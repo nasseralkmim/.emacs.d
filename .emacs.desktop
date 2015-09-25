@@ -1,0 +1,74 @@
+;; -*- mode: emacs-lisp; coding: emacs-mule; -*-
+;; --------------------------------------------------------------------------
+;; Desktop File for Emacs
+;; --------------------------------------------------------------------------
+;; Created Fri Sep 25 15:31:41 2015
+;; Desktop file format version 206
+;; Emacs version 24.5.1
+
+;; Global section:
+(setq desktop-saved-frameset [frameset 1 (22021 37645 76000 0) (desktop . "206") "Nasser@NASSER-PC" nil nil ((((font-backend uniscribe gdi) (font . "-outline-Courier New-normal-normal-normal-mono-13-*-*-*-c-*-iso8859-1") (border-width . 2) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars . right) (foreground-color . "#657b83") (background-color . "#fdf6e3") (mouse-color . "black") (border-color . "black") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (alpha) (menu-bar-lines . 0) (tool-bar-lines . 0) (title) (fullscreen) (icon-type) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 17) (horizontal-scroll-bars . t) (display-type . color) (background-mode . light) (cursor-color . "#657b83") (environment) (frameset--id . "78DC-E2F5-3CC7-8939") (frameset--mini t . t) (modeline . t) (minibuffer . t) (unsplittable) (icon-name) (display . "w32") (explicit-name) (tool-bar-position . top) (visibility . t) (height . 63) (width . 113) (left . 7) (top . 3)) ((min-height . 8) (min-width . 10) (min-height-ignore . 6) (min-width-ignore . 7) (min-height-safe . 2) (min-width-safe . 2) (min-pixel-height . 128) (min-pixel-width . 80) (min-pixel-height-ignore . 96) (min-pixel-width-ignore . 56) (min-pixel-height-safe . 32) (min-pixel-width-safe . 16)) vc (pixel-width . 937) (pixel-height . 992) (total-width . 117) (total-height . 62) (normal-height . 1.0) (normal-width . 1.0) (combination-limit) (leaf (pixel-width . 937) (pixel-height . 496) (total-width . 117) (total-height . 31) (normal-height . 0.5) (normal-width . 1.0) (buffer "init.el" (selected) (hscroll . 0) (fringes 8 8 nil) (margins 3) (scroll-bars 17 3 t nil) (vscroll . 0) (dedicated) (point . 2509) (start . 2037))) (leaf (last . t) (pixel-width . 937) (pixel-height . 496) (total-width . 117) (total-height . 31) (normal-height . 0.5) (normal-width . 1.0) (buffer "init.el" (selected . t) (hscroll . 0) (fringes 8 8 nil) (margins 3) (scroll-bars 17 3 t nil) (vscroll . 0) (dedicated) (point . 2844) (start . 2013)))))])
+(setq desktop-missing-file-warning nil)
+(setq tags-file-name nil)
+(setq tags-table-list nil)
+(setq search-ring '(".emacs" ".e" "nas" "user	" "tram" "ess" "org" "po" "preview" "preview-" "30" "pessoa " "one" "n" "neotress" "aula"))
+(setq regexp-search-ring nil)
+(setq register-alist nil)
+(setq file-name-history '("c:/Users/Nasser/.emacs.d/init.el" "~/.emacs.d/" "c:/Users/Nasser/.emacs.d/init.el" "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/revisao-tc.org" "c:/Users/Nasser/Desktop/nasser2015_CILAMCE2015.tex" "c:/Users/Nasser/Desktop/Appendix_C.pdf" "c:/Users/Nasser/Desktop/nasser2015_CILAMCE2015.tex" "c:/Users/Nasser/Desktop/Appendix_C.pdf" "c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/circ.tex" "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/notas-revisao.org" "c:/Users/Nasser/OneDrive/UNB/2015_2/direito/notas-de-aula.org" "c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/circ.tex" "c:/Users/Nasser/.emacs.d/init.el" "c:/Program Files/emacs/share/emacs/site-lisp/auctex/preview.el" "c:/Users/Nasser/Desktop/test.tex" "../../../Users/Nasser/.emacs.d/init.el"))
+
+;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "c:/Users/Nasser/.emacs.d/init.el"
+  "init.el"
+  'emacs-lisp-mode
+  '(visual-line-mode linum-mode projectile-mode helm-mode)
+  2844
+  '(2843 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . prefer-utf-8-dos) (truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  ".emacs.d"
+  'dired-mode
+  '(visual-line-mode linum-mode projectile-mode helm-mode)
+  528
+  '(nil nil)
+  t
+  '("c:/Users/Nasser/.emacs.d/")
+  '((truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/revisao-tc.org"
+  "revisao-tc.org"
+  'org-mode
+  '(auto-fill-mode visual-line-mode linum-mode projectile-mode helm-mode text-scale-mode)
+  8337
+  '(7386 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . iso-latin-1-dos) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_2/direito/notas-direito.org"
+  "notas-direito.org"
+  'org-mode
+  '(auto-fill-mode visual-line-mode linum-mode projectile-mode helm-mode)
+  21968
+  '(20029 nil)
+  nil
+  nil
+  '((buffer-file-coding-system . iso-latin-1-dos) (truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  "*info*"
+  'Info-mode
+  '(visual-line-mode linum-mode projectile-mode helm-mode)
+  15497
+  '(14012 nil)
+  t
+  '("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Keys and lisp" ((history ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Top" 1755) ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Contacts" 10333) ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Installation" 11704) ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Top" 1703))))
+  '((tab-width . 8) (buffer-file-coding-system . undecided-unix) (case-fold-search . t) (truncate-lines)))
+
