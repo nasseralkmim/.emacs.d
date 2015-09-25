@@ -101,7 +101,7 @@
 (add-hook 'god-mode-enabled-hook 'my-update-cursor)
 (add-hook 'god-mode-disabled-hook 'my-update-cursor)
 
-;; Line numbers display
+;; Line numbers display\
 (require 'linum)
 (global-linum-mode 1)
 

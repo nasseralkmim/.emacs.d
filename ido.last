@@ -42,6 +42,8 @@
 
 ;; ----- ido-dir-file-cache -----
 (
+ ("c:/Users/Nasser/.emacs.d/" (22021 35890 0 0) "projectile-bookmarks.eld" "init.el" "ido.last" "elpa/" "auto-save-list/" ".git/" ".emacs.desktop.lock" ".emacs.desktop" "../" "./")
+
  ("c:/Program Files/emacs/share/emacs/site-lisp/auctex/" (22002 60169 0 0) "toolbar-x.elc" "toolbar-x.el" "texmathp.elc" "texmathp.el" "tex.elc" "tex.el" "tex-style.elc" "tex-style.el" "tex-mik.elc" "tex-mik.el" "tex-jp.elc" "tex-jp.el" "tex-info.elc" "tex-info.el" "tex-font.elc" "tex-font.el" "tex-fold.elc" "tex-fold.el" "tex-buf.elc" "tex-buf.el" "tex-bar.elc" "tex-bar.el" "style/" "prv-emacs.elc" "prv-emacs.el" "preview.elc" "preview.el" "plain-tex.elc" "plain-tex.el" "multi-prompt.elc" "multi-prompt.el" "latex.elc" "latex.el" "latex/" "images/" "font-latex.elc" "font-latex.el" "context.elc" "context.el" "context-nl.elc" "context-nl.el" "context-en.elc" "context-en.el" "bib-cite.elc" "bib-cite.el" ".nosearch" "../" "./")
 
  ("c:/Users/Nasser/OneDrive/UNB/2015_2/direito/" (22017 57021 0 0) "notas-direito.tex" "notas-direito.pdf" "notas-direito.org" "Exercício em sala de aula 01.docx" ".emacs.desktop" "../" "./")
@@ -49,8 +51,6 @@
  ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/" (22002 3547 0 0) "_region_.tex" "_region_.prv/" "_region_.log" "toolbar-x.elc" "toolbar-x.el" "texmathp.elc" "texmathp.el" "tex.elc" "tex.el" "tex-wizard.elc" "tex-wizard.el" "tex-style.elc" "tex-style.el" "tex-site.elc" "tex-site.el" "tex-mik.elc" "tex-mik.el" "tex-jp.elc" "tex-jp.el" "tex-info.elc" "tex-info.el" "tex-font.elc" "tex-font.el" "tex-fold.elc" "tex-fold.el" "tex-buf.elc" "tex-buf.el" "tex-bar.elc" "tex-bar.el" "tests/" "style/" "RELEASE" "README.GIT" "README" "prv_circ.log" "prv-xemacs.elc" "prv-xemacs.el" "prv-emacs.elc" "prv-emacs.el" "preview.elc" "preview.el" "preview-latex.info" "plain-tex.elc" "plain-tex.el" "multi-prompt.elc" "multi-prompt.el" "latex.elc" "latex.el" "latex/" "images/" "GNUmakefile" "font-latex.elc" "font-latex.el" "doc/" "dir" "COPYING" "context.elc" "context.el" "context-nl.elc" "context-nl.el" "context-en.elc" "context-en.el" "circ.tex" "circ.pdf" "circ.log" "circ.aux" "ChangeLog-preview.1" "ChangeLog-preview" "ChangeLog" "bib-cite.elc" "bib-cite.el" "auctex.info" "auctex.elc" "auctex.el" "auctex-pkg.elc" "auctex-pkg.el" "auctex-autoloads.el" ".elpaignore" "../" "./")
 
  ("c:/Users/Nasser/Desktop/" (22010 59601 0 0) "vim-cheat-sheet-en.pdf" "vi-vim-cheat-sheet-and-tutorial.pdf" "Thumbs.db" "tex-ref.pdf" "SIGFAPDF - Fundação de A...pdf" "refcard.pdf" "orgcard.pdf" "desktop.ini" "cal_matricula_22015.pdf" "a_privataria_tucana_-_amaury_ribeiro_jr1.pdf" "Appendix_C.pdf" "../" "./")
-
- ("c:/Users/Nasser/.emacs.d/" (22020 25518 0 0) "init.el~" "init.el" "ido.last" "elpa/" "auto-save-list/" ".emacs.desktop.lock" ".emacs.desktop" "../" "./")
 
  ("c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/" (22006 47285 0 0) "_TC1P2.1.txt" "_1ª Prova" "trab1-tc.docx" "Terraplanagem e Locacao - Vamberto - Alunos.pdf" "Segurança_trabalho.pdf" "revisao-tc.tex" "revisao-tc.pdf" "revisao-tc.org" "lajes moldadas in loco_05_2014.pdf" "Instalações provisórias_canteiro_layout_materiais Rev Débora.pdf" "Fundações_diretas.pdf" "Formas_2013-alunos.pdf" "Exercício_Terraplanagem e Locacao. 2015_1.pdf" "exercicio_fundações_diretas_moodle.pdf" "Exercicio fundações indiretas.pdf" "E23-07 Instalação da Obra (2) Rev Débora.pdf" "../" "./")
 
