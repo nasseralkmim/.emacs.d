@@ -2,73 +2,216 @@
 ;; --------------------------------------------------------------------------
 ;; Desktop File for Emacs
 ;; --------------------------------------------------------------------------
-;; Created Fri Sep 25 15:34:22 2015
+;; Created Fri Oct 23 13:24:18 2015
 ;; Desktop file format version 206
 ;; Emacs version 24.5.1
 
 ;; Global section:
-(setq desktop-saved-frameset [frameset 1 (22021 37806 899000 0) (desktop . "206") "Nasser@NASSER-PC" nil nil ((((font-backend uniscribe gdi) (font . "-outline-Courier New-normal-normal-normal-mono-13-*-*-*-c-*-iso8859-1") (border-width . 2) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars . right) (foreground-color . "#657b83") (background-color . "#fdf6e3") (mouse-color . "black") (border-color . "black") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (alpha) (menu-bar-lines . 0) (tool-bar-lines . 0) (title) (fullscreen) (icon-type) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 17) (horizontal-scroll-bars . t) (display-type . color) (background-mode . light) (cursor-color . "#657b83") (environment) (frameset--id . "78DC-E2F5-3CC7-8939") (frameset--mini t . t) (modeline . t) (minibuffer . t) (unsplittable) (icon-name) (display . "w32") (explicit-name) (tool-bar-position . top) (visibility . t) (height . 63) (width . 113) (left . 7) (top . 3)) ((min-height . 8) (min-width . 10) (min-height-ignore . 6) (min-width-ignore . 7) (min-height-safe . 2) (min-width-safe . 2) (min-pixel-height . 128) (min-pixel-width . 80) (min-pixel-height-ignore . 96) (min-pixel-width-ignore . 56) (min-pixel-height-safe . 32) (min-pixel-width-safe . 16)) vc (pixel-width . 937) (pixel-height . 992) (total-width . 117) (total-height . 62) (normal-height . 1.0) (normal-width . 1.0) (combination-limit) (leaf (pixel-width . 937) (pixel-height . 496) (total-width . 117) (total-height . 31) (normal-height . 0.5) (normal-width . 1.0) (buffer "init.el" (selected . t) (hscroll . 0) (fringes 8 8 nil) (margins 3) (scroll-bars 17 3 t nil) (vscroll . 0) (dedicated) (point . 2861) (start . 2037))) (leaf (last . t) (pixel-width . 937) (pixel-height . 496) (total-width . 117) (total-height . 31) (normal-height . 0.5) (normal-width . 1.0) (buffer "init.el" (selected) (hscroll . 0) (fringes 8 8 nil) (margins 3) (scroll-bars 17 3 t nil) (vscroll . 0) (dedicated) (point . 2844) (start . 2013)))))])
+(setq desktop-saved-frameset [frameset 1 (22058 20770 689000 0) (desktop . "206") "Nasser@NASSER-PC" nil nil ((((font-backend uniscribe gdi) (font . "-outline-Courier New-normal-normal-normal-mono-13-*-*-*-c-*-iso8859-1") (border-width . 2) (internal-border-width . 0) (right-divider-width . 0) (bottom-divider-width . 0) (vertical-scroll-bars) (foreground-color . "#657b83") (background-color . "#fdf6e3") (mouse-color . "black") (border-color . "black") (screen-gamma) (line-spacing) (left-fringe . 8) (right-fringe . 8) (alpha) (menu-bar-lines . 0) (tool-bar-lines . 0) (title) (fullscreen . maximized) (icon-type) (auto-raise) (auto-lower) (cursor-type . box) (scroll-bar-width . 0) (horizontal-scroll-bars . t) (display-type . color) (background-mode . light) (cursor-color . "#657b83") (environment) (frameset--id . "78DC-E2F5-3CC7-8939") (frameset--mini t . t) (modeline . t) (minibuffer . t) (unsplittable) (icon-name) (display . "w32") (explicit-name) (tool-bar-position . top) (image-mode-saved-params (585 . 209) (238 . 64) "Unprintable entity") (visibility . t) (height . 64) (width . 238) (left + -8) (top + -8)) ((min-height . 4) (min-width . 20) (min-height-ignore . 4) (min-width-ignore . 8) (min-height-safe . 1) (min-width-safe . 4) (min-pixel-height . 64) (min-pixel-width . 160) (min-pixel-height-ignore . 64) (min-pixel-width-ignore . 64) (min-pixel-height-safe . 16) (min-pixel-width-safe . 32)) hc (pixel-width . 1920) (pixel-height . 1008) (total-width . 240) (total-height . 63) (normal-height . 1.0) (normal-width . 1.0) (combination-limit) (leaf (pixel-width . 960) (pixel-height . 1008) (total-width . 120) (total-height . 63) (normal-height . 1.0) (normal-width . 0.5) (buffer "RTP-NSA8-102015.tex" (selected) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars 0 0 t nil) (vscroll . 0) (dedicated) (point . 1051) (start . 1051))) (leaf (last . t) (pixel-width . 960) (pixel-height . 1008) (total-width . 120) (total-height . 63) (normal-height . 1.0) (normal-width . 0.5) (buffer "*Process List*" (selected) (hscroll . 0) (fringes 8 8 nil) (margins nil) (scroll-bars 0 0 t nil) (vscroll . 0) (dedicated) (point . 1) (start . 1)))))])
 (setq desktop-missing-file-warning nil)
 (setq tags-file-name nil)
 (setq tags-table-list nil)
-(setq search-ring '(".emacs" ".e" "nas" "user	" "tram" "ess" "org" "po" "preview" "preview-" "30" "pessoa " "one" "n" "neotress" "aula"))
+(setq search-ring '("resul" "ds" "column" "resu" "line" "persona" "sujei" "figure" "colum" "figure" "metodo" "pÅ˙blico" "Direito PÅ˙blo" "direito pu" "textblo" "wheel"))
 (setq regexp-search-ring nil)
 (setq register-alist nil)
-(setq file-name-history '("c:/Users/Nasser/.emacs.d/init.el" "~/.emacs.d/" "c:/Users/Nasser/.emacs.d/init.el" "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/revisao-tc.org" "c:/Users/Nasser/Desktop/nasser2015_CILAMCE2015.tex" "c:/Users/Nasser/Desktop/Appendix_C.pdf" "c:/Users/Nasser/Desktop/nasser2015_CILAMCE2015.tex" "c:/Users/Nasser/Desktop/Appendix_C.pdf" "c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/circ.tex" "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/notas-revisao.org" "c:/Users/Nasser/OneDrive/UNB/2015_2/direito/notas-de-aula.org" "c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/circ.tex" "c:/Users/Nasser/.emacs.d/init.el" "c:/Program Files/emacs/share/emacs/site-lisp/auctex/preview.el" "c:/Users/Nasser/Desktop/test.tex" "../../../Users/Nasser/.emacs.d/init.el"))
+(setq file-name-history '("~/OneDrive/elflab/elflab/example/poster" "~/OneDrive/UnB - MatrÅÌcula Web - Grade HorÅ·ria.pdf" "c:/Users/Nasser/OneDrive/Resume/resume2/NasserResumept.tex" "~/OneDrive/UNB/2015_1/cilamce 2015/Cilamce2015_Latex/nasser2015_CILAMCE2015.tex" "~/OneDrive/UNB/2014_2/PIBIC/general polynomial shape function/code/anydegree.py" "~/OneDrive/Berkeley/CE 133/hw2/133code2_final.py" "~/OneDrive/Berkeley/CE 133/hw3/133code3_v3.py" "~/OneDrive/elflab/elflab/boundaryconditions2dof.py" "~/OneDrive/elflab/elflab/assemble2dof.py" "~/OneDrive/elflab/elflab/heat2dtransient.py" "~/OneDrive/elflab/elflab/element2dof.py" "~/OneDrive/elflab/elflab/processing.py" "~/OneDrive/elflab/elflab/elasticity2d.py" "~/OneDrive/elflab/elflab/example/ex1_imposedU.py" "~/Miniconda3/Lib/site-packages/elflab/processing.py" "~/Miniconda3/Lib/site-packages/elflab/boundaryconditions2dof.py" "~/Miniconda3/Lib/site-packages/elflab/assemble2dof.py" "~/Miniconda3/Lib/site-packages/elflab/elasticity2d.py" "~/OneDrive/elflab/elasticity2d.py" "~/OneDrive/elflab/gmsh.py" "~/OneDrive/elflab/example/ex1_imposedU.py" "~/.emacs.d/" "c:/Users/Nasser/OneDrive/elflab/elasticity2d.py" "c:/Users/Nasser/.emacs.d/init.el" "~/.emacs.d/" "c:/Users/Nasser/.emacs.d/init.el" "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/revisao-tc.org" "c:/Users/Nasser/Desktop/nasser2015_CILAMCE2015.tex" "c:/Users/Nasser/Desktop/Appendix_C.pdf" "c:/Users/Nasser/Desktop/nasser2015_CILAMCE2015.tex" "c:/Users/Nasser/Desktop/Appendix_C.pdf" "c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/circ.tex" "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/notas-revisao.org" "c:/Users/Nasser/OneDrive/UNB/2015_2/direito/notas-de-aula.org" "c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/circ.tex" "c:/Users/Nasser/.emacs.d/init.el" "c:/Program Files/emacs/share/emacs/site-lisp/auctex/preview.el" "c:/Users/Nasser/Desktop/test.tex" "../../../Users/Nasser/.emacs.d/init.el"))
 
 ;; Buffer section -- buffers listed in same order as in buffer list:
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_2/pibic/producao/elastodinÅ‰mica/RTP-NSA8-102015.tex"
+  "RTP-NSA8-102015.tex"
+  'latex-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode latex-preview-pane-mode flyspell-mode)
+  1051
+  '(1188 nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_2/pibic/producao/elastodinÅ‰mica/RTP-NSA8-102015.pdf"
+  "RTP-NSA8-102015.pdf"
+  'doc-view-mode
+  '(visual-line-mode projectile-mode helm-mode TeX-PDF-mode)
+  78853
+  '(78853 nil)
+  nil
+  '((page . 1) (slice))
+  '((buffer-file-coding-system . no-conversion) (truncate-lines)))
+
 (desktop-create-buffer 206
   "c:/Users/Nasser/.emacs.d/init.el"
   "init.el"
   'emacs-lisp-mode
-  '(visual-line-mode linum-mode projectile-mode helm-mode)
-  2861
-  '(2843 nil)
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode linum-mode TeX-PDF-mode)
+  2975
+  '(7704 nil)
   nil
   nil
   '((buffer-file-coding-system . prefer-utf-8-dos) (truncate-lines)))
 
 (desktop-create-buffer 206
-  nil
-  ".emacs.d"
-  'dired-mode
-  '(visual-line-mode linum-mode projectile-mode helm-mode)
-  528
-  '(nil nil)
+  "c:/Users/Nasser/OneDrive/UNB/2015_1/cilamce 2015/poster/_region_.tex"
+  "_region_.tex"
+  'fundamental-mode
+  '(visual-line-mode projectile-mode helm-mode TeX-PDF-mode)
+  946
+  '(1206 nil)
   t
-  '("c:/Users/Nasser/.emacs.d/")
-  '((truncate-lines)))
-
-(desktop-create-buffer 206
-  "c:/Users/Nasser/OneDrive/UNB/2015_2/tec-construcoes/revisao-tc.org"
-  "revisao-tc.org"
-  'org-mode
-  '(auto-fill-mode visual-line-mode linum-mode projectile-mode helm-mode text-scale-mode)
-  8337
-  '(7386 nil)
-  nil
   nil
   '((buffer-file-coding-system . iso-latin-1-dos) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_1/cilamce 2015/Cilamce2015_Latex/nasser2015_CILAMCE2015.pdf"
+  "nasser2015_CILAMCE2015.pdf"
+  'doc-view-mode
+  '(visual-line-mode projectile-mode helm-mode TeX-PDF-mode)
+  1
+  '(nil nil)
+  t
+  '((page . 1) (slice))
+  '((buffer-file-coding-system . no-conversion) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UnB - MatrÅÌcula Web - Grade HorÅ·ria.pdf"
+  "UnB - MatrÅÌcula Web - Grade HorÅ·ria.pdf"
+  'doc-view-mode
+  '(visual-line-mode projectile-mode helm-mode TeX-PDF-mode)
+  1
+  '(nil nil)
+  t
+  '((page . 1) (slice))
+  '((buffer-file-coding-system . no-conversion) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/Resume/resume2/NasserResumept.pdf"
+  "NasserResumept.pdf"
+  'doc-view-mode
+  '(visual-line-mode projectile-mode helm-mode TeX-PDF-mode)
+  1
+  '(nil nil)
+  t
+  '((page . 1) (slice))
+  '((buffer-file-coding-system . no-conversion) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_1/cilamce 2015/poster/poster-cilamce2015.pdf"
+  "poster-cilamce2015.pdf"
+  'doc-view-mode
+  '(visual-line-mode projectile-mode helm-mode TeX-PDF-mode)
+  1
+  '(nil nil)
+  t
+  '((page . 1) (slice))
+  '((buffer-file-coding-system . no-conversion) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2014_2/PIBIC/general polynomial shape function/code/anydegree.py"
+  "anydegree.py"
+  'python-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode linum-mode TeX-PDF-mode)
+  12900
+  '(12902 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
 (desktop-create-buffer 206
   "c:/Users/Nasser/OneDrive/UNB/2015_2/direito/notas-direito.org"
   "notas-direito.org"
   'org-mode
-  '(auto-fill-mode visual-line-mode linum-mode projectile-mode helm-mode)
-  21968
-  '(20029 nil)
+  '(auto-fill-mode visual-line-mode projectile-mode helm-mode linum-mode TeX-PDF-mode)
+  37960
+  '(18172 nil)
   nil
   nil
   '((buffer-file-coding-system . iso-latin-1-dos) (truncate-lines)))
 
 (desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_1/cilamce 2015/poster/poster-cilamce2015.tex"
+  "poster-cilamce2015.tex"
+  'latex-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode latex-preview-pane-mode TeX-PDF-mode flyspell-mode)
+  6462
+  '(6535 nil)
   nil
-  "*info*"
-  'Info-mode
-  '(visual-line-mode linum-mode projectile-mode helm-mode)
-  15497
-  '(14012 nil)
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . iso-latin-1-dos) (overwrite-mode) (case-fold-search . t) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/UNB/2015_1/cilamce 2015/Cilamce2015_Latex/nasser2015_CILAMCE2015.tex"
+  "nasser2015_CILAMCE2015.tex"
+  'latex-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode latex-preview-pane-mode TeX-PDF-mode flyspell-mode)
+  12342
+  '(11269 nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . iso-latin-1-unix) (case-fold-search . t) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/Resume/resume2/NasserResumept.tex"
+  "NasserResumept.tex"
+  'latex-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode latex-preview-pane-mode TeX-PDF-mode flyspell-mode)
+  1482
+  '(1478 nil)
+  nil
+  nil
+  '((indent-tabs-mode) (buffer-file-coding-system . utf-8-unix) (overwrite-mode) (case-fold-search . t) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/elflab/elflab/example/ex1_imposedU.py"
+  "ex1_imposedU.py"
+  'python-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode linum-mode TeX-PDF-mode)
+  305
+  '(305 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-dos) (truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  "cilamce 2015"
+  'dired-mode
+  '(visual-line-mode projectile-mode god-local-mode helm-mode TeX-PDF-mode)
+  308
+  '(nil nil)
   t
-  '("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Keys and lisp" ((history ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Top" 1755) ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Contacts" 10333) ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Installation" 11704) ("c:/Users/Nasser/.emacs.d/elpa/auctex-11.88.8/preview-latex" "Top" 1703))))
-  '((tab-width . 8) (buffer-file-coding-system . undecided-unix) (case-fold-search . t) (truncate-lines)))
+  '("c:/Users/Nasser/OneDrive/UNB/2015_1/cilamce 2015/")
+  '((truncate-lines)))
+
+(desktop-create-buffer 206
+  nil
+  "UNB"
+  'dired-mode
+  '(visual-line-mode projectile-mode helm-mode TeX-PDF-mode)
+  228
+  '(nil nil)
+  t
+  '("c:/Users/Nasser/OneDrive/UNB/")
+  '((truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/elflab/elflab/boundaryconditions2dof.py"
+  "boundaryconditions2dof.py"
+  'python-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode linum-mode TeX-PDF-mode)
+  84
+  '(nil nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-dos) (truncate-lines)))
+
+(desktop-create-buffer 206
+  "c:/Users/Nasser/OneDrive/elflab/setup.py"
+  "setup.py"
+  'python-mode
+  '(visual-line-mode auto-complete-mode projectile-mode helm-mode linum-mode TeX-PDF-mode)
+  219
+  '(206 nil)
+  nil
+  nil
+  '((tab-width . 8) (indent-tabs-mode) (buffer-file-coding-system . undecided-unix) (truncate-lines)))
 
