@@ -18,7 +18,10 @@
 		     auto-complete
 		     company
 		     yasnippet
-		     org-download))
+		     org-download
+		     powerline
+		     theme-looper
+		     material-theme))
 
 ; list the repositories containing them
 (setq package-archives '(("elpa" . "http://tromey.com/elpa/")
@@ -42,7 +45,31 @@
 (setq message-log-max t)
 
 ;;
-;; yassnippet
+;; Change default font
+;;
+(set-face-attribute 'default nil :font  "Fantasque Sans Mono-11" ))
+(set-frame-font  "Fantasque Sans Mono-11" nil t)
+
+
+;Configure theme-looper
+(theme-looper-set-theme-set '(deeper-blue
+                              wheatgrass
+                              wombat
+			      material
+			      material-light
+			      zenburn))
+(theme-looper-set-customizations 'powerline-reset)
+(global-set-key (kbd "C-0") 'theme-looper-enable-next-theme)
+;;
+;;powerline
+;;
+(require 'powerline)
+(powerline-center-theme)
+(setq powerline-default-separator 'wave)
+
+
+;;
+;; Yassnippet
 ;;
 ;(require 'yasnippet)
 ;(yas-global-mode)
@@ -51,7 +78,7 @@
 ;;
 ;;org download - images on org
 ;;
-(require 'org-download)
+;(require 'org-download)
 ;; paste from clipboard
 (defun my-org-insert-clipboard ()
   (interactive)
@@ -140,10 +167,13 @@
 ;;;
 ;; Load recent version of org-mode.
 (require 'org-install)
+;; make lists collapsed by default
+(setq org-cycle-include-plain-lists 'integrate)
 
 ;; helm
 (require 'helm-config)
 (helm-mode 1)
+(helm-autoresize-mode 1)
 ; helm find files
 (global-set-key (kbd "C-x C-f") 'helm-find-files)
 (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
@@ -191,12 +221,12 @@
 ;; No splash screen please... jeez
 (setq inhibit-startup-screen t)
 
-(load-theme 'zenburn t) ; load theme
+(load-theme 'material t) ; load theme
 ;;(desktop-save-mode 1) ; Save desktop opened previously
 
 (global-visual-line-mode 1) ; Line wrapping
 (global-hl-line-mode 1) ; Highlight current line
-(set-face-background 'hl-line "#5F5F5F")
+;(set-face-background 'hl-line "#5F5F5F")
 (setq make-backup-files nil) ; Don't save backup files
 
 ;;;

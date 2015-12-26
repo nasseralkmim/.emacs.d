@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/OneDrive/Resume/" "~/OneDrive/nasseralkmim.github.io/" "~/OneDrive/eldypy/" "~/OneDrive/elflab/")
+("~/.emacs.d/" "~/OneDrive/nasseralkmim.github.io/" "~/OneDrive/Resume/" "~/OneDrive/eldypy/" "~/OneDrive/elflab/")
