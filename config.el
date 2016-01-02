@@ -4,28 +4,34 @@
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 
+(use-package moe-theme
+  :ensure t)
+
 (use-package material-theme
+  :defer t
   :ensure t
   :init
   (load-theme 'material t))  
 
 (use-package cyberpunk-theme
+  :defer t
   :ensure t)
 
 (use-package zenburn-theme
+  :defer t
   :ensure t)
 
 (use-package theme-looper
+  :defer t
   :ensure t
   :init
-  (theme-looper-set-theme-set '(;deeper-blue
-                              ;wheatgrass
-                              ;wombat
-			      material
-			      material-light
-			      zenburn
-                              cyberpunk
-			      ))
+  (theme-looper-set-theme-set '(moe-light
+                                moe-dark
+                                material
+                                material-light
+                                zenburn
+                                cyberpunk
+                                ))
   (theme-looper-set-customizations 'powerline-reset)
   (global-set-key (kbd "S-<f12>") 'theme-looper-enable-next-theme))
 
@@ -160,9 +166,10 @@
 ;; paste from clipboard
 (defun my-org-insert-clipboard ()
   (interactive)
-  (let* ((image-file (concat (buffer-file-name)
-			     "_"
-			     (format-time-string "%Y%m%d_%H%M%S_.png")))
+  (let* ((image-file (concat 
+                      (buffer-file-name)
+                      "_"
+                      (format-time-string "%Y%m%d_%H%M%S_.png")))
 	 (exit-status
 	  (call-process "convert" nil nil nil
 			"clipboard:" image-file)))
@@ -222,10 +229,10 @@
          ("C-x C-f" . helm-find-files)))
 
 (use-package swiper-helm
+  :bind (("C-s" . swiper-helm)
+         ("C-r" . swiper-helm))
   :ensure t
-  :init
-  (global-set-key (kbd "C-s") 'swiper-helm)
-  (global-set-key (kbd "C-r") 'swiper-helm)
+  :config
   (setq swiper-helm-display-function 'helm-default-display-buffer))
 
 (use-package magit
@@ -246,28 +253,18 @@
   (kill-buffer)
   (jump-to-register :magit-fullscreen))
 
-(use-package edit-server
-  :ensure t
-  :config
-  (edit-server-start)
-  (setq edit-server-default-major-mode 'markdown-mode)
-  (setq edit-server-new-frame nil))
-
 (use-package ein
+  :defer t
   :ensure t)
-
-(use-package expand-region
-  :ensure t
-  :bind ("C-@" . er/expand-region))
-
-(use-package flycheck
-  :ensure t
-  :config (setq flycheck-html-tidy-executable "tidy5"))
 
 (use-package markdown-mode
   :ensure t
   :mode (("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'"       . markdown-mode)))
+
+(use-package perspective
+  :ensure t
+  :config (persp-mode))
 
 (use-package projectile
   :ensure t
@@ -281,6 +278,11 @@
       :commands ag
       :ensure t)))
 
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode)
+  :ensure t)
+
 (use-package smartparens
   :ensure t
   :diminish smartparens-mode
@@ -292,17 +294,8 @@
 (sp-local-pair 'org-mode "*" "*" :actions '(wrap))
 
 (use-package smooth-scrolling
+  :defer t
   :ensure t)
-
-(use-package visual-regexp
-  :ensure t
-  :init
-  (use-package visual-regexp-steroids :ensure t)
-  :bind (("C-c r" . vr/replace)
-         ("C-c q" . vr/query-replace)
-         ("C-c m" . vr/mc-mark) ; Need multiple cursors
-         ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward)))
 
 (use-package auctex
   :ensure t
@@ -313,7 +306,8 @@
     (setq TeX-PDF-mode t)
     (setq-default TeX-master nil)
     (setq TeX-auto-save t)
-    (setq TeX-parse-self t)))
+    (setq TeX-parse-self t)
+    (setq global-font-lock-mode t)))
 
 (use-package latex-preview-pane
   :ensure t

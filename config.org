@@ -22,10 +22,18 @@ customize settings in [[file:init.el][init.el]].
 #+end_src
 
 * Theme
+Add themes as you want, then add the theme to the looper
+
+** Moe theme
+#+BEGIN_SRC emacs-lisp
+(use-package moe-theme
+  :ensure t)
+#+END_SRC
 ** Material theme
 
 #+begin_src emacs-lisp
 (use-package material-theme
+  :defer t
   :ensure t
   :init
   (load-theme 'material t))  
@@ -35,28 +43,30 @@ customize settings in [[file:init.el][init.el]].
 
 #+BEGIN_SRC emacs-lisp
 (use-package cyberpunk-theme
+  :defer t
   :ensure t)
 #+END_SRC
 
 ** Zenburn
 #+BEGIN_SRC emacs-lisp
 (use-package zenburn-theme
+  :defer t
   :ensure t)
 #+END_SRC
 ** Theme looper
 
 #+begin_src emacs-lisp
 (use-package theme-looper
+  :defer t
   :ensure t
   :init
-  (theme-looper-set-theme-set '(;deeper-blue
-                              ;wheatgrass
-                              ;wombat
-			      material
-			      material-light
-			      zenburn
-                              cyberpunk
-			      ))
+  (theme-looper-set-theme-set '(moe-light
+                                moe-dark
+                                material
+                                material-light
+                                zenburn
+                                cyberpunk
+                                ))
   (theme-looper-set-customizations 'powerline-reset)
   (global-set-key (kbd "S-<f12>") 'theme-looper-enable-next-theme))
 #+end_src
@@ -185,7 +195,6 @@ at point as the default value for occur.
 #+end_src
 
 * Org mode
-
 ** Org activation bindings
 
 Set up some global key bindings that integrate with Org Mode features.
@@ -252,17 +261,6 @@ good column number to do that.
 
 ** Org babel/source blocks
 
-I like to have source blocks properly syntax highlighted and with the
-editing popup window staying within the same window so all the windows
-don't jump around. Also, having the top and bottom trailing lines in
-the block is a waste of space, so we can remove them.
-
-I noticed that fontification doesn't work with markdown mode when the
-block is indented after editing it in the org src buffer---the leading
-#s for headers don't get fontified properly because they appear as Org
-comments. Setting ~org-src-preserve-indentation~ makes things
-consistent as it doesn't pad source blocks with leading spaces.
-
 #+begin_src emacs-lisp
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
@@ -272,13 +270,16 @@ consistent as it doesn't pad source blocks with leading spaces.
 #+end_src
 
 ** Org paste from clipboard
+Function for pasting images from clipboard. I got this from [[https://lists.gnu.org/archive/html/emacs-orgmode/2013-11/msg00290.html][this thread]]. It's very useful when I'm writing notes while studying, great for reviewing the notes later.
+
 #+BEGIN_SRC emacs-lisp
 ;; paste from clipboard
 (defun my-org-insert-clipboard ()
   (interactive)
-  (let* ((image-file (concat (buffer-file-name)
-			     "_"
-			     (format-time-string "%Y%m%d_%H%M%S_.png")))
+  (let* ((image-file (concat 
+                      (buffer-file-name)
+                      "_"
+                      (format-time-string "%Y%m%d_%H%M%S_.png")))
 	 (exit-status
 	  (call-process "convert" nil nil nil
 			"clipboard:" image-file)))
@@ -288,6 +289,8 @@ consistent as it doesn't pad source blocks with leading spaces.
 #+END_SRC
 
 ** Org BG level 1 and 2
+This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
+
 #+BEGIN_SRC emacs-lisp
 (custom-set-faces
 
@@ -373,10 +376,10 @@ what I have them set to (with respect to Dvorak, of course).
 ** Helm swiper
 #+BEGIN_SRC emacs-lisp
 (use-package swiper-helm
+  :bind (("C-s" . swiper-helm)
+         ("C-r" . swiper-helm))
   :ensure t
-  :init
-  (global-set-key (kbd "C-s") 'swiper-helm)
-  (global-set-key (kbd "C-r") 'swiper-helm)
+  :config
   (setq swiper-helm-display-function 'helm-default-display-buffer))
 #+END_SRC
 ** Magit
@@ -418,48 +421,11 @@ No more juggling windows after commiting. It's magit bliss.
   (jump-to-register :magit-fullscreen))
 #+end_src
 
-** Edit With Emacs
-
-Editing input boxes from Chrome with Emacs. Pretty useful to keep all
-significant text-writing on the web within emacs. I typically use this
-with posts on Discourse, which has a post editor that overrides normal
-Emacs key bindings with other functions. As such, ~markdown-mode~ is
-used.
-
-#+begin_src emacs-lisp
-(use-package edit-server
-  :ensure t
-  :config
-  (edit-server-start)
-  (setq edit-server-default-major-mode 'markdown-mode)
-  (setq edit-server-new-frame nil))
-#+end_src
-
 ** Emacs IPython Notebook
 #+begin_src emacs-lisp
 (use-package ein
+  :defer t
   :ensure t)
-#+end_src
-
-** Expand region
-
-#+begin_src emacs-lisp
-(use-package expand-region
-  :ensure t
-  :bind ("C-@" . er/expand-region))
-#+end_src
-
-** Flycheck
-
-Still need to set up hooks so that flycheck automatically runs in
-python mode, etc. js2-mode is already really good for the syntax
-checks, so I probably don't need the jshint checks with flycheck for
-it.
-
-#+begin_src emacs-lisp
-(use-package flycheck
-  :ensure t
-  :config (setq flycheck-html-tidy-executable "tidy5"))
 #+end_src
 
 ** Markdown mode
@@ -475,7 +441,7 @@ it.
 
 Workspaces in Emacs.
 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package perspective
   :ensure t
   :config (persp-mode))
@@ -505,10 +471,12 @@ http://batsov.com/projectile/
 
 ** Python
 
-Integrates with IPython.
+Integrates with Python.
 
-#+begin_src emacs-lisp :tangle no
-(use-package python-mode
+#+begin_src emacs-lisp
+(use-package python
+  :mode ("\\.py\\'" . python-mode)
+  :interpreter ("python" . python-mode)
   :ensure t)
 #+end_src
 
@@ -539,29 +507,7 @@ around so much.
 
 #+begin_src emacs-lisp
 (use-package smooth-scrolling
-  :ensure t)
-#+end_src
-
-** Visual-regexp
-
-#+begin_src emacs-lisp
-(use-package visual-regexp
-  :ensure t
-  :init
-  (use-package visual-regexp-steroids :ensure t)
-  :bind (("C-c r" . vr/replace)
-         ("C-c q" . vr/query-replace)
-         ("C-c m" . vr/mc-mark) ; Need multiple cursors
-         ("C-M-r" . vr/isearch-backward)
-         ("C-M-s" . vr/isearch-forward)))
-#+end_src
-
-** Webmode
-
-For html and css [http://web-mode.org/]
-
-#+begin_src emacs-lisp :tangle no
-(use-package web-mode
+  :defer t
   :ensure t)
 #+end_src
 
@@ -576,7 +522,8 @@ For html and css [http://web-mode.org/]
     (setq TeX-PDF-mode t)
     (setq-default TeX-master nil)
     (setq TeX-auto-save t)
-    (setq TeX-parse-self t)))
+    (setq TeX-parse-self t)
+    (setq global-font-lock-mode t)))
 #+end_src
 
 Latex preview pane
@@ -678,7 +625,7 @@ the load average.
 (setq display-time-default-load-average nil)
 #+end_src
 
-** Docview keybindings
+** Doc view keybindings
 
 #+begin_src emacs-lisp
 (use-package doc-view
