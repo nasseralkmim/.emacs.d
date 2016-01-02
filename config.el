@@ -5,13 +5,15 @@
 (load custom-file)
 
 (use-package moe-theme
-  :ensure t)
+  :ensure t
+  :config
+  (setq moe-light-pure-white-background-in-terminal t))
 
 (use-package material-theme
   :defer t
   :ensure t
   :init
-  (load-theme 'material t))  
+  (load-theme 'material t))
 
 (use-package cyberpunk-theme
   :defer t
@@ -170,9 +172,9 @@
                       (buffer-file-name)
                       "_"
                       (format-time-string "%Y%m%d_%H%M%S_.png")))
-	 (exit-status
-	  (call-process "convert" nil nil nil
-			"clipboard:" image-file)))
+         (exit-status
+          (call-process "convert" nil nil nil
+                        "clipboard:" image-file)))
     (org-insert-link nil (concat "file:" image-file) "")
     (org-display-inline-images)))
 (global-set-key (kbd "C-c y") 'my-org-insert-clipboard)
@@ -348,7 +350,7 @@
   (defun fd-switch-dictionary()
   (interactive)
   (let* ((dic ispell-current-dictionary)
-    	 (change (if (string= dic "brasileiro") "english" "brasileiro")))
+         (change (if (string= dic "brasileiro") "english" "brasileiro")))
     (ispell-change-dictionary change)
     (message "Dictionary switched from %s to %s" dic change)
     ))
@@ -356,20 +358,13 @@
 
 (use-package company
   :ensure t
-  :init
+  :defer t
+  :config
   (add-hook 'after-init-hook 'global-company-mode))
-
-(use-package undo-tree
-  :ensure t
-  :bind (("C-z" . undo)
-         ("C-S-z" . redo))
-  :init
-  ;;turn on everywhere
-  (global-undo-tree-mode 1))
 
 (use-package powerline
   :ensure t
-  :init
+  :config
   (powerline-default-theme)
   (setq powerline-default-separator 'wave)
   (setq powerline-default-separator 'utf-8))

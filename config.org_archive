@@ -1,0 +1,22 @@
+#    -*- mode: org -*-
+
+
+Archived entries from file c:/Users/Nasser/.emacs.d/config.org
+
+
+* Undo tree
+  :PROPERTIES:
+  :ARCHIVE_TIME: 2016-01-02 Sat 21:22
+  :ARCHIVE_FILE: ~/.emacs.d/config.org
+  :ARCHIVE_OLPATH: ELPA packages
+  :ARCHIVE_CATEGORY: config
+  :END:
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :ensure t
+  :bind (("C-z" . undo)
+         ("C-S-z" . redo))
+  :config
+  ;;turn on everywhere
+  (global-undo-tree-mode 1))
+#+END_SRC

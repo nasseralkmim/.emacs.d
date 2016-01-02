@@ -1,0 +1,1016 @@
+* Português[0%][0/3]
+** TODO Oração subordinada
+
+** TODO Sintaxe
+
+** TODO Morfologia
+
+* Legislação do sistema de aviação civil[0%][0/6]
+** TODO Lei 7565/1986 - Código brasileiro de Aeronáutica
+REF: http://www.planalto.gov.br/ccivil_03/Leis/L7565.htm
+
+*** *DISPOSIÇÕES GERAIS*
+- Código brasileiro de Aeronáutica
+- Direito regulado por: Tratados, Conveções internacionais, esse código e legislação complementar
+- Se aplica a nacionais e a extrangeiros em _todo território nacional_
+*** *DIREITO INTERNACIONAL PRIVADO*
+- Atos que produzam efeitos no brasil são regidos por leis brasileiras
+- Não terão eficácia no brasil o direito extrangeiro que _exclua a competência_ do lugar de destino.
+*** *ESPAÇO AÉREO BRASILEIRO*
+- Brasil exerce exclusiva _soberania_ sobre o espaço aéreo acima do seu território e mar territorial
+*** *TRÁFEGO AÉREO*
+- Nenhuma aeronave sem autorização poderá voar em espaço aéreo brasileiro
+- Zonas que são proibido o tráfego aéreo devido interesse público
+- Pouso de emergência: proprietário não poderá opor-se a retirada da aeronave, desde que seja dada indenização a danos
+- Comandante da aeronave deve obedecer órgão controlador
+- Não pode voar no espaço aéreo brasileiro se não possuir marcas de nacionalidade e matrícula, equipamentos de navegação e comunicação, tripulação habilitada;
+*** *ENTRADA E SAÍDA DO ESPAÇO AÉREO BRASILEIRO*
+- Aeronaves internacionais devem fazer o primeiro pouso e última decolagem em aeroporto internacional
+*** *INFRA ESTRUTURA AERONÁUTICA*
+- Constituída por: órgãos, instalações e estruturas terrestres para promover segurança e eficiência.
+- Autoridade aeronáutica aprova instalção e funcionamento de serviço de infra-estrutura
+*** *AERÓDROMOS*
+- Sistema aeroportuário é constituído por um _conjunto de aeródromos_
+- É constituído por:
+  + pistas de pouso
+  + pistas de táxi
+  + pátio de estacionamento
+  + terminal de carga e passageiro
+  + facilidade:
+    * balisamento, iluminação, ônibus, ponte de embarque, esteira, escada rolante
+    * basicamente tudo dentro de um aeroporto
+- Classificados em _civis_ e _militares_
+  + civis
+    + Pode ser _público_ ou _privado_
+    + não pode ser utilizado sem estar cadastrado
+
+      
+** TODO Lei 10871/2004 - Criação de carreiras e organização de cargos efetivos das autarquias especiais (Agência reguladora)
+Referência: http://www.planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l10.871.htm
+
+*** Cargos
+1. Especialista em regulação de serviços públicos de telecomunicação
+2. Especialista em regulação da atividade cinematográfica e audiovisual
+3. Especialista em regulação de serviços públicos de energia
+4. Especialista em geologia e geofísica do petróleo e gás natural
+5.
+
+** TODO Lei 11182/2005 - Criação da anac
+Referência: http://www.planalto.gov.br/ccivil_03/_ato2004-2006/2005/Lei/L11182.htm
+
+1. Criação da ANAC (agência nacional de aviação civil) submetida a regime autárquico especial, vinculada ao Ministério da Defesa.
+2. Sede e foro no DF.
+3. Competência: _Regular e fiscalizar as atividades de aviação civil e da infra-estrutura aeronáutica e aeroportuária_.
+4. Deve implementar as orientações estabelecidas pelo governo federal:
+   - Representação do Brasil
+   - Estabelecer modelo de concessão de infra-estrutura aeroportuária
+   - Outorga de serviços aéreos
+   - suplementação de recursos a aeroportos estratégicos
+5. _Autarquia especial significa autonomia_
+
+** TODO Decreto 5731, 20 de março de 2006
+
+** TODO Lei 12462/2011
+
+** TODO Decreto 61144/1969
+* Administração pública[0%][0/7]
+** TODO [#A] 1. Administração pública
+** TODO [#A] 2. Teoria das organizações e da administração pública
+** TODO [#A] 3. Eficiência e eficácia e efetividade da administração pública
+** TODO 4. Convergência e diferenças entre a gestão pública e privada
+** TODO 5. Evoluçao da administração pública e a reforma do estado
+** TODO 6. Excelência nos serviços públicos
+** TODO 7. Ética no serviço público
+* Engenharia de Aeroportos [66%][6/9]
+** DONE 1. Planejamento e gerenciamento de projetos e obras de engenharia: programação, controle, orçamento e fiscalização
+
+*** Planejamento
+
+- Desenvolvida antes do inpicio do empreendimento e perdura até sua finalização
+- Visão macro do projeto, global
+- Tem caráter dinâmico
+- _Plano mestre_ é elaborado e contém:
+  * Dimensão do projeto
+  * sistemas construtivos envolvidos
+  * Estimativa de insumos
+  * Estimativa do Valor global
+
+
+*** Programação
+
+- Parte integrante do planejamento
+- _detalha_ os evento para o comprimento do plano mestre.
+- Define _como_, _quando_ e com que _recursos_ a execução ocorrerá.
+- Planejamento no nível _micro_
+- Faz parte
+  * _Previsão detalhada de prazos, custos e distribuição de recursos_
+  * Preparação de contratos e especificações técnicas
+  * Acompanhamento e análise da evolução e metas
+  * Sugestão de medidas corretivas
+  * Realimentação do sistema com resultados coletados
+
+
+*** Controle
+
+- Acompanhamento diário da execução dos serviços, focando em _eficiência_, _produtividade_ e _custos_.
+- A etapa de controle no contexto do planejamento apresenta o seguinte siclo
+  * Medição
+  * Comparação com o previsto
+  * Análise
+  * Conclusão e tomada de desições
+- O controle observa se os prazos e os curso estão de acordo com o previsto
+- A etapa de controle é responsável por definir _resposta_
+- Se sobrepõe a programação e planejamento
+- Controle _financeiro_ e _físico_
+
+INSTRUMENTOS DE CONTROLE
+1. Controle de prazos
+   - Diagrama de barrars
+   - Cronograma de acompanhamento: inserção de barras paralelas às previstas, representando o real executado e seu percentual
+   - _Curva S_. Percentual acumulado de serviço prevista (vertical) ao longo do tempo (horizontal). A cada mês registram os percentuais acumulados reais dos serviços.
+2. Controle de custos
+   - Quando há orçamento analítico
+   - Curva S. É previsto um custo acumulado ao longo do tempo e nele superposto o custo real obtido.
+   - Comparar produção dos serviços com as previstas
+   - Comparar quantidade de material com o previsto
+   - Comparar quantidade de horas consumida pela mão de obra
+
+*** Orçamento
+
+
+- Levantamento de custos e preços
+- Estimar ou calcular, antes da execução, o _custo_
+- Usado para checar viabilidade
+- Após planejamento, formulação de proposta de custo e preço para licitação
+
+Classificação:
+
+1. DETALHAMENTO
+   - *Sintético*: resumido, não detalhado.
+   - *Analítico*: detalhado.
+     * finalidade de analisar impactos de custo caso haver mudanças.
+     * Apresenta etapas construtivas e seus custos e preços
+     * Serviços de cada etapa
+     * quantitativos
+     * preços unitários e totais
+2. PRECISÃO
+   - *Estimativo* aproximado
+     * Método do custo unitário básico, custo por m2 de obra pronta
+     * Custo total obtido pelo produto da área total e o CUB
+     * Pode ser baseado na NBR ou pelo custo de itens principais
+   - *Firmes*
+     * Calculados todos os custo unitários, parciais e totais
+     * Elaboração de planilhas orçamentárias que contém os custos passados ao cliente
+     * Calculo do quantitativo de serviços baseado no projeto executivo
+     * Produção da tabela com a composição unitária de serviços para calculo do custo unitário e custo total de cada serviço com o consumo unitário
+     * Tomada de preço unitário dos insumos para calculo do custo
+
+
+*** Fiscalização
+
+
+** DONE 6. Projeto de pavimentos aeroportuários (rígidos flexiveis e suas funcionalidades)
+
+O pavimento é a estrutura constituída de uma ou mais camadas de materiais preparados ou beneficiados.
+
+Objetivo: limitar as tensões e deformações na estrutura do pavimento.
+
+*** Funções do pavimentos
+
+1. *Distribuir as cargas do tráfego*
+2. Fornecer condições de conforto operacional
+3. Resistir a esforços horizontais, desgaste.
+*** Pavimento flexível
+
+Consiste em uma camada de revestimento, base com pedra britada, sub-base de pedregulho e o solo natural.
+Pavimento flexível, absorve deformações.
+
+| Revestimento          |
+| base - pedra britada  |
+| sub-base - pedregulho |
+| Solo natural          |
+
+Por que é flexível?
+
+O que caracteriza a flexibilidade? A brita com o solo em baixo.
+
+A distribuição dos esforços num pavimento flexível é mais concentrada.
+
+Todas as camadas sofrem deformações elásticas significattivas.
+
+Subleito precisa admitir maiores deformações.
+
+*** Pavimento rígidos
+Consiste em camada de placa de concreto cimento, sub-base de pedregulo e solo natural.
+
+| Placa de concreto     |
+| Sub-base - Pedregulho |
+| solo natural          |
+
+Rigidez fornecida pelo concreto.
+
+Distribui melhor as tensões.
+
+Qualidade do subleito não interfere no comportamento estrutural
+
+*** Camadas
+
+1. Subleito. Leito é a base, subleito corresponde a camada de solo natural. Deve ser planificada por processo de terraplanagem.
+2. Sub-base. Prefixo sub indica movimento de baixo para cima. Fica entre a camada do subleito e a base.
+3. Base. Suporte estrutural. Distribui as tensões nas camadas inferiores.
+
+** DONE 12. Planejamento, projeto e operação de aeroportos
+
+*** Planejamento
+
+Para implantação (planejamento) faz-se necessário o desenvolvimento de estudos econômicos (viabilidade econômica do empreendimento), caracterizando a região e avaliando o seu potencial para o transporte aéreo.
+
+Planos aeroviários ESTADUAIS contém esses estudos de potencial.
+
+Quem propõe a localização dos sítios onde serão implatados novos aeroportos: *Departamento de aviação Civil (DAC)*
+O *Instituto de Aviação Civil*, com apoio dos Comandos Aérios Regionais (COMAR) e dos órgãos regionais do Departamento de controle do espaço áreo (DECEA)
+
+
+Fatores e dados que devem ser coletados em uma etapa preliminar:
+1. Características sócio-econômica da região
+2. Localização em relação ao centro urbano
+3. Aeródromo existentes na área de influencia (50 km)
+4. Acesso
+5. Dados metereolégicos (5 anos)
+6. Dimensão e orientação em relação aos ventos predominantes
+7. Ocupação do solo no entorno
+8. Identificar implantações de natureza perigosa: lixões, aterros sanitários, vazadouros, matadouros e outros que atraiam pássaros.
+9. Identificar áreas de proteção ambiental
+10. Valor das terras
+11. Topografia para verificar necessidade de movimentação de terra.
+12. Caracterização geológica do solo e possibilidades de drenagem
+13. identificação de serviços e instalações: energia elétrica, telefone, abastecimento, esgoto, lixo.
+
+Técnicos da COMAR/SERENG, SRPV ou CINDACTA e IAC analisa os sítios escolhidos e apontam o que melhor se adaptam. O *DAC* analise e aprova a escolha feita.
+
+
+*** Operação
+
+**** Concessão
+ delegação do direito de realizar, totalmente ou parcialmente, as atividades de construir, operar, manter e explorar aeródromos. Requer autorização do Direitos do DAC, _Termo de convênio_, no qual serão fixados o objetivo, prazo e condições essenciais. _Autorização_ é o ato administrativo do direto geral do DAC, revogável em qaulquer tempo.
+
+**** Tarifas
+correspondem à utilização de áreas e edifícios, instalações, equipamentos, serviços. Tarifa de embarque, pouso, permanência e armazenagem.
+
+**** Certificação de aeroportos
+ Desde 1944 ao ser assinado a Convenção da Aviação Civil internacional. Objetiva garantir a _segurança operacional_, _regularidade_ e _eficiência_. A Autoridade Aeronáutica do Brasil tem a responsabilidade de supervisionar, o _DAC emite certificados (Certidicado Operacional de Aeroportos) após aprovação do Manual Operacional do Aeroporto(MOA)_.
+
+*Fases para Certificação (Certificado Operacional de Aeroportos)*
+1. Consulta preliminar: Solicitante entra em contanto com o DAC para obtenção da lesgilação e dos requisitos necessários.
+2. Solicitação formal: Solicitação ao DAC com a manifestação formal e copias do Manual de Operação do Aeroporto (MOA).
+3. Avaliação da solicitação: Pelo DAC e SIE (subdepartamento de infra-estrutura)
+4. Inspeção inicial da certificação: No aeroporto, realizado pelo DAC e SIE, avaliar as copndições físicas e operacionais. Assegurar a compatibilidade com o MOA e avalariar o Sistema de Segurança operacional.
+5. Certificação: Após aprovação do MOA e das características físicas o DAC emite o certificado.
+
+Para *Manter o certificado* a
+1. administração aeroportuária deve observar os procedimentos estabelecidos no MOA.
+2. Manutenção.
+3. Capacitação.
+4. Elaborar Plano de Emergência Aeronáutica em Aeródromo (PEAA)
+5. Elaborar programa de manutenção, gestão do perigo da fauna, desintedição de pista, controle de obstaculo, controle de uso do solo, manuseio de materiais perigosos.
+
+**** Gestão e controle da segurança da Aviação Civil
+
+Prevenir e dissuadir prática de atos de interferência ilícita contra a aviação civil.
+
+Administração portuária tem as seguintes responsábilidades:
+1. Estabelecer e  manter um Programa de Segurança Aeroportuária (PSA) - Avaliando sua eficácia.
+2. Implantar e manter um Centro de operações de emergência (COE), que gerencia crises.
+
+**** Gestão e controle do meio ambiente
+Procedimentos para reduzir impactos ambientais e riscos decorrentes do mal manejo do mesmo. Procedimentos essees _preventivos e corretivos_.
+
+1. *Plano de gerenciamento de Resíduos*. CONAMA no 5. Orienta o gerenciamento dentro da unidade portuária. Resíduos devem ser corretamente armazenados. Diversas normas versam sobre os diferentes tipos de resíduos.
+
+2. *Programa de gestão do perigo da Fauna*. Minimizar os risco de acidentes com aeronaves.
+
+3. *Plano de emergência aeronáutica em aeródromo (PEAA). Emergência, pouso forçado, alijamento de combustível. Administração do aeroporto deve elaborar esse plano.
+
+4. *Controle da proliferação de vetores: Adm elabora programa previsto pela ANVISA.
+
+5. *Programa de controle do uso do solo no entorno*: Minimizar impacto do ruído aeronautico.
+
+6. *Recuperação de áreas degradadas (PRAD)*: atingidas pela construção.
+
+7. *Plano de gestão dos rercursos naturais (água e energia)*: Controle da qualidade do sistema de abastecimento dos aeroportos e água utilizada em aeronaves. Qualidade da água para consumo humano, e padrões de lançamento.
+
+**** Recursos humanos da administração aeroportuária
+
+**** Internacionalização de aeroportos
+- Controle dos cidadãos estrangeiros e controle aduaneiro de cargas e bagagens.
+- Vigilância sanitária e defesa sanitária animal e vegeral.
+
+Para internacionalização: Solicitação do governo local o DAC avalia o potencial de demando da região. O Exmo. Sr. Comandante da Aeronáutica minuta de aviso a ser envaninhado aos ministros da Justiça, Fazendo, Saúde  e agricultura, esses órgãos disponibilizam os meios necessários para atender às operações internacionais.
+
+** DONE 12.1 Plaons diretores
+
+PDIR (Plano direito aeroportuário) é o documento que apresenta um conjutno de *DIRETRIZES* para orientar a implantação, o desenvolvimento e a expansão de um aeroporto. Deve ser aprovado e oficializado pelo Comando da Aeronáutica.
+
+Apresenta:
+1. Melhor solução para um sítio aeroportuário
+2. otimiza a capacidade operacional
+3. almeja obter desenvolvimento equilibrado de cada componente sem com isso perder a segurança do conjunto, valor do investimento e custo de manutenção.
+
+Norma NSMA estipula que é de responsabilidade dos administradores aeroportuários elaborar, implementar e revisar os planos diretores. *Pode ser terceirizado*.
+
+Critérios:
+- Grupo 1. Aeroporto Internacional operando serviço de transporte aéreo regular internacional
+- Grupo 2. Aeroportos domésticos e internacionais operando serviço de transporte aéreo regular
+- Grupo 3. Aeroportos e aeródromos abertos ao tráfego aéreo público
+
+O plano diretor deve ser atualizado. A elaboração do plano direto ou revisão passa por quatro etapas.
+
+1. *Coleta de dados.*
+   1. *Planejamento: ateção às questões urbanas*, acessibilidade, impactos ambientais para evitar impactos após a construção e desenvolvimento do aeroporto.
+   2. _Caracteriza a região_
+   3. Infra-estrutura local e caracterização urbana e ambiental
+2. *Estudos preliminares.*
+   1. _Demanda e potencial de mercado aéreo da localidade._
+3. *Estudo de alternativas.*
+   1. Formular alternativas de desenvolvimento do aeroporto e selecionar a melhor solução.
+4. *Planejamento geral do aeroporto*
+   1. Apresentação da proposta, apresenta o _plano do aeroporto_ e as diretrizes urbanas, ambientais e acessibilidade. O plano inclui o zoneamento e o orçamento.
+   2. As diretrizes vizam orientar as autoridades estaduais ou municipais para adequar a lesgilação urbana (área de segurança, zona de ruído, acesso viário).
+
+OBS:
+- _Após a terceita etapa, a melhor alternativa é submetida ao DAC para aprovação. A quarta etapa será cumprida após a aprovação do DAC._
+
+** DONE 12.2 Geometria e sinalização
+
+*** Características físicas
+
+Dependem do tipo de tráfego esperado e das aeronaves que irão operar. Dependem também das características topográficas do sítio.
+
+1. Configuração inicial. Concepção aeroportuária segue a nroma da OACI. Para operação requer: terminal de passageiros, estacionamento, parque de abastecimento e seção contra incêndio.
+2. Configuração final. Decorrente da implantação inicial executada pelo Governo estadual, orientada a fim de se obter um aeroporto de porte adequado as evoluções de demanda.
+
+| Largura da pista | Número de faixas |
+|------------------+------------------|
+|              18m |                4 |
+|               23 |                6 |
+|               30 |                8 |
+|               45 |               12 |
+|               60 |               16 |
+
+
+*** Pista de pouso e decolagem
+Definida pelo vento e o alinhamento da pista para permitir aproximações em conformidade com as superfícies limitadoras de obstáculos.
+
+Localização Orientação definida por:
+1. *Tipo de operação* - Depende das condições meteorológicas.
+2. *Condições climatológicas* - Distribuição do vento ao longo do tempo define o fator de utilização. Requer dados estatisticos de distribuição dos ventos.
+3. *Topografia*
+4. *Tráfego no entorno do aeródromo*
+
+*Número de pistas*: Depdende do número de movimento de aeronaves a ser realizado.
+
+Comprimento da pista:
+1. considera-se um mix de aeronaves e as condições físicas locais.
+2. Do mix estabelece-se a aeronave crítica, a que exige maior comprimnto de pista para operar.
+3. Aeronave de projeto é a que precisa da maior espessura de pavimento para uma referida previsão de frequência.
+4. Comprimento básico é função do peso operacional da crítica.
+
+**** Geometria pista de pouso
+
+1. Largura mínima, 18m pra categoria A e máximo de 60m pra F.
+2. Declividade longitudinal. Possuem um máximo de 2%, código 1 ou 2, as outras são menores.
+3. Evitar ondulação, mudanças de declividade.
+4. Declividade transversal,
+   1. para escoamento das águas pluviais as pistas devem ser convexa, com declividade máxima de 1,5 a 2% simétrica em relação ao eixo.
+5. Acostamento,
+   1. aeródromo D, E, F ou largura inferior a 60m permite a passagem de aeronaves para fora da pista.
+   2. Passagem para veículos de apoio.
+   3. Largura total da pista mais acostamento deve ser maior que 60m.
+   4. Mesma declividade.
+6. Stopway.
+   1. Quando a decolagem é abortada.
+   2. Garantir espaço para frenagem. Mesmo comprimeto que o clearway.
+7. Resa (runway end safety areas),
+   1. área de segurança em cada extremidade de uma faixa.
+   2. Estendida no mínimo 90m, largura 2x a da pista.
+8. clearway
+   1. após lift-off (momento da decolagem),
+   2. manter a área a frente desobstruída, logo após a cabeceira da pista.
+   3. Comprimento máximo igual a metade do da pista.
+   4. Estende-se lateralmente mínimo de 75m.
+   5. Terreno do clear way não pode ser elevado.
+   7. [[file:Notas ANAC.org_20151222_124848_.png]]
+9. Saída de pista. Melhora capacidade do sistema. Deve ter um raio de curvatura mínimo (550m e 275m).
+   1. Deve possuir distância depois da curva (turn-off) suficiente para parar com segurança na pista de taxi.
+
+
+*** Sinalização
+
+Indicadores e dispositivos de sinalização:
+
+1. Direção do vento. No mínimo 1, localizdo visível para uma aeronave em voo. Cone vazado, de tecido, 3,6m de diametro na maior extremidade e 0,9m na menor.
+2. Direção de pouso. Forma de T. Cor branca ou laranja.
+3. Luz de sinalização. Uma luz na torre de controle. Luz vermelha, verde e branca. Ser direcionada. Difusão entre 1 e 3 graus.
+4. Painéis de sinalização. Ser visível por todos os ângulos de azimute. Localizada em superfície horizontal de no máximo 9m2.
+
+**** Sinalização horizontal:
+1. Pista de pouso e decolagem.
+   - _Designação_ consiste em número de dois dígitos, podendo ser acompanhada com uma letra em pistas paralelas.
+   - Número é o númeo inteiro decimal mais próximo do norte magnético quando visto da direção de aproximação.
+
+2. Sinalização horizontal de _eixo da pista_ de pouso e decolagem. Linha com comprimento mínimo do intervalo ou 30m. Largura da linha determinada na norma.
+
+3. Sinalização horizontal de _cabeceira_:
+   - Iniciam-se a 6m a partir da cabeceira.
+   - Dispostas simetricamente em relação ao eixo da pista.
+   - Três faixas mínimas em cada lado do eixo da pista.
+   - Mínimo de 30m de comprimento.
+   - 1,8m de largura e 1,8m de espaçamento.
+   - _Faixa transversal_: quando a cabeceira for deslocada da extremidade da pista de pouso e decolagem, ou quando a extremidade da pista não for perpendicular ao eixo.
+   - _Setas_: quando a cabeceira for permanentemente recuada.
+
+4. Sinalização horizontal de _ponto de visada_:
+   - Dispostas em cada extremidade de aproximação
+   - código 2,3 ou 4.
+   - 2 faixas
+
+5. Sinalização horizontal de _zona de toque_ (contato):
+   - Na zona de toque de pistas de aproximação, código 2,3,4.
+   - Pares de retângulos dispostos simetricamente ao eixo da pista. Número de pares relacionado à distância disponível.
+
+6. sinalização horizontal _borda de pista_ de pouso e decolagem.
+   - comprimento: entre as cabeceiras. Onde não há contraste entre a borda e o terreno ao redor, em pista de precição é independente.
+   - duas faixas, ao longo das bordas, ou a 30m do eixo.
+   - 0,9m de largura mnm. ou 0,45m em pistas de largura menor que 30m
+
+7. Sinalização horizontal _eixo de pista de táxi_:
+
+8. Sinalização horizontal da _área de giro_ de pista de pouso e decolagem:
+   - Guia aeronave a dar uma volta de 180 graus.
+   - Estende-se 60m do ponto de tangência ou 30m.
+   - Largura de 15cm e contínua
+
+9. Sinalização horizontal de _posição de espera_ de pista de pouso e decolagem
+   - Interseção com pista de taxi, padrão A. Pistas distantes da pista de pouso podem ser padrão B.
+   - [[file:Notas ANAC.org_20151222_104940_.png]][[file:Notas ANAC.org_20151222_105146_.png]]
+
+10. Sinalização horizontal de _posição intermediária de espera_:
+    - linha simples interrompida em interseção e duas pistas de táxi pavimentadas. Deve garantir desobristução entre aeronaves em táxi.
+    - [[file:Notas ANAC.org_20151222_105339_.png]]
+
+11. Sinalização horizontal de _posição de estacionamento de aeronáves_:
+    - Disposta nos pátios de aeronaves pavimentados.
+    - Deve oferecer afastamento de obstáculos.
+    - Deve incluir: posição de estacionamento, linha de entrada, barra de virada, linha de virada, barra de alinhamento, linha de parada e linha de saída.
+
+12. Linhas de _segurança de pátio de aeronaves_:
+    - Delimitar as posições de estacionamento e área de utilização de equipamentos de solo.
+    - Inclui linha de afastamento de ponta de asa e linha de contorno das vias de serviço.
+    - É contínua e tem 10cm de largura.
+
+13. Sinalização horizontal _posição de espera em vias de serviço_:
+    - Disposta em todos os acessos de vias de serviço para uma pista de pouso ou decolagem.
+
+14. Sinalização horizontal _de instrução obrigatória_:
+    - quando não for possível sinalização vertical usar sinalização horizontal de instrução obrigatória.
+    - Onde for necessário, pistas largas maior que 60m ou para auxiliar na prevenção.
+    - Transversal à pista de táxi. Centrada em seu eixo.
+    - [[file:Notas ANAC.org_20151222_110519_.png]]
+
+15. Sinalização horizontal de _informação_:
+    - Onde for impraticável instalar sinalização vertical de informação.
+    - Inscrição em amarelo, sobre fundo preto para complementar ou substituir vertical de *localização*.
+    - Preto sobre fundo amarelo substitui vertical de *direcionamento*.
+
+**** Luzes
+1. Podem por em risco a segurança de aeronaves.
+2. Raios laser podem também por em risco.
+3. Luzes que podem causar confusão: luz na superfície não aeronautica.
+4. *Iluminação de emergência*
+   - Aeródromo requer fonte de iluminação secundário caso haja alguma falha. Também pode sinalizar obstáculos ou delinear pistas de táxi.
+5. Farol aeronáutico
+   - Quando for necessário.
+6. Farol do aeródromo
+   - Deve existir ao uso noturno se: as aeronaves navegam por meios visuais, visibilidade ruim frequente ou é dificil localizar o aeródromo do ar.
+   - Deve exibir flashs coloridos alternados com flashs brancos.
+   - Deve se direcionar a todos os ângulo de azimute. Deve projetar-se para cima desde uma elevação não superior a 1 grau.
+7. Farol de identificação: uso noturno quando não possam ser facilmente localizados no ar.
+8. luzes de aproximação:
+
+** DONE 12.3 Componentes aeroportuários
+
+1. Terminal de passageiros
+   1. Processo de embarque
+      1. check in
+      2. despacho de bagagem
+      3. inspeção de segurança
+      4. emigração
+      5. acesso e permanencia na sala de embarque
+   2. Processo de desembarque
+      1. imigração
+      2. restituição de bagagens
+      3. aduana (repartição governamental oficial de controle do movimento de entrada e saída de mercadorias para o exterior ou dele proveniente)
+2. Estacionamento de veículos (pátio de aeronáves)
+3. Serviços de apoio
+   1. Parque de abastecimento
+   2. Seção contra incêndio
+
+** TODO 12.4 Quantificação dos fluxos a serem processados, conceitos de pico de tráfego, capacidade e nível de serviço
+
+1. Volume de tráfego: número de viajens em um certo período de
+2. Hora de pico: intervalo de 1 hora de maior movimento.
+** TODO 12.5 Técnicas de pesquisa operacional e gerenciamento de risco
+
+** TODO 12.6 Noções de tráfego aéreo
+Normas da Organização da Aviação Civil Internacional (OACI)
+
+*** Espaço aéreo brasileire
+
+1. Inferior: limitado por nível do solo ou água até voo 195, 19500 pés, 6000m ou 6km.
+2. Superior: voo 195 até o limite vertical superior.
+
+Classificado em:
+
+1. Espaço aéreo controlado
+2. Não controlado
+3. condicionado.
+
+*** Etapas de um voo
+
+1. Planejamento do voo: aprovação da autoridade aeroportuária
+2. Acionamento do motor: autorização da torre para ligar os motores e iniciar o deslocamento (_táxi_)
+3. Decolagem: Torre fornece autorização para decolagem.
+4. Saída do terminal: Após subida inicial, procedimento de subida em regime ascendente até a porta da aerovia.
+5. Voo em cruzeiro: Após sair do terminal aeronave é monitorada pelo ACC, altitude e velocidade de cruzeiro.
+6. Entrada na terminal: procedimento de aproximação, voltando ao controle de um APP que define o procedimento.
+7. Aproximação final: procedimento em que a aeronava para por um ponto estabelecido como de alinhamento com a pista e a partir do qual poderá buscar manter trajetória de planeio até o toque na pista.
+8. Pouso e táxi: recebe comando da torre até sua posição de parada no pátio.
+
+* Gestão da qualidade de produtos e processos [80%][12/15]
+** DONE 1. Conceito de qualidade
+- *ATENDIMENTO A REQUISITOS*
+- A palavra vem do latin "qualitate".
+- De acordo com a norma: Grau no qual um conjunto de características inerentes satisfaz a _requisitos_.
+- Algo que afeta a vida de forma positiva
+- Referindo a um produto indica que sua função foi cumprida de forma desejada
+- Aderência perfeita e conformidade às especificações e padroes de referência do projeto do produto.
+
+
+| Deming | Uniformidade das características dos produtos |
+| Crosby | Conformidade dos requisitos                   |
+| JUran  | Aptidão para o uso/finalidade                 |
+
+** DONE 1.1 Evolução do conceito de qualidade
+
+1. Inicialmente surgiu na _Segunda Gerra_
+   - corrigir os erros dos produtos bélicos
+   - Era denominado controle de processo e depois garantia de qualidade
+   - Utilizada normas específicas para cada etapa
+   - Controle de qualidade Taylor e Ford
+2. Evolução
+   - [[file:Notas ANAC.org_20151224_084151_.png]]
+3. DEMING
+   - Apoiar desenvolvimento de um recenseamento no japão
+   - Organização manter a ênfase necessária na qualidade era imprescindível o empenho continuado da gestão de topo.
+   - 14 princípios direcionados a gestores.
+     1) propósito constante direcionado à melhoria de produtos e serviços
+     2) clima onde falhas e negativismo não são aceeites
+     3) desenhar produtos com qualidade intrínseca
+     4) terminar a prática de decidir contractos em base no preço mais baixo. Desenvolver relações de longo prazo com fornecedores do processo.
+     5) Melhoria contínua, reduzir cursto e melhorar qualidade
+     6) Treino e formação
+     7) substituir supervisão por liderança
+     8) eliminar razões para receio, criar clima de confiança
+     9) eliminar barreiras entre áreas funcionais na empresa
+     10) eliminar slogans
+     11) eliminar prática de gestão por objetivo e quotas de trabalho, substituir por liderança efetiva
+     12) orgulho pelo trabalho
+     13) controle estatístico da qualidade
+     14) envolver todos os colaboradores.
+   - Conceito restrito, _focado nos aspectos técnicos do produto_.
+4. JURAN
+   - Qualidade: Termos da adequação de um produto à sua utilização pretendida.
+   - Perspectiva do cliente ou utilizados, mlhorar qualidade para utilização do cliente.
+   - Modelo _custo de qualidade_
+   - TRÊS etapas o processo
+     1. Planejamento da qualidade:
+	- descrição dos clientes e das necessidades,
+	- definição dos objetivos,
+	- definição dos parâmetros utilizados para medir a qualidade,
+	- desenvolvimento do plano de qualidade.
+	- implementação efetiva
+     2. controle de qualidade
+	- implantação do sistema que mede a qualidade
+	- avaliação das ações
+     3. Mellhoria da qualidade
+5. FEIGENBAUM
+   - Controle de qualidade total
+   - Comunicação entre os departamentos
+     * projeto
+     * controle de materiais e produção
+   - Poder do modelo de custo de qualidade, mesmo que JURAN
+   - propôs a engenharia de controle de qualidade
+6. CROSBY
+   - Conceito de _zero defeitos_
+   - Define qualidade como: conformidade de um produto com suas especificações técnicas
+   - _qualidade é grátis_, compensa sempre o investimento
+7. ISHIKAWA
+   - diagrama de causa e feito: chega a raiz de uma falha de qualidade explorando causas primarias
+   - circulo de qualidade: grupos de trabalho que reúnem periodicamente para discutir e resolver problemas de qualidade que afetam o seu dia-a-dia.
+
+** DONE 2. Gerencialmento da qualidade total
+
+https://d3eaq9o21rgr1g.cloudfront.net/aula-temp/57948/00000000000/curso-5840-aula-00-v2.pdf?Expires=1451230534&Signature=VcPltX~TSLn7jfWL4TsW2aE975X2cnfxNFz8M-hDsz86I58ITF1TgTRbxIabnTB6U4DRizr7XnPN-kPFyGDU-v1bz4YEovl1AuarxGcK30pvGX6KSU3QasIuifOPO7P0rXxmp4~seMGk-09Zoj-teTOTk1b7knKIy7AdPSc~z6c_&Key-Pair-Id=APKAIKHUAVWTIL5FVANA
+
+1. *Total satisfação do cliente*
+2. *Gerência participativa*
+3. *Constância de proposito*
+4. *Aperfeiçoamento contínuo*
+5. *Desenvolvimento de recursos humanos*
+6. *Delegação*
+7. *Garantia da qualidade*
+8. *Não aceite de erros*
+9. *Gerência de processos*
+10. *Dissiminação de informações*
+
+Reforça a ideia de que a _qualidade resulta de um esforço de todos os indivíduos_ que colaboram com uma organização.
+
+Chiavenato 2012
+  - A melhoria contínua da qualidade é aplicável no nível operacional a _qualidade total_ estende o seu conceito para organização inteira.
+  - total: Organização inteira
+  - total: abrange todos os seus
+
+A total quality management: atribui às pessoas, e não somente aos gestores e dirigentes, a responsabilidade pelo alcance dos padrões de qualidade.
+
+Os funcionários, e não os gestores, são responsáveis por alcançar a qualidade. O controle burocrático ()rígido, unitário centralizador) cede lugar para o controle pelas pessoas envolvidas (_solto, coletivo e descentralizado_)
+
+** DONE 3. Custo da qualidade: prevenção, inspeção, falhas internas e externas
+
+1. Falhas internas: JURAN. Custo com produtos defeituosos.
+   - Custo da produção defeituosa _antes de chegar ao cliente_
+   - Desperdício: trabalho e materiais gastos na produção defeituoso
+   - Reelaboração: correção de produtos defeituosos.
+   - Reteste: inspeção e teste de produtos que foram reelaborados.
+   - Paragem: tempo de paragem de equipamento não programado.
+   - Reciclagem: O que fazer com produtos defeituosos.
+2. Falhas externas: JURAN. Custo com garantias.
+   - Clientes _recebem produtos defeituosos_
+   - Difícil quantificar, geralmente subestimado.
+   - Reclamações: investigar e resolver queixas dos clientes.
+   - Devoluções: receber e substituir produtos defeituosos.
+   - Custo de garantia: manter e respeitar serviço de garantia.
+   - Perda de negócio futuro.
+3. Prevenção: JURAN. Custos associados a prevenção de falhas de qualidade
+   - Planejamento: desenvolver o plano da qualidade, os procedimentos e os manuais para comunicar o plano da qualidade
+   - Design: avaliar e modificar o design de produtos, testar os novos produtos e processos
+   - Treino e formação
+   - Controle do processo: _recolher dados_, desenvolver e manter o sistema, analisar os dados.
+   - Reporte: distribuir informação a colaboradores
+   - Projetor de melhoria: desenvolvimento de programas para redução de produtos defeituosos, motivação para qualidade.
+4. Inspeção: JURAN. Custo com inspeção e teste antes do produto ser enviado ao cliente.
+   - Inspeção de materiais: na recepção ou antes de incorporar no processo.
+   - Inspeção final e teste.
+   - Equipamento de teste. Calibragem e manutenção.
+   - Materiasis e serviços: utilização ou destruição na fase de inspeção
+   - Avaliação de stocks: teste aos produtos para avaliar estragos ou deterioração.
+
+** DONE 4. Os efeitos da qualidade sobre a produtividade
+
+*** Histórico
+
+1. American system of manufacture
+   - Adaptar as fábricas a produzir produtos simples e de forma repetitiva
+   - simples e baratos
+   - _quebrar_ o produto e o processo produtivo em unidades menores, mais administráveis.
+   - Com a especialização da produção surgem os _terceirizado_.
+
+** DONE 5. Qualidade e o papel da administração da empresa
+
+[[[http://www2.unifap.br/mariomendonca/files/2011/05/qualidade-total11.pdf]]]
+
+- Qualidade não é o objetivo e sim o resultado de um trabalho gerencial competente e pró ativo
+- Qualidade total, produtividade e competitividade depende
+  * Estrutura organizacionail: para liderar o processo contínuo
+  * Colaboradores treinados, criativos e motivado: que objetivam melhorar cada vez mais o que fazem.
+  * Sistemas internos que envolvam o planejamento, a execução, avaliação e controle que possibilitem produzir bons serviços que _atendam às expectativas dos clientes (i.e., apresentem qualidade)_
+
+PROGRAMAS DE QUALIDADE
+
+1. Conway (1966)
+   - [[file:Notas ANAC.org_20151227_094732_.png]]
+   - Praparação: Educar a alta liderança e _Identificar desperdício_
+   - Desenvolvimento:
+     * Projetos de melhoria
+     * treinamento de funcionários
+     * Definição da _missão_ e _visão organizacional_
+     * esclarecer a _razão central da existência organizacional_
+   - Implementação:
+     * Implementaer e avaliar
+2. Cortada e Quintella (1994)
+   - Operacionalizar _programas de qualidade_ por meio de 5 etapas:
+     1) Consciência inicial: _sensibilizar o todo organizacional_
+     2) Alguma implantação
+     3) Atividade Estendida
+     4) Resultados significativos
+     5) Melhoria da industria
+   - [[file:Notas ANAC.org_20151227_095356_.png]]
+   -
+
+** TODO 6. Diretrizes da qualidade e seus desdobramentos
+** DONE 7. Desdobramento da função qualidade
+REF: http://www.infoescola.com/administracao_/desdobramento-da-funcao-qualidade-qfd/
+http://www.blogdaqualidade.com.br/desdobramento-da-funcao-qualidade-qfd/
+
+1. *DEF* (Quality function deployment) _Ferramenta_ cujo objetivo é implementar as necessidades do cliente nos projetos de melhoria.
+2. *Metodologia*:
+   - Transfomar as necessidades dos clientes (obtidas em pesquisas) em _Especificações técnicas_
+   - As especificações são detalhadas para cada parte do produto
+   - Estabeler quais _processos_ serão necessários para satisfazer as especificações
+   - Defini-se as _necessidades_ de produção
+3. *Benefícios*
+   - Foco no consumidor e concorrência
+   - Registro de informações
+   - Formato induz discussões racionais
+   - Induz maior comprometimento
+
+** DONE 7.1 Qualidade dos sistemas de gerenciamento
+
+REF: http://www.nitmantiqueira.org.br/portal/images/pdf/documentacao/cit-orientacoes-sistema-gestao-qualidade.pdf
+
+** DONE 7.2 Gerenciamento pelas diretrizes
+Ref: http://www.feg.unesp.br/dpd/cegp/2011/GQ/Gerenciamento%20das%20Diretrizes%20e%20da%20Rorina.pdf
+
+- Fábula: Viajante pergunta a três pedreiros o que eles estão fazendo. O primeiro responde que estão quebrando pedras, o segundo levantando pedras e o terceiro construindo uma catedral. Apenas o terceiro percebeu que seu trabalho simples fazia parte de um muito maior.
+
+- *GPD definição*:
+  * Desenvolvido no JAPÃO
+  * Ferramenta para _implementar a qualidade total_
+  * Dissemina _metas da organização_ para _todos_ os setores e níveis do sistema
+  * _Define_ as metas e as ações para atingi-las.
+  * Define as ações corretivas quando a meta não está sendo alcançada.
+  * Abrange todos os níveis da estrutura organizacional.
+
+- *Componentes da diretriz*:
+  + Direção, o que se deseja conquistar e para onde deseja-se ir
+  + Objetivo, quantitativo da direção
+  + Condições de contorno, condições a serem seguidas a fim de que se alcance o objetivo de forma adequada.
+  + Linhas mestras, indicações das estratéias de ação (fazer parceirias, reduzir fornecedores, comprar qualidade..)
+
+- *5W1H*: Processo de gerenciamento onde os objetivos podem ser explanador por:
+  * What, When, Where, Why, Who e How (how much também)
+
+- *Aplicação*
+  + Pode ser aplicado a qualquer objetivo, custos, produtividade, qualidade, tempo de cliclo
+  + Utilização do ciclo PDCA (Metas, métodos, execução, coleta de dados, checar, correção e melhoria)
+
+** DONE 7.3 Gerenciamento por processos
+
+Livro: http://www.modernizacao.mpf.mp.br/bpm/publicacoes/manual-de-gestao-por-processos.pdf
+http://www.dga.unicamp.br/Conteudos/Planes/IniGesProTexRef.pdf
+
++ Processo: sequência de atividades interligadas, tem inputs e outputs.
++ *Vertical*: gestão por função, cada área trata de sua função específica. Funcionários restritos a apenas sua função. São cobrados pela eficiência de sua função. Decições verticais, há poder centralizador.
++ *Horizontal*: Estruturas inter-relacionadas. Processo gerenciado de forma _integrada_. Processo de negócio é visualizado por todos (horizontal).
++ Gestão por processos foca em _processos estratégicos_ e  _multifuncionais_ não em torno de funções.
++ Na gestao por processos as áreas funcionais continuam importantes, mas servem aos processos de negócios que focam nos clientes.
++ Gerente de processo deve conhecer todo o Processo de negócio. Buca o bom desempinho do processo através da atuação de _toda a equipe_.
+
+DEFINIÇÃO:
+É uma orientação conceitual que visualiza as funções de uma organização com base nas _sequências de suas atividades_, ao contrário da abordagem funcional tradicional em que as organizações estão separadas por área de atuação, altamente burocratizadas e sem visão sistêmica do trabalho que realizam.
+
+A Abordagem por processo permite:
+- melhor especificação do trabalho realizado,
+- o desenvolvimento de sistemas,
+- a gestão do conhecimento,
+- redesenho e
+- melhoria por meio da análise do trabalho realizado de modo a identificar oportunidades de aperfeiçoamento.
+
+A gestão por processo ou Business Process Management (BPM)
+- Abordagem sistemática de gestão
+- Trata de processos de negócios como ativos que potencializam o desempenho da organização
+- Padronizar _processos corporativos_ e almejar melhora na produtividade e eficiência
+
+Como forma de viabilizar a gestão por processos, visando aumento da performance existem três grupos de tarefas:
+1. Projetar processos:
+   - _Estabelecer objetivos e estratégias_
+   - Definir e priorizar problemas atuais
+   - Reprojetar práticas de gestão e execução de processos
+2. Gerir processos:
+   - Implantar novos processos
+   - _Acompanhar execução de processos_
+   - Registrar desempenho
+3. Promover aprendizado
+   - Registrar aprendizado sobre os processos
+
+*** Questões
+1. (ESAF  MPOG / EPPGG 2009) Sobre o temaerenciamento de processos,  correto afirmar que:
+a) a partir da estratgia, a organizao deve identificar seus processos crticos, gerenciando-os com base em um enfoque de sistema aberto. *OK!*
+b) os esforos de mapeamento devem ser abrangentes, de modo a permitir uma completa varredura em todos os processos da organizao. *Apenas os processos relevantes, principais, que mais aferam a performance*
+c) um bom mapeamento de processos decorre de se saber que a abordagem vertical  mais importante que a abordagem horizontal. *horizontal é mais importante*
+d) todos os processos organizacionais devem ser otimizados, mesmo aqueles que no agregam valor. *Apenas os primordiais*
+e) considerado um fim em si mesmo, o mapeamento de processos  mais importante que o cumprimento das metas e objetivos estabelecidos. *O mais importante é o comprimento da meta e dos objetivos*
+
+** DONE 7.4 Gerenciamento da rotina
+Ref: http://www.feg.unesp.br/dpd/cegp/2009/GQ/Gerenciamento%20da%20Rotina.pdf
+Ref: http://www.feg.unesp.br/dpd/cegp/2011/GQ/Gerenciamento%20das%20Diretrizes%20e%20da%20Rorina.pdf
+
+
+*Definição*: São ações e _verificações diárias_ conduzidas para que cada pessoa possa assumir as responsabilidades no _comprimento das obrigações_ conferidas a cada indivíduo e a cada organização.
+
+1. *É*:
+   - Um _processo_ aplicado a qualquer departamento ou setor
+   - objetiva _plana satisfação do cliente_
+   - _controle sistemático_
+   - melhoria contínua de cada micro processo em base _diária_ e progressiva
+
+2. *Aplicação*
+   - Responsabilidade do chefe mas requer participação de todos
+   - deve ser praticado de modo permanente e contínuo com base diária
+
+3. *Campo de utilização*
+   - Quando os micro processos são repetitivos
+   - micro processos definidos operacionalmente
+   - há interesse de melhorar o desempenho
+   - há disposição de criar o hábito de trabalhar sistematicamente com dados confiáveis e idenficar gargalos
+
+4. *Método*
+   - _Identificar o processo prioritário_ *foca nos micro processos*
+   - Definir as _necessidades dos clientes_ *foca no cliente*
+   - Determinar _itens de controle_ de qualidade *foca no controle do micro processo*
+   - Determinar itens de controle de custo *controle do micro processo*
+   - Determinar itens de controle de entrega, moral e segurança *controle mp*
+   - Definir _quando atuar_ e _como atuar_ *foca na melhoria*
+5. Reunião diária
+   - Deixar todos a par do progresso
+   - Permitir ao lider eliminar obstáculos
+6. Intruções de trabalho
+   - Abrir o trabalho em elementos constituidos de etapas
+   - Ferramentas para fazer o produto com qualidade
+
+** TODO 8. Tendências atuais e modelos para gerenciamento da qualidade
+** TODO 9. Gestão da qualidade na cadeia de suprimentos
+** DONE 10. Ferramentas de qualidade: histogramas, diagramas de causa e efeito, diagramas de pareto, folhas de verificação, gráficos lineares, diagramas de dispersão e fluxogramas
+
+1. *HISTOGRAMA*
+   - Representa a dispersão por meio de lotes
+   - Caráter prliminar
+   - Indica distribuição de dados
+   - etimologia desconhecida, grego "hitos" (não erguido, como nos mastros do navio ou as barras verticais do histograma), "gramma" (desenhar, escrever, gravas). Ou "diagrama histórico".
+   - [[file:Notas ANAC.org_20151225_195737_.png]]
+2. *DIAGRAMAS DE CAUSA E EFEITO*
+   - "Espinha de peixe" ou "Ishikawa"
+   - Representação do relacionamento de um efeito (problema) e sua causa potencial.
+   - Favorece o pensamento racional
+   - [[file:Notas ANAC.org_20151225_201555_.png]]
+3. *DIAGRAMA DE PARETO*
+   - Representa importancia de dados ou variáveis
+   - Ressalta pontos vitais em contraste com triviais
+   - Auxiliando examinar por quê, como, onde, quando e o quê referente a um suposto problema.
+   - Ordena do maior para o menor para _priorizar_ problemas essenciais.
+   - [[file:Notas ANAC.org_20151225_202053_.png]]
+4. *FOLHAS DE VERIFICAÇÃO*
+   - lista de item a serem conferidos para coleta rápida e análise quantitativa
+   - utilizando para se obter dados de números de itens defeituosos, localização e causa dos defeitos.
+5. *GRÁFICOS LINEARES*
+   - Monitorar o desempenho do processo ao longo do tempo.
+6. *DIAGRAMA DE DISPERSÃO*
+   - correlacionar dois fatores a um só tempo.
+   - [[file:Notas ANAC.org_20151225_211942_.png]]
+7. *FLUXOGRAMA*
+   - Representar os passos de um processo.
+   - Útil para determinar como um processo realmente funciona
+   - Vizualizar como os vários passos do processo relacionam-se entre si.
+   - Identificar fontes de potencial problema.
+   - [[file:Notas ANAC.org_20151225_212214_.png]]
+
+* Gestão de projetos [0%][0/8]
+** TODO 1. Guias de melhores práticas
+
+** TODO 2. Redes de projeto
+
+** TODO 3. Determinação de caminhos críticos
+
+** TODO 4. Custos e otimização em redes de projetos
+
+** TODO 5. Cronograma físico-financeiro de projetos
+
+** TODO 6. As atividades de projeto nas empresas
+
+** TODO 7. Ciclo de vida de projetos
+
+** TODO 8. Sistemas organizacionais de administração de projetos
+
+* Estratégia de produção [9%][1/11]
+** TODO 1. Tipos de produção
+
+** TODO 2. A mentalidade enxuta nas empresas
+
+** TODO 3. Estratégia corporativa, vantagem competitiva, forças competitivas, cadei de valor
+
+** TODO 4. Implementação da estratégia, balanced scorecard, mapa estratégico
+
+** TODO 4.1 Gestão de projetos
+
+** TODO 4.2 Gestão de processos
+
+** TODO 5. Benchmarking
+
+** TODO 6. Qualidade e produtividade
+
+1. *QUALIDADE*
+   - tem qualidade quando algo atende a requisitos
+2. *PRODUTIVIDADE*
+   - Produtividade é a relação entre os resultados alcançados e os insumos utilizados.
+   - Alta produção utilizando pouco insumo indica alta produtividade
+   - É diretamente proporcional aos _resultados_
+   - É inversamento proporcional aos _insumos utilizados_
+
+** TODO 7. Inovação e competitividade
+
+** DONE 8. Gestão da produção, sistemas integrados de gestão, just-in-time, teoria das restrições
+
+
+1. *JUST IN TIME*: 1940-1950 2nda Gerra mundial
+   - Logística de operações.
+   - Ampliação da produção Cria o Just in Time
+   - Abordagem para _reduzir continuamento os estoques_ ao mesmo tempo que melhora a qualidade.
+   - Prudizir em alta quantidade utilizando estoque mínimo.
+   - A matéria prima é enviada apenas quando houver sua necessidade.
+   - Nada será produzido até que seja necessário
+2. *TEORIA DAS RESTRIÇÕES*: ToC, thory of constraints
+   - Paradigma de gestão que considera qualquer sistema gerencialvem como sendo limitado em alcançar mais do que suas metas por um número muito pequeno de restrições.
+   - Eliyahu Moshe Goldratt: filosfia baseado em _restrições ou gargalos_.
+   - Gargalo é um recurso dentro do sistema de produção cuja capacidade é menor ou igual à demanda alocada para esse recuso.
+   - "Uma corrente é tão forte quanto seu elo mais fraco"
+   - Gestor deve encontrar o gargalo e o controlar.
+3. *SISTEMA INTEGRADO DE GESTÃO*
+   - _Integração_ dos processosde qualidade, meio ambiente, segurança,saúde ocupacional e responsabilidade social.
+   - Reduzir custos para maximizar lucro.
+   - Sistema interativo e em constante comunicação, a organização transforma-se num todo, cada função é _alinhada de acordo com um objetivo em comum_ a todos os departamentos que é a melhora da eficiência e o desempenho,
+   - Sistema coordenado, combina todos os elementos.
+   - A integração leva a um racionamento do uso de recursos e pessoas. Evita a _duplicidade_ de esforços, melhora _comunicação_ facilita a tomada de decisões.
+
+** TODO 9. Gestão da cadeia de suprimento
+
+* Auditoria [0%][0/30]
+** TODO 1. Auditoria de regularidade e auditoria operacional
+** TODO 2. Instrumentos de fiscalização: Auditoria, levantamento, monitoramento, acompanhamento e inspeção
+
+** TODO 3. Planejamento de auditoria
+
+** TODO 3.1 Plano de auditoria baseado no risco
+
+** TODO 3.2 Determinalção de escopo
+
+** TODO 3.3 Materialidade, risco e relevância
+
+** TODO 3.4 Exame e avaliação do controle interno
+
+** TODO 3.5 Risco inerente, de controle e detecção
+
+** TODO 3.6 Matriz de planejamento
+
+** TODO 3.7 Programa de auditoria
+
+** TODO 3.8 Papéis de trabalho
+
+** TODO 3.9 Teste de auditoria
+
+** TODO 4. Importância da amostragem estatística em auditoria
+
+** TODO 5. Execução da auditoria
+
+** TODO 5.1 Técnicas e procedimentos
+
+** TODO 6. Evidências, caracterização de achados de auditoria
+
+** TODO 6.1 Matriz de achados e matriz de responsabilização
+
+** TODO 7. Comunicação dos resultados: relatório de auditoria e pareceres
+
+** TODO 8. Monitoramento
+
+** TODO 9. Auditoria de conformidade e auditoria de resultado ou de desempenho
+
+** TODO 10. Marco lógico
+
+** TODO 11. Técnicas de entrevista
+
+** TODO 12. Elaboração de questionário
+
+** TODO 13. Brainstorming
+
+** TODO 14. Delphi
+
+** TODO 15. Análise SWOT
+
+** TODO 16. Técnicas de follow-up
+
+** TODO 17. Conceito e método de seleção estatística e não estatística
+
+** TODO 17.1 Determinação do tamanho da amostra
+
+** TODO 17.2 Risco aceitável e fator de risco
+
+$$x=\alpha \dfrac{2}{x}$$
+
