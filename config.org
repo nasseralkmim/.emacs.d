@@ -1,4 +1,4 @@
-#+TITLE: Emacs Configuration
+\#+TITLE: Emacs Configuration
 #+AUTHOR: Nasser Alkmim
 
 This configuration uses the [[https://github.com/jwiegley/use-package][use-package]] package from John Wiegley, which is
@@ -28,17 +28,17 @@ Add themes as you want, then add the theme to the looper
 #+BEGIN_SRC emacs-lisp
 (use-package moe-theme
   :ensure t
-  :config
-  (setq moe-light-pure-white-background-in-terminal t))
+  :defer t
+  :init 
+  (require 'moe-theme)
+  (moe-dark))
 #+END_SRC
 ** Material theme
 
 #+begin_src emacs-lisp
 (use-package material-theme
   :defer t
-  :ensure t
-  :init
-  (load-theme 'material t))  
+  :ensure t)  
 #+end_src
 
 ** Cyberpunk theme
@@ -603,10 +603,20 @@ Auto complete
 #+BEGIN_SRC emacs-lisp
 (use-package powerline
   :ensure t
+  :defer t  
+  :disabled t
   :config
-  (powerline-default-theme)
   (setq powerline-default-separator 'wave)
+  (powerline-default-theme)
   (setq powerline-default-separator 'utf-8))
+#+END_SRC
+** Smart mode line
+#+BEGIN_SRC emacs-lisp
+(use-package smart-mode-line
+  :ensure t
+  :disabled t
+  :config
+  (sml/setup))
 #+END_SRC
 
 * Misc

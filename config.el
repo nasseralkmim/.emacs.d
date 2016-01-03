@@ -6,14 +6,14 @@
 
 (use-package moe-theme
   :ensure t
-  :config
-  (setq moe-light-pure-white-background-in-terminal t))
+  :defer t
+  :init 
+  (require 'moe-theme)
+  (moe-dark))
 
 (use-package material-theme
   :defer t
-  :ensure t
-  :init
-  (load-theme 'material t))
+  :ensure t)
 
 (use-package cyberpunk-theme
   :defer t
@@ -364,10 +364,18 @@
 
 (use-package powerline
   :ensure t
+  :defer t  
+  :disabled t
   :config
-  (powerline-default-theme)
   (setq powerline-default-separator 'wave)
+  (powerline-default-theme)
   (setq powerline-default-separator 'utf-8))
+
+(use-package smart-mode-line
+  :ensure t
+  :disabled t
+  :config
+  (sml/setup))
 
 (setq display-time-default-load-average nil)
 
