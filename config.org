@@ -1,12 +1,13 @@
-\#+TITLE: Emacs Configuration
+#+TITLE: Emacs Configuration
 #+AUTHOR: Nasser Alkmim
 
 This configuration uses the [[https://github.com/jwiegley/use-package][use-package]] package from John Wiegley, which is
 a fantastic way to manage package configurations.
 
-* Personal Information
+This [[http://emacs.stackexchange.com/questions/10396/difference-between-init-and-config-in-use-package][Question]] is useful to understand the differences between :init and :config.
 
-#+begin_src emacs-lisp
+* Personal information
+ #+begin_src emacs-lisp
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
 #+end_src
@@ -17,11 +18,12 @@ Set up the customize file to its own separate file, instead of saving
 customize settings in [[file:init.el][init.el]].
 
 #+begin_src emacs-lisp
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+;(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;(load custom-file)
 #+end_src
 
 * Theme
+
 Add themes as you want, then add the theme to the looper
 
 ** Moe theme
@@ -55,6 +57,18 @@ Add themes as you want, then add the theme to the looper
   :defer t
   :ensure t)
 #+END_SRC
+** Solarized 
+#+BEGIN_SRC emacs-lisp
+(use-package solarized-theme
+  :ensure t
+  :defer t)
+#+END_SRC
+** Sanityinc tomorrow
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :defer t)
+#+END_SRC
 ** Theme looper
 
 #+begin_src emacs-lisp
@@ -62,12 +76,14 @@ Add themes as you want, then add the theme to the looper
   :defer t
   :ensure t
   :init
-  (theme-looper-set-theme-set '(moe-light
+  (theme-looper-set-theme-set '(;moe-light
                                 moe-dark
-                                material
-                                material-light
-                                zenburn
-                                cyberpunk
+                                ;material
+                                ;material-light
+                                ;zenburn
+                                ;cyberpunk
+                                solarized-light
+                                sanityinc-tomorrow-day
                                 ))
   (theme-looper-set-customizations 'powerline-reset)
   (global-set-key (kbd "S-<f12>") 'theme-looper-enable-next-theme))
@@ -93,7 +109,7 @@ Download [[https://github.com/adobe-fonts/source-code-pro][Source Code Pro]]
                     :family "Source Code Pro" :height 100)
 #+end_src
 
-* Sane defaults
+* Common defaults
 
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
@@ -117,6 +133,9 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 (set-keyboard-coding-system 'utf-8) ; pretty
 (set-selection-coding-system 'utf-8) ; please
 (prefer-coding-system 'utf-8) ; with sugar on top
+;; from Sacha page
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 (setq-default indent-tabs-mode nil)
 
 ;; use shift-arrows to move between windows
@@ -177,71 +196,94 @@ at point as the default value for occur.
 #+end_src
 
 * Recentf
+Recentf is a minor mode that builds a list of recently opened files.
 
 #+begin_src emacs-lisp
 (use-package recentf
-  :commands ido-recentf-open
   :init
   (progn
     (recentf-mode t)
-    (setq recentf-max-saved-items 200)
-
-    (defun ido-recentf-open ()
-      "Use `ido-completing-read' to \\[find-file] a recent file"
-      (interactive)
-      (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-          (message "Opening file...")
-        (message "Aborting")))
-
-    (bind-key "C-x C-r" 'ido-recentf-open)))
+    (setq recentf-max-saved-items 200
+          recentf-max-menu-items 15)))
 #+end_src
 
 * Org mode
-** Org activation bindings
+** Basic Initialization
 
-Set up some global key bindings that integrate with Org Mode features.
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :ensure t
+  :defer t
+  :bind(("C-c a" . org-agenda)
+        ("C-c l" . org-store-link)
+        ("C-c c" . org-capture)))
+#+END_SRC
 
-#+begin_src emacs-lisp
-(bind-key "C-c l" 'org-store-link)
-(bind-key "C-c a" 'org-agenda)
-#+end_src
+** Shortcut to organizer file
 
-*** Org agenda
+From [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/][This blog entry]], C-c o is set to open the tasks.org
 
-Learned about [[https://github.com/sachac/.emacs.d/blob/83d21e473368adb1f63e582a6595450fcd0e787c/Sacha.org#org-agenda][this =delq= and =mapcar= trick from Sacha Chua's config]].
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "C-c o") 
+                (lambda () (interactive) (find-file "~/OneDrive/Org/organizer.org")))
+#+END_SRC
 
-#+begin_src emacs-lisp
-(setq org-agenda-files
-      (delq nil
-            (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/OneDrive/Agenda"))))
-#+end_src
+** Capture
+Set tasks.org as my default notes file
 
-*** Org capture
+#+BEGIN_SRC emacs-lisp
+(setq org-default-notes-file "~/OneDrive/Org/organizer.org")
+#+END_SRC
 
-#+begin_src emacs-lisp
-(bind-key "C-c c" 'org-capture)
-(setq org-default-notes-file "~/OneDrive/Notes/notes.org")
-#+end_src
+*** Capture templates
 
-** Org setup
+The templates were copied from [[http://members.optusnet.com.au/~charles57/GTD/datetree.html][This Tutorial]].
 
-Speed commands are a nice and quick way to perform certain actions
-while at the beginning of a heading. It's not activated by default.
+So far I have the following templates:
+1. *Todo*: will be used for defining daily or weekly tasks and reminders.
+   - TODO keyword
+   - %^{Description} prompt for user input
+   - %^g prompt for tags
+   - %? position cursor here
+   - %U inactive timestamp
+2. *Notes*: Any kind of note, books, movies, blog post ideas.
+   - %^{Description} prompt for user input
+   - %^g prompt for tags
+   - %? position cursor here
+   - %U inactive timestamp
 
-See the doc for speed keys by checking out [[elisp:(info%20"(org)%20speed%20keys")][the documentation for
-speed keys in Org mode]].
 
+#+BEGIN_SRC emacs-lisp
+(setq org-capture-templates
+      '(
+("t" "Todo" entry (file+datetree "~/OneDrive/Org/organizer.org") 
+"* TODO %^{Description} %^g 
+%? 
+Added: %U")
+("n" "Notes" entry (file+datetree "~/OneDrive/Org/organizer.org") 
+"* %^{Description} %^g 
+%? 
+Added: %U")      
+))
+#+END_SRC
+
+** Options
+Start up folded, lists will be folded when file is opened. Don't remember where I got that.
+#+BEGIN_SRC emacs-lisp
+(setq org-cycle-include-plain-lists 'integrate)
+#+END_SRC
+
+Org display inline images when starts up, [[http://emacs.stackexchange.com/questions/14758/in-org-mode-how-to-always-display-inline-images-at-emacs-startup][From this question]].
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-with-inline-images t)
+#+END_SRC
+
+Speed up commands. See the doc for speed keys by checking out [[elisp:(info%20"(org)%20speed%20keys")][the documentation for speed keys in Org mode]].
 #+begin_src emacs-lisp
 (setq org-use-speed-commands t)
 #+end_src
 
-#+begin_src emacs-lisp
-(setq org-image-actual-width 550)
-#+end_src
-
-Options
-
+General options.
 #+BEGIN_SRC emacs-lisp
 (setq org-special-ctrl-a/e t)
 (transient-mark-mode nil)
@@ -249,17 +291,16 @@ Options
 (setq org-habit-graph-column 50) ;position the habit graph on the agenda to the right of the default
 (setq org-hide-emphasis-markers nil)
 (setq org-src-fontify-natively t)
+(setq inhibit-splash-screen t)
+(setq org-indent-mode t) ;indent the headings for clean view
+(setq org-startup-indented t)
  #+END_SRC
 
-** Org tags
+Todo sequences.
+#+BEGIN_SRC emacs-lisp
+(setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "DONE(d)")))
+#+END_SRC
 
-The default value is -77, which is weird for smaller width windows.
-I'd rather have the tags align horizontally with the header. 45 is a
-good column number to do that.
-
-#+begin_src emacs-lisp
-(setq org-tags-column 45)
-#+end_src
 
 ** Org babel/source blocks
 
@@ -323,7 +364,7 @@ A quick way to jump around text in buffers.
   :ensure t
   :diminish ace-jump-mode
   :commands ace-jump-mode
-  :bind ("C-S-s" . ace-jump-mode))
+  :bind ("C-c C-SPC" . ace-jump-mode))
 #+end_src
 
 ** Ace Window
@@ -588,27 +629,22 @@ Latex preview pane
     (ispell-change-dictionary change)
     (message "Dictionary switched from %s to %s" dic change)
     ))
-  (global-set-key (kbd "<f6>")   'fd-switch-dictionary))
+  (global-set-key (kbd "<f6>")   'fd-switch-dictionary)
+  (global-set-key (kbd "C-<f1>") 'flyspell-correct-word-before-point))
 #+END_SRC
 ** Company
 Auto complete
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
-  :defer t
-  :config
+  :init
   (add-hook 'after-init-hook 'global-company-mode))
 #+END_SRC
 ** Powerline
 #+BEGIN_SRC emacs-lisp
 (use-package powerline
   :ensure t
-  :defer t  
-  :disabled t
-  :config
-  (setq powerline-default-separator 'wave)
-  (powerline-default-theme)
-  (setq powerline-default-separator 'utf-8))
+  )
 #+END_SRC
 ** Smart mode line
 #+BEGIN_SRC emacs-lisp
@@ -617,6 +653,21 @@ Auto complete
   :disabled t
   :config
   (sml/setup))
+#+END_SRC
+
+** Undo tree
+Undo system to recover any past state of a buffer
+#+BEGIN_SRC emacs-lisp
+(use-package undo-tree
+  :defer t
+  :ensure t
+  :bind ("C-z" . undo-tree-undo)
+  :diminish undo-tree-mode
+  :config
+  (progn
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)))
 #+END_SRC
 
 * Misc
@@ -643,6 +694,3 @@ the load average.
   (global-set-key (kbd "C-<wheel-down>") 'doc-view-shrink)
   (setq doc-view-continuous t))
 #+end_src
-
-
-

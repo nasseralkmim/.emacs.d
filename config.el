@@ -1,8 +1,8 @@
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
 
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+;(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+;(load custom-file)
 
 (use-package moe-theme
   :ensure t
@@ -23,16 +23,26 @@
   :defer t
   :ensure t)
 
+(use-package solarized-theme
+  :ensure t
+  :defer t)
+
+(use-package color-theme-sanityinc-tomorrow
+  :ensure t
+  :defer t)
+
 (use-package theme-looper
   :defer t
   :ensure t
   :init
-  (theme-looper-set-theme-set '(moe-light
+  (theme-looper-set-theme-set '(;moe-light
                                 moe-dark
-                                material
-                                material-light
-                                zenburn
-                                cyberpunk
+                                ;material
+                                ;material-light
+                                ;zenburn
+                                ;cyberpunk
+                                solarized-light
+                                sanityinc-tomorrow-day
                                 ))
   (theme-looper-set-customizations 'powerline-reset)
   (global-set-key (kbd "S-<f12>") 'theme-looper-enable-next-theme))
@@ -67,6 +77,9 @@
 (set-keyboard-coding-system 'utf-8) ; pretty
 (set-selection-coding-system 'utf-8) ; please
 (prefer-coding-system 'utf-8) ; with sugar on top
+;; from Sacha page
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 (setq-default indent-tabs-mode nil)
 
 ;; use shift-arrows to move between windows
@@ -120,35 +133,41 @@
 (bind-key "M-s o" 'occur-dwim)
 
 (use-package recentf
-  :commands ido-recentf-open
   :init
   (progn
     (recentf-mode t)
-    (setq recentf-max-saved-items 200)
+    (setq recentf-max-saved-items 200
+          recentf-max-menu-items 15)))
 
-    (defun ido-recentf-open ()
-      "Use `ido-completing-read' to \\[find-file] a recent file"
-      (interactive)
-      (if (find-file (ido-completing-read "Find recent file: " recentf-list))
-          (message "Opening file...")
-        (message "Aborting")))
+(use-package org
+  :ensure t
+  :defer t
+  :bind(("C-c a" . org-agenda)
+        ("C-c l" . org-store-link)
+        ("C-c c" . org-capture)))
 
-    (bind-key "C-x C-r" 'ido-recentf-open)))
+(global-set-key (kbd "C-c o") 
+                (lambda () (interactive) (find-file "~/OneDrive/Org/organizer.org")))
 
-(bind-key "C-c l" 'org-store-link)
-(bind-key "C-c a" 'org-agenda)
+(setq org-default-notes-file "~/OneDrive/Org/organizer.org")
 
-(setq org-agenda-files
-      (delq nil
-            (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/OneDrive/Agenda"))))
+(setq org-capture-templates
+      '(
+("t" "Todo" entry (file+datetree "~/OneDrive/Org/organizer.org") 
+"* TODO %^{Description} %^g 
+%? 
+Added: %U")
+("n" "Notes" entry (file+datetree "~/OneDrive/Org/organizer.org") 
+"* %^{Description} %^g 
+%? 
+Added: %U")      
+))
 
-(bind-key "C-c c" 'org-capture)
-(setq org-default-notes-file "~/OneDrive/Notes/notes.org")
+(setq org-cycle-include-plain-lists 'integrate)
+
+(setq org-startup-with-inline-images t)
 
 (setq org-use-speed-commands t)
-
-(setq org-image-actual-width 550)
 
 (setq org-special-ctrl-a/e t)
 (transient-mark-mode nil)
@@ -156,8 +175,11 @@
 (setq org-habit-graph-column 50) ;position the habit graph on the agenda to the right of the default
 (setq org-hide-emphasis-markers nil)
 (setq org-src-fontify-natively t)
+(setq inhibit-splash-screen t)
+(setq org-indent-mode t) ;indent the headings for clean view
+(setq org-startup-indented t)
 
-(setq org-tags-column 45)
+(setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "DONE(d)")))
 
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
@@ -192,7 +214,7 @@
   :ensure t
   :diminish ace-jump-mode
   :commands ace-jump-mode
-  :bind ("C-S-s" . ace-jump-mode))
+  :bind ("C-c C-SPC" . ace-jump-mode))
 
 (use-package ace-window
   :ensure t
@@ -354,28 +376,34 @@
     (ispell-change-dictionary change)
     (message "Dictionary switched from %s to %s" dic change)
     ))
-  (global-set-key (kbd "<f6>")   'fd-switch-dictionary))
+  (global-set-key (kbd "<f6>")   'fd-switch-dictionary)
+  (global-set-key (kbd "C-<f1>") 'flyspell-correct-word-before-point))
 
 (use-package company
   :ensure t
-  :defer t
-  :config
+  :init
   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package powerline
   :ensure t
-  :defer t  
-  :disabled t
-  :config
-  (setq powerline-default-separator 'wave)
-  (powerline-default-theme)
-  (setq powerline-default-separator 'utf-8))
+  )
 
 (use-package smart-mode-line
   :ensure t
   :disabled t
   :config
   (sml/setup))
+
+(use-package undo-tree
+  :defer t
+  :ensure t
+  :bind ("C-z" . undo-tree-undo)
+  :diminish undo-tree-mode
+  :config
+  (progn
+    (global-undo-tree-mode)
+    (setq undo-tree-visualizer-timestamps t)
+    (setq undo-tree-visualizer-diff t)))
 
 (setq display-time-default-load-average nil)
 

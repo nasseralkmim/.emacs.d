@@ -11,6 +11,9 @@
     ("a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" default)))
  '(helm-locate-command "mdfind -interpret -name %s %s")
  '(helm-mode t)
+ '(org-agenda-files
+   (quote
+    ("~/OneDrive/Org/organizer.org" "~/OneDrive/ANAC/Notas ANAC.org")))
  '(vc-annotate-background "#2B2B2B")
  '(vc-annotate-color-map
    (quote
