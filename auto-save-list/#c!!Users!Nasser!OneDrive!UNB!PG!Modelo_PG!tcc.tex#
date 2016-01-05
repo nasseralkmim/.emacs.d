@@ -6,6 +6,7 @@
 \input{fixos/informacoes}
 \input{fixos/setup}
 
+
 \begin{document}
 \frenchspacing 
     \imprimircapa       
@@ -32,7 +33,7 @@
 \input{editaveis/anexos}
 \printindex
 
-$\alpha \Gamma \beta \theta \int_p^t $
+
 
 \end{document}
 

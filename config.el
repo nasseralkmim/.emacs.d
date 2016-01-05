@@ -1,9 +1,6 @@
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
 
-;(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;(load custom-file)
-
 (use-package moe-theme
   :ensure t
   :defer t
@@ -141,13 +138,19 @@
 
 (use-package org
   :ensure t
-  :defer t
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
         ("C-c c" . org-capture)))
 
 (global-set-key (kbd "C-c o") 
                 (lambda () (interactive) (find-file "~/OneDrive/Org/organizer.org")))
+
+(setq org-agenda-files
+      (delq nil
+            (mapcar (lambda (x) (and (file-exists-p x) x))
+                    '("~/OneDrive/Org/organizer.org"
+                      "~/OneDrive/ANAC/Notas ANAC.org"
+))))
 
 (setq org-default-notes-file "~/OneDrive/Org/organizer.org")
 
@@ -180,6 +183,11 @@ Added: %U")
 (setq org-startup-indented t)
 
 (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "DONE(d)")))
+(setq org-todo-keyword-faces 
+      '(
+         ("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
+         ("STARTED" :background "#edd400" :foreground "#5f5f5f" :weight bold )
+         ("DONE" :background "#6ac214" :foreground "#5f5f5f" :weight bold )))
 
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
@@ -187,19 +195,29 @@ Added: %U")
       org-src-preserve-indentation t
       org-src-tab-acts-natively t)
 
-;; paste from clipboard
-(defun my-org-insert-clipboard ()
+(defun my/org-insert-clipboard ()
   (interactive)
+  ;make the img directory
+  (setq myvar/folder-path (concat default-directory "img/"))
+  ;create the directory if it doesn't exist
+  (if (not (file-exists-p myvar/folder-path))
+      (mkdir myvar/folder-path))
+
   (let* ((image-file (concat 
-                      (buffer-file-name)
+                      myvar/folder-path
+                      (buffer-name)
                       "_"
                       (format-time-string "%Y%m%d_%H%M%S_.png")))
+
          (exit-status
           (call-process "convert" nil nil nil
                         "clipboard:" image-file)))
+
     (org-insert-link nil (concat "file:" image-file) "")
+
     (org-display-inline-images)))
-(global-set-key (kbd "C-c y") 'my-org-insert-clipboard)
+
+(global-set-key (kbd "C-c y") 'my/org-insert-clipboard)
 
 (custom-set-faces
 
@@ -344,15 +362,15 @@ Added: %U")
   :config
   (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
 
-(add-to-list 'load-path "C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
-(require 'magic-latex-buffer)
-(add-hook 'latex-mode-hook 'magic-latex-buffer)
-(add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
-(setq magic-latex-enable-block-highlight nil
+(use-package magic-latex-buffer
+  :load-path ("C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
+  :config
+  (add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
+  (setq magic-latex-enable-block-highlight nil
       magic-latex-enable-suscript        t
       magic-latex-enable-pretty-symbols  t
       magic-latex-enable-block-align     nil
-      magic-latex-enable-inline-image    nil)
+      magic-latex-enable-inline-image    nil))
 
 (use-package flycheck
   :ensure t
@@ -382,7 +400,8 @@ Added: %U")
 (use-package company
   :ensure t
   :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-idle-delay 0))
 
 (use-package powerline
   :ensure t

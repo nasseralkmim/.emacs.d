@@ -1,25 +1,21 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Nasser Alkmim
 
+This conficuration was copied and modified from [[https://github.com/danielmai/.emacs.d][Daniel's configuration]].
+
+Download [[http://vgoulet.act.ulaval.ca/en/emacs/windows/][Emacs]] from this site which includes the support for png, jpeg images.
+  
 This configuration uses the [[https://github.com/jwiegley/use-package][use-package]] package from John Wiegley, which is
 a fantastic way to manage package configurations.
 
 This [[http://emacs.stackexchange.com/questions/10396/difference-between-init-and-config-in-use-package][Question]] is useful to understand the differences between :init and :config.
 
+This [[http://ergoemacs.org/emacs/elisp.html][website]] is useful for emacs lisp functions.
+
 * Personal information
  #+begin_src emacs-lisp
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
-#+end_src
-
-* Customize settings
-  
-Set up the customize file to its own separate file, instead of saving
-customize settings in [[file:init.el][init.el]].
-
-#+begin_src emacs-lisp
-;(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;(load custom-file)
 #+end_src
 
 * Theme
@@ -213,7 +209,6 @@ Recentf is a minor mode that builds a list of recently opened files.
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :ensure t
-  :defer t
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
         ("C-c c" . org-capture)))
@@ -228,7 +223,21 @@ From [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/]
                 (lambda () (interactive) (find-file "~/OneDrive/Org/organizer.org")))
 #+END_SRC
 
+** Agenda
+
+Set agenda files
+
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files
+      (delq nil
+            (mapcar (lambda (x) (and (file-exists-p x) x))
+                    '("~/OneDrive/Org/organizer.org"
+                      "~/OneDrive/ANAC/Notas ANAC.org"
+))))
+#+END_SRC
+
 ** Capture
+
 Set tasks.org as my default notes file
 
 #+BEGIN_SRC emacs-lisp
@@ -268,6 +277,7 @@ Added: %U")
 #+END_SRC
 
 ** Options
+
 Start up folded, lists will be folded when file is opened. Don't remember where I got that.
 #+BEGIN_SRC emacs-lisp
 (setq org-cycle-include-plain-lists 'integrate)
@@ -299,8 +309,12 @@ General options.
 Todo sequences.
 #+BEGIN_SRC emacs-lisp
 (setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "DONE(d)")))
+(setq org-todo-keyword-faces 
+      '(
+         ("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
+         ("STARTED" :background "#edd400" :foreground "#5f5f5f" :weight bold )
+         ("DONE" :background "#6ac214" :foreground "#5f5f5f" :weight bold )))
 #+END_SRC
-
 
 ** Org babel/source blocks
 
@@ -313,23 +327,38 @@ Todo sequences.
 #+end_src
 
 ** Org paste from clipboard
+
 Function for pasting images from clipboard. I got this from [[https://lists.gnu.org/archive/html/emacs-orgmode/2013-11/msg00290.html][this thread]]. It's very useful when I'm writing notes while studying, great for reviewing the notes later.
 
+Now it creates a folder called "img/" where all the figures are going to be saved.
+
 #+BEGIN_SRC emacs-lisp
-;; paste from clipboard
-(defun my-org-insert-clipboard ()
+(defun my/org-insert-clipboard ()
   (interactive)
+  ;make the img directory
+  (setq myvar/folder-path (concat default-directory "img/"))
+  ;create the directory if it doesn't exist
+  (if (not (file-exists-p myvar/folder-path))
+      (mkdir myvar/folder-path))
+
   (let* ((image-file (concat 
-                      (buffer-file-name)
+                      myvar/folder-path
+                      (buffer-name)
                       "_"
                       (format-time-string "%Y%m%d_%H%M%S_.png")))
+
 	 (exit-status
 	  (call-process "convert" nil nil nil
 			"clipboard:" image-file)))
+
     (org-insert-link nil (concat "file:" image-file) "")
+
     (org-display-inline-images)))
-(global-set-key (kbd "C-c y") 'my-org-insert-clipboard)
+
+(global-set-key (kbd "C-c y") 'my/org-insert-clipboard)
 #+END_SRC
+
+
 
 ** Org BG level 1 and 2
 This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
@@ -591,15 +620,15 @@ Latex preview pane
 
 ** Magic Latex Buffer
 #+begin_src emacs-lisp
-(add-to-list 'load-path "C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
-(require 'magic-latex-buffer)
-(add-hook 'latex-mode-hook 'magic-latex-buffer)
-(add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
-(setq magic-latex-enable-block-highlight nil
+(use-package magic-latex-buffer
+  :load-path ("C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
+  :config
+  (add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
+  (setq magic-latex-enable-block-highlight nil
       magic-latex-enable-suscript        t
       magic-latex-enable-pretty-symbols  t
       magic-latex-enable-block-align     nil
-      magic-latex-enable-inline-image    nil)
+      magic-latex-enable-inline-image    nil))
 #+end_src
 
 ** Flycheck
@@ -634,11 +663,15 @@ Latex preview pane
 #+END_SRC
 ** Company
 Auto complete
+
+The configurations were taken from [[https://github.com/company-mode/company-mode/issues/68][This discussion]]. The delay time from the wiki
+
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
   :init
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
+  (setq company-idle-delay 0))
 #+END_SRC
 ** Powerline
 #+BEGIN_SRC emacs-lisp
@@ -694,3 +727,4 @@ the load average.
   (global-set-key (kbd "C-<wheel-down>") 'doc-view-shrink)
   (setq doc-view-continuous t))
 #+end_src
+
