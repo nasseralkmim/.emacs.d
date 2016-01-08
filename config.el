@@ -31,8 +31,9 @@
 (use-package theme-looper
   :defer t
   :ensure t
+  :bind ("S-<f12>" . theme-looper-enable-next-theme)
   :init
-  (theme-looper-set-theme-set '(;moe-light
+  (theme-looper-set-theme-set '(moe-light
                                 moe-dark
                                 ;material
                                 ;material-light
@@ -41,8 +42,7 @@
                                 solarized-light
                                 sanityinc-tomorrow-day
                                 ))
-  (theme-looper-set-customizations 'powerline-reset)
-  (global-set-key (kbd "S-<f12>") 'theme-looper-enable-next-theme))
+  (theme-looper-set-customizations 'powerline-reset))
 
 (defun disable-all-themes ()
   "disable all active themes."
@@ -64,10 +64,6 @@
 ;; Answering just 'y' or 'n' will do
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Keep all backup and auto-save files in one directory
-(setq backup-directory-alist '(("." . "~/.emacs.d/backups")))
-(setq auto-save-file-name-transforms '((".*" "~/.emacs.d/auto-save-list/" t)))
-
 ;; UTF-8 please
 (setq locale-coding-system 'utf-8) ; pretty
 (set-terminal-coding-system 'utf-8) ; pretty
@@ -85,6 +81,10 @@
 ;; highlight current line
 (global-hl-line-mode 1)
 
+; wrap lines
+(global-visual-line-mode)
+(diminish 'visual-line-mode)
+
 ;; Turn off the blinking cursor
 (blink-cursor-mode -1)
 
@@ -98,12 +98,9 @@
 ;; delete the region when typing, just like as we expect nowadays.
 (delete-selection-mode t)
 
-(show-paren-mode t)
 
 (column-number-mode t)
 
-(global-visual-line-mode)
-(diminish 'visual-line-mode)
 
 (setq uniquify-buffer-name-style 'forward)
 
@@ -116,21 +113,9 @@
 ;; Don't create backups
 (setq make-backup-files nil)
 
-(defun occur-dwim ()
-  "Call `occur' with a sane default."
-  (interactive)
-  (push (if (region-active-p)
-            (buffer-substring-no-properties
-             (region-beginning)
-             (region-end))
-          (thing-at-point 'symbol))
-        regexp-history)
-  (call-interactively 'occur))
-
-(bind-key "M-s o" 'occur-dwim)
-
 (use-package recentf
-  :init
+  :defer 10
+  :config
   (progn
     (recentf-mode t)
     (setq recentf-max-saved-items 200
@@ -151,6 +136,9 @@
                     '("~/OneDrive/Org/organizer.org"
                       "~/OneDrive/ANAC/Notas ANAC.org"
 ))))
+
+(custom-set-variables
+ '(org-agenda-skip-scheduled-if-done t))
 
 (setq org-default-notes-file "~/OneDrive/Org/organizer.org")
 
@@ -243,29 +231,19 @@ Added: %U")
 
 (use-package helm
   :ensure t
+  :defer 5
   :diminish helm-mode
-  :init (progn
-          (require 'helm-config)
-          (use-package helm-projectile
-            :ensure t
-            :commands helm-projectile
-            :bind ("C-c p h" . helm-projectile)
-            :init
-            ;; helm with projectile
-            (projectile-global-mode)
-            (setq projectile-completion-system 'helm)
-            (helm-projectile-on)
-            (setq projectile-switch-project-action 'helm-projectile-find-file)
-            (setq projectile-indexing-method 'alien))
-          (use-package helm-ag :ensure t)
-          (setq helm-locate-command "mdfind -interpret -name %s %s"
-                helm-ff-newfile-prompt-p nil
-                helm-M-x-fuzzy-match t)
-          (helm-mode)
-          (helm-autoresize-mode t)
-          (setq helm-split-window-in-side-p t))
+  :init
+  (require 'helm-config)
+  :config 
+  (helm-mode)
+  (helm-autoresize-mode t)
+  (setq helm-split-window-in-side-p t)
+  (bind-key "<tab>" #'helm-execute-persistent-action helm-map)
+
   :bind (("C-c h" . helm-command-prefix)
          ("C-x b" . helm-mini)
+         ("C-x f"   . helm-multi-files)
          ("C-`" . helm-resume)
          ("M-x" . helm-M-x)
          ("C-x C-f" . helm-find-files)))
@@ -297,6 +275,7 @@ Added: %U")
 
 (use-package ein
   :defer t
+  :disabled t
   :ensure t)
 
 (use-package markdown-mode
@@ -305,20 +284,23 @@ Added: %U")
          ("\\.md\\'"       . markdown-mode)))
 
 (use-package perspective
+  :disabled t
   :ensure t
   :config (persp-mode))
 
 (use-package projectile
   :ensure t
   :diminish projectile-mode
-  :commands projectile-mode
+  :commands projectile-global-mode
+  :defer 5
+  :bind-keymap ("C-c p" . projectile-command-map)
   :config
-  (progn
-    (projectile-global-mode t)
-    (setq projectile-enable-caching t)
-    (use-package ag
-      :commands ag
-      :ensure t)))
+  (use-package helm-projectile
+    :config
+    (setq projectile-completion-system 'helm)
+    (helm-projectile-on)
+    (setq projectile-indexing-method 'alien))
+  (projectile-global-mode))
 
 (use-package python
   :mode ("\\.py\\'" . python-mode)
@@ -327,13 +309,14 @@ Added: %U")
 
 (use-package smartparens
   :ensure t
+  :defer 5
   :diminish smartparens-mode
-  :config (progn (require 'smartparens-config)
-                 (smartparens-global-mode t)))
-
-(sp-local-pair 'org-mode "~" "~" :actions '(wrap))
-(sp-local-pair 'org-mode "/" "/" :actions '(wrap))
-(sp-local-pair 'org-mode "*" "*" :actions '(wrap))
+  :config
+  (use-package smartparens-config)
+  (smartparens-global-mode 1)
+  (show-smartparens-global-mode t)
+  (sp-local-pair 'org-mode "_" "_" )
+  (sp-local-pair 'org-mode "*" "*" ))
 
 (use-package smooth-scrolling
   :defer t
@@ -399,11 +382,15 @@ Added: %U")
 
 (use-package company
   :ensure t
-  :init
+  :defer 10
+  :diminish company-mode
+  :config
+  (global-company-mode)
   (add-hook 'after-init-hook 'global-company-mode)
   (setq company-idle-delay 0))
 
 (use-package powerline
+  :disabled t
   :ensure t
   )
 
@@ -421,10 +408,7 @@ Added: %U")
   :config
   (progn
     (global-undo-tree-mode)
-    (setq undo-tree-visualizer-timestamps t)
     (setq undo-tree-visualizer-diff t)))
-
-(setq display-time-default-load-average nil)
 
 (use-package doc-view
   :config
@@ -436,3 +420,5 @@ Added: %U")
   (global-set-key (kbd "C-<wheel-up>") 'doc-view-enlarge)
   (global-set-key (kbd "C-<wheel-down>") 'doc-view-shrink)
   (setq doc-view-continuous t))
+
+(setq ad-redefinition-action 'accept)

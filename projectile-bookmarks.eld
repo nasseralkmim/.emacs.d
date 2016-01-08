@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/OneDrive/UNB/PG/Modelo_PG/" "~/OneDrive/nasseralkmim.github.io/" "~/Miniconda3/Lib/site-packages/pelican/themes/simple_nasser/")
+("~/.emacs.d/" "~/OneDrive/nasseralkmim.github.io/" "~/OneDrive/UNB/PG/Modelo_PG/" "~/Miniconda3/Lib/site-packages/pelican/themes/simple_nasser/")

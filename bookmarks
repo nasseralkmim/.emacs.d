@@ -9,7 +9,7 @@
  (position . 154))
 ("org-capture-last-stored"
  (filename . "~/OneDrive/Org/organizer.org")
- (front-context-string . "**** Livro de me")
- (rear-context-string . "1-05 Tue 16:41]\n")
- (position . 682))
+ (front-context-string . "**** Bases para ")
+ (rear-context-string . "1-06 Wed 20:36]\n")
+ (position . 4276))
 )

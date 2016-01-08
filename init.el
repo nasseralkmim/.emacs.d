@@ -22,6 +22,7 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)                ;; if you use :diminish
