@@ -8,8 +8,8 @@
  (rear-context-string . "ve/nasser.org]]\n")
  (position . 154))
 ("org-capture-last-stored"
- (filename . "~/OneDrive/Org/organizer.org")
- (front-context-string . "**** Bases para ")
- (rear-context-string . "1-06 Wed 20:36]\n")
- (position . 4276))
+ (filename . "~/OneDrive/nasseralkmim.github.io/blog/content/2016-01-27-Grook \"A short aphoristic poem\".md")
+ (front-context-string . "Title: LOL\nDate:")
+ (rear-context-string)
+ (position . 1))
 )

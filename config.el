@@ -4,13 +4,22 @@
 (use-package moe-theme
   :ensure t
   :defer t
-  :init 
+  :init
   (require 'moe-theme)
-  (moe-dark))
+)
+
+(use-package leuven-theme
+  :ensure t
+  :defer t)
+
+(use-package anti-zenburn-theme
+  :ensure t
+  :init
+  (load-theme 'anti-zenburn t))
 
 (use-package material-theme
   :defer t
-  :ensure t)
+  :ensure t)  
 
 (use-package cyberpunk-theme
   :defer t
@@ -34,13 +43,15 @@
   :bind ("S-<f12>" . theme-looper-enable-next-theme)
   :init
   (theme-looper-set-theme-set '(moe-light
-                                moe-dark
+                                ;moe-dark
+                                leuven
+                                anti-zenburn
                                 ;material
                                 ;material-light
                                 ;zenburn
-                                ;cyberpunk
-                                solarized-light
-                                sanityinc-tomorrow-day
+                                cyberpunk
+                                ;solarized-light
+                                ;sanityinc-tomorrow-day
                                 ))
   (theme-looper-set-customizations 'powerline-reset))
 
@@ -104,8 +115,6 @@
 
 (setq uniquify-buffer-name-style 'forward)
 
-;; -i gets alias definitions from .bash_profile
-(setq shell-command-switch "-ic")
 
 ;; Don't beep at me
 (setq visible-bell t)
@@ -123,35 +132,91 @@
 
 (use-package org
   :ensure t
+  :defer t
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
-        ("C-c c" . org-capture)))
+        ("C-c c" . org-capture))
+  :config
+  (add-hook 'org-mode-hook 'company-mode)
+  (add-hook 'org-mode-hook 'flycheck-mode))
+
+(setq org-modules '(org-habit))
+
+(eval-after-load 'org
+ '(org-load-modules-maybe t))
+
+(setq org-habit-graph-column 80)
+;(setq org-habit-show-habits-only-for-today nil)
 
 (global-set-key (kbd "C-c o") 
-                (lambda () (interactive) (find-file "~/OneDrive/Org/organizer.org")))
+                (lambda () (interactive) (find-file "~/OneDrive/Org/notes.org")))
 
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/OneDrive/Org/organizer.org"
-                      "~/OneDrive/ANAC/Notas ANAC.org"
+                    '("~/OneDrive/Org/gtd.org"
+                      "~/OneDrive/Org/notes.org"
+                      "~/OneDrive/Org/culture.org"
+                      "~/OneDrive/ANAC/anac.org"
 ))))
 
 (custom-set-variables
- '(org-agenda-skip-scheduled-if-done t))
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-skip-deadline-if-done t))
 
-(setq org-default-notes-file "~/OneDrive/Org/organizer.org")
+(setq org-default-notes-file "~/OneDrive/Org/gtb.org")
 
 (setq org-capture-templates
       '(
-("t" "Todo" entry (file+datetree "~/OneDrive/Org/organizer.org") 
-"* TODO %^{Description} %^g 
-%? 
+("t" "Todo" entry (file+datetree "~/OneDrive/Org/gtd.org") 
+"* TODO %?
+
 Added: %U")
-("n" "Notes" entry (file+datetree "~/OneDrive/Org/organizer.org") 
+
+("n" "Notes" entry (file+datetree "~/OneDrive/Org/notes.org") 
 "* %^{Description} %^g 
-%? 
-Added: %U")      
+
+%?
+ 
+Added: %U")
+
+("b" "Books" entry (file+headline "~/OneDrive/Org/culture.org" "Books")
+"* STRT %^{Title} 
+SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a +1d>>\")
+:PROPERTIES:
+:STYLE:    habit
+:END:
+
+
+*Author(s):* %^{Author}
+*Pages/Day:* %^{P/D}
+*Review/Comments:*
+
+%?
+
+*Added*: %U" )
+
+("m" "Movies" entry (file+headline "~/OneDrive/Org/culture.org" "Movies")
+"* %^{Title}
+
+*Review/Comments:*
+
+%?
+
+*Added*: %U"
+)
+
+("p" "Post" plain (file  (blog-post-new))
+ "Title: %^{Title}
+Date: %<%Y-%m-%d %H:%M>
+Category: %^{Category}
+Tags: %^{Tags}
+
+%?
+
+"
+)
+      
 ))
 
 (setq org-cycle-include-plain-lists 'integrate)
@@ -168,14 +233,20 @@ Added: %U")
 (setq org-src-fontify-natively t)
 (setq inhibit-splash-screen t)
 (setq org-indent-mode t) ;indent the headings for clean view
+(diminish 'org-indent-mode)
 (setq org-startup-indented t)
+(setq org-tags-column -96) ;where the tags are places
 
-(setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)")))
 (setq org-todo-keyword-faces 
       '(
          ("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
-         ("STARTED" :background "#edd400" :foreground "#5f5f5f" :weight bold )
+         ("STRT" :background "#edd400" :foreground "#5f5f5f" :weight bold )
          ("DONE" :background "#6ac214" :foreground "#5f5f5f" :weight bold )))
+
+(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+
+(setq org-cycle-separator-lines 0)
 
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
@@ -197,9 +268,9 @@ Added: %U")
                       "_"
                       (format-time-string "%Y%m%d_%H%M%S_.png")))
 
-         (exit-status
-          (call-process "convert" nil nil nil
-                        "clipboard:" image-file)))
+	 (exit-status
+	  (call-process "convert" nil nil nil
+			"clipboard:" image-file)))
 
     (org-insert-link nil (concat "file:" image-file) "")
 
@@ -213,6 +284,23 @@ Added: %U")
 
   '(org-level-2 ((t (:background nil :bold t :overline nil)))))
 
+(use-package org-pomodoro
+  :ensure t
+  :bind ("<f12>" . org-pomodoro))
+
+(defun today-date ()
+  (format-time-string "%Y-%m-%d"))
+
+(defun blog-title ()
+  (interactive)
+  (read-string "Blog title: "))
+
+(defun blog-post-new ()
+  (let ((title
+         (blog-title)))
+  (concat (file-name-as-directory "C:/Users/Nasser/Onedrive/nasseralkmim.github.io/blog/content")
+          (today-date) "-" title ".md")))
+
 (bind-key "C-x m" 'shell)
 (bind-key "C-x M" 'ansi-term)
 
@@ -220,7 +308,7 @@ Added: %U")
   :ensure t
   :diminish ace-jump-mode
   :commands ace-jump-mode
-  :bind ("C-c C-SPC" . ace-jump-mode))
+  :bind ("C-x C-x" . ace-jump-mode))
 
 (use-package ace-window
   :ensure t
@@ -231,13 +319,13 @@ Added: %U")
 
 (use-package helm
   :ensure t
-  :defer 5
   :diminish helm-mode
   :init
   (require 'helm-config)
   :config 
   (helm-mode)
   (helm-autoresize-mode t)
+  (setq helm-display-header-line nil)
   (setq helm-split-window-in-side-p t)
   (bind-key "<tab>" #'helm-execute-persistent-action helm-map)
 
@@ -283,16 +371,10 @@ Added: %U")
   :mode (("\\.markdown\\'" . markdown-mode)
          ("\\.md\\'"       . markdown-mode)))
 
-(use-package perspective
-  :disabled t
-  :ensure t
-  :config (persp-mode))
-
 (use-package projectile
   :ensure t
   :diminish projectile-mode
   :commands projectile-global-mode
-  :defer 5
   :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (use-package helm-projectile
@@ -305,45 +387,61 @@ Added: %U")
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'company-mode)
+  (add-hook 'python-mode-hook 'flycheck-mode))
 
 (use-package smartparens
   :ensure t
-  :defer 5
   :diminish smartparens-mode
   :config
   (use-package smartparens-config)
-  (smartparens-global-mode 1)
+  (smartparens-global-mode)
   (show-smartparens-global-mode t)
   (sp-local-pair 'org-mode "_" "_" )
   (sp-local-pair 'org-mode "*" "*" ))
 
 (use-package smooth-scrolling
   :defer t
+  :disabled t
   :ensure t)
 
-(use-package auctex
-  :ensure t
-  :mode ("\\.tex\\'" . latex-mode)
-  :commands (latex-mode LaTeX-mode plain-tex-mode)
+(use-package tex
+  :ensure auctex
+  :defer t
   :config
-  (progn
-    (setq TeX-PDF-mode t)
-    (setq-default TeX-master nil)
-    (setq TeX-auto-save t)
-    (setq TeX-parse-self t)
-    (setq global-font-lock-mode t)))
+  (load "auctex.el" nil nil t)
+  (setq global-font-lock-mode t)
+  (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook 'flycheck-mode)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTeX-mode-hook 'company-mode)
+  (setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresource"))
+  (setq reftex-plug-into-AUCTeX t)
+  (setq-default TeX-PDF-mode t)
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil))
 
 (use-package latex-preview-pane
   :ensure t
   :bind ("M-p" . latex-preview-pane-mode)
   :config
-  (setq doc-view-ghostscript-program "gswin64c"))
+  (setq doc-view-ghostscript-program "gswin64c")
+  (custom-set-variables
+   '(shell-escape-mode "-shell-escape")))
+
+;; activate fold mode
+;(add-hook 'LaTeX-mode-hook (lambda ()
+;                             (TeX-fold-mode 1)))
+; hide foldable items automatically
+;(add-hook 'find-file-hook 'TeX-fold-buffer t)
+
+;(add-hook 'LaTeX-mode-hook 'outline-minor-mode)
 
 (use-package reftex
-  :ensure t
-  :config
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
+  :ensure t)
 
 (use-package magic-latex-buffer
   :load-path ("C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
@@ -373,7 +471,7 @@ Added: %U")
   (defun fd-switch-dictionary()
   (interactive)
   (let* ((dic ispell-current-dictionary)
-         (change (if (string= dic "brasileiro") "english" "brasileiro")))
+    	 (change (if (string= dic "brasileiro") "english" "brasileiro")))
     (ispell-change-dictionary change)
     (message "Dictionary switched from %s to %s" dic change)
     ))
@@ -382,23 +480,11 @@ Added: %U")
 
 (use-package company
   :ensure t
-  :defer 10
   :diminish company-mode
   :config
-  (global-company-mode)
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay 0))
-
-(use-package powerline
-  :disabled t
-  :ensure t
-  )
-
-(use-package smart-mode-line
-  :ensure t
-  :disabled t
-  :config
-  (sml/setup))
+  (setq company-idle-delay 0)
+  (setq company-show-numbers t)
+  (setq company-minimum-prefix-length 2))
 
 (use-package undo-tree
   :defer t
@@ -410,8 +496,24 @@ Added: %U")
     (global-undo-tree-mode)
     (setq undo-tree-visualizer-diff t)))
 
+(use-package workgroups2
+  :ensure t
+  :bind (("C-c 1" . wg-reload-session)
+         ("C-c 2" . wg-switch-to-workgroup)
+         ("C-c z z" . wg-save-session))
+  :config
+  (workgroups-mode 1))
+
+(use-package centered-cursor-mode
+  :ensure t
+  :diminish centered-cursor-mode
+;  :disabled t
+  :config
+  (global-centered-cursor-mode +1))
+
 (use-package doc-view
   :config
+  (add-hook 'doc-view-mode-hook (lambda () (centered-cursor-mode -1)))
   (define-key doc-view-mode-map (kbd "<right>") 'doc-view-next-page)
   (define-key doc-view-mode-map (kbd "<left>") 'doc-view-previous-page)
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -419,6 +521,7 @@ Added: %U")
 
   (global-set-key (kbd "C-<wheel-up>") 'doc-view-enlarge)
   (global-set-key (kbd "C-<wheel-down>") 'doc-view-shrink)
+
   (setq doc-view-continuous t))
 
 (setq ad-redefinition-action 'accept)

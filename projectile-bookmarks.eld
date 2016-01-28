@@ -1,1 +1,1 @@
-("~/.emacs.d/" "~/OneDrive/nasseralkmim.github.io/" "~/OneDrive/UNB/PG/Modelo_PG/" "~/Miniconda3/Lib/site-packages/pelican/themes/simple_nasser/")
+("~/OneDrive/nasseralkmim.github.io/" "~/OneDrive/UNB/2015_2/pibic/producao/topology optimization/" "~/Miniconda3/Lib/site-packages/pelican/themes/simple_nasser/" "~/.emacs.d/" "~/OneDrive/Projects/elasticitate/")

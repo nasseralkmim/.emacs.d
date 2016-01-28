@@ -1,9 +1,10 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Nasser Alkmim
 
+* Introduction
 This conficuration was copied and modified from [[https://github.com/danielmai/.emacs.d][Daniel's configuration]].
 
-Download [[http://vgoulet.act.ulaval.ca/en/emacs/windows/][Emacs]] from this site which includes the support for png, jpeg images.
+Download [[http://vgoulet.act.ulaval.ca/en/emacs/windows/][Emacs]] from this site which includes the support for png, jpeg images. Or [[http://emacsbinw64.sourceforge.net/][From this site]].
   
 This configuration uses the [[https://github.com/jwiegley/use-package][use-package]] package from John Wiegley, which is
 a fantastic way to manage package configurations. This [[http://www.lunaryorn.com/2015/01/06/my-emacs-configuration-with-use-package.html][post]] explain how it works.
@@ -13,23 +14,34 @@ This [[http://emacs.stackexchange.com/questions/10396/difference-between-init-an
 Current load time 1.5s on windows.
 
 * Personal information
+
  #+begin_src emacs-lisp
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
 #+end_src
 
 * Theme
-
-Add themes as you want, then add the theme to the looper
-
 ** Moe theme
 #+BEGIN_SRC emacs-lisp
 (use-package moe-theme
   :ensure t
   :defer t
-  :init 
+  :init
   (require 'moe-theme)
-  (moe-dark))
+)
+#+END_SRC
+** Leuven theme
+#+BEGIN_SRC emacs-lisp
+(use-package leuven-theme
+  :ensure t
+  :defer t)
+#+END_SRC
+** Anti Zenburn
+#+BEGIN_SRC emacs-lisp
+(use-package anti-zenburn-theme
+  :ensure t
+  :init
+  (load-theme 'anti-zenburn t))
 #+END_SRC
 ** Material theme
 
@@ -74,13 +86,15 @@ Add themes as you want, then add the theme to the looper
   :bind ("S-<f12>" . theme-looper-enable-next-theme)
   :init
   (theme-looper-set-theme-set '(moe-light
-                                moe-dark
+                                ;moe-dark
+                                leuven
+                                anti-zenburn
                                 ;material
                                 ;material-light
                                 ;zenburn
-                                ;cyberpunk
-                                solarized-light
-                                sanityinc-tomorrow-day
+                                cyberpunk
+                                ;solarized-light
+                                ;sanityinc-tomorrow-day
                                 ))
   (theme-looper-set-customizations 'powerline-reset))
 #+end_src
@@ -159,8 +173,6 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 
 (setq uniquify-buffer-name-style 'forward)
 
-;; -i gets alias definitions from .bash_profile
-(setq shell-command-switch "-ic")
 
 ;; Don't beep at me
 (setq visible-bell t)
@@ -188,9 +200,46 @@ Recentf is a minor mode that builds a list of recently opened files.
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :ensure t
+  :defer t
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
-        ("C-c c" . org-capture)))
+        ("C-c c" . org-capture))
+  :config
+  (add-hook 'org-mode-hook 'company-mode)
+  (add-hook 'org-mode-hook 'flycheck-mode))
+#+END_SRC
+
+** Modules
+
+Modules to experiment in my workflow.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-modules '(org-habit))
+
+(eval-after-load 'org
+ '(org-load-modules-maybe t))
+#+END_SRC
+
+*** Habits
+
+A special category of TODO's, habits. A habit is a task that is constantly repeating. In my case, I plan to use it for:
+
+1. Books that I am reading, reading every day.
+2. My thesis progress.
+
+Some properties:
+- blue if the task wasn't to be done yet
+- green if the task could have been done on that day
+- yellow if the task was going to be overdue the next day
+- red if the task was overdue on that days
+- asterisk if the task was done on that day!
+- exclamation show where the current day falls in the graph
+
+From [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha]].
+
+#+BEGIN_SRC emacs-lisp
+(setq org-habit-graph-column 80)
+;(setq org-habit-show-habits-only-for-today nil)
 #+END_SRC
 
 ** Shortcut to organizer file
@@ -199,7 +248,7 @@ From [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/]
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-c o") 
-                (lambda () (interactive) (find-file "~/OneDrive/Org/organizer.org")))
+                (lambda () (interactive) (find-file "~/OneDrive/Org/notes.org")))
 #+END_SRC
 
 ** Agenda
@@ -210,8 +259,10 @@ Set agenda files
 (setq org-agenda-files
       (delq nil
             (mapcar (lambda (x) (and (file-exists-p x) x))
-                    '("~/OneDrive/Org/organizer.org"
-                      "~/OneDrive/ANAC/Notas ANAC.org"
+                    '("~/OneDrive/Org/gtd.org"
+                      "~/OneDrive/Org/notes.org"
+                      "~/OneDrive/Org/culture.org"
+                      "~/OneDrive/ANAC/anac.org"
 ))))
 #+END_SRC
 
@@ -219,15 +270,16 @@ remove done tasks from the agenda, from [[http://stackoverflow.com/questions/828
 
 #+BEGIN_SRC emacs-lisp
 (custom-set-variables
- '(org-agenda-skip-scheduled-if-done t))
+ '(org-agenda-skip-scheduled-if-done t)
+ '(org-agenda-skip-deadline-if-done t))
 #+END_SRC
 
 ** Capture
 
-Set tasks.org as my default notes file
+Set gtd.org as my default notes file
 
 #+BEGIN_SRC emacs-lisp
-(setq org-default-notes-file "~/OneDrive/Org/organizer.org")
+(setq org-default-notes-file "~/OneDrive/Org/gtb.org")
 #+END_SRC
 
 *** Capture templates
@@ -246,19 +298,61 @@ So far I have the following templates:
    - %^g prompt for tags
    - %? position cursor here
    - %U inactive timestamp
+3. *Books*: Save books that I'm reading, scheduled than so I read the minimum quota daily, notes and review.
 
 
 #+BEGIN_SRC emacs-lisp
 (setq org-capture-templates
       '(
-("t" "Todo" entry (file+datetree "~/OneDrive/Org/organizer.org") 
-"* TODO %^{Description} %^g 
-%? 
+("t" "Todo" entry (file+datetree "~/OneDrive/Org/gtd.org") 
+"* TODO %?
+
 Added: %U")
-("n" "Notes" entry (file+datetree "~/OneDrive/Org/organizer.org") 
+
+("n" "Notes" entry (file+datetree "~/OneDrive/Org/notes.org") 
 "* %^{Description} %^g 
-%? 
-Added: %U")      
+
+%?
+ 
+Added: %U")
+
+("b" "Books" entry (file+headline "~/OneDrive/Org/culture.org" "Books")
+"* STRT %^{Title} 
+SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a +1d>>\")
+:PROPERTIES:
+:STYLE:    habit
+:END:
+
+
+,*Author(s):* %^{Author}
+,*Pages/Day:* %^{P/D}
+,*Review/Comments:*
+
+%?
+
+,*Added*: %U" )
+
+("m" "Movies" entry (file+headline "~/OneDrive/Org/culture.org" "Movies")
+"* %^{Title}
+
+,*Review/Comments:*
+
+%?
+
+,*Added*: %U"
+)
+
+("p" "Post" plain (file  (blog-post-new))
+ "Title: %^{Title}
+Date: %<%Y-%m-%d %H:%M>
+Category: %^{Category}
+Tags: %^{Tags}
+
+%?
+
+"
+)
+      
 ))
 #+END_SRC
 
@@ -289,18 +383,31 @@ General options.
 (setq org-src-fontify-natively t)
 (setq inhibit-splash-screen t)
 (setq org-indent-mode t) ;indent the headings for clean view
+(diminish 'org-indent-mode)
 (setq org-startup-indented t)
+(setq org-tags-column -96) ;where the tags are places
  #+END_SRC
 
 Todo sequences.
 #+BEGIN_SRC emacs-lisp
-(setq org-todo-keywords '((sequence "TODO(t)" "STARTED(s)" "DONE(d)")))
+(setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)")))
 (setq org-todo-keyword-faces 
       '(
          ("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
-         ("STARTED" :background "#edd400" :foreground "#5f5f5f" :weight bold )
+         ("STRT" :background "#edd400" :foreground "#5f5f5f" :weight bold )
          ("DONE" :background "#6ac214" :foreground "#5f5f5f" :weight bold )))
 #+END_SRC
+
+From [[http://stackoverflow.com/questions/28351465/emacs-orgmode-do-not-insert-line-between-headers][This question]], an option for org mode not insert a line between headings.
+#+BEGIN_SRC emacs-lisp
+(setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
+#+END_SRC
+
+[[http://orgmode.org/manual/Headlines.html][This reference]] is used to remove an annoying feature of not hiding extra lines in a subtree
+#+BEGIN_SRC emacs-lisp
+(setq org-cycle-separator-lines 0)
+#+END_SRC
+
 
 ** Org babel/source blocks
 
@@ -344,7 +451,6 @@ Now it creates a folder called "img/" where all the figures are going to be save
 (global-set-key (kbd "C-c y") 'my/org-insert-clipboard)
 #+END_SRC
 
-
 ** Org BG level 1 and 2
 This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
 
@@ -355,6 +461,40 @@ This is for remove the annoying background color on the headings, level 1 and le
 
   '(org-level-2 ((t (:background nil :bold t :overline nil)))))
 #+END_SRC
+** Org pomodoro
+
+[[https://github.com/lolownia/org-pomodoro][This package]] adds the pomodoro (timer) technique into org-mode. I'll try it for studying.
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-pomodoro
+  :ensure t
+  :bind ("<f12>" . org-pomodoro))
+#+END_SRC
+** Blog post
+
+This is an attempt to create a workflow for blog posts, the referece is this [[http://pasoev.github.io/programming/2015/10/31/jekyll-posts-emacs-capture/][Blog post]].
+
+First a function to return the date of the blog post.
+#+BEGIN_SRC emacs-lisp
+(defun today-date ()
+  (format-time-string "%Y-%m-%d"))
+#+END_SRC
+
+A function to ask for the post title
+#+BEGIN_SRC emacs-lisp
+(defun blog-title ()
+  (interactive)
+  (read-string "Blog title: "))
+#+END_SRC
+
+A function for creating a markdown file with the name based on the date and a title which should be at the top of the kill-ring.
+#+BEGIN_SRC emacs-lisp
+(defun blog-post-new ()
+  (let ((title
+         (blog-title)))
+  (concat (file-name-as-directory "C:/Users/Nasser/Onedrive/nasseralkmim.github.io/blog/content")
+          (today-date) "-" title ".md")))
+#+END_SRC
 
 * Shell
 
@@ -364,9 +504,6 @@ This is for remove the annoying background color on the headings, level 1 and le
 #+end_src
 
 * ELPA packages
-
-These are the packages that are not built into Emacs.
-
 ** Ace Jump Mode
    
 A quick way to jump around text in buffers.
@@ -378,7 +515,7 @@ A quick way to jump around text in buffers.
   :ensure t
   :diminish ace-jump-mode
   :commands ace-jump-mode
-  :bind ("C-c C-SPC" . ace-jump-mode))
+  :bind ("C-x C-x" . ace-jump-mode))
 #+end_src
 
 ** Ace Window
@@ -402,13 +539,13 @@ what I have them set to (with respect to Dvorak, of course).
 #+begin_src emacs-lisp
 (use-package helm
   :ensure t
-  :defer 5
   :diminish helm-mode
   :init
   (require 'helm-config)
   :config 
   (helm-mode)
   (helm-autoresize-mode t)
+  (setq helm-display-header-line nil)
   (setq helm-split-window-in-side-p t)
   (bind-key "<tab>" #'helm-execute-persistent-action helm-map)
 
@@ -469,6 +606,7 @@ No more juggling windows after commiting. It's magit bliss.
 #+end_src
 
 ** Emacs IPython Notebook
+
 #+begin_src emacs-lisp
 (use-package ein
   :defer t
@@ -485,17 +623,6 @@ No more juggling windows after commiting. It's magit bliss.
          ("\\.md\\'"       . markdown-mode)))
 #+end_src
 
-** Perspective
-
-Workspaces in Emacs. Not using right now.
-
-#+begin_src emacs-lisp
-(use-package perspective
-  :disabled t
-  :ensure t
-  :config (persp-mode))
-#+end_src
-
 ** Projectile
 
 From John Wiegley.
@@ -506,7 +633,6 @@ From John Wiegley.
   :ensure t
   :diminish projectile-mode
   :commands projectile-global-mode
-  :defer 5
   :bind-keymap ("C-c p" . projectile-command-map)
   :config
   (use-package helm-projectile
@@ -525,7 +651,10 @@ Integrates with Python.
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'company-mode)
+  (add-hook 'python-mode-hook 'flycheck-mode))
 #+end_src
 
 ** Smartparens
@@ -533,11 +662,10 @@ Integrates with Python.
 #+begin_src emacs-lisp
 (use-package smartparens
   :ensure t
-  :defer 5
   :diminish smartparens-mode
   :config
   (use-package smartparens-config)
-  (smartparens-global-mode 1)
+  (smartparens-global-mode)
   (show-smartparens-global-mode t)
   (sp-local-pair 'org-mode "_" "_" )
   (sp-local-pair 'org-mode "*" "*" ))
@@ -551,42 +679,75 @@ around so much.
 #+begin_src emacs-lisp
 (use-package smooth-scrolling
   :defer t
+  :disabled t
   :ensure t)
 #+end_src
 
 ** AucTex
+*** Basic setup
+
+Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when files with .tex are loaded. Tex-master is  useful to make Auctex aware of multi-files documents. TeX-PDF mode is used to compile using pdflatex.
+
 #+begin_src emacs-lisp
-(use-package auctex
-  :ensure t
-  :mode ("\\.tex\\'" . latex-mode)
-  :commands (latex-mode LaTeX-mode plain-tex-mode)
+(use-package tex
+  :ensure auctex
+  :defer t
   :config
-  (progn
-    (setq TeX-PDF-mode t)
-    (setq-default TeX-master nil)
-    (setq TeX-auto-save t)
-    (setq TeX-parse-self t)
-    (setq global-font-lock-mode t)))
+  (load "auctex.el" nil nil t)
+  (setq global-font-lock-mode t)
+  (add-hook 'TeX-mode-hook 'LaTeX-math-mode)
+  (add-hook 'LaTeX-mode-hook 'flycheck-mode)
+  (add-hook 'LaTeX-mode-hook 'turn-on-reftex)
+  (add-hook 'LaTeX-mode-hook 'company-mode)
+  (setq reftex-bibliography-commands '("bibliography" "nobibliography" "addbibresource"))
+  (setq reftex-plug-into-AUCTeX t)
+  (setq-default TeX-PDF-mode t)
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)
+  (setq-default TeX-master nil))
 #+end_src
 
-Latex preview pane
+*** Latex preview pane
+
+shell-escape mode because the pacakge svg requires it.
+
 #+BEGIN_SRC emacs-lisp
 (use-package latex-preview-pane
   :ensure t
   :bind ("M-p" . latex-preview-pane-mode)
   :config
-  (setq doc-view-ghostscript-program "gswin64c"))
+  (setq doc-view-ghostscript-program "gswin64c")
+  (custom-set-variables
+   '(shell-escape-mode "-shell-escape")))
+#+END_SRC
+
+*** Folding 
+
+[[https://www.gnu.org/software/auctex/manual/auctex/Folding.html][From this manual]], folding macros and environments to avoind clutter.
+
+#+BEGIN_SRC emacs-lisp
+;; activate fold mode
+;(add-hook 'LaTeX-mode-hook (lambda ()
+;                             (TeX-fold-mode 1)))
+; hide foldable items automatically
+;(add-hook 'find-file-hook 'TeX-fold-buffer t)
+#+END_SRC
+
+*** Outline document
+
+[[http://www.gnu.org/software/auctex/manual/auctex/Outline.html][From this section of the manual]], outline for better view content.
+
+#+BEGIN_SRC emacs-lisp
+;(add-hook 'LaTeX-mode-hook 'outline-minor-mode)
 #+END_SRC
 
 ** Reftex
 
-[[http://www.gnu.org/software/auctex/manual/reftex.html#SEC2][RefTex website]]
+[[http://www.gnu.org/software/auctex/manual/reftex.html#SEC2][RefTex website]]. Useful for managing cross references, bibliographies, indices, and document navigation.
 
 #+BEGIN_SRC emacs-lisp
 (use-package reftex
-  :ensure t
-  :config
-  (add-hook 'LaTeX-mode-hook 'turn-on-reftex))
+  :ensure t)
 #+END_SRC
 
 ** Magic Latex Buffer
@@ -603,11 +764,15 @@ Latex preview pane
 #+end_src
 
 ** Flycheck
+
+
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t
   :bind ("S-<f5>" . flycheck-mode))
 #+END_SRC
+
+
 
 ** Flyspell
 #+BEGIN_SRC emacs-lisp
@@ -635,35 +800,20 @@ Latex preview pane
 ** Company
 Auto complete
 
-The configurations were taken from [[https://github.com/company-mode/company-mode/issues/68][This discussion]]. The delay time from the wiki
+The configurations were taken from [[https://github.com/company-mode/company-mode/issues/68][This discussion]]. The delay time from the wiki. This [[https://www.reddit.com/r/emacs/comments/3s5bkf/companymode_configuration_make_editing_slow/][reddit thread]] has some cool configurations.
 
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
-  :defer 10
   :diminish company-mode
   :config
-  (global-company-mode)
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay 0))
+  (setq company-idle-delay 0)
+  (setq company-show-numbers t)
+  (setq company-minimum-prefix-length 2))
 #+END_SRC
-** Powerline
-#+BEGIN_SRC emacs-lisp
-(use-package powerline
-  :disabled t
-  :ensure t
-  )
-#+END_SRC
-** Smart mode line
-#+BEGIN_SRC emacs-lisp
-(use-package smart-mode-line
-  :ensure t
-  :disabled t
-  :config
-  (sml/setup))
-#+END_SRC
-
 ** Undo tree
+
+
 Undo system to recover any past state of a buffer
 #+BEGIN_SRC emacs-lisp
 (use-package undo-tree
@@ -677,12 +827,44 @@ Undo system to recover any past state of a buffer
     (setq undo-tree-visualizer-diff t)))
 #+END_SRC
 
+** Workgroups
+
+[[https://github.com/pashinin/workgroups2][Work Groups]] for emacs, it saves sessions.
+
+1. ~C-c z C-f~ to laod and start workgroups
+2. ~C-c z v~ switch to workgroup
+3. ~C-c z c~ create workgroup
+4. ~C-c z k~ kill workgroup
+5. ~C-c z C-s~ save session
+
+
+#+BEGIN_SRC emacs-lisp
+(use-package workgroups2
+  :ensure t
+  :bind (("C-c 1" . wg-reload-session)
+         ("C-c 2" . wg-switch-to-workgroup)
+         ("C-c z z" . wg-save-session))
+  :config
+  (workgroups-mode 1))
+  #+END_SRC
+** Centered cursor
+
+#+BEGIN_SRC emacs-lisp
+(use-package centered-cursor-mode
+  :ensure t
+  :diminish centered-cursor-mode
+;  :disabled t
+  :config
+  (global-centered-cursor-mode +1))
+#+END_SRC
+
 * Misc
 ** Doc view keybindings
 
 #+begin_src emacs-lisp
 (use-package doc-view
   :config
+  (add-hook 'doc-view-mode-hook (lambda () (centered-cursor-mode -1)))
   (define-key doc-view-mode-map (kbd "<right>") 'doc-view-next-page)
   (define-key doc-view-mode-map (kbd "<left>") 'doc-view-previous-page)
   (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
@@ -690,6 +872,7 @@ Undo system to recover any past state of a buffer
 
   (global-set-key (kbd "C-<wheel-up>") 'doc-view-enlarge)
   (global-set-key (kbd "C-<wheel-down>") 'doc-view-shrink)
+
   (setq doc-view-continuous t))
 #+end_src
 
