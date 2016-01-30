@@ -407,6 +407,22 @@ From [[http://stackoverflow.com/questions/28351465/emacs-orgmode-do-not-insert-l
 #+BEGIN_SRC emacs-lisp
 (setq org-cycle-separator-lines 0)
 #+END_SRC
+** Org Clock
+From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-capure-templates][this]] settings,
+
+#+BEGIN_SRC emacs-lisp
+;; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persistence-insinuate t)
+(setq org-clock-persist t)
+(setq org-clock-in-resume t)
+
+;; Change task state to STARTED when clocking in
+(setq org-clock-in-switch-to-state "STRT")
+;; Save clock data and notes in the LOGBOOK drawer
+(setq org-clock-into-drawer t)
+;; Removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+#+END_SRC
 
 
 ** Org babel/source blocks
@@ -484,7 +500,7 @@ A function to ask for the post title
 #+BEGIN_SRC emacs-lisp
 (defun blog-title ()
   (interactive)
-  (read-string "Blog title: "))
+  (read-string "Blog file name: "))
 #+END_SRC
 
 A function for creating a markdown file with the name based on the date and a title which should be at the top of the kill-ring.
@@ -769,6 +785,7 @@ shell-escape mode because the pacakge svg requires it.
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t
+  :diminish flycheck-mode
   :bind ("S-<f5>" . flycheck-mode))
 #+END_SRC
 
@@ -849,11 +866,13 @@ Undo system to recover any past state of a buffer
   #+END_SRC
 ** Centered cursor
 
+Está dando problemas com o company-mode
+
 #+BEGIN_SRC emacs-lisp
 (use-package centered-cursor-mode
   :ensure t
   :diminish centered-cursor-mode
-;  :disabled t
+  :disabled t
   :config
   (global-centered-cursor-mode +1))
 #+END_SRC

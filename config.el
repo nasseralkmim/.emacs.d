@@ -19,7 +19,7 @@
 
 (use-package material-theme
   :defer t
-  :ensure t)  
+  :ensure t)
 
 (use-package cyberpunk-theme
   :defer t
@@ -248,6 +248,18 @@ Tags: %^{Tags}
 
 (setq org-cycle-separator-lines 0)
 
+;; Save the running clock and all clock history when exiting Emacs, load it on startup
+(setq org-clock-persistence-insinuate t)
+(setq org-clock-persist t)
+(setq org-clock-in-resume t)
+
+;; Change task state to STARTED when clocking in
+(setq org-clock-in-switch-to-state "STRT")
+;; Save clock data and notes in the LOGBOOK drawer
+(setq org-clock-into-drawer t)
+;; Removes clocked tasks with 0:00 duration
+(setq org-clock-out-remove-zero-time-clocks t)
+
 (setq org-src-fontify-natively t
       org-src-window-setup 'current-window
       org-src-strip-leading-and-trailing-blank-lines t
@@ -268,9 +280,9 @@ Tags: %^{Tags}
                       "_"
                       (format-time-string "%Y%m%d_%H%M%S_.png")))
 
-	 (exit-status
-	  (call-process "convert" nil nil nil
-			"clipboard:" image-file)))
+         (exit-status
+          (call-process "convert" nil nil nil
+                        "clipboard:" image-file)))
 
     (org-insert-link nil (concat "file:" image-file) "")
 
@@ -293,7 +305,7 @@ Tags: %^{Tags}
 
 (defun blog-title ()
   (interactive)
-  (read-string "Blog title: "))
+  (read-string "Blog file name: "))
 
 (defun blog-post-new ()
   (let ((title
@@ -455,6 +467,7 @@ Tags: %^{Tags}
 
 (use-package flycheck
   :ensure t
+  :diminish flycheck-mode
   :bind ("S-<f5>" . flycheck-mode))
 
 (use-package flyspell
@@ -471,7 +484,7 @@ Tags: %^{Tags}
   (defun fd-switch-dictionary()
   (interactive)
   (let* ((dic ispell-current-dictionary)
-    	 (change (if (string= dic "brasileiro") "english" "brasileiro")))
+         (change (if (string= dic "brasileiro") "english" "brasileiro")))
     (ispell-change-dictionary change)
     (message "Dictionary switched from %s to %s" dic change)
     ))
@@ -507,7 +520,7 @@ Tags: %^{Tags}
 (use-package centered-cursor-mode
   :ensure t
   :diminish centered-cursor-mode
-;  :disabled t
+  :disabled t
   :config
   (global-centered-cursor-mode +1))
 

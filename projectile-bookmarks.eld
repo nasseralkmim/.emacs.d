@@ -1,1 +1,1 @@
-("~/OneDrive/nasseralkmim.github.io/" "~/OneDrive/UNB/2015_2/pibic/producao/topology optimization/" "~/Miniconda3/Lib/site-packages/pelican/themes/simple_nasser/" "~/.emacs.d/" "~/OneDrive/Projects/elasticitate/")
+("~/OneDrive/UNB/2015_2/pibic/producao/topology optimization/" "~/.emacs.d/" "~/OneDrive/nasseralkmim.github.io/" "~/Miniconda3/Lib/site-packages/pelican/themes/simple_nasser/" "~/OneDrive/Projects/elasticitate/")
