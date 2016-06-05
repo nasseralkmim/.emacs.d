@@ -1,3 +1,4 @@
+(setq tramp-ssh-controlmaster-options "")
 ;;; Begin initialization
 ;; Turn off mouse interface early in startup to avoid momentary display
 (when window-system
@@ -9,10 +10,13 @@
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
 
+(setq package-enable-at-startup nil)
+
 ;;; Set up package
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+;; initalize all ELPA packages
+ (require 'package)
+ (add-to-list 'package-archives
+              '("melpa" . "http://melpa.org/packages/") t)
 (package-initialize)
 
 ;;; Bootstrap use-package
@@ -22,13 +26,11 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
-
 (eval-when-compile
   (require 'use-package))
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)
 ;(setq use-package-verbose t)
-
 
 ;;; Load the config
 (org-babel-load-file (concat user-emacs-directory "config.org"))

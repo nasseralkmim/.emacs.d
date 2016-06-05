@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "anaphora" "anaphora.el" (22172 13367 0 0))
+;;;### (autoloads nil "anaphora" "anaphora.el" (22222 11754 0 0))
 ;;; Generated autoloads from anaphora.el
 
 (let ((loads (get 'anaphora 'custom-loads))) (if (member '"anaphora" loads) nil (put 'anaphora 'custom-loads (cons '"anaphora" loads))))

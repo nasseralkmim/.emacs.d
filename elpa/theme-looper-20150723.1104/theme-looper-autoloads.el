@@ -3,7 +3,7 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "theme-looper" "theme-looper.el" (22150 65230
+;;;### (autoloads nil "theme-looper" "theme-looper.el" (22222 11644
 ;;;;;;  0 0))
 ;;; Generated autoloads from theme-looper.el
 
