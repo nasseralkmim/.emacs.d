@@ -701,7 +701,8 @@ Integrates with Python.
   :ensure t
   :defer t
   :config
-  (elpy-enable))
+  (elpy-enable)
+  (setq elpy-rpc-backend "jedi"))
 #+END_SRC
 
 ** Company Jedi
