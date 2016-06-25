@@ -9,7 +9,7 @@
  (position . 154))
 ("org-capture-last-stored"
  (filename . "~/OneDrive/Org/notes.org")
- (front-context-string . "******* pdf-tool")
- (rear-context-string . "-05-26 Thursday\n")
- (position . 18994))
+ (front-context-string . "******* newton q")
+ (rear-context-string . "16-06-19 Sunday\n")
+ (position . 19902))
 )
