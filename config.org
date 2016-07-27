@@ -106,7 +106,7 @@ Current load time 1.5s on windows.
                                 tao-yang
                                 anti-zenburn
                                  zenburn
-                                ;cyberpunk
+                                cyberpunk
                                 ;solarized-light
                                 sanityinc-tomorrow-day
                                 ))
@@ -155,6 +155,8 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 (set-keyboard-coding-system 'utf-8) ; pretty
 (set-selection-coding-system 'utf-8) ; please
 (prefer-coding-system 'utf-8) ; with sugar on top
+(setq default-buffer-file-coding-system 'utf-8)                      
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 ;; from Sacha page
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
@@ -241,8 +243,10 @@ Recentf is a minor mode that builds a list of recently opened files.
 * Org mode
 ** Basic Initialization
 
+
 #+BEGIN_SRC emacs-lisp
 (use-package org
+  :ensure t
   :mode (("\\.org$" . org-mode))
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
@@ -256,17 +260,45 @@ Recentf is a minor mode that builds a list of recently opened files.
   (use-package org-bullets
     :ensure t
     :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (setq org-ellipsis " …")
+    (setq org-bullets-bullet-list '("•")))
+
+    
+  (setq org-ellipsis " …")
 
   ;; babel languages
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)
-     (ipython .t)))
+     (ipython .t)
+     (emacs-lisp . t)
+     (latex . t)))
 
   ;; beamer export
   (eval-after-load "org"
-  '(require 'ox-beamer))
+    '(require 'ox-beamer))
+
+  (use-package ox-reveal :ensure ox-reveal
+    :config
+    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+    (setq org-reveal-mathjax t))
+
+  (use-package org-ref
+  :ensure t
+  :config
+  (setq reftex-default-bibliography '("C:/Users/Nasser/OneDrive/Bibliography/references.bib"))
+  (setq org-ref-default-bibliography '("C:/Users/Nasser/OneDrive/Bibliography/references.bib"))
+  (setq org-ref-pdf-directory "C:/Users/Nasser/OneDrive/Bibliography/references-pdf/")
+  (use-package org-ref-ivy)
+  (setq org-ref-completion-library 'org-ref-ivy-cite))
+  
+
+  (use-package org-download
+    :ensure t
+    :config
+    (setq-default org-download-image-dir "./img/"))
+  
 
    ;; This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
   (custom-set-faces
@@ -278,9 +310,6 @@ Recentf is a minor mode that builds a list of recently opened files.
   (eval-after-load 'org
     '(org-load-modules-maybe t)))
 #+END_SRC
-
-
-
 
 ** Agenda and Capture files
 
@@ -294,6 +323,7 @@ From [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/]
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
+  :defer t
   :config
   (setq org-agenda-files
         (delq nil
@@ -301,6 +331,7 @@ From [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/]
                       '("~/OneDrive/Org/gtd.org"
                         "~/OneDrive/Org/notes.org"
                         "~/OneDrive/Org/culture.org"
+                        "~/OneDrive/Org/practice.org"
                         "~/OneDrive/ANAC/anac.org"))))
    (custom-set-variables
   '(org-agenda-skip-scheduled-if-done t)
@@ -374,18 +405,7 @@ So far I have the following templates:
 
   ,*Added*: %U"
   )
-
-  ("p" "Post" plain (file  (blog-post-new))
-   "Title: %^{Title}
-  Date: %<%Y-%m-%d %H:%M>
-  Category: %^{Category}
-  Tags: %^{Tags}
-
-  %?
-
-  "
-  )
-  )))
+)))
 #+END_SRC
 
 *** Images
@@ -397,7 +417,7 @@ Start up folded, lists will be folded when file is opened. Don't remember where 
   :defer t 
   :config
   (setq org-cycle-include-plain-lists 'integrate)
-  (setq org-image-actual-width nil)
+  (setq org-image-actual-width t)
   (setq org-startup-with-inline-images t))
  #+END_SRC
 
@@ -409,6 +429,7 @@ Speed up commands. See the doc for speed keys by checking out [[elisp:(info%20"(
 General options.
 #+BEGIN_SRC emacs-lisp
 (use-package org
+  :defer t
   :config
   (setq org-special-ctrl-a/e t)
   (transient-mark-mode nil)
@@ -422,13 +443,14 @@ General options.
   (setq org-odd-levels-only t)
   (diminish 'org-indent-mode)
   (setq org-startup-indented t)
-  (setq org-tags-column -96) ;where the tags are places
+  (setq org-tags-column -66) ;where the tags are places
   (setq org-use-speed-commands t)) ; speed up commands
  #+END_SRC
 
 Todo sequences.
 #+BEGIN_SRC emacs-lisp
 (use-package org
+  :defer t
   :config
   (setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)")))
 
@@ -451,7 +473,8 @@ From [[http://stackoverflow.com/questions/28351465/emacs-orgmode-do-not-insert-l
 From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-capure-templates][this]] settings,
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
+(use-package org-clock
+  :defer t
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
   (setq org-clock-persistence-insinuate t)
@@ -471,6 +494,7 @@ From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-
 
 #+begin_src emacs-lisp
 (use-package org
+  :defer t
   :config
   (setq org-src-fontify-natively t
         org-src-window-setup 'current-window
@@ -516,6 +540,14 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
 
       (org-display-inline-images))))
 #+END_SRC
+** Org ref
+
+[[https://github.com/jkitchin/org-ref][Org-ref]]
+
+#+BEGIN_SRC emacs-lisp
+
+#+END_SRC
+
 
 ** Org page
 
@@ -534,12 +566,35 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
   (setq op/site-main-title "Nasser Alkmim")
   (setq op/site-sub-title "~/-")
   (setq op/personal-github-link "https://github.com/nasseralkmim")
-  (setq op/personal-google-analytics-id "74704246"))
-#+END_SRC
+  (setq op/personal-google-analytics-id "74704246")
 
+  (setq op/category-ignore-list '("themes" "assets" "blog"))
 
-
-
+(setq op/category-config-alist
+      '(("blog" ;; this is the default configuration
+         :label "Notes"
+         :show-meta t
+         :show-comment t
+         :uri-generator op/generate-uri
+         :uri-template "/blog/%y/%m/%d/%t/"
+         :sort-by :date     ;; how to sort the posts
+         :category-index t) ;; generate category index or not
+        ("index"
+         :show-meta nil
+         :show-comment nil
+         :uri-generator op/generate-uri
+         :uri-template "/"
+         :sort-by :date
+         :category-index nil)
+        ("about"
+         :show-meta nil
+         :show-comment nil
+         :uri-generator op/generate-uri
+         :uri-template "/about/"
+         :sort-by :date
+         :category-index nil))))
+#+end_src
+  
 * Shell
 
 #+begin_src emacs-lisp
@@ -560,7 +615,6 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
          ("C-x C-x" . avy-goto-word-or-subword-1)
          ("C-x C-l" . avy-goto-line)))
 #+END_SRC
-
 ** Ace Window
 
 [[https://github.com/abo-abo/ace-window][ace-window]] is a package that uses the same idea from ace-jump-mode for
@@ -574,6 +628,9 @@ what I have them set to (with respect to Dvorak, of course).
   :config
   (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (ace-window-display-mode)
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
   :bind ("C-o " . ace-window))
 #+end_src
 ** Swiper/Ivy
@@ -583,7 +640,12 @@ what I have them set to (with respect to Dvorak, of course).
   :ensure t
   :bind (("M-x" . counsel-M-x)
          ("C-h v" . counsel-describe-variable)
-         ("C-h f" . counsel-describe-function)))
+         ("C-h f" . counsel-describe-function))
+  :config
+  (use-package flx :ensure t)
+  (setq ivy-re-builders-alist
+      '((t . ivy--regex-fuzzy)))
+  (setq ivy-initial-inputs-alist nil))
 #+END_SRC
 
 
@@ -658,7 +720,6 @@ Very nice config: [[http://sriramkswamy.github.io/dotemacs/#orgheadline79][here.
 
    (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe))
 #+end_src
-   
 ** Helm swiper
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -734,12 +795,16 @@ Integrates with Python.
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
-
   (add-hook 'python-mode-hook 'elpy-mode)
-
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
- 
+  (add-hook 'python-mode-hook 'flycheck-mode)
+
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi))
+
+  (add-hook 'python-mode-hook 'my/python-mode-hook)
+
   ;; Sets the python interpreter to be ipython. To trick emacs into
   ;; thinking we're still running regular python, we run ipython in
   ;; classic mode.
@@ -756,9 +821,18 @@ Integrates with Python.
   :defer t
   :config
   (elpy-enable)
-  (setq elpy-rpc-backend "jedi")
-  (setq jedi:complete-on-dot t))
+  (elpy-use-ipython)
+  (setq elpy-rpc-backend "jedi"))
 #+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+(use-package company-jedi
+  :ensure t
+  :config
+  (setq jedi:complete-on-dot t)
+  (setq jedi:use-shortcuts t))
+#+END_SRC
+
 
 ** Smartparens
 
@@ -799,6 +873,7 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
               (smartparens-mode)
               (turn-on-reftex)
               (setq reftex-plug-into-AUCTeX t)
+              (reftex-isearch-minor-mode)
               (setq TeX-PDF-mode t)
               (setq global-font-lock-mode t)
               (setq TeX-source-correlate-method 'synctex)
@@ -973,13 +1048,22 @@ Undo system to recover any past state of a buffer.
 #+BEGIN_SRC emacs-lisp 
 (use-package pdf-tools
   :ensure t
+  :mode ("\\.pdf\\'" . pdf-tools-install)
   :bind ("C-c C-g" . pdf-sync-forward-search)
   :defer t
   :config
   (setq mouse-wheel-follow-mouse t)
   (setq pdf-view-resize-factor 1.10))
 #+END_SRC
+** Which key 
 
+#+BEGIN_SRC emacs-lisp
+(use-package which-key
+  :ensure t
+  :diminish (which-key-mode)
+  :config
+  (which-key-mode))
+#+END_SRC
 
 
 * Misc
@@ -1004,7 +1088,10 @@ Undo system to recover any past state of a buffer.
 #+BEGIN_SRC emacs-lisp
 (setq ad-redefinition-action 'accept)
 #+END_SRC
-
+** Winner mode
+#+BEGIN_SRC emacs-lisp
+(winner-mode 1)
+#+END_SRC
 
 ** Key chord
 
@@ -1025,6 +1112,8 @@ Update file in buffer, refresh.
 
 #+BEGIN_SRC emacs-lisp
 (global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 #+END_SRC
 ** Change src block bg
 
@@ -1178,8 +1267,11 @@ fontification, as long as `org-src-fontify-natively' is non-nil."
 
 (defface org-block-sh
   `((t (:background "MintCream")))
-  "Face for python blocks")
+  "Face for shell blocks")
 
+(defface org-block-latex
+  `((t (:background "FloralWhite")))
+  "Face for latex blocks")
 #+END_SRC
 ** Byte compile
 
@@ -1192,4 +1284,17 @@ From this [[https://www.reddit.com/r/emacs/comments/4oxev7/how_should_i_start_un
   (when (and (eq major-mode 'emacs-lisp-mode)
              (file-exists-p (byte-compile-dest-file buffer-file-name)))
     (byte-compile-file buffer-file-name)))
+#+END_SRC
+** Key M-\ to M-] delete horizontal space
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key (kbd "M-]") 'delete-horizontal-space)
+#+END_SRC
+** Minibuffer
+
+Minibuffer window expands vertically as necessary to hold the text
+that you put in the minibuffer
+
+#+BEGIN_SRC emacs-lisp
+(setq resize-mini-windows t) ;; was grow-only
 #+END_SRC

@@ -49,7 +49,7 @@
                                 tao-yang
                                 anti-zenburn
                                  zenburn
-                                ;cyberpunk
+                                cyberpunk
                                 ;solarized-light
                                 sanityinc-tomorrow-day
                                 ))
@@ -82,6 +82,8 @@
 (set-keyboard-coding-system 'utf-8) ; pretty
 (set-selection-coding-system 'utf-8) ; please
 (prefer-coding-system 'utf-8) ; with sugar on top
+(setq default-buffer-file-coding-system 'utf-8)                      
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 ;; from Sacha page
 (when (display-graphic-p)
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
@@ -147,6 +149,7 @@
           recentf-max-menu-items 15)))
 
 (use-package org
+  :ensure t
   :mode (("\\.org$" . org-mode))
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
@@ -160,17 +163,45 @@
   (use-package org-bullets
     :ensure t
     :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (setq org-ellipsis " …")
+    (setq org-bullets-bullet-list '("•")))
+
+    
+  (setq org-ellipsis " …")
 
   ;; babel languages
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)
-     (ipython .t)))
+     (ipython .t)
+     (emacs-lisp . t)
+     (latex . t)))
 
   ;; beamer export
   (eval-after-load "org"
-  '(require 'ox-beamer))
+    '(require 'ox-beamer))
+
+  (use-package ox-reveal :ensure ox-reveal
+    :config
+    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+    (setq org-reveal-mathjax t))
+
+  (use-package org-ref
+  :ensure t
+  :config
+  (setq reftex-default-bibliography '("C:/Users/Nasser/OneDrive/Bibliography/references.bib"))
+  (setq org-ref-default-bibliography '("C:/Users/Nasser/OneDrive/Bibliography/references.bib"))
+  (setq org-ref-pdf-directory "C:/Users/Nasser/OneDrive/Bibliography/references-pdf/")
+  (use-package org-ref-ivy)
+  (setq org-ref-completion-library 'org-ref-ivy-cite))
+  
+
+  (use-package org-download
+    :ensure t
+    :config
+    (setq-default org-download-image-dir "./img/"))
+  
 
    ;; This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
   (custom-set-faces
@@ -183,6 +214,7 @@
     '(org-load-modules-maybe t)))
 
 (use-package org
+  :defer t
   :config
   (setq org-agenda-files
         (delq nil
@@ -190,6 +222,7 @@
                       '("~/OneDrive/Org/gtd.org"
                         "~/OneDrive/Org/notes.org"
                         "~/OneDrive/Org/culture.org"
+                        "~/OneDrive/Org/practice.org"
                         "~/OneDrive/ANAC/anac.org"))))
    (custom-set-variables
   '(org-agenda-skip-scheduled-if-done t)
@@ -242,27 +275,17 @@
 
   *Added*: %U"
   )
-
-  ("p" "Post" plain (file  (blog-post-new))
-   "Title: %^{Title}
-  Date: %<%Y-%m-%d %H:%M>
-  Category: %^{Category}
-  Tags: %^{Tags}
-
-  %?
-
-  "
-  )
-  )))
+)))
 
 (use-package org
   :defer t 
   :config
   (setq org-cycle-include-plain-lists 'integrate)
-  (setq org-image-actual-width nil)
+  (setq org-image-actual-width t)
   (setq org-startup-with-inline-images t))
 
 (use-package org
+  :defer t
   :config
   (setq org-special-ctrl-a/e t)
   (transient-mark-mode nil)
@@ -276,10 +299,11 @@
   (setq org-odd-levels-only t)
   (diminish 'org-indent-mode)
   (setq org-startup-indented t)
-  (setq org-tags-column -96) ;where the tags are places
+  (setq org-tags-column -66) ;where the tags are places
   (setq org-use-speed-commands t)) ; speed up commands
 
 (use-package org
+  :defer t
   :config
   (setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)")))
 
@@ -291,7 +315,8 @@
   (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
   (setq org-cycle-separator-lines 0))
 
-(use-package org
+(use-package org-clock
+  :defer t
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
   (setq org-clock-persistence-insinuate t)
@@ -306,6 +331,7 @@
   (setq org-clock-out-remove-zero-time-clocks t))
 
 (use-package org
+  :defer t
   :config
   (setq org-src-fontify-natively t
         org-src-window-setup 'current-window
@@ -343,6 +369,8 @@
 
       (org-display-inline-images))))
 
+
+
 (use-package org-page
   :ensure t
   :bind (("C-x C-a p" . op/do-publication-and-preview-site)
@@ -355,7 +383,33 @@
   (setq op/site-main-title "Nasser Alkmim")
   (setq op/site-sub-title "~/-")
   (setq op/personal-github-link "https://github.com/nasseralkmim")
-  (setq op/personal-google-analytics-id "74704246"))
+  (setq op/personal-google-analytics-id "74704246")
+
+  (setq op/category-ignore-list '("themes" "assets" "blog"))
+
+(setq op/category-config-alist
+      '(("blog" ;; this is the default configuration
+         :label "Notes"
+         :show-meta t
+         :show-comment t
+         :uri-generator op/generate-uri
+         :uri-template "/blog/%y/%m/%d/%t/"
+         :sort-by :date     ;; how to sort the posts
+         :category-index t) ;; generate category index or not
+        ("index"
+         :show-meta nil
+         :show-comment nil
+         :uri-generator op/generate-uri
+         :uri-template "/"
+         :sort-by :date
+         :category-index nil)
+        ("about"
+         :show-meta nil
+         :show-comment nil
+         :uri-generator op/generate-uri
+         :uri-template "/about/"
+         :sort-by :date
+         :category-index nil))))
 
 (bind-key "C-x m" 'shell)
 (bind-key "C-x M" 'ansi-term)
@@ -372,13 +426,21 @@
   :config
   (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (ace-window-display-mode)
+  (custom-set-faces
+   '(aw-leading-char-face
+     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
   :bind ("C-o " . ace-window))
 
 (use-package counsel
   :ensure t
   :bind (("M-x" . counsel-M-x)
          ("C-h v" . counsel-describe-variable)
-         ("C-h f" . counsel-describe-function)))
+         ("C-h f" . counsel-describe-function))
+  :config
+  (use-package flx :ensure t)
+  (setq ivy-re-builders-alist
+      '((t . ivy--regex-fuzzy)))
+  (setq ivy-initial-inputs-alist nil))
 
 (use-package ivy
   :ensure t
@@ -439,12 +501,16 @@
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
-
   (add-hook 'python-mode-hook 'elpy-mode)
-
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
- 
+  (add-hook 'python-mode-hook 'flycheck-mode)
+
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi))
+
+  (add-hook 'python-mode-hook 'my/python-mode-hook)
+
   ;; Sets the python interpreter to be ipython. To trick emacs into
   ;; thinking we're still running regular python, we run ipython in
   ;; classic mode.
@@ -457,8 +523,14 @@
   :defer t
   :config
   (elpy-enable)
-  (setq elpy-rpc-backend "jedi")
-  (setq jedi:complete-on-dot t))
+  (elpy-use-ipython)
+  (setq elpy-rpc-backend "jedi"))
+
+(use-package company-jedi
+  :ensure t
+  :config
+  (setq jedi:complete-on-dot t)
+  (setq jedi:use-shortcuts t))
 
 (use-package smartparens
   :ensure t 
@@ -489,6 +561,7 @@
               (smartparens-mode)
               (turn-on-reftex)
               (setq reftex-plug-into-AUCTeX t)
+              (reftex-isearch-minor-mode)
               (setq TeX-PDF-mode t)
               (setq global-font-lock-mode t)
               (setq TeX-source-correlate-method 'synctex)
@@ -597,11 +670,18 @@
 
 (use-package pdf-tools
   :ensure t
+  :mode ("\\.pdf\\'" . pdf-tools-install)
   :bind ("C-c C-g" . pdf-sync-forward-search)
   :defer t
   :config
   (setq mouse-wheel-follow-mouse t)
   (setq pdf-view-resize-factor 1.10))
+
+(use-package which-key
+  :ensure t
+  :diminish (which-key-mode)
+  :config
+  (which-key-mode))
 
 (use-package doc-view
   :config
@@ -618,6 +698,8 @@
 
 (setq ad-redefinition-action 'accept)
 
+(winner-mode 1)
+
 (use-package key-chord
   :ensure t
   :after (org tex-site) 
@@ -629,6 +711,8 @@
   (key-chord-define-global "::" "?"))
 
 (global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
 
 ;; * Colored src blocks
 ;; based on patches from Rasmus <rasmus@gmx.us>
@@ -779,7 +863,11 @@ fontification, as long as `org-src-fontify-natively' is non-nil."
 
 (defface org-block-sh
   `((t (:background "MintCream")))
-  "Face for python blocks")
+  "Face for shell blocks")
+
+(defface org-block-latex
+  `((t (:background "FloralWhite")))
+  "Face for latex blocks")
 
 (defun byte-compile-current-buffer ()
   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
@@ -787,3 +875,7 @@ fontification, as long as `org-src-fontify-natively' is non-nil."
   (when (and (eq major-mode 'emacs-lisp-mode)
              (file-exists-p (byte-compile-dest-file buffer-file-name)))
     (byte-compile-file buffer-file-name)))
+
+(global-set-key (kbd "M-]") 'delete-horizontal-space)
+
+(setq resize-mini-windows t) ;; was grow-only
