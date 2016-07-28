@@ -1,60 +1,26 @@
+;; Don't edit this file, edit ~/.emacs.d/config.org instead ...
+
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
+(package-initialize nil)
+(setq package-enable-at-startup nil)
+;;; Set up package
+;; initalize all ELPA packages
+(require 'package)
+(setq package-enable-at-startup nil
+      package-archives
+      '(("melpa"           . "http://melpa.org/packages/")))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)                ;; if you use :diminish
+(require 'bind-key)
+;(setq use-package-verbose t)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
-
-(use-package moe-theme
-  :ensure t
-  :disabled t
-  :defer t
-  :init
-  (require 'moe-theme)
-)
-
-(use-package tao-theme
-  :ensure t
-  :defer t)
-
-(use-package leuven-theme
-  :ensure t
-  :defer t)
-
-(use-package anti-zenburn-theme
-  :ensure t
-  :defer t )
-
-(use-package cyberpunk-theme
-  :defer t
-  :ensure t)
-
-(use-package zenburn-theme
-  :ensure t
-  :defer t)
-
-(use-package solarized-theme
-  :ensure t
-  :defer t)
-
-(use-package color-theme-sanityinc-tomorrow
-  :ensure t
-  :defer t)
-
-(use-package theme-looper
-  :defer t
-  :bind ("S-<f12>" . theme-looper-enable-next-theme)
-  :init
-  (theme-looper-set-theme-set '(                               
-                                leuven
-                                tao-yang
-                                anti-zenburn
-                                 zenburn
-                                cyberpunk
-                                ;solarized-light
-                                sanityinc-tomorrow-day
-                                ))
-  (theme-looper-set-customizations 'powerline-reset))
-
 (defun disable-all-themes ()
   "disable all active themes."
   (dolist (i custom-enabled-themes)
@@ -62,10 +28,8 @@
 
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))
-
 (set-frame-font "Source Code Pro 10")
 ;(set-frame-font "Monospace 10")
-
 ;; These functions are useful. Activate them.
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
@@ -127,7 +91,6 @@
 
 ;; Don't create backups
 (setq make-backup-files nil)
-
 (defun my/delete-config-el ()
   "Delete ~/.emacs.d/config.el when the current buffer is ~/.emacs.d/config.org"
   (setq configel "~/.emacs.d/config.el")
@@ -136,10 +99,15 @@
           (delete-file "~/.emacs.d/config.el"))))
 
 (add-hook 'after-save-hook 'my/delete-config-el)
-
 ;(setq debug-on-error t)
 ;(setq debug-on-quit t)
+(when window-system
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1))
 
+(setq initial-scratch-message "")
 (use-package recentf
   :defer 10
   :config
@@ -147,7 +115,6 @@
     (recentf-mode t)
     (setq recentf-max-saved-items 200
           recentf-max-menu-items 15)))
-
 (use-package org
   :ensure t
   :mode (("\\.org$" . org-mode))
@@ -158,7 +125,7 @@
   (add-hook 'org-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'org-mode-hook 'company-mode)
-
+  (add-hook 'org-mode-hook 'flyspell-mode)
 
   (use-package org-bullets
     :ensure t
@@ -201,6 +168,18 @@
     :ensure t
     :config
     (setq-default org-download-image-dir "./img/"))
+
+  ;; Org babel and source blocks
+  (setq org-src-fontify-natively t
+        org-src-window-setup 'current-window
+        org-src-strip-leading-and-trailing-blank-lines t
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t
+        org-export-babel-evaluate nil
+        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
+
+  ;;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
   
 
    ;; This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
@@ -212,8 +191,7 @@
 
   (eval-after-load 'org
     '(org-load-modules-maybe t)))
-
-(use-package org
+(use-package org-agenda
   :defer t
   :config
   (setq org-agenda-files
@@ -232,7 +210,6 @@
 
    (global-set-key (kbd "C-c o") 
                    (lambda () (interactive) (find-file "~/OneDrive/Org/notes.org"))))
-
 (use-package org
   :defer t
   :config
@@ -258,32 +235,30 @@
   :END:
 
 
-  *Author(s):* %^{Author}
-  *Pages/Day:* %^{P/D}
-  *Review/Comments:*
+  ,*Author(s):* %^{Author}
+  ,*Pages/Day:* %^{P/D}
+  ,*Review/Comments:*
 
   %?
 
-  *Added*: %U" )
+  ,*Added*: %U" )
 
   ("m" "Movies" entry (file+headline "~/OneDrive/Org/culture.org" "Movies")
   "* %^{Title}
 
-  *Review/Comments:*
+  ,*Review/Comments:*
 
   %?
 
-  *Added*: %U"
+  ,*Added*: %U"
   )
 )))
-
 (use-package org
   :defer t 
   :config
   (setq org-cycle-include-plain-lists 'integrate)
   (setq org-image-actual-width t)
   (setq org-startup-with-inline-images t))
-
 (use-package org
   :defer t
   :config
@@ -301,11 +276,10 @@
   (setq org-startup-indented t)
   (setq org-tags-column -66) ;where the tags are places
   (setq org-use-speed-commands t)) ; speed up commands
-
 (use-package org
   :defer t
   :config
-  (setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)" "CNCL(c)")))
 
   (setq org-todo-keyword-faces 
         '(("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
@@ -313,8 +287,7 @@
           ("DONE" :background "#6ac214" :foreground "#5f5f5f" :weight bold )))
   
   (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
-  (setq org-cycle-separator-lines 0))
-
+  (setq org-cycle-separator-lines 0)) 
 (use-package org-clock
   :defer t
   :config
@@ -329,22 +302,8 @@
   (setq org-clock-into-drawer t)
   ;; Removes clocked tasks with 0:00 duration
   (setq org-clock-out-remove-zero-time-clocks t))
-
 (use-package org
-  :defer t
-  :config
-  (setq org-src-fontify-natively t
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t
-        org-src-tab-acts-natively t
-        org-export-babel-evaluate nil
-        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
-
-  ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
-
-(use-package org
+  :mode (("\\.org$" . org-mode))
   :bind ("C-c y" . my/org-insert-clipboard)
   :config
   (defun my/org-insert-clipboard ()
@@ -368,9 +327,6 @@
       (org-insert-link nil (concat "file:" image-file) "")
 
       (org-display-inline-images))))
-
-
-
 (use-package org-page
   :ensure t
   :bind (("C-x C-a p" . op/do-publication-and-preview-site)
@@ -393,7 +349,7 @@
          :show-meta t
          :show-comment t
          :uri-generator op/generate-uri
-         :uri-template "/blog/%y/%m/%d/%t/"
+         :uri-template "/notes/%y/%m/%d/%t/"
          :sort-by :date     ;; how to sort the posts
          :category-index t) ;; generate category index or not
         ("index"
@@ -410,17 +366,14 @@
          :uri-template "/about/"
          :sort-by :date
          :category-index nil))))
-
 (bind-key "C-x m" 'shell)
 (bind-key "C-x M" 'ansi-term)
-
 (use-package avy
   :ensure t 
   :diminish avy-mode
   :bind (("C-x C-SPC" . avy-goto-char)
          ("C-x C-x" . avy-goto-word-or-subword-1)
          ("C-x C-l" . avy-goto-line)))
-
 (use-package ace-window
   :ensure t 
   :config
@@ -430,7 +383,6 @@
    '(aw-leading-char-face
      ((t (:inherit ace-jump-face-foreground :height 3.0)))))
   :bind ("C-o " . ace-window))
-
 (use-package counsel
   :ensure t
   :bind (("M-x" . counsel-M-x)
@@ -441,7 +393,6 @@
   (setq ivy-re-builders-alist
       '((t . ivy--regex-fuzzy)))
   (setq ivy-initial-inputs-alist nil))
-
 (use-package ivy
   :ensure t
   :diminish (ivy-mode)
@@ -450,11 +401,9 @@
   (ivy-mode 1)
   (setq ivy-use-virtual-buffers t)
   (setq ivy-display-style 'fancy))
-
 (use-package swiper
   :ensure t
   :bind ("C-s" . swiper))
-
 (use-package magit
   :ensure t 
   :bind ("C-x g" . magit-status)
@@ -475,7 +424,6 @@
     (interactive)
     (kill-buffer)
     (jump-to-register :magit-fullscreen)))
-
 (use-package projectile
   :ensure t 
   :diminish projectile-mode
@@ -496,7 +444,6 @@
 
   (setq projectile-indexing-method 'alien)
   (projectile-global-mode))
-
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -517,7 +464,6 @@
   (setq
    python-shell-interpreter "ipython"
    python-shell-interpreter-args "-i --classic"))
-
 (use-package elpy
   :ensure t
   :defer t
@@ -525,13 +471,12 @@
   (elpy-enable)
   (elpy-use-ipython)
   (setq elpy-rpc-backend "jedi"))
-
 (use-package company-jedi
   :ensure t
+  :defer t
   :config
   (setq jedi:complete-on-dot t)
   (setq jedi:use-shortcuts t))
-
 (use-package smartparens
   :ensure t 
   :defer t
@@ -543,7 +488,6 @@
   (sp-local-pair 'org-mode "*" "*" )
   (sp-local-pair 'latex-mode "$" "$" )
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l("))
-
 (use-package tex-site
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
@@ -577,13 +521,11 @@
 ; language specific hooks in auctex
 (add-hook 'TeX-language-dk-hook
       (lambda () (ispell-change-dictionary "brasileiro"))))
-
 (use-package company-auctex
   :ensure t
   :defer t
   :config
   (company-auctex-init))
-
 (use-package latex-preview-pane
   :disabled t
   :bind ("M-p" . latex-preview-pane-mode)
@@ -593,13 +535,11 @@
   (custom-set-variables
    '(shell-escape-mode "-shell-escape")
    '(latex-preview-pane-multifile-mode (quote auctex))))
-
 (use-package reftex
   :ensure t
   :defer t
   :config
   (setq reftex-cite-prompt-optional-args t)); Prompt for empty optional arguments in cite
-
 (use-package magic-latex-buffer
   :load-path ("C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
   :config
@@ -609,12 +549,10 @@
       magic-latex-enable-pretty-symbols  t
       magic-latex-enable-block-align     nil
       magic-latex-enable-inline-image    nil))
-
 (use-package flycheck
   :ensure t 
   :diminish flycheck-mode
   :bind ("S-<f5>" . flycheck-mode))
-
 (use-package flyspell
   :ensure t
   :bind ("S-<f6>" . flyspell-mode)
@@ -630,13 +568,12 @@
   (defun fd-switch-dictionary()
   (interactive)
   (let* ((dic ispell-current-dictionary)
-         (change (if (string= dic "brasileiro") "english" "brasileiro")))
+    	 (change (if (string= dic "brasileiro") "english" "brasileiro")))
     (ispell-change-dictionary change)
     (message "Dictionary switched from %s to %s" dic change)
     ))
   (global-set-key (kbd "<f6>")   'fd-switch-dictionary)
   (global-set-key (kbd "C-<f1>") 'flyspell-correct-word-before-point))
-
 (use-package company
   :ensure t
   :diminish company-mode
@@ -648,11 +585,9 @@
   (setq company-minimum-prefix-length 3)
   (delete 'company-capf company-backends)
   (add-hook 'company-mode-hook 'company-statistics-mode))
-
 (use-package company-statistics
   :ensure t
   :defer t)
-
 (use-package undo-tree
   :ensure t 
   :bind ("C-z" . undo-tree-undo)
@@ -661,13 +596,11 @@
   (progn
     (global-undo-tree-mode)
     (setq undo-tree-visualizer-diff t)))
-
 (use-package rainbow-delimiters
   :ensure t 
   :defer t
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode))
-
 (use-package pdf-tools
   :ensure t
   :mode ("\\.pdf\\'" . pdf-tools-install)
@@ -676,30 +609,18 @@
   :config
   (setq mouse-wheel-follow-mouse t)
   (setq pdf-view-resize-factor 1.10))
-
 (use-package which-key
   :ensure t
   :diminish (which-key-mode)
   :config
   (which-key-mode))
-
-(use-package doc-view
+(use-package popwin
+  :ensure t
+  :defer 5
   :config
-  (add-hook 'doc-view-mode-hook (lambda () (centered-cursor-mode -1)))
-  (define-key doc-view-mode-map (kbd "<right>") 'doc-view-next-page)
-  (define-key doc-view-mode-map (kbd "<left>") 'doc-view-previous-page)
-  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-
-  (global-set-key (kbd "C-<wheel-up>") 'doc-view-enlarge)
-  (global-set-key (kbd "C-<wheel-down>") 'doc-view-shrink)
-
-  (setq doc-view-continuous t))
-
+  (popwin-mode 1))
 (setq ad-redefinition-action 'accept)
-
 (winner-mode 1)
-
 (use-package key-chord
   :ensure t
   :after (org tex-site) 
@@ -709,11 +630,9 @@
   (key-chord-define-global "]]" "\\")
   (key-chord-define-global ";;" "/")
   (key-chord-define-global "::" "?"))
-
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
-
 ;; * Colored src blocks
 ;; based on patches from Rasmus <rasmus@gmx.us>
 
@@ -726,126 +645,126 @@ fontification, as long as `org-src-fontify-natively' is non-nil."
   (let ((lang-mode (org-src--get-lang-mode lang)))
     (when (fboundp lang-mode)
       (let ((string (buffer-substring-no-properties start end))
-            (modified (buffer-modified-p))
-            (org-buffer (current-buffer))
-            (block-faces (let ((face-name (intern (format "org-block-%s" lang))))
-                           (append (and (facep face-name) (list face-name))
-                                   '(org-block)))))
-        (remove-text-properties start end '(face nil))
-        (with-current-buffer
-            (get-buffer-create
-             (format " *org-src-fontification:%s*" lang-mode))
-          (erase-buffer)
-          (insert string " ") ;; so there's a final property change
-          (unless (eq major-mode lang-mode) (funcall lang-mode))
-          (org-font-lock-ensure)
-          (let ((pos (point-min)) next)
-            (while (setq next (next-single-property-change pos 'face))
-              (let ((new-face (get-text-property pos 'face)))
-                (put-text-property
-                 (+ start (1- pos)) (1- (+ start next)) 'face
-                 (list :inherit (append (and new-face (list new-face))
-                                        block-faces))
-                 org-buffer))
-              (setq pos next))
-            ;; Add the face to the remaining part of the font.
-            (put-text-property (1- (+ start pos))
-                               end 'face
-                               (list :inherit block-faces) org-buffer)))
-        (add-text-properties
-         start end
-         '(font-lock-fontified t fontified t font-lock-multiline t))
-        (set-buffer-modified-p modified)))))
+	    (modified (buffer-modified-p))
+	    (org-buffer (current-buffer))
+	    (block-faces (let ((face-name (intern (format "org-block-%s" lang))))
+			   (append (and (facep face-name) (list face-name))
+				   '(org-block)))))
+	(remove-text-properties start end '(face nil))
+	(with-current-buffer
+	    (get-buffer-create
+	     (format " *org-src-fontification:%s*" lang-mode))
+	  (erase-buffer)
+	  (insert string " ") ;; so there's a final property change
+	  (unless (eq major-mode lang-mode) (funcall lang-mode))
+	  (org-font-lock-ensure)
+	  (let ((pos (point-min)) next)
+	    (while (setq next (next-single-property-change pos 'face))
+	      (let ((new-face (get-text-property pos 'face)))
+		(put-text-property
+		 (+ start (1- pos)) (1- (+ start next)) 'face
+		 (list :inherit (append (and new-face (list new-face))
+					block-faces))
+		 org-buffer))
+	      (setq pos next))
+	    ;; Add the face to the remaining part of the font.
+	    (put-text-property (1- (+ start pos))
+			       end 'face
+			       (list :inherit block-faces) org-buffer)))
+	(add-text-properties
+	 start end
+	 '(font-lock-fontified t fontified t font-lock-multiline t))
+	(set-buffer-modified-p modified)))))
 
 (defun org-fontify-meta-lines-and-blocks-1 (limit)
   "Fontify #+ lines and blocks."
   (let ((case-fold-search t))
     (if (re-search-forward
-         "^\\([ \t]*#\\(\\(\\+[a-zA-Z]+:?\\| \\|$\\)\\(_\\([a-zA-Z]+\\)\\)?\\)[ \t]*\\(\\([^ \t\n]*\\)[ \t]*\\(.*\\)\\)\\)"
-         limit t)
-        (let ((beg (match-beginning 0))
-              (block-start (match-end 0))
-              (block-end nil)
-              (lang (match-string 7))
-              (beg1 (line-beginning-position 2))
-              (dc1 (downcase (match-string 2)))
-              (dc3 (downcase (match-string 3)))
-              end end1 quoting block-type ovl)
-          (cond
-           ((and (match-end 4) (equal dc3 "+begin"))
-            ;; Truly a block
-            (setq block-type (downcase (match-string 5))
-                  quoting (member block-type org-protecting-blocks))
-            (when (re-search-forward
-                   (concat "^[ \t]*#\\+end" (match-string 4) "\\>.*")
-                   nil t)  ;; on purpose, we look further than LIMIT
-              (setq end (min (point-max) (match-end 0))
-                    end1 (min (point-max) (1- (match-beginning 0))))
-              (setq block-end (match-beginning 0))
-              (when quoting
-                (org-remove-flyspell-overlays-in beg1 end1)
-                (remove-text-properties beg end
-                                        '(display t invisible t intangible t)))
-              (add-text-properties
-               beg end '(font-lock-fontified t font-lock-multiline t))
-              (add-text-properties beg beg1 '(face org-meta-line))
-              (org-remove-flyspell-overlays-in beg beg1)
-              (add-text-properties      ; For end_src
-               end1 (min (point-max) (1+ end)) '(face org-meta-line))
-              (org-remove-flyspell-overlays-in end1 end)
-              (cond
-               ((and lang (not (string= lang "")) org-src-fontify-natively)
-                (org-src-font-lock-fontify-block lang block-start block-end)
-                (add-text-properties beg1 block-end '(src-block t)))
-               (quoting
-                (add-text-properties beg1 (min (point-max) (1+ end1))
-                                     (let ((face-name (intern (format "org-block-%s" lang))))
-                                       (append (and (facep face-name) (list face-name))
-                                               '(face org-block))))) ; end of source block
-               ((not org-fontify-quote-and-verse-blocks))
-               ((string= block-type "quote")
-                (add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-quote)))
-               ((string= block-type "verse")
-                (add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-verse))))
-              (add-text-properties beg beg1 '(face org-block-begin-line))
-              (add-text-properties (min (point-max) (1+ end)) (min (point-max) (1+ end1))
-                                   '(face org-block-end-line))
-              t))
-           ((member dc1 '("+title:" "+author:" "+email:" "+date:"))
-            (org-remove-flyspell-overlays-in
-             (match-beginning 0)
-             (if (equal "+title:" dc1) (match-end 2) (match-end 0)))
-            (add-text-properties
-             beg (match-end 3)
-             (if (member (intern (substring dc1 1 -1)) org-hidden-keywords)
-                 '(font-lock-fontified t invisible t)
-               '(font-lock-fontified t face org-document-info-keyword)))
-            (add-text-properties
-             (match-beginning 6) (min (point-max) (1+ (match-end 6)))
-             (if (string-equal dc1 "+title:")
-                 '(font-lock-fontified t face org-document-title)
-               '(font-lock-fontified t face org-document-info))))
-           ((equal dc1 "+caption:")
-            (org-remove-flyspell-overlays-in (match-end 2) (match-end 0))
-            (remove-text-properties (match-beginning 0) (match-end 0)
-                                    '(display t invisible t intangible t))
-            (add-text-properties (match-beginning 1) (match-end 3)
-                                 '(font-lock-fontified t face org-meta-line))
-            (add-text-properties (match-beginning 6) (+ (match-end 6) 1)
-                                 '(font-lock-fontified t face org-block))
-            t)
-           ((member dc3 '(" " ""))
-            (org-remove-flyspell-overlays-in beg (match-end 0))
-            (add-text-properties
-             beg (match-end 0)
-             '(font-lock-fontified t face font-lock-comment-face)))
-           (t ;; just any other in-buffer setting, but not indented
-            (org-remove-flyspell-overlays-in (match-beginning 0) (match-end 0))
-            (remove-text-properties (match-beginning 0) (match-end 0)
-                                    '(display t invisible t intangible t))
-            (add-text-properties beg (match-end 0)
-                                 '(font-lock-fontified t face org-meta-line))
-            t))))))
+	 "^\\([ \t]*#\\(\\(\\+[a-zA-Z]+:?\\| \\|$\\)\\(_\\([a-zA-Z]+\\)\\)?\\)[ \t]*\\(\\([^ \t\n]*\\)[ \t]*\\(.*\\)\\)\\)"
+	 limit t)
+	(let ((beg (match-beginning 0))
+	      (block-start (match-end 0))
+	      (block-end nil)
+	      (lang (match-string 7))
+	      (beg1 (line-beginning-position 2))
+	      (dc1 (downcase (match-string 2)))
+	      (dc3 (downcase (match-string 3)))
+	      end end1 quoting block-type ovl)
+	  (cond
+	   ((and (match-end 4) (equal dc3 "+begin"))
+	    ;; Truly a block
+	    (setq block-type (downcase (match-string 5))
+		  quoting (member block-type org-protecting-blocks))
+	    (when (re-search-forward
+		   (concat "^[ \t]*#\\+end" (match-string 4) "\\>.*")
+		   nil t)  ;; on purpose, we look further than LIMIT
+	      (setq end (min (point-max) (match-end 0))
+		    end1 (min (point-max) (1- (match-beginning 0))))
+	      (setq block-end (match-beginning 0))
+	      (when quoting
+		(org-remove-flyspell-overlays-in beg1 end1)
+		(remove-text-properties beg end
+					'(display t invisible t intangible t)))
+	      (add-text-properties
+	       beg end '(font-lock-fontified t font-lock-multiline t))
+	      (add-text-properties beg beg1 '(face org-meta-line))
+	      (org-remove-flyspell-overlays-in beg beg1)
+	      (add-text-properties	; For end_src
+	       end1 (min (point-max) (1+ end)) '(face org-meta-line))
+	      (org-remove-flyspell-overlays-in end1 end)
+	      (cond
+	       ((and lang (not (string= lang "")) org-src-fontify-natively)
+		(org-src-font-lock-fontify-block lang block-start block-end)
+		(add-text-properties beg1 block-end '(src-block t)))
+	       (quoting
+		(add-text-properties beg1 (min (point-max) (1+ end1))
+				     (let ((face-name (intern (format "org-block-%s" lang))))
+				       (append (and (facep face-name) (list face-name))
+					       '(face org-block))))) ; end of source block
+	       ((not org-fontify-quote-and-verse-blocks))
+	       ((string= block-type "quote")
+		(add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-quote)))
+	       ((string= block-type "verse")
+		(add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-verse))))
+	      (add-text-properties beg beg1 '(face org-block-begin-line))
+	      (add-text-properties (min (point-max) (1+ end)) (min (point-max) (1+ end1))
+				   '(face org-block-end-line))
+	      t))
+	   ((member dc1 '("+title:" "+author:" "+email:" "+date:"))
+	    (org-remove-flyspell-overlays-in
+	     (match-beginning 0)
+	     (if (equal "+title:" dc1) (match-end 2) (match-end 0)))
+	    (add-text-properties
+	     beg (match-end 3)
+	     (if (member (intern (substring dc1 1 -1)) org-hidden-keywords)
+		 '(font-lock-fontified t invisible t)
+	       '(font-lock-fontified t face org-document-info-keyword)))
+	    (add-text-properties
+	     (match-beginning 6) (min (point-max) (1+ (match-end 6)))
+	     (if (string-equal dc1 "+title:")
+		 '(font-lock-fontified t face org-document-title)
+	       '(font-lock-fontified t face org-document-info))))
+	   ((equal dc1 "+caption:")
+	    (org-remove-flyspell-overlays-in (match-end 2) (match-end 0))
+	    (remove-text-properties (match-beginning 0) (match-end 0)
+				    '(display t invisible t intangible t))
+	    (add-text-properties (match-beginning 1) (match-end 3)
+				 '(font-lock-fontified t face org-meta-line))
+	    (add-text-properties (match-beginning 6) (+ (match-end 6) 1)
+				 '(font-lock-fontified t face org-block))
+	    t)
+	   ((member dc3 '(" " ""))
+	    (org-remove-flyspell-overlays-in beg (match-end 0))
+	    (add-text-properties
+	     beg (match-end 0)
+	     '(font-lock-fontified t face font-lock-comment-face)))
+	   (t ;; just any other in-buffer setting, but not indented
+	    (org-remove-flyspell-overlays-in (match-beginning 0) (match-end 0))
+	    (remove-text-properties (match-beginning 0) (match-end 0)
+				    '(display t invisible t intangible t))
+	    (add-text-properties beg (match-end 0)
+				 '(font-lock-fontified t face org-meta-line))
+	    t))))))
 
 
 
@@ -868,14 +787,11 @@ fontification, as long as `org-src-fontify-natively' is non-nil."
 (defface org-block-latex
   `((t (:background "FloralWhite")))
   "Face for latex blocks")
-
 (defun byte-compile-current-buffer ()
   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
   (interactive)
   (when (and (eq major-mode 'emacs-lisp-mode)
              (file-exists-p (byte-compile-dest-file buffer-file-name)))
     (byte-compile-file buffer-file-name)))
-
 (global-set-key (kbd "M-]") 'delete-horizontal-space)
-
 (setq resize-mini-windows t) ;; was grow-only

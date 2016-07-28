@@ -18,6 +18,83 @@ Current load time 1.5s on windows.
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
 #+end_src
+* Loading config.org
+
+Using the method described here: http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
+*** Package management
+
+#+BEGIN_SRC emacs-lisp
+(package-initialize nil)
+(setq package-enable-at-startup nil)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+;;; Set up package
+;; initalize all ELPA packages
+(require 'package)
+(setq package-enable-at-startup nil
+      package-archives
+      '(("melpa"           . "http://melpa.org/packages/")))
+#+END_SRC
+*** use-package
+
+See http://github.com/jwiegley/use-package/
+or http://www.lunaryorn.com/2015/01/06/my-emacs-configuration-with-use-package.html
+
+Basic syntax:
+
+#+BEGIN_EXAMPLE
+(use-package package-name
+	 [:keyword [option]]...)
+
+:init          Code to run before PACKAGE-NAME has been loaded.
+:config        Code to run after PACKAGE-NAME has been loaded.  Note that if
+			   loading is deferred for any reason, this code does not execute
+			   until the lazy load has occurred.
+:preface       Code to be run before everything except `:disabled'; this can
+			   be used to define functions for use in `:if', or that should be
+			   seen by the byte-compiler.
+:mode          Form to be added to `auto-mode-alist'.
+:interpreter   Form to be added to `interpreter-mode-alist'.
+:commands      Define autoloads for commands that will be defined by the
+			   package.  This is useful if the package is being lazily loaded,
+			   and you wish to conditionally call functions in your `:init'
+			   block that are defined in the package.
+:bind          Bind keys, and define autoloads for the bound commands.
+:bind*         Bind keys, and define autoloads for the bound commands,
+			   *overriding all minor mode bindings*.
+:bind-keymap   Bind a key prefix to an auto-loaded keymap defined in the
+			   package.  This is like `:bind', but for keymaps.
+:bind-keymap*  Like `:bind-keymap', but overrides all minor mode bindings
+:defer         Defer loading of a package -- this is implied when using
+			   `:commands', `:bind', `:bind*', `:mode' or `:interpreter'.
+			   This can be an integer, to force loading after N seconds of
+			   idle time, if the package has not already been loaded.
+:after         Defer loading of a package until after any of the named
+			   features are loaded.
+:demand        Prevent deferred loading in all cases.
+:if EXPR       Initialize and load only if EXPR evaluates to a non-nil value.
+:disabled      The package is ignored completely if this keyword is present.
+:defines       Declare certain variables to silence the byte-compiler.
+:functions     Declare certain functions to silence the byte-compiler.
+:load-path     Add to the `load-path' before attempting to load the package.
+:diminish      Support for diminish.el (if installed).
+:ensure        Loads the package using package.el if necessary.
+:pin           Pin the package to an archive.
+#+END_EXAMPLE
+
+#+BEGIN_SRC emacs-lisp
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)                ;; if you use :diminish
+(require 'bind-key)
+;(setq use-package-verbose t)
+#+END_SRC
+
 * Custom settings
 
 #+BEGIN_SRC emacs-lisp
@@ -26,21 +103,20 @@ Current load time 1.5s on windows.
 #+END_SRC
 
 * Theme
-** Moe theme
+** Moe theme 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package moe-theme
   :ensure t
   :disabled t
   :defer t
   :init
-  (require 'moe-theme)
-)
+  (require 'moe-theme))
 #+END_SRC
 
 ** Tao theme
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package tao-theme
   :ensure t
   :defer t)
@@ -48,7 +124,7 @@ Current load time 1.5s on windows.
 
 ** Leuven theme
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package leuven-theme
   :ensure t
   :defer t)
@@ -56,7 +132,7 @@ Current load time 1.5s on windows.
 
 ** Anti Zenburn
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package anti-zenburn-theme
   :ensure t
   :defer t )
@@ -64,7 +140,7 @@ Current load time 1.5s on windows.
 
 ** Cyberpunk theme
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package cyberpunk-theme
   :defer t
   :ensure t)
@@ -72,7 +148,7 @@ Current load time 1.5s on windows.
 
 ** Zenburn
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package zenburn-theme
   :ensure t
   :defer t)
@@ -80,7 +156,7 @@ Current load time 1.5s on windows.
 
 ** Solarized 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package solarized-theme
   :ensure t
   :defer t)
@@ -88,7 +164,7 @@ Current load time 1.5s on windows.
 
 ** Sanityinc tomorrow
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
   :defer t)
@@ -96,7 +172,7 @@ Current load time 1.5s on windows.
 
 ** Theme looper
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package theme-looper
   :defer t
   :bind ("S-<f12>" . theme-looper-enable-next-theme)
@@ -226,7 +302,16 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 ;(setq debug-on-error t)
 ;(setq debug-on-quit t)
 #+END_SRC
+*** Window
+#+BEGIN_SRC emacs-lisp
+(when window-system
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1))
 
+(setq initial-scratch-message "")
+#+END_SRC
 * Recentf
 Recentf is a minor mode that builds a list of recently opened files.
 
@@ -241,7 +326,7 @@ Recentf is a minor mode that builds a list of recently opened files.
 #+end_src
 
 * Org mode
-** Basic Initialization
+** Org itself
 
 
 #+BEGIN_SRC emacs-lisp
@@ -255,7 +340,7 @@ Recentf is a minor mode that builds a list of recently opened files.
   (add-hook 'org-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'org-mode-hook 'company-mode)
-
+  (add-hook 'org-mode-hook 'flyspell-mode)
 
   (use-package org-bullets
     :ensure t
@@ -298,6 +383,18 @@ Recentf is a minor mode that builds a list of recently opened files.
     :ensure t
     :config
     (setq-default org-download-image-dir "./img/"))
+
+  ;; Org babel and source blocks
+  (setq org-src-fontify-natively t
+        org-src-window-setup 'current-window
+        org-src-strip-leading-and-trailing-blank-lines t
+        org-src-preserve-indentation t
+        org-src-tab-acts-natively t
+        org-export-babel-evaluate nil
+        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
+
+  ;;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
   
 
    ;; This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
@@ -322,7 +419,7 @@ Set gtd.org as my default notes file
 From [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/][This blog entry]], C-c o is set to open the tasks.org
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
+(use-package org-agenda
   :defer t
   :config
   (setq org-agenda-files
@@ -452,7 +549,7 @@ Todo sequences.
 (use-package org
   :defer t
   :config
-  (setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)" "CNCL(c)")))
 
   (setq org-todo-keyword-faces 
         '(("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
@@ -490,24 +587,6 @@ From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-
 #+END_SRC
 
 
-** Org babel/source blocks
-
-#+begin_src emacs-lisp
-(use-package org
-  :defer t
-  :config
-  (setq org-src-fontify-natively t
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t
-        org-src-tab-acts-natively t
-        org-export-babel-evaluate nil
-        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
-
-  ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
-#+end_src
-
 ** Org paste from clipboard
 
 Function for pasting images from clipboard. I got this from [[https://lists.gnu.org/archive/html/emacs-orgmode/2013-11/msg00290.html][this thread]]. It's very useful when I'm writing notes while studying, great for reviewing the notes later.
@@ -516,6 +595,7 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
+  :mode (("\\.org$" . org-mode))
   :bind ("C-c y" . my/org-insert-clipboard)
   :config
   (defun my/org-insert-clipboard ()
@@ -540,15 +620,6 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
 
       (org-display-inline-images))))
 #+END_SRC
-** Org ref
-
-[[https://github.com/jkitchin/org-ref][Org-ref]]
-
-#+BEGIN_SRC emacs-lisp
-
-#+END_SRC
-
-
 ** Org page
 
 [[https://github.com/kelvinh/org-page][Org-page]] - A package for generate a static blog.
@@ -576,7 +647,7 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
          :show-meta t
          :show-comment t
          :uri-generator op/generate-uri
-         :uri-template "/blog/%y/%m/%d/%t/"
+         :uri-template "/notes/%y/%m/%d/%t/"
          :sort-by :date     ;; how to sort the posts
          :category-index t) ;; generate category index or not
         ("index"
@@ -828,6 +899,7 @@ Integrates with Python.
 #+BEGIN_SRC emacs-lisp
 (use-package company-jedi
   :ensure t
+  :defer t
   :config
   (setq jedi:complete-on-dot t)
   (setq jedi:use-shortcuts t))
@@ -1064,12 +1136,20 @@ Undo system to recover any past state of a buffer.
   :config
   (which-key-mode))
 #+END_SRC
+** Popwin
 
+#+BEGIN_SRC emacs-lisp
+(use-package popwin
+  :ensure t
+  :defer 5
+  :config
+  (popwin-mode 1))
+#+END_SRC
 
 * Misc
 ** Doc view keybindings
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package doc-view
   :config
   (add-hook 'doc-view-mode-hook (lambda () (centered-cursor-mode -1)))
