@@ -1,6 +1,14 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
+(when window-system
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1))
+
+(setq initial-scratch-message "")
+
 ;; Don't load old .elc files when the .el file is newer
 (setq load-prefer-newer t)
 

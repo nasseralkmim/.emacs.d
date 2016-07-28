@@ -91,23 +91,6 @@
 
 ;; Don't create backups
 (setq make-backup-files nil)
-(defun my/delete-config-el ()
-  "Delete ~/.emacs.d/config.el when the current buffer is ~/.emacs.d/config.org"
-  (setq configel "~/.emacs.d/config.el")
-  (if (s-suffix? ".emacs.d/config.org" buffer-file-name)
-      (if (file-exists-p configel)
-          (delete-file "~/.emacs.d/config.el"))))
-
-(add-hook 'after-save-hook 'my/delete-config-el)
-;(setq debug-on-error t)
-;(setq debug-on-quit t)
-(when window-system
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
-
-(setq initial-scratch-message "")
 (use-package recentf
   :defer 10
   :config
@@ -452,8 +435,10 @@
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'python-mode-hook 'flycheck-mode)
+  (add-hook 'python-mode-hook 'jedi:setup)
 
   (defun my/python-mode-hook ()
+    (company-mode +1)
     (add-to-list 'company-backends 'company-jedi))
 
   (add-hook 'python-mode-hook 'my/python-mode-hook)
@@ -476,7 +461,8 @@
   :defer t
   :config
   (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t))
+  (setq jedi:use-shortcuts t)
+  (add-to-list 'company-backends 'company-jedi))
 (use-package smartparens
   :ensure t 
   :defer t

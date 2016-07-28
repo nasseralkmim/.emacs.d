@@ -279,39 +279,14 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 #+end_src
 
 
-[[https://github.com/AssailantLF/emacsconfig/blob/master/config.org#optimize-org-babel-config-for-faster-startup][From here.]] It makes org-babel-load-file loading faster.
-
-
-#+BEGIN_SRC emacs-lisp
-(defun my/delete-config-el ()
-  "Delete ~/.emacs.d/config.el when the current buffer is ~/.emacs.d/config.org"
-  (setq configel "~/.emacs.d/config.el")
-  (if (s-suffix? ".emacs.d/config.org" buffer-file-name)
-      (if (file-exists-p configel)
-          (delete-file "~/.emacs.d/config.el"))))
-
-(add-hook 'after-save-hook 'my/delete-config-el)
-#+END_SRC
-
-
 
 *** Debug
 
-
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;(setq debug-on-error t)
 ;(setq debug-on-quit t)
 #+END_SRC
-*** Window
-#+BEGIN_SRC emacs-lisp
-(when window-system
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
 
-(setq initial-scratch-message "")
-#+END_SRC
 * Recentf
 Recentf is a minor mode that builds a list of recently opened files.
 
@@ -870,8 +845,10 @@ Integrates with Python.
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'python-mode-hook 'flycheck-mode)
+  (add-hook 'python-mode-hook 'jedi:setup)
 
   (defun my/python-mode-hook ()
+    (company-mode +1)
     (add-to-list 'company-backends 'company-jedi))
 
   (add-hook 'python-mode-hook 'my/python-mode-hook)
@@ -902,7 +879,8 @@ Integrates with Python.
   :defer t
   :config
   (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t))
+  (setq jedi:use-shortcuts t)
+  (add-to-list 'company-backends 'company-jedi))
 #+END_SRC
 
 
@@ -1353,6 +1331,7 @@ fontification, as long as `org-src-fontify-natively' is non-nil."
   `((t (:background "FloralWhite")))
   "Face for latex blocks")
 #+END_SRC
+
 ** Byte compile
 
 From this [[https://www.reddit.com/r/emacs/comments/4oxev7/how_should_i_start_unittesting_or_behaviortesting/][thread]]
