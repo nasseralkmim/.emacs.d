@@ -10,7 +10,7 @@
    (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
  '(custom-safe-themes
    (quote
-    ("20e359ef1818a838aff271a72f0f689f5551a27704bf1c9469a5c2657b417e6c" default)))
+    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "20e359ef1818a838aff271a72f0f689f5551a27704bf1c9469a5c2657b417e6c" default)))
  '(fci-rule-color "#d6d6d6")
  '(nrepl-message-colors
    (quote
@@ -20,6 +20,7 @@
     ("~/OneDrive/Org/gtd.org" "~/OneDrive/Org/notes.org" "~/OneDrive/Org/culture.org" "~/OneDrive/Org/practice.org")))
  '(org-agenda-skip-deadline-if-done t)
  '(org-agenda-skip-scheduled-if-done t)
+ '(org-beamer-frame-level 1)
  '(org-bullets-bullet-list (quote ("◉" "○" "●" "◆")))
  '(org-latex-pdf-process
    (quote
@@ -60,13 +61,4 @@
  '(fringe ((t (:background "white"))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
  '(org-level-1 ((t (:background nil :bold t :overline nil))))
- '(org-level-2 ((t (:background nil :bold t :overline nil))))
- '(rainbow-delimiters-depth-1-face ((t (:foreground "#ae6a6a"))))
- '(rainbow-delimiters-depth-2-face ((t (:foreground "#7aa3de"))))
- '(rainbow-delimiters-depth-3-face ((t (:foreground "#c5ca89"))))
- '(rainbow-delimiters-depth-4-face ((t (:foreground "#7bcb7e"))))
- '(rainbow-delimiters-depth-5-face ((t (:foreground "#9cb9e9"))))
- '(rainbow-delimiters-depth-6-face ((t (:foreground "#9898ca"))))
- '(rainbow-delimiters-depth-7-face ((t (:foreground "#72c572"))))
- '(rainbow-delimiters-depth-8-face ((t (:foreground "#8eb0ed"))))
- '(rainbow-delimiters-depth-9-face ((t (:foreground "#82cfb4")))))
+ '(org-level-2 ((t (:background nil :bold t :overline nil)))))
