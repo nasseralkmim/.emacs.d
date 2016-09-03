@@ -18,6 +18,7 @@ Current load time 1.5s on windows.
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
 #+end_src
+
 * Loading config.org
 
 Using the method described here: http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
@@ -34,11 +35,13 @@ Using the method described here: http://www.holgerschurig.de/en/emacs-efficientl
 (require 'package)
 (setq package-enable-at-startup nil
       package-archives
-      '(("melpa"           . "http://melpa.org/packages/")))
+      '(("melpa"           . "http://melpa.org/packages/")
+        ("melpa-stable" . "http://stable.melpa.org/packages/")
+        ("RSW-packages" . "http://www.plasmas.biz/rswe/")))
 #+END_SRC
 *** use-package
 
-See http://github.com/jwiegley/use-package/
+See [http://github.com/jwiegley/use-package/]
 or http://www.lunaryorn.com/2015/01/06/my-emacs-configuration-with-use-package.html
 
 Basic syntax:
@@ -108,10 +111,10 @@ Basic syntax:
 #+BEGIN_SRC emacs-lisp :tangle no
 (use-package moe-theme
   :ensure t
-  :disabled t
-  :defer t
-  :init
-  (require 'moe-theme))
+  :config
+  (setq moe-theme-highlight-buffer-id t)
+  (setq moe-light-pure-white-background-in-terminal t)
+  (use-package moe-theme-switcher))
 #+END_SRC
 
 *** Tao theme
@@ -170,6 +173,15 @@ Basic syntax:
   :defer t)
 #+END_SRC
 
+*** Afternoon
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package afternoon-theme
+  :ensure t
+  :config 
+  (load-theme 'afternoon t))
+#+END_SRC
+
 *** Theme looper
 
 #+begin_src emacs-lisp :tangle no
@@ -191,7 +203,7 @@ Basic syntax:
 
 the function load-theme will first disable the active themes, before loading the new one.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (defun disable-all-themes ()
   "disable all active themes."
   (dolist (i custom-enabled-themes)
@@ -200,6 +212,7 @@ the function load-theme will first disable the active themes, before loading the
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))
 #+END_SRC
+
 * Font
 
 Download 
@@ -342,7 +355,12 @@ Recentf is a minor mode that builds a list of recently opened files.
      (ipython . t)
      (emacs-lisp . t)
      (latex . t)
-     (dot . t)))
+     (plantuml . t)))
+
+  ;; plantuml jar file path
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/.emacs.d/plantuml.jar"))
+
 
    ;; beamer export
   (eval-after-load "org"
@@ -352,6 +370,18 @@ Recentf is a minor mode that builds a list of recently opened files.
     :config
     (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
     (setq org-reveal-mathjax t))
+
+  ;; For code fragments typesetting
+  ;; http://orgmode.org/worg/org-tutorials/org-latex-preview.html
+  (setq org-latex-listings 'minted)
+  (require 'ox-latex)
+  ;; code highlight for latex org export
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; add a nice font to org latex export
+  (add-to-list 'org-latex-packages-alist '("" "libertine"))
+
+  ;; preview latex in org mode with imagemagick
+  (setq org-latex-create-formula-image-program 'imagemagick)
 
 
   (use-package org-ref
@@ -367,7 +397,8 @@ Recentf is a minor mode that builds a list of recently opened files.
   (use-package org-download
     :ensure t
     :config
-    (setq-default org-download-image-dir "./img/"))
+    (setq-default org-download-image-dir "./img/")
+    (setq-default org-download-heading-lvl nil))
 
   ;; Org babel and source blocks
   (setq org-src-fontify-natively t
@@ -699,6 +730,9 @@ what I have them set to (with respect to Dvorak, of course).
          ("C-h f" . counsel-describe-function))
   :config
   (use-package flx :ensure t)
+
+  ;; miz fuzzy with plus (.* for each space)
+  ;; http://oremacs.com/2016/01/06/ivy-flx/
   (setq ivy-re-builders-alist
       '((t . ivy--regex-fuzzy)))
   (setq ivy-initial-inputs-alist nil))
@@ -938,15 +972,29 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
               (setq TeX-source-correlate-method 'synctex)
               (setq TeX-source-correlate-start-server t)))
 
-(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ;https://github.com/politza/pdf-tools/issues/187
+;https://github.com/politza/pdf-tools/issues/187
 
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) 
+
+
+       
 ;; to use pdfview with auctex
 (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
-(setq TeX-view-program-selection '((output-pdf "pdf-tools")))
-(setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+;; nil beacuse I don't want the pdf to be opened again in the same frame after C-c C-a
+;; (setq TeX-view-program-selection nil)  
+;; (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+;; (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
 
 ;add org ref into auctex
+;; https://github.com/jkitchin/org-ref/issues/216
 (add-hook 'LaTeX-mode-hook (lambda () (require 'org-ref)))
+
+;; https://github.com/politza/pdf-tools/pull/60
+(setq pdf-sync-forward-display-action
+      '(display-buffer-reuse-window (reusable-frames . t)))
+;; same thing, now I can jump from pdf in another frame into source
+(setq pdf-sync-backward-display-action
+      '(display-buffer-reuse-window (reusable-frames . t)))
 
 ; language specific hooks in auctex
 (add-hook 'TeX-language-dk-hook
@@ -1033,7 +1081,7 @@ shell-escape mode because the pacakge svg requires it.
   ;; use aspell
   (setq ispell-program-name "aspell")
   ;; where the dictionay is
-  (setq ispell-personal-dictionary "C:/Program Files (x86)/Aspell/dict")
+  ;; (setq ispell-personal-dictionary "c:/Program Files (x86)/Aspell/dict")
   ;; change dictionaries
   (defun fd-switch-dictionary()
   (interactive)
@@ -1099,16 +1147,17 @@ Undo system to recover any past state of a buffer.
   :defer t
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "dark slate gray")
-  (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
-  (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
-  (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
-  (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
-  (set-face-foreground 'rainbow-delimiters-depth-6-face "lime green")
-  (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
-  (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
-  (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
-  (set-face-foreground 'rainbow-delimiters-unmatched-face "red"))
+  ;; (set-face-foreground 'rainbow-delimiters-depth-1-face "dark slate gray")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-6-face "lime green")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
+  ;; (set-face-foreground 'rainbow-delimiters-unmatched-face "red")
+)
 #+END_SRC
 
 
@@ -1127,6 +1176,7 @@ Undo system to recover any past state of a buffer.
   (setq mouse-wheel-follow-mouse t)
   (setq pdf-view-resize-factor 1.10))
 #+END_SRC
+
 ** Which key 
 
 #+BEGIN_SRC emacs-lisp
@@ -1176,6 +1226,21 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
   :config
   (yas-global-mode 1))
 #+END_SRC
+** Hyperbole
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package hyperbole
+  :ensure t
+  :defer 10)
+#+END_SRC
+** Lispy
+
+#+BEGIN_SRC emacs-lisp
+(use-package lispy
+  :ensure t
+  :defer t)
+#+END_SRC
+
 
 * Misc
 ** Doc view keybindings
@@ -1210,6 +1275,7 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
 (use-package key-chord
   :ensure t
   :after (org tex-site) 
+  :defer 10
   :config
   (key-chord-mode 1)
   (setq key-chord-two-keys-delay 0.1)
@@ -1382,7 +1448,11 @@ Update file in buffer, refresh.
 
         (defface org-block-latex
           `((t (:background "FloralWhite")))
-          "Face for latex blocks"))
+          "Face for latex blocks")
+
+        (defface org-block-plantuml
+          `((t (:background "Ivory")))
+          "Face for plantuml blocks"))
 #+END_SRC
 
 ** Byte compile
@@ -1402,7 +1472,7 @@ From this [[https://www.reddit.com/r/emacs/comments/4oxev7/how_should_i_start_un
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-]") 'delete-horizontal-space)
 #+END_SRC
-** Minibuffer
+** minibuffer
 
 Minibuffer window expands vertically as necessary to hold the text
 that you put in the minibuffer
@@ -1410,3 +1480,11 @@ that you put in the minibuffer
 #+BEGIN_SRC emacs-lisp
 (setq resize-mini-windows t) ;; was grow-only
 #+END_SRC
+** Scrooling
+
+#+BEGIN_SRC emacs-lisp
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+#+END_SRC
+
+

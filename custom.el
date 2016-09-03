@@ -10,7 +10,7 @@
    (vector "#4d4d4c" "#c82829" "#718c00" "#eab700" "#4271ae" "#8959a8" "#3e999f" "#ffffff"))
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "20e359ef1818a838aff271a72f0f689f5551a27704bf1c9469a5c2657b417e6c" default)))
+    ("37def0fac11a4890922af9febc8394e3b6e3c68904a294a2d440b1904e979c7e" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "28ec8ccf6190f6a73812df9bc91df54ce1d6132f18b4c8fcc85d45298569eb53" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "20e359ef1818a838aff271a72f0f689f5551a27704bf1c9469a5c2657b417e6c" default)))
  '(fci-rule-color "#d6d6d6")
  '(nrepl-message-colors
    (quote
@@ -22,6 +22,22 @@
  '(org-agenda-skip-scheduled-if-done t)
  '(org-beamer-frame-level 1)
  '(org-bullets-bullet-list (quote ("◉" "○" "●" "◆")))
+ '(org-latex-default-packages-alist
+   (quote
+    (("AUTO" "inputenc" t)
+     ("T1" "fontenc" t)
+     ("" "fixltx2e" nil)
+     ("" "graphicx" t)
+     ("" "grffile" t)
+     ("" "longtable" nil)
+     ("" "wrapfig" nil)
+     ("" "rotating" nil)
+     ("normalem" "ulem" t)
+     ("" "amsmath" t)
+     ("" "textcomp" t)
+     ("" "amssymb" t)
+     ("" "capt-of" nil)
+     ("hidelinks" "hyperref" nil))))
  '(org-latex-pdf-process
    (quote
     ("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f" "bibtex %b" "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f" "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
@@ -56,9 +72,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:background "white" :foreground "black"))))
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0))))
- '(fringe ((t (:background "white"))))
- '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
- '(org-level-1 ((t (:background nil :bold t :overline nil))))
- '(org-level-2 ((t (:background nil :bold t :overline nil)))))
+ '(org-level-1 ((((class color) (min-colors 89)) (:bold t :foreground "#5fafd7"))))
+ '(org-level-2 ((((class color) (min-colors 89)) (:bold t :foreground "#5fd700")))))

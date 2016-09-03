@@ -8,8 +8,8 @@
  (rear-context-string . "ve/nasser.org]]\n")
  (position . 154))
 ("org-capture-last-stored"
- (filename . "~/OneDrive/Org/gtd.org")
- (front-context-string . "******* TODO com")
- (rear-context-string . "07-20 Wednesday\n")
- (position . 5419))
+ (filename . "~/OneDrive/Org/notes.org")
+ (front-context-string . "******* When lat")
+ (rear-context-string . "16-08-21 Sunday\n")
+ (position . 37615))
 )

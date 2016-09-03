@@ -9,7 +9,9 @@
 (require 'package)
 (setq package-enable-at-startup nil
       package-archives
-      '(("melpa"           . "http://melpa.org/packages/")))
+      '(("melpa"           . "http://melpa.org/packages/")
+        ("melpa-stable" . "http://stable.melpa.org/packages/")
+        ("RSW-packages" . "http://www.plasmas.biz/rswe/")))
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -21,13 +23,6 @@
 ;(setq use-package-verbose t)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
-(defun disable-all-themes ()
-  "disable all active themes."
-  (dolist (i custom-enabled-themes)
-    (disable-theme i)))
-
-(defadvice load-theme (before disable-themes-first activate)
-  (disable-all-themes))
 (set-frame-font "Source Code Pro 10")
 ;; (set-frame-font "Monospace 10")
 ;; (set-frame-font "Dejavu Sans 10")
@@ -129,7 +124,12 @@
      (ipython . t)
      (emacs-lisp . t)
      (latex . t)
-     (dot . t)))
+     (plantuml . t)))
+
+  ;; plantuml jar file path
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/.emacs.d/plantuml.jar"))
+
 
    ;; beamer export
   (eval-after-load "org"
@@ -139,6 +139,18 @@
     :config
     (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
     (setq org-reveal-mathjax t))
+
+  ;; For code fragments typesetting
+  ;; http://orgmode.org/worg/org-tutorials/org-latex-preview.html
+  (setq org-latex-listings 'minted)
+  (require 'ox-latex)
+  ;; code highlight for latex org export
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  ;; add a nice font to org latex export
+  (add-to-list 'org-latex-packages-alist '("" "libertine"))
+
+  ;; preview latex in org mode with imagemagick
+  (setq org-latex-create-formula-image-program 'imagemagick)
 
 
   (use-package org-ref
@@ -154,7 +166,8 @@
   (use-package org-download
     :ensure t
     :config
-    (setq-default org-download-image-dir "./img/"))
+    (setq-default org-download-image-dir "./img/")
+    (setq-default org-download-heading-lvl nil))
 
   ;; Org babel and source blocks
   (setq org-src-fontify-natively t
@@ -377,6 +390,9 @@
          ("C-h f" . counsel-describe-function))
   :config
   (use-package flx :ensure t)
+
+  ;; miz fuzzy with plus (.* for each space)
+  ;; http://oremacs.com/2016/01/06/ivy-flx/
   (setq ivy-re-builders-alist
       '((t . ivy--regex-fuzzy)))
   (setq ivy-initial-inputs-alist nil))
@@ -501,15 +517,29 @@
               (setq TeX-source-correlate-method 'synctex)
               (setq TeX-source-correlate-start-server t)))
 
-(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) ;https://github.com/politza/pdf-tools/issues/187
+;https://github.com/politza/pdf-tools/issues/187
 
+(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) 
+
+
+       
 ;; to use pdfview with auctex
 (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
-(setq TeX-view-program-selection '((output-pdf "pdf-tools")))
-(setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+;; nil beacuse I don't want the pdf to be opened again in the same frame after C-c C-a
+;; (setq TeX-view-program-selection nil)  
+;; (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+;; (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
 
 ;add org ref into auctex
+;; https://github.com/jkitchin/org-ref/issues/216
 (add-hook 'LaTeX-mode-hook (lambda () (require 'org-ref)))
+
+;; https://github.com/politza/pdf-tools/pull/60
+(setq pdf-sync-forward-display-action
+      '(display-buffer-reuse-window (reusable-frames . t)))
+;; same thing, now I can jump from pdf in another frame into source
+(setq pdf-sync-backward-display-action
+      '(display-buffer-reuse-window (reusable-frames . t)))
 
 ; language specific hooks in auctex
 (add-hook 'TeX-language-dk-hook
@@ -556,7 +586,7 @@
   ;; use aspell
   (setq ispell-program-name "aspell")
   ;; where the dictionay is
-  (setq ispell-personal-dictionary "C:/Program Files (x86)/Aspell/dict")
+  ;; (setq ispell-personal-dictionary "c:/Program Files (x86)/Aspell/dict")
   ;; change dictionaries
   (defun fd-switch-dictionary()
   (interactive)
@@ -594,16 +624,17 @@
   :defer t
   :config
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "dark slate gray")
-  (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
-  (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
-  (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
-  (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
-  (set-face-foreground 'rainbow-delimiters-depth-6-face "lime green")
-  (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
-  (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
-  (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
-  (set-face-foreground 'rainbow-delimiters-unmatched-face "red"))
+  ;; (set-face-foreground 'rainbow-delimiters-depth-1-face "dark slate gray")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-6-face "lime green")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
+  ;; (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
+  ;; (set-face-foreground 'rainbow-delimiters-unmatched-face "red")
+)
 (use-package pdf-tools
   :ensure t
   :mode ("\\.pdf\\'" . pdf-tools-install)
@@ -628,11 +659,15 @@
   (progn 
     (setq sml/no-confirmation-load-theme t)
     (sml/setup)))
+(use-package lispy
+  :ensure t
+  :defer t)
 (setq ad-redefinition-action 'accept)
 (winner-mode 1)
 (use-package key-chord
   :ensure t
   :after (org tex-site) 
+  :defer 10
   :config
   (key-chord-mode 1)
   (setq key-chord-two-keys-delay 0.1)
@@ -795,7 +830,11 @@
 
         (defface org-block-latex
           `((t (:background "FloralWhite")))
-          "Face for latex blocks"))
+          "Face for latex blocks")
+
+        (defface org-block-plantuml
+          `((t (:background "Ivory")))
+          "Face for plantuml blocks"))
 (defun byte-compile-current-buffer ()
   "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
   (interactive)
@@ -804,3 +843,5 @@
     (byte-compile-file buffer-file-name)))
 (global-set-key (kbd "M-]") 'delete-horizontal-space)
 (setq resize-mini-windows t) ;; was grow-only
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
