@@ -20,3 +20,5 @@ company-statistics-cache.el
 /.python-environments/
 /server/
 /server/server13232
+/elpa/ace-window-20160225.819/ace-window-autoloads.el
+/elpa/0blayout-readme.txt
