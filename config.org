@@ -19,6 +19,7 @@ Current load time 1.5s on windows.
       user-mail-address "nasser.alkmim@gmail.com")
 #+end_src
 
+
 * Loading config.org
 
 Using the method described here: http://www.holgerschurig.de/en/emacs-efficiently-untangling-elisp/
@@ -29,6 +30,7 @@ Using the method described here: http://www.holgerschurig.de/en/emacs-efficientl
 (setq package-enable-at-startup nil)
 #+END_SRC
 
+
 #+BEGIN_SRC emacs-lisp
 ;;; Set up package
 ;; initalize all ELPA packages
@@ -37,8 +39,10 @@ Using the method described here: http://www.holgerschurig.de/en/emacs-efficientl
       package-archives
       '(("melpa"           . "http://melpa.org/packages/")
         ("melpa-stable" . "http://stable.melpa.org/packages/")
-        ("RSW-packages" . "http://www.plasmas.biz/rswe/")))
+        ("RSW-packages" . "http://www.plasmas.biz/rswe/")
+        ("org" . "http://orgmode.org/elpa/")))
 #+END_SRC
+
 *** use-package
 
 See [http://github.com/jwiegley/use-package/]
@@ -95,8 +99,9 @@ Basic syntax:
   (require 'use-package))
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)
-;(setq use-package-verbose t)
+(setq use-package-verbose t)
 #+END_SRC
+
 
 * Custom settings
 
@@ -105,7 +110,40 @@ Basic syntax:
 (load custom-file)
 #+END_SRC
 
+
 * Theme
+*** Doom theme 
+
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package doom-themes
+  :ensure t
+  :diminish doom-buffer-mode
+  :init (load-theme 'doom-one t)
+  :config
+  ;;; OPTIONAL
+  ;; brighter source buffers
+  (add-hook 'find-file-hook 'doom-buffer-mode)
+  ;; brighter minibuffer when active
+  (add-hook 'minibuffer-setup-hook 'doom-brighten-minibuffer)
+
+  ;; Custom neotree theme
+  ;; (require 'doom-neotree)
+  ;; (setq doom-neotree-enable-file-icons nil)
+
+  ;; org mode configs
+  (setq org-fontify-whole-heading-line t
+      org-fontify-done-headline t
+      org-fontify-quote-and-verse-blocks t)
+
+  ;;  use it to visually set apart source buffers from popups, the minibuffer, or temporary buffers.
+  (add-hook 'find-file-hook 'doom-buffer-mode)
+  (use-package all-the-icons
+    :load-path "C:/Users/Nasser/.emacs.d/elpa/all-the-icons"))
+#+END_SRC
+
+
+
 *** Moe theme 
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -117,6 +155,7 @@ Basic syntax:
   (use-package moe-theme-switcher))
 #+END_SRC
 
+
 *** Tao theme
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -124,6 +163,8 @@ Basic syntax:
   :ensure t
   :defer t)
 #+END_SRC
+
+
 
 *** Leuven theme
 
@@ -133,6 +174,7 @@ Basic syntax:
   :defer t)
 #+END_SRC
 
+
 *** Anti Zenburn
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -140,6 +182,7 @@ Basic syntax:
   :ensure t
   :defer t )
 #+END_SRC
+
 
 *** Cyberpunk theme
 
@@ -149,6 +192,7 @@ Basic syntax:
   :ensure t)
 #+END_SRC
 
+
 *** Zenburn
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -156,6 +200,7 @@ Basic syntax:
   :ensure t
   :defer t)
 #+END_SRC
+
 
 *** Solarized 
 
@@ -165,6 +210,7 @@ Basic syntax:
   :defer t)
 #+END_SRC
 
+
 *** Sanityinc tomorrow
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -172,6 +218,7 @@ Basic syntax:
   :ensure t
   :defer t)
 #+END_SRC
+
 
 *** Afternoon
 
@@ -181,6 +228,7 @@ Basic syntax:
   :config 
   (load-theme 'afternoon t))
 #+END_SRC
+
 
 *** Theme looper
 
@@ -201,6 +249,7 @@ Basic syntax:
   (theme-looper-set-customizations 'powerline-reset))
 #+end_src
 
+
 the function load-theme will first disable the active themes, before loading the new one.
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -212,6 +261,7 @@ the function load-theme will first disable the active themes, before loading the
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))
 #+END_SRC
+
 
 * Font
 
@@ -226,11 +276,13 @@ Download
 
 #+begin_src emacs-lisp
 (set-frame-font "Source Code Pro 10")
+;; (set-frame-font "Fira mono for powerline 10")
 ;; (set-frame-font "Monospace 10")
 ;; (set-frame-font "Dejavu Sans 10")
 ;; (set-frame-font "Fantasque Sans Mono 11")
 ;; (set-frame-font "Inconsolata-g 10")
 #+end_src
+
 
 * Common defaults
 
@@ -287,8 +339,9 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 (column-number-mode t)
 
 ;; convert symbols like greek letter into its unicode character
-(global-prettify-symbols-mode)
-
+(setq global-prettify-symbols-mode t)
+;; unprettify symbol when at right edge
+(setq prettify-symbols-unprettify-at-point 'right-edge) 
 
 (setq uniquify-buffer-name-style 'forward)
 
@@ -302,6 +355,7 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 
 
 
+
 *** Debug
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -309,12 +363,13 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 ;(setq debug-on-quit t)
 #+END_SRC
 
+
 * Recentf
 Recentf is a minor mode that builds a list of recently opened files.
 
 #+begin_src emacs-lisp
 (use-package recentf
-  :defer 10
+  :defer 30
   :config
   (progn
     (recentf-mode t)
@@ -322,13 +377,15 @@ Recentf is a minor mode that builds a list of recently opened files.
           recentf-max-menu-items 15)))
 #+end_src
 
+
 * Org mode
-** Org itself
+*** Org itself
 
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :ensure t
+  :ensure org-plus-contrib
+  :load-path "~/.emacs.d/elpa/org-plus-contrib-20161102"
   :mode (("\\.org$" . org-mode))
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
@@ -337,207 +394,140 @@ Recentf is a minor mode that builds a list of recently opened files.
   (add-hook 'org-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'org-mode-hook 'company-mode)
-  (add-hook 'org-mode-hook 'flyspell-mode)
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-
-  (use-package org-bullets
-    :ensure t
-    :init
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    (setq org-ellipsis " …")
-    (setq org-bullets-bullet-list '("•")))
-
-
-  ;; babel languages
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (ipython . t)
-     (emacs-lisp . t)
-     (latex . t)
-     (plantuml . t)))
-
-  ;; plantuml jar file path
-  (setq org-plantuml-jar-path
-        (expand-file-name "~/.emacs.d/plantuml.jar"))
-
-
-   ;; beamer export
-  (eval-after-load "org"
-    '(require 'ox-beamer))
-
-  (use-package ox-reveal :ensure ox-reveal
-    :config
-    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-    (setq org-reveal-mathjax t))
-
-  ;; For code fragments typesetting
-  ;; http://orgmode.org/worg/org-tutorials/org-latex-preview.html
-  (setq org-latex-listings 'minted)
-  (require 'ox-latex)
-  ;; code highlight for latex org export
-  (add-to-list 'org-latex-packages-alist '("" "minted"))
-  ;; add a nice font to org latex export
-  (add-to-list 'org-latex-packages-alist '("" "libertine"))
-
-  ;; preview latex in org mode with imagemagick
-  (setq org-latex-create-formula-image-program 'imagemagick)
-
-
-  (use-package org-ref
-  :ensure t
-  :config
-  (setq reftex-default-bibliography '("C:/Users/Nasser/OneDrive/Bibliography/references.bib"))
-  (setq org-ref-default-bibliography '("C:/Users/Nasser/OneDrive/Bibliography/references.bib"))
-  (setq org-ref-pdf-directory "C:/Users/Nasser/OneDrive/Bibliography/references-pdf/")
-  (use-package org-ref-ivy)
-  (setq org-ref-completion-library 'org-ref-ivy-cite))
-  
-
-  (use-package org-download
-    :ensure t
-    :config
-    (setq-default org-download-image-dir "./img/")
-    (setq-default org-download-heading-lvl nil))
-
-  ;; Org babel and source blocks
-  (setq org-src-fontify-natively t
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t
-        org-src-tab-acts-natively t
-        org-export-babel-evaluate nil
-        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
-
-  ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-  
-
-   ;; This is for remove the annoying background color on the headings, level 1 and level 2, when using the material-theme.
-  (custom-set-faces
-  '(org-level-1 ((t (:background nil :bold t :overline nil))))
-  '(org-level-2 ((t (:background nil :bold t :overline nil)))))
-
-  (setq org-modules '(org-habit))
-
-  (eval-after-load 'org
-    '(org-load-modules-maybe t)))
+  (add-hook 'org-mode-hook 'flyspell-mode))
 #+END_SRC
 
-** Agenda and Capture files
 
-Set agenda files.
-
-remove done tasks from the agenda, from [[http://stackoverflow.com/questions/8281604/remove-done-tasks-from-agenda-view][this question]].
-
-Set gtd.org as my default notes file
-
-From [[http://sachachua.com/blog/2015/02/learn-take-notes-efficiently-org-mode/][This blog entry]], C-c o is set to open the tasks.org
-
-#+BEGIN_SRC emacs-lisp
-(use-package org-agenda
-  :defer t
-  :config
-  (setq org-agenda-files
-        (delq nil
-              (mapcar (lambda (x) (and (file-exists-p x) x))
-                      '("~/OneDrive/Org/gtd.org"
-                        "~/OneDrive/Org/notes.org"
-                        "~/OneDrive/Org/culture.org"
-                        "~/OneDrive/Org/practice.org"
-                        "~/OneDrive/ANAC/anac.org"))))
-   (custom-set-variables
-  '(org-agenda-skip-scheduled-if-done t)
-  '(org-agenda-skip-deadline-if-done t))
-
-   (setq org-default-notes-file "~/OneDrive/Org/gtb.org")
-
-   (global-set-key (kbd "C-c o") 
-                   (lambda () (interactive) (find-file "~/OneDrive/Org/notes.org"))))
-   #+END_SRC
-
-*** Capture templates
-
-The templates were copied from [[http://members.optusnet.com.au/~charles57/GTD/datetree.html][This Tutorial]].
-
-So far I have the following templates:
-1. *Todo*: will be used for defining daily or weekly tasks and reminders.
-   - TODO keyword
-   - %^{Description} prompt for user input
-   - %^g prompt for tags
-   - %? position cursor here
-   - %U inactive timestamp
-2. *Notes*: Any kind of note, books, movies, blog post ideas.
-   - %^{Description} prompt for user input
-   - %^g prompt for tags
-   - %? position cursor here
-   - %U inactive timestamp
-3. *Books*: Save books that I'm reading, scheduled than so I read the minimum quota daily, notes and review.
-
-
-#+BEGIN_SRC emacs-lisp
-(use-package org
-  :defer t
-  :config
-  (setq org-capture-templates
-        '(
-  ("t" "Todo" entry (file+datetree "~/OneDrive/Org/gtd.org") 
-  "* TODO %?
-
-  Added: %U")
-
-  ("n" "Notes" entry (file+datetree "~/OneDrive/Org/notes.org") 
-  "* %^{Description} %^g 
-
-  %?
-
-  Added: %U")
-
-  ("b" "Books" entry (file+headline "~/OneDrive/Org/culture.org" "Books")
-  "* STRT %^{Title} 
-  SCHEDULED: %(format-time-string \"%<<%Y-%m-%d %a +1d>>\")
-  :PROPERTIES:
-  :STYLE:    habit
-  :END:
-
-
-  ,*Author(s):* %^{Author}
-  ,*Pages/Day:* %^{P/D}
-  ,*Review/Comments:*
-
-  %?
-
-  ,*Added*: %U" )
-
-  ("m" "Movies" entry (file+headline "~/OneDrive/Org/culture.org" "Movies")
-  "* %^{Title}
-
-  ,*Review/Comments:*
-
-  %?
-
-  ,*Added*: %U"
-  )
-)))
-#+END_SRC
-
-*** Images
+*** Images config
 
 Start up folded, lists will be folded when file is opened. Don't remember where I got that.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :defer t 
+  :defer t
   :config
   (setq org-cycle-include-plain-lists 'integrate)
   (setq org-image-actual-width t)
   (setq org-startup-with-inline-images t))
  #+END_SRC
+ 
 
 Org display inline images when starts up, [[http://emacs.stackexchange.com/questions/14758/in-org-mode-how-to-always-display-inline-images-at-emacs-startup][From this question]]. For change the width of images.
+*** Org bullets
 
-** Options
-Speed up commands. See the doc for speed keys by checking out [[elisp:(info%20"(org)%20speed%20keys")][the documentation for speed keys in Org mode]].
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :defer t
+  :config
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (setq org-ellipsis " …")
+    (setq org-bullets-bullet-list '("•"))))
+#+END_SRC
+
+
+*** Org reveal
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :defer t
+  :config
+  (use-package ox-reveal 
+    :ensure t
+    :defer 10
+    :config
+    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+    (setq org-reveal-mathjax t)))
+#+END_SRC
+
+
+*** Org beamer
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :defer t
+  :config
+  (use-package ox-beamer
+    :defer 10
+    :config
+    (progn
+      ;; allow for export=>beamer by placing
+      ;; #+LaTeX_CLASS: beamer in org files
+      (add-to-list 'org-latex-classes
+                   '("beamer"
+                     "\\documentclass[presentation]{beamer}"
+                     ("\\section{%s}"        . "\\section*{%s}")
+                     ("\\subsection{%s}"     . "\\subsection*{%s}")
+                     ("\\subsubsection{%s}"  . "\\subsubsection*{%s}"))))))
+#+END_SRC
+
+
+*** Org latex
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :defer t
+  :config
+  (use-package ox-latex
+    :defer 5
+    :config
+    ;; code highlight for latex org export
+    (add-to-list 'org-latex-packages-alist '("" "minted"))
+    ;; add a nice font to org latex export
+    (add-to-list 'org-latex-packages-alist '("" "libertine"))
+
+    ;; preview latex in org mode with imagemagick
+    (setq org-latex-create-formula-image-program 'imagemagick)
+
+    ;; For code fragments typesetting
+    ;; http://orgmode.org/worg/org-tutorials/org-latex-preview.html
+    (setq org-latex-listings 'minted))
+
+    ; change foreground color of latex macros inside org
+    (setq org-highlight-latex-and-related '(latex script entities))
+    (set-face-foreground 'org-latex-and-related "blue")
+
+    (setq doc-view-ghostscript-program "gswin64c")
+)
+#+END_SRC
+
+
+*** Org block background
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :defer t
+  :config 
+  (setq org-src-block-faces '(("emacs-lisp" (:background "GhostWhite"))
+                            ("python" (:background "WhiteSmoke"))
+                            ("ipython" (:background "AliceBlue"))
+                            ("plantuml" (:background "Ivory"))
+                            ("latex" (:background "FloralWhite"))
+                            ("shell" (:background "Ivory")))))
+#+END_SRC
+
+
+
+*** Org download
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :defer t
+  :config
+  (use-package org-download
+   :ensure t
+   :defer 10
+   :config
+   (setq-default org-download-image-dir "./img/")
+   (setq-default org-download-heading-lvl nil)))
+#+END_SRC
+
+
+*** General options
+Speed up commands. See the doc for speed keys by checking out [[elisp:(info%20"(org)%20speed%20keys")][the documentation for speed eys in Org mode]].
 
 General options.
 #+BEGIN_SRC emacs-lisp
@@ -547,7 +537,7 @@ General options.
   (setq org-special-ctrl-a/e t)
   (transient-mark-mode nil)
   (setq org-log-done 'time) ;Log the time a task is completed.
-  (setq org-habit-graph-column 50) ;position the habit graph on the agenda to the right of the default
+  (setq org-habit-graph-column 50) ;position the habit graph on the agenda to the right of he default
   (setq org-hide-emphasis-markers nil)
   (setq inhibit-splash-screen t)
   (setq org-indent-mode t) ;indent the headings for clean view
@@ -556,11 +546,93 @@ General options.
   (setq org-odd-levels-only t)
   (diminish 'org-indent-mode)
   (setq org-startup-indented t)
-  (setq org-tags-column -66) ;where the tags are places
-  (setq org-use-speed-commands t)) ; speed up commands
- #+END_SRC
+  ;; (setq org-tags-column -66) ;where the tags are places
+  (setq org-use-speed-commands t)
 
-Todo sequences.
+
+  ;; This is for remove the annoying background color on the headings, 
+  ;; level 1 and level 2, when using the material-theme. 
+  (custom-set-faces
+   '(org-level-1 ((t (:background nil :bold t :overline nil))))
+   '(org-level-2 ((t (:background nil :bold t :overline nil)))))
+
+
+  (setq org-agenda-weekend-days nil)
+
+  (setq org-modules '(org-habit))
+  (eval-after-load 'org
+    '(org-load-modules-maybe t))
+    )
+ #+END_SRC
+ 
+ 
+*** Org babel config
+
+#+BEGIN_SRC emacs-lisp
+(use-package org
+  :defer t
+  :config
+  (use-package ob
+    :defer 10
+    :config
+    (add-hook 'org-mode-hook #'yas-minor-mode))
+
+  (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((python . t)
+       (ipython . t)
+       (emacs-lisp . t)
+       (latex . t)
+       (plantuml . t)
+       (shell . t)))
+
+  ;; plantuml jar file path
+  (setq org-plantuml-jar-path
+          (expand-file-name "~/.emacs.d/plantuml.jar"))
+
+  (setq org-babel-default-header-args:python
+        '((:results . "output pp")
+          (:exports . "both")))
+
+  ;; Org babel and source blocks
+  (setq org-src-fontify-natively t
+        org-highlight-latex-and-related '(latex)
+        org-src-window-setup 'current-window
+        org-src-strip-leading-and-trailing-blank-lines t
+        org-src-preserve-indentation t ; preserve indentation in code
+        org-adapt-indentation nil; Non-nil means adapt indentation to outline node level.
+        org-src-tab-acts-natively t
+        org-export-babel-evaluate nil
+        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
+
+  ;;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+#+END_SRC
+
+
+*** Org ref
+
+#+BEGIN_SRC emacs-lisp
+(use-package org 
+  :defer t
+  :config
+  (use-package org-ref
+    :defer 20
+    :ensure t
+    :config
+    (setq org-ref-default-bibliography 
+          '("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
+    (setq org-ref-pdf-directory 
+          '("C:/Users/Nasser/OneDrive/Bibliography/references-pdf/"
+            "C:/Users/Nasser/OneDrive/Bibliography/references-etc/"))
+            (setq org-ref-completion-library 'org-ref-ivy-bibtex)
+            (org-ref-ivy-cite-completion)))
+#+END_SRC
+
+
+
+*** Todo sequences
+
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :defer t
@@ -576,13 +648,14 @@ Todo sequences.
   (setq org-cycle-separator-lines 0)) 
 #+END_SRC
 
+
 From [[http://stackoverflow.com/questions/28351465/emacs-orgmode-do-not-insert-line-between-headers][This question]], an option for org mode not insert a line between headings.
 
 [[http://orgmode.org/manual/Headlines.html][This reference]] is used to remove an annoying feature of not hiding extra lines in a subtree
 
 
 
-** Org Clock
+*** Org Clock
 From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-capure-templates][this]] settings,
 
 #+BEGIN_SRC emacs-lisp
@@ -603,9 +676,10 @@ From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-
 #+END_SRC
 
 
-** Org paste from clipboard
 
-Function for pasting images from clipboard. I got this from [[https://lists.gnu.org/archive/html/emacs-orgmode/2013-11/msg00290.html][this thread]]. It's very useful when I'm writing notes while studying, great for reviewing the notes later.
+*** Org paste from clipboard
+
+Function for pasting images from clipboard. I got this from [[https://lists.gnu.org/archive/html/emacs-orgmode/2013-11/msg00290.html][this thread]]. It's very useful hen I'm writing notes while studying, great for reviewing the notes later.
 
 +Now it creates a folder called "img/" where all the figures are going to be saved.+
 
@@ -636,7 +710,53 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
 
       (org-display-inline-images))))
 #+END_SRC
-** Org page
+
+
+*** Org tree slide
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-tree-slide
+    :ensure t
+    :bind (("<f9>" . org-tree-slide-mode)
+           ("<f12>" . org-tree-slide-move-next-tree)
+           ("<f11>" . org-tree-slide-move-previous-tree)
+           ("C-<f12>" . org-babel-next-src-block)
+           ("C-<f11>" . org-babel-previous-src-block))
+    :config
+    (global-set-key (kbd "S-<f9>") 'org-tree-slide-skip-done-toggle)
+    (org-tree-slide-simple-profile)
+    (setq org-tree-slide-modeline-display 'outside)
+
+    (use-package hide-lines :ensure t)
+
+    (defun my:hide-headers ()
+      (interactive)
+        (hide-lines-matching "#\\+BEGIN_SRC")
+        (hide-lines-matching "#\\+END_SRC
+
+"))
+      (add-hook 'org-tree-slide-play-hook 'my:hide-headers)
+      (add-hook 'org-tree-slide-stop-hook 'hide-lines-show-all)
+
+    (defun my:show-headers ()
+      (hide-lines-show-all))
+
+    (defun advice:org-edit-src-code (&optional code edit-buffer-name)
+      (interactive)
+      (my:show-headers))
+    (advice-add 'org-edit-src-code :before #'advice:org-edit-src-code)
+
+    (defun advice:org-edit-src-exit ()
+      (interactive)
+      (my:hide-headers))
+    (advice-add 'org-edit-src-exit :after #'advice:org-edit-src-exit)
+
+    (advice-add 'org-edit-inline-src-code :after #'advice:org-edit-src-exit)
+    (advice-add 'org-tree-slide-move-next-tree :after #'advice:org-edit-src-exit))
+#+END_SRC
+
+
+*** Org page
 
 [[https://github.com/kelvinh/org-page][Org-page]] - A package for generate a static blog.
 
@@ -681,7 +801,12 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
          :sort-by :date
          :category-index nil))))
 #+end_src
-  
+
+
+
+
+
+
 * Shell
 
 #+begin_src emacs-lisp
@@ -689,8 +814,9 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
 (bind-key "C-x M" 'ansi-term)
 #+end_src
 
+
 * ELPA packages
-** Avy mode
+*** Avy mode
 
 [[https://github.com/abo-abo/avy][Avy-mode]]
 
@@ -702,7 +828,8 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
          ("C-x C-x" . avy-goto-word-or-subword-1)
          ("C-x C-l" . avy-goto-line)))
 #+END_SRC
-** Ace Window
+
+*** Ace Window
 
 [[https://github.com/abo-abo/ace-window][ace-window]] is a package that uses the same idea from ace-jump-mode for
 buffer navigation, but applies it to windows. The default keys are
@@ -720,108 +847,88 @@ what I have them set to (with respect to Dvorak, of course).
      ((t (:inherit ace-jump-face-foreground :height 3.0)))))
   :bind ("C-o " . ace-window))
 #+end_src
-** Swiper/Ivy
+
+*** Counsel
 
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
   :ensure t
   :bind (("M-x" . counsel-M-x)
+         ("C-s" . counsel-grep-or-swiper)
          ("C-h v" . counsel-describe-variable)
-         ("C-h f" . counsel-describe-function))
+         ("C-h f" . counsel-describe-function)
+         ("C-x C-f" . counsel-find-file))
   :config
-  (use-package flx :ensure t)
-
-  ;; miz fuzzy with plus (.* for each space)
-  ;; http://oremacs.com/2016/01/06/ivy-flx/
-  (setq ivy-re-builders-alist
-      '((t . ivy--regex-fuzzy)))
-  (setq ivy-initial-inputs-alist nil))
+  (use-package smex :ensure t))
 #+END_SRC
 
+
+*** Ivy
 
 #+BEGIN_SRC emacs-lisp
 (use-package ivy
   :ensure t
-  :diminish (ivy-mode)
+  :diminish ivy-mode
   :bind (("C-x b" . ivy-switch-buffer))
   :config
-  (ivy-mode 1)
+  ;; Disable ido
+  (with-eval-after-load 'ido
+    (ido-mode -1)
+    ;; Enable ivy
+    (ivy-mode 1))
+  ;; for recent candidates
   (setq ivy-use-virtual-buffers t)
-  (setq ivy-display-style 'fancy))
+  (setq ivy-display-style 'fancy)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq ivy-initial-inputs-alist nil)
+  (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
+
+  ;; ;; Show recently killed buffers when calling ivy-switch-buffer
+  (setq ivy-use-virtual-buffers t)
+  ;; (setq ivy-virtual-abbreviate 'full) ; Show the full virtual file paths
+  ;; ;; Do not show "./" and "../" in the counsel-find-file completion list
+  (setq ivy-extra-directories nil))
 #+END_SRC
+
+
+*** Ivy Bibtex
+
+=M-o= show the different actions 
+
+#+BEGIN_SRC emacs-lisp
+(use-package ivy-bibtex
+  :ensure t
+  :bind ("C-c b b" . ivy-bibtex)
+  :config
+  (setq bibtex-completion-bibliography 
+        '("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
+  (setq bibtex-completion-library-path 
+        '("C:/Users/Nasser/OneDrive/Bibliography/references-pdf"
+          "C:/Users/Nasser/OneDrive/Bibliography/references-etc"))
+
+  ;; using bibtex path reference to pdf file
+  (setq bibtex-completion-pdf-field "File")
+
+  ;;open pdf with external viwer foxit
+  (setq bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (call-process "C:\\Program Files (x86)\\Foxit Software\\Foxit Reader\\FoxitReader.exe" nil 0 nil fpath)))
+
+  (setq ivy-bibtex-default-action 'bibtex-completion-insert-citation))
+#+END_SRC
+
+
+*** Swiper
 
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :ensure t
-  :bind (("C-s" . swiper)
-         ("C-c u" . swiper-all)))
+  :bind (("C-c u" . swiper-all)))
 #+END_SRC
 
-** Helm
 
-Very nice config: [[http://sriramkswamy.github.io/dotemacs/#orgheadline79][here.]]
 
-#+begin_src emacs-lisp :tangle no
-(use-package helm
-  :disabled t
-  :ensure t 
-  :diminish helm-mode
-  :commands (helm-mode
-             helm-M-x
-             helm-smex/run
-             helm-find-files
-             helm-buffers
-             helm-recentf)
-  :bind (("C-c h" . helm-command-prefix)
-        ("C-x b" . helm-mini)
-        ("C-x f"   . helm-multi-files)
-        ("C-`" . helm-resume)
-        ("M-x" . helm-M-x)
-        ("C-x C-f" . helm-find-files))
-  :config
-  (helm-mode 1)
-  (use-package helm-config)
-
-  ;; Fuzzy matching for everything
-  (setq helm-M-x-fuzzy-match t
-   helm-recentf-fuzzy-match t
-   helm-buffers-fuzzy-matching t
-   helm-locate-fuzzy-match nil
-   helm-mode-fuzzy-match t)
-
-   (helm-autoresize-mode t)
-   (setq helm-input-idle-delay 0.01)
-   (setq helm-yas-display-key-on-candidate t)
-   (setq helm-quick-update t)
-   (setq helm-display-header-line nil)
-
-   ;; Make sure helm always pops up in bottom
-   (setq helm-split-window-in-side-p t)
-   (define-key helm-map (kbd "<tab>") 'helm-execute-persistent-action) ; rebind tab to run persistent action
-
-   ;; hide the minibuffer when helm is active
-   (defun helm-hide-minibuffer-maybe ()
-   (when (with-helm-buffer helm-echo-input-in-header-line)
-   (let ((ov (make-overlay (point-min) (point-max) nil nil t)))
-   (overlay-put ov 'window (selected-window))
-   (overlay-put ov 'face (let ((bg-color (face-background 'default nil)))
-   `(:background ,bg-color :foreground ,bg-color)))
-   (setq-local cursor-type nil))))
-
-   (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe))
-#+end_src
-** Helm swiper
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package swiper-helm
-  :disabled t
-  :ensure t 
-  :bind ("C-s" . swiper-helm)
-  :config
-  (setq swiper-helm-display-function 'helm-default-display-buffer))
-#+end_src
-
-** Magit
+*** Magit
 
 
 A great interface for git projects. It's much more pleasant to use
@@ -831,7 +938,7 @@ access magit.
 #+begin_src emacs-lisp
 (use-package magit
   :ensure t 
-  :bind ("C-x g" . magit-status)
+  :bind ("C-c g" . magit-status)
   :config
   (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
   
@@ -851,32 +958,25 @@ access magit.
     (jump-to-register :magit-fullscreen)))
 #+end_src
 
-** Projectile
+
+*** Projectile
 
 #+begin_src emacs-lisp
-(use-package projectile
-  :ensure t 
-  :diminish projectile-mode
-  :commands projectile-global-mode
-  :bind-keymap ("C-c p" . projectile-command-map)
+(use-package counsel-projectile
+  :ensure t
+  :bind ("C-c p p " . counsel-projectile-switch-project)
   :config
-
-  (use-package helm-projectile
-    :disabled t
+  (counsel-projectile-on)
+  (use-package projectile
     :ensure t 
-    :defer t)
-
-  ;(setq projectile-completion-system 'helm)
-  ;(helm-projectile-on)
-
-  ;So projectile works with ivy
-  (setq projectile-completion-system 'ivy)
-
-  (setq projectile-indexing-method 'alien)
-  (projectile-global-mode))
-#+end_src
-
-** Python
+    :diminish projectile-mode
+    :init
+    (projectile-global-mode)
+    (setq projectile-completion-system 'ivy) ;So projectile works with ivy
+    (setq projectile-indexing-method 'alien)))
+ #+end_src
+ 
+*** Python
 
 Integrates with Python.
 
@@ -885,57 +985,94 @@ Integrates with Python.
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
-  (add-hook 'python-mode-hook 'elpy-mode)
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+  (add-hook 'python-mode-hook 'flycheck-mode)
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'python-mode-hook 'jedi:setup)
+  (add-hook 'python-mode-hook 'company-mode)
+  (add-hook 'python-mode-hook 'yas-minor-mode)
 
-  (defun my/python-mode-hook ()
-    (company-mode +1)
-    (add-to-list 'company-backends 'company-jedi))
+  (eval-after-load "company"
+    '(add-to-list 'company-backends 'company-anaconda))
 
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
 
   ;; Sets the python interpreter to be ipython. To trick emacs into
   ;; thinking we're still running regular python, we run ipython in
   ;; classic mode.
   (setq
    python-shell-interpreter "ipython"
-   python-shell-interpreter-args "-i --classic"))
+    python-shell-interpreter-args "-i --classic")
+
+  ;; ;; Don't switch the code buffer to python shell
+  (setq py-switch-buffers-on-execute-p nil)
+  ;; ;; Split windows
+  (setq py-split-windows-on-execute-p t)
+  ;; ;; Try to automagically figure out indentation
+  (setq py-smart-indentation t)
+
+  (setq warning-suppress-types '((python)
+                                 (emacs))))
 #+end_src
 
-[[https://github.com/jorgenschaefer/elpy][Elpy]]
 
-#+BEGIN_SRC emacs-lisp
+
+*** +Elpy+
+
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package elpy
   :ensure t
   :defer t
   :config
   (elpy-enable)
-  (elpy-use-ipython)
+  ;; (elpy-use-ipython)
   (setq elpy-rpc-backend "jedi"))
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-(use-package company-jedi
+*** company mode
+#+BEGIN_SRC emacs-lisp 
+(use-package company
   :ensure t
   :defer t
   :config
-  (setq jedi:complete-on-dot t)
-  (setq jedi:use-shortcuts t)
-  (add-to-list 'company-backends 'company-jedi))
+
+  (use-package company-jedi :ensure t
+    :disabled t
+    :config
+    (add-to-list 'company-backends 'company-jedi)
+    (setq jedi:complete-on-dot t)
+    (setq jedi:use-shortcuts t))
+
+  )
+
+
+#+END_SRC
+
+*** Anaconda mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package anaconda-mode
+  :ensure t
+  :bind ("C-c C-d" . anaconda-mode-show-doc)
+)
+#+END_SRC
+
+*** Company anaconda
+
+#+BEGIN_SRC emacs-lisp
+(use-package company-anaconda 
+  :ensure t
+  :defer t)
 #+END_SRC
 
 
-** Smartparens
+*** Smartparens
 
 #+begin_src emacs-lisp
 (use-package smartparens
   :ensure t 
   :defer t
-  :diminish smartparens-mode
   :config
-  (smartparens-global-mode)
   (show-smartparens-global-mode t)
   (sp-local-pair 'org-mode "_" "_" )
   (sp-local-pair 'org-mode "*" "*" )
@@ -943,8 +1080,9 @@ Integrates with Python.
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l("))
 #+end_src
 
-** AucTex
-*** Basic setup
+
+*** AucTex
+
 
 Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when files with .tex are loaded. Tex-master is  useful to make Auctex aware of multi-files documents. TeX-PDF mode is used to compile using pdflatex.
 
@@ -958,8 +1096,6 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
   (setq-default TeX-master nil)
   (add-hook 'LaTeX-mode-hook
             (lambda ()
-              (magic-latex-buffer)
-              (LaTeX-math-mode)
               (rainbow-delimiters-mode)
               (flyspell-mode)
               (company-mode)
@@ -968,57 +1104,40 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
               (setq reftex-plug-into-AUCTeX t)
               (reftex-isearch-minor-mode)
               (setq TeX-PDF-mode t)
-              (setq global-font-lock-mode t)
-              (setq TeX-source-correlate-method 'synctex)
-              (setq TeX-source-correlate-start-server t)))
+              (setq global-font-lock-mode t)))
 
-;https://github.com/politza/pdf-tools/issues/187
+  ;; Method for enabling forward and inverse search 
+  (setq TeX-source-correlate-method 'synctex)
+  ;; inhibit the question to start a server process
+  (setq TeX-source-correlate-start-server t)
 
-(add-hook 'TeX-after-compilation-finished-functions #'TeX-revert-document-buffer) 
+;; Update PDF buffers after successful LaTeX runs
+  ;; http://emacs.stackexchange.com/questions/19472/how-to-let-auctex-open-pdf-with-pdf-tools
+  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
+             #'TeX-revert-document-buffer)
 
+  ;; to use pdfview with auctex
+  (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
+ 
+  ;; latex commands
+  (setq LaTeX-command "latex -synctex=1  -shell-escape")
 
-       
-;; to use pdfview with auctex
-(add-hook 'LaTeX-mode-hook 'pdf-tools-install)
-;; nil beacuse I don't want the pdf to be opened again in the same frame after C-c C-a
-;; (setq TeX-view-program-selection nil)  
-;; (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
-;; (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+  ;;Use pdf-tools to open PDF files
+  (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
 
-;add org ref into auctex
-;; https://github.com/jkitchin/org-ref/issues/216
-(add-hook 'LaTeX-mode-hook (lambda () (require 'org-ref)))
+  (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
 
-;; https://github.com/politza/pdf-tools/pull/60
-(setq pdf-sync-forward-display-action
-      '(display-buffer-reuse-window (reusable-frames . t)))
-;; same thing, now I can jump from pdf in another frame into source
-(setq pdf-sync-backward-display-action
-      '(display-buffer-reuse-window (reusable-frames . t)))
-
-; language specific hooks in auctex
-(add-hook 'TeX-language-dk-hook
-      (lambda () (ispell-change-dictionary "brasileiro"))))
+  (setq pdf-sync-backward-display-action
+  '(nil (reusable-frames . t)))
+)
 #+end_src
-
-*** Company auctex
-
-From [[https://github.com/manugoyal/.emacs.d#latex][here]].
-
-#+BEGIN_SRC emacs-lisp
-(use-package company-auctex
-  :ensure t
-  :defer t
-  :config
-  (company-auctex-init))
-#+END_SRC
 
 
 *** Latex preview pane
 
 shell-escape mode because the pacakge svg requires it.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package latex-preview-pane
   :disabled t
   :bind ("M-p" . latex-preview-pane-mode)
@@ -1030,7 +1149,8 @@ shell-escape mode because the pacakge svg requires it.
    '(latex-preview-pane-multifile-mode (quote auctex))))
 #+END_SRC
 
-** Reftex
+
+*** Reftex
 
 [[http://www.gnu.org/software/auctex/manual/reftex.html#SEC2][RefTex website]]. Useful for managing cross references, bibliographies, indices, and document navigation.
 
@@ -1039,36 +1159,55 @@ shell-escape mode because the pacakge svg requires it.
   :ensure t
   :defer t
   :config
-  (setq reftex-cite-prompt-optional-args t)); Prompt for empty optional arguments in cite
+  (setq reftex-cite-prompt-optional-args t) ; Prompt for empty optional arguments in cite
+  ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
+  (setq reftex-enable-partial-scans t)
+  (setq reftex-keep-temporary-buffers nil)
+  (setq reftex-save-parse-info t)
+  (setq reftex-trust-label-prefix '("fig:" "eq:")))
 #+END_SRC
 
-** Magic Latex Buffer
 
-#+begin_src emacs-lisp
+*** +Magic Latex Buffer+
+
+#+begin_src emacs-lisp :tangle no
 (use-package magic-latex-buffer
   :load-path ("C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
   :config
   (add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
   (setq magic-latex-enable-block-highlight nil
-      magic-latex-enable-suscript        t
+      magic-latex-enable-suscript        nil
       magic-latex-enable-pretty-symbols  t
       magic-latex-enable-block-align     nil
       magic-latex-enable-inline-image    nil))
 #+end_src
 
-** Flycheck
+
+*** Flycheck
 
 
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t 
-  :diminish flycheck-mode
-  :bind ("S-<f5>" . flycheck-mode))
+  :defer t
+  :config
+
+  (flycheck-define-checker proselint
+  "A linter for prose."
+  :command ("proselint" source-inplace)
+  :error-patterns
+  ((warning line-start (file-name) ":" line ":" column ": "
+        (id (one-or-more (not (any " "))))
+        (message) line-end))
+  :modes (text-mode markdown-mode gfm-mode))
+
+  (add-to-list 'flycheck-checkers 'proselint)
+
+  )
 #+END_SRC
 
 
-
-** Flyspell
+*** Flyspell
 
 #+BEGIN_SRC emacs-lisp
 (use-package flyspell
@@ -1091,10 +1230,20 @@ shell-escape mode because the pacakge svg requires it.
     (message "Dictionary switched from %s to %s" dic change)
     ))
   (global-set-key (kbd "<f6>")   'fd-switch-dictionary)
-  (global-set-key (kbd "C-<f1>") 'flyspell-correct-word-before-point))
+  (global-set-key (kbd "C-<f1>") 'flyspell-correct-word-before-point)
+
+
+  (use-package auto-dictionary
+    :ensure t
+    :config
+    (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode 1))))
+  
+  (setq ispell-dictionary "brasileiro")
+)
 #+END_SRC
 
-** Company
+
+*** Company
 Auto complete
 
 The configurations were taken from [[https://github.com/company-mode/company-mode/issues/68][This discussion]]. The delay time from the wiki. This [[https://www.reddit.com/r/emacs/comments/3s5bkf/companymode_configuration_make_editing_slow/][reddit thread]] has some cool configurations. [[https://github.com/manugoyal/.emacs.d#company-mode][Company capf is problematic?]]
@@ -1110,10 +1259,15 @@ The configurations were taken from [[https://github.com/company-mode/company-mod
   (setq company-show-numbers t)
   (setq company-minimum-prefix-length 3)
   (delete 'company-capf company-backends)
-  (add-hook 'company-mode-hook 'company-statistics-mode))
+  (add-hook 'company-mode-hook 'company-statistics-mode)
+  (use-package company-flx
+    :ensure t
+    :init
+    (company-flx-mode +1)))
 #+END_SRC
 
-** Company statistics-mode 
+
+*** Company statistics-mode 
 
 [[https://github.com/company-mode/company-statistics][Company statistics-mode]]
 
@@ -1123,7 +1277,8 @@ The configurations were taken from [[https://github.com/company-mode/company-mod
   :defer t)
 #+END_SRC
 
-** Undo tree 
+
+*** Undo tree 
 
 
 Undo system to recover any past state of a buffer.
@@ -1139,30 +1294,32 @@ Undo system to recover any past state of a buffer.
     (setq undo-tree-visualizer-diff t)))
 #+END_SRC
 
-** Rainbow delimiters
+
+*** Rainbow delimiters
 
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
   :ensure t 
   :defer t
+  :init   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   :config
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-  ;; (set-face-foreground 'rainbow-delimiters-depth-1-face "dark slate gray")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-6-face "lime green")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
-  ;; (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
-  ;; (set-face-foreground 'rainbow-delimiters-unmatched-face "red")
-)
+  (set-face-foreground 'rainbow-delimiters-depth-1-face "dark slate gray")
+  (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
+  (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
+  (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
+  (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
+  (set-face-foreground 'rainbow-delimiters-depth-6-face "lime green")
+  (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
+  (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
+  (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
+  (set-face-foreground 'rainbow-delimiters-unmatched-face "red")
+  )
 #+END_SRC
 
 
 
-** Pdf tools
+
+*** Pdf tools
 
 -From the larslj's  [[https://github.com/larslj/pdf-tools/tree/windows][windows branch]].- 
 
@@ -1177,36 +1334,33 @@ Undo system to recover any past state of a buffer.
   (setq pdf-view-resize-factor 1.10))
 #+END_SRC
 
-** Which key 
 
-#+BEGIN_SRC emacs-lisp
+*** +Which key+
+
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package which-key
   :ensure t
   :diminish (which-key-mode)
   :config
   (which-key-mode))
 #+END_SRC
-** Popwin
 
-#+BEGIN_SRC emacs-lisp
-(use-package popwin
-  :ensure t
-  :defer 5
-  :config
-  (popwin-mode 1))
-#+END_SRC
-** Smart mode line
 
-#+BEGIN_SRC emacs-lisp
+
+
+*** +Smart mode line+
+
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package smart-mode-line
   :ensure t
-  :init
+  :config
   (progn 
     (setq sml/no-confirmation-load-theme t)
     (sml/setup)))
 #+END_SRC
 
-** Writegood mode
+
+*** +Writegood mode+
 
 From [[https://github.com/grettke/help/blob/master/help.org][this source]]
 
@@ -1217,33 +1371,125 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
   (eval-after-load "writegood-mode"
     '(diminish 'writegood-mode)))
 #+END_SRC
-** Yasnippet
 
-#+BEGIN_SRC emacs-lisp :tangle no
+*** Yasnippet
+
+#+BEGIN_SRC emacs-lisp
 (use-package yasnippet
-  :ensure t
-  :defer t
-  :config
-  (yas-global-mode 1))
+  :commands (yas-minor-mode) ; autoload `yasnippet' when `yas-minor-mode' is called
+                                        ; using any means: via a hook or by user
+                                        ; Feel free to add more commands to this
+                                        ; list to suit your needs.
+  :config ; stuff to do after requiring the package
+  (yas-reload-all)
+
+    (defun yas/org-very-safe-expand ()
+      (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
+
+    (defun yas/org-setup ()
+      ;; yasnippet (using the new org-cycle hooks)
+      (make-variable-buffer-local 'yas/trigger-key)
+      (setq yas/trigger-key [tab])
+      (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
+      (define-key yas/keymap [tab] 'yas/next-field))
+
+    ;; See https://github.com/eschulte/emacs24-starter-kit/issues/80.
+    (setq org-src-tab-acts-natively nil)
+    
+    (add-hook 'org-mode-hook #'yas/org-setup))
 #+END_SRC
-** Hyperbole
+
+
+*** +Hyperbole+
 
 #+BEGIN_SRC emacs-lisp :tangle no
 (use-package hyperbole
   :ensure t
   :defer 10)
 #+END_SRC
-** Lispy
 
-#+BEGIN_SRC emacs-lisp
+*** +Lispy+
+
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package lispy
   :ensure t
   :defer t)
 #+END_SRC
 
+*** Key chord
+
+#+BEGIN_SRC emacs-lisp
+(use-package key-chord
+  :ensure t
+  :defer 10
+  :config
+  (key-chord-mode 1)
+  (setq key-chord-two-keys-delay 0.1)
+  (key-chord-define-global "]]" "\\")
+  (key-chord-define-global ";;" "/")
+  (key-chord-define-global "::" "?")
+  (key-chord-define-global "}}" "|"))
+#+END_SRC
+
+*** Neotree
+
+#+BEGIN_SRC emacs-lisp
+(use-package neotree
+  :ensure t
+  :bind ("<f8>" . neotree-toggle)
+  :config
+  (setq neo-smart-open t)
+  (setq neo-vc-integration nil)
+  ;; Do not allow neotree to be the only open window
+  (setq-default neo-dont-be-alone t)
+  (setq neo-theme 'nerd)) ; 'classic, 'nerd, 'ascii, 'arrow
+#+END_SRC
+
+
+
+*** +Hydra+
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package hydra
+  :ensure t
+  :config
+  (set-face-attribute 'hydra-face-red      nil :foreground "Red"        :bold t)
+  (set-face-attribute 'hydra-face-blue     nil :foreground "RoyalBlue3" :bold t)
+  (set-face-attribute 'hydra-face-amaranth nil :foreground "#e52b50"    :bold t)
+  (set-face-attribute 'hydra-face-pink     nil :foreground "HotPink1"   :bold t)
+  (set-face-attribute 'hydra-face-teal     nil :foreground "#367588"    :bold t)
+  (hydra-add-font-lock))
+#+END_SRC
+
+*** imenu list
+
+
+#+BEGIN_SRC emacs-lisp
+(use-package imenu-list
+  :ensure t
+  :bind ("C-." . imenu-list-minor-mode)
+  :config
+  (setq imenu-list-focus-after-activation t))
+#+END_SRC
+
+*** Expand region
+
+#+BEGIN_SRC emacs-lisp
+(use-package expand-region
+  :ensure t
+  :bind ("C-=" . er/expand-region))
+#+END_SRC
+
+*** Iedit
+
+#+BEGIN_SRC emacs-lisp
+(use-package iedit
+  :ensure t
+  :bind* ("C-;" . iedit-mode))
+#+END_SRC
 
 * Misc
-** Doc view keybindings
+** +Doc view keybindings+
 
 #+begin_src emacs-lisp :tangle no
 (use-package doc-view
@@ -1260,218 +1506,35 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
   (setq doc-view-continuous t))
 #+end_src
 
+
 ** Remove ad-handle message
 #+BEGIN_SRC emacs-lisp
 (setq ad-redefinition-action 'accept)
 #+END_SRC
+
 ** Winner mode
 #+BEGIN_SRC emacs-lisp
 (winner-mode 1)
 #+END_SRC
 
-** Key chord
 
-#+BEGIN_SRC emacs-lisp
-(use-package key-chord
-  :ensure t
-  :after (org tex-site) 
-  :defer 10
-  :config
-  (key-chord-mode 1)
-  (setq key-chord-two-keys-delay 0.1)
-  (key-chord-define-global "]]" "\\")
-  (key-chord-define-global ";;" "/")
-  (key-chord-define-global "::" "?")
-  (key-chord-define-global "}}" "|"))
-#+END_SRC
+
 ** Autorevert mode
 
 Update file in buffer, refresh.
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (global-auto-revert-mode t)
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 #+END_SRC
-** Change src block bg
 
-#+BEGIN_SRC emacs-lisp
-(with-eval-after-load 'org
-        ;; * Colored src blocks
-        ;; based on patches from Rasmus <rasmus@gmx.us>
-
-        ;; This function overwrites the org-src function to make src blocks be colored again.
-        (defun org-src-font-lock-fontify-block (lang start end)
-          "Fontify code block.
-        LANG is the language of the block.  START and END are positions of
-        the block.  This function is called by Emacs automatic
-        fontification, as long as `org-src-fontify-natively' is non-nil."
-          (let ((lang-mode (org-src--get-lang-mode lang)))
-            (when (fboundp lang-mode)
-              (let ((string (buffer-substring-no-properties start end))
-                    (modified (buffer-modified-p))
-                    (org-buffer (current-buffer))
-                    (block-faces (let ((face-name (intern (format "org-block-%s" lang))))
-                                   (append (and (facep face-name) (list face-name))
-                                           '(org-block)))))
-                (remove-text-properties start end '(face nil))
-                (with-current-buffer
-                    (get-buffer-create
-                     (format " *org-src-fontification:%s*" lang-mode))
-                  (erase-buffer)
-                  (insert string " ") ;; so there's a final property change
-                  (unless (eq major-mode lang-mode) (funcall lang-mode))
-                  (org-font-lock-ensure)
-                  (let ((pos (point-min)) next)
-                    (while (setq next (next-single-property-change pos 'face))
-                      (let ((new-face (get-text-property pos 'face)))
-                        (put-text-property
-                         (+ start (1- pos)) (1- (+ start next)) 'face
-                         (list :inherit (append (and new-face (list new-face))
-                                                block-faces))
-                         org-buffer))
-                      (setq pos next))
-                    ;; Add the face to the remaining part of the font.
-                    (put-text-property (1- (+ start pos))
-                                       end 'face
-                                       (list :inherit block-faces) org-buffer)))
-                (add-text-properties
-                 start end
-                 '(font-lock-fontified t fontified t font-lock-multiline t))
-                (set-buffer-modified-p modified)))))
-
-        (defun org-fontify-meta-lines-and-blocks-1 (limit)
-          "Fontify #+ lines and blocks."
-          (let ((case-fold-search t))
-            (if (re-search-forward
-                 "^\\([ \t]*#\\(\\(\\+[a-zA-Z]+:?\\| \\|$\\)\\(_\\([a-zA-Z]+\\)\\)?\\)[ \t]*\\(\\([^ \t\n]*\\)[ \t]*\\(.*\\)\\)\\)"
-                 limit t)
-                (let ((beg (match-beginning 0))
-                      (block-start (match-end 0))
-                      (block-end nil)
-                      (lang (match-string 7))
-                      (beg1 (line-beginning-position 2))
-                      (dc1 (downcase (match-string 2)))
-                      (dc3 (downcase (match-string 3)))
-                      end end1 quoting block-type ovl)
-                  (cond
-                   ((and (match-end 4) (equal dc3 "+begin"))
-                    ;; Truly a block
-                    (setq block-type (downcase (match-string 5))
-                          quoting (member block-type org-protecting-blocks))
-                    (when (re-search-forward
-                           (concat "^[ \t]*#\\+end" (match-string 4) "\\>.*")
-                           nil t)  ;; on purpose, we look further than LIMIT
-                      (setq end (min (point-max) (match-end 0))
-                            end1 (min (point-max) (1- (match-beginning 0))))
-                      (setq block-end (match-beginning 0))
-                      (when quoting
-                        (org-remove-flyspell-overlays-in beg1 end1)
-                        (remove-text-properties beg end
-                                                '(display t invisible t intangible t)))
-                      (add-text-properties
-                       beg end '(font-lock-fontified t font-lock-multiline t))
-                      (add-text-properties beg beg1 '(face org-meta-line))
-                      (org-remove-flyspell-overlays-in beg beg1)
-                      (add-text-properties	; For end_src
-                       end1 (min (point-max) (1+ end)) '(face org-meta-line))
-                      (org-remove-flyspell-overlays-in end1 end)
-                      (cond
-                       ((and lang (not (string= lang "")) org-src-fontify-natively)
-                        (org-src-font-lock-fontify-block lang block-start block-end)
-                        (add-text-properties beg1 block-end '(src-block t)))
-                       (quoting
-                        (add-text-properties beg1 (min (point-max) (1+ end1))
-                                             (let ((face-name (intern (format "org-block-%s" lang))))
-                                               (append (and (facep face-name) (list face-name))
-                                                       '(face org-block))))) ; end of source block
-                       ((not org-fontify-quote-and-verse-blocks))
-                       ((string= block-type "quote")
-                        (add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-quote)))
-                       ((string= block-type "verse")
-                        (add-text-properties beg1 (min (point-max) (1+ end1)) '(face org-verse))))
-                      (add-text-properties beg beg1 '(face org-block-begin-line))
-                      (add-text-properties (min (point-max) (1+ end)) (min (point-max) (1+ end1))
-                                           '(face org-block-end-line))
-                      t))
-                   ((member dc1 '("+title:" "+author:" "+email:" "+date:"))
-                    (org-remove-flyspell-overlays-in
-                     (match-beginning 0)
-                     (if (equal "+title:" dc1) (match-end 2) (match-end 0)))
-                    (add-text-properties
-                     beg (match-end 3)
-                     (if (member (intern (substring dc1 1 -1)) org-hidden-keywords)
-                         '(font-lock-fontified t invisible t)
-                       '(font-lock-fontified t face org-document-info-keyword)))
-                    (add-text-properties
-                     (match-beginning 6) (min (point-max) (1+ (match-end 6)))
-                     (if (string-equal dc1 "+title:")
-                         '(font-lock-fontified t face org-document-title)
-                       '(font-lock-fontified t face org-document-info))))
-                   ((equal dc1 "+caption:")
-                    (org-remove-flyspell-overlays-in (match-end 2) (match-end 0))
-                    (remove-text-properties (match-beginning 0) (match-end 0)
-                                            '(display t invisible t intangible t))
-                    (add-text-properties (match-beginning 1) (match-end 3)
-                                         '(font-lock-fontified t face org-meta-line))
-                    (add-text-properties (match-beginning 6) (+ (match-end 6) 1)
-                                         '(font-lock-fontified t face org-block))
-                    t)
-                   ((member dc3 '(" " ""))
-                    (org-remove-flyspell-overlays-in beg (match-end 0))
-                    (add-text-properties
-                     beg (match-end 0)
-                     '(font-lock-fontified t face font-lock-comment-face)))
-                   (t ;; just any other in-buffer setting, but not indented
-                    (org-remove-flyspell-overlays-in (match-beginning 0) (match-end 0))
-                    (remove-text-properties (match-beginning 0) (match-end 0)
-                                            '(display t invisible t intangible t))
-                    (add-text-properties beg (match-end 0)
-                                         '(font-lock-fontified t face org-meta-line))
-                    t))))))
-
-        (defface org-block-emacs-lisp
-          `((t (:background "GhostWhite")))
-          "Face for elisp src blocks")
-
-        (defface org-block-python
-          `((t (:background "WhiteSmoke")))
-          "Face for python blocks")
-
-        (defface org-block-ipython
-          `((t (:background "AliceBlue")))
-          "Face for python blocks") 
-
-        (defface org-block-sh
-          `((t (:background "MintCream")))
-          "Face for shell blocks")
-
-        (defface org-block-latex
-          `((t (:background "FloralWhite")))
-          "Face for latex blocks")
-
-        (defface org-block-plantuml
-          `((t (:background "Ivory")))
-          "Face for plantuml blocks"))
-#+END_SRC
-
-** Byte compile
-
-From this [[https://www.reddit.com/r/emacs/comments/4oxev7/how_should_i_start_unittesting_or_behaviortesting/][thread]]
-
-#+BEGIN_SRC emacs-lisp
-(defun byte-compile-current-buffer ()
-  "`byte-compile' current buffer if it's emacs-lisp-mode and compiled file exists."
-  (interactive)
-  (when (and (eq major-mode 'emacs-lisp-mode)
-             (file-exists-p (byte-compile-dest-file buffer-file-name)))
-    (byte-compile-file buffer-file-name)))
-#+END_SRC
 ** Key M-\ to M-] delete horizontal space
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-]") 'delete-horizontal-space)
 #+END_SRC
+
 ** minibuffer
 
 Minibuffer window expands vertically as necessary to hold the text
@@ -1480,11 +1543,67 @@ that you put in the minibuffer
 #+BEGIN_SRC emacs-lisp
 (setq resize-mini-windows t) ;; was grow-only
 #+END_SRC
+
+** Activate window on another frame
+
+mouse auto select to make active the buffer where the mouse pointer is hovering, and focus follows to work with other emacs frames. Useful to scroll pdf on different frames
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq focus-follows-mouse t)
+(setq mouse-autoselect-window t)
+#+END_SRC
+
+
 ** Scrooling
 
 #+BEGIN_SRC emacs-lisp
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 #+END_SRC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
