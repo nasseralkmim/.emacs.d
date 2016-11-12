@@ -1120,7 +1120,7 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
   (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
  
   ;; latex commands
-  (setq LaTeX-command "latex -synctex=1  -shell-escape")
+  (setq LaTeX-command "latex --synctex=1 -shell-escape")
 
   ;;Use pdf-tools to open PDF files
   (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
@@ -1325,10 +1325,8 @@ Undo system to recover any past state of a buffer.
 
 #+BEGIN_SRC emacs-lisp 
 (use-package pdf-tools
-  :ensure t
   :mode ("\\.pdf\\'" . pdf-tools-install)
   :bind ("C-c C-g" . pdf-sync-forward-search)
-  :defer t
   :config
   (setq mouse-wheel-follow-mouse t)
   (setq pdf-view-resize-factor 1.10))
