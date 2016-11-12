@@ -1129,6 +1129,8 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
 
   (setq pdf-sync-backward-display-action
   '(nil (reusable-frames . t)))
+  (setq pdf-sync-forward-display-action
+  '(nil (reusable-frames . t)))
 )
 #+end_src
 
