@@ -1,3 +1,18 @@
+;; http://scripter.co/emacsclient-on-windows/
+(require 'server)
+;; Start a server if (server-running-p) does not return t (e.g. if it
+;; returns nil or :other)
+(or (eq (server-running-p) t)
+    (server-start))
+
+(when (equal window-system 'w32)
+  (setq server-use-tcp t))
+
+(with-eval-after-load 'server
+  (when (equal window-system 'w32)
+    ;; Suppress error "directory  ~/.emacs.d/server is unsafe". It is needed
+    ;; needed for the server to start on Windows.
+    (defun server-ensure-safe-dir (dir) "Noop" t)))
 
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.  Don't delete this line.  If you don't want it,
@@ -8,11 +23,11 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-(when window-system
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (tooltip-mode -1))
+(set-face-attribute 'default nil :font "Source Code Pro 10")
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(tooltip-mode -1)
 
 (setq initial-scratch-message "")
 
