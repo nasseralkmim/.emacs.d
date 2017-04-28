@@ -39,7 +39,7 @@ Using the method described here: http://www.holgerschurig.de/en/emacs-efficientl
       package-archives
       '(("melpa"           . "http://melpa.org/packages/")
         ("melpa-stable" . "http://stable.melpa.org/packages/")
-        ("RSW-packages" . "http://www.plasmas.biz/rswe/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
         ("org" . "http://orgmode.org/elpa/")))
 #+END_SRC
 
@@ -148,6 +148,7 @@ Basic syntax:
   ;;  use it to visually set apart source buffers from popups, the minibuffer, or temporary buffers.
   (add-hook 'find-file-hook 'doom-buffer-mode)
   (use-package all-the-icons
+    :disabled t
     :load-path "C:/Users/Nasser/.emacs.d/elpa/all-the-icons"))
 #+END_SRC
 
@@ -225,7 +226,17 @@ Basic syntax:
 #+BEGIN_SRC emacs-lisp :tangle no
 (use-package color-theme-sanityinc-tomorrow
   :ensure t
-  :defer t)
+  :config
+  (load-theme 'sanityinc-tomorrow-night)
+)
+#+END_SRC
+*** Gruvbox
+
+#+BEGIN_SRC emacs-lisp
+(use-package gruvbox-theme
+  :ensure t
+  :config
+  (load-theme 'gruvbox t))
 #+END_SRC
 
 
@@ -284,83 +295,91 @@ Download
 
 
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Source Code Pro 10")
+;; (set-face-attribute 'default nil :font "Dejavu Sans 10") 
+;; (set-face-attribute 'default nil :font "Source Code Pro 10")
+;; (set-face-attribute 'default nil :font "Office Code Pro D 10")
 ;; (set-frame-font "Source Code Pro 10")  
-;; (set-frame-font "Fira mono for powerline 10")
+;; (set-frame-font "Lucida Sans Unicode 10")
 ;; (set-frame-font "Monospace 10")
-;; (set-frame-font "Dejavu Sans 10")
 ;; (set-frame-font "Fantasque Sans Mono 11")
 ;; (set-frame-font "Inconsolata-g 10")
 #+end_src
 
+#+BEGIN_SRC emacs-lisp
+;; set a default font
+(when (member "Office Code Pro D" (font-family-list))
+  (set-face-attribute 'default nil :font "Office Code Pro D 9"))
+
+;; specify font for all unicode characters
+(when (member "Dejavu Sans" (font-family-list))
+  (set-fontset-font t 'unicode "Dejavu Sans" nil 'prepend))
+#+END_SRC
 
 * Common defaults
 
 Sources for this section include [[https://github.com/magnars/.emacs.d/blob/master/settings/sane-defaults.el][Magnars Sveen]] and [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
 
 #+begin_src emacs-lisp
-;; These functions are useful. Activate them.
-(put 'downcase-region 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
+  ;; These functions are useful. Activate them.
+  (put 'downcase-region 'disabled nil)
+  (put 'upcase-region 'disabled nil)
+  (put 'narrow-to-region 'disabled nil)
+  (put 'dired-find-alternate-file 'disabled nil)
 
-;; Answering just 'y' or 'n' will do
-(defalias 'yes-or-no-p 'y-or-n-p)
+  ;; Answering just 'y' or 'n' will do
+  (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; UTF-8 please
-(prefer-coding-system 'utf-8)
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+  ;; UTF-8 please
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-;; from Sacha page
-(when (display-graphic-p)
-  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+  ;; from Sacha page
+  (when (display-graphic-p)
+    (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
+  (setq-default indent-tabs-mode nil)
 
+  ;; use shift-arrows to move between windows
+  (windmove-default-keybindings)
 
+  ;; highlight current line
+  ;; (global-hl-line-mode 1)
+  ;; (set-face-background 'hl-line "SlateGray1")
 
-(setq-default indent-tabs-mode nil)
+  ; wrap lines
+  ;; (global-visual-line-mode)
+  ;; (diminish 'visual-line-mode)
 
-;; use shift-arrows to move between windows
-(windmove-default-keybindings)
+  ;; Turn off the blinking cursor
+  (blink-cursor-mode -1)
 
-;; highlight current line
-(global-hl-line-mode 1)
-(set-face-background 'hl-line "SlateGray1")
+  (setq-default indent-tabs-mode nil)
+  (setq-default indicate-empty-lines t)
 
-; wrap lines
-(global-visual-line-mode)
-(diminish 'visual-line-mode)
+  ;; Don't count two spaces after a period as the end of a sentence.
+  ;; Just one space is needed.
+  (setq sentence-end-double-space nil)
 
-;; Turn off the blinking cursor
-(blink-cursor-mode -1)
-
-(setq-default indent-tabs-mode nil)
-(setq-default indicate-empty-lines t)
-
-;; Don't count two spaces after a period as the end of a sentence.
-;; Just one space is needed.
-(setq sentence-end-double-space nil)
-
-;; delete the region when typing, just like as we expect nowadays.
-(delete-selection-mode t)
-
-
-(column-number-mode t)
-
-;; convert symbols like greek letter into its unicode character
-(setq global-prettify-symbols-mode t)
-;; unprettify symbol when at right edge
-(setq prettify-symbols-unprettify-at-point 'right-edge) 
-
-(setq uniquify-buffer-name-style 'forward)
+  ;; delete the region when typing, just like as we expect nowadays.
+  (delete-selection-mode t)
 
 
-;; Don't beep at me
-(setq visible-bell t)
+  (column-number-mode t)
 
-;; Don't create backups
-(setq make-backup-files nil)
+  ;; unprettify symbol when at right edge
+  (setq prettify-symbols-unprettify-at-point 'right-edge) 
+
+  (setq uniquify-buffer-name-style 'forward)
+
+
+  ;; Don't beep at me
+  (setq visible-bell t)
+
+  ;; Don't create backups
+  (setq make-backup-files nil)
 #+end_src
 
 
@@ -373,6 +392,28 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 ;(setq debug-on-quit t)
 #+END_SRC
 
+*** Fringe
+
+#+BEGIN_SRC emacs-lisp
+(set-fringe-mode 0)
+#+END_SRC
+*** go to line
+
+http://whattheemacsd.com/
+
+#+BEGIN_SRC emacs-lisp
+(global-set-key [remap goto-line] 'goto-line-with-feedback)
+
+(defun goto-line-with-feedback ()
+  "Show line numbers temporarily, while prompting for the line number input"
+  (interactive)
+  (unwind-protect
+      (progn
+        (linum-mode 1)
+        (goto-line (read-number "Goto line: ")))
+    (linum-mode -1)))
+#+END_SRC
+
 
 * Recentf
 Recentf is a minor mode that builds a list of recently opened files.
@@ -383,8 +424,9 @@ Recentf is a minor mode that builds a list of recently opened files.
   :config
   (progn
     (recentf-mode t)
-    (setq recentf-max-saved-items 200
-          recentf-max-menu-items 15)))
+    (setq recentf-max-saved-items 500
+          recentf-max-menu-items 15))
+  (run-at-time (current-time) 300 'recentf-save-list))
 #+end_src
 
 
@@ -399,14 +441,16 @@ Recentf is a minor mode that builds a list of recently opened files.
   :mode (("\\.org$" . org-mode))
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
-        ("C-c c" . org-capture))
+        ("C-c c" . org-capture)
+        ("M-p" . org-previous-item)
+        ("M-n" . org-next-item))
   :init (require 'org)
   :config
   (add-hook 'org-mode-hook 'smartparens-mode)
-  (add-hook 'org-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'org-mode-hook 'company-mode)
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
   (add-hook 'org-mode-hook 'flyspell-mode)
+  (add-hook 'org-mode-hook 'visual-line-mode)
 )
 #+END_SRC
 
@@ -444,13 +488,14 @@ General options.
    '(org-level-2 ((t (:background nil :bold t :overline nil)))))
 
   (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey")
+  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey")
 
   (custom-set-faces
-   '(org-level-1 ((t (:bold t  :height 1.1 :family "Helvetica Neue"))))
+   '(org-level-1 ((t (:bold t  :height 1.2 ))))
    '(org-level-2 ((t (:inherit outline-2 :bold t  :height 1.0))))
-   '(org-level-3 ((t (:inherit outline-3 :height 1.0))))
-   '(org-level-4 ((t (:inherit outline-5 :height 1.0))))
-   '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+   '(org-level-3 ((t (:inherit outline-3 :bold t :height 1.0))))
+   '(org-level-4 ((t (:inherit outline-4 :bold t :height 1.0))))
+   '(org-level-5 ((t (:inherit outline-5 :bold t :height 1.0)))))
 
   
   (setq org-agenda-weekend-days nil)
@@ -458,7 +503,15 @@ General options.
   (setq org-modules '(org-habit))
   (eval-after-load 'org
     '(org-load-modules-maybe t))
-    )
+
+
+  (setq org-file-apps '((auto-mode . emacs)
+                        ("\\.mm\\'" . default)
+                        ("\\.x?html?\\'" . default)
+                        ("\\.pdf::\\([0-9]+\\)\\'" . "sumatrapdf \"%s\" -page %1")
+                        ("\\.pdf\\'" . default)))
+
+  )
  #+END_SRC
  
 *** Ox extra
@@ -470,6 +523,259 @@ General options.
   (require 'ox-extra)
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 #+END_SRC
+*** Ob ipython modifications
+
+From [[http://kitchingroup.cheme.cmu.edu/blog/2017/01/29/ob-ipython-and-inline-figures-in-org-mode/?utm_source=feedburner&utm_medium=twitter&utm_campaign=Feed%3A+TheKitchinResearchGroup+%28The+Kitchin+Research+Group%29#org36f9eed][John Kitchin]]
+
+https://github.com/jkitchin/scimax/blob/master/scimax-org-babel-ipython.el#L100
+
+#+BEGIN_SRC emacs-lisp
+(defun ob-ipython-inline-image (b64-string)
+  "Write the B64-STRING to a file.
+Returns an org-link to the file."
+  (let* ((f (md5 b64-string))
+	 (d "ipython-inline-images")
+	 (tfile (concat d "/ob-ipython-" f ".png"))
+	 (link (format "[[file:%s]]" tfile)))
+    (unless (file-directory-p d)
+      (make-directory d))
+    (ob-ipython--write-base64-string tfile b64-string)
+    link))
+
+
+(defun ob-ipython--async-callback (status &rest args)
+  "Callback function for `ob-ipython--execute-request-asynchronously'.
+It replaces the output in the results."
+  (let* ((ret (ob-ipython--eval (if (>= (url-http-parse-response) 400)
+				    (ob-ipython--dump-error (buffer-string))
+				  (goto-char url-http-end-of-headers)
+				  (let ((json-array-type 'list))
+				    (json-read)))))
+	 (result (cdr (assoc :result ret)))
+	 (output (cdr (assoc :output ret)))
+	 result-type)
+    (with-current-buffer *async-ob-ipython*
+      (save-excursion
+	(goto-char (point-min))
+	(when (re-search-forward "async-abcd-1234-\\(output\\|value\\)" nil t)
+	  (setq result-type (match-string 1))
+	  (replace-match "")
+	  (cond
+	   ((string= "output" result-type)
+	    (insert
+	     (concat
+	      (s-trim output)
+	      (format "%s"
+		      (mapconcat
+		       'identity
+		       (loop for res in result
+			     ;; if (and (eq 'text/plain (car res)) (cdr res))
+			     ;; collect (cdr res)
+			     if (eq 'text/html (car res))
+			     collect (format "#+BEGIN_EXPORT HTML\n%s\n#+END_EXPORT\n"
+					     (cdr res))
+			     if (eq 'text/latex (car res))
+			     collect (format "#+BEGIN_EXPORT latex\n%s\n#+END_EXPORT\n"
+					     (cdr res))
+			     if (eq 'image/png (car res))
+			     collect (ob-ipython-inline-image (cdr res)))
+		       "\n")))))
+	   ((string= "value" result-type)
+	    (insert
+	     (cdr (assoc 'text/plain result)))))
+	  (org-redisplay-inline-images))))
+    (setq *async-ob-ipython* nil)))
+
+
+(defun ob-ipython--execute-request-asynchronously (code name)
+  "This function makes an asynchronous request.
+A callback function replaces the results."
+  (let ((url-request-data code)
+        (url-request-method "POST"))
+    (url-retrieve
+     (format "http://%s:%d/execute/%s"
+	     ob-ipython-driver-hostname
+	     ob-ipython-driver-port
+	     name)
+     ;; the callback function
+     'ob-ipython--async-callback)))
+
+
+;; This overwrites the ob-ipython function and adds better inline image support,
+;; and adds async support.
+(defun org-babel-execute:ipython (body params)
+  "Execute a block of IPython code with Babel.
+This function is called by `org-babel-execute-src-block'."
+  (let* ((file (cdr (assoc :file params)))
+         (session (cdr (assoc :session params)))
+	 (async (cdr (assoc :async params)))
+         (result-type (cdr (assoc :result-type params)))
+	 results)
+    (org-babel-ipython-initiate-session session params)
+
+    ;; Check the current results for inline images and delete the files.
+    (let ((location (org-babel-where-is-src-block-result))
+	  current-results)
+      (when location
+	(save-excursion
+	  (goto-char location)
+	  (when (looking-at (concat org-babel-result-regexp ".*$"))
+	    (setq results (buffer-substring-no-properties
+			   location
+			   (save-excursion
+			     (forward-line 1) (org-babel-result-end)))))))
+      (with-temp-buffer
+	(insert (or results ""))
+	(goto-char (point-min))
+	(while (re-search-forward
+		"\\[\\[file:\\(ipython-inline-images/ob-ipython-.*?\\)\\]\\]" nil t)
+	  (let ((f (match-string 1)))
+	    (when (file-exists-p f)
+	      (delete-file f))))))
+    
+    (if async
+	(progn
+	  ;; this limits us to running one async process at a time. It does not
+	  ;; support multiple sessions in one org-file.
+	  (save-excursion
+	    (goto-char (point-min))
+	    (when (re-search-forward "async-abcd-1234" nil t)
+	      (error "It looks like an async process is already running")))
+	  (setq *async-ob-ipython* (current-buffer))
+	  (ob-ipython--execute-request-asynchronously
+	   (org-babel-expand-body:generic
+	    (encode-coding-string body 'utf-8)
+	    params (org-babel-variable-assignments:python params))
+	   (ob-ipython--normalize-session session))
+	  (format "async-abcd-1234-%s" result-type))
+      
+      (-when-let (ret (ob-ipython--eval
+		       (ob-ipython--execute-request
+			(org-babel-expand-body:generic
+			 (encode-coding-string body 'utf-8)
+			 params (org-babel-variable-assignments:python params))
+			(ob-ipython--normalize-session session))))
+	(let ((result (cdr (assoc :result ret)))
+	      (output (cdr (assoc :output ret))))
+	  (if (eq result-type 'output)
+	      (concat
+	       output
+	       (format "%s"
+		       (mapconcat 'identity
+				  (loop for res in result
+					;; if (and (eq 'text/plain (car res)) (cdr res))
+					;; collect (cdr res)
+					if (eq 'text/html (car res))
+					collect (format
+						 "#+BEGIN_EXPORT HTML\n%s\n#+END_EXPORT\n"
+						 (cdr res))
+					if (eq 'text/latex (car res))
+					collect (format
+						 "#+BEGIN_EXPORT latex\n%s\n#+END_EXPORT\n"
+						 (cdr res))
+					if (eq 'image/png (car res))
+					collect (ob-ipython-inline-image (cdr res)))
+				  "\n")))
+	    ;; The result here is a value. We should still get inline images though.
+	    (ob-ipython--create-stdout-buffer output)
+	    (concat
+	     (->> result (assoc 'text/plain) cdr)
+	     (format "\n%s"
+		     (mapconcat 'identity
+				(loop for res in result
+				      ;; if (and (eq 'text/plain (car res)) (cdr res))
+				      ;; collect (cdr res)
+				      if (eq 'text/html (car res))
+				      collect (format
+					       "#+BEGIN_EXPORT HTML\n%s\n#+END_EXPORT\n"
+					       (cdr res))
+				      if (eq 'text/latex (car res))
+				      collect (format
+					       "#+BEGIN_EXPORT latex\n%s\n#+END_EXPORT\n"
+					       (cdr res))
+				      if (eq 'image/png (car res))
+				      collect (ob-ipython-inline-image (cdr res)))
+				"\n")))))))))
+
+
+(defun org-babel-execute-async:ipython (&optional arg)
+  (interactive)
+  (let* ((body (org-element-property :value (org-element-context)))
+	 (params (nth 2 (org-babel-get-src-block-info)))
+	 (file (cdr (assoc :file params)))
+         (session (cdr (assoc :session params)))
+	 (async (cdr (assoc :async params)))
+	 (results (cdr (assoc :results params)))
+         (result-type (cdr (assoc :result-type params))))
+    (org-babel-ipython-initiate-session session params)
+    
+    (if (not async)
+	(org-babel-execute:ipython body params)
+      ;; Check the current results for inline images and delete the files.
+      (let ((location (org-babel-where-is-src-block-result))
+	    current-results)
+	(when location
+	  (save-excursion
+	    (goto-char location)
+	    (when (looking-at (concat org-babel-result-regexp ".*$"))
+	      (setq current-results (buffer-substring-no-properties
+				     location
+				     (save-excursion
+				       (forward-line 1) (org-babel-result-end)))))))
+	(with-temp-buffer
+	  (insert (or current-results ""))
+	  (goto-char (point-min))
+	  (while (re-search-forward
+		  "\\[\\[file:\\(ipython-inline-images/ob-ipython-.*?\\)\\]\\]" nil t)
+	    (let ((f (match-string 1)))
+	      (when (file-exists-p f)
+		(delete-file f))))))
+      ;; Now we run the async
+      (save-excursion
+	(goto-char (point-min))
+	(when (re-search-forward "async-abcd-1234" nil t)
+	  (error "It looks like an async process is already running")))
+      
+      (setq *async-ob-ipython* (current-buffer))
+      (org-babel-remove-result)
+      (org-babel-insert-result (format "async-abcd-1234-%s" result-type)
+			       (split-string  results " " t))
+      (save-excursion
+	(re-search-forward (format "async-abcd-1234-%s" result-type))
+	(flyspell-delete-region-overlays (match-beginning 0) (match-end 0))
+	(let ((map (make-sparse-keymap)))
+	  (define-key map [mouse-1]
+	    `(lambda ()
+	       (interactive)
+	       (message "Interrupting the kernel.")
+	       (save-excursion
+		 (org-babel-previous-src-block)
+		 (org-babel-remove-result))
+	       (ob-ipython-interrupt-kernel (cdr (assoc
+						  (or ,session "default")
+						  (ob-ipython--get-kernel-processes))))))
+	  (set-text-properties
+	   (match-beginning 0) (match-end 0)
+	   `(font-lock-face (:foreground "red")
+			    local-map ,map
+			    mouse-face highlight
+			    help-echo "Click to interrupt async process"))))
+      (setq font-lock-extra-managed-props (delq 'local-map font-lock-extra-managed-props))
+      ;; finally call the async command.
+      (message "running async")
+      (ob-ipython--execute-request-asynchronously
+       (org-babel-expand-body:generic
+	(encode-coding-string body 'utf-8)
+	params (org-babel-variable-assignments:python params))
+       (ob-ipython--normalize-session session)))))
+#+END_SRC
+
+https://github.com/gregsexton/ob-ipython/issues/28
+#+BEGIN_SRC emacs-lisp
+(setq python-shell-completion-native-enable nil) 
+(setq python-shell-prompt-detect-failure-warning nil)
+#+END_SRC
+
 *** +Ox koma letter+
 
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -502,6 +808,7 @@ Start up folded, lists will be folded when file is opened. Don't remember where 
   :defer t
   :config
   (setq org-cycle-include-plain-lists 'integrate)
+
   (setq org-image-actual-width t)
   (setq org-startup-with-inline-images t))
  #+END_SRC
@@ -571,16 +878,20 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
     ;; code highlight for latex org export
     (add-to-list 'org-latex-packages-alist '("" "minted"))
     ;; add a nice font to org latex export
-    (add-to-list 'org-latex-packages-alist '("" "libertine"))
+    (add-to-list 'org-latex-packages-alist '("" "fouriernc"))
 
     ;; For code fragments typesetting
     ;; http://orgmode.org/worg/org-tutorials/org-latex-preview.html
     (setq org-latex-listings 'minted))
 
-    ; change foreground color of latex macros inside org
-    (setq org-highlight-latex-and-related '(latex script entities))
-    (set-face-foreground 'org-latex-and-related "blue")
+  (add-to-list 'org-latex-minted-langs '(ipython "python"))
+  
+; change foreground color of latex macros inside org
+  (setq org-highlight-latex-and-related '(latex script entities))
+  (set-face-foreground 'org-latex-and-related "blue")
 
+  (setq org-latex-create-formula-image-program 'imagemagick)
+    
 )
 #+END_SRC
 
@@ -591,12 +902,22 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 (use-package org
   :defer t
   :config 
-  (setq org-src-block-faces '(("emacs-lisp" (:background "GhostWhite"))
-                            ("python" (:background "WhiteSmoke"))
-                            ("ipython" (:background "AliceBlue"))
-                            ("plantuml" (:background "Ivory"))
-                            ("latex" (:background "FloralWhite"))
-                            ("shell" (:background "Ivory")))))
+  ;; (setq org-src-block-faces '(("emacs-lisp" (:background "GhostWhite"))
+  ;;                           ("python" (:background "WhiteSmoke"))
+  ;;                           ("ipython" (:background "WhiteSmoke"))
+  ;;                           ("plantuml" (:background "Ivory"))
+  ;;                           ("latex" (:background "FloralWhite"))
+  ;;                           ("shell" (:background "Ivory"))))
+
+  (setq org-src-block-faces '(("emacs-lisp" (:background "#1c1c1c"))
+                            ("python" (:background "#1c1c1c"))
+                            ("ipython" (:background "#1c1c1c"))
+                            ("plantuml" (:background "#1c1c1c"))
+                            ("latex" (:background "#1c1c1c"))
+                            ("shell" (:background "#1c1c1c"))))
+
+  (set-face-foreground 'org-block "#fdf4c1")
+  )
 #+END_SRC
 
 
@@ -622,11 +943,7 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 (use-package org
   :defer t
   :config
-  (use-package ob
-    :defer 10
-    :config
-    (add-hook 'org-mode-hook #'yas-minor-mode))
-
+ 
   (org-babel-do-load-languages
      'org-babel-load-languages
      '((python . t)
@@ -659,6 +976,15 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 #+END_SRC
 
+*** Ob-async
+
+#+BEGIN_SRC emacs-lisp
+(use-package ob-async
+  :ensure t
+  :config
+  (add-to-list 'org-ctrl-c-ctrl-c-hook 'ob-async-org-babel-execute-src-block))
+#+END_SRC
+
 
 *** Org ref
 
@@ -667,6 +993,7 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
   :defer t
   :config
   (use-package org-ref
+    :defer 10
     :ensure t
     :config
     (setq org-ref-default-bibliography 
@@ -686,7 +1013,7 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 (use-package org
   :defer t
   :config
-  (setq org-todo-keywords '((sequence "TODO(t)" "STRT(s)" "DONE(d)")))
+  (setq org-todo-keywords '((sequence "TODO(t)" "DONE(d)")))
 
   (setq org-todo-keyword-faces 
         '(("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
@@ -715,9 +1042,11 @@ From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-
   (setq org-clock-persistence-insinuate t)
   (setq org-clock-persist t)
   (setq org-clock-in-resume t)
+  (setq org-clock-mode-line-total 'current)
+  
 
   ;; Change task state to STARTED when clocking in
-  (setq org-clock-in-switch-to-state "STRT")
+  ;; (setq org-clock-in-switch-to-state "STRT")
   ;; Save clock data and notes in the LOGBOOK drawer
   (setq org-clock-into-drawer t)
   ;; Removes clocked tasks with 0:00 duration
@@ -781,9 +1110,8 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
     (defun my:hide-headers ()
       (interactive)
         (hide-lines-matching "#\\+BEGIN_SRC")
-        (hide-lines-matching "#\\+END_SRC
+        (hide-lines-matching "#\\+END_SRC"))
 
-"))
       (add-hook 'org-tree-slide-play-hook 'my:hide-headers)
       (add-hook 'org-tree-slide-stop-hook 'hide-lines-show-all)
 
@@ -822,17 +1150,22 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
   (setq op/site-main-title "Nasser Alkmim")
   (setq op/site-sub-title " ")
   (setq op/personal-github-link "https://github.com/nasseralkmim")
-  (setq op/personal-google-analytics-id "74704246")
+  (setq op/personal-google-analytics-id "UA-74704246-1")
+
+  (setq op/tag-rss t)                   ;rss for each tag
+
+  (setq op/theme-root-directory "c:/Users/Nasser/OneDrive/nasseralkmim.github.io/themes/")
+  (setq op/theme 'mdo)
 
   (setq op/category-ignore-list '("themes" "assets" "blog"))
 
 (setq op/category-config-alist
-      '(("blog" ;; this is the default configuration
+      '(("notes" ;; this is the default configuration
          :label "Notes"
          :show-meta t
          :show-comment t
          :uri-generator op/generate-uri
-         :uri-template "/blog/%y/%m/%d/%t/"
+         :uri-template "/notes/%y/%m/%d/%t/"
          :sort-by :date     ;; how to sort the posts
          :category-index t) ;; generate category index or not
         ("index"
@@ -859,17 +1192,24 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
   :defer t
   :config
   (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
-                                 "~/OneDrive/Org/culture.org"
                                  "~/OneDrive/Org/notes.org"
-                                 "~/OneDrive/Org/gcal.org")))
+                                 "~/OneDrive/Org/journal.org"
+                                 "~/OneDrive/Org/gcal.org"
+                                 "~/OneDrive/TerraCap/terracap_notes.org")))
 
   (setq 
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
    org-agenda-skip-timestamp-if-done t)
 
-   (setq org-default-notes-file "~/OneDrive/Org/gtb.org")
+   (setq org-default-notes-file "~/OneDrive/Org/notes.org")
 
+   
+   (setq org-agenda-custom-commands
+      '(("c" "Simple agenda view"
+         ((agenda "")
+          (todo "TODO")))))
+   
    (global-set-key (kbd "C-c o") 
                    (lambda () (interactive) 
                      (find-file "~/OneDrive/Org/notes.org")))
@@ -878,11 +1218,12 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
         '(("t" "Todo" entry (file+datetree "~/OneDrive/Org/gtd.org") 
            "* TODO %? \n\n Added: %T")
           ("n" "Notes" entry (file+datetree "~/OneDrive/Org/notes.org") 
-           "* %^{Description} %^g \n\n %? \n\n Added: %T"))))
+           "* %^{Description} %^g \n\n %? \n\n Added: %T")
+          ("j" "Journal" entry (file+datetree "~/OneDrive/Org/journal.org") 
+           "* %T \n\n%?"))))
 #+END_SRC
 
-#+RESULTS:
-: t
+
 
 *** Show next/prev heading tidily 
 
@@ -948,8 +1289,12 @@ http://orgmode.org/worg/org-hacks.html
 * Shell
 
 #+begin_src emacs-lisp
-(bind-key "C-x m" 'shell)
-(bind-key "C-x M" 'ansi-term)
+(defun my/open-cmd()
+  (interactive)
+  (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
+    (set-process-query-on-exit-flag proc nil)))
+
+(bind-key "C-x m" 'my/open-cmd)
 #+end_src
 
 
@@ -965,6 +1310,14 @@ http://orgmode.org/worg/org-hacks.html
   :bind (("C-x C-SPC" . avy-goto-char)
          ("C-x C-x" . avy-goto-word-or-subword-1)
          ("C-x C-l" . avy-goto-line)))
+#+END_SRC
+*** dumb jump
+
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+  :ensure t
+  :init
+  (dumb-jump-mode))
 #+END_SRC
 
 *** Ace Window
@@ -1050,7 +1403,7 @@ what I have them set to (with respect to Dvorak, of course).
   ;;open pdf with external viwer foxit
   (setq bibtex-completion-pdf-open-function
         (lambda (fpath)
-          (call-process "C:\\Program Files (x86)\\Foxit Software\\Foxit Reader\\FoxitReader.exe" nil 0 nil fpath)))
+          (call-process "SumatraPDF" nil 0 nil fpath)))
 
   (setq ivy-bibtex-default-action 'bibtex-completion-insert-citation))
 #+END_SRC
@@ -1063,8 +1416,76 @@ what I have them set to (with respect to Dvorak, of course).
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :ensure t
-  :bind (("C-c u" . swiper-all)))
+  :bind (("C-c u" . swiper-all))
+  :config
+  (setq swiper-include-line-number-in-search t))
 #+END_SRC
+
+
+*** Hydra
+
+#+BEGIN_SRC emacs-lisp
+(use-package hydra :ensure t)
+#+END_SRC
+
+***** Find file with "xf"
+
+#+BEGIN_SRC emacs-lisp
+;; Find file with xf
+(defun x-hydra-pre ()
+  (insert "x")
+  (let ((timer (timer-create)))
+    (timer-set-time timer (timer-relative-time (current-time) 0.5))
+    (timer-set-function timer 'hydra-keyboard-quit)
+    (timer-activate timer)))
+
+(defhydra x-hydra (:body-pre x-hydra-pre
+                   :color blue
+                   :hint nil)
+  ("f" (progn (zap-to-char -1 ?x) (counsel-find-file))))
+
+(global-set-key "x" #'x-hydra/body)
+#+END_SRC
+
+***** window resize
+
+#+BEGIN_SRC emacs-lisp
+(defun my-funcs/resize-window-down ()
+  "Resize a window downwards."
+  (interactive)
+  (if (window-in-direction 'below)
+      (enlarge-window 1)
+    (shrink-window 1)))
+
+(defun my-funcs/resize-window-up ()
+  "Resize a window upwards."
+  (interactive)
+  (if (window-in-direction 'above)
+      (enlarge-window 1)
+    (shrink-window 1)))
+
+(defun my-funcs/resize-window-left ()
+  "Resize a window leftwards."
+  (interactive)
+  (if (window-in-direction 'left)
+      (enlarge-window-horizontally 1)
+    (shrink-window-horizontally 1)))
+
+(defun my-funcs/resize-window-right ()
+  "Resize a window rightwards."
+  (interactive)
+  (if (window-in-direction 'right)
+      (enlarge-window-horizontally 1)
+    (shrink-window-horizontally 1)))
+
+(defhydra hydra-window-resize (global-map "C-x w")
+    "Window resizing"
+    ("j" my-funcs/resize-window-down "down")
+    ("k" my-funcs/resize-window-up "up")
+    ("l" my-funcs/resize-window-right "right")
+    ("h" my-funcs/resize-window-left "left"))
+#+END_SRC
+
 
 
 *** Magit
@@ -1124,68 +1545,59 @@ Integrates with Python.
 #+begin_src emacs-lisp
 (use-package python
   :mode ("\\.py\\'" . python-mode)
+  :bind (("M-." . jedi:goto-definition)
+         ("M-," . jedi:goto-definition-pop-marker)
+         ("C-c C-d" . jedi:show-doc))
   :interpreter ("python" . python-mode)
   :config
   (add-hook 'python-mode-hook 'smartparens-mode)
-  (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'python-mode-hook 'company-mode)
   (add-hook 'python-mode-hook 'yas-minor-mode)
-  (add-hook 'python-mode-hook 'elpy-mode)
+
+  (require 'flycheck-pyflakes)
+  (add-hook 'python-mode-hook 'flycheck-mode)
+  (add-to-list 'flycheck-disabled-checkers 'python-flake8)
+  (add-to-list 'flycheck-disabled-checkers 'python-pylint)
 
   (setq warning-suppress-types '((python)
                                  (emacs)))
   
-)
+  (use-package highlight-indent-guides
+    :ensure t
+    :config
+    (setq highlight-indent-guides-method 'character))
+  (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
+
+  (add-hook 'python-mode-hook 'company-mode)
+
+  (use-package company-jedi 
+    :ensure t
+    :config
+    (setq jedi:complete-on-dot t))
+
+  (defun my/python-mode-hook ()
+    (add-to-list 'company-backends 'company-jedi))
+  (add-hook 'python-mode-hook 'my/python-mode-hook)
+
+  ;; https://emacs.stackexchange.com/questions/24453/weird-shell-output-when-using-ipython-5/24572#24572
+  (setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args "--simple-prompt -i")
+
+  ;; suppress the warning "python.el: native completion setup failed"
+  (with-eval-after-load 'python
+    (defun python-shell-completion-native-try ()
+      "Return non-nil if can trigger native completion."
+      (let ((python-shell-completion-native-enable t)
+            (python-shell-completion-native-output-timeout
+             python-shell-completion-native-try-output-timeout))
+        (python-shell-completion-native-get-completions
+         (get-buffer-process (current-buffer))
+         nil "_"))))
+
+  )
 #+end_src
 
 
-*** Elpy
 
-#+BEGIN_SRC emacs-lisp
-(use-package elpy
-  :ensure t
-  :defer t
-  :config
-  (elpy-enable)
-  (elpy-use-ipython)
-  (setq elpy-rpc-backend "jedi")       ;use jedi for auto completion
-)
-#+END_SRC
-
-*** company mode
-#+BEGIN_SRC emacs-lisp 
-(use-package company
-  :ensure t
-  :defer t
-  :config
-
-  (use-package company-jedi :ensure t
-    :disabled t
-    :config
-    (add-to-list 'company-backends 'company-jedi)
-    (setq jedi:complete-on-dot t)
-    (setq jedi:use-shortcuts t))
-  )
-#+END_SRC
-
-*** +Anaconda mode+
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package anaconda-mode
-  :disabled t
-  :ensure t
-  :bind ("C-c C-d" . anaconda-mode-show-doc)
-)
-#+END_SRC
-
-*** +Company anaconda+
-
-#+BEGIN_SRC emacs-lisp :rangle no
-(use-package company-anaconda 
-  :disabled t
-  :ensure t
-  :defer t)
-#+END_SRC
 
 
 *** Smartparens
@@ -1197,9 +1609,9 @@ Integrates with Python.
   :config
   (show-smartparens-global-mode t)
   (sp-local-pair 'org-mode "_" "_" )
-  (sp-local-pair 'org-mode "*" "*" )
   (sp-local-pair 'latex-mode "$" "$" )
-  (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l("))
+  (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
+  )
 #+end_src
 
 
@@ -1218,12 +1630,14 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
   (setq-default TeX-master nil)
   (add-hook 'LaTeX-mode-hook
             (lambda ()
-              (rainbow-delimiters-mode)
               (flyspell-mode)
-              (company-mode)
+              (prettify-symbols-mode)
               (smartparens-mode)
+              (rainbow-blocks-mode)
               (turn-on-reftex)
               (reftex-isearch-minor-mode)))
+
+  (add-hook 'LaTeX-mode-hook 'company-mode)
 
   (setq reftex-plug-into-AUCTeX t)
   (setq TeX-PDF-mode t)
@@ -1234,27 +1648,50 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
   ;; inhibit the question to start a server process
   (setq TeX-source-correlate-start-server t)
 
- 
-;; Update PDF buffers after successful LaTeX runs
+   ;; Update PDF buffers after successful LaTeX runs
   ;; http://emacs.stackexchange.com/questions/19472/how-to-let-auctex-open-pdf-with-pdf-tools
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
              #'TeX-revert-document-buffer)
 
   ;; to use pdfview with auctex
-  (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
+  ;; (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
  
   ;; latex commands
   (setq LaTeX-command "latex --synctex=1 -shell-escape")
 
   ;;Use pdf-tools to open PDF files
-  (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+  ;; (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+  ;; (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
 
-  (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
+  ;; use sumatra to view pdf
+  ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
+  ;; -set-color-range #fdf4c1 #282828
+  (setq TeX-view-program-list
+        '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+                          (mode-io-correlate " -forward-search %b %n ") " %o"))))
 
-  (setq pdf-sync-backward-display-action
-  '(nil (reusable-frames . t)))
-  (setq pdf-sync-forward-display-action
-  '(nil (reusable-frames . t)))
+  (use-package sumatra-forward 
+    :load-path "c:/Users/Nasser/.emacs.d/elpa/sumatra-forward"
+    :bind* ("C-c C-v" . sumatra-jump-to-line)
+    :init
+    (advice-add 'sumatra-jump-to-line :before #'TeX-view)
+    )
+
+  (eval-after-load 'tex
+  '(progn
+     (assq-delete-all 'output-pdf TeX-view-program-selection)
+     (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
+  
+  ;; (setq pdf-sync-backward-display-action
+  ;; '(nil (reusable-frames . t)))
+  ;; (setq pdf-sync-forward-display-action
+  ;; '(nil (reusable-frames . t)))
+
+(add-hook 'LaTeX-mode 
+          (lambda ()
+            (TeX-fold-mode 1)
+            (add-hook 'find-file-hook 'TeX-fold-buffer t t))) ;; Automatically activate TeX-fold-mode.
+
 )
 #+end_src
 
@@ -1284,6 +1721,7 @@ shell-escape mode because the pacakge svg requires it.
 (use-package reftex
   :ensure t
   :defer t
+  :bind ("C-c =" . reftex-toc)
   :config
   (setq reftex-cite-prompt-optional-args t) ; Prompt for empty optional arguments in cite
   ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
@@ -1292,21 +1730,6 @@ shell-escape mode because the pacakge svg requires it.
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:")))
 #+END_SRC
-
-
-*** +Magic Latex Buffer+
-
-#+begin_src emacs-lisp :tangle no
-(use-package magic-latex-buffer
-  :load-path ("C:/Users/Nasser/.emacs.d/elpa/magic-latex-buffer-master")
-  :config
-  (add-hook 'LaTeX-mode-hook 'magic-latex-buffer)
-  (setq magic-latex-enable-block-highlight nil
-      magic-latex-enable-suscript        nil
-      magic-latex-enable-pretty-symbols  t
-      magic-latex-enable-block-align     nil
-      magic-latex-enable-inline-image    nil))
-#+end_src
 
 
 *** Flycheck
@@ -1380,28 +1803,33 @@ The configurations were taken from [[https://github.com/company-mode/company-mod
   :diminish company-mode
   :defer t
   :config
-  (add-hook 'after-init-hook 'global-company-mode)
-  (setq company-idle-delay 0)
+  (setq company-idle-delay 0.2)
   (setq company-show-numbers t)
-  (setq company-minimum-prefix-length 3)
-  (delete 'company-capf company-backends)
+  (setq company-minimum-prefix-length 2)
+
+  (use-package company-statistics :ensure t :defer t)
   (add-hook 'company-mode-hook 'company-statistics-mode)
+
   (use-package company-flx
     :ensure t
     :init
-    (company-flx-mode +1)))
+    (company-flx-mode +1))
+
+  (defun tab-indent-or-complete ()
+  (interactive)
+  (if (minibufferp)
+      (minibuffer-complete)
+    (if (or (not yas-minor-mode)
+            (null (do-yas-expand)))
+        (if (check-expansion)
+            (company-complete-common)
+          (indent-for-tab-command)))))
+  ;; Also these lines are useful to trigger the completion pressing the key you want.
+  (global-set-key [backtab] 'tab-indent-or-complete)
+  
+)
 #+END_SRC
 
-
-*** Company statistics-mode 
-
-[[https://github.com/company-mode/company-statistics][Company statistics-mode]]
-
-#+BEGIN_SRC emacs-lisp
-(use-package company-statistics
-  :ensure t
-  :defer t)
-#+END_SRC
 
 
 *** Undo tree 
@@ -1426,30 +1854,39 @@ Undo system to recover any past state of a buffer.
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
   :ensure t 
-  :defer t
-  :init   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   :config
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "dark slate gray")
+
+  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'LaTex-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'org-mode-hook 'rainbow-delimiters-mode)
+  
+  (set-face-foreground 'rainbow-delimiters-depth-1-face "lime green")
   (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
   (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
   (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
   (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
-  (set-face-foreground 'rainbow-delimiters-depth-6-face "lime green")
+  (set-face-foreground 'rainbow-delimiters-depth-6-face "dark slate gray")
   (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
   (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
   (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
-  (set-face-foreground 'rainbow-delimiters-unmatched-face "red")
-  )
+  ) 
 #+END_SRC
 
 
 
 
-*** Pdf tools
+*** Rainbow blocks
+
+#+BEGIN_SRC emacs-lisp
+(use-package rainbow-blocks
+  :ensure t
+  :defer t)
+#+END_SRC
+*** +Pdf tools+
 
 -From the larslj's  [[https://github.com/larslj/pdf-tools/tree/windows][windows branch]].- 
 
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp  :tangle no
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-tools-install)
   :bind ("C-c C-g" . pdf-sync-forward-search)
@@ -1472,73 +1909,18 @@ Undo system to recover any past state of a buffer.
 
 
 
-*** +Smart mode line+
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package smart-mode-line
-  :ensure t
-  :config
-  (progn 
-    (setq sml/no-confirmation-load-theme t)
-    (sml/setup)))
-#+END_SRC
-
-
-*** +Writegood mode+
-
-From [[https://github.com/grettke/help/blob/master/help.org][this source]]
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package writegood-mode
-  :ensure t
-  :config
-  (eval-after-load "writegood-mode"
-    '(diminish 'writegood-mode)))
-#+END_SRC
-
 *** Yasnippet
 
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
-  :commands (yas-minor-mode) ; autoload `yasnippet' when `yas-minor-mode' is called
-                                        ; using any means: via a hook or by user
-                                        ; Feel free to add more commands to this
-                                        ; list to suit your needs.
-  :config ; stuff to do after requiring the package
+  :if (not noninteractive)
+  :config
   (yas-reload-all)
-
-    (defun yas/org-very-safe-expand ()
-      (let ((yas/fallback-behavior 'return-nil)) (yas/expand)))
-
-    (defun yas/org-setup ()
-      ;; yasnippet (using the new org-cycle hooks)
-      (make-variable-buffer-local 'yas/trigger-key)
-      (setq yas/trigger-key [tab])
-      (add-to-list 'org-tab-first-hook 'yas/org-very-safe-expand)
-      (define-key yas/keymap [tab] 'yas/next-field))
-
-    ;; See https://github.com/eschulte/emacs24-starter-kit/issues/80.
-    ;; (setq org-src-tab-acts-natively nil)
-    
-    (add-hook 'org-mode-hook #'yas/org-setup))
+  (add-hook 'prog-mode-hook #'yas-minor-mode)
+  (add-hook 'org-mode-hook #'yas-minor-mode)
+(define-key yas-minor-mode-map (kbd "TAB") nil))
 #+END_SRC
 
-
-*** +Hyperbole+
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package hyperbole
-  :ensure t
-  :defer 10)
-#+END_SRC
-
-*** +Lispy+
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package lispy
-  :ensure t
-  :defer t)
-#+END_SRC
 
 *** Key chord
 
@@ -1568,19 +1950,14 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
   (setq-default neo-dont-be-alone t)
   (setq neo-fit-to-contents t)
   (setq neo-theme 'nerd)
-  (setq neo-window-fixed-size nil)) ; 'classic, 'nerd, 'ascii, 'arrow
+  (setq neo-window-fixed-size nil))
 #+END_SRC
 
+*** Dired +
 
-
-*** Hydra
-
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package hydra
-  :ensure t
-  :bind
-  ("C-c w" . hydra-window/body)
-  ("C-c p m" . hydra-pdftools/body))
+#+BEGIN_SRC emacs-lisp
+(use-package dired+
+  :ensure t)
 #+END_SRC
 
 
@@ -1610,21 +1987,25 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
   :ensure t
   :bind* ("C-;" . iedit-mode))
 #+END_SRC
-*** Indent tools
-
-#+BEGIN_SRC emacs-lisp
-(use-package indent-tools
-  :ensure t
-  :bind ("C-c >" . indent-tools-hydra/body))
-#+END_SRC
-
-
 *** Go to last change
 
 #+BEGIN_SRC emacs-lisp
 (use-package goto-last-change
-:ensure t
-:bind ("C-x C-j" . goto-last-change))
+  :ensure t
+  :bind ("C-x C-j" . goto-last-change))
+#+END_SRC
+*** web mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package web-mode
+  :ensure t
+  :mode (("\\.html\\'" . web-mode)
+         ("\\.css\\'" . web-mode)
+         ("\\.js\\'" . web-mode)
+         ("\\.mustache\\'" . web-mode))
+  :config
+  (add-hook 'web-mode-hook 'smartparens-mode)
+  (use-package smartparens-html))
 #+END_SRC
 * Misc
 ** +Doc view keybindings+
@@ -1643,9 +2024,19 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
 
   (setq doc-view-continuous t))
 #+end_src
-** Auto dim other buffer
+** W32 browser
+
 
 #+BEGIN_SRC emacs-lisp
+(use-package w32-browser
+  :load-path "c:/users/Nasser/.emacs.d/elpa/")
+#+END_SRC
+
+
+
+** +Auto dim other buffer+
+
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package auto-dim-other-buffers
   :ensure t
   :init
@@ -1653,7 +2044,8 @@ From [[https://github.com/grettke/help/blob/master/help.org][this source]]
                              (when (fboundp 'auto-dim-other-buffers-mode)
                                (auto-dim-other-buffers-mode t))))
   :config
-  (set-face-background 'auto-dim-other-buffers-face "gray98"))
+  ;; (set-face-background 'auto-dim-other-buffers-face "gray98")
+  )
 #+END_SRC
 
 
@@ -1698,9 +2090,9 @@ that you put in the minibuffer
 
 mouse auto select to make active the buffer where the mouse pointer is hovering, and focus follows to work with other emacs frames. Useful to scroll pdf on different frames
 
-#+BEGIN_SRC emacs-lisp :tangle no
-(setq focus-follows-mouse nil)
-(setq mouse-autoselect-window nil)
+#+BEGIN_SRC emacs-lisp
+(setq focus-follows-mouse t)
+(setq mouse-autoselect-window t)
 #+END_SRC
 
 
@@ -1710,3 +2102,60 @@ mouse auto select to make active the buffer where the mouse pointer is hovering,
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
 #+END_SRC
+** Moving to end of line or block
+
+http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html
+
+#+BEGIN_SRC emacs-lisp
+(defun xah-beginning-of-line-or-block ()
+  "Move cursor to beginning of line, or beginning of current or previous text block.
+
+• When called first time, move cursor to beginning of line.
+• When called again, move cursor to beginning of paragraph.
+• When called again, move cursor to beginning of previous paragraph.
+
+URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
+Version 2017-01-17"
+  (interactive)
+  (if (or (equal (point) (line-beginning-position))
+          (equal last-command this-command ))
+      (if (re-search-backward "\n[\t\n ]*\n+" nil "NOERROR")
+          (skip-chars-backward "\n\t ")
+        (goto-char (point-min)))
+    (beginning-of-line)))
+
+
+(defun xah-end-of-line-or-block ()
+  "Move cursor to end of line, or end of current or next text block.
+
+• When called first time, move cursor to end of line.
+• When called again, move cursor to end of paragraph.
+• When called again, move cursor to end of next paragraph.
+
+URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
+Version 2017-01-17"
+  (interactive)
+  (if (or (equal (point) (line-end-position))
+          (equal last-command this-command ))
+      (if (equal (point) (line-end-position))
+          (re-search-forward "\n[\t\n ]*\n+" nil "NOERROR" )
+        (end-of-line))
+    (end-of-visual-line)))
+
+(require 'bind-key)
+
+;; (global-set-key (kbd "C-a") 'xah-beginning-of-line-or-block)
+;; (global-set-key (kbd "C-e") 'xah-end-of-line-or-block)
+(bind-key* "C-e" 'xah-end-of-line-or-block)
+(bind-key* "C-a" 'xah-beginning-of-line-or-block)
+#+END_SRC
+
+
+
+
+
+
+
+
+
+

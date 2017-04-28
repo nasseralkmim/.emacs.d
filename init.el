@@ -23,11 +23,11 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-(set-face-attribute 'default nil :font "Source Code Pro 10")
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(tooltip-mode -1)
+(setq default-frame-alist '((font . "Office Code Pro D 9")))
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(tooltip-mode 0)
 
 (setq initial-scratch-message "")
 
