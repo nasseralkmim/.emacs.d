@@ -99,8 +99,25 @@ Basic syntax:
   (require 'use-package))
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)
-(setq use-package-verbose t)
+(setq use-package-verbose nil)
 #+END_SRC
+
+*** use-package defer loading and add-hook
+
+[[https://emacs.stackexchange.com/questions/19695/use-package-defer-t-and-add-hook][This question clarified for me]]
+
+=:commands= will generate an autoload for package-x-function, the =:init= will immediately add it to the hook.
+=:commands= implies =:defer=, the package will not load immediately.
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package X
+  :ensure t
+  :commands package-x-function
+  :init
+  (add-hook 'some-mode 'package-x-function))
+#+END_SRC
+
+
 
 
 
@@ -156,13 +173,13 @@ Basic syntax:
 
 *** Moe theme 
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
 (use-package moe-theme
   :ensure t
   :config
-  (setq moe-theme-highlight-buffer-id t)
-  (setq moe-light-pure-white-background-in-terminal t)
-  (use-package moe-theme-switcher))
+  (setq moe-theme-highlight-buffer-id nil)
+  (setq moe-theme-resize-org-title '(1.3 1.2 1.2 1.2 1.1 1.0 1.0 1.0 1.0))
+  (moe-dark))
 #+END_SRC
 
 
@@ -230,13 +247,25 @@ Basic syntax:
   (load-theme 'sanityinc-tomorrow-night)
 )
 #+END_SRC
+
 *** Gruvbox
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package gruvbox-theme
   :ensure t
   :config
-  (load-theme 'gruvbox t))
+  (load-theme 'gruvbox t)
+  (set-face-foreground 'org-block "#fdf4c1")
+  )
+#+END_SRC
+
+*** Eziam 
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package eziam-theme
+  :ensure t
+  :config
+  (load-theme 'eziam-dark t))
 #+END_SRC
 
 
@@ -248,7 +277,23 @@ Basic syntax:
   :config 
   (load-theme 'afternoon t))
 #+END_SRC
+*** base 16
 
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package base16-theme
+  :ensure t
+  :config
+  (load-theme 'base16-default-dark t))
+#+END_SRC
+
+
+*** Alect
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package alect-themes
+  :ensure t
+  :config (load-theme 'alect-black))
+#+END_SRC
 
 *** Theme looper
 
@@ -281,6 +326,9 @@ the function load-theme will first disable the active themes, before loading the
 (defadvice load-theme (before disable-themes-first activate)
   (disable-all-themes))
 #+END_SRC
+
+#+RESULTS:
+: load-theme
 
 
 * Font
@@ -412,10 +460,11 @@ http://whattheemacsd.com/
         (linum-mode 1)
         (goto-line (read-number "Goto line: ")))
     (linum-mode -1)))
-#+END_SRC
+#+END_SC
 
 
 * Recentf
+
 Recentf is a minor mode that builds a list of recently opened files.
 
 #+begin_src emacs-lisp
@@ -478,7 +527,7 @@ General options.
   ;; (setq org-tags-column -66) ;where the tags are places
   (setq org-use-speed-commands t)
   (setq org-edit-src-content-indentation 0)
-
+  (setq org-support-shift-select t)
   (setq line-spacing '0.1 )
 
   ;; This is for remove the annoying background color on the headings, 
@@ -487,15 +536,15 @@ General options.
    '(org-level-1 ((t (:background nil :bold t :overline nil))))
    '(org-level-2 ((t (:background nil :bold t :overline nil)))))
 
-  (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey")
-  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey")
+  (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey75")
+  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey75")
 
-  (custom-set-faces
-   '(org-level-1 ((t (:bold t  :height 1.2 ))))
-   '(org-level-2 ((t (:inherit outline-2 :bold t  :height 1.0))))
-   '(org-level-3 ((t (:inherit outline-3 :bold t :height 1.0))))
-   '(org-level-4 ((t (:inherit outline-4 :bold t :height 1.0))))
-   '(org-level-5 ((t (:inherit outline-5 :bold t :height 1.0)))))
+  ;; (custom-set-faces
+  ;;  '(org-level-1 ((t (:bold t  :height 1.2 ))))
+  ;;  '(org-level-2 ((t (:inherit outline-2 :bold t  :height 1.0))))
+  ;;  '(org-level-3 ((t (:inherit outline-3 :bold t :height 1.0))))
+  ;;  '(org-level-4 ((t (:inherit outline-4 :bold t :height 1.0))))
+  ;;  '(org-level-5 ((t (:inherit outline-5 :bold t :height 1.0)))))
 
   
   (setq org-agenda-weekend-days nil)
@@ -770,6 +819,9 @@ This function is called by `org-babel-execute-src-block'."
        (ob-ipython--normalize-session session)))))
 #+END_SRC
 
+#+RESULTS:
+: org-babel-execute-async:ipython
+
 https://github.com/gregsexton/ob-ipython/issues/28
 #+BEGIN_SRC emacs-lisp
 (setq python-shell-completion-native-enable nil) 
@@ -891,32 +943,31 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
   (set-face-foreground 'org-latex-and-related "blue")
 
   (setq org-latex-create-formula-image-program 'imagemagick)
-    
 )
 #+END_SRC
 
 
 *** Org block background
 
+
 #+BEGIN_SRC emacs-lisp
 (use-package org
   :defer t
   :config 
   ;; (setq org-src-block-faces '(("emacs-lisp" (:background "GhostWhite"))
-  ;;                           ("python" (:background "WhiteSmoke"))
-  ;;                           ("ipython" (:background "WhiteSmoke"))
-  ;;                           ("plantuml" (:background "Ivory"))
-  ;;                           ("latex" (:background "FloralWhite"))
-  ;;                           ("shell" (:background "Ivory"))))
-
-  (setq org-src-block-faces '(("emacs-lisp" (:background "#1c1c1c"))
-                            ("python" (:background "#1c1c1c"))
-                            ("ipython" (:background "#1c1c1c"))
-                            ("plantuml" (:background "#1c1c1c"))
-                            ("latex" (:background "#1c1c1c"))
-                            ("shell" (:background "#1c1c1c"))))
-
-  (set-face-foreground 'org-block "#fdf4c1")
+  ;;                           ("python" (:background "GhostWhite"))
+  ;;                           ("ipython" (:background "GhostWhite"))
+  ;;                           ("plantuml" (:background "GhostWhite"))
+  ;;                           ("latex" (:background "GhostWhite"))
+  ;;                           ("shell" (:background "GhostWhite"))))
+  ;;  
+  
+   ;; (setq org-src-block-faces '(("emacs-lisp" (:background "#2d2d2d"))
+   ;;                           ("python" (:background "#2d2d2d"))
+   ;;                           ("ipython" (:background "#2d2d2d"))
+   ;;                           ("plantuml" (:background "#2d2d2d"))
+   ;;                           ("latex" (:background "#2d2d2d"))
+   ;;                         ("shell" (:background "#2d2d2d"))))
   )
 #+END_SRC
 
@@ -972,6 +1023,8 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
         org-export-babel-evaluate nil
         org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
 
+  ;; dont guess the indent offset
+  (setq python-indent-guess-indent-offset nil)
   ;;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 #+END_SRC
@@ -1105,31 +1158,19 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
     (org-tree-slide-simple-profile)
     (setq org-tree-slide-modeline-display 'outside)
 
+    ;; hide markups
     (use-package hide-lines :ensure t)
-
     (defun my:hide-headers ()
       (interactive)
         (hide-lines-matching "#\\+BEGIN_SRC")
-        (hide-lines-matching "#\\+END_SRC"))
-
-      (add-hook 'org-tree-slide-play-hook 'my:hide-headers)
-      (add-hook 'org-tree-slide-stop-hook 'hide-lines-show-all)
-
+        (hide-lines-matching "#\\+END_SRC")
+        (hide-lines-matching "#\\+RESULTS:"))
     (defun my:show-headers ()
       (hide-lines-show-all))
-
-    (defun advice:org-edit-src-code (&optional code edit-buffer-name)
-      (interactive)
-      (my:show-headers))
-    (advice-add 'org-edit-src-code :before #'advice:org-edit-src-code)
-
-    (defun advice:org-edit-src-exit ()
-      (interactive)
-      (my:hide-headers))
-    (advice-add 'org-edit-src-exit :after #'advice:org-edit-src-exit)
-
-    (advice-add 'org-edit-inline-src-code :after #'advice:org-edit-src-exit)
-    (advice-add 'org-tree-slide-move-next-tree :after #'advice:org-edit-src-exit))
+    ;; (add-hook 'org-tree-slide-play-hook 'my:hide-headers)
+    ;; (add-hook 'org-tree-slide-stop-hook 'hide-lines-show-all)
+    ;; (add-hook 'org-src-mode-hook 'my:hide-headers)
+)
 #+END_SRC
 
 
@@ -1210,9 +1251,9 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
          ((agenda "")
           (todo "TODO")))))
    
-   (global-set-key (kbd "C-c o") 
-                   (lambda () (interactive) 
-                     (find-file "~/OneDrive/Org/notes.org")))
+   ;; (global-set-key (kbd "C-c o") 
+   ;;                 (lambda () (interactive) 
+   ;;                   (find-file "~/OneDrive/Org/notes.org")))
 
    (setq org-capture-templates
         '(("t" "Todo" entry (file+datetree "~/OneDrive/Org/gtd.org") 
@@ -1311,6 +1352,7 @@ http://orgmode.org/worg/org-hacks.html
          ("C-x C-x" . avy-goto-word-or-subword-1)
          ("C-x C-l" . avy-goto-line)))
 #+END_SRC
+
 *** dumb jump
 
 #+BEGIN_SRC emacs-lisp
@@ -1378,7 +1420,16 @@ what I have them set to (with respect to Dvorak, of course).
   (setq ivy-use-virtual-buffers t)
   ;; (setq ivy-virtual-abbreviate 'full) ; Show the full virtual file paths
   ;; ;; Do not show "./" and "../" in the counsel-find-file completion list
-  (setq ivy-extra-directories nil))
+  (setq ivy-extra-directories nil)
+
+  (use-package ivy-rich
+    :ensure t
+    :config
+    (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
+    (setq ivy-virtual-abbreviate 'full
+      ivy-rich-switch-buffer-align-virtual-buffer t)
+    (setq ivy-rich-abbreviate-paths t))
+)
 #+END_SRC
 
 
@@ -1421,16 +1472,18 @@ what I have them set to (with respect to Dvorak, of course).
   (setq swiper-include-line-number-in-search t))
 #+END_SRC
 
-
 *** Hydra
 
 #+BEGIN_SRC emacs-lisp
 (use-package hydra :ensure t)
+
+;; better look M-o for ivy
+(use-package ivy-hydra :ensure t)
 #+END_SRC
 
 ***** Find file with "xf"
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 ;; Find file with xf
 (defun x-hydra-pre ()
   (insert "x")
@@ -1478,7 +1531,7 @@ what I have them set to (with respect to Dvorak, of course).
       (enlarge-window-horizontally 1)
     (shrink-window-horizontally 1)))
 
-(defhydra hydra-window-resize (global-map "C-x w")
+(defhydra hydra-window-resize (global-map "C-c w")
     "Window resizing"
     ("j" my-funcs/resize-window-down "down")
     ("k" my-funcs/resize-window-up "up")
@@ -1545,39 +1598,10 @@ Integrates with Python.
 #+begin_src emacs-lisp
 (use-package python
   :mode ("\\.py\\'" . python-mode)
-  :bind (("M-." . jedi:goto-definition)
-         ("M-," . jedi:goto-definition-pop-marker)
-         ("C-c C-d" . jedi:show-doc))
   :interpreter ("python" . python-mode)
   :config
-  (add-hook 'python-mode-hook 'smartparens-mode)
-  (add-hook 'python-mode-hook 'yas-minor-mode)
-
-  (require 'flycheck-pyflakes)
-  (add-hook 'python-mode-hook 'flycheck-mode)
-  (add-to-list 'flycheck-disabled-checkers 'python-flake8)
-  (add-to-list 'flycheck-disabled-checkers 'python-pylint)
-
   (setq warning-suppress-types '((python)
                                  (emacs)))
-  
-  (use-package highlight-indent-guides
-    :ensure t
-    :config
-    (setq highlight-indent-guides-method 'character))
-  (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
-
-  (add-hook 'python-mode-hook 'company-mode)
-
-  (use-package company-jedi 
-    :ensure t
-    :config
-    (setq jedi:complete-on-dot t))
-
-  (defun my/python-mode-hook ()
-    (add-to-list 'company-backends 'company-jedi))
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
-
   ;; https://emacs.stackexchange.com/questions/24453/weird-shell-output-when-using-ipython-5/24572#24572
   (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args "--simple-prompt -i")
@@ -1593,24 +1617,109 @@ Integrates with Python.
          (get-buffer-process (current-buffer))
          nil "_"))))
 
+
+  ;; solve indentation issues inside docstring
+  (defun my-python-indent-line ()
+    (if (eq (car (python-indent-context)) :inside-docstring)
+        'noindent
+      (python-indent-line)))
+
+  (defun my-python-mode-hook ()
+    (setq indent-line-function #'my-python-indent-line))
+  (add-hook 'python-mode-hook #'my-python-mode-hook)
   )
 #+end_src
 
+***** Highlight indent guide
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-indent-guides
+  :ensure t
+  :after python
+  :init
+  (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'fill))
+#+END_SRC
+***** Company jedi
+
+#+BEGIN_SRC emacs-lisp
+;; doesnt work
+(use-package company-jedi
+  :disabled t
+  :ensure t
+  :init
+  (eval-after-load "company"
+    '(add-to-list 'company-backends 'company-jedi)))
+#+END_SRC
+
+***** Elpy
+
+#+BEGIN_SRC emacs-lisp
+(use-package elpy 
+  :ensure t
+  :after python
+  :config
+  (elpy-enable)
+
+  (electric-indent-local-mode -1)
+  (delete 'elpy-module-highlight-indentation elpy-modules)
+  (remove-hook 'elpy-modules 'elpy-module-company)
+  (delete 'elpy-module-flymake elpy-modules)
+
+  ;; use py.test
+  (setq elpy-test-runner 'elpy-test-pytest-runner)
+  
+  (defun elpy-goto-definition-or-rgrep ()
+    "Go to the definition of the symbol at point, if found. Otherwise, run `elpy-rgrep-symbol'."
+    (interactive)
+    (ring-insert find-tag-marker-ring (point-marker))
+    (condition-case nil (elpy-goto-definition)
+      (error (elpy-rgrep-symbol
+              (concat "\\(def\\|class\\)\s" (thing-at-point 'symbol) "(")))))
+  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition-or-rgrep))
+#+END_SRC
+
+***** Anaconda mode
 
 
-
+#+BEGIN_SRC emacs-lisp
+(use-package anaconda-mode
+  :ensure t
+  :after python
+  :init
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
+  :config
+  (use-package company-anaconda
+    :ensure t
+    :after company
+    :config
+    (setq jedi:complete-on-dot t)
+    (setq company-minimum-prefix-length 1)
+    (add-to-list 'company-backends '(company-anaconda :with company-capf))))
+#+END_SRC
 
 *** Smartparens
 
 #+begin_src emacs-lisp
 (use-package smartparens
   :ensure t 
-  :defer t
+  :commands smartparens-mode
+  :init
+  (add-hook 'prog-mode-hook 'smartparens-mode)
   :config
   (show-smartparens-global-mode t)
   (sp-local-pair 'org-mode "_" "_" )
   (sp-local-pair 'latex-mode "$" "$" )
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
+
+  ;; highligh matching brackets
+  (show-paren-mode 1) 
+  (setq show-paren-style 'expression)
+  ;; (custom-set-faces 
+  ;;   '(show-paren-match ((((class color) (background light)) 
+  ;;                        (:background "papaya whip")))))
   )
 #+end_src
 
@@ -1632,11 +1741,19 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
             (lambda ()
               (flyspell-mode)
               (prettify-symbols-mode)
+              (LaTeX-math-mode)
               (smartparens-mode)
-              (rainbow-blocks-mode)
               (turn-on-reftex)
               (reftex-isearch-minor-mode)))
+  
+  (add-hook 'LaTeX-mode-hook #'outline-minor-mode)
 
+  ;; enable tex fold mode and fold buffer
+  (add-hook 'LaTeX-mode-hook 
+          (lambda ()
+            (TeX-fold-mode 1)
+            (add-hook 'find-file-hook 'TeX-fold-buffer t)))
+ 
   (add-hook 'LaTeX-mode-hook 'company-mode)
 
   (setq reftex-plug-into-AUCTeX t)
@@ -1653,15 +1770,8 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
              #'TeX-revert-document-buffer)
 
-  ;; to use pdfview with auctex
-  ;; (add-hook 'LaTeX-mode-hook 'pdf-tools-install)
- 
   ;; latex commands
   (setq LaTeX-command "latex --synctex=1 -shell-escape")
-
-  ;;Use pdf-tools to open PDF files
-  ;; (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
-  ;; (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view")))
 
   ;; use sumatra to view pdf
   ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
@@ -1670,31 +1780,56 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
         '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
                           (mode-io-correlate " -forward-search %b %n ") " %o"))))
 
-  (use-package sumatra-forward 
-    :load-path "c:/Users/Nasser/.emacs.d/elpa/sumatra-forward"
-    :bind* ("C-c C-v" . sumatra-jump-to-line)
-    :init
-    (advice-add 'sumatra-jump-to-line :before #'TeX-view)
-    )
+  ;; jump to source
+  (setq TeX-source-correlate-mode t)
 
   (eval-after-load 'tex
   '(progn
      (assq-delete-all 'output-pdf TeX-view-program-selection)
      (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
-  
-  ;; (setq pdf-sync-backward-display-action
-  ;; '(nil (reusable-frames . t)))
-  ;; (setq pdf-sync-forward-display-action
-  ;; '(nil (reusable-frames . t)))
-
-(add-hook 'LaTeX-mode 
-          (lambda ()
-            (TeX-fold-mode 1)
-            (add-hook 'find-file-hook 'TeX-fold-buffer t t))) ;; Automatically activate TeX-fold-mode.
-
 )
 #+end_src
 
+#+RESULTS:
+
+
+#+BEGIN_SRC emacs-lisp
+(defhydra hydra-outline (:color pink :hint nil)
+  "
+^Hide^             ^Show^           ^Move
+^^^^^^------------------------------------------------------
+_q_: sublevels     _a_: all         _u_: up
+_t_: body          _e_: entry       _n_: next visible
+_o_: other         _i_: children    _p_: previous visible
+_c_: entry         _k_: branches    _f_: forward same level
+_l_: leaves        _s_: subtree     _b_: backward same level
+_d_: subtree   _<tab>_: cycle
+
+"
+  ;; Hide
+  ("q" hide-sublevels)    ; Hide everything but the top-level headings
+  ("t" hide-body)         ; Hide everything but headings (all body lines)
+  ("o" hide-other)        ; Hide other branches
+  ("c" hide-entry)        ; Hide this entry's body
+  ("l" hide-leaves)       ; Hide body lines in this entry and sub-entries
+  ("d" hide-subtree)      ; Hide everything in this entry and sub-entries
+  ;; Show
+  ("a" show-all)          ; Show (expand) everything
+  ("e" show-entry)        ; Show this heading's body
+  ("i" show-children)     ; Show this heading's immediate child sub-headings
+  ("k" show-branches)     ; Show all sub-headings under this heading
+  ("s" show-subtree)      ; Show (expand) everything in this heading & below
+  ("<tab>" org-cycle)
+  ;; Move
+  ("u" outline-up-heading)                ; Up
+  ("n" outline-next-visible-heading)      ; Next
+  ("p" outline-previous-visible-heading)  ; Previous
+  ("f" outline-forward-same-level)        ; Forward - same level
+  ("b" outline-backward-same-level)       ; Backward - same level
+  ("z" nil "leave"))
+
+(global-set-key (kbd "C-c o") 'hydra-outline/body) ; by exambple
+#+END_SRC
 
 *** Latex preview pane
 
@@ -1738,7 +1873,9 @@ shell-escape mode because the pacakge svg requires it.
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
   :ensure t 
-  :defer t
+  :commands flycheck-mode
+  :init
+  (add-hook 'prog-mode-hook 'flycheck-mode)
   :config
 
   (flycheck-define-checker proselint
@@ -1751,7 +1888,6 @@ shell-escape mode because the pacakge svg requires it.
   :modes (text-mode markdown-mode gfm-mode))
 
   (add-to-list 'flycheck-checkers 'proselint)
-
   )
 #+END_SRC
 
@@ -1800,37 +1936,48 @@ The configurations were taken from [[https://github.com/company-mode/company-mod
 #+BEGIN_SRC emacs-lisp
 (use-package company
   :ensure t
-  :diminish company-mode
-  :defer t
+  :commands company-mode
+  :init
+  (add-hook 'prog-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay 0.2)
+  (setq company-idle-delay 0.5)
   (setq company-show-numbers t)
-  (setq company-minimum-prefix-length 2)
-
-  (use-package company-statistics :ensure t :defer t)
-  (add-hook 'company-mode-hook 'company-statistics-mode)
-
-  (use-package company-flx
-    :ensure t
-    :init
-    (company-flx-mode +1))
 
   (defun tab-indent-or-complete ()
-  (interactive)
-  (if (minibufferp)
-      (minibuffer-complete)
-    (if (or (not yas-minor-mode)
-            (null (do-yas-expand)))
-        (if (check-expansion)
-            (company-complete-common)
-          (indent-for-tab-command)))))
-  ;; Also these lines are useful to trigger the completion pressing the key you want.
+    (interactive)
+    (if (minibufferp)
+        (minibuffer-complete)
+      (if (or (not yas-minor-mode)
+              (null (do-yas-expand)))
+          (if (check-expansion)
+              (company-complete-common)
+            (indent-for-tab-command)))))
+  
+  ;; Also these lines are useful to trigger the completion 
+  ;; pressing the key you want.
   (global-set-key [backtab] 'tab-indent-or-complete)
   
 )
 #+END_SRC
 
 
+#+BEGIN_SRC emacs-lisp
+  (use-package company-statistics 
+    :ensure t
+    :after company
+    :config
+    (company-statistics-mode))
+#+END_SRC
+
+
+
+#+BEGIN_SRC emacs-lisp
+(use-package company-flx
+  :ensure t
+  :after company
+  :config
+  (company-flx-mode +1))
+#+END_SRC
 
 *** Undo tree 
 
@@ -1854,30 +2001,20 @@ Undo system to recover any past state of a buffer.
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
   :ensure t 
-  :config
-
+  :commands rainbow-delimiters-mode
+  :init
   (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'LaTex-mode-hook #'rainbow-delimiters-mode)
   (add-hook 'org-mode-hook 'rainbow-delimiters-mode)
-  
-  (set-face-foreground 'rainbow-delimiters-depth-1-face "lime green")
-  (set-face-foreground 'rainbow-delimiters-depth-2-face "brown")
-  (set-face-foreground 'rainbow-delimiters-depth-3-face "deep sky blue")
-  (set-face-foreground 'rainbow-delimiters-depth-4-face "magenta")
-  (set-face-foreground 'rainbow-delimiters-depth-5-face "goldenrod")
-  (set-face-foreground 'rainbow-delimiters-depth-6-face "dark slate gray")
-  (set-face-foreground 'rainbow-delimiters-depth-7-face "black")
-  (set-face-foreground 'rainbow-delimiters-depth-8-face "cyan")
-  (set-face-foreground 'rainbow-delimiters-depth-9-face "yellow")
-  ) 
+  )
 #+END_SRC
 
 
 
 
-*** Rainbow blocks
+*** +Rainbow blocks+
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package rainbow-blocks
   :ensure t
   :defer t)
@@ -1948,9 +2085,30 @@ Undo system to recover any past state of a buffer.
   (setq neo-vc-integration nil)
   ;; Do not allow neotree to be the only open window
   (setq-default neo-dont-be-alone t)
-  (setq neo-fit-to-contents t)
-  (setq neo-theme 'nerd)
+  (setq neo-fit-to-contents nil)
+  
+  (setq neo-theme 'arrow)
   (setq neo-window-fixed-size nil))
+#+END_SRC
+
+*** All the icons
+
+#+BEGIN_SRC emacs-lisp
+(use-package all-the-icons
+    :ensure t
+    :after neotree)
+#+END_SRC
+
+
+
+*** Smart mode line
+
+#+BEGIN_SRC emacs-lisp
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (setq sml/theme 'respectful)
+  (sml/setup))
 #+END_SRC
 
 *** Dired +
@@ -2007,6 +2165,82 @@ Undo system to recover any past state of a buffer.
   (add-hook 'web-mode-hook 'smartparens-mode)
   (use-package smartparens-html))
 #+END_SRC
+
+*** Highlight symbol
+
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-symbol
+  :ensure t
+  :commands highlight-symbol-mode
+  :init
+  (add-hook 'prog-mode-hook #'highlight-symbol-mode)
+  :config
+  ;; (custom-set-faces 
+  ;;  '(highlight-symbol-face ((((class color) (background light)) 
+  ;;                            (:background "papaya whip")))))
+)
+#+END_SRC
+
+
+*** Highlight paren mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package highlight-parentheses
+  :ensure t
+  :config
+  (global-highlight-parentheses-mode t))
+#+END_SRC
+
+*** Ibuffer
+
+#+BEGIN_SRC emacs-lisp
+(use-package ibuffer
+  :ensure t
+  :config
+  (global-set-key (kbd "C-x C-b") 'ibuffer)
+  (autoload 'ibuffer "ibuffer" "List buffers." t))
+#+END_SRC
+
+*** Irony 
+
+#+BEGIN_SRC emacs-lisp
+(use-package irony
+  :ensure t
+  :mode ("\\.c\\'" . irony-mode)
+  :init
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  :config
+  ;; Windows performance tweaks
+  ;;
+  (when (boundp 'w32-pipe-read-delay)
+    (setq w32-pipe-read-delay 0))
+  ;; Set the buffer size to 64K on Windows (from the original 4K)
+  (when (boundp 'w32-pipe-buffer-size)
+    (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
+)
+#+END_SRC
+
+*** +Golden Ratio+
+
+#+BEGIN_SRC emacs-lisp :tangle no
+(use-package golden-ratio
+  :ensure t
+  :config
+  (golden-ratio-mode 1))
+#+END_SRC
+
+*** Matlab mode
+
+#+BEGIN_SRC emacs-lisp
+(use-package matlab-mode
+  :ensure t
+  :mode ("\\.m\\'" . matlab-mode))
+#+END_SRC
+
 * Misc
 ** +Doc view keybindings+
 
@@ -2044,7 +2278,7 @@ Undo system to recover any past state of a buffer.
                              (when (fboundp 'auto-dim-other-buffers-mode)
                                (auto-dim-other-buffers-mode t))))
   :config
-  ;; (set-face-background 'auto-dim-other-buffers-face "gray98")
+  (set-face-background 'auto-dim-other-buffers-face "gray95")
   )
 #+END_SRC
 
