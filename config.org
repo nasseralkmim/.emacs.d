@@ -460,7 +460,7 @@ http://whattheemacsd.com/
         (linum-mode 1)
         (goto-line (read-number "Goto line: ")))
     (linum-mode -1)))
-#+END_SC
+#+END_SRC
 
 
 * Recentf
@@ -2305,7 +2305,7 @@ Update file in buffer, refresh.
 (setq auto-revert-verbose nil)
 #+END_SRC
 
-** Key M-\ to M-] delete horizontal space
+** Key M-\ to M- delete horizontal space
 
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "M-]") 'delete-horizontal-space)
