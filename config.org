@@ -342,25 +342,12 @@ Download
 
 
 
-#+begin_src emacs-lisp
-;; (set-face-attribute 'default nil :font "Dejavu Sans 10") 
-;; (set-face-attribute 'default nil :font "Source Code Pro 10")
-;; (set-face-attribute 'default nil :font "Office Code Pro D 10")
-;; (set-frame-font "Source Code Pro 10")  
-;; (set-frame-font "Lucida Sans Unicode 10")
-;; (set-frame-font "Monospace 10")
-;; (set-frame-font "Fantasque Sans Mono 11")
-;; (set-frame-font "Inconsolata-g 10")
-#+end_src
-
 #+BEGIN_SRC emacs-lisp
-;; set a default font
-(when (member "Office Code Pro D" (font-family-list))
-  (set-face-attribute 'default nil :font "Office Code Pro D 9"))
+;; set a default font Iosevka, Hack, 
+(set-face-attribute 'default nil :family "Iosevka Term" :height 100)
 
 ;; specify font for all unicode characters
-(when (member "Dejavu Sans" (font-family-list))
-  (set-fontset-font t 'unicode "Dejavu Sans" nil 'prepend))
+(set-fontset-font t 'unicode "Lucida Sans Unicode-10" nil 'prepend)
 #+END_SRC
 
 * Common defaults
@@ -443,8 +430,9 @@ Sources for this section include [[https://github.com/magnars/.emacs.d/blob/mast
 *** Fringe
 
 #+BEGIN_SRC emacs-lisp
-(set-fringe-mode 0)
+(set-fringe-mode nil)
 #+END_SRC
+
 *** go to line
 
 http://whattheemacsd.com/
@@ -536,17 +524,6 @@ General options.
    '(org-level-1 ((t (:background nil :bold t :overline nil))))
    '(org-level-2 ((t (:background nil :bold t :overline nil)))))
 
-  (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey75")
-  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey75")
-
-  ;; (custom-set-faces
-  ;;  '(org-level-1 ((t (:bold t  :height 1.2 ))))
-  ;;  '(org-level-2 ((t (:inherit outline-2 :bold t  :height 1.0))))
-  ;;  '(org-level-3 ((t (:inherit outline-3 :bold t :height 1.0))))
-  ;;  '(org-level-4 ((t (:inherit outline-4 :bold t :height 1.0))))
-  ;;  '(org-level-5 ((t (:inherit outline-5 :bold t :height 1.0)))))
-
-  
   (setq org-agenda-weekend-days nil)
 
   (setq org-modules '(org-habit))
@@ -567,8 +544,8 @@ General options.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-:defer t
-:config
+  :defer t
+  :config
   (require 'ox-extra)
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 #+END_SRC
@@ -578,7 +555,7 @@ From [[http://kitchingroup.cheme.cmu.edu/blog/2017/01/29/ob-ipython-and-inline-f
 
 https://github.com/jkitchin/scimax/blob/master/scimax-org-babel-ipython.el#L100
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (defun ob-ipython-inline-image (b64-string)
   "Write the B64-STRING to a file.
 Returns an org-link to the file."
@@ -819,9 +796,6 @@ This function is called by `org-babel-execute-src-block'."
        (ob-ipython--normalize-session session)))))
 #+END_SRC
 
-#+RESULTS:
-: org-babel-execute-async:ipython
-
 https://github.com/gregsexton/ob-ipython/issues/28
 #+BEGIN_SRC emacs-lisp
 (setq python-shell-completion-native-enable nil) 
@@ -830,9 +804,10 @@ https://github.com/gregsexton/ob-ipython/issues/28
 
 *** +Ox koma letter+
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
 (use-package org
   :defer t
+  :disabled t
   :config
   (eval-after-load 'ox '(require 'ox-koma-letter))
 
@@ -870,79 +845,98 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 *** Org bullets
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :defer t
-  :config
-  (use-package org-bullets
+(use-package org-bullets
     :ensure t
+    :after org
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
     (setq org-ellipsis " …")
-    (setq org-bullets-bullet-list '("•"))))
+    (setq org-bullets-bullet-list '("•")))
 #+END_SRC
 
 
 *** Org reveal
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :defer t
-  :config
-  (use-package ox-reveal 
+(use-package ox-reveal 
     :ensure t
-    :defer 10
+    :after org
     :config
     (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-    (setq org-reveal-mathjax t)))
+    (setq org-reveal-mathjax t))
 #+END_SRC
 
 
 *** Org beamer
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :defer t
+(use-package ox-beamer
+  :after org
   :config
-  (use-package ox-beamer
-    :defer 10
-    :config
-    (progn
-      ;; allow for export=>beamer by placing
-      ;; #+LaTeX_CLASS: beamer in org files
-      (add-to-list 'org-latex-classes
-                   '("beamer"
-                     "\\documentclass[presentation]{beamer}"
-                     ("\\section{%s}"        . "\\section*{%s}")
-                     ("\\subsection{%s}"     . "\\subsection*{%s}")
-                     ("\\subsubsection{%s}"  . "\\subsubsection*{%s}"))))))
+  (progn
+    ;; allow for export=>beamer by placing
+    ;; #+LaTeX_CLASS: beamer in org files
+    (add-to-list 'org-latex-classes
+                 '("beamer"
+                   "\\documentclass[presentation]{beamer}"
+                   ("\\section{%s}"        . "\\section*{%s}")
+                   ("\\subsection{%s}"     . "\\subsection*{%s}")
+                   ("\\subsubsection{%s}"  . "\\subsubsection*{%s}")))))
 #+END_SRC
 
 
 *** Org latex
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :defer t
+(use-package ox-latex
+  :after org
   :config
-  (use-package ox-latex
-    :defer 5
-    :config
-    ;; code highlight for latex org export
-    (add-to-list 'org-latex-packages-alist '("" "minted"))
-    ;; add a nice font to org latex export
-    (add-to-list 'org-latex-packages-alist '("" "fouriernc"))
+  ;; code highlight for latex org export
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
 
-    ;; For code fragments typesetting
-    ;; http://orgmode.org/worg/org-tutorials/org-latex-preview.html
-    (setq org-latex-listings 'minted))
+  (setq org-latex-minted-options
+        '(("frame" "lines") ("linenos" "true") ("fontsize" "\\scriptsize")
+          ("breakbytoken" "true") ("baselinestretch" ".8")))
+  ;; add a nice font to org latex export
+  (add-to-list 'org-latex-packages-alist '("" "libertine"))
+  (add-to-list 'org-latex-packages-alist '("" "inconsolata"))
+  ;; For code fragments typesetting
+  ;; http://orgmode.org/worg/org-tutorials/org-latex-preview.html
+  (setq org-latex-listings 'minted)
 
-  (add-to-list 'org-latex-minted-langs '(ipython "python"))
-  
-; change foreground color of latex macros inside org
-  (setq org-highlight-latex-and-related '(latex script entities))
-  (set-face-foreground 'org-latex-and-related "blue")
+(add-to-list 'org-latex-minted-langs '(ipython "python"))
 
-  (setq org-latex-create-formula-image-program 'imagemagick)
+                                      ; change foreground color of latex macros inside org
+(setq org-highlight-latex-and-related '(latex script entities))
+
+;; use imagemagick to preview latex
+(setq org-latex-create-formula-image-program 'imagemagick)
+;; add shell escape to pdflatex command
+(setq org-preview-latex-process-alist 
+      '((dvipng :programs
+               ("latex" "dvipng")
+               :description "dvi > png" :message "you need to install the programs: latex and dvipng." :image-input-type "dvi" :image-output-type "png" :image-size-adjust
+               (1.0 . 1.0)
+               :latex-compiler
+               ("latex -interaction nonstopmode -output-directory %o %f")
+               :image-converter
+               ("dvipng -fg %F -bg %B -D %D -T tight -o %O %f"))
+       (dvisvgm :programs
+                ("latex" "dvisvgm")
+                :description "dvi > svg" :message "you need to install the programs: latex and dvisvgm." :use-xcolor t :image-input-type "dvi" :image-output-type "svg" :image-size-adjust
+                (1.7 . 1.5)
+                :latex-compiler
+                ("latex -interaction nonstopmode -output-directory %o %f")
+                :image-converter
+                ("dvisvgm %f -n -b min -c %S -o %O"))
+       (imagemagick :programs
+                    ("latex" "convert")
+                    :description "pdf > png" :message "you need to install the programs: latex and imagemagick." :use-xcolor t :image-input-type "pdf" :image-output-type "png" :image-size-adjust
+                    (1.0 . 1.0)
+                    :latex-compiler
+                    ("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+                    :image-converter
+                    ("convert -density %D -trim -antialias %f -quality 100 %O"))))
 )
 #+END_SRC
 
@@ -950,25 +944,24 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 *** Org block background
 
 
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp 
 (use-package org
   :defer t
   :config 
+  (set-face-attribute 'org-block-begin-line nil :height .7)
+  (set-face-attribute 'org-block-end-line nil :height .5)
+  ;; org markups meta line --> change to grey100 when presenting
+
+  (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey70")
+  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey70")
+  
   ;; (setq org-src-block-faces '(("emacs-lisp" (:background "GhostWhite"))
   ;;                           ("python" (:background "GhostWhite"))
   ;;                           ("ipython" (:background "GhostWhite"))
   ;;                           ("plantuml" (:background "GhostWhite"))
   ;;                           ("latex" (:background "GhostWhite"))
   ;;                           ("shell" (:background "GhostWhite"))))
-  ;;  
-  
-   ;; (setq org-src-block-faces '(("emacs-lisp" (:background "#2d2d2d"))
-   ;;                           ("python" (:background "#2d2d2d"))
-   ;;                           ("ipython" (:background "#2d2d2d"))
-   ;;                           ("plantuml" (:background "#2d2d2d"))
-   ;;                           ("latex" (:background "#2d2d2d"))
-   ;;                         ("shell" (:background "#2d2d2d"))))
-  )
+)
 #+END_SRC
 
 
@@ -976,15 +969,12 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 *** Org download
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :defer t
+(use-package org-download
+  :ensure t
+  :after org
   :config
-  (use-package org-download
-   :ensure t
-   :defer 10
-   :config
-   (setq-default org-download-image-dir "./img/")
-   (setq-default org-download-heading-lvl nil)))
+  (setq-default org-download-image-dir "./img/")
+  (setq-default org-download-heading-lvl nil))
 #+END_SRC
 
 
@@ -1009,8 +999,8 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
           (expand-file-name "~/.emacs.d/plantuml.jar"))
 
   (setq org-babel-default-header-args:python
-        '((:results . "output pp")
-          (:exports . "both")))
+        '((:exports . "both")
+          (:results . "output")))
 
   ;; Org babel and source blocks
   (setq org-src-fontify-natively t
@@ -1034,6 +1024,7 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 #+BEGIN_SRC emacs-lisp
 (use-package ob-async
   :ensure t
+  :after org
   :config
   (add-to-list 'org-ctrl-c-ctrl-c-hook 'ob-async-org-babel-execute-src-block))
 #+END_SRC
@@ -1042,20 +1033,17 @@ Org display inline images when starts up, [[http://emacs.stackexchange.com/quest
 *** Org ref
 
 #+BEGIN_SRC emacs-lisp
-(use-package org 
-  :defer t
+(use-package org-ref
+  :after org
+  :ensure t
   :config
-  (use-package org-ref
-    :defer 10
-    :ensure t
-    :config
-    (setq org-ref-default-bibliography 
-          '("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
-    (setq org-ref-pdf-directory 
-          '("C:/Users/Nasser/OneDrive/Bibliography/references-pdf/"
-            "C:/Users/Nasser/OneDrive/Bibliography/references-etc/"))
-            (setq org-ref-completion-library 'org-ref-ivy-bibtex)
-            (org-ref-ivy-cite-completion)))
+  (setq org-ref-default-bibliography 
+        '("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
+  (setq org-ref-pdf-directory 
+        '("C:/Users/Nasser/OneDrive/Bibliography/references-pdf/"
+          "C:/Users/Nasser/OneDrive/Bibliography/references-etc/"))
+  (setq org-ref-completion-library 'org-ref-ivy-bibtex)
+  (org-ref-ivy-cite-completion))
 #+END_SRC
 
 
@@ -1089,7 +1077,7 @@ From [[https://github.com/jbranso/.emacs.d/blob/master/lisp/init-org.org#my-org-
 
 #+BEGIN_SRC emacs-lisp
 (use-package org-clock
-  :defer t
+  :after org
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
   (setq org-clock-persistence-insinuate t)
@@ -1116,7 +1104,6 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
 
 #+BEGIN_SRC emacs-lisp
 (use-package org
-  :mode (("\\.org$" . org-mode))
   :bind ("C-c y" . my/org-insert-clipboard)
   :config
   (defun my/org-insert-clipboard ()
@@ -1157,19 +1144,7 @@ Function for pasting images from clipboard. I got this from [[https://lists.gnu.
     (global-set-key (kbd "S-<f9>") 'org-tree-slide-skip-done-toggle)
     (org-tree-slide-simple-profile)
     (setq org-tree-slide-modeline-display 'outside)
-
-    ;; hide markups
-    (use-package hide-lines :ensure t)
-    (defun my:hide-headers ()
-      (interactive)
-        (hide-lines-matching "#\\+BEGIN_SRC")
-        (hide-lines-matching "#\\+END_SRC")
-        (hide-lines-matching "#\\+RESULTS:"))
-    (defun my:show-headers ()
-      (hide-lines-show-all))
-    ;; (add-hook 'org-tree-slide-play-hook 'my:hide-headers)
-    ;; (add-hook 'org-tree-slide-stop-hook 'hide-lines-show-all)
-    ;; (add-hook 'org-src-mode-hook 'my:hide-headers)
+    (setq org-tree-slide-cursor-init nil)
 )
 #+END_SRC
 
@@ -1311,21 +1286,36 @@ http://orgmode.org/worg/org-hacks.html
 *** Org gcal
 
 #+BEGIN_SRC emacs-lisp
-(use-package org
-  :defer
-  :config
-  (use-package org-gcal
-    :ensure t
-    :disabled t
-    :config
-    (setq org-gcal-client-id "1083156545268-4amskf4uvdeqe7e0u8f4hjvnuslp54vl.apps.googleusercontent.com"
-      org-gcal-client-secret "AETRQ7SppHH3NToGQjMJyscw"
-      org-gcal-file-alist '(("nasser.alkmim@gmail.com" .  "~/OneDrive/Org/gcal.org")))
-    
-    (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync)))
-    (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync))))
-)
+(use-package org-gcal
+ :ensure t
+ :after org
+ :disabled t
+ :config
+ (setq org-gcal-client-id "1083156545268-4amskf4uvdeqe7e0u8f4hjvnuslp54vl.apps.googleusercontent.com"
+   org-gcal-client-secret "AETRQ7SppHH3NToGQjMJyscw"
+   org-gcal-file-alist '(("nasser.alkmim@gmail.com" .  "~/OneDrive/Org/gcal.org")))
+
+ (add-hook 'org-agenda-mode-hook (lambda () (org-gcal-sync)))
+ (add-hook 'org-capture-after-finalize-hook (lambda () (org-gcal-sync))))
 #+END_SRC
+*** org toc
+
+#+BEGIN_SRC emacs-lisp
+(use-package toc-org
+  :ensure t
+  :after org
+  :init  (add-hook 'org-mode-hook 'toc-org-enable))
+#+END_SRC
+*** Multiple cursors
+
+#+BEGIN_SRC emacs-lisp
+(use-package multiple-cursors
+  :ensure t
+  :bind (("C-x C-m C-m" . mc/edit-lines)
+         ("C-x C-m C-n" . mc/mark-next-like-this)))
+#+END_SRC
+
+
 
 * Shell
 
@@ -1358,7 +1348,8 @@ http://orgmode.org/worg/org-hacks.html
 #+BEGIN_SRC emacs-lisp
 (use-package dumb-jump
   :ensure t
-  :init
+  :bind ("C-M-g". dumb-jump-go)
+  :config
   (dumb-jump-mode))
 #+END_SRC
 
@@ -1373,12 +1364,14 @@ what I have them set to (with respect to Dvorak, of course).
 (use-package ace-window
   :ensure t 
   :config
+  (setq aw-scope 'frame)
   (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (ace-window-display-mode)
   (custom-set-faces
    '(aw-leading-char-face
      ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-  :bind ("C-o " . ace-window))
+  :bind (("C-o " . other-window)
+         ("C-x o " . ace-window)))
 #+end_src
 
 *** Counsel
@@ -1617,16 +1610,8 @@ Integrates with Python.
          (get-buffer-process (current-buffer))
          nil "_"))))
 
-
-  ;; solve indentation issues inside docstring
-  (defun my-python-indent-line ()
-    (if (eq (car (python-indent-context)) :inside-docstring)
-        'noindent
-      (python-indent-line)))
-
-  (defun my-python-mode-hook ()
-    (setq indent-line-function #'my-python-indent-line))
-  (add-hook 'python-mode-hook #'my-python-mode-hook)
+  (global-eldoc-mode -1)
+  (eldoc-mode -1)
   )
 #+end_src
 
@@ -1644,13 +1629,18 @@ Integrates with Python.
 ***** Company jedi
 
 #+BEGIN_SRC emacs-lisp
-;; doesnt work
-(use-package company-jedi
+(use-package company-jedi             ;;; company-mode completion back-end for Python JEDI
   :disabled t
   :ensure t
-  :init
-  (eval-after-load "company"
-    '(add-to-list 'company-backends 'company-jedi)))
+  :after python
+  :config
+  (setq jedi:environment-virtualenv (list (expand-file-name "~/.emacs.d/.python-environments/")))
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t)
+  (setq jedi:use-shortcuts t)
+  (defun config/enable-company-jedi ()
+    (add-to-list 'company-backends 'company-jedi))
+  (add-hook 'python-mode-hook 'config/enable-company-jedi))
 #+END_SRC
 
 ***** Elpy
@@ -1659,6 +1649,8 @@ Integrates with Python.
 (use-package elpy 
   :ensure t
   :after python
+  :bind (:map elpy-mode-map 
+              ("C-c C-k" . elpy-shell-kill))
   :config
   (elpy-enable)
 
@@ -1666,6 +1658,7 @@ Integrates with Python.
   (delete 'elpy-module-highlight-indentation elpy-modules)
   (remove-hook 'elpy-modules 'elpy-module-company)
   (delete 'elpy-module-flymake elpy-modules)
+  (delete 'elpy-module-company elpy-modules)
 
   ;; use py.test
   (setq elpy-test-runner 'elpy-test-pytest-runner)
@@ -1689,7 +1682,6 @@ Integrates with Python.
   :after python
   :init
   (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
   :config
   (use-package company-anaconda
     :ensure t
@@ -1747,12 +1739,6 @@ Enable [[https://www.gnu.org/software/auctex/manual/auctex.html][Auctex]] when f
               (reftex-isearch-minor-mode)))
   
   (add-hook 'LaTeX-mode-hook #'outline-minor-mode)
-
-  ;; enable tex fold mode and fold buffer
-  (add-hook 'LaTeX-mode-hook 
-          (lambda ()
-            (TeX-fold-mode 1)
-            (add-hook 'find-file-hook 'TeX-fold-buffer t)))
  
   (add-hook 'LaTeX-mode-hook 'company-mode)
 
@@ -1877,7 +1863,12 @@ shell-escape mode because the pacakge svg requires it.
   :init
   (add-hook 'prog-mode-hook 'flycheck-mode)
   :config
-
+  (setq flycheck-highlighting-mode 'lines)
+  (setq flycheck-indication-mode nil)
+  (setq flycheck-display-errors-delay 1.5)
+  (setq flycheck-idle-change-delay 3)
+  (setq flycheck-check-syntax-automatically '(mode-enabled save))
+  
   (flycheck-define-checker proselint
   "A linter for prose."
   :command ("proselint" source-inplace)
@@ -2175,6 +2166,7 @@ Undo system to recover any past state of a buffer.
   :commands highlight-symbol-mode
   :init
   (add-hook 'prog-mode-hook #'highlight-symbol-mode)
+  (add-hook 'matlab-mode-hook #'highlight-symbol-mode)
   :config
   ;; (custom-set-faces 
   ;;  '(highlight-symbol-face ((((class color) (background light)) 
@@ -2241,6 +2233,36 @@ Undo system to recover any past state of a buffer.
   :mode ("\\.m\\'" . matlab-mode))
 #+END_SRC
 
+*** git gutter
+
+
+#+BEGIN_SRC emacs-lisp
+(use-package git-gutter-fringe
+  :ensure t
+  :after python
+  :bind (("C-x g d" . git-gutter:popup-diff)
+         ("C-x g r" . git-gutter:revert-hunk))
+  :init
+  (add-hook 'python-mode-hook 'git-gutter-mode)
+  :config
+  (fringe-helper-define  'git-gutter-fr:modified nil " ") 
+  (fringe-helper-define  'git-gutter-fr:deleted nil " ")
+  (fringe-helper-define  'git-gutter-fr:added nil " "))
+
+(use-package fringe-helper
+  :ensure t
+  :after git-gutter-fringe)
+#+END_SRC
+
+*** column marker
+
+#+BEGIN_SRC emacs-lisp
+(use-package column-marker
+  :ensure t
+  :commands column-marker-1
+  :init
+  (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80))))
+#+END_SRC
 * Misc
 ** +Doc view keybindings+
 
@@ -2335,6 +2357,7 @@ mouse auto select to make active the buffer where the mouse pointer is hovering,
 #+BEGIN_SRC emacs-lisp
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
+(setq auto-window-vscroll nil)
 #+END_SRC
 ** Moving to end of line or block
 
@@ -2383,7 +2406,24 @@ Version 2017-01-17"
 (bind-key* "C-e" 'xah-end-of-line-or-block)
 (bind-key* "C-a" 'xah-beginning-of-line-or-block)
 #+END_SRC
+** set window width to 80
 
+#+BEGIN_SRC emacs-lisp
+(defun set-window-width (n)
+  "Set the selected window's width."
+  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+
+(defun set-80-columns ()
+  "Set the selected window to 80 columns."
+  (interactive)
+  (set-window-width 80))
+(defun set-68-columns ()
+  "Set the selected window to 80 columns."
+  (interactive)
+  (set-window-width 68))
+(global-set-key "\C-x8" 'set-80-columns)
+(global-set-key "\C-x7" 'set-68-columns)
+#+END_SRC
 
 
 

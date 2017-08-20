@@ -23,7 +23,6 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-(setq default-frame-alist '((font . "Office Code Pro D 9")))
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
