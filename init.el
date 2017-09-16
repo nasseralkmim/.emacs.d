@@ -1,130 +1,130 @@
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
+ ;; Added by Package.el.  This must come before configurations of
+ ;; installed packages.  Don't delete this line.  If you don't want it,
+ ;; just comment it out by adding a semicolon to the start of the line.
+ ;; You may delete these explanatory comments.
+ (package-initialize)
 
-(defvar my-start-time (current-time)
-  "Time when Emacs was started")
+ (defvar my-start-time (current-time)
+   "Time when Emacs was started")
 
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
-(tooltip-mode 0)
+ (menu-bar-mode 0)
+ (tool-bar-mode 0)
+ (scroll-bar-mode 0)
+ (tooltip-mode 0)
+ (setenv "PYTHONIOENCODING" "utf-8")
+ (setq initial-scratch-message "")
 
-(setq initial-scratch-message "")
+ ;; Don't load old .elc files when the .el file is newer
+ (setq load-prefer-newer t)
 
-;; Don't load old .elc files when the .el file is newer
-(setq load-prefer-newer t)
+ (setq inhibit-startup-screen t)
 
-(setq inhibit-startup-screen t)
+ ;; Don't edit this file, edit ~/.emacs.d/config.org instead ...
 
-;; Don't edit this file, edit ~/.emacs.d/config.org instead ...
+ (setq user-full-name "Nasser Alkmim"
+       user-mail-address "nasser.alkmim@gmail.com")
+ (package-initialize nil)
+ (setq package-enable-at-startup nil)
+ ;;; Set up package
+ ;; initalize all ELPA packages
+ (require 'package)
+ (setq package-enable-at-startup nil
+       package-archives
+       '(("melpa"           . "http://melpa.org/packages/")
+         ("melpa-stable" . "http://stable.melpa.org/packages/")
+         ("gnu" . "http://elpa.gnu.org/packages/")
+         ("org" . "http://orgmode.org/elpa/")))
+ (unless (package-installed-p 'use-package)
+   (package-refresh-contents)
+   (package-install 'use-package))
 
-(setq user-full-name "Nasser Alkmim"
-      user-mail-address "nasser.alkmim@gmail.com")
-(package-initialize nil)
-(setq package-enable-at-startup nil)
-;;; Set up package
-;; initalize all ELPA packages
-(require 'package)
-(setq package-enable-at-startup nil
-      package-archives
-      '(("melpa"           . "http://melpa.org/packages/")
-        ("melpa-stable" . "http://stable.melpa.org/packages/")
-        ("gnu" . "http://elpa.gnu.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
-
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)                ;; if you use :diminish
-(require 'bind-key)
-(setq use-package-verbose t)
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+ (eval-when-compile
+   (require 'use-package))
+ (require 'diminish)                ;; if you use :diminish
+ (require 'bind-key)
+ (setq use-package-verbose t)
+ (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+ (load custom-file)
 (use-package moe-theme
-  :disabled t
   :ensure t
   :config
   (setq moe-theme-highlight-buffer-id nil)
   (setq moe-theme-resize-org-title '(1.3 1.2 1.2 1.2 1.1 1.0 1.0 1.0 1.0))
   (moe-dark))
-;; set a default font Iosevka, Hack, 
-(set-face-attribute 'default nil :family "Iosevka Term" :height 100)
+ ;; set a default font Iosevka, Hack, 
+ (set-face-attribute 'default nil :family "Iosevka Term" :height 90)
 
-;; specify font for all unicode characters
-(set-fontset-font t 'unicode "Lucida Sans Unicode-10" nil 'prepend)
-  ;; These functions are useful. Activate them.
-  (put 'downcase-region 'disabled nil)
-  (put 'upcase-region 'disabled nil)
-  (put 'narrow-to-region 'disabled nil)
-  (put 'dired-find-alternate-file 'disabled nil)
+ ;; specify font for all unicode characters
+ (set-fontset-font t 'unicode "Iosevka Term" nil 'prepend)
 
-  ;; Answering just 'y' or 'n' will do
-  (defalias 'yes-or-no-p 'y-or-n-p)
+   ;; These functions are useful. Activate them.
+   (put 'downcase-region 'disabled nil)
+   (put 'upcase-region 'disabled nil)
+   (put 'narrow-to-region 'disabled nil)
+   (put 'dired-find-alternate-file 'disabled nil)
 
-  ;; UTF-8 please
-  (prefer-coding-system 'utf-8)
-  (set-default-coding-systems 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8)
-  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+   ;; Answering just 'y' or 'n' will do
+   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  ;; from Sacha page
-  (when (display-graphic-p)
-    (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+   ;; UTF-8 please
+   (prefer-coding-system 'utf-8)
+   (set-default-coding-systems 'utf-8)
+   (set-terminal-coding-system 'utf-8)
+   (set-keyboard-coding-system 'utf-8)
+   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-  (setq-default indent-tabs-mode nil)
+   ;; from Sacha page
+   (when (display-graphic-p)
+     (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
-  ;; use shift-arrows to move between windows
-  (windmove-default-keybindings)
+   (setq-default indent-tabs-mode nil)
 
-  ;; highlight current line
-  ;; (global-hl-line-mode 1)
-  ;; (set-face-background 'hl-line "SlateGray1")
+   ;; use shift-arrows to move between windows
+   (windmove-default-keybindings)
 
-  ; wrap lines
-  ;; (global-visual-line-mode)
-  ;; (diminish 'visual-line-mode)
+   ;; highlight current line
+   ;; (global-hl-line-mode 1)
+   ;; (set-face-background 'hl-line "SlateGray1")
 
-  ;; Turn off the blinking cursor
-  (blink-cursor-mode -1)
+   ; wrap lines
+   ;; (global-visual-line-mode)
+   ;; (diminish 'visual-line-mode)
 
-  (setq-default indent-tabs-mode nil)
-  (setq-default indicate-empty-lines t)
+   ;; Turn off the blinking cursor
+   (blink-cursor-mode -1)
 
-  ;; Don't count two spaces after a period as the end of a sentence.
-  ;; Just one space is needed.
-  (setq sentence-end-double-space nil)
+   (setq-default indent-tabs-mode nil)
+   (setq-default indicate-empty-lines t)
 
-  ;; delete the region when typing, just like as we expect nowadays.
-  (delete-selection-mode t)
+   ;; Don't count two spaces after a period as the end of a sentence.
+   ;; Just one space is needed.
+   (setq sentence-end-double-space nil)
 
-  (column-number-mode t)
+   ;; delete the region when typing, just like as we expect nowadays.
+   (delete-selection-mode t)
 
-  ;; unprettify symbol when at right edge
-  (setq prettify-symbols-unprettify-at-point 'right-edge) 
+   (column-number-mode t)
 
-  (setq uniquify-buffer-name-style 'forward)
+   ;; unprettify symbol when at right edge
+   (setq prettify-symbols-unprettify-at-point 'right-edge) 
 
-  ;; Don't beep at me
-  (setq visible-bell t)
+   (setq uniquify-buffer-name-style 'forward)
 
-  ;; Don't create backups
-  (setq make-backup-files nil)
-(set-fringe-mode nil)
-(global-set-key [remap goto-line] 'goto-line-with-feedback)
+   ;; Don't beep at me
+   (setq visible-bell t)
 
-(defun goto-line-with-feedback ()
-  "Show line numbers temporarily, while prompting for the line number input"
-  (interactive)
-  (unwind-protect
-      (progn
-        (linum-mode 1)
-        (goto-line (read-number "Goto line: ")))
+   ;; Don't create backups
+   (setq make-backup-files nil)
+ (set-fringe-mode '(6 . 0))
+ (global-set-key [remap goto-line] 'goto-line-with-feedback)
+
+ (defun goto-line-with-feedback ()
+   "Show line numbers temporarily, while prompting for the line number input"
+   (interactive)
+   (unwind-protect
+       (progn
+         (linum-mode 1)
+         (goto-line (read-number "Goto line: ")))
     (linum-mode -1)))
 (use-package recentf
   :defer 30
@@ -142,20 +142,19 @@
         ("C-c c" . org-capture)
         ("M-p" . org-previous-item)
         ("M-n" . org-next-item))
-  :config
+  :init
   (add-hook 'org-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'company-mode)
-  (add-hook 'org-mode-hook 'visual-line-mode))
-(use-package org
-  :defer t
+  (add-hook 'org-mode-hook 'visual-line-mode)
+
   :config
   (setq org-special-ctrl-a/e t)
   (transient-mark-mode nil)
-  (setq org-log-done 'time) ;Log the time a task is completed.
+  (setq org-log-done 'time)         ;Log the time a task is completed.
   (setq org-habit-graph-column 50) ;position the habit graph on the agenda to the right of he defaul 
   (setq org-hide-emphasis-markers t) 
   (setq inhibit-splash-screen t)
-  (setq org-indent-mode t) ;indent the headings for clean view
+  (setq org-indent-mode t)         ;indent the headings for clean view
   (setq org-hide-leading-stars t) 
   (setq org-hide-leading-stars-before-indent-mode t)
   (setq org-odd-levels-only t)
@@ -178,24 +177,57 @@
   (setq org-modules '(org-habit))
   (eval-after-load 'org
     '(org-load-modules-maybe t))
-
-
+  
   (setq org-file-apps '((auto-mode . emacs)
                         ("\\.mm\\'" . default)
                         ("\\.x?html?\\'" . default)
                         ("\\.pdf::\\([0-9]+\\)\\'" . "sumatrapdf \"%s\" -page %1")
-                        ("\\.pdf\\'" . default))))
-(use-package org
-  :defer t
-  :config
-  (require 'ox-extra)
-  (ox-extras-activate '(latex-header-blocks ignore-headlines)))
-(use-package org
-  :defer t
-  :config
+                        ("\\.pdf\\'" . default)))
+
   (setq org-cycle-include-plain-lists 'integrate)
   (setq org-image-actual-width t)
-  (setq org-startup-with-inline-images t))
+  (setq org-startup-with-inline-images t)
+  (set-face-attribute 'org-block-begin-line nil :height .7)
+  (set-face-attribute 'org-block-end-line nil :height .5)
+  ;; org markups meta line --> change to grey100 when presenting
+
+  (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey70")
+  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey70")
+
+  (org-babel-do-load-languages
+     'org-babel-load-languages
+     '((python . t)
+       (emacs-lisp . t)
+       (latex . t)
+       (plantuml . t)
+       (shell . t)))
+
+  ;; plantuml jar file path
+  (setq org-plantuml-jar-path
+        (expand-file-name "~/.emacs.d/plantuml.jar"))
+  (setq org-babel-default-header-args:python
+        '((:exports . "both")
+          (:results . "output")))
+
+  ;; Org babel and source blocks
+  (setq org-src-fontify-natively t
+        org-highlight-latex-and-related '(latex)
+        org-src-window-setup 'current-window
+        org-src-strip-leading-and-trailing-blank-lines t
+        org-src-preserve-indentation t ; preserve indentation in code
+        org-adapt-indentation nil; Non-nil means adapt indentation to outline node level.
+        org-src-tab-acts-natively t
+        org-export-babel-evaluate nil
+        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
+
+  ;; dont guess the indent offset
+  (setq python-indent-guess-indent-offset nil)
+  ;;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+(use-package ox-extra
+  :after org
+  :config
+  (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 (use-package ox-reveal 
     :ensure t
     :after org
@@ -263,55 +295,12 @@
                        ("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
                        :image-converter
                        ("convert -density %D -trim -antialias %f -quality 100 %O")))))
-(use-package org
-  :defer t
-  :config 
-  (set-face-attribute 'org-block-begin-line nil :height .7)
-  (set-face-attribute 'org-block-end-line nil :height .5)
-  ;; org markups meta line --> change to grey100 when presenting
-
-  (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey70")
-  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey70"))
 (use-package org-download
   :ensure t
   :after org
   :config
   (setq-default org-download-image-dir "./img/")
   (setq-default org-download-heading-lvl nil))
-(use-package org
-  :defer t
-  :config
- 
-  (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((python . t)
-       (emacs-lisp . t)
-       (latex . t)
-       (plantuml . t)
-       (shell . t)))
-
-  ;; plantuml jar file path
-  (setq org-plantuml-jar-path
-        (expand-file-name "~/.emacs.d/plantuml.jar"))
-  (setq org-babel-default-header-args:python
-        '((:exports . "both")
-          (:results . "output")))
-
-  ;; Org babel and source blocks
-  (setq org-src-fontify-natively t
-        org-highlight-latex-and-related '(latex)
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t ; preserve indentation in code
-        org-adapt-indentation nil; Non-nil means adapt indentation to outline node level.
-        org-src-tab-acts-natively t
-        org-export-babel-evaluate nil
-        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
-
-  ;; dont guess the indent offset
-  (setq python-indent-guess-indent-offset nil)
-  ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 (use-package ob-async
   :disabled t
   :ensure t
@@ -414,7 +403,7 @@
 
   (setq op/category-ignore-list '("themes" "assets" "blog"))
 
-(setq op/category-config-alist
+ (setq op/category-config-alist
       '(("notes" ;; this is the default configuration
          :label "Notes"
          :show-meta t
@@ -512,11 +501,11 @@
   :ensure t
   :bind (("C-x C-m C-m" . mc/edit-lines)
          ("C-x C-m C-n" . mc/mark-next-like-this)))
-(defun my/open-cmd()
+ (defun my/open-cmd()
   (interactive)
   (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
     (set-process-query-on-exit-flag proc nil)))
-(bind-key "C-x m" 'my/open-cmd)
+ (bind-key "C-x m" 'my/open-cmd)
 (use-package avy
   :ensure t 
   :diminish avy-mode
@@ -605,7 +594,8 @@
 (use-package hydra
   :ensure t
   :bind (("C-c w" . hydra-window-resize/body)
-         ("C-c o" . hydra-outline/body))
+         ("C-c o" . hydra-outline/body)
+         ("C-c m" . multiple-cursors-hydra/body))
   :config
   (defun my-funcs/resize-window-down ()
     "Resize a window downwards."
@@ -658,19 +648,39 @@
     ("l" hide-leaves)  ; Hide body lines in this entry and sub-entries
     ("d" hide-subtree) ; Hide everything in this entry and sub-entries
     ;; Show
-    ("a" show-all)    ; Show (expand) everything
-    ("e" show-entry)  ; Show this heading's body
+    ("a" show-all)                      ; Show (expand) everything
+    ("e" show-entry)                    ; Show this heading's body
     ("i" show-children) ; Show this heading's immediate child sub-headings
     ("k" show-branches) ; Show all sub-headings under this heading
     ("s" show-subtree) ; Show (expand) everything in this heading & below
     ("<tab>" org-cycle)
     ;; Move
-    ("u" outline-up-heading)             ; Up
-    ("n" outline-next-visible-heading)   ; Next
+    ("u" outline-up-heading)               ; Up
+    ("n" outline-next-visible-heading)     ; Next
     ("p" outline-previous-visible-heading) ; Previous
     ("f" outline-forward-same-level)       ; Forward - same level
     ("b" outline-backward-same-level)      ; Backward - same level
-    ("z" nil "leave")))
+    ("z" nil "leave"))
+  
+  (defhydra multiple-cursors-hydra (:hint nil)
+    "
+      ^Up^            ^Down^        ^Other^
+ ----------------------------------------------
+ [_p_]   Next    [_n_]   Next    [_l_] Edit lines
+ [_P_]   Skip    [_N_]   Skip    [_a_] Mark all
+ [_M-p_] Unmark  [_M-n_] Unmark  [_r_] Mark by regexp
+ ^ ^             ^ ^             [_q_] Quit
+ "
+    ("l" mc/edit-lines :exit t)
+    ("a" mc/mark-all-like-this :exit t)
+    ("n" mc/mark-next-like-this)
+    ("N" mc/skip-to-next-like-this)
+    ("M-n" mc/unmark-next-like-this)
+    ("p" mc/mark-previous-like-this)
+    ("P" mc/skip-to-previous-like-this)
+    ("M-p" mc/unmark-previous-like-this)
+    ("r" mc/mark-all-in-region-regexp :exit t)
+    ("q" nil)))
 (use-package ivy-hydra
   :ensure t
   :defer t)
@@ -712,10 +722,6 @@
   :config
   (setq warning-suppress-types '((python)
                                  (emacs)))
-  ;; https://emacs.stackexchange.com/questions/24453/weird-shell-output-when-using-ipython-5/24572#24572
-  (setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "--simple-prompt -i")
-
   ;; suppress the warning "python.el: native completion setup failed"
   (with-eval-after-load 'python
     (defun python-shell-completion-native-try ()
@@ -726,10 +732,8 @@
         (python-shell-completion-native-get-completions
          (get-buffer-process (current-buffer))
          nil "_"))))
-
   (global-eldoc-mode -1)
-  (eldoc-mode -1)
-  )
+  (eldoc-mode -1))
 (use-package highlight-indent-guides
   :ensure t
   :after python
@@ -741,10 +745,9 @@
   :ensure t
   :after python
   :bind (:map elpy-mode-map 
-              ("C-c C-k" . elpy-shell-kill))
+               ("C-c C-k" . elpy-shell-kill)
+               ("C-c C-c" . elpy-restart-python-and-send-buffer))
   :config
-  (elpy-enable)
-
   (electric-indent-local-mode -1)
   (delete 'elpy-module-highlight-indentation elpy-modules)
   (remove-hook 'elpy-modules 'elpy-module-company)
@@ -752,7 +755,8 @@
   (delete 'elpy-module-company elpy-modules)
   (delete 'elpy-module-yasnippet elpy-modules)
   (delete 'elpy-module-django elpy-modules)
-
+  (delete 'elpy-module-eldoc elpy-modules)
+  (elpy-enable)
   ;; use py.test
   (setq elpy-test-runner 'elpy-test-pytest-runner)
   
@@ -763,7 +767,23 @@
     (condition-case nil (elpy-goto-definition)
       (error (elpy-rgrep-symbol
               (concat "\\(def\\|class\\)\s" (thing-at-point 'symbol) "(")))))
-  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition-or-rgrep))
+  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition-or-rgrep)
+
+  (defun elpy-restart-python-and-send-buffer ()
+    "Restart python console before evaluate buffer or region to avoid various uncanny conflicts, like not reloding modules even when they are changed"
+    (interactive)
+    ;; (when (get-buffer "*Python*")
+    ;;   (kill-process "Python")
+    ;;   (sleep-for 0.05)
+    ;;   (kill-buffer "*Python*"))
+    (elpy-shell-send-region-or-buffer)))
+(use-package lisp
+  :mode ("\\.el\\'" . lisp-mode))
+(use-package lispy
+  :ensure t
+  :after lisp
+  :init
+  (add-hook 'lisp-mode-hook 'lispy-mode))
 (use-package anaconda-mode
   :ensure t
   :after python
@@ -787,14 +807,9 @@
   (sp-local-pair 'org-mode "_" "_" )
   (sp-local-pair 'latex-mode "$" "$" )
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
-
   ;; highligh matching brackets
   (show-paren-mode 1) 
-  (setq show-paren-style 'expression)
-  ;; (custom-set-faces 
-  ;;   '(show-paren-match ((((class color) (background light)) 
-  ;;                        (:background "papaya whip")))))
-  )
+  (setq show-paren-style 'expression))
 (use-package tex-site
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
@@ -809,10 +824,6 @@
               (smartparens-mode)
               (turn-on-reftex)
               (reftex-isearch-minor-mode)))
-  
-  (add-hook 'LaTeX-mode-hook #'outline-minor-mode)
- 
-  (add-hook 'LaTeX-mode-hook 'company-mode)
 
   (setq reftex-plug-into-AUCTeX t)
   (setq TeX-PDF-mode t)
@@ -823,13 +834,10 @@
   ;; inhibit the question to start a server process
   (setq TeX-source-correlate-start-server t)
 
-   ;; Update PDF buffers after successful LaTeX runs
+  ;; Update PDF buffers after successful LaTeX runs
   ;; http://emacs.stackexchange.com/questions/19472/how-to-let-auctex-open-pdf-with-pdf-tools
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
-             #'TeX-revert-document-buffer)
-
-  ;; latex commands
-  (setq LaTeX-command "latex --synctex=1 -shell-escape")
+            #'TeX-revert-document-buffer)
 
   ;; use sumatra to view pdf
   ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
@@ -842,10 +850,9 @@
   (setq TeX-source-correlate-mode t)
 
   (eval-after-load 'tex
-  '(progn
-     (assq-delete-all 'output-pdf TeX-view-program-selection)
-     (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))))
- 
+    '(progn
+       (assq-delete-all 'output-pdf TeX-view-program-selection)
+       (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))))
 (use-package reftex
   :after tex-site
   :ensure t
@@ -880,42 +887,21 @@
 
   (add-to-list 'flycheck-checkers 'proselint))
 (use-package flyspell
-  :disabled t
   :ensure t
-  :bind ("S-<f6>" . flyspell-mode)
+  :commands flyspell-mode
+  :init
+  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   :config
-  ;; init add hook org e latex
-  
-  ;; path to Aspell
-  (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin/")
-  ;; use aspell
-  (setq ispell-program-name "aspell")
-  ;; where the dictionay is
-  ;; (setq ispell-personal-dictionary "c:/Program Files (x86)/Aspell/dict")
-  ;; change dictionaries
-  (defun fd-switch-dictionary()
-    (interactive)
-    (let* ((dic ispell-current-dictionary)
-           (change (if (string= dic "brasileiro") "english" "brasileiro")))
-      (ispell-change-dictionary change)
-      (message "Dictionary switched from %s to %s" dic change)
-      ))
-  (global-set-key (kbd "<f6>")   'fd-switch-dictionary)
-  (global-set-key (kbd "C-<f1>") 'flyspell-correct-word-before-point)
-
-  (use-package auto-dictionary
-    :ensure t
-    :config
-    (add-hook 'flyspell-mode-hook (lambda () (auto-dictionary-mode 1))))
-  
-  (setq ispell-dictionary "brasileiro"))
+  (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin")
+  (setq ispell-program-name "aspell"))
 (use-package company
   :ensure t
   :commands company-mode
   :init
   (add-hook 'prog-mode-hook 'company-mode)
+  (add-hook 'LaTeX-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay 0.5)
+  (setq company-idle-delay .2)
   (setq company-show-numbers t)
 
   (defun tab-indent-or-complete ()
@@ -1030,98 +1016,91 @@
   (global-highlight-parentheses-mode t))
 (use-package ibuffer
   :ensure t
-  :config
-  (global-set-key (kbd "C-x C-b") 'ibuffer)
-  (autoload 'ibuffer "ibuffer" "List buffers." t))
+  :bind ("C-c C-b" . ibuffer))
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m\\'" . matlab-mode))
-(use-package git-gutter-fringe
+(use-package git-gutter-fringe+
   :ensure t
   :after python
-  :bind (("C-x g d" . git-gutter:popup-diff)
-         ("C-x g r" . git-gutter:revert-hunk))
+  :bind (("C-S-x C-S-s" . git-gutter+-stage-hunks)
+         ("C-S-x C-S-c" . git-gutter+-stage-and-commit))
   :init
-  (add-hook 'python-mode-hook 'git-gutter-mode)
+  (add-hook 'python-mode-hook 'git-gutter+-mode)
   :config
-  (fringe-helper-define  'git-gutter-fr:modified nil " ") 
-  (fringe-helper-define  'git-gutter-fr:deleted nil " ")
-  (fringe-helper-define  'git-gutter-fr:added nil " "))
-
-(use-package fringe-helper
-  :ensure t
-  :after git-gutter-fringe)
+  (git-gutter-fr+-minimal))
 (use-package column-marker
   :ensure t
   :commands column-marker-1
   :init
   (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80))))
-(setq ad-redefinition-action 'accept)
-(winner-mode 1)
-(global-auto-revert-mode t)
-(setq global-auto-revert-non-file-buffers t)
-(setq auto-revert-verbose nil)
-(global-set-key (kbd "M-]") 'delete-horizontal-space)
-(setq resize-mini-windows t) ;; was grow-only
-(setq focus-follows-mouse t)
-(setq mouse-autoselect-window t)
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
-(setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
-(setq auto-window-vscroll nil)
-(defun xah-beginning-of-line-or-block ()
-  "Move cursor to beginning of line, or beginning of current or previous text block.
+(use-package epa-file
+  :ensure t
+  :disabled t
+  :after org
+  :config
+  (epa-file-enable))
+ (setq ad-redefinition-action 'accept)
+ (winner-mode 1)
+ (global-auto-revert-mode t)
+ (setq global-auto-revert-non-file-buffers t)
+ (setq auto-revert-verbose nil)
+ (global-set-key (kbd "M-]") 'delete-horizontal-space)
+ (setq resize-mini-windows t) ;; was grow-only
+ (setq focus-follows-mouse t)
+ (setq mouse-autoselect-window t)
+ (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+ (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
+ (setq auto-window-vscroll nil)
+ (defun xah-beginning-of-line-or-block ()
+   "Move cursor to beginning of line, or beginning of current or previous text block.
 
-• When called first time, move cursor to beginning of line.
-• When called again, move cursor to beginning of paragraph.
-• When called again, move cursor to beginning of previous paragraph.
+ • When called first time, move cursor to beginning of line.
+ • When called again, move cursor to beginning of paragraph.
+ • When called again, move cursor to beginning of previous paragraph.
 
-URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
-Version 2017-01-17"
-  (interactive)
-  (if (or (equal (point) (line-beginning-position))
-          (equal last-command this-command ))
-      (if (re-search-backward "\n[\t\n ]*\n+" nil "NOERROR")
-          (skip-chars-backward "\n\t ")
-        (goto-char (point-min)))
-    (beginning-of-line)))
+ URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
+ Version 2017-01-17"
+   (interactive)
+   (if (or (equal (point) (line-beginning-position))
+           (equal last-command this-command ))
+       (if (re-search-backward "\n[\t\n ]*\n+" nil "NOERROR")
+           (skip-chars-backward "\n\t ")
+         (goto-char (point-min)))
+     (beginning-of-line)))
+ (defun xah-end-of-line-or-block ()
+   "Move cursor to end of line, or end of current or next text block.
 
+ • When called first time, move cursor to end of line.
+ • When called again, move cursor to end of paragraph.
+ • When called again, move cursor to end of next paragraph.
 
-(defun xah-end-of-line-or-block ()
-  "Move cursor to end of line, or end of current or next text block.
+ URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
+ Version 2017-01-17"
+   (interactive)
+   (if (or (equal (point) (line-end-position))
+           (equal last-command this-command ))
+       (if (equal (point) (line-end-position))
+           (re-search-forward "\n[\t\n ]*\n+" nil "NOERROR" )
+         (end-of-line))
+     (end-of-visual-line)))
+  ;; (global-set-key (kbd "C-a") 'xah-beginning-of-line-or-block)
+ ;; (global-set-key (kbd "C-e") 'xah-end-of-line-or-block)
+ (bind-key* "C-e" 'xah-end-of-line-or-block)
+ (bind-key* "C-a" 'xah-beginning-of-line-or-block)
+ (defun set-window-width (n)
+   "Set the selected window's width."
+   (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+ (defun set-80-columns ()
+   "Set the selected window to 80 columns."
+   (interactive)
+   (set-window-width 80))
+ (defun set-68-columns ()
+   "Set the selected window to 80 columns."
+   (interactive)
+   (set-window-width 68))
+ (global-set-key "\C-x8" 'set-80-columns)
+ (global-set-key "\C-x7" 'set-68-columns)
 
-• When called first time, move cursor to end of line.
-• When called again, move cursor to end of paragraph.
-• When called again, move cursor to end of next paragraph.
-
-URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
-Version 2017-01-17"
-  (interactive)
-  (if (or (equal (point) (line-end-position))
-          (equal last-command this-command ))
-      (if (equal (point) (line-end-position))
-          (re-search-forward "\n[\t\n ]*\n+" nil "NOERROR" )
-        (end-of-line))
-    (end-of-visual-line)))
-
-(require 'bind-key)
-
-;; (global-set-key (kbd "C-a") 'xah-beginning-of-line-or-block)
-;; (global-set-key (kbd "C-e") 'xah-end-of-line-or-block)
-(bind-key* "C-e" 'xah-end-of-line-or-block)
-(bind-key* "C-a" 'xah-beginning-of-line-or-block)
-(defun set-window-width (n)
-  "Set the selected window's width."
-  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
-
-(defun set-80-columns ()
-  "Set the selected window to 80 columns."
-  (interactive)
-  (set-window-width 80))
-(defun set-68-columns ()
-  "Set the selected window to 80 columns."
-  (interactive)
-  (set-window-width 68))
-(global-set-key "\C-x8" 'set-80-columns)
-(global-set-key "\C-x7" 'set-68-columns)
-
-(message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+ (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+ (put 'set-goal-column 'disabled nil)
