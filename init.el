@@ -1020,13 +1020,16 @@
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m\\'" . matlab-mode))
-(use-package git-gutter-fringe+
+(use-package git-gutter+
   :ensure t
-  :after python
   :bind (("C-S-x C-S-s" . git-gutter+-stage-hunks)
          ("C-S-x C-S-c" . git-gutter+-stage-and-commit))
   :init
   (add-hook 'python-mode-hook 'git-gutter+-mode)
+  (add-hook 'lisp-mode-hook 'git-gutter+-mode))
+(use-package git-gutter-fringe+
+  :ensure t
+  :after git-gutter+
   :config
   (git-gutter-fr+-minimal))
 (use-package column-marker
