@@ -796,7 +796,17 @@
     :config
     (setq jedi:complete-on-dot t)
     (setq company-minimum-prefix-length 1)
+    (setq company-idle-delay 0)
+    (remove-hook 'anaconda-mode-response-read-fail-hook
+                 'anaconda-mode-show-unreadable-response)
     (add-to-list 'company-backends '(company-anaconda :with company-capf))))
+(use-package company-quickhelp
+  :ensure t
+  :after python
+  :config (company-quickhelp-mode 1))
+(use-package realgud
+  :ensure t
+  :after python)
 (use-package smartparens
   :ensure t 
   :commands smartparens-mode
