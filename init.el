@@ -769,6 +769,10 @@
               (concat "\\(def\\|class\\)\s" (thing-at-point 'symbol) "(")))))
 (use-package cl
   :after elpy)
+(use-package hl-todo
+  :ensure t
+  :after python
+  :init (add-hook 'python-mode-hook 'hl-todo-mode))
 (use-package lisp
   :mode ("\\.el\\'" . lisp-mode))
 (use-package lispy
