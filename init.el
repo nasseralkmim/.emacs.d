@@ -767,16 +767,8 @@
     (condition-case nil (elpy-goto-definition)
       (error (elpy-rgrep-symbol
               (concat "\\(def\\|class\\)\s" (thing-at-point 'symbol) "(")))))
-  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition-or-rgrep)
-
-  (defun elpy-restart-python-and-send-buffer ()
-    "Restart python console before evaluate buffer or region to avoid various uncanny conflicts, like not reloding modules even when they are changed"
-    (interactive)
-    ;; (when (get-buffer "*Python*")
-    ;;   (kill-process "Python")
-    ;;   (sleep-for 0.05)
-    ;;   (kill-buffer "*Python*"))
-    (elpy-shell-send-region-or-buffer)))
+(use-package cl
+  :after elpy)
 (use-package lisp
   :mode ("\\.el\\'" . lisp-mode))
 (use-package lispy
