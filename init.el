@@ -732,8 +732,34 @@
         (python-shell-completion-native-get-completions
          (get-buffer-process (current-buffer))
          nil "_"))))
+  
   (global-eldoc-mode -1)
-  (eldoc-mode -1))
+  (eldoc-mode -1)
+  (setenv "PYTHONIOENCODING" "utf-8")
+
+  ;; https://github.com/hlissner/doom-emacs/blob/master/modules/lang/python/config.el#L16
+  (setq python-shell-interpreter "ipython"
+        python-shell-interpreter-args "-i --simple-prompt --no-color-info"
+        python-shell-prompt-regexp "In \\[[0-9]+\\]: "
+        python-shell-prompt-block-regexp "\\.\\.\\.\\.: "
+        python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
+        python-shell-completion-setup-code
+        "from IPython.core.completerlib import module_completion"
+        python-shell-completion-string-code
+        "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
+
+  ;; Disable readline based native completion
+  (setq python-shell-completion-native-enable nil)
+
+  (defun python-add-breakpoint ()
+    "Add a break point"
+    (interactive)
+    (newline-and-indent)
+    (insert "import ipdb; ipdb.set_trace()")
+    (highlight-lines-matching-regexp "^[ ]*import ipdb; ipdb.set_trace()"))
+  
+  (define-key python-mode-map (kbd "C-c C-i C-p") 'python-add-breakpoint)
+  )
 (use-package highlight-indent-guides
   :ensure t
   :after python
