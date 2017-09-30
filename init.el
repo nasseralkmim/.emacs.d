@@ -967,9 +967,12 @@
   :init
   (add-hook 'prog-mode-hook 'company-mode)
   (add-hook 'LaTeX-mode-hook 'company-mode)
+  (add-hook 'org-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay .2)
+  (setq company-idle-delay .1)
   (setq company-show-numbers t)
+
+  (delete 'company-capf company-backends)
 
   (defun tab-indent-or-complete ()
     (interactive)
@@ -985,10 +988,10 @@
   ;; pressing the key you want.
   (global-set-key [backtab] 'tab-indent-or-complete))
 (use-package company-statistics 
-    :ensure t
-    :after company
-    :config
-    (company-statistics-mode))
+  :ensure t
+  :after company
+  :config
+  (company-statistics-mode))
 (use-package company-flx
   :ensure t
   :after company
