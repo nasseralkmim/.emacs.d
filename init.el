@@ -11,7 +11,7 @@
  (tool-bar-mode 0)
  (scroll-bar-mode 0)
  (tooltip-mode 0)
- (setenv "PYTHONIOENCODING" "utf-8")
+
  (setq initial-scratch-message "")
 
  ;; Don't load old .elc files when the .el file is newer
@@ -31,7 +31,6 @@
  (setq package-enable-at-startup nil
        package-archives
        '(("melpa"           . "http://melpa.org/packages/")
-         ("melpa-stable" . "http://stable.melpa.org/packages/")
          ("gnu" . "http://elpa.gnu.org/packages/")
          ("org" . "http://orgmode.org/elpa/")))
  (unless (package-installed-p 'use-package)
@@ -46,16 +45,16 @@
  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
  (load custom-file)
 (use-package moe-theme
+  :disabled t
   :ensure t
   :config
   (setq moe-theme-highlight-buffer-id nil)
-  (setq moe-theme-resize-org-title '(1.3 1.2 1.2 1.2 1.1 1.0 1.0 1.0 1.0))
   (moe-dark))
  ;; set a default font Iosevka, Hack, 
  (set-face-attribute 'default nil :family "Iosevka Term" :height 90)
 
  ;; specify font for all unicode characters
- (set-fontset-font t 'unicode "Iosevka Term" nil 'prepend)
+(set-fontset-font t 'unicode "Dejavu Sans Mono" nil 'prepend)
 
    ;; These functions are useful. Activate them.
    (put 'downcase-region 'disabled nil)
@@ -134,7 +133,7 @@
     (setq recentf-max-saved-items 500
           recentf-max-menu-items 15))
   (run-at-time (current-time) 300 'recentf-save-list))
-(use-package org  
+(use-package org
   :ensure org-plus-contrib
   :mode (("\\.org$" . org-mode))
   :bind(("C-c a" . org-agenda)
@@ -143,10 +142,7 @@
         ("M-p" . org-previous-item)
         ("M-n" . org-next-item))
   :init
-  (add-hook 'org-mode-hook 'smartparens-mode)
-  (add-hook 'org-mode-hook 'company-mode)
-  (add-hook 'org-mode-hook 'visual-line-mode)
-
+  ;; (add-hook 'org-mode-hook 'visual-line-mode)
   :config
   (setq org-special-ctrl-a/e t)
   (transient-mark-mode nil)
@@ -195,12 +191,12 @@
   (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey70")
 
   (org-babel-do-load-languages
-     'org-babel-load-languages
-     '((python . t)
-       (emacs-lisp . t)
-       (latex . t)
-       (plantuml . t)
-       (shell . t)))
+   'org-babel-load-languages
+   '((python . t)
+     (emacs-lisp . t)
+     (latex . t)
+     (plantuml . t)
+     (shell . t)))
 
   ;; plantuml jar file path
   (setq org-plantuml-jar-path
@@ -214,15 +210,15 @@
         org-highlight-latex-and-related '(latex)
         org-src-window-setup 'current-window
         org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t ; preserve indentation in code
-        org-adapt-indentation nil; Non-nil means adapt indentation to outline node level.
+        org-src-preserve-indentation t  ; preserve indentation in code
+        org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
         org-src-tab-acts-natively t
         org-export-babel-evaluate nil
         org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
 
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil)
-  ;;; display/update images in the buffer after I evaluate
+;;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 (use-package ox-extra
   :after org
@@ -295,6 +291,8 @@
                        ("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
                        :image-converter
                        ("convert -density %D -trim -antialias %f -quality 100 %O")))))
+(use-package ox-md
+  :after org)
 (use-package org-download
   :ensure t
   :after org
@@ -571,6 +569,8 @@
   :ensure t
   :bind ("C-c b b" . ivy-bibtex)
   :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
   (setq bibtex-completion-bibliography 
         '("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
   (setq bibtex-completion-library-path 
@@ -593,9 +593,9 @@
   (setq swiper-include-line-number-in-search t))
 (use-package hydra
   :ensure t
-  :bind (("C-c w" . hydra-window-resize/body)
-         ("C-c o" . hydra-outline/body)
-         ("C-c m" . multiple-cursors-hydra/body))
+  :bind (("C-c C-w" . hydra-window-resize/body)
+         ("C-x C-o" . hydra-outline/body)
+         ("C-x C-m " . multiple-cursors-hydra/body))
   :config
   (defun my-funcs/resize-window-down ()
     "Resize a window downwards."
@@ -683,7 +683,7 @@
     ("q" nil)))
 (use-package ivy-hydra
   :ensure t
-  :defer t)
+  :after hydra)
 (use-package magit
   :ensure t 
   :bind ("C-c g" . magit-status)
@@ -732,12 +732,8 @@
         (python-shell-completion-native-get-completions
          (get-buffer-process (current-buffer))
          nil "_"))))
-  
-  (global-eldoc-mode -1)
-  (eldoc-mode -1)
   (setenv "PYTHONIOENCODING" "utf-8")
-
-  ;; https://github.com/hlissner/doom-emacs/blob/master/modules/lang/python/config.el#L16
+;; https://github.com/hlissner/doom-emacs/blob/master/modules/lang/python/config.el#L16
   (setq python-shell-interpreter "ipython"
         python-shell-interpreter-args "-i --simple-prompt --no-color-info"
         python-shell-prompt-regexp "In \\[[0-9]+\\]: "
@@ -749,17 +745,7 @@
         "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
 
   ;; Disable readline based native completion
-  (setq python-shell-completion-native-enable nil)
-
-  (defun python-add-breakpoint ()
-    "Add a break point"
-    (interactive)
-    (newline-and-indent)
-    (insert "import ipdb; ipdb.set_trace()")
-    (highlight-lines-matching-regexp "^[ ]*import ipdb; ipdb.set_trace()"))
-  
-  (define-key python-mode-map (kbd "C-c C-i C-p") 'python-add-breakpoint)
-  )
+  (setq python-shell-completion-native-enable nil))
 (use-package highlight-indent-guides
   :ensure t
   :after python
@@ -771,21 +757,17 @@
   :ensure t
   :after python
   :bind (:map elpy-mode-map 
-               ("C-c C-k" . elpy-shell-kill)
-               ("C-c C-c" . elpy-restart-python-and-send-buffer))
+              ("C-c C-k" . elpy-shell-kill))
   :config
   (electric-indent-local-mode -1)
   (delete 'elpy-module-highlight-indentation elpy-modules)
-  (remove-hook 'elpy-modules 'elpy-module-company)
   (delete 'elpy-module-flymake elpy-modules)
   (delete 'elpy-module-company elpy-modules)
   (delete 'elpy-module-yasnippet elpy-modules)
   (delete 'elpy-module-django elpy-modules)
-  (delete 'elpy-module-eldoc elpy-modules)
   (elpy-enable)
   ;; use py.test
   (setq elpy-test-runner 'elpy-test-pytest-runner)
-  
   (defun elpy-goto-definition-or-rgrep ()
     "Go to the definition of the symbol at point, if found. Otherwise, run `elpy-rgrep-symbol'."
     (interactive)
@@ -793,6 +775,7 @@
     (condition-case nil (elpy-goto-definition)
       (error (elpy-rgrep-symbol
               (concat "\\(def\\|class\\)\s" (thing-at-point 'symbol) "(")))))
+  (define-key elpy-mode-map (kbd "M-.") 'elpy-goto-definition-or-rgrep))
 (use-package cl
   :after elpy)
 (use-package hl-todo
@@ -1112,8 +1095,11 @@
   (add-hook 'matlab-mode-hook #'highlight-symbol-mode))
 (use-package highlight-parentheses
   :ensure t
-  :config
-  (global-highlight-parentheses-mode t))
+  :commands highlight-parentheses-mode
+  :init
+  (add-hook 'org-mode-hook 'highlight-parentheses-mode)
+  (add-hook 'LaTeX-mode-hook 'highlight-parentheses-mode)
+  (add-hook 'python-mode-hook 'highlight-parentheses-mode))
 (use-package ibuffer
   :ensure t
   :bind ("C-c C-b" . ibuffer))
@@ -1122,11 +1108,12 @@
   :mode ("\\.m\\'" . matlab-mode))
 (use-package git-gutter+
   :ensure t
-  :bind (("C-S-x C-S-s" . git-gutter+-stage-hunks)
-         ("C-S-x C-S-c" . git-gutter+-stage-and-commit))
+  :bind (("C-M-z C-M-s" . git-gutter+-stage-hunks)
+         ("C-M-z C-M-c" . git-gutter+-stage-and-commit))
   :init
   (add-hook 'python-mode-hook 'git-gutter+-mode)
-  (add-hook 'lisp-mode-hook 'git-gutter+-mode))
+  (add-hook 'lisp-interaction-mode-hook 'git-gutter+-mode)
+  (add-hook 'org-mode-hook 'git-gutter+-mode))
 (use-package git-gutter-fringe+
   :ensure t
   :after git-gutter+
@@ -1138,11 +1125,18 @@
   :init
   (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80))))
 (use-package epa-file
-  :ensure t
-  :disabled t
   :after org
   :config
   (epa-file-enable))
+(use-package org-crypt
+  :after org
+  :config
+  (org-crypt-use-before-save-magic)
+  (setq org-tags-exclude-from-inheritance (quote ("crypt")))
+  ;; GPG key to use for encryption
+  ;; Either the Key ID or set to nil to use symmetric encryption.
+  (setq org-crypt-key "CB17DA00")
+  (setq org-crypt-disable-auto-save nil))
  (setq ad-redefinition-action 'accept)
  (winner-mode 1)
  (global-auto-revert-mode t)
@@ -1151,47 +1145,11 @@
  (global-set-key (kbd "M-]") 'delete-horizontal-space)
  (setq resize-mini-windows t) ;; was grow-only
  (setq focus-follows-mouse t)
- (setq mouse-autoselect-window t)
+ (setq mouse-autoselect-window nil)
  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
  (setq auto-window-vscroll nil)
- (defun xah-beginning-of-line-or-block ()
-   "Move cursor to beginning of line, or beginning of current or previous text block.
-
- • When called first time, move cursor to beginning of line.
- • When called again, move cursor to beginning of paragraph.
- • When called again, move cursor to beginning of previous paragraph.
-
- URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
- Version 2017-01-17"
-   (interactive)
-   (if (or (equal (point) (line-beginning-position))
-           (equal last-command this-command ))
-       (if (re-search-backward "\n[\t\n ]*\n+" nil "NOERROR")
-           (skip-chars-backward "\n\t ")
-         (goto-char (point-min)))
-     (beginning-of-line)))
- (defun xah-end-of-line-or-block ()
-   "Move cursor to end of line, or end of current or next text block.
-
- • When called first time, move cursor to end of line.
- • When called again, move cursor to end of paragraph.
- • When called again, move cursor to end of next paragraph.
-
- URL `http://ergoemacs.org/emacs/emacs_keybinding_design_beginning-of-line-or-block.html'
- Version 2017-01-17"
-   (interactive)
-   (if (or (equal (point) (line-end-position))
-           (equal last-command this-command ))
-       (if (equal (point) (line-end-position))
-           (re-search-forward "\n[\t\n ]*\n+" nil "NOERROR" )
-         (end-of-line))
-     (end-of-visual-line)))
-  ;; (global-set-key (kbd "C-a") 'xah-beginning-of-line-or-block)
- ;; (global-set-key (kbd "C-e") 'xah-end-of-line-or-block)
- (bind-key* "C-e" 'xah-end-of-line-or-block)
- (bind-key* "C-a" 'xah-beginning-of-line-or-block)
- (defun set-window-width (n)
+(defun set-window-width (n)
    "Set the selected window's width."
    (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
  (defun set-80-columns ()
