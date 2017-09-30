@@ -842,13 +842,11 @@
   ;; highligh matching brackets
   (show-paren-mode 1) 
   (setq show-paren-style 'expression))
-(use-package tex-site
+(use-package latex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
-  :config
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)
-  (setq-default TeX-master nil)
+  :init
+  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (prettify-symbols-mode)
@@ -856,37 +854,60 @@
               (smartparens-mode)
               (turn-on-reftex)
               (reftex-isearch-minor-mode)))
-
+  :config
+  (setq TeX-auto-save t)
+  (setq TeX-parse-self t)       ;enable document parsing
+  (setq-default TeX-master nil) ;make auctex aware of multi-file documents
   (setq reftex-plug-into-AUCTeX t)
   (setq TeX-PDF-mode t)
   (setq global-font-lock-mode t)
-  
+  (font-lock-add-keywords 'latex-mode
+                          (list (list "\\(«\\(.+?\\|\n\\)\\)\\(+?\\)\\(»\\)"
+                                      '(1 'font-latex-string-face t)
+                                      '(2 'font-latex-string-face t)
+                                      '(3 'font-latex-string-face t))))
   ;; Method for enabling forward and inverse search 
   (setq TeX-source-correlate-method 'synctex)
   ;; inhibit the question to start a server process
   (setq TeX-source-correlate-start-server t)
-
-  ;; Update PDF buffers after successful LaTeX runs
-  ;; http://emacs.stackexchange.com/questions/19472/how-to-let-auctex-open-pdf-with-pdf-tools
-  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook
-            #'TeX-revert-document-buffer)
-
   ;; use sumatra to view pdf
   ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
   ;; -set-color-range #fdf4c1 #282828
   (setq TeX-view-program-list
         '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
                           (mode-io-correlate " -forward-search %b %n ") " %o"))))
-
   ;; jump to source
   (setq TeX-source-correlate-mode t)
-
   (eval-after-load 'tex
     '(progn
        (assq-delete-all 'output-pdf TeX-view-program-selection)
-       (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))))
+       (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
+  :init
+  (defun my/tex-insert-clipboard ()
+    (interactive)
+                                        ;make the img directory
+    (setq myvar/folder-path (concat default-directory "img/"))
+                                        ;create the directory if it doesn't exist
+    (if (not (file-exists-p myvar/folder-path))
+        (mkdir myvar/folder-path))
+    (setq my/image-path (concat 
+                         myvar/folder-path
+                         "img_"
+                         (format-time-string "%Y%m%d_%H%M%S_.png")))
+    (let* ((image-file (concat 
+                        "img/img_"
+                        (format-time-string "%Y%m%d_%H%M%S_.png")))
+           (exit-status
+            (call-process "convert" nil nil nil
+                          "clipboard:" my/image-path)))
+      (insert (format "
+\\begin{figure}[ht!]
+  \\centering
+  \\includegraphics[width=.5\\textwidth]{%s}
+\\end{figure}" image-file))
+      )))
 (use-package reftex
-  :after tex-site
+  :after latex
   :ensure t
   :bind ("C-c =" . reftex-toc)
   :config
@@ -896,6 +917,13 @@
   (setq reftex-keep-temporary-buffers nil)
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:")))
+(use-package company-bibtex
+  :ensure t
+  :after latex
+  :config
+  (add-to-list 'company-backends 'company-bibtex)
+  (setq company-bibtex-bibliography
+	'("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib")))
 (use-package flycheck
   :ensure t 
   :commands flycheck-mode
