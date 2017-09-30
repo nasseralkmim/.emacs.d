@@ -800,12 +800,13 @@
   :after python
   :init (add-hook 'python-mode-hook 'hl-todo-mode))
 (use-package lisp
-  :mode ("\\.el\\'" . lisp-mode))
+  :mode ("\\.el\\'" . lisp-interaction-mode))
 (use-package lispy
   :ensure t
+  :bind ("C-c C-d" . lispy-describe-inline)
   :after lisp
   :init
-  (add-hook 'lisp-mode-hook 'lispy-mode))
+  (add-hook 'lisp-interaction-mode-hook 'lispy-mode))
 (use-package anaconda-mode
   :ensure t
   :after python
