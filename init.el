@@ -949,11 +949,18 @@
 (use-package flyspell
   :ensure t
   :commands flyspell-mode
-  :init
-  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   :config
-  (add-to-list 'exec-path "C:/Program Files (x86)/Aspell/bin")
-  (setq ispell-program-name "aspell"))
+  (add-to-list 'exec-path "C:/Program Files (x86)/Hunspell/bin")
+  (setq ispell-program-name (locate-file "hunspell"
+                                         exec-path exec-suffixes 'file-executable-p))
+  (setq ispell-local-dictionary "en_US")
+  (setq ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US,pt_BR") nil utf-8)))
+  (flyspell-mode 1))
+(use-package flyspell-correct-ivy
+  :ensure t
+  :after flyspell
+  :bind (:map flyspell-mode-map
+              ("C-c C-SPC" . flyspell-correct-word-generic)))
 (use-package company
   :ensure t
   :commands company-mode
