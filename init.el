@@ -1029,6 +1029,7 @@
   (key-chord-define-global "::" "?")
   (key-chord-define-global "}}" "|"))
 (use-package neotree
+  :disabled t
   :ensure t
   :bind ("<f8>" . neotree-toggle)
   :config
@@ -1037,13 +1038,40 @@
   ;; Do not allow neotree to be the only open window
   (setq-default neo-dont-be-alone t)
   (setq neo-fit-to-contents nil)
-  
   (setq neo-theme 'arrow)
   (setq neo-window-fixed-size nil))
+(use-package treemacs
+  :ensure t
+  :bind ("<f8>" . treemacs-toggle)
+  :config
+  (setq treemacs-follow-after-init          t
+        treemacs-width                      35
+        treemacs-indentation                2
+        treemacs-git-integration            t
+        treemacs-collapse-dirs              3
+        treemacs-silent-refresh             nil
+        treemacs-change-root-without-asking t
+        treemacs-sorting                    'alphabetic-desc
+        treemacs-show-hidden-files          t
+        treemacs-never-persist              nil
+        treemacs-is-never-other-window      nil
+        treemacs-goto-tag-strategy          'refetch-index)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t))
+(use-package treemacs-projectile
+  :ensure t
+  :after treemacs
+  :config
+  (setq treemacs-header-function #'treemacs-projectile-create-header))
+(use-package pfuture
+  :ensure t
+  :after treemacs)
 (use-package all-the-icons
   :ensure t
-  :after neotree)
+  :disabled 
+  :after treemacs)
 (use-package smart-mode-line
+  :defer 10
   :ensure t
   :config
   (setq sml/theme 'light)
