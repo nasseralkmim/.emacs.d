@@ -819,22 +819,23 @@
     :config
     (setq jedi:complete-on-dot t)
     (setq company-minimum-prefix-length 1)
-    (setq company-idle-delay 0)
+    (setq company-idle-delay 0.3)
     (remove-hook 'anaconda-mode-response-read-fail-hook
                  'anaconda-mode-show-unreadable-response)
-    (add-to-list 'company-backends '(company-anaconda :with company-capf))))
+    (add-to-list 'company-backends 'company-anaconda)))
 (use-package company-quickhelp
   :ensure t
   :after python
   :config (company-quickhelp-mode 1))
 (use-package realgud
   :ensure t
-  :after python)
+  :commands (realgud:ipdb))
 (use-package smartparens
   :ensure t 
   :commands smartparens-mode
   :init
   (add-hook 'prog-mode-hook 'smartparens-mode)
+  (add-hook 'org-mode-hook 'smartparens-mode)
   :config
   (show-smartparens-global-mode t)
   (sp-local-pair 'org-mode "_" "_" )
