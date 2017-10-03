@@ -44,6 +44,10 @@
  (setq use-package-verbose t)
  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
  (load custom-file)
+(use-package gruvbox-theme
+  :ensure t
+  :config
+  (load-theme 'gruvbox-dark-soft t))
 (use-package moe-theme
   :disabled t
   :ensure t
