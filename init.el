@@ -587,9 +587,13 @@
   ;;open pdf with external viwer foxit
   (setq bibtex-completion-pdf-open-function
         (lambda (fpath)
-          (call-process "SumatraPDF" nil 0 nil fpath)))
+          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil fpath)))
+  ;; (setq bibtex-completion-pdf-open-function
+  ;;       (lambda (fpath)
+  ;;         (call-process "SumatraPDF" nil 0 nil fpath)))
 
-  (setq ivy-bibtex-default-action 'bibtex-completion-insert-citation))
+  (setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation)
+  )
 (use-package swiper
   :ensure t
   :bind (("C-c u" . swiper-all))
