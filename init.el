@@ -760,7 +760,26 @@
   :init
   (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
   :config
-  (setq highlight-indent-guides-method 'fill))
+  (setq highlight-indent-guides-method 'character))
+(use-package lsp-python
+  :ensure t
+  :after python
+  :init
+  (add-hook 'python-mode-hook #'lsp-python-enable))
+(use-package python-docstring
+  :ensure t
+  :after python
+  :init
+  (add-hook 'python-mode-hook 'python-dosctring-mode))
+(use-package lpy
+  :disabled t
+  :load-path "C:/Users/Nasser/.emacs.d/elpa/lpy-master"
+  :after python
+  :init (add-hook 'python-mode-hook 'lpy-mode))
+(use-package worf
+  :disabled t
+  :ensure t
+  :after lpy)
 (use-package elpy 
   :ensure t
   :after python
