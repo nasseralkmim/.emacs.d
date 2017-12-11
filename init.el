@@ -1,8 +1,6 @@
  ;; Added by Package.el.  This must come before configurations of
- ;; installed packages.  Don't delete this line.  If you don't want it,
- ;; just comment it out by adding a semicolon to the start of the line.
- ;; You may delete these explanatory comments.
- (package-initialize)
+;; installed packages.
+(package-initialize)
 
  (defvar my-start-time (current-time)
    "Time when Emacs was started")
@@ -12,16 +10,13 @@
  (scroll-bar-mode 0)
  (tooltip-mode 0)
 
- (setq initial-scratch-message "")
+(setq initial-scratch-message "")
+(setq initial-major-mode 'lisp-mode)
 
  ;; Don't load old .elc files when the .el file is newer
  (setq load-prefer-newer t)
-
- (setq inhibit-startup-screen t)
-
- ;; Don't edit this file, edit ~/.emacs.d/config.org instead ...
-
- (setq user-full-name "Nasser Alkmim"
+(setq inhibit-startup-screen t)
+(setq user-full-name "Nasser Alkmim"
        user-mail-address "nasser.alkmim@gmail.com")
  (package-initialize nil)
  (setq package-enable-at-startup nil)
@@ -45,9 +40,14 @@
  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
  (load custom-file)
 (use-package gruvbox-theme
+  :disabled t
+  :ensure t
+  :config (load-theme 'gruvbox-dark-medium t))
+(use-package darkokai-theme
   :ensure t
   :config
-  (load-theme 'gruvbox-dark-soft t))
+  (setq darkokai-mode-line-padding 1)
+  (load-theme 'darkokai t))
 (use-package moe-theme
   :disabled t
   :ensure t
@@ -56,9 +56,8 @@
   (moe-dark))
  ;; set a default font Iosevka, Hack, 
  (set-face-attribute 'default nil :family "Iosevka Term" :height 90)
-
  ;; specify font for all unicode characters
-(set-fontset-font t 'unicode "Dejavu Sans Mono" nil 'prepend)
+ (set-fontset-font t 'unicode "Dejavu Sans Mono" nil 'prepend)
 
    ;; These functions are useful. Activate them.
    (put 'downcase-region 'disabled nil)
@@ -86,8 +85,7 @@
    (windmove-default-keybindings)
 
    ;; highlight current line
-   ;; (global-hl-line-mode 1)
-   ;; (set-face-background 'hl-line "SlateGray1")
+   (global-hl-line-mode 0)
 
    ; wrap lines
    ;; (global-visual-line-mode)
@@ -107,12 +105,9 @@
    (delete-selection-mode t)
 
    (column-number-mode t)
-
    ;; unprettify symbol when at right edge
    (setq prettify-symbols-unprettify-at-point 'right-edge) 
-
    (setq uniquify-buffer-name-style 'forward)
-
    ;; Don't beep at me
    (setq visible-bell t)
 
@@ -187,12 +182,11 @@
   (setq org-cycle-include-plain-lists 'integrate)
   (setq org-image-actual-width t)
   (setq org-startup-with-inline-images t)
-  (set-face-attribute 'org-block-begin-line nil :height .7)
-  (set-face-attribute 'org-block-end-line nil :height .5)
+  (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
+  (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
   ;; org markups meta line --> change to grey100 when presenting
-
-  (set-face-attribute 'org-meta-line nil :height 0.8 :slant 'normal :foreground "grey70")
-  (set-face-attribute 'org-special-keyword nil :height 0.8 :slant 'normal :foreground "grey70")
+  ;; (set-face-attribute 'org-meta-line nil :height 1.  :slant 'normal)
+  ;; (set-face-attribute 'org-special-keyword nil :height 1. :slant 'normal)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -222,7 +216,7 @@
 
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil)
-;;; display/update images in the buffer after I evaluate
+ ;;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 (use-package ox-extra
   :after org
@@ -514,6 +508,12 @@
   :bind (("C-x C-SPC" . avy-goto-char)
          ("C-x C-x" . avy-goto-word-or-subword-1)
          ("C-x C-l" . avy-goto-line)))
+(use-package smartscan
+  :ensure t
+  :bind (("M-p" . smartscan-symbol-go-back)
+         ("M-n" . smartscan-symbol-go-forward))
+  :config
+  (smartscan-mode 1))
 (use-package dumb-jump
   :ensure t
   :bind ("C-M-g". dumb-jump-go)
@@ -522,12 +522,12 @@
 (use-package ace-window
   :ensure t 
   :config
-  (setq aw-scope 'frame)
+  (setq aw-scope 'global)
   (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s))
   (ace-window-display-mode)
   (custom-set-faces
    '(aw-leading-char-face
-     ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+     ((t (:inherit ace-jump-face-foreground :height 2.0)))))
   :bind (("C-o " . other-window)
          ("C-x o " . ace-window)))
 (use-package counsel
@@ -602,8 +602,9 @@
 (use-package hydra
   :ensure t
   :bind (("C-c C-w" . hydra-window-resize/body)
-         ("C-x C-o" . hydra-outline/body)
-         ("C-x C-m " . multiple-cursors-hydra/body))
+         ("C-c C-u" . hydra-outline/body)
+         ("C-x C-m " . multiple-cursors-hydra/body)
+         ("C-x C-'" . hydra-origami/body))
   :config
   (defun my-funcs/resize-window-down ()
     "Resize a window downwards."
@@ -688,7 +689,19 @@
     ("P" mc/skip-to-previous-like-this)
     ("M-p" mc/unmark-previous-like-this)
     ("r" mc/mark-all-in-region-regexp :exit t)
-    ("q" nil)))
+    ("q" nil))
+  (defhydra hydra-origami (:color red)
+    "
+  _o_pen node    _n_ext fold       toggle _f_orward    _t_oggle recursively
+  _c_lose node   _p_revious fold   toggle _a_ll 
+  "
+    ("o" origami-open-node)
+    ("t" origami-recursively-toggle-node)
+    ("c" origami-close-node)
+    ("n" origami-next-fold)
+    ("p" origami-previous-fold)
+    ("f" origami-forward-toggle-node)
+    ("a" origami-toggle-all-nodes)))
 (use-package ivy-hydra
   :ensure t
   :after hydra)
@@ -724,6 +737,9 @@
     (projectile-global-mode)
     (setq projectile-completion-system 'ivy) ;So projectile works with ivy
     (setq projectile-indexing-method 'alien)))
+(use-package go-mode
+  :ensure t
+  :mode ("\\.go\\'" . go-mode))
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -741,17 +757,6 @@
          (get-buffer-process (current-buffer))
          nil "_"))))
   (setenv "PYTHONIOENCODING" "utf-8")
-;; https://github.com/hlissner/doom-emacs/blob/master/modules/lang/python/config.el#L16
-  (setq python-shell-interpreter "ipython"
-        python-shell-interpreter-args "-i --simple-prompt --no-color-info"
-        python-shell-prompt-regexp "In \\[[0-9]+\\]: "
-        python-shell-prompt-block-regexp "\\.\\.\\.\\.: "
-        python-shell-prompt-output-regexp "Out\\[[0-9]+\\]: "
-        python-shell-completion-setup-code
-        "from IPython.core.completerlib import module_completion"
-        python-shell-completion-string-code
-        "';'.join(get_ipython().Completer.all_completions('''%s'''))\n")
-
   ;; Disable readline based native completion
   (setq python-shell-completion-native-enable nil))
 (use-package highlight-indent-guides
@@ -759,13 +764,9 @@
   :after python
   :init
   (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'lisp-interaction-mode-hook 'highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character))
-(use-package lsp-python
-  :ensure t
-  :after python
-  :init
-  (add-hook 'python-mode-hook #'lsp-python-enable))
 (use-package python-docstring
   :ensure t
   :after python
@@ -787,6 +788,7 @@
               ("C-c C-k" . elpy-shell-kill))
   :config
   (electric-indent-local-mode -1)
+  (elpy-use-ipython)
   (delete 'elpy-module-highlight-indentation elpy-modules)
   (delete 'elpy-module-flymake elpy-modules)
   (delete 'elpy-module-company elpy-modules)
@@ -852,13 +854,14 @@
   (sp-local-pair 'latex-mode "$" "$" )
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   ;; highligh matching brackets
-  (show-paren-mode 1) 
+  (show-paren-mode 1)
+  ;; so that paren highlights do not override region marking (aka selecting)
+  (setq show-paren-priority -1)
   (setq show-paren-style 'expression))
 (use-package latex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
   :init
-  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (prettify-symbols-mode)
@@ -894,7 +897,6 @@
     '(progn
        (assq-delete-all 'output-pdf TeX-view-program-selection)
        (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
-  :init
   (defun my/tex-insert-clipboard ()
     (interactive)
                                         ;make the img directory
@@ -913,11 +915,22 @@
             (call-process "convert" nil nil nil
                           "clipboard:" my/image-path)))
       (insert (format "
-\\begin{figure}[ht!]
+ \\begin{figure}[ht!]
   \\centering
   \\includegraphics[width=.5\\textwidth]{%s}
-\\end{figure}" image-file))
-      )))
+ \\end{figure}" image-file))
+      ))
+  :init
+  (defface dh-default-monaco-face
+    '((t (:family "Dejavu Sans Mono" :inherit default)))
+    "Default face with the Monaco font"
+    :group 'basic-faces)
+  (setq dh-monaco-face-remapping-alist
+        '((default dh-default-monaco-face)))
+  (defun latex-set-font ()
+    (setq-local face-remapping-alist dh-monaco-face-remapping-alist))
+  (add-hook 'LaTeX-mode-hook 'latex-set-font)
+  )
 (use-package reftex
   :after latex
   :ensure t
@@ -928,7 +941,8 @@
   (setq reftex-enable-partial-scans t)
   (setq reftex-keep-temporary-buffers nil)
   (setq reftex-save-parse-info t)
-  (setq reftex-trust-label-prefix '("fig:" "eq:")))
+  (setq reftex-trust-label-prefix '("fig:" "eq:"))
+  (setq reftex-default-bibliography "C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
 (use-package company-bibtex
   :ensure t
   :after latex
@@ -959,14 +973,15 @@
 
   (add-to-list 'flycheck-checkers 'proselint))
 (use-package flyspell
-  :ensure t
   :commands flyspell-mode
+  :init
+  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   :config
-  (add-to-list 'exec-path "C:/Program Files (x86)/Hunspell/bin")
-  (setq ispell-program-name (locate-file "hunspell"
-                                         exec-path exec-suffixes 'file-executable-p))
+  (setq ispell-program-name "hunspell")
   (setq ispell-local-dictionary "en_US")
-  (setq ispell-local-dictionary-alist '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_US,pt_BR") nil utf-8)))
+  (setq ispell-local-dictionary-alist
+        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)
+          ("pt_BR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)))
   (flyspell-mode 1))
 (use-package flyspell-correct-ivy
   :ensure t
@@ -1056,41 +1071,33 @@
   :ensure t
   :bind ("<f8>" . treemacs-toggle)
   :config
-  (setq treemacs-follow-after-init          t
-        treemacs-width                      35
-        treemacs-indentation                2
-        treemacs-git-integration            t
-        treemacs-collapse-dirs              3
-        treemacs-silent-refresh             nil
+  (setq treemacs-git-integration            t
         treemacs-change-root-without-asking t
         treemacs-sorting                    'alphabetic-desc
-        treemacs-show-hidden-files          t
-        treemacs-never-persist              nil
-        treemacs-is-never-other-window      nil
-        treemacs-goto-tag-strategy          'refetch-index)
+        treemacs-show-hidden-files          t)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t))
-(use-package treemacs-projectile
-  :ensure t
-  :after treemacs
-  :config
-  (setq treemacs-header-function #'treemacs-projectile-create-header))
 (use-package pfuture
   :ensure t
   :after treemacs)
 (use-package all-the-icons
   :ensure t
-  :disabled 
+  :disabled t 
   :after treemacs)
-(use-package smart-mode-line
-  :defer 10
+(use-package beacon
   :ensure t
   :config
-  (setq sml/theme 'light)
-  (sml/setup))
+  (setq beacon-blink-delay .3)
+  (setq beacon-size 30)
+  (setq beacon-blink-duration .3)
+  (beacon-mode 1))
 (use-package dired+
   :ensure t
   :defer t)
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (sml/setup))
 (use-package imenu-list
   :ensure t
   :bind ("C-." . imenu-list-minor-mode)
@@ -1164,7 +1171,25 @@
   ;; Either the Key ID or set to nil to use symmetric encryption.
   (setq org-crypt-key "CB17DA00")
   (setq org-crypt-disable-auto-save nil))
- (setq ad-redefinition-action 'accept)
+(use-package vimish-fold
+  :disabled t
+  :ensure t
+  :bind (("C-' C-'" . vimish-fold-toggle)
+         ("C-' C-c" . vimish-fold)
+         ("C-' C-d" . vimish-fold-delete)
+         ("C-' C-a" . vimish-fold-toggle-all))
+  :init
+  (add-hook 'lisp-interaction-mode-hook 'vimish-fold-mode)
+  (add-hook 'python-mode-hook 'vimish-fold-mode))
+(use-package origami
+  :ensure t
+  :bind (("C-'" . origami-recursively-toggle-node))
+  :init
+  (add-hook 'lisp-interaction-mode-hook 'origami-mode)
+  (add-hook 'python-mode-hook 'origami-mode))
+(use-package helpful
+  :ensure t)
+(setq ad-redefinition-action 'accept)
  (winner-mode 1)
  (global-auto-revert-mode t)
  (setq global-auto-revert-non-file-buffers t)
@@ -1172,11 +1197,14 @@
  (global-set-key (kbd "M-]") 'delete-horizontal-space)
  (setq resize-mini-windows t) ;; was grow-only
  (setq focus-follows-mouse t)
+ (other-window 1 'visible)
+ (select-frame-set-input-focus (selected-frame))
+ (bind-key "C-x C-o" 'next-multiframe-window)
  (setq mouse-autoselect-window nil)
  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
  (setq auto-window-vscroll nil)
-(defun set-window-width (n)
+ (defun set-window-width (n)
    "Set the selected window's width."
    (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
  (defun set-80-columns ()
