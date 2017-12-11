@@ -1189,6 +1189,10 @@
   (add-hook 'python-mode-hook 'origami-mode))
 (use-package helpful
   :ensure t)
+(use-package smooth-scrolling
+  :ensure t
+  :config
+  (smooth-scrolling-mode 1))
 (setq ad-redefinition-action 'accept)
  (winner-mode 1)
  (global-auto-revert-mode t)
