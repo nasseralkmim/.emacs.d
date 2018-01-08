@@ -55,12 +55,23 @@
   (setq moe-theme-highlight-buffer-id nil)
   (moe-dark))
  ;; set a default font Iosevka, Hack, 
- (set-face-attribute 'default nil :family "Iosevka Term" :height 90)
- ;; specify font for all unicode characters
- (set-fontset-font t 'unicode "Dejavu Sans Mono" nil 'prepend)
+(set-face-attribute 'default nil
+                    :family "Iosevka Term"
+                    :height 90
+                    :weight 'normal
+                    :width 'normal)
 
-   ;; These functions are useful. Activate them.
-   (put 'downcase-region 'disabled nil)
+;; specify font for all unicode characters
+(set-fontset-font t
+                  'unicode
+                  (font-spec :family "Dejavu Sans Mono"
+                             :width 'normal
+                             :height 90
+                             :weight 'normal) nil 'prepend)
+;; For testing purposes: →„Σ“←
+
+;; These functions are useful. Activate them.
+(put 'downcase-region 'disabled nil)
    (put 'upcase-region 'disabled nil)
    (put 'narrow-to-region 'disabled nil)
    (put 'dired-find-alternate-file 'disabled nil)
