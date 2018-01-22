@@ -1,3 +1,5 @@
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
  ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.
 (package-initialize)
@@ -40,10 +42,21 @@
  (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
  (load custom-file)
 (use-package gruvbox-theme
-  :disabled t
   :ensure t
-  :config (load-theme 'gruvbox-dark-medium t))
+  :disabled t
+  :config (load-theme 'gruvbox-dark-hard t))
+(use-package zerodark-theme
+  :ensure t
+  :disabled t
+  :config
+  (load-theme 'zerodark t)
+  (setq inhibit-compacting-font-caches t)
+  (zerodark-setup-modeline-format))
+(use-package color-identifiers-mode
+  :ensure t
+  :defer t)
 (use-package darkokai-theme
+  :disabled t
   :ensure t
   :config
   (setq darkokai-mode-line-padding 1)
@@ -56,8 +69,8 @@
   (moe-dark))
  ;; set a default font Iosevka, Hack, 
 (set-face-attribute 'default nil
-                    :family "Iosevka Term"
-                    :height 90
+                    :family "Dejavu sans Mono"
+                    :height 100
                     :weight 'normal
                     :width 'normal)
 
@@ -65,7 +78,7 @@
 (set-fontset-font t
                   'unicode
                   (font-spec :family "Dejavu Sans Mono"
-                             :width 'normal
+                             :width 'ultra-condensed
                              :height 90
                              :weight 'normal) nil 'prepend)
 ;; For testing purposes: →„Σ“←
@@ -102,6 +115,9 @@
    ;; (global-visual-line-mode)
    ;; (diminish 'visual-line-mode)
 
+   ;; dont truncate lines
+   ;; (set-default 'truncate-lines 0)
+
    ;; Turn off the blinking cursor
    (blink-cursor-mode -1)
 
@@ -136,7 +152,7 @@
          (goto-line (read-number "Goto line: ")))
     (linum-mode -1)))
 (use-package recentf
-  :defer 30
+  :defer 10
   :config
   (progn
     (recentf-mode t)
@@ -191,7 +207,7 @@
                         ("\\.pdf\\'" . default)))
 
   (setq org-cycle-include-plain-lists 'integrate)
-  (setq org-image-actual-width t)
+  (setq org-image-actual-width '(400))
   (setq org-startup-with-inline-images t)
   (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
   (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
@@ -303,6 +319,7 @@
 (use-package ox-md
   :after org)
 (use-package org-download
+  :disabled t
   :ensure t
   :after org
   :config
@@ -566,7 +583,7 @@
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-initial-inputs-alist nil)
   (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
-
+  ;; C-M-j imediate done ivy
   ;; ;; Show recently killed buffers when calling ivy-switch-buffer
   (setq ivy-use-virtual-buffers t)
   ;; (setq ivy-virtual-abbreviate 'full) ; Show the full virtual file paths
@@ -611,6 +628,7 @@
   :config
   (setq swiper-include-line-number-in-search t))
 (use-package hydra
+  :defer 1
   :ensure t
   :bind (("C-c C-w" . hydra-window-resize/body)
          ("C-c C-u" . hydra-outline/body)
@@ -715,6 +733,7 @@
     ("a" origami-toggle-all-nodes)))
 (use-package ivy-hydra
   :ensure t
+  :defer t
   :after hydra)
 (use-package magit
   :ensure t 
@@ -740,14 +759,15 @@
   :ensure t
   :bind ("C-c p p " . counsel-projectile-switch-project)
   :config
-  (counsel-projectile-on)
-  (use-package projectile
-    :ensure t 
-    :diminish projectile-mode
-    :init
-    (projectile-global-mode)
-    (setq projectile-completion-system 'ivy) ;So projectile works with ivy
-    (setq projectile-indexing-method 'alien)))
+  (counsel-projectile-mode))
+(use-package projectile
+  :ensure t
+  :after counsel-projectile
+  :diminish projectile-mode
+  :init
+  (projectile-global-mode)
+  (setq projectile-completion-system 'ivy) ;So projectile works with ivy
+  (setq projectile-indexing-method 'alien))
 (use-package go-mode
   :ensure t
   :mode ("\\.go\\'" . go-mode))
@@ -755,6 +775,8 @@
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
+  ;; change commenting foreground
+  (set-face-attribute 'font-lock-comment-face nil :foreground "lightgray")
   (setq warning-suppress-types '((python)
                                  (emacs)))
   ;; suppress the warning "python.el: native completion setup failed"
@@ -780,9 +802,10 @@
   (setq highlight-indent-guides-method 'character))
 (use-package python-docstring
   :ensure t
+  :disabled t
   :after python
   :init
-  (add-hook 'python-mode-hook 'python-dosctring-mode))
+  (add-hook 'python-mode-hook #'python-dosctring-mode))
 (use-package lpy
   :disabled t
   :load-path "C:/Users/Nasser/.emacs.d/elpa/lpy-master"
@@ -793,6 +816,7 @@
   :ensure t
   :after lpy)
 (use-package elpy 
+  :disabled t
   :ensure t
   :after python
   :bind (:map elpy-mode-map 
@@ -857,18 +881,20 @@
   :ensure t 
   :commands smartparens-mode
   :init
+  (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'prog-mode-hook 'smartparens-mode)
+  (add-hook 'LaTeX-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'smartparens-mode)
   :config
-  (show-smartparens-global-mode t)
   (sp-local-pair 'org-mode "_" "_" )
   (sp-local-pair 'latex-mode "$" "$" )
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   ;; highligh matching brackets
   (show-paren-mode 1)
+  (show-smartparens-global-mode 0)
   ;; so that paren highlights do not override region marking (aka selecting)
   (setq show-paren-priority -1)
-  (setq show-paren-style 'expression))
+  (setq show-paren-style 'mixed))       ;expression
 (use-package latex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
@@ -877,21 +903,23 @@
             (lambda ()
               (prettify-symbols-mode)
               (LaTeX-math-mode)
-              (smartparens-mode)
               (turn-on-reftex)
               (reftex-isearch-minor-mode)))
   :config
+  (setq TeX-save-query nil)
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)       ;enable document parsing
   (setq-default TeX-master nil) ;make auctex aware of multi-file documents
   (setq reftex-plug-into-AUCTeX t)
   (setq TeX-PDF-mode t)
+  (setq TeX-electric-escape t)
   (setq global-font-lock-mode t)
   (font-lock-add-keywords 'latex-mode
                           (list (list "\\(«\\(.+?\\|\n\\)\\)\\(+?\\)\\(»\\)"
                                       '(1 'font-latex-string-face t)
                                       '(2 'font-latex-string-face t)
                                       '(3 'font-latex-string-face t))))
+
   ;; Method for enabling forward and inverse search 
   (setq TeX-source-correlate-method 'synctex)
   ;; inhibit the question to start a server process
@@ -926,21 +954,11 @@
             (call-process "convert" nil nil nil
                           "clipboard:" my/image-path)))
       (insert (format "
- \\begin{figure}[ht!]
+\\begin{figure}[ht!]
   \\centering
   \\includegraphics[width=.5\\textwidth]{%s}
- \\end{figure}" image-file))
+\\end{figure}" image-file))
       ))
-  :init
-  (defface dh-default-monaco-face
-    '((t (:family "Dejavu Sans Mono" :inherit default)))
-    "Default face with the Monaco font"
-    :group 'basic-faces)
-  (setq dh-monaco-face-remapping-alist
-        '((default dh-default-monaco-face)))
-  (defun latex-set-font ()
-    (setq-local face-remapping-alist dh-monaco-face-remapping-alist))
-  (add-hook 'LaTeX-mode-hook 'latex-set-font)
   )
 (use-package reftex
   :after latex
@@ -983,7 +1001,15 @@
     :modes (text-mode markdown-mode gfm-mode))
 
   (add-to-list 'flycheck-checkers 'proselint))
+(use-package flyspell-lazy
+  :defer 5
+  :ensure t
+  :init
+  (add-hook 'LaTeX-mode-hook 'flyspell-lazy-mode)
+  :config
+  (flyspell-lazy-mode 1))
 (use-package flyspell
+  :after flyspell-lazy
   :commands flyspell-mode
   :init
   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
@@ -1052,7 +1078,7 @@
   (add-hook 'org-mode-hook 'rainbow-delimiters-mode))
 (use-package which-key
   :ensure t
-  :defer 20
+  :defer 5
   :diminish (which-key-mode)
   :config
   (which-key-mode))
@@ -1065,7 +1091,8 @@
   (key-chord-define-global "]]" "\\")
   (key-chord-define-global ";;" "/")
   (key-chord-define-global "::" "?")
-  (key-chord-define-global "}}" "|"))
+  (key-chord-define-global "}}" "|")
+  (key-chord-define-global "==" "+"))
 (use-package neotree
   :disabled t
   :ensure t
@@ -1097,17 +1124,24 @@
   :after treemacs)
 (use-package beacon
   :ensure t
+  :defer 10
   :config
   (setq beacon-blink-delay .3)
   (setq beacon-size 30)
   (setq beacon-blink-duration .3)
+  (setq beacon-blink-when-window-scrolls nil)
   (beacon-mode 1))
 (use-package dired+
   :ensure t
   :defer t)
 (use-package smart-mode-line
+  :defer 5
   :ensure t
   :config
+  (setq sml/mode-width 5)
+  (setq sml/name-width 10)
+  (setq sml/shorten-directory t)
+  (setq sml/shorten-directory t)
   (sml/setup))
 (use-package imenu-list
   :ensure t
@@ -1199,11 +1233,25 @@
   (add-hook 'lisp-interaction-mode-hook 'origami-mode)
   (add-hook 'python-mode-hook 'origami-mode))
 (use-package helpful
-  :ensure t)
-(use-package smooth-scrolling
+  :ensure t
+  :disabled t)
+(use-package pdf-tools
+  :after latex
+  :mode ("\\.pdf\\'" . pdf-view-mode)
   :ensure t
   :config
-  (smooth-scrolling-mode 1))
+  (pdf-tools-install))
+(use-package markdown-mode
+  :ensure t
+  :commands (markdown-mode gfm-mode)
+  :mode (("README\\.md\\'" . gfm-mode)
+         ("\\.md\\'" . markdown-mode)
+         ("\\.markdown\\'" . markdown-mode))
+  :init (setq markdown-command "pandoc"))
+(use-package focus
+  :ensure t
+  :commands 'focus-mode
+  :disabled t)
 (setq ad-redefinition-action 'accept)
  (winner-mode 1)
  (global-auto-revert-mode t)
@@ -1216,9 +1264,10 @@
  (select-frame-set-input-focus (selected-frame))
  (bind-key "C-x C-o" 'next-multiframe-window)
  (setq mouse-autoselect-window nil)
+ ;; (setq mouse-wheel-scroll-amount '(5)) ;; mouse scroll moves 1 line at a time, instead of 5 lines
  (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
- (setq auto-window-vscroll nil)
+ ;; (setq auto-window-vscroll nil)
  (defun set-window-width (n)
    "Set the selected window's width."
    (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
@@ -1232,6 +1281,28 @@
    (set-window-width 68))
  (global-set-key "\C-x8" 'set-80-columns)
  (global-set-key "\C-x7" 'set-68-columns)
+ (setq-default fringe-indicator-alist (assq-delete-all 'truncation fringe-indicator-alist))
+(setq-default fringe-indicator-alist (assq-delete-all 'continuation fringe-indicator-alist))
+(setq right-fringe-width 0)
+(set-display-table-slot standard-display-table 'wrap ?\ )
 
- (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
  (put 'set-goal-column 'disabled nil)
+ ;; (setq redisplay-dont-pause t
+ ;;       scroll-margin 1
+ ;;       scroll-step 1
+ ;;       scroll-conservatively 1000
+ ;;       scroll-preserve-screen-position 1)
+ (defun open-buffer-path ()
+   "Run explorer on the directory of the current buffer."
+   (interactive)
+ (shell-command (concat "explorer "
+                        (replace-regexp-in-string "/" "\\\\"
+                                                  (file-name-directory
+                                                   (buffer-file-name)) nil nil))))
+(global-set-key [M-f9] 'open-buffer-path)
+
+;; Then reset it as late as possible; these are the reasonable defaults I use.
+  (setq gc-cons-threshold 16777216
+        gc-cons-percentage 0.1)
+(message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+ 
