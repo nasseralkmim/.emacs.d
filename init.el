@@ -923,18 +923,45 @@
   (setq TeX-source-correlate-method 'synctex)
   ;; inhibit the question to start a server process
   (setq TeX-source-correlate-start-server t)
+
+
+  ;; Use pdf tools
+  ;;
+  ;;
+  ;; add "PDF Tools" to the list of possible PDF tools  
+  ;; (unless (assoc "PDF Tools" TeX-view-program-list  
+  ;;                (add-to-list 'TeX-view-program-list  
+  ;;                             '("PDF Tools" TeX-pdf-tools-sync-view)))
+  ;;   (add-to-list 'TeX-view-program-selection  
+  ;;                '(output-pdf "PDF Tools")))
+    
+  ;;   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+    
+  ;;   ;; Update PDF buffers after successful LaTeX runs  
+  ;;   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
+  ;;             'TeX-revert-document-buffer)
+
+  
   ;; use sumatra to view pdf
+  ;;
+  ;; 
   ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
   ;; -set-color-range #fdf4c1 #282828
   (setq TeX-view-program-list
         '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
                           (mode-io-correlate " -forward-search %b %n ") " %o"))))
-  ;; jump to source
-  (setq TeX-source-correlate-mode t)
+
   (eval-after-load 'tex
     '(progn
        (assq-delete-all 'output-pdf TeX-view-program-selection)
        (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
+  ;; jump to source
+   (setq TeX-source-correlate-mode t)
+
+   
+  ;; Custom functions
+  ;;
+  ;; 
   (defun my/tex-insert-clipboard ()
     (interactive)
                                         ;make the img directory
