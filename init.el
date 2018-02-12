@@ -69,19 +69,18 @@
   (moe-dark))
  ;; set a default font Iosevka, Hack, 
 (set-face-attribute 'default nil
-                    :family "Dejavu sans Mono"
+                    :family "PragmataPro"
                     :height 100
                     :weight 'normal
                     :width 'normal)
-
 ;; specify font for all unicode characters
 (set-fontset-font t
                   'unicode
-                  (font-spec :family "Dejavu Sans Mono"
-                             :width 'ultra-condensed
-                             :height 90
+                  (font-spec :family "PragmataPro"
+                             :width 'normal
+                             :height 100
                              :weight 'normal) nil 'prepend)
-;; For testing purposes: →„Σ“←
+;; For testing purposes: →„Σ"←
 
 ;; These functions are useful. Activate them.
 (put 'downcase-region 'disabled nil)
