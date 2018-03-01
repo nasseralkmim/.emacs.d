@@ -27,7 +27,7 @@
  '(magit-diff-use-overlays nil)
  '(package-selected-packages
    (quote
-    (pdf-tools feebleline color-identifiers-mode zerodark-theme avy focus markdown-mode company vi-tilde-fringe flyspell-lazy smooth-scrolling helpful lsp-python python-docstring go-mode hydra beacon darkokai-theme vimish-fold origami smartscan gruvbox-theme gruvbox nav-flash base16-theme treemacs-projectile pfuture anaconda-mode company-math company-bibtex soap worf lpy sly sly-company slime-company treemacs flyspell-correct-ivy epa-file hl-todo company-quickhelp counsel swiper ivy realgud ivy-bibtex lispy git-gutter-fringe+ org auto-dictionary which-key web-mode use-package undo-tree toc-org smex smartparens smart-mode-line rainbow-delimiters ox-reveal org-tree-slide org-ref org-plus-contrib org-page org-download org-bullets ob-async neotree multiple-cursors moe-theme matlab-mode magit ivy-rich ivy-hydra irony imenu-list iedit highlight-symbol highlight-parentheses highlight-indent-guides goto-last-change git-gutter-fringe flycheck expand-region elpy dumb-jump dired+ counsel-projectile company-statistics company-flx company-anaconda column-marker auctex all-the-icons ace-window)))
+    (company-childframe langtool ivy-posframe esup pdf-tools feebleline color-identifiers-mode zerodark-theme avy focus markdown-mode company vi-tilde-fringe flyspell-lazy smooth-scrolling helpful lsp-python python-docstring go-mode hydra beacon darkokai-theme vimish-fold origami smartscan gruvbox-theme gruvbox nav-flash base16-theme treemacs-projectile pfuture anaconda-mode company-math company-bibtex soap worf lpy sly sly-company slime-company treemacs flyspell-correct-ivy epa-file hl-todo company-quickhelp counsel swiper ivy realgud ivy-bibtex lispy git-gutter-fringe+ org auto-dictionary which-key web-mode use-package undo-tree toc-org smex smartparens smart-mode-line rainbow-delimiters ox-reveal org-tree-slide org-ref org-plus-contrib org-page org-download org-bullets ob-async neotree multiple-cursors moe-theme matlab-mode magit ivy-rich ivy-hydra irony imenu-list iedit highlight-symbol highlight-parentheses highlight-indent-guides goto-last-change git-gutter-fringe flycheck expand-region elpy dumb-jump dired+ counsel-projectile company-statistics company-flx company-anaconda column-marker auctex all-the-icons ace-window)))
  '(pos-tip-background-color "#E6DB74")
  '(pos-tip-foreground-color "#242728")
  '(safe-local-variable-values (quote ((TeX-command-extra-options . "-shell-escape"))))
@@ -63,4 +63,6 @@
  ;; If there is more than one, they won't work right.
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 2.0))))
  '(font-lock-comment-face ((t (:foreground "gray"))))
- '(mode-line ((t (:background "grey85" :foreground "black" :inverse-video nil :box (:line-width 3 :color "grey85"))))))
+ '(mode-line ((t (:background "grey85" :foreground "black" :inverse-video nil :box (:line-width 3 :color "grey85")))))
+ '(org-level-1 ((t (:background nil :bold t :overline nil))))
+ '(org-level-2 ((t (:background nil :bold t :overline nil)))))

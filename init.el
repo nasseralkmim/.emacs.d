@@ -1,46 +1,45 @@
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
- ;; Added by Package.el.  This must come before configurations of
+;; Added by Package.el.  This must come before configurations of
 ;; installed packages.
 (package-initialize)
 
- (defvar my-start-time (current-time)
-   "Time when Emacs was started")
+(defvar my-start-time (current-time)
+  "Time when Emacs was started")
 
- (menu-bar-mode 0)
- (tool-bar-mode 0)
- (scroll-bar-mode 0)
- (tooltip-mode 0)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(tooltip-mode 0) 
 
 (setq initial-scratch-message "")
 (setq initial-major-mode 'lisp-mode)
 
- ;; Don't load old .elc files when the .el file is newer
- (setq load-prefer-newer t)
+;; Don't load old .elc files when the .el file is newer
+(setq load-prefer-newer t)
 (setq inhibit-startup-screen t)
 (setq user-full-name "Nasser Alkmim"
-       user-mail-address "nasser.alkmim@gmail.com")
- (package-initialize nil)
- (setq package-enable-at-startup nil)
- ;;; Set up package
- ;; initalize all ELPA packages
- (require 'package)
- (setq package-enable-at-startup nil
-       package-archives
-       '(("melpa"           . "http://melpa.org/packages/")
-         ("gnu" . "http://elpa.gnu.org/packages/")
-         ("org" . "http://orgmode.org/elpa/")))
- (unless (package-installed-p 'use-package)
-   (package-refresh-contents)
-   (package-install 'use-package))
+      user-mail-address "nasser.alkmim@gmail.com")
 
- (eval-when-compile
-   (require 'use-package))
- (require 'diminish)                ;; if you use :diminish
- (require 'bind-key)
- (setq use-package-verbose t)
- (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
- (load custom-file)
+ ;;; Set up package
+;; initalize all ELPA packages
+(require 'package)
+(setq package-enable-at-startup nil
+      package-archives
+      '(("melpa"           . "http://melpa.org/packages/")
+        ("gnu" . "http://elpa.gnu.org/packages/")
+        ("org" . "http://orgmode.org/elpa/")))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+
+(eval-when-compile
+  (require 'use-package))
+(require 'diminish)                ;; if you use :diminish
+(require 'bind-key)
+(setq use-package-verbose t)
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+(load custom-file)
 (use-package gruvbox-theme
   :ensure t
   :disabled t
@@ -67,16 +66,16 @@
   :config
   (setq moe-theme-highlight-buffer-id nil)
   (moe-dark))
- ;; set a default font Iosevka, Hack, 
+;; set a default font Iosevka, Hack, 
 (set-face-attribute 'default nil
-                    :family "PragmataPro"
+                    :family "Iosevka"
                     :height 100
                     :weight 'normal
                     :width 'normal)
 ;; specify font for all unicode characters
 (set-fontset-font t
                   'unicode
-                  (font-spec :family "PragmataPro"
+                  (font-spec :family "Iosevka"
                              :width 'normal
                              :height 100
                              :weight 'normal) nil 'prepend)
@@ -84,71 +83,71 @@
 
 ;; These functions are useful. Activate them.
 (put 'downcase-region 'disabled nil)
-   (put 'upcase-region 'disabled nil)
-   (put 'narrow-to-region 'disabled nil)
-   (put 'dired-find-alternate-file 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+(put 'dired-find-alternate-file 'disabled nil)
 
-   ;; Answering just 'y' or 'n' will do
-   (defalias 'yes-or-no-p 'y-or-n-p)
+;; Answering just 'y' or 'n' will do
+(defalias 'yes-or-no-p 'y-or-n-p)
 
-   ;; UTF-8 please
-   (prefer-coding-system 'utf-8)
-   (set-default-coding-systems 'utf-8)
-   (set-terminal-coding-system 'utf-8)
-   (set-keyboard-coding-system 'utf-8)
-   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+;; UTF-8 please
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
-   ;; from Sacha page
-   (when (display-graphic-p)
-     (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+;; from Sacha page
+(when (display-graphic-p)
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
-   (setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)
 
-   ;; use shift-arrows to move between windows
-   (windmove-default-keybindings)
+;; use shift-arrows to move between windows
+(windmove-default-keybindings)
 
-   ;; highlight current line
-   (global-hl-line-mode 0)
+;; highlight current line
+(global-hl-line-mode 0)
 
-   ; wrap lines
-   ;; (global-visual-line-mode)
-   ;; (diminish 'visual-line-mode)
+                                        ; wrap lines
+;; (global-visual-line-mode)
+;; (diminish 'visual-line-mode)
 
-   ;; dont truncate lines
-   ;; (set-default 'truncate-lines 0)
+;; dont truncate lines
+;; (set-default 'truncate-lines 0)
 
-   ;; Turn off the blinking cursor
-   (blink-cursor-mode -1)
+;; Turn off the blinking cursor
+(blink-cursor-mode 1)
 
-   (setq-default indent-tabs-mode nil)
-   (setq-default indicate-empty-lines t)
+(setq-default indent-tabs-mode nil)
+(setq-default indicate-empty-lines t)
 
-   ;; Don't count two spaces after a period as the end of a sentence.
-   ;; Just one space is needed.
-   (setq sentence-end-double-space nil)
+;; Don't count two spaces after a period as the end of a sentence.
+;; Just one space is needed.
+(setq sentence-end-double-space nil)
 
-   ;; delete the region when typing, just like as we expect nowadays.
-   (delete-selection-mode t)
+;; delete the region when typing, just like as we expect nowadays.
+(delete-selection-mode t)
 
-   (column-number-mode t)
-   ;; unprettify symbol when at right edge
-   (setq prettify-symbols-unprettify-at-point 'right-edge) 
-   (setq uniquify-buffer-name-style 'forward)
-   ;; Don't beep at me
-   (setq visible-bell t)
+(column-number-mode t)
+;; unprettify symbol when at right edge
+(setq prettify-symbols-unprettify-at-point 'right-edge) 
+(setq uniquify-buffer-name-style 'forward)
+;; Don't beep at me
+(setq visible-bell t)
 
-   ;; Don't create backups
-   (setq make-backup-files nil)
- (set-fringe-mode '(6 . 0))
- (global-set-key [remap goto-line] 'goto-line-with-feedback)
+;; Don't create backups
+(setq make-backup-files nil)
+(set-fringe-mode '(6 . 0))
+(global-set-key [remap goto-line] 'goto-line-with-feedback)
 
- (defun goto-line-with-feedback ()
-   "Show line numbers temporarily, while prompting for the line number input"
-   (interactive)
-   (unwind-protect
-       (progn
-         (linum-mode 1)
-         (goto-line (read-number "Goto line: ")))
+(defun goto-line-with-feedback ()
+  "Show line numbers temporarily, while prompting for the line number input"
+  (interactive)
+  (unwind-protect
+      (progn
+        (linum-mode 1)
+        (goto-line (read-number "Goto line: ")))
     (linum-mode -1)))
 (use-package recentf
   :defer 10
@@ -206,7 +205,7 @@
                         ("\\.pdf\\'" . default)))
 
   (setq org-cycle-include-plain-lists 'integrate)
-  (setq org-image-actual-width '(400))
+  (setq org-image-actual-width t)
   (setq org-startup-with-inline-images t)
   (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
   (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
@@ -249,11 +248,11 @@
   :config
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
 (use-package ox-reveal 
-    :ensure t
-    :after org
-    :config
-    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-    (setq org-reveal-mathjax t))
+  :ensure t
+  :after org
+  :config
+  (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+  (setq org-reveal-mathjax t))
 (use-package ox-beamer
   :after org
   :config
@@ -374,9 +373,9 @@
   :config
   (defun my/org-insert-clipboard ()
     (interactive)
-    ;make the img directory
+                                        ;make the img directory
     (setq myvar/folder-path (concat default-directory "img/"))
-    ;create the directory if it doesn't exist
+                                        ;create the directory if it doesn't exist
     (if (not (file-exists-p myvar/folder-path))
         (mkdir myvar/folder-path))
 
@@ -394,17 +393,17 @@
 
       (org-display-inline-images))))
 (use-package org-tree-slide
-    :ensure t
-    :bind (("<f9>" . org-tree-slide-mode)
-           ("<f12>" . org-tree-slide-move-next-tree)
-           ("<f11>" . org-tree-slide-move-previous-tree)
-           ("C-<f12>" . org-babel-next-src-block)
-           ("C-<f11>" . org-babel-previous-src-block))
-    :config
-    (global-set-key (kbd "S-<f9>") 'org-tree-slide-skip-done-toggle)
-    (org-tree-slide-simple-profile)
-    (setq org-tree-slide-modeline-display 'outside)
-    (setq org-tree-slide-cursor-init nil))
+  :ensure t
+  :bind (("<f9>" . org-tree-slide-mode)
+         ("<f12>" . org-tree-slide-move-next-tree)
+         ("<f11>" . org-tree-slide-move-previous-tree)
+         ("C-<f12>" . org-babel-next-src-block)
+         ("C-<f11>" . org-babel-previous-src-block))
+  :config
+  (global-set-key (kbd "S-<f9>") 'org-tree-slide-skip-done-toggle)
+  (org-tree-slide-simple-profile)
+  (setq org-tree-slide-modeline-display 'outside)
+  (setq org-tree-slide-cursor-init nil))
 (use-package org-page
   :ensure t
   :bind (("C-x C-a p" . op/do-publication-and-preview-site)
@@ -426,29 +425,29 @@
 
   (setq op/category-ignore-list '("themes" "assets" "blog"))
 
- (setq op/category-config-alist
-      '(("notes" ;; this is the default configuration
-         :label "Notes"
-         :show-meta t
-         :show-comment t
-         :uri-generator op/generate-uri
-         :uri-template "/notes/%y/%m/%d/%t/"
-         :sort-by :date     ;; how to sort the posts
-         :category-index t) ;; generate category index or not
-        ("index"
-         :show-meta nil
-         :show-comment nil
-         :uri-generator op/generate-uri
-         :uri-template "/"
-         :sort-by :date
-         :category-index nil)
-        ("about"
-         :show-meta nil
-         :show-comment nil
-         :uri-generator op/generate-uri
-         :uri-template "/about/"
-         :sort-by :date
-         :category-index nil))))
+  (setq op/category-config-alist
+        '(("notes" ;; this is the default configuration
+           :label "Notes"
+           :show-meta t
+           :show-comment t
+           :uri-generator op/generate-uri
+           :uri-template "/notes/%y/%m/%d/%t/"
+           :sort-by :date     ;; how to sort the posts
+           :category-index t) ;; generate category index or not
+          ("index"
+           :show-meta nil
+           :show-comment nil
+           :uri-generator op/generate-uri
+           :uri-template "/"
+           :sort-by :date
+           :category-index nil)
+          ("about"
+           :show-meta nil
+           :show-comment nil
+           :uri-generator op/generate-uri
+           :uri-template "/about/"
+           :sort-by :date
+           :category-index nil))))
 (use-package org
   :defer t
   :config
@@ -463,19 +462,19 @@
    org-agenda-skip-deadline-if-done t
    org-agenda-skip-timestamp-if-done t)
 
-   (setq org-default-notes-file "~/OneDrive/Org/notes.org")
+  (setq org-default-notes-file "~/OneDrive/Org/notes.org")
 
-   
-   (setq org-agenda-custom-commands
-      '(("c" "Simple agenda view"
-         ((agenda "")
-          (todo "TODO")))))
-   
-   ;; (global-set-key (kbd "C-c o") 
-   ;;                 (lambda () (interactive) 
-   ;;                   (find-file "~/OneDrive/Org/notes.org")))
+  
+  (setq org-agenda-custom-commands
+        '(("c" "Simple agenda view"
+           ((agenda "")
+            (todo "TODO")))))
+  
+  ;; (global-set-key (kbd "C-c o") 
+  ;;                 (lambda () (interactive) 
+  ;;                   (find-file "~/OneDrive/Org/notes.org")))
 
-   (setq org-capture-templates
+  (setq org-capture-templates
         '(("t" "Todo" entry (file+datetree "~/OneDrive/Org/gtd.org") 
            "* TODO %? \n\n Added: %T")
           ("n" "Notes" entry (file+datetree "~/OneDrive/Org/notes.org") 
@@ -483,9 +482,10 @@
           ("j" "Journal" entry (file+datetree "~/OneDrive/Org/journal.org") 
            "* %T \n\n%?"))))
 (use-package org
+  :disabled t
   :defer t
   :config
-  (defun ded/org-show-next-heading-tidily ()
+  (defun ded/org-shonw-next-heading-tidily ()
     "Show next entry, keeping other entries closed."
     (if (save-excursion (end-of-line) (outline-invisible-p))
         (progn (org-show-entry) (show-children))
@@ -524,11 +524,11 @@
   :ensure t
   :bind (("C-x C-m C-m" . mc/edit-lines)
          ("C-x C-m C-n" . mc/mark-next-like-this)))
- (defun my/open-cmd()
+(defun my/open-cmd()
   (interactive)
   (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
     (set-process-query-on-exit-flag proc nil)))
- (bind-key "C-x m" 'my/open-cmd)
+(bind-key "C-x m" 'my/open-cmd)
 (use-package avy
   :ensure t 
   :diminish avy-mode
@@ -566,6 +566,11 @@
          ("C-x C-f" . counsel-find-file))
   :config
   (use-package smex :ensure t))
+(use-package ivy-posframe
+  :ensure t
+  :after ivy
+  :config
+  (setq ivy-display-function #'ivy-posframe-display))
 (use-package ivy
   :ensure t
   :diminish ivy-mode
@@ -589,13 +594,13 @@
   ;; ;; Do not show "./" and "../" in the counsel-find-file completion list
   (setq ivy-extra-directories nil))
 (use-package ivy-rich
-    :after ivy
-    :ensure t
-    :config
-    (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
-    (setq ivy-virtual-abbreviate 'full
-      ivy-rich-switch-buffer-align-virtual-buffer t)
-    (setq ivy-rich-abbreviate-paths t))
+  :after ivy
+  :ensure t
+  :config
+  (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
+  (setq ivy-virtual-abbreviate 'full
+        ivy-rich-switch-buffer-align-virtual-buffer t)
+  (setq ivy-rich-abbreviate-paths t))
 (use-package ivy-bibtex
   :ensure t
   :bind ("C-c b b" . ivy-bibtex)
@@ -627,7 +632,7 @@
   :config
   (setq swiper-include-line-number-in-search t))
 (use-package hydra
-  :defer 1
+  :defer 5
   :ensure t
   :bind (("C-c C-w" . hydra-window-resize/body)
          ("C-c C-u" . hydra-outline/body)
@@ -857,6 +862,7 @@
   :ensure t
   :after python
   :init
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
   (add-hook 'python-mode-hook 'anaconda-mode)
   :config
   (use-package company-anaconda
@@ -869,7 +875,13 @@
     (remove-hook 'anaconda-mode-response-read-fail-hook
                  'anaconda-mode-show-unreadable-response)
     (add-to-list 'company-backends 'company-anaconda)))
+(use-package company-childframe
+  :ensure t
+  :after company
+  :config
+  (company-childframe-mode 1))
 (use-package company-quickhelp
+  :disabled t
   :ensure t
   :after python
   :config (company-quickhelp-mode 1))
@@ -877,11 +889,12 @@
   :ensure t
   :commands (realgud:ipdb))
 (use-package smartparens
-  :ensure t 
+  :ensure t
+  :defer 5
   :commands smartparens-mode
   :init
   (add-hook 'python-mode-hook 'smartparens-mode)
-  (add-hook 'prog-mode-hook 'smartparens-mode)
+  (add-hook 'lisp-interaction-mode-hook 'smartparens-mode)
   (add-hook 'LaTeX-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'smartparens-mode)
   :config
@@ -934,9 +947,9 @@
   ;;                             '("PDF Tools" TeX-pdf-tools-sync-view)))
   ;;   (add-to-list 'TeX-view-program-selection  
   ;;                '(output-pdf "PDF Tools")))
-    
+  
   ;;   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
-    
+  
   ;;   ;; Update PDF buffers after successful LaTeX runs  
   ;;   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
   ;;             'TeX-revert-document-buffer)
@@ -956,9 +969,9 @@
        (assq-delete-all 'output-pdf TeX-view-program-selection)
        (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
   ;; jump to source
-   (setq TeX-source-correlate-mode t)
+  (setq TeX-source-correlate-mode t)
 
-   
+  
   ;; Custom functions
   ;;
   ;; 
@@ -1024,7 +1037,7 @@
     ((warning line-start (file-name) ":" line ":" column ": "
               (id (one-or-more (not (any " "))))
               (message) line-end))
-    :modes (text-mode markdown-mode gfm-mode))
+    :modes (text-mode markdown-mode gfm-mode LaTeX-mode))
 
   (add-to-list 'flycheck-checkers 'proselint))
 (use-package flyspell-lazy
@@ -1034,6 +1047,21 @@
   (add-hook 'LaTeX-mode-hook 'flyspell-lazy-mode)
   :config
   (flyspell-lazy-mode 1))
+(use-package langtool
+  :ensure t
+  :commands langtool-check
+  :config
+  (setq langtool-language-tool-jar "c:/Users/Nasser/.emacs.d/LanguageTool-4.0/languagetool-commandline.jar")
+  (defun langtool-autoshow-detail-popup (overlays)
+    (when (require 'popup nil t)
+      ;; Do not interrupt current popup
+      (unless (or popup-instances
+                  ;; suppress popup after type `C-g` .
+                  (memq last-command '(keyboard-quit)))
+        (let ((msg (langtool-details-error-message overlays)))
+          (popup-tip msg)))))
+  (setq langtool-autoshow-message-function
+        'langtool-autoshow-detail-popup))
 (use-package flyspell
   :after flyspell-lazy
   :commands flyspell-mode
@@ -1044,8 +1072,7 @@
   (setq ispell-local-dictionary "en_US")
   (setq ispell-local-dictionary-alist
         '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)
-          ("pt_BR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)))
-  (flyspell-mode 1))
+          ("pt_BR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8))))
 (use-package flyspell-correct-ivy
   :ensure t
   :after flyspell
@@ -1055,38 +1082,44 @@
   :ensure t
   :commands company-mode
   :init
-  (add-hook 'prog-mode-hook 'company-mode)
+  (add-hook 'python-mode-hook 'company-mode)
+  (add-hook 'lisp-interaction-mode-hook 'company-mode)
   (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'org-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay .1)
-  (setq company-show-numbers t)
+  (setq company-idle-delay 0.3) 
+  (setq company-show-numbers t) 
+  (setq company-require-match 'company-explicit-action-p)
+  (setq company-tooltip-flip-when-above t)
+  (setq company-tooltip-align-annotations t)
+  ;; (delete 'company-capf company-backends)
 
-  (delete 'company-capf company-backends)
-
-  (defun tab-indent-or-complete ()
-    (interactive)
-    (if (minibufferp)
-        (minibuffer-complete)
-      (if (or (not yas-minor-mode)
-              (null (do-yas-expand)))
-          (if (check-expansion)
-              (company-complete-common)
-            (indent-for-tab-command)))))
-  
-  ;; Also these lines are useful to trigger the completion 
-  ;; pressing the key you want.
-  (global-set-key [backtab] 'tab-indent-or-complete))
-(use-package company-statistics 
+  ;; (defun tab-indent-or-complete ()
+  ;;   (interactive)
+  ;;   (if (minibufferp)
+  ;;       (minibuffer-complete)
+  ;;     (if (or (not yas-minor-mode)
+  ;;             (null (do-yas-expand)))
+  ;;         (if (check-expansion)
+  ;;             (company-complete-common)
+  ;;           (indent-for-tab-command)))))
+  ;; ;; Also these lines are useful to trigger the completion 
+  ;; ;; pressing the key you want.
+  ;; (global-set-key [backtab] 'tab-indent-or-complete)
+  )
+(use-package company-statistics
+  :disabled t
   :ensure t
   :after company
   :config
   (company-statistics-mode))
 (use-package company-flx
   :ensure t
+  :disabled t
   :after company
   :config
-  (company-flx-mode +1))
+  (company-flx-mode +1)
+  (setq company-flx-limit 400))
 (use-package undo-tree
   :ensure t 
   :bind ("C-z" . undo-tree-undo)
@@ -1164,7 +1197,7 @@
   :defer 5
   :ensure t
   :config
-  (setq sml/mode-width 5)
+  (setq sml/mode-width 20)
   (setq sml/name-width 10)
   (setq sml/shorten-directory t)
   (setq sml/shorten-directory t)
@@ -1202,7 +1235,6 @@
   :ensure t
   :commands highlight-parentheses-mode
   :init
-  (add-hook 'org-mode-hook 'highlight-parentheses-mode)
   (add-hook 'LaTeX-mode-hook 'highlight-parentheses-mode)
   (add-hook 'python-mode-hook 'highlight-parentheses-mode))
 (use-package ibuffer
@@ -1235,6 +1267,7 @@
   (epa-file-enable))
 (use-package org-crypt
   :after org
+  :commands (org-encrypt-entry org-decrypt-entry)
   :config
   (org-crypt-use-before-save-magic)
   (setq org-tags-exclude-from-inheritance (quote ("crypt")))
@@ -1279,56 +1312,56 @@
   :commands 'focus-mode
   :disabled t)
 (setq ad-redefinition-action 'accept)
- (winner-mode 1)
- (global-auto-revert-mode t)
- (setq global-auto-revert-non-file-buffers t)
- (setq auto-revert-verbose nil)
- (global-set-key (kbd "M-]") 'delete-horizontal-space)
- (setq resize-mini-windows t) ;; was grow-only
- (setq focus-follows-mouse t)
- (other-window 1 'visible)
- (select-frame-set-input-focus (selected-frame))
- (bind-key "C-x C-o" 'next-multiframe-window)
- (setq mouse-autoselect-window nil)
- ;; (setq mouse-wheel-scroll-amount '(5)) ;; mouse scroll moves 1 line at a time, instead of 5 lines
- (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
- (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
- ;; (setq auto-window-vscroll nil)
- (defun set-window-width (n)
-   "Set the selected window's width."
-   (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
- (defun set-80-columns ()
-   "Set the selected window to 80 columns."
-   (interactive)
-   (set-window-width 80))
- (defun set-68-columns ()
-   "Set the selected window to 80 columns."
-   (interactive)
-   (set-window-width 68))
- (global-set-key "\C-x8" 'set-80-columns)
- (global-set-key "\C-x7" 'set-68-columns)
- (setq-default fringe-indicator-alist (assq-delete-all 'truncation fringe-indicator-alist))
+(winner-mode 1)
+(global-auto-revert-mode t)
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+(global-set-key (kbd "M-]") 'delete-horizontal-space)
+(setq resize-mini-windows t) ;; was grow-only
+(setq focus-follows-mouse t)
+(other-window 1 'visible)
+(select-frame-set-input-focus (selected-frame))
+(bind-key "C-x C-o" 'next-multiframe-window)
+(setq mouse-autoselect-window nil)
+;; (setq mouse-wheel-scroll-amount '(5)) ;; mouse scroll moves 1 line at a time, instead of 5 lines
+(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+(setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
+;; (setq auto-window-vscroll nil)
+(defun set-window-width (n)
+  "Set the selected window's width."
+  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+(defun set-80-columns ()
+  "Set the selected window to 80 columns."
+  (interactive)
+  (set-window-width 80))
+(defun set-68-columns ()
+  "Set the selected window to 80 columns."
+  (interactive)
+  (set-window-width 68))
+(global-set-key "\C-x8" 'set-80-columns)
+(global-set-key "\C-x7" 'set-68-columns)
+(setq-default fringe-indicator-alist (assq-delete-all 'truncation fringe-indicator-alist))
 (setq-default fringe-indicator-alist (assq-delete-all 'continuation fringe-indicator-alist))
 (setq right-fringe-width 0)
 (set-display-table-slot standard-display-table 'wrap ?\ )
 
- (put 'set-goal-column 'disabled nil)
- ;; (setq redisplay-dont-pause t
- ;;       scroll-margin 1
- ;;       scroll-step 1
- ;;       scroll-conservatively 1000
- ;;       scroll-preserve-screen-position 1)
- (defun open-buffer-path ()
-   "Run explorer on the directory of the current buffer."
-   (interactive)
- (shell-command (concat "explorer "
-                        (replace-regexp-in-string "/" "\\\\"
-                                                  (file-name-directory
-                                                   (buffer-file-name)) nil nil))))
+(put 'set-goal-column 'disabled nil)
+;; (setq redisplay-dont-pause t
+;;       scroll-margin 1
+;;       scroll-step 1
+;;       scroll-conservatively 1000
+;;       scroll-preserve-screen-position 1)
+(defun open-buffer-path ()
+  "Run explorer on the directory of the current buffer."
+  (interactive)
+  (shell-command (concat "explorer "
+                         (replace-regexp-in-string "/" "\\\\"
+                                                   (file-name-directory
+                                                    (buffer-file-name)) nil nil))))
 (global-set-key [M-f9] 'open-buffer-path)
 
 ;; Then reset it as late as possible; these are the reasonable defaults I use.
-  (setq gc-cons-threshold 16777216
-        gc-cons-percentage 0.1)
+(setq gc-cons-threshold 16777216
+      gc-cons-percentage 0.1)
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
- 
+
