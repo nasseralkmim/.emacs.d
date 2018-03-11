@@ -1,11 +1,10 @@
+(defvar my-start-time (current-time)
+  "Time when Emacs was started")
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.
-(package-initialize)
-
-(defvar my-start-time (current-time)
-  "Time when Emacs was started")
+;; (package-initialize)
 
 (menu-bar-mode 0)
 (tool-bar-mode 0)
@@ -28,7 +27,8 @@
       package-archives
       '(("melpa"           . "http://melpa.org/packages/")
         ("gnu" . "http://elpa.gnu.org/packages/")
-        ("org" . "http://orgmode.org/elpa/")))
+        ("org" . "http://orgmode.org/elpa/"))
+      package-user-dir "~/.emacs.d/elpa/")
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
@@ -37,7 +37,8 @@
   (require 'use-package))
 (require 'diminish)                ;; if you use :diminish
 (require 'bind-key)
-(setq use-package-verbose t)
+(setq use-package-verbose nil
+      use-package-minimum-reported-time 0.01)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
 (use-package gruvbox-theme
@@ -85,7 +86,7 @@
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
-(put 'dired-find-alternate-file 'disabled nil)
+
 
 ;; Answering just 'y' or 'n' will do
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -159,6 +160,7 @@
   (run-at-time (current-time) 300 'recentf-save-list))
 (use-package org
   :ensure org-plus-contrib
+  :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :bind(("C-c a" . org-agenda)
         ("C-c l" . org-store-link)
@@ -775,6 +777,9 @@
 (use-package go-mode
   :ensure t
   :mode ("\\.go\\'" . go-mode))
+(use-package hide-comnt
+  :load-path "c:/Users/Nasser/.emacs.d/elpa"
+  :commands hide/show-comments-toggle)
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -863,19 +868,18 @@
   :after python
   :init
   (add-hook 'python-mode-hook 'anaconda-eldoc-mode)
-  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-mode))
+(use-package company-anaconda
+  :ensure t
+  :after anaconda-mode
   :config
-  (use-package company-anaconda
-    :ensure t
-    :after company
-    :config
-    (setq jedi:complete-on-dot t)
-    (setq company-minimum-prefix-length 1)
-    (setq company-idle-delay 0.3)
-    (remove-hook 'anaconda-mode-response-read-fail-hook
-                 'anaconda-mode-show-unreadable-response)
-    (add-to-list 'company-backends 'company-anaconda)))
+  (setq jedi:complete-on-dot t)
+  (setq company-minimum-prefix-length 1)
+  (remove-hook 'anaconda-mode-response-read-fail-hook
+               'anaconda-mode-show-unreadable-response)
+  (add-to-list 'company-backends 'company-anaconda))
 (use-package company-childframe
+  :diminish company-childframe-mode
   :ensure t
   :after company
   :config
@@ -889,6 +893,7 @@
   :ensure t
   :commands (realgud:ipdb))
 (use-package smartparens
+  :diminish smartparens-mode  
   :ensure t
   :defer 5
   :commands smartparens-mode
@@ -1063,6 +1068,7 @@
   (setq langtool-autoshow-message-function
         'langtool-autoshow-detail-popup))
 (use-package flyspell
+  :diminish flyspell-mode
   :after flyspell-lazy
   :commands flyspell-mode
   :init
@@ -1079,6 +1085,7 @@
   :bind (:map flyspell-mode-map
               ("C-c C-SPC" . flyspell-correct-word-generic)))
 (use-package company
+  :diminish company-mode
   :ensure t
   :commands company-mode
   :init
@@ -1087,7 +1094,7 @@
   (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'org-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay 0.3) 
+  (setq company-idle-delay 0.5)
   (setq company-show-numbers t) 
   (setq company-require-match 'company-explicit-action-p)
   (setq company-tooltip-flip-when-above t)
@@ -1182,6 +1189,7 @@
   :disabled t 
   :after treemacs)
 (use-package beacon
+  :diminish beacon-mode
   :ensure t
   :defer 10
   :config
@@ -1191,14 +1199,24 @@
   (setq beacon-blink-when-window-scrolls nil)
   (beacon-mode 1))
 (use-package dired+
+  :disabled t
   :ensure t
   :defer t)
+(use-package direx
+  :disabled t
+  :ensure t
+  :after dired
+  :bind ("C-x C-j" . direx:jump-to-directory)
+  :config
+  (setq-default dired-omit-files-p t)
+  (setq dired-listing-switches "-alhv")
+  (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"))
 (use-package smart-mode-line
   :defer 5
   :ensure t
   :config
-  (setq sml/mode-width 20)
-  (setq sml/name-width 10)
+  ;; (setq sml/mode-width nil)
+  ;; (setq sml/name-width 20)
   (setq sml/shorten-directory t)
   (setq sml/shorten-directory t)
   (sml/setup))
@@ -1226,12 +1244,14 @@
   (add-hook 'web-mode-hook 'smartparens-mode)
   (use-package smartparens-html))
 (use-package highlight-symbol
+  :diminish highlight-symbol-mode
   :ensure t
   :commands highlight-symbol-mode
   :init
   (add-hook 'prog-mode-hook #'highlight-symbol-mode)
   (add-hook 'matlab-mode-hook #'highlight-symbol-mode))
 (use-package highlight-parentheses
+  :diminish highlight-parentheses-mode
   :ensure t
   :commands highlight-parentheses-mode
   :init
@@ -1243,7 +1263,11 @@
 (use-package matlab-mode
   :ensure t
   :mode ("\\.m\\'" . matlab-mode))
+(use-package eldoc
+  :config
+  (global-eldoc-mode -1))
 (use-package git-gutter+
+  :diminish git-gutter+-mode
   :ensure t
   :bind (("C-M-z C-M-s" . git-gutter+-stage-hunks)
          ("C-M-z C-M-c" . git-gutter+-stage-and-commit))
@@ -1262,7 +1286,7 @@
   :init
   (add-hook 'python-mode-hook (lambda () (interactive) (column-marker-1 80))))
 (use-package epa-file
-  :after org
+  :after org-crypt
   :config
   (epa-file-enable))
 (use-package org-crypt
@@ -1326,7 +1350,7 @@
 ;; (setq mouse-wheel-scroll-amount '(5)) ;; mouse scroll moves 1 line at a time, instead of 5 lines
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mous
-;; (setq auto-window-vscroll nil)
+(setq auto-window-vscroll nil)
 (defun set-window-width (n)
   "Set the selected window's width."
   (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
@@ -1359,9 +1383,7 @@
                                                    (file-name-directory
                                                     (buffer-file-name)) nil nil))))
 (global-set-key [M-f9] 'open-buffer-path)
-
 ;; Then reset it as late as possible; these are the reasonable defaults I use.
 (setq gc-cons-threshold 16777216
       gc-cons-percentage 0.1)
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-
