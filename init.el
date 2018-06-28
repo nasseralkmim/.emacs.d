@@ -2,15 +2,27 @@
   "Time when Emacs was started")
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
+
+;; UTF-8 please
+(prefer-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+
+;; (setq inhibit-compacting-font-caches t)
+;; (setq w32-pipe-read-delay 0)
+
 ;; Added by Package.el.  This must come before configurations of
 ;; installed packages.
-;; (package-initialize)
-
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
-(tooltip-mode 0) 
-
+(package-initialize)
+;; (load-theme 'manoj-dark t)
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(tooltip-mode -1) 
+(setq-default bidi-display-reordering t)
+(setq timer-max-repeats 1)
 (setq initial-scratch-message "")
 (setq initial-major-mode 'lisp-mode)
 
@@ -35,19 +47,55 @@
 
 (eval-when-compile
   (require 'use-package))
-(require 'diminish)                ;; if you use :diminish
+(use-package diminish :ensure t)
 (require 'bind-key)
 (setq use-package-verbose nil
       use-package-minimum-reported-time 0.01)
+(setq use-package-enable-imenu-support t)
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (load custom-file)
-(use-package gruvbox-theme
+(use-package challenger-deep-theme
+  :disabled
   :ensure t
-  :disabled t
+  :config
+  (load-theme 'challenger-deep t)
+  (let* ((headline `(:background nil :box nil)))
+    (custom-theme-set-faces
+     'user
+     `(org-level-4 ((t (:height 1.0))))
+     `(org-level-3 ((t (:height 1.0))))
+     `(org-level-2 ((t (,@headline :height 1.1))))
+     `(org-level-1 ((t (,@headline :height 1.2))))
+     `(org-document-title ((t (,@headline :height 1.25 :underline nil))))
+     `(org-block-begin-line ((t (:box nil))))
+     `(org-block-end-line ((t (:box nil)))))))
+(use-package habamax-theme
+  :disabled
+  :ensure t
+  :config
+  (setq habamax-theme-variable-heading-heights nil)
+  (load-theme 'habamax t))
+(use-package flatui-dark-theme
+  :ensure t
+  :config
+(custom-theme-set-faces
+     'user
+     `(org-level-4 ((t (:height 1.0))))
+     `(org-level-5 ((t (:foreground "#c0392b"))))
+     `(org-level-3 ((t (:height 1.0))))
+     `(org-level-2 ((t (:height 1.0))))
+     `(org-level-1 ((t (:height 1.0))))
+     `(org-document-title ((t (:height 1.0 :underline nil))))
+     `(org-block-begin-line ((t (:box nil))))
+     `(org-block-end-line ((t (:box nil)))))
+  (load-theme 'flatui-dark t))
+(use-package gruvbox-theme
+  :disabled
+  :ensure t
   :config (load-theme 'gruvbox-dark-hard t))
 (use-package zerodark-theme
   :ensure t
-  :disabled t
+  :disabled
   :config
   (load-theme 'zerodark t)
   (setq inhibit-compacting-font-caches t)
@@ -56,47 +104,40 @@
   :ensure t
   :defer t)
 (use-package darkokai-theme
-  :disabled t
   :ensure t
+  :disabled
   :config
   (setq darkokai-mode-line-padding 1)
   (load-theme 'darkokai t))
 (use-package moe-theme
-  :disabled t
+  :disabled
   :ensure t
   :config
   (setq moe-theme-highlight-buffer-id nil)
   (moe-dark))
-;; set a default font Iosevka, Hack, 
-(set-face-attribute 'default nil
-                    :family "Iosevka"
-                    :height 100
-                    :weight 'normal
-                    :width 'normal)
-;; specify font for all unicode characters
-(set-fontset-font t
-                  'unicode
-                  (font-spec :family "Iosevka"
-                             :width 'normal
-                             :height 100
-                             :weight 'normal) nil 'prepend)
-;; For testing purposes: →„Σ"←
+
+;; ;; set a default font Iosevka, Hack, PragmataPro
+;; (set-face-attribute 'default nil
+;;                     :family "Iosevka"
+;;                     :height 100
+;;                     :weight 'normal
+;;                     :width 'normal)
+;; ;; ;; specify font for all unicode characters
+;; (set-fontset-font t
+;;                   'unicode
+;;                   (font-spec :family "Dejavu Sans mono"
+;;                              :width 'normal
+;;                              :height 100
+;;                              :weight 'normal) nil 'prepend)
+;; ;; For testing purposes: →„Σ"←
 
 ;; These functions are useful. Activate them.
 (put 'downcase-region 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'narrow-to-region 'disabled nil)
 
-
 ;; Answering just 'y' or 'n' will do
 (defalias 'yes-or-no-p 'y-or-n-p)
-
-;; UTF-8 please
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
-(setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
 ;; from Sacha page
 (when (display-graphic-p)
@@ -108,17 +149,13 @@
 (windmove-default-keybindings)
 
 ;; highlight current line
-(global-hl-line-mode 0)
-
+(setq global-hl-line-mode 0)
                                         ; wrap lines
 ;; (global-visual-line-mode)
 ;; (diminish 'visual-line-mode)
 
-;; dont truncate lines
-;; (set-default 'truncate-lines 0)
-
 ;; Turn off the blinking cursor
-(blink-cursor-mode 1)
+(blink-cursor-mode -1)
 
 (setq-default indent-tabs-mode nil)
 (setq-default indicate-empty-lines t)
@@ -156,46 +193,41 @@
   (progn
     (recentf-mode t)
     (setq recentf-max-saved-items 500
-          recentf-max-menu-items 15))
-  (run-at-time (current-time) 300 'recentf-save-list))
+          recentf-max-menu-items 15)))
 (use-package org
   :ensure org-plus-contrib
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
-  :bind(("C-c a" . org-agenda)
-        ("C-c l" . org-store-link)
-        ("C-c c" . org-capture)
-        ("M-p" . org-previous-item)
-        ("M-n" . org-next-item))
+  :bind(("C-c c" . org-capture)
+        ("C-c a" . org-agenda)
+        :map org-mode-map
+             ("C-c l" . org-store-link)
+             ("M-p" . org-previous-item)
+             ("M-n" . org-next-item))
   :init
-  ;; (add-hook 'org-mode-hook 'visual-line-mode)
+  (add-hook 'org-mode-hook 'flyspell-mode)
+  (add-hook 'org-mode-hook 'visual-line-mode)
   :config
   (setq org-special-ctrl-a/e t)
-  (transient-mark-mode nil)
+  (transient-mark-mode -1)
   (setq org-log-done 'time)         ;Log the time a task is completed.
-  (setq org-habit-graph-column 50) ;position the habit graph on the agenda to the right of he defaul 
+  (setq org-habit-graph-column 53) ;position the habit graph on the agenda to the right of he defaul 
+  (setq org-habit-following-days 4)
   (setq org-hide-emphasis-markers t) 
   (setq inhibit-splash-screen t)
-  (setq org-indent-mode t)         ;indent the headings for clean view
+  (setq org-indent-mode nil)         ;indent the headings for clean view
+  (setq org-startup-indented nil)
   (setq org-hide-leading-stars t) 
-  (setq org-hide-leading-stars-before-indent-mode t)
+  (setq org-startup-align-all-tables nil)
+  (setq org-hide-leading-stars-before-indent-mode nil)
   (setq org-odd-levels-only t)
-  (diminish 'org-indent-mode)
-  (setq org-startup-indented t)
   ;; (setq org-tags-column -66) ;where the tags are places
   (setq org-use-speed-commands t)
   (setq org-edit-src-content-indentation 0)
   (setq org-support-shift-select t)
   (setq line-spacing '0.1 )
-
-  ;; This is for remove the annoying background color on the headings, 
-  ;; level 1 and level 2, when using the material-theme. 
-  (custom-set-faces
-   '(org-level-1 ((t (:background nil :bold t :overline nil))))
-   '(org-level-2 ((t (:background nil :bold t :overline nil)))))
-
-  (setq org-agenda-weekend-days nil)
-
+  (setq org-ellipsis "…")
+  (set-face-attribute 'org-ellipsis nil :underline nil)
   (setq org-modules '(org-habit))
   (eval-after-load 'org
     '(org-load-modules-maybe t))
@@ -206,14 +238,14 @@
                         ("\\.pdf::\\([0-9]+\\)\\'" . "sumatrapdf \"%s\" -page %1")
                         ("\\.pdf\\'" . default)))
 
-  (setq org-cycle-include-plain-lists 'integrate)
-  (setq org-image-actual-width t)
+  (setq org-cycle-include-plain-lists t)
+  (setq org-image-actual-width nil)
   (setq org-startup-with-inline-images t)
-  (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
-  (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
+  ;; (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
+  ;; (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
   ;; org markups meta line --> change to grey100 when presenting
-  ;; (set-face-attribute 'org-meta-line nil :height 1.  :slant 'normal)
-  ;; (set-face-attribute 'org-special-keyword nil :height 1. :slant 'normal)
+  (set-face-attribute 'org-meta-line nil :height 0.8)
+  (set-face-attribute 'org-special-keyword nil :height  0.8)
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -249,7 +281,8 @@
   :after org
   :config
   (ox-extras-activate '(latex-header-blocks ignore-headlines)))
-(use-package ox-reveal 
+(use-package ox-reveal
+  :disabled
   :ensure t
   :after org
   :config
@@ -319,20 +352,20 @@
 (use-package ox-md
   :after org)
 (use-package org-download
-  :disabled t
+  :disabled
   :ensure t
   :after org
   :config
   (setq-default org-download-image-dir "./img/")
   (setq-default org-download-heading-lvl nil))
 (use-package ob-async
-  :disabled t
+  :disabled
   :ensure t
   :after org
   :config
   (add-to-list 'org-ctrl-c-ctrl-c-hook 'ob-async-org-babel-execute-src-block))
 (use-package org-ref
-  :disabled t
+  :disabled
   :after org
   :ensure t
   :config
@@ -343,15 +376,26 @@
           "C:/Users/Nasser/OneDrive/Bibliography/references-etc/"))
   (setq org-ref-completion-library 'org-ref-ivy-bibtex)
   (org-ref-ivy-cite-completion))
+(use-package org-sticky-header
+  :ensure t
+  :hook (org-mode . org-sticky-header-mode)
+  :config
+  (setq org-sticky-header-full-path 'reversed))
+(use-package org-super-agenda
+  :disabled
+  :ensure t
+  :after org-agenda
+  :init (add-hook 'org-agenda-mode-hook 'org-super-agenda-mode))
 (use-package org
   :defer t
   :config
-  (setq org-todo-keywords '((sequence "TODO(t)" "DONE(d)")))
-
+  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "REVW" "|" "DONE(d)")))
+  ;; 
   (setq org-todo-keyword-faces 
-        '(("TODO" :background "tomato" :foreground "#5f5f5f" :weight bold )
-          ("STRT" :background "#edd400" :foreground "#5f5f5f" :weight bold )
-          ("DONE" :background "#6ac214" :foreground "#5f5f5f" :weight bold )))
+        '(("TODO" :background "tomato" :foreground "#000000"  :weight bold :height 0.8)
+          ("NEXT" :background "#edd400" :foreground "#000000"  :weight bold :height 0.8)
+          ("DONE" :background "#6ac214" :foreground "#000000"  :weight bold :height 0.8)
+          ("REVW" :background "deep sky blue" :foreground "#000000"  :weight bold :height 0.8)))
   
   (setq org-blank-before-new-entry '((heading . nil) (plain-list-item . nil)))
   (setq org-cycle-separator-lines 0)) 
@@ -363,11 +407,17 @@
   (setq org-clock-persist t)
   (setq org-clock-in-resume t)
   (setq org-clock-mode-line-total 'current)
-  
-  ;; Change task state to STARTED when clocking in
-  ;; (setq org-clock-in-switch-to-state "STRT")
+  (setq org-duration-format (quote h:mm))
+  (setq org-clocktable-defaults
+        '(:maxlevel 2 :lang "en" :scope file :block nil :wstart 1 :mstart 1 :tstart nil :tend nil :step nil :stepskip0 nil :fileskip0 nil :tags nil :emphasize t :link nil :narrow 40! :indent t :formula nil :timestamp nil :level nil :tcolumns 3 :formatter nil))
+  ;; remove schedule tag on agenda
+  (setq org-agenda-scheduled-leaders '("" ""))
+
   ;; Save clock data and notes in the LOGBOOK drawer
-  (setq org-clock-into-drawer t)
+  ;; (setq org-clock-into-drawer t)
+  (setq org-log-into-drawer "LOGBOOK")
+  (setq org-clock-into-drawer 1)
+  
   ;; Removes clocked tasks with 0:00 duration
   (setq org-clock-out-remove-zero-time-clocks t))
 (use-package org
@@ -449,7 +499,31 @@
            :uri-generator op/generate-uri
            :uri-template "/about/"
            :sort-by :date
-           :category-index nil))))
+           :category-index nil)))
+  ;; remove blog heading
+  (defun op/get-file-category (org-file)
+    "Get org file category presented by ORG-FILE, return all categories if
+ORG-FILE is nil. This is the default function used to get a file's category,
+see `op/retrieve-category-function'. How to judge a file's category is based on
+its name and its root folder name under `op/repository-directory'."
+    (cond ((not org-file)
+           (let ((cat-list '("index" "about"))) ;; 3 default categories
+             (dolist (f (directory-files op/repository-directory))
+               (when (and (not (equal f "."))
+                          (not (equal f ".."))
+                          (not (equal f ".git"))
+                          (not (member f op/category-ignore-list))
+                          (file-directory-p
+                           (expand-file-name f op/repository-directory)))
+                 (setq cat-list (cons f cat-list))))
+             cat-list))
+          ((string= (expand-file-name "index.org" op/repository-directory)
+                    (expand-file-name org-file)) "index")
+          ((string= (expand-file-name "about.org" op/repository-directory)
+                    (expand-file-name org-file)) "about")
+          (t (car (split-string (file-relative-name (expand-file-name org-file)
+                                                    op/repository-directory)
+                                "[/\\\\]+"))))))
 (use-package org
   :defer t
   :config
@@ -457,16 +531,38 @@
                                  "~/OneDrive/Org/notes.org"
                                  "~/OneDrive/Org/journal.org"
                                  "~/OneDrive/Org/gcal.org"
-                                 "~/OneDrive/TerraCap/terracap_notes.org")))
+                                 "~/OneDrive/Concurso/Notas/notas_concurso.org")))
 
   (setq 
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
-   org-agenda-skip-timestamp-if-done t)
+   org-agenda-skip-timestamp-if-done nil)
 
   (setq org-default-notes-file "~/OneDrive/Org/notes.org")
 
+  ;; Which days are weekend?
+  ;; (setq org-agenda-weekend-days nil)
+  ;; start agenda on current day
+  (setq org-agenda-start-on-weekday 1)
+  ;; min and max percentages of agenda window height
+  (setq org-agenda-window-frame-fractions '(0 . 1))
+
+  ;; Days on the overview display
+  (setq org-agenda-span 1)
+
+  ;; (setq org-agenda-time-grid
+  ;;     '((daily today require-timed)
+  ;;       (800 1000 1200 1400 1600 1800 2000)
+  ;;       "......" "----------------"))
   
+  (setq org-agenda-prefix-format '(
+  ;; (agenda  . " %i %-12:c%?-12t% s") ;; file name + org-agenda-entry-type
+  (agenda  . " %i %-16:c%?-16t% s")
+  (timeline  . "  % s")
+  (todo  . " %i %-12:c")
+  (tags  . " %i %-12:c")
+  (search . " %i %-12:c")))
+
   (setq org-agenda-custom-commands
         '(("c" "Simple agenda view"
            ((agenda "")
@@ -484,7 +580,7 @@
           ("j" "Journal" entry (file+datetree "~/OneDrive/Org/journal.org") 
            "* %T \n\n%?"))))
 (use-package org
-  :disabled t
+  :disabled
   :defer t
   :config
   (defun ded/org-shonw-next-heading-tidily ()
@@ -524,19 +620,15 @@
   :init  (add-hook 'org-mode-hook 'toc-org-enable))
 (use-package multiple-cursors
   :ensure t
-  :bind (("C-x C-m C-m" . mc/edit-lines)
-         ("C-x C-m C-n" . mc/mark-next-like-this)))
-(defun my/open-cmd()
-  (interactive)
-  (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
-    (set-process-query-on-exit-flag proc nil)))
-(bind-key "C-x m" 'my/open-cmd)
+  :defer t)
 (use-package avy
   :ensure t 
   :diminish avy-mode
   :bind (("C-x C-SPC" . avy-goto-char)
          ("C-x C-x" . avy-goto-word-or-subword-1)
-         ("C-x C-l" . avy-goto-line)))
+         ("C-x C-l" . avy-goto-line))
+  :config
+  (setq avy-timeout-seconds 0.4))
 (use-package smartscan
   :ensure t
   :bind (("M-p" . smartscan-symbol-go-back)
@@ -570,22 +662,25 @@
   (use-package smex :ensure t))
 (use-package ivy-posframe
   :ensure t
+  :disabled
   :after ivy
   :config
-  (setq ivy-display-function #'ivy-posframe-display))
+  (setq ivy-display-function #'ivy-posframe-display-at-point))
 (use-package ivy
   :ensure t
   :diminish ivy-mode
-  :bind (("C-x b" . ivy-switch-buffer))
+  :bind (("C-x b" . ivy-switch-buffer)
+         :map ivy-minibuffer-map
+         ("C-j" . ivy-next-line)
+         ("C-k" . ivy-previous-line))
   :config
   ;; Disable ido
   (with-eval-after-load 'ido
     (ido-mode -1)
     ;; Enable ivy
     (ivy-mode 1))
-  ;; for recent candidates
-  (setq ivy-use-virtual-buffers t)
   (setq ivy-display-style 'fancy)
+  (setq ivy-use-selectable-prompt t)
   (setq ivy-count-format "(%d/%d) ")
   (setq ivy-initial-inputs-alist nil)
   (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
@@ -599,10 +694,12 @@
   :after ivy
   :ensure t
   :config
-  (ivy-set-display-transformer 'ivy-switch-buffer 'ivy-rich-switch-buffer-transformer)
+  (ivy-set-display-transformer 'ivy-switch-buffer
+                               'ivy-rich-switch-buffer-transformer)
   (setq ivy-virtual-abbreviate 'full
         ivy-rich-switch-buffer-align-virtual-buffer t)
-  (setq ivy-rich-abbreviate-paths t))
+  (setq ivy-rich-abbreviate-paths t)
+  (setq ivy-rich-path-style 'abbrev))
 (use-package ivy-bibtex
   :ensure t
   :bind ("C-c b b" . ivy-bibtex)
@@ -618,16 +715,20 @@
   ;; using bibtex path reference to pdf file
   (setq bibtex-completion-pdf-field "File")
 
-  ;;open pdf with external viwer foxit
-  (setq bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil fpath)))
+  ;; ;;open pdf with external viwer foxit
   ;; (setq bibtex-completion-pdf-open-function
   ;;       (lambda (fpath)
-  ;;         (call-process "SumatraPDF" nil 0 nil fpath)))
+  ;;         (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil fpath)))
+  (setq bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (call-process "SumatraPDF" nil 0 nil fpath)))
 
   (setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation)
   )
+(use-package powerthesaurus
+  :ensure t
+  :disabled
+  :commands powerthesaurus-lookup-word)
 (use-package swiper
   :ensure t
   :bind (("C-c u" . swiper-all))
@@ -639,8 +740,15 @@
   :bind (("C-c C-w" . hydra-window-resize/body)
          ("C-c C-u" . hydra-outline/body)
          ("C-x C-m " . multiple-cursors-hydra/body)
-         ("C-x C-'" . hydra-origami/body))
+         ("C-x C-'" . hydra-fold/body))
   :config
+  (defhydra hydra-fold (:pre (hs-minor-mode 1))
+    "fold"
+    ("t" fold-dwim-toggle "toggle")
+    ("h" fold-dwim-hide-all "hide-all")
+    ("s" fold-dwim-show-all "show-all")
+    ("q" nil "quit"))
+  
   (defun my-funcs/resize-window-down ()
     "Resize a window downwards."
     (interactive)
@@ -736,7 +844,23 @@
     ("n" origami-next-fold)
     ("p" origami-previous-fold)
     ("f" origami-forward-toggle-node)
-    ("a" origami-toggle-all-nodes)))
+    ("a" origami-toggle-all-nodes))
+
+  (defhydra hydra-move-previous
+     (:body-pre (previous-line))
+     "move"
+     ("n" next-line)
+     ("p" previous-line)
+     ("<tab>" org-cycle)
+     ("q" nil))
+  
+   (defhydra hydra-move-next
+     (:body-pre (next-line))
+     "move"
+     ("n" next-line)
+     ("p" previous-line)
+     ("<tab>" org-cycle)
+     ("q" nil)))
 (use-package ivy-hydra
   :ensure t
   :defer t
@@ -775,6 +899,7 @@
   (setq projectile-completion-system 'ivy) ;So projectile works with ivy
   (setq projectile-indexing-method 'alien))
 (use-package go-mode
+  :disabled
   :ensure t
   :mode ("\\.go\\'" . go-mode))
 (use-package hide-comnt
@@ -785,7 +910,6 @@
   :interpreter ("python" . python-mode)
   :config
   ;; change commenting foreground
-  (set-face-attribute 'font-lock-comment-face nil :foreground "lightgray")
   (setq warning-suppress-types '((python)
                                  (emacs)))
   ;; suppress the warning "python.el: native completion setup failed"
@@ -811,21 +935,21 @@
   (setq highlight-indent-guides-method 'character))
 (use-package python-docstring
   :ensure t
-  :disabled t
+  :disabled
   :after python
   :init
   (add-hook 'python-mode-hook #'python-dosctring-mode))
 (use-package lpy
-  :disabled t
+  :disabled
   :load-path "C:/Users/Nasser/.emacs.d/elpa/lpy-master"
   :after python
   :init (add-hook 'python-mode-hook 'lpy-mode))
 (use-package worf
-  :disabled t
+  :disabled
   :ensure t
   :after lpy)
 (use-package elpy 
-  :disabled t
+  :disabled
   :ensure t
   :after python
   :bind (:map elpy-mode-map 
@@ -855,14 +979,6 @@
   :ensure t
   :after python
   :init (add-hook 'python-mode-hook 'hl-todo-mode))
-(use-package lisp
-  :mode ("\\.el\\'" . lisp-interaction-mode))
-(use-package lispy
-  :ensure t
-  :bind ("C-c C-d" . lispy-describe-inline)
-  :after lisp
-  :init
-  (add-hook 'lisp-interaction-mode-hook 'lispy-mode))
 (use-package anaconda-mode
   :ensure t
   :after python
@@ -883,27 +999,47 @@
   :ensure t
   :after company
   :config
-  (company-childframe-mode 1))
+  (company-childframe-mode 1)
+  ;; let desktop.el not record the company-childframe-mode
+  (require 'desktop) ;this line is needed.
+  (push '(company-childframe-mode . nil)
+        desktop-minor-mode-table))
 (use-package company-quickhelp
-  :disabled t
+  :disabled
   :ensure t
   :after python
   :config (company-quickhelp-mode 1))
+(use-package prescient
+  :ensure t) 
+(use-package ivy-prescient
+  :ensure t
+  :after ivy
+  :config
+  (ivy-prescient-mode))
+(use-package company-prescient
+  :ensure t
+  :after company
+  :config
+  (company-prescient-mode))
 (use-package realgud
   :ensure t
-  :commands (realgud:ipdb))
+  :commands (realgud:ipdb)
+  :config
+  (setq gud-tooltip-mode 1)
+  (setq tooltip-mode 1))
 (use-package smartparens
   :diminish smartparens-mode  
   :ensure t
-  :defer 5
   :commands smartparens-mode
   :init
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'lisp-interaction-mode-hook 'smartparens-mode)
+  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
   (add-hook 'LaTeX-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'smartparens-mode)
   :config
   (sp-local-pair 'org-mode "_" "_" )
+  (sp-local-pair 'org-mode "*" "*" )
   (sp-local-pair 'latex-mode "$" "$" )
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   ;; highligh matching brackets
@@ -912,16 +1048,27 @@
   ;; so that paren highlights do not override region marking (aka selecting)
   (setq show-paren-priority -1)
   (setq show-paren-style 'mixed))       ;expression
+(use-package latex-extra
+  :ensure t
+  :after latex
+  :init
+  (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
+  :config
+  (setq latex/override-font-map nil)
+  (auto-fill-mode -1))
 (use-package latex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
+  :bind ("C-S-f" . forward-whitespace)
   :init
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (prettify-symbols-mode)
               (LaTeX-math-mode)
               (turn-on-reftex)
-              (reftex-isearch-minor-mode)))
+              (reftex-isearch-minor-mode)
+              (turn-off-auto-fill)))
+  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   :config
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
@@ -941,7 +1088,6 @@
   (setq TeX-source-correlate-method 'synctex)
   ;; inhibit the question to start a server process
   (setq TeX-source-correlate-start-server t)
-
 
   ;; Use pdf tools
   ;;
@@ -975,7 +1121,6 @@
        (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
   ;; jump to source
   (setq TeX-source-correlate-mode t)
-
   
   ;; Custom functions
   ;;
@@ -1024,32 +1169,20 @@
   (setq company-bibtex-bibliography
 	'("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib")))
 (use-package flycheck
-  :ensure t 
-  :commands flycheck-mode
+  :ensure t
   :init
-  (add-hook 'prog-mode-hook 'flycheck-mode)
+  (add-hook 'python-mode-hook 'flycheck-mode)
+  :commands flycheck-mode
   :config
   (setq flycheck-highlighting-mode 'lines)
   (setq flycheck-indication-mode nil)
   (setq flycheck-display-errors-delay 1.5)
-  (setq flycheck-idle-change-delay 3)
-  (setq flycheck-check-syntax-automatically '(mode-enabled save))
-  
-  (flycheck-define-checker proselint
-    "A linter for prose."
-    :command ("proselint" source-inplace)
-    :error-patterns
-    ((warning line-start (file-name) ":" line ":" column ": "
-              (id (one-or-more (not (any " "))))
-              (message) line-end))
-    :modes (text-mode markdown-mode gfm-mode LaTeX-mode))
-
-  (add-to-list 'flycheck-checkers 'proselint))
+  (setq flycheck-idle-change-delay 3))
 (use-package flyspell-lazy
-  :defer 5
   :ensure t
   :init
   (add-hook 'LaTeX-mode-hook 'flyspell-lazy-mode)
+  (add-hook 'org-mode-hook 'flyspell-lazy-mode)
   :config
   (flyspell-lazy-mode 1))
 (use-package langtool
@@ -1075,10 +1208,10 @@
   (add-hook 'LaTeX-mode-hook 'flyspell-mode)
   :config
   (setq ispell-program-name "hunspell")
-  (setq ispell-local-dictionary "en_US")
-  (setq ispell-local-dictionary-alist
-        '(("en_US" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8)
-          ("pt_BR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil nil nil utf-8))))
+  (add-to-list 'ispell-extra-args "--sug-mode=ultra")
+  (setq ispell-dictionary "en_US,pt_BR")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
 (use-package flyspell-correct-ivy
   :ensure t
   :after flyspell
@@ -1091,38 +1224,30 @@
   :init
   (add-hook 'python-mode-hook 'company-mode)
   (add-hook 'lisp-interaction-mode-hook 'company-mode)
+  (add-hook 'emacs-lisp-mode-hook 'company-mode)
   (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'org-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay 0.5)
-  (setq company-show-numbers t) 
-  (setq company-require-match 'company-explicit-action-p)
-  (setq company-tooltip-flip-when-above t)
-  (setq company-tooltip-align-annotations t)
-  ;; (delete 'company-capf company-backends)
-
-  ;; (defun tab-indent-or-complete ()
-  ;;   (interactive)
-  ;;   (if (minibufferp)
-  ;;       (minibuffer-complete)
-  ;;     (if (or (not yas-minor-mode)
-  ;;             (null (do-yas-expand)))
-  ;;         (if (check-expansion)
-  ;;             (company-complete-common)
-  ;;           (indent-for-tab-command)))))
-  ;; ;; Also these lines are useful to trigger the completion 
-  ;; ;; pressing the key you want.
-  ;; (global-set-key [backtab] 'tab-indent-or-complete)
-  )
+  (setq company-idle-delay 0.1
+        company-echo-delay 0 ; remove annoying blinking)
+        company-show-numbers t 
+        company-require-match nil  ; 'company-explicit-action-p
+        company-tooltip-flip-when-above t
+        company-dabbrev-ignore-case nil
+        company-dabbrev-downcase nil)
+  ;; display inline
+  (setq company-frontends
+      '(company-pseudo-tooltip-unless-just-one-frontend
+        company-preview-frontend
+        company-echo-metadata-frontend)))
 (use-package company-statistics
-  :disabled t
   :ensure t
   :after company
   :config
   (company-statistics-mode))
 (use-package company-flx
   :ensure t
-  :disabled t
+  :disabled
   :after company
   :config
   (company-flx-mode +1)
@@ -1135,6 +1260,10 @@
   (progn
     (global-undo-tree-mode)
     (setq undo-tree-visualizer-diff t)))
+(use-package rainbow-mode
+  :ensure t
+  :diminish rainbow-mode
+  :hook (emacs-lisp-mode . rainbow-mode))
 (use-package rainbow-delimiters
   :ensure t 
   :commands rainbow-delimiters-mode
@@ -1147,20 +1276,25 @@
   :defer 5
   :diminish (which-key-mode)
   :config
-  (which-key-mode))
+  (which-key-mode)
+  (set-face-attribute 'which-key-local-map-description-face nil :weight 'bold))
 (use-package key-chord
   :ensure t
-  :defer 10
+  :after evil
   :config
   (key-chord-mode 1)
-  (setq key-chord-two-keys-delay 0.1)
-  (key-chord-define-global "]]" "\\")
-  (key-chord-define-global ";;" "/")
-  (key-chord-define-global "::" "?")
-  (key-chord-define-global "}}" "|")
-  (key-chord-define-global "==" "+"))
+  (setq key-chord-two-keys-delay 0.2)
+  (key-chord-define evil-insert-state-map "]]" "\\")
+  (key-chord-define evil-insert-state-map ";;" "/")
+  (key-chord-define evil-insert-state-map "::" "?")
+  (key-chord-define evil-insert-state-map "}}" "|")
+  (key-chord-define evil-insert-state-map "==" "+")
+  (key-chord-define evil-insert-state-map "99" "(")
+  (key-chord-define evil-insert-state-map "--" "_")
+  (key-chord-define evil-insert-state-map "''" "^")
+  (key-chord-define evil-insert-state-map "[[" "{"))
 (use-package neotree
-  :disabled t
+  :disabled
   :ensure t
   :bind ("<f8>" . neotree-toggle)
   :config
@@ -1172,55 +1306,101 @@
   (setq neo-theme 'arrow)
   (setq neo-window-fixed-size nil))
 (use-package treemacs
+  :disabled
   :ensure t
-  :bind ("<f8>" . treemacs-toggle)
   :config
-  (setq treemacs-git-integration            t
-        treemacs-change-root-without-asking t
-        treemacs-sorting                    'alphabetic-desc
-        treemacs-show-hidden-files          t)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t))
+  (setq treemacs-collapse-dirs
+        (if (executable-find "python") 3 0)
+          treemacs-file-event-delay           5000
+          treemacs-follow-after-init          t
+          treemacs-follow-recenter-distance   0.1
+          treemacs-goto-tag-strategy          'refetch-index
+          treemacs-indentation                2
+          treemacs-indentation-string         " "
+          treemacs-is-never-other-window      nil
+          treemacs-no-png-images              nil
+          treemacs-project-follow-cleanup     nil
+          treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+          treemacs-recenter-after-file-follow nil
+          treemacs-recenter-after-tag-follow  nil
+          treemacs-show-hidden-files          t
+          treemacs-silent-filewatch           nil
+          treemacs-silent-refresh             nil
+          treemacs-sorting                    'alphabetic-desc
+          treemacs-space-between-root-nodes   t
+          treemacs-tag-follow-cleanup         t
+          treemacs-tag-follow-delay           1.5
+          treemacs-width                      35)
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+  :bind (("<f8>". treemacs)
+        ("M-0" . treemacs-find-file)))
+(use-package treemacs-evil
+  :disabled
+  :after treemacs evil
+  :ensure t)
 (use-package pfuture
   :ensure t
   :after treemacs)
 (use-package all-the-icons
   :ensure t
-  :disabled t 
+  :disabled 
   :after treemacs)
 (use-package beacon
   :diminish beacon-mode
   :ensure t
   :defer 10
   :config
-  (setq beacon-blink-delay .3)
-  (setq beacon-size 30)
-  (setq beacon-blink-duration .3)
-  (setq beacon-blink-when-window-scrolls nil)
+  (setq beacon-blink-delay .5)
+  (setq beacon-size 4)
+  (setq beacon-blink-when-focused t)
+  (setq beacon-blink-duration .5)
+  (setq beacon-blink-when-window-scrolls t)
   (beacon-mode 1))
 (use-package dired+
-  :disabled t
+  :disabled
   :ensure t
   :defer t)
+(use-package dired
+  :commands dired
+  :config
+  (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
+  (setq dired-hide-details-mode t)
+  (defun xah-dired-mode-setup ()
+    "to be run as hook for `dired-mode'."
+    (dired-hide-details-mode 1))
+(add-hook 'dired-mode-hook 'xah-dired-mode-setup))
 (use-package direx
-  :disabled t
+  :disabled
   :ensure t
   :after dired
   :bind ("C-x C-j" . direx:jump-to-directory)
   :config
   (setq-default dired-omit-files-p t)
-  (setq dired-listing-switches "-alhv")
-  (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"))
-(use-package smart-mode-line
-  :defer 5
+  (setq dired-listing-switches "-alhv"))
+(use-package feebleline
+  :disabled
   :ensure t
+  :defer 1
   :config
-  ;; (setq sml/mode-width nil)
-  ;; (setq sml/name-width 20)
+  (window-divider-mode t)
+  (setq window-divider-default-bottom-width 1)
+  (setq window-divider-default-places (quote bottom-only))
+  (feebleline-mode t))
+(use-package smart-mode-line
+  :ensure t
+  :disabled
+  :config
+  (setq sml/name-width 20)
   (setq sml/shorten-directory t)
-  (setq sml/shorten-directory t)
+  (setq sml/theme 'dark)
   (sml/setup))
+(use-package imenu-anywhere
+  :disabled
+  :ensure t
+  :bind* ("C-." . imenu-anywhere))
 (use-package imenu-list
+  :disabled
   :ensure t
   :bind ("C-." . imenu-list-minor-mode)
   :config
@@ -1228,9 +1408,17 @@
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
-(use-package iedit
+(use-package evil-multiedit
   :ensure t
-  :bind* ("C-;" . iedit-mode))
+  :after evil
+  :bind (:map evil-normal-state-map
+              ("C-;" . evil-multiedit-match-all))
+  :config
+  (evil-multiedit-default-keybinds))
+(use-package iedit
+  :disabled
+  :ensure t
+  :bind ("C-;" . iedit-mode))
 (use-package goto-last-change
   :ensure t
   :bind ("C-x C-j" . goto-last-change))
@@ -1243,8 +1431,19 @@
   :config
   (add-hook 'web-mode-hook 'smartparens-mode)
   (use-package smartparens-html))
+(use-package highlight-numbers
+  :ensure t
+  :diminish highlight-numbers-mode
+  :commands highlight-numbers-mode
+  :init (add-hook 'python-mode-hook 'highlight-numbers-mode))
+(use-package highlight-operators
+  :ensure t
+  :diminish highlight-operators-mode
+  :commands highlight-operators-mode
+  :init (add-hook 'python-mode-hook 'highlight-operators-mode))
 (use-package highlight-symbol
   :diminish highlight-symbol-mode
+  :disabled
   :ensure t
   :commands highlight-symbol-mode
   :init
@@ -1261,6 +1460,7 @@
   :ensure t
   :bind ("C-c C-b" . ibuffer))
 (use-package matlab-mode
+  :disabled
   :ensure t
   :mode ("\\.m\\'" . matlab-mode))
 (use-package eldoc
@@ -1273,14 +1473,14 @@
          ("C-M-z C-M-c" . git-gutter+-stage-and-commit))
   :init
   (add-hook 'python-mode-hook 'git-gutter+-mode)
-  (add-hook 'lisp-interaction-mode-hook 'git-gutter+-mode)
-  (add-hook 'org-mode-hook 'git-gutter+-mode))
+  (add-hook 'lisp-interaction-mode-hook 'git-gutter+-mode))
 (use-package git-gutter-fringe+
   :ensure t
   :after git-gutter+
   :config
   (git-gutter-fr+-minimal))
 (use-package column-marker
+  :disabled
   :ensure t
   :commands column-marker-1
   :init
@@ -1300,7 +1500,7 @@
   (setq org-crypt-key "CB17DA00")
   (setq org-crypt-disable-auto-save nil))
 (use-package vimish-fold
-  :disabled t
+  :disabled
   :ensure t
   :bind (("C-' C-'" . vimish-fold-toggle)
          ("C-' C-c" . vimish-fold)
@@ -1311,13 +1511,15 @@
   (add-hook 'python-mode-hook 'vimish-fold-mode))
 (use-package origami
   :ensure t
-  :bind (("C-'" . origami-recursively-toggle-node))
+  :disabled
+  :bind (("C-<tab>" . origami-recursively-toggle-node)
+         ("C-M-<tab>". origami-toggle-all-nodes))
   :init
   (add-hook 'lisp-interaction-mode-hook 'origami-mode)
   (add-hook 'python-mode-hook 'origami-mode))
 (use-package helpful
   :ensure t
-  :disabled t)
+  :disabled)
 (use-package pdf-tools
   :after latex
   :mode ("\\.pdf\\'" . pdf-view-mode)
@@ -1334,7 +1536,130 @@
 (use-package focus
   :ensure t
   :commands 'focus-mode
-  :disabled t)
+  :disabled)
+(use-package use-package-chords
+  :ensure t
+  :disabled t
+  :config (key-chord-mode 1))
+(use-package evil
+  :ensure t
+  :diminish evil-mode
+  :defer 1
+  :init
+  (setq evil-want-integration nil)
+  :config
+  (evil-mode 1)
+  (key-chord-define evil-insert-state-map "jj" 'evil-normal-state)
+  (key-chord-define evil-insert-state-map "kk" 'evil-normal-state)
+  (key-chord-define evil-insert-state-map "pk" 'sp-up-sexp)
+  (key-chord-define evil-normal-state-map ";." 'evil-search-forward)
+  (key-chord-define evil-normal-state-map "xc" 'avy-goto-char)
+  (key-chord-define evil-normal-state-map "xs" 'save-buffer)
+  (evil-define-key 'normal 'global "s" 'avy-goto-char-timer)
+  (evil-define-key 'normal 'global "j" 'evil-next-visual-line)
+  (evil-define-key 'normal 'global "k" 'evil-previous-visual-line))
+(use-package evil-easymotion
+  :ensure t
+  :after evil
+  :config
+  (evilem-default-keybindings "SPC"))
+(use-package evil-leader
+  :ensure t
+  :disabled
+  :after evil
+  :config
+  (global-evil-leader-mode)
+  (evil-leader/set-leader "SPC")
+  (evil-leader/set-key
+      "e" 'counsel-find-file
+      "b" 'ivy-switch-buffer))
+(use-package evil-snipe
+  :ensure t
+  :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
+  :after evil
+  :config
+  (evil-snipe-override-mode 1)
+  (setq evil-snipe-spillover-scope 'visible))
+(use-package evil-smartparens
+  :ensure t
+  :diminish smartparens-strict-mode
+  :hook ((smartparens-enabled . smartparens-strict-mode)
+         (smartparens-enabled . evil-smartparens-mode))
+  :after smartparens)
+(use-package evil-cleverparens
+  :ensure t
+  :disabled
+  :diminish evil-cleverparens-mode
+  :after evil 
+  :init (setq evil-cleverparens-use-s-and-S nil)
+  :hook (emacs-lisp-mode . evil-cleverparens-mode))
+(use-package evil-goggles
+  :ensure t
+  :after evil
+  :diminish evil-goggles-mode
+  :config
+  (evil-goggles-mode)
+  (evil-goggles-use-diff-faces))
+(use-package evil-collection
+  :ensure t
+  :after evil
+  :config
+  (setq evil-collection-mode-list nil)
+  (setq evil-collection-mode-list '(anaconda-mode
+                                    realgud
+                                    ivy
+                                    dired
+                                    company
+                                    minibuffer
+                                    paren
+                                    magit
+                                    calendar
+                                    eww))
+  (setq evil-collection-setup-minibuffer t)
+  (setq evil-collection-outline-bind-tab-p nil)
+  (evil-collection-init))
+(use-package evil-org
+  :ensure t
+  :diminish evil-org-mode
+  :after org
+  :init
+  (add-hook 'org-mode-hook 'evil-org-mode)
+  (add-hook 'evil-org-mode-hook
+            (lambda ()
+              (evil-org-set-key-theme)))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+(use-package evil-surround
+  :ensure t
+  :after evil
+  :config
+  (global-evil-surround-mode 1))
+(use-package fold-dwim
+  :ensure t
+  :bind ("C-<tab>" . fold-dwim-toggle)
+  :commands fold-dwim-toggle) 
+(use-package crux
+   :ensure t
+   :bind (("C-a" . crux-move-beginning-of-line)
+          ("S-<ret>" . crux-smart-open-line)))
+(use-package academic-phrases
+  :ensure t
+  :commands (academic-phrases academic-phrases-by-section))
+(use-package define-word
+  :ensure t
+  :commands define-word-at-point)
+(use-package dashboard
+  :disabled
+  :ensure t
+  :config
+  (setq dashboard-items '((agenda . 10) (recents . 5)))
+  (dashboard-setup-startup-hook))
+(defun my/open-cmd()
+  (interactive)
+  (let ((proc (start-process "cmd" nil "cmd.exe" "/C" "start" "cmd.exe")))
+    (set-process-query-on-exit-flag proc nil)))
+(bind-key "C-x m" 'my/open-cmd)
 (setq ad-redefinition-action 'accept)
 (winner-mode 1)
 (global-auto-revert-mode t)
@@ -1384,6 +1709,6 @@
                                                     (buffer-file-name)) nil nil))))
 (global-set-key [M-f9] 'open-buffer-path)
 ;; Then reset it as late as possible; these are the reasonable defaults I use.
-(setq gc-cons-threshold 16777216
+(setq gc-cons-threshold 1000000
       gc-cons-percentage 0.1)
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
