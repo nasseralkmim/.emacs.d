@@ -1,11 +1,25 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
+
+;; increase gc-cons threshold to decrease the load and compile time
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
+
+;; maybe improve performance on windows
+(setq w32-pipe-read-delay 0)
+
 (menu-bar-mode -1)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
 (setq inhibit-startup-screen t)
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
+
+(lambda () (progn
+  (setq left-margin-width 2)
+  (setq right-margin-width 2)
+  (set-window-buffer nil (current-buffer))))
+
 
 ;; UTF-8 please
 (prefer-coding-system 'utf-8)
@@ -196,7 +210,18 @@
       "t" 'xah-toggle-letter-case
       "m" 'cfw:open-org-calendar
       "p" 'evil-jump-item
-      "g m" 'my-magit-stage-all-and-commit)
+      "g c" 'my-magit-stage-all-and-commit
+      "SPC" 'org-agenda-show-and-scroll-up
+      "p" 'counsel-evil-registers
+      "x n s" 'org-narrow-to-subtree
+      "x n w" 'widen
+      "x c v" 'org-toggle-inline-images
+      "x c l" 'org-toggle-latex-fragment
+      "x c i" 'org-clock-in
+      "x c o" 'org-clock-out
+      "x c x" 'org-clock-in-last
+      "<tab>" 'next-multiframe-window
+      "=" 'reftex-toc)
 
   ;; function to toggle case
   (defun xah-toggle-letter-case ()
@@ -298,6 +323,9 @@ Version 2017-04-19"
               ("C-c n" . evil-mc-make-cursor-move-next-line))
   :config
   (global-evil-mc-mode 1))
+(use-package evil-exchange
+  :after evil
+  :config (evil-exchange-install))
 (use-package key-chord
   :after evil
   :config
@@ -331,6 +359,7 @@ Version 2017-04-19"
   :diminish (eldoc-mode))
 (use-package magit
   :bind ("C-c g" . magit-status)
+  :commands my-magit-stage-all-and-commit
   :config
   (define-key magit-status-mode-map (kbd "q") 'magit-quit-session)
   
@@ -356,6 +385,7 @@ Version 2017-04-19"
 (use-package iedit
   :defer t)
 (use-package rainbow-mode
+  :defer 5
   :diminish rainbow-mode
   :config (rainbow-mode))
 (use-package org
@@ -395,18 +425,23 @@ Version 2017-04-19"
 	org-goto-max-level 4
 	org-outline-path-complete-in-steps nil
 	org-startup-with-inline-images t
-	org-cycle-separator-lines 0)
+	org-cycle-separator-lines 0
+	org-fontify-whole-heading-line t
+	org-fontify-done-headline nil
+	org-fontify-quote-and-verse-blocks t)
 	
   (set-face-attribute 'org-ellipsis nil :underline nil)
   (eval-after-load 'org
     '(org-load-modules-maybe t))
   
   (setq org-file-apps '((auto-mode . emacs)
-                        ("\\.mm\\'" . default)
-                        ("\\.x?html?\\'" . default)
-                        ("\\.pdf::\\([0-9]+\\)\\'" . "sumatrapdf \"%s\" -page %1")
-                        ("\\.pdf\\'" . default)))
-
+			("\\.mm\\'" . default)
+			("\\.x?html?\\'" . default)
+			("\\.pdf::\\([0-9]+\\)\\'" . "sumatrapdf \"%s\" -page %1")
+			("\\.pdf\\'" . "\"C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe\" \"%s\" ")
+			;; ("\\.pdf\\'" . default)
+			))
+  
   ;; (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
   ;; (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
   ;; org markups meta line --> change to grey100 when presenting
@@ -448,6 +483,7 @@ Version 2017-04-19"
 
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil)
+  
  ;;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
     (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
@@ -458,7 +494,8 @@ Version 2017-04-19"
   (setq org-agenda-skip-scheduled-if-done t
 	org-agenda-skip-deadline-if-done t
 	org-agenda-skip-timestamp-if-done nil
-	org-agenda-use-time-grid nil)
+	org-agenda-use-time-grid nil
+	org-scheduled-past-days 0)	; don't show delayed task on other days
 
   (setq org-imenu-depth 2)
   (setq org-default-notes-file "~/OneDrive/Org/notes.org")
@@ -501,7 +538,14 @@ Version 2017-04-19"
           ("n" "Notes" entry (file+datetree "~/OneDrive/Org/notes.org") 
            "* %^{Description} %^g \n\n %? \n\n Added: %T")
           ("j" "Journal" entry (file+datetree "~/OneDrive/Org/journal.org") 
-           "* %T \n\n%?"))))
+           "* %T \n\n%?")))
+  (require 'org-depend)
+  )
+(use-package org-timeline
+  :after org
+  :disabled
+  :config
+  (add-hook 'org-agenda-finalize-hook 'org-timeline-insert-timeline :append))
 (use-package org
   :bind ("C-c y" . my/org-insert-clipboard)
   :config
@@ -541,8 +585,9 @@ Version 2017-04-19"
         '(:maxlevel 2 :lang "en" :scope file :block nil :wstart 1 :mstart 1 :tstart nil :tend nil :step nil :stepskip0 nil :fileskip0 nil :tags nil :emphasize t :link nil :narrow 40! :indent t :formula nil :timestamp nil :level nil :tcolumns 3 :formatter nil))
 
   ;; remove schedule tag on agenda
-  (setq org-agenda-scheduled-leaders '("" ""))
-  (setq org-agenda-block-separator "")
+  (setq org-agenda-scheduled-leaders '("" "")
+	org-agenda-block-separator "")
+
   ;; Save clock data and notes in the LOGBOOK drawer
   ;; (setq org-clock-into-drawer t)
   (setq org-log-into-drawer "LOGBOOK")
@@ -556,10 +601,7 @@ Version 2017-04-19"
   (setq org-sticky-header-full-path 'reversed))
 (use-package flyspell
   :diminish flyspell-mode
-  :after flyspell-lazy
-  :commands flyspell-mode
-  :init
-  (add-hook 'LaTeX-mode-hook 'flyspell-mode)
+  :defer t
   :config
   (setq ispell-program-name "hunspell")
   (add-to-list 'ispell-extra-args "--sug-mode=ultra")
@@ -572,11 +614,15 @@ Version 2017-04-19"
   (add-hook 'LaTeX-mode-hook 'flyspell-lazy-mode)
   (add-hook 'org-mode-hook 'flyspell-lazy-mode)
   :config
-  (flyspell-lazy-mode 1))
+  (flyspell-lazy-mode 1)
+  (flyspell-mode 1))
 (use-package flyspell-correct-ivy
-  :after flyspell
+  :demand t
+  :after flyspell-lazy
   :bind (:map flyspell-mode-map
-              ("C-c C-SPC" . flyspell-correct-word-generic)))
+	      ("C-c C-SPC" . flyspell-correct-wrapper)
+	      ("C-c C-;" . flyspell-correct-at-point))
+  :custom (flyspell-correct-interface 'flyspell-correct-ivy))
 (use-package company
   :diminish company-mode
   :commands company-mode
@@ -726,6 +772,29 @@ Version 2017-04-19"
   (add-to-list 'company-backends 'company-bibtex)
   (setq company-bibtex-bibliography
 	'("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib")))
+(use-package ivy-bibtex
+  :bind ("C-c b b" . ivy-bibtex)
+  :config
+  (setq ivy-use-virtual-buffers t)
+  (setq ivy-count-format "(%d/%d) ")
+  (setq bibtex-completion-bibliography 
+        '("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
+  (setq bibtex-completion-library-path 
+        '("C:/Users/Nasser/OneDrive/Bibliography/references-pdf"
+          "C:/Users/Nasser/OneDrive/Bibliography/references-etc"))
+
+  ;; using bibtex path reference to pdf file
+  (setq bibtex-completion-pdf-field "File")
+
+  ;; ;;open pdf with external viwer foxit
+  ;; (setq bibtex-completion-pdf-open-function
+  ;;       (lambda (fpath)
+  ;;         (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil fpath)))
+  (setq bibtex-completion-pdf-open-function
+        (lambda (fpath)
+          (call-process "SumatraPDF" nil 0 nil fpath)))
+
+  (setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation))
 (use-package rainbow-delimiters
   :commands rainbow-delimiters-mode
   :init
@@ -743,10 +812,15 @@ Version 2017-04-19"
     (dired-hide-details-mode 1))
   (add-hook 'dired-mode-hook 'xah-dired-mode-setup))
 (use-package spacemacs-common
-  :disabled
   :ensure spacemacs-theme
   :config
   (load-theme 'spacemacs-dark t)
+  (setq spacemacs-theme-keyword-italic t
+	spacemacs-theme-comment-italic t
+	spacemacs-theme-org-bold t
+	spacemacs-theme-org-height nil
+	spacemacs-theme-org-agenda-height nil
+	spacemacs-theme-org-highlight nil)
   (custom-theme-set-faces
    'user
      `(org-level-5 ((t (:height 0.95 :slant italic))))
@@ -759,6 +833,7 @@ Version 2017-04-19"
   :config
   (load-theme 'darktooth t))
 (use-package solarized-theme
+  :disabled
   :config
   (setq solarized-use-variable-pitch nil)
   (setq solarized-high-contrast-mode-line nil)
@@ -779,7 +854,6 @@ Version 2017-04-19"
      `(org-table ((t (:family "Monospace Serif" :height 0.8))))
      `(org-formula ((t (:family "Monospace Serif" :height 0.8))))))
 (use-package smart-mode-line
-  :defer 2
   :config
   (setq sml/name-width 20)
   (setq sml/shorten-directory t)
@@ -817,11 +891,14 @@ Version 2017-04-19"
   :ensure adaptive-wrap
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 (use-package calfw
-  :commands cfw:open-org-calendar)
+  :commands cfw:open-org-calendar
+  :config
+  (setq cfw:details-window-size 30))
 (use-package calfw-org
   :after org calfw)
 (use-package toc-org
   :after org
+  :commands org-export-dispatch
   :config  (add-hook 'org-mode-hook 'toc-org-enable))
 (use-package hydra
   :defer 5
@@ -958,11 +1035,26 @@ Version 2017-04-19"
          ("C-x C-l" . avy-goto-line))
   :config
   (setq avy-timeout-seconds 0.4))
+(use-package counsel-projectile
+  :bind ("C-c p p " . counsel-projectile-switch-project)
+  :config
+  (counsel-projectile-mode))
+(use-package projectile
+  :after counsel-projectile
+  :diminish projectile-mode
+  :init
+  (projectile-global-mode)
+  (setq projectile-completion-system 'ivy) ;So projectile works with ivy
+  (setq projectile-indexing-method 'alien))
 ;; abbrev for speed and less strain
 (setq-default abbrev-mode t)
 (diminish 'abbrev-mode)
 (setq save-abbrevs 'silently)
 
 (bind-key "C-x C-o" 'next-multiframe-window)
+
+;; Then reset it as late as possible; these are the reasonable defaults I use.
+(setq gc-cons-threshold 16777216 
+      gc-cons-percentage 0.1)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
