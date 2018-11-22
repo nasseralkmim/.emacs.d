@@ -69,19 +69,19 @@
   (setq use-package-always-ensure t))
 
 ;; set a default font Iosevka, Hack, PragmataPro
-(set-face-attribute 'default nil
-                    :family "Iosevka"
-                    :height 100
-                    :weight 'normal
-                    :width 'normal)
-;; ;; specify font for all unicode characters
-(set-fontset-font t
-                  'unicode
-                  (font-spec :family "Dejavu Sans mono"
-                             :width 'normal
-                             :height 100
-                             :weight 'normal) nil 'prepend)
-;; For testing purposes: →„Σ"←
+;; (set-face-attribute 'default nil
+;;                     :family "Iosevka"
+;;                     :height 100
+;;                     :weight 'normal
+;;                     :width 'normal)
+;; ;; ;; specify font for all unicode characters
+;; (set-fontset-font t
+;;                   'unicode
+;;                   (font-spec :family "Dejavu Sans mono"
+;;                              :width 'normal
+;;                              :height 100
+;;                              :weight 'normal) nil 'prepend)
+;; ;; For testing purposes: →„Σ"←
 
 
 ;; Don't create backups
