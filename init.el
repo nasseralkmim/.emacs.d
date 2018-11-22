@@ -61,7 +61,7 @@
     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
 
   ;; initialize packages and ensure that use-package is installed
-  (package-initialize)
+  ;; (package-initialize)
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))     ; install if it's missing
@@ -97,6 +97,7 @@
 ;; Don't beep at me
 (setq visible-bell t)
 
+(use-package diminish :defer t)
 (use-package color-identifiers-mode
   :defer t)
 (use-package recentf
@@ -167,6 +168,7 @@
   :defer 1
   :init
   (setq evil-want-integration nil)
+  (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
   (key-chord-define evil-insert-state-map "pk" 'sp-up-sexp)
@@ -284,18 +286,6 @@ Version 2017-04-19"
 (use-package evil-collection
   :after evil
   :config
-  (setq evil-collection-mode-list nil)
-  (setq evil-collection-mode-list '(anaconda-mode
-                                    realgud
-                                    ivy
-                                    dired
-                                    company
-                                    minibuffer
-                                    paren
-                                    magit
-                                    reftex
-                                    calendar
-                                    eww))
   (setq evil-collection-setup-minibuffer t)
   (setq evil-collection-outline-bind-tab-p nil)
   (evil-collection-init))
@@ -654,15 +644,11 @@ Version 2017-04-19"
   :after company
   :config
   (company-statistics-mode))
-(use-package company-childframe
-  :diminish company-childframe-mode
+(use-package company-posframe
+  :diminish company-posframe-mode
   :after company
   :config
-  (company-childframe-mode 1)
-  ;; let desktop.el not record the company-childframe-mode
-  (require 'desktop) ;this line is needed.
-  (push '(company-childframe-mode . nil)
-        desktop-minor-mode-table))
+  (company-posframe-mode 1))
 (use-package latex
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
