@@ -61,7 +61,7 @@
     (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
 
   ;; initialize packages and ensure that use-package is installed
-  ;; (package-initialize)
+  (package-initialize)
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))     ; install if it's missing
@@ -69,19 +69,19 @@
   (setq use-package-always-ensure t))
 
 ;; set a default font Iosevka, Hack, PragmataPro
-;; (set-face-attribute 'default nil
-;;                     :family "Iosevka"
-;;                     :height 100
-;;                     :weight 'normal
-;;                     :width 'normal)
-;; ;; ;; specify font for all unicode characters
-;; (set-fontset-font t
-;;                   'unicode
-;;                   (font-spec :family "Dejavu Sans mono"
-;;                              :width 'normal
-;;                              :height 100
-;;                              :weight 'normal) nil 'prepend)
-;; ;; For testing purposes: →„Σ"←
+(set-face-attribute 'default nil
+                    :family "Iosevka SS05"
+                    :height 100
+                    :weight 'normal
+                    :width 'normal)
+;; ;; specify font for all unicode characters
+(set-fontset-font t
+                  'unicode
+                  (font-spec :family "Dejavu Sans mono"
+                             :width 'normal
+                             :height 100
+                             :weight 'normal) nil 'prepend)
+;; For testing purposes: →„Σ"←
 
 
 ;; Don't create backups
