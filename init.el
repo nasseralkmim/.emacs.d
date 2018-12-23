@@ -10,7 +10,13 @@
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
+(show-paren-mode 1)
 (scroll-bar-mode -1)
+(global-hl-line-mode 1)
+(winner-mode t)
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
+(setq ring-bell-function 'ignore)
+(setq mouse-wheel-progressive-speed nil)
 (setq inhibit-startup-screen t)
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
@@ -158,11 +164,14 @@
   (sp-local-pair 'latex-mode "$" "$" )
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   ;; highligh matching brackets
-  (show-paren-mode 1)
   (show-smartparens-global-mode 0)
   ;; so that paren highlights do not override region marking (aka selecting)
   (setq show-paren-priority -1)
-  (setq show-paren-style 'mixed))
+  (setq show-paren-when-point-inside-paren t)
+  (setq sp-show-pair-from-inside t)
+  (setq show-paren-style 'mixed)) 
+(use-package flycheck
+  :hook (python-mode . flycheck-mode))
 (use-package evil
   :diminish evil-mode
   :defer 1
@@ -288,6 +297,7 @@ Version 2017-04-19"
   :config
   (setq evil-collection-setup-minibuffer t)
   (setq evil-collection-outline-bind-tab-p nil)
+  (delete 'paren evil-collection-mode-list)
   (evil-collection-init))
 (use-package evil-org
   :diminish evil-org-mode
@@ -304,22 +314,30 @@ Version 2017-04-19"
   :after evil
   :config
   (global-evil-surround-mode 1))
-(use-package evil-mc
-  :disabled
+(use-package evil-mc			; bindings https://github.com/gabesoft/evil-mc/blob/master/evil-mc.el
   :after evil
   :diminish evil-mc-mode
   :bind (:map evil-normal-state-map
-              ("C-n" . evil-mc-make-and-goto-next-match)
-              ("C-c n" . evil-mc-make-cursor-move-next-line))
+	      ("C-n" . evil-mc-make-and-goto-next-match)
+	      ("C-p" . evil-mc-make-and-goto-prev-match)
+	      ("<escape>" . evil-mc-undo-all-cursors))
   :config
   (global-evil-mc-mode 1))
+(use-package evil-mc-extras
+  :after evil-mc
+  :config (global-evil-mc-extras-mode 1))
 (use-package evil-exchange
   :after evil
   :config (evil-exchange-install))
+(use-package evil-matchit
+  :after evil
+  :config
+  (global-evil-matchit-mode 1))
+(use-package multiple-cursors :defer t)
 (use-package key-chord
   :after evil
   :config
-  (key-chord-mode 1)  
+  (key-chord-mode 1)
   (setq key-chord-one-key-delay 0.5) 
   (key-chord-define evil-insert-state-map "]]" "\\")
   (key-chord-define evil-insert-state-map ";;" "/")
@@ -546,18 +564,22 @@ Version 2017-04-19"
                                         ;create the directory if it doesn't exist
     (if (not (file-exists-p myvar/folder-path))
         (mkdir myvar/folder-path))
-
-    (let* ((image-file (concat 
+    (let* ((filename (concat 
                         myvar/folder-path
                         (buffer-name)
                         "_"
                         (format-time-string "%Y%m%d_%H%M%S_.png")))
 
-           (exit-status
-            (call-process "convert" nil nil nil
-                          "clipboard:" image-file)))
-
-      (org-insert-link nil (concat "file:" image-file) "")
+           ;; (exit-status
+           ;;  (call-process "convert" nil nil nil
+           ;;                "clipboard:" image-file))
+	   )
+      ;; http://www.sastibe.de/2018/11/take-screenshots-straight-into-org-files-in-emacs-on-win10/
+      (shell-command "snippingtool /clip")
+      (shell-command (concat "powershell -command \"Add-Type -AssemblyName System.Windows.Forms;if ($([System.Windows.Forms.Clipboard]::ContainsImage())) {$image = [System.Windows.Forms.Clipboard]::GetImage();[System.Drawing.Bitmap]$image.Save('" filename "',[System.Drawing.Imaging.ImageFormat]::Png); Write-Output 'clipboard content saved as file'} else {Write-Output 'clipboard does not contain image data'}\""))
+      (insert "#+attr_org: :width 400 \n")
+      (insert (concat "[[file:" filename "]]"))
+  ;; (org-insert-link nil (concat "file:" filename ) nil)
 
       (org-display-inline-images))))
 (use-package org-clock
@@ -586,6 +608,7 @@ Version 2017-04-19"
   ;; Removes clocked tasks with 0:00 duration
   (setq org-clock-out-remove-zero-time-clocks t))
 (use-package org-sticky-header
+  :disabled
   :hook (org-mode . org-sticky-header-mode)
   :config
   (setq org-sticky-header-full-path 'reversed))
@@ -622,9 +645,9 @@ Version 2017-04-19"
   (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'org-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay 0.1
+  (setq company-idle-delay 0
         company-echo-delay 0 ; remove annoying blinking)
-        company-minimum-prefix-length 2
+        company-minimum-prefix-length 3
         company-show-numbers t 
         company-require-match 'never  ; 'company-explicit-action-p
 	company-selection-wrap-around t
@@ -682,6 +705,9 @@ Version 2017-04-19"
   ;; inhibit the question to start a server process
   (setq TeX-source-correlate-start-server t)
 
+  ;; jump to source
+  (setq TeX-source-correlate-mode t)
+  
   ;; Use pdf tools
   ;;
   ;;
@@ -694,10 +720,9 @@ Version 2017-04-19"
   
   ;;   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
   
-  ;;   ;; Update PDF buffers after successful LaTeX runs  
-  ;;   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
-  ;;             'TeX-revert-document-buffer)
-
+    ;; Update PDF buffers after successful LaTeX runs  
+    (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
+              'TeX-revert-document-buffer)
   
   ;; use sumatra to view pdf
   ;;
@@ -707,13 +732,10 @@ Version 2017-04-19"
   (setq TeX-view-program-list
         '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
                           (mode-io-correlate " -forward-search %b %n ") " %o"))))
-
   (eval-after-load 'tex
     '(progn
        (assq-delete-all 'output-pdf TeX-view-program-selection)
        (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
-  ;; jump to source
-  (setq TeX-source-correlate-mode t)
   
   ;; Custom functions
   ;;
@@ -751,34 +773,35 @@ Version 2017-04-19"
   (setq reftex-keep-temporary-buffers nil)
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:"))
-  (setq reftex-default-bibliography "C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
+  (setq reftex-default-bibliography "C:/Users/nasse/OneDrive/Bibliography/references-zot.bib"))
 (use-package company-bibtex
   :after latex
   :config
   (add-to-list 'company-backends 'company-bibtex)
   (setq company-bibtex-bibliography
-	'("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib")))
+	'("C:/Users/nasse/OneDrive/Bibliography/references-zot.bib")))
 (use-package ivy-bibtex
   :bind ("C-c b b" . ivy-bibtex)
   :config
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
   (setq bibtex-completion-bibliography 
-        '("C:/Users/Nasser/OneDrive/Bibliography/references-zot.bib"))
+        '("C:/Users/nasse/OneDrive/Bibliography/references-zot.bib"))
   (setq bibtex-completion-library-path 
-        '("C:/Users/Nasser/OneDrive/Bibliography/references-pdf"
-          "C:/Users/Nasser/OneDrive/Bibliography/references-etc"))
+        '("C:/Users/nasse/OneDrive/Bibliography/references-pdf"
+          "C:/Users/nasse/OneDrive/Bibliography/references-etc"))
 
   ;; using bibtex path reference to pdf file
   (setq bibtex-completion-pdf-field "File")
 
   ;; ;;open pdf with external viwer foxit
-  ;; (setq bibtex-completion-pdf-open-function
-  ;;       (lambda (fpath)
-  ;;         (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil fpath)))
   (setq bibtex-completion-pdf-open-function
         (lambda (fpath)
-          (call-process "SumatraPDF" nil 0 nil fpath)))
+          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil fpath)))
+
+  ;; (setq bibtex-completion-pdf-open-function
+  ;;       (lambda (fpath)
+  ;;         (call-process "SumatraPDF" nil 0 nil fpath)))
 
   (setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation))
 (use-package rainbow-delimiters
@@ -792,12 +815,14 @@ Version 2017-04-19"
   :commands dired
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
+  (setq dired-auto-revert-buffer t)
   (setq dired-hide-details-mode t)
   (defun xah-dired-mode-setup ()
     "to be run as hook for `dired-mode'."
     (dired-hide-details-mode 1))
   (add-hook 'dired-mode-hook 'xah-dired-mode-setup))
 (use-package spacemacs-common
+  :disabled
   :ensure spacemacs-theme
   :config
   (load-theme 'spacemacs-dark t)
@@ -840,16 +865,95 @@ Version 2017-04-19"
      `(org-table ((t (:family "Monospace Serif" :height 0.8))))
      `(org-formula ((t (:family "Monospace Serif" :height 0.8))))))
 (use-package smart-mode-line
+  :disabled
   :config
   (setq sml/name-width 20)
   (setq sml/shorten-directory t)
   (setq sml/theme 'respectful)
   (setq after-save-hook nil)
   (sml/setup))
+(use-package treemacs
+  :ensure t
+  :defer t
+  :init
+  (with-eval-after-load 'winum
+    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  :config
+  (progn
+    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
+          treemacs-deferred-git-apply-delay   0.5
+          treemacs-display-in-side-window     t
+          treemacs-file-event-delay           5000
+          treemacs-file-follow-delay          0.2
+          treemacs-follow-after-init          t
+          treemacs-follow-recenter-distance   0.1
+          treemacs-git-command-pipe           ""
+          treemacs-goto-tag-strategy          'refetch-index
+          treemacs-indentation                1
+          treemacs-indentation-string         " "
+          treemacs-is-never-other-window      nil
+          treemacs-max-git-entries            5000
+          treemacs-no-png-images              nil
+          treemacs-no-delete-other-windows    t
+          treemacs-project-follow-cleanup     nil
+          treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+          treemacs-recenter-after-file-follow t
+          treemacs-recenter-after-tag-follow  nil
+          treemacs-show-cursor                nil
+          treemacs-show-hidden-files          t
+          treemacs-silent-filewatch           nil
+          treemacs-silent-refresh             nil
+          treemacs-sorting                    'alphabetic-desc
+          treemacs-space-between-root-nodes   t
+          treemacs-tag-follow-cleanup         t
+          treemacs-tag-follow-delay           1.5
+          treemacs-width                      35)
+
+    ;; The default width and height of the icons is 22 pixels. If you are
+    ;; using a Hi-DPI display, uncomment this to double the icon size.
+    ;;(treemacs-resize-icons 44)
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode t)
+    (pcase (cons (not (null (executable-find "git")))
+                 (not (null (executable-find "python3"))))
+      (`(t . t)
+       (treemacs-git-mode 'deferred))
+      (`(t . _)
+       (treemacs-git-mode 'simple))))
+  :bind
+  (:map global-map
+        ("M-0"       . treemacs-select-window)
+        ("C-x t 1"   . treemacs-delete-other-windows)
+        ("C-x t t"   . treemacs)
+        ("C-x t B"   . treemacs-bookmark)
+        ("C-x t C-t" . treemacs-find-file)
+        ("C-x t M-t" . treemacs-find-tag)))
+(use-package treemacs-evil
+  :after treemacs evil
+  :ensure t)
+(use-package doom-themes
+  :config
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t)
+  (doom-themes-org-config)
+  (doom-themes-treemacs-config)
+  (custom-theme-set-faces
+   'user
+   `(show-paren-match ((t (:underline t))))))
+(use-package doom-modeline
+  :hook (after-init . doom-modeline-init)
+  :config
+  ;; Don’t compact font caches during GC.
+  (setq inhibit-compacting-font-caches t)
+  (setq doom-modeline-icon t))
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
+  (setq company-minimum-prefix-length 1)
   ;; change commenting foreground
   (setq warning-suppress-types '((python)
                                  (emacs)))
@@ -866,8 +970,18 @@ Version 2017-04-19"
   (setenv "PYTHONIOENCODING" "utf-8")
   ;; Disable readline based native completion
   (setq python-shell-completion-native-enable nil))
+(use-package anaconda-mode
+  :hook ((python-mode . anaconda-mode)
+	 (anaconda-mode . anaconda-eldoc-mode)))
+(use-package company-anaconda
+  :after company anaconda-mode
+  :config
+  (use-package rx) 			; https://github.com/proofit404/company-anaconda/issues/29https://github.com/proofit404/company-anaconda/issues/29
+  (eval-after-load "company"
+    '(add-to-list 'company-backends '(company-anaconda :with company-capf))))
 (use-package highlight-indent-guides
   :after python
+  :diminish highlight-indent-guides-mode
   :init
   (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
   (add-hook 'lisp-interaction-mode-hook 'highlight-indent-guides-mode)
@@ -1032,6 +1146,10 @@ Version 2017-04-19"
   (projectile-global-mode)
   (setq projectile-completion-system 'ivy) ;So projectile works with ivy
   (setq projectile-indexing-method 'alien))
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-tools-install))
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
 ;; abbrev for speed and less strain
 (setq-default abbrev-mode t)
 (diminish 'abbrev-mode)
@@ -1042,5 +1160,15 @@ Version 2017-04-19"
 ;; Then reset it as late as possible; these are the reasonable defaults I use.
 (setq gc-cons-threshold 16777216 
       gc-cons-percentage 0.1)
+
+;; open cmd
+(defun my-open-cmd ()
+  "open cmd at file location"
+  (interactive)
+  (start-process-shell-command (format "cmd(%s)" default-directory) nil "start cmd"))
+(bind-key "C-x m" 'my-open-cmd)
+
+(server-start)
+(global-auto-revert-mode)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
