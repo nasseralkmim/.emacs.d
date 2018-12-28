@@ -12,8 +12,11 @@
 (tool-bar-mode -1)
 (show-paren-mode 1)
 (scroll-bar-mode -1)
+(tooltip-mode -1)
+(global-eldoc-mode -1)
 (global-hl-line-mode 1)
 (winner-mode t)
+(setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
 (setq ring-bell-function 'ignore)
 (setq mouse-wheel-progressive-speed nil)
@@ -180,12 +183,9 @@
   (setq evil-want-keybinding nil)
   :config
   (evil-mode 1)
-  (key-chord-define evil-insert-state-map "pk" 'sp-up-sexp)
-  (key-chord-define evil-normal-state-map "xc" 'avy-goto-char)
-  (key-chord-define evil-normal-state-map "xs" 'save-buffer)
   (evil-define-key 'normal 'global "s" 'avy-goto-char-timer)
-  (evil-define-key 'normal 'global "j" 'evil-next-visual-line)
-  (evil-define-key 'normal 'global "k" 'evil-previous-visual-line)
+  ;; (evil-define-key 'normal 'global "j" 'evil-next-visual-line)
+  ;; (evil-define-key 'normal 'global "k" 'evil-previous-visual-line)
   (evil-define-key 'normal 'global ";" 'evil-search-forward)
   (setq
    lazy-highlight-cleanup nil
@@ -194,10 +194,11 @@
 (use-package evil-escape
   :after evil
   :diminish evil-escape-mode
+  :disabled
   :config
   (evil-escape-mode)
   (setq-default evil-escape-key-sequence "jk")
-  (setq-default evil-escape-delay 0.4)   
+  (setq-default evil-escape-delay 0.3)
   (setq-default evil-escape-unordered-key-sequence t))
 (use-package evil-easymotion
   :after evil
@@ -285,6 +286,7 @@ Version 2017-04-19"
   :config
   (evil-multiedit-default-keybinds))
 (use-package evil-goggles
+  :defer 30
   :after evil
   :diminish evil-goggles-mode
   :config
@@ -294,6 +296,7 @@ Version 2017-04-19"
   (evil-goggles-use-diff-faces))
 (use-package evil-collection
   :after evil
+  :defer 10
   :config
   (setq evil-collection-setup-minibuffer t)
   (setq evil-collection-outline-bind-tab-p nil)
@@ -320,22 +323,27 @@ Version 2017-04-19"
   :bind (:map evil-normal-state-map
 	      ("C-n" . evil-mc-make-and-goto-next-match)
 	      ("C-p" . evil-mc-make-and-goto-prev-match)
+	      ("C-t" . evil-mc-skip-and-goto-next-match)
 	      ("<escape>" . evil-mc-undo-all-cursors))
   :config
   (global-evil-mc-mode 1))
 (use-package evil-mc-extras
   :after evil-mc
+  :defer 50
   :config (global-evil-mc-extras-mode 1))
+(use-package general :defer t)
 (use-package evil-exchange
   :after evil
   :config (evil-exchange-install))
 (use-package evil-matchit
-  :after evil
+  :after evil python
   :config
   (global-evil-matchit-mode 1))
-(use-package multiple-cursors :defer t)
+(use-package multiple-cursors :disabled :defer t)
 (use-package key-chord
+  :disabled
   :after evil
+  :defer 10
   :config
   (key-chord-mode 1)
   (setq key-chord-one-key-delay 0.5) 
@@ -407,7 +415,6 @@ Version 2017-04-19"
              ("M-p" . org-previous-item)
              ("M-n" . org-next-item))
   :init
-  (add-hook 'org-mode-hook 'flyspell-mode)
   (add-hook 'org-mode-hook 'visual-line-mode)
   :config
   (transient-mark-mode -1)
@@ -614,7 +621,9 @@ Version 2017-04-19"
   (setq org-sticky-header-full-path 'reversed))
 (use-package flyspell
   :diminish flyspell-mode
-  :defer t
+  :defer 30
+  :init
+  (add-hook 'org-mode-hook 'flyspell-mode)
   :config
   (setq ispell-program-name "hunspell")
   (add-to-list 'ispell-extra-args "--sug-mode=ultra")
@@ -622,7 +631,8 @@ Version 2017-04-19"
   (ispell-set-spellchecker-params)
   (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
 (use-package flyspell-lazy
-  :defer t
+  :after flyspell
+  :defer 30
   :init
   (add-hook 'LaTeX-mode-hook 'flyspell-lazy-mode)
   (add-hook 'org-mode-hook 'flyspell-lazy-mode)
@@ -631,7 +641,7 @@ Version 2017-04-19"
   (flyspell-mode 1))
 (use-package flyspell-correct-ivy
   :demand t
-  :after flyspell-lazy
+  :after flyspell-lazy ivy
   :bind (:map flyspell-mode-map
 	      ("C-c C-SPC" . flyspell-correct-wrapper)
 	      ("C-c C-;" . flyspell-correct-at-point))
@@ -642,12 +652,12 @@ Version 2017-04-19"
   :init
   (add-hook 'python-mode-hook 'company-mode)
   (add-hook 'emacs-lisp-mode-hook 'company-mode)
-  (add-hook 'LaTeX-mode-hook 'company-mode)
+  ;; (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'org-mode-hook 'company-mode)
   :config
-  (setq company-idle-delay 0
+  (setq company-idle-delay 0.2
         company-echo-delay 0 ; remove annoying blinking)
-        company-minimum-prefix-length 3
+        company-minimum-prefix-length 2
         company-show-numbers t 
         company-require-match 'never  ; 'company-explicit-action-p
 	company-selection-wrap-around t
@@ -774,6 +784,14 @@ Version 2017-04-19"
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:"))
   (setq reftex-default-bibliography "C:/Users/nasse/OneDrive/Bibliography/references-zot.bib"))
+(use-package company-reftex
+  :after latex
+  :config
+  (add-to-list 'company-backends 'company-reftex))
+(use-package company-auctex
+  :after latex
+  :config
+  (add-to-list 'company-backends 'company-auctex))
 (use-package company-bibtex
   :after latex
   :config
@@ -1150,6 +1168,74 @@ Version 2017-04-19"
   :mode ("\\.pdf\\'" . pdf-tools-install))
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
+(use-package org-page
+  :ensure t
+  :bind (("C-x C-a p" . op/do-publication-and-preview-site)
+         ("C-x C-a C-p" . op/do-publication)
+         ("C-x C-a C-n" . op/new-post))
+  :config
+  (setq op/repository-directory "c:/Users/nasse/OneDrive/nasseralkmim.github.io/")
+  (setq op/site-domain "http://nasseralkmim.github.io/")
+  (setq op/personal-disqus-shortname "nasseralkmim")
+  (setq op/site-main-title "Nasser Alkmim")
+  (setq op/site-sub-title " ")
+  (setq op/personal-github-link "https://github.com/nasseralkmim")
+  (setq op/personal-google-analytics-id "UA-74704246-1")
+
+  (setq op/tag-rss t)                   ;rss for each tag
+
+  (setq op/theme-root-directory "c:/Users/nasse/OneDrive/nasseralkmim.github.io/themes/")
+  (setq op/theme 'mdo)
+
+  (setq op/category-ignore-list '("themes" "assets" "blog"))
+
+  (setq op/category-config-alist
+        '(("notes" ;; this is the default configuration
+           :label "Notes"
+           :show-meta t
+           :show-comment t
+           :uri-generator op/generate-uri
+           :uri-template "/notes/%y/%m/%d/%t/"
+           :sort-by :date     ;; how to sort the posts
+           :category-index t) ;; generate category index or not
+          ("index"
+           :show-meta nil
+           :show-comment nil
+           :uri-generator op/generate-uri
+           :uri-template "/"
+           :sort-by :date
+           :category-index nil)
+          ("about"
+           :show-meta nil
+           :show-comment nil
+           :uri-generator op/generate-uri
+           :uri-template "/about/"
+           :sort-by :date
+           :category-index nil)))
+  ;; remove blog heading
+  (defun op/get-file-category (org-file)
+    "Get org file category presented by ORG-FILE, return all categories if
+ORG-FILE is nil. This is the default function used to get a file's category,
+see `op/retrieve-category-function'. How to judge a file's category is based on
+its name and its root folder name under `op/repository-directory'."
+    (cond ((not org-file)
+           (let ((cat-list '("index" "about"))) ;; 3 default categories
+             (dolist (f (directory-files op/repository-directory))
+               (when (and (not (equal f "."))
+                          (not (equal f ".."))
+                          (not (equal f ".git"))
+                          (not (member f op/category-ignore-list))
+                          (file-directory-p
+                           (expand-file-name f op/repository-directory)))
+                 (setq cat-list (cons f cat-list))))
+             cat-list))
+          ((string= (expand-file-name "index.org" op/repository-directory)
+                    (expand-file-name org-file)) "index")
+          ((string= (expand-file-name "about.org" op/repository-directory)
+                    (expand-file-name org-file)) "about")
+          (t (car (split-string (file-relative-name (expand-file-name org-file)
+                                                    op/repository-directory)
+                                "[/\\\\]+"))))))
 ;; abbrev for speed and less strain
 (setq-default abbrev-mode t)
 (diminish 'abbrev-mode)
