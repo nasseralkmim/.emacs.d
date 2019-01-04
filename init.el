@@ -79,10 +79,11 @@
 
 ;; set a default font Iosevka, Hack, PragmataPro
 (set-face-attribute 'default nil
-                    :family "Iosevka SS05"
+                    :family "Iosevka ss05"
                     :height 100
                     :weight 'normal
                     :width 'normal)
+
 ;; ;; specify font for all unicode characters
 (set-fontset-font t
                   'unicode
@@ -232,8 +233,7 @@
       "x c i" 'org-clock-in
       "x c o" 'org-clock-out
       "x c x" 'org-clock-in-last
-      "<tab>" 'next-multiframe-window
-      "=" 'reftex-toc)
+      "<tab>" 'next-multiframe-window)
 
   ;; function to toggle case
   (defun xah-toggle-letter-case ()
@@ -625,11 +625,12 @@ Version 2017-04-19"
   :init
   (add-hook 'org-mode-hook 'flyspell-mode)
   :config
-  (setq ispell-program-name "hunspell")
-  (add-to-list 'ispell-extra-args "--sug-mode=ultra")
-  (setq ispell-dictionary "en_US,pt_BR")
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
+  (if '(eq system-type 'windows-nt)
+      (setq ispell-program-name "hunspell")
+    (add-to-list 'ispell-extra-args "--sug-mode=ultra")
+    (setq ispell-dictionary "en_US,pt_BR")
+    (ispell-set-spellchecker-params)
+    (ispell-hunspell-add-multi-dic "en_US,pt_BR")))
 (use-package flyspell-lazy
   :after flyspell
   :defer 30
@@ -652,7 +653,7 @@ Version 2017-04-19"
   :init
   (add-hook 'python-mode-hook 'company-mode)
   (add-hook 'emacs-lisp-mode-hook 'company-mode)
-  ;; (add-hook 'LaTeX-mode-hook 'company-mode)
+  (add-hook 'LaTeX-mode-hook 'company-mode)
   (add-hook 'org-mode-hook 'company-mode)
   :config
   (setq company-idle-delay 0.2
@@ -785,15 +786,18 @@ Version 2017-04-19"
   (setq reftex-trust-label-prefix '("fig:" "eq:"))
   (setq reftex-default-bibliography "C:/Users/nasse/OneDrive/Bibliography/references-zot.bib"))
 (use-package company-reftex
-  :after latex
+  :after latex company
+  :disabled				; it gives me an error, try it later again
   :config
   (add-to-list 'company-backends 'company-reftex))
 (use-package company-auctex
-  :after latex
+  :after latex company
   :config
-  (add-to-list 'company-backends 'company-auctex))
+  (company-auctex-init)
+  ;; (add-to-list 'company-backends 'company-auctex)
+  )
 (use-package company-bibtex
-  :after latex
+  :after latex company
   :config
   (add-to-list 'company-backends 'company-bibtex)
   (setq company-bibtex-bibliography
@@ -950,12 +954,23 @@ Version 2017-04-19"
 (use-package treemacs-evil
   :after treemacs evil
   :ensure t)
+(use-package poet-theme
+  :config
+  :disabled
+  (load-theme 'poet t)
+  (set-face-attribute 'variable-pitch nil :family "Baskerville"
+		      :height 120)
+  (set-face-attribute 'default nil :family "Iosevka SS05" :height 100)
+  (set-face-attribute 'fixed-pitch nil :family "Iosevka SS05" :height 100)
+  (add-hook 'text-mode-hook
+               (lambda ()
+                (variable-pitch-mode 1))))
 (use-package doom-themes
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one t)
+  (load-theme 'doom-one-light t)
   (doom-themes-org-config)
   (doom-themes-treemacs-config)
   (custom-theme-set-faces
