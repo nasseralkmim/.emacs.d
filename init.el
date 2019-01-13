@@ -80,7 +80,7 @@
 ;; set a default font Iosevka, Hack, PragmataPro
 (set-face-attribute 'default nil
                     :family "Iosevka ss05"
-                    :height 100
+                    :height 90
                     :weight 'normal
                     :width 'normal)
 
@@ -107,6 +107,7 @@
 ;; Don't beep at me
 (setq visible-bell t)
 
+(use-package general)
 (use-package diminish :defer t)
 (use-package color-identifiers-mode
   :defer t)
@@ -268,6 +269,7 @@ Version 2017-04-19"
       (put this-command 'state 0))))))
 (use-package evil-snipe
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
+  :general ('normal "f" 'evil-snipe-f)
   :after evil
   :config
   (evil-snipe-override-mode 1)
@@ -276,8 +278,8 @@ Version 2017-04-19"
 (use-package evil-numbers
   :after evil org
   :bind (:map evil-normal-state-map
-              ("C-c =" . 'evil-numbers/inc-at-pt)
-              ("C-c -" . 'evil-numbers/dec-at-pt))
+              ("C-c =" . evil-numbers/inc-at-pt)
+              ("C-c -" . evil-numbers/dec-at-pt))
   :diminish evil-numbers-mode)
 (use-package evil-multiedit
   :after evil
@@ -292,7 +294,7 @@ Version 2017-04-19"
   :config
   (evil-goggles-mode)
   (setq evil-goggles-pulse nil)
-  (setq evil-goggles-duration 0.1)
+  (setq evil-goggles-duration 0.2)
   (evil-goggles-use-diff-faces))
 (use-package evil-collection
   :after evil
@@ -331,9 +333,9 @@ Version 2017-04-19"
   :after evil-mc
   :defer 50
   :config (global-evil-mc-extras-mode 1))
-(use-package general :defer t)
 (use-package evil-exchange
   :after evil
+  :general ('normal "g x" 'evil-exchange)
   :config (evil-exchange-install))
 (use-package evil-matchit
   :after evil python
@@ -572,10 +574,11 @@ Version 2017-04-19"
     (if (not (file-exists-p myvar/folder-path))
         (mkdir myvar/folder-path))
     (let* ((filename (concat 
-                        myvar/folder-path
                         (buffer-name)
                         "_"
                         (format-time-string "%Y%m%d_%H%M%S_.png")))
+	   (filepath (concat myvar/folder-path
+			     filename))
 
            ;; (exit-status
            ;;  (call-process "convert" nil nil nil
@@ -583,9 +586,9 @@ Version 2017-04-19"
 	   )
       ;; http://www.sastibe.de/2018/11/take-screenshots-straight-into-org-files-in-emacs-on-win10/
       (shell-command "snippingtool /clip")
-      (shell-command (concat "powershell -command \"Add-Type -AssemblyName System.Windows.Forms;if ($([System.Windows.Forms.Clipboard]::ContainsImage())) {$image = [System.Windows.Forms.Clipboard]::GetImage();[System.Drawing.Bitmap]$image.Save('" filename "',[System.Drawing.Imaging.ImageFormat]::Png); Write-Output 'clipboard content saved as file'} else {Write-Output 'clipboard does not contain image data'}\""))
+      (shell-command (concat "powershell -command \"Add-Type -AssemblyName System.Windows.Forms;if ($([System.Windows.Forms.Clipboard]::ContainsImage())) {$image = [System.Windows.Forms.Clipboard]::GetImage();[System.Drawing.Bitmap]$image.Save('" filepath "',[System.Drawing.Imaging.ImageFormat]::Png); Write-Output 'clipboard content saved as file'} else {Write-Output 'clipboard does not contain image data'}\""))
       (insert "#+attr_org: :width 400 \n")
-      (insert (concat "[[file:" filename "]]"))
+      (insert (concat "[[file:img/" filename "]]"))
   ;; (org-insert-link nil (concat "file:" filename ) nil)
 
       (org-display-inline-images))))
@@ -723,13 +726,20 @@ Version 2017-04-19"
   ;;
   ;;
   ;; add "PDF Tools" to the list of possible PDF tools  
-  ;; (unless (assoc "PDF Tools" TeX-view-program-list  
-  ;;                (add-to-list 'TeX-view-program-list  
-  ;;                             '("PDF Tools" TeX-pdf-tools-sync-view)))
-  ;;   (add-to-list 'TeX-view-program-selection  
-  ;;                '(output-pdf "PDF Tools")))
+;;   (unless (assoc "PDF Tools" TeX-view-program-list  
+;; 		 (add-to-list 'TeX-view-program-list  
+;; 			      '("PDF Tools" TeX-pdf-tools-sync-view)))
+;;     (add-to-list 'TeX-view-program-selection  
+;; 		 '(output-pdf "PDF Tools")))
   
-  ;;   (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+;;     (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
+;;     (evil-define-key 'normal 'pdf-view-mode-map (kbd "M-<left>") 'pdf-history-backward)
+;;     (evil-define-key 'normal 'pdf-view-mode-map (kbd "C-<wheel-up>") 'pdf-view-enlarge)
+;;     (evil-define-key 'normal 'pdf-view-mode-map (kbd "C-<wheel-down>") 'pdf-view-shrink)
+;;     (evil-set-initial-state 'pdf-view-mode 'emacs)
+;; (add-hook 'pdf-view-mode-hook
+;;   (lambda ()
+;;     (set (make-local-variable 'evil-emacs-state-cursor) (list nil))))
   
     ;; Update PDF buffers after successful LaTeX runs  
     (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
@@ -897,9 +907,9 @@ Version 2017-04-19"
 (use-package treemacs
   :ensure t
   :defer t
-  :init
-  (with-eval-after-load 'winum
-    (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  ;; :init
+  ;; (with-eval-after-load 'winum
+  ;;   (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
   :config
   (progn
     (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
@@ -972,10 +982,7 @@ Version 2017-04-19"
 	doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (load-theme 'doom-one-light t)
   (doom-themes-org-config)
-  (doom-themes-treemacs-config)
-  (custom-theme-set-faces
-   'user
-   `(show-paren-match ((t (:underline t))))))
+  (doom-themes-treemacs-config))
 (use-package doom-modeline
   :hook (after-init . doom-modeline-init)
   :config
@@ -1169,10 +1176,12 @@ Version 2017-04-19"
   :config
   (setq avy-timeout-seconds 0.4))
 (use-package counsel-projectile
+  :disabled
   :bind ("C-c p p " . counsel-projectile-switch-project)
   :config
   (counsel-projectile-mode))
 (use-package projectile
+  :disabled
   :after counsel-projectile
   :diminish projectile-mode
   :init
@@ -1250,7 +1259,116 @@ its name and its root folder name under `op/repository-directory'."
                     (expand-file-name org-file)) "about")
           (t (car (split-string (file-relative-name (expand-file-name org-file)
                                                     op/repository-directory)
-                                "[/\\\\]+"))))))
+                                "[/\\\\]+")))))
+  (defun op/new-post (&optional category filename)
+    "Setup a new post.
+
+CATEGORY: this post belongs to
+FILENAME: the file name of this post
+
+Note that this function does not verify the category and filename, it is users'
+responsibility to guarantee the two parameters are valid."
+    (interactive
+     (let* ((c (read-string "Category: " "notes"))
+	    (f (read-string "filename: " "new-post.org")))
+       (list c f)))
+    (if (string= category "")
+	(setq category "notes"))
+    (if (string= filename "")
+	(setq filename "new-post.org"))
+    (unless (string-suffix-p ".org" filename)
+      (setq filename (concat filename ".org")))
+    (let* ((dir (concat (file-name-as-directory op/repository-directory)
+			(file-name-as-directory category)))
+	   (path (concat dir filename)))
+      (op/git-change-branch op/repository-directory op/repository-org-branch)
+      (if (file-exists-p path)
+	  (error "Post `%s' already exists." path))
+      (unless (file-directory-p dir)
+	(mkdir dir t))
+      (switch-to-buffer (find-file path))
+      (if (called-interactively-p 'any)
+	  (call-interactively 'op/insert-options-template)
+	(op/insert-options-template "<Insert Your Title Here>"
+				    "/%y/%m/%d/%t/"
+				    "add, keywords, here"
+				    "add, tags, here"
+				    "add description here"))
+      (save-buffer)))
+
+  (defun op/insert-options-template (&optional title uri
+					       keywords tags description)
+    "Insert a template into current buffer with information for exporting.
+
+TITLE: the title of this post
+URI: the uri of this post, usually looks like: /2013/12/27/the-post-title,
+the following parameters could be used:
+    %y: to represent the year of creation date
+    %m: to represent the month of creation date
+    %d: to represent the day of creation date
+KEYWORDS: the keywords of this post, used by search engine
+TAGS: the tags of this post, should be separated by comma and space
+DESCRIPTION: the description of this post, it will be displayed in RSS feed
+
+Note that this function does not verify the input parameters, it is users'
+responsibility to guarantee these parameters are valid."
+  (interactive
+   (let* ((i (read-string "Title: "))
+          (u (read-string "URI(%y, %m and %d can be used to represent year, \
+month and day): " (unless (string= i "")
+                    (format-spec "/notes/%y/%m/%d/%t"
+                                 `((?y . "%y")
+                                   (?m . "%m")
+                                   (?d . "%d")
+                                   (?t . ,(encode-string-to-url i)))))))
+          (k (read-string "Keywords(separated by comma and space [, ]): "))
+          (a (read-string "Tags(separated by comma and space [, ]): "))
+          (d (read-string "Description: ")))
+     (list i u k a d)))
+  (if (not (bolp)) (newline))
+  (insert (format
+	   "#+TITLE:       %s
+#+AUTHOR:      %s
+#+EMAIL:       %s
+#+DATE:        %s
+#+URI:         %s
+#+KEYWORDS:    %s
+#+TAGS:        %s
+#+LANGUAGE:    %s
+#+OPTIONS:     H:%d num:%s toc:%s \\n:%s ::%s |:%s ^:%s -:%s f:%s *:%s <:%s
+#+DESCRIPTION: %s
+"
+           (if (string= title "") (buffer-name) title)
+           (user-full-name)
+           user-mail-address
+           (format-time-string (substring (car org-time-stamp-formats) 1 -1))
+           (if (string= uri "") "<TODO: insert your uri here>" uri)
+           (if (string= keywords "")
+               "<TODO: insert your keywords here>"
+             keywords)
+           (if (string= tags "") "<TODO: insert your tags here>" tags)
+           org-export-default-language
+           org-export-headline-levels
+           nil ;; org-export-with-section-numbers
+           nil ;; org-export-with-toc
+           org-export-preserve-breaks
+           ;; org-export-html-expand
+           org-export-with-fixed-width
+           org-export-with-tables
+           nil ;; org-export-with-sub-superscripts
+           nil ;; org-export-with-special-strings
+           org-export-with-footnotes
+           org-export-with-emphasize
+           org-export-with-timestamps
+           (if (string= description "")
+               "<TODO: insert your description here>"
+             description)))) 
+
+)
+(use-package which-key
+  :defer 20
+  :config
+  (which-key-mode t))
 ;; abbrev for speed and less strain
 (setq-default abbrev-mode t)
 (diminish 'abbrev-mode)
