@@ -3,7 +3,11 @@
 
 ;; increase gc-cons threshold to decrease the load and compile time
 (setq gc-cons-threshold 402653184
-      gc-cons-percentage 0.6)
+      gc-cons-percentage 0.6
+      ;;gc-cons-threshold (* 1024 1024 1024) ;1G
+      jit-lock-stealth-time 1
+      jit-lock-chunk-size 500
+      jit-lock-defer-time 0.5)
 
 ;; maybe improve performance on windows
 (setq w32-pipe-read-delay 0)
@@ -15,6 +19,7 @@
 (tooltip-mode -1)
 (global-eldoc-mode -1)
 (global-hl-line-mode 1)
+(column-number-mode 1)
 (winner-mode t)
 (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
@@ -57,7 +62,7 @@
   (setq load-path (append load-path (directory-files package-user-dir t "^[^.]" t))))
 
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-(load custom-file)
+;; (load custom-file)
 
 ;; Initialize package management
 (eval-when-compile                      ; when byte compiled skip this
@@ -80,6 +85,7 @@
 ;; set a default font Iosevka, Hack, PragmataPro
 (set-face-attribute 'default nil
                     :family "Iosevka ss05"
+		    ;; :family "IBM Plex Mono Medium"
                     :height 90
                     :weight 'normal
                     :width 'normal)
@@ -157,6 +163,9 @@
 (use-package smartparens
   :diminish smartparens-mode  
   :commands smartparens-mode
+  :general
+  ('normal smartparens-mode-map "C-l" 'sp-next-sexp)
+  ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   :init
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'lisp-interaction-mode-hook 'smartparens-mode)
@@ -166,16 +175,17 @@
   :config
   (sp-local-pair 'org-mode "_" "_" )
   (sp-local-pair 'org-mode "*" "*" )
-  (sp-local-pair 'latex-mode "$" "$" )
+  (sp-local-pair 'latex-mode "$" "$")
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   ;; highligh matching brackets
   (show-smartparens-global-mode 0)
   ;; so that paren highlights do not override region marking (aka selecting)
-  (setq show-paren-priority -1)
+  (setq show-paren-priority -1) 
   (setq show-paren-when-point-inside-paren t)
   (setq sp-show-pair-from-inside t)
   (setq show-paren-style 'mixed)) 
 (use-package flycheck
+  :disabled
   :hook (python-mode . flycheck-mode))
 (use-package evil
   :diminish evil-mode
@@ -298,7 +308,6 @@ Version 2017-04-19"
   (evil-goggles-use-diff-faces))
 (use-package evil-collection
   :after evil
-  :defer 10
   :config
   (setq evil-collection-setup-minibuffer t)
   (setq evil-collection-outline-bind-tab-p nil)
@@ -328,9 +337,17 @@ Version 2017-04-19"
 	      ("C-t" . evil-mc-skip-and-goto-next-match)
 	      ("<escape>" . evil-mc-undo-all-cursors))
   :config
-  (global-evil-mc-mode 1))
+  (global-evil-mc-mode 1)
+  (custom-theme-set-faces
+   'user
+   '(evil-mc-cursor-bar-face ((t (:background "#c678dd" :foreground "#1B2229" :height 0.9)))))
+  )
 (use-package evil-mc-extras
   :after evil-mc
+  :bind (:map evil-mc-key-map
+	      ("C-c +" . evil-mc-inc-num-at-each-cursor))
+  :general
+  (general-unbind 'normal 'evil-mc-extras-key-map "g r +" "g r -")
   :defer 50
   :config (global-evil-mc-extras-mode 1))
 (use-package evil-exchange
@@ -363,10 +380,10 @@ Version 2017-04-19"
   :defer 10
   :config
   (setq beacon-blink-delay .5)
-  (setq beacon-size 4)
+  (setq beacon-size 8)
   (setq beacon-blink-when-focused t)
   (setq beacon-blink-duration .5)
-  (setq beacon-blink-when-window-scrolls t)
+  (setq beacon-blink-when-window-scrolls nil)
   (beacon-mode 1))
 (use-package undo-tree
   :diminish (undo-tree-mode)
@@ -400,6 +417,8 @@ Version 2017-04-19"
     (interactive)
     (kill-buffer)
     (jump-to-register :magit-fullscreen)))
+(use-package evil-magit
+  :after magit evil)
 (use-package iedit
   :defer t)
 (use-package rainbow-mode
@@ -498,8 +517,6 @@ Version 2017-04-19"
         org-export-babel-evaluate nil
         org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
 
-  ;; dont guess the indent offset
-  (setq python-indent-guess-indent-offset nil)
   
  ;;; display/update images in the buffer after I evaluate
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
@@ -624,28 +641,29 @@ Version 2017-04-19"
   (setq org-sticky-header-full-path 'reversed))
 (use-package flyspell
   :diminish flyspell-mode
+  :commands flyspell-mode
   :defer 30
   :init
   (add-hook 'org-mode-hook 'flyspell-mode)
   :config
-  (if '(eq system-type 'windows-nt)
-      (setq ispell-program-name "hunspell")
-    (add-to-list 'ispell-extra-args "--sug-mode=ultra")
-    (setq ispell-dictionary "en_US,pt_BR")
-    (ispell-set-spellchecker-params)
-    (ispell-hunspell-add-multi-dic "en_US,pt_BR")))
+  (setq ispell-program-name "hunspell")
+  (add-to-list 'ispell-extra-args "--sug-mode=ultra")
+  (setq ispell-dictionary "en_US,pt_BR")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
 (use-package flyspell-lazy
   :after flyspell
   :defer 30
   :init
   (add-hook 'LaTeX-mode-hook 'flyspell-lazy-mode)
   (add-hook 'org-mode-hook 'flyspell-lazy-mode)
-  :config
-  (flyspell-lazy-mode 1)
-  (flyspell-mode 1))
+  ;; :config
+  ;; (flyspell-lazy-mode 1)
+  ;; (flyspell-mode 1))
+  )
 (use-package flyspell-correct-ivy
   :demand t
-  :after flyspell-lazy ivy
+  :after flyspell-lazy
   :bind (:map flyspell-mode-map
 	      ("C-c C-SPC" . flyspell-correct-wrapper)
 	      ("C-c C-;" . flyspell-correct-at-point))
@@ -653,13 +671,11 @@ Version 2017-04-19"
 (use-package company
   :diminish company-mode
   :commands company-mode
-  :init
-  (add-hook 'python-mode-hook 'company-mode)
-  (add-hook 'emacs-lisp-mode-hook 'company-mode)
-  (add-hook 'LaTeX-mode-hook 'company-mode)
-  (add-hook 'org-mode-hook 'company-mode)
+  :hook ((python-mode . company-mode)
+	 (LaTeX-mode . company-mode)
+	 (org-mode . company-mode))
   :config
-  (setq company-idle-delay 0.2
+  (setq company-idle-delay 0.1
         company-echo-delay 0 ; remove annoying blinking)
         company-minimum-prefix-length 2
         company-show-numbers t 
@@ -800,12 +816,6 @@ Version 2017-04-19"
   :disabled				; it gives me an error, try it later again
   :config
   (add-to-list 'company-backends 'company-reftex))
-(use-package company-auctex
-  :after latex company
-  :config
-  (company-auctex-init)
-  ;; (add-to-list 'company-backends 'company-auctex)
-  )
 (use-package company-bibtex
   :after latex company
   :config
@@ -829,9 +839,10 @@ Version 2017-04-19"
   ;; ;;open pdf with external viwer foxit
   (setq bibtex-completion-pdf-open-function
         (lambda (fpath)
-          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil fpath)))
-
-  ;; (setq bibtex-completion-pdf-open-function
+          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil
+			fpath)))
+  
+;; (setq bibtex-completion-pdf-open-function
   ;;       (lambda (fpath)
   ;;         (call-process "SumatraPDF" nil 0 nil fpath)))
 
@@ -939,7 +950,7 @@ Version 2017-04-19"
           treemacs-space-between-root-nodes   t
           treemacs-tag-follow-cleanup         t
           treemacs-tag-follow-delay           1.5
-          treemacs-width                      35)
+          treemacs-width                      25)
 
     ;; The default width and height of the icons is 22 pixels. If you are
     ;; using a Hi-DPI display, uncomment this to double the icon size.
@@ -979,46 +990,74 @@ Version 2017-04-19"
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-one-light t)
+	doom-themes-enable-italic t
+	doom-treemacs-use-generic-icons nil) ; if nil, italics is universally disabled
+  (load-theme 'doom-Iosvkem t)
   (doom-themes-org-config)
-  (doom-themes-treemacs-config))
+  (doom-themes-treemacs-config)
+
+  (custom-theme-set-faces
+   'user
+   `(show-paren-match ((t (:underline t :weight ultra-bold))))
+   ;; `(show-paren-match-expression ((t (:foreground "#e45649" :background "#f0f0f0" :inherit nil))))
+   `(show-paren-match-expression ((t (:inherit 'default :underline nil))))
+   )
+  )
+(use-package treemacs-icons-dired
+  :after treemacs dired
+  :ensure t
+  :config (treemacs-icons-dired-mode))
 (use-package doom-modeline
   :hook (after-init . doom-modeline-init)
   :config
   ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
   (setq doom-modeline-icon t))
+(use-package lsp-mode
+  :disabled
+  :commands lsp)
+(use-package lsp-python
+  :disabled
+  :hook (python-mode . lsp))
+(use-package lsp-ui
+  :disabled
+  :after lsp-mode
+  :hook (lsp-mode . lsp-ui-mode))
+(use-package company-lsp
+  :disabled
+  :after lsp-mode
+  :config
+  (push 'company-lsp company-backends))
+(use-package dap-mode
+  :disabled
+  :after lsp-mode
+  :commands dap-debug
+  :config
+  (require 'dap-python))
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :config
-  (setq company-minimum-prefix-length 1)
-  ;; change commenting foreground
-  (setq warning-suppress-types '((python)
-                                 (emacs)))
-  ;; suppress the warning "python.el: native completion setup failed"
-  (with-eval-after-load 'python
-    (defun python-shell-completion-native-try ()
-      "Return non-nil if can trigger native completion."
-      (let ((python-shell-completion-native-enable t)
-            (python-shell-completion-native-output-timeout
-             python-shell-completion-native-try-output-timeout))
-        (python-shell-completion-native-get-completions
-         (get-buffer-process (current-buffer))
-         nil "_"))))
-  (setenv "PYTHONIOENCODING" "utf-8")
-  ;; Disable readline based native completion
-  (setq python-shell-completion-native-enable nil))
+  ;; dont guess the indent offset
+  (setq python-indent-guess-indent-offset nil)
+  (setq company-minimum-prefix-length 1))
 (use-package anaconda-mode
+  :after python
+  :general
+  ('normal "g d" 'anaconda-mode-find-definitions)
+  ('normal "g o d" 'anaconda-mode-find-definitions-other-window)
+  ('normal "g r" 'anaconda-mode-find-references)
+  ('normal "g o r" 'anaconda-mode-find-references-other-window)
   :hook ((python-mode . anaconda-mode)
 	 (anaconda-mode . anaconda-eldoc-mode)))
 (use-package company-anaconda
   :after company anaconda-mode
   :config
   (use-package rx) 			; https://github.com/proofit404/company-anaconda/issues/29https://github.com/proofit404/company-anaconda/issues/29
-  (eval-after-load "company"
-    '(add-to-list 'company-backends '(company-anaconda :with company-capf))))
+  (push 'company-anaconda company-backends))
+(use-package highlight-symbol
+  :after python anaconda-mode
+  :hook (python-mode . highlight-symbol-mode))
 (use-package highlight-indent-guides
   :after python
   :diminish highlight-indent-guides-mode
@@ -1047,6 +1086,12 @@ Version 2017-04-19"
          ("C-x C-m " . multiple-cursors-hydra/body)
          ("C-x C-'" . hydra-fold/body))
   :config
+  (defhydra hydra-expand-region ()
+    "region: "
+    ("k" er/expand-region "expand")
+    ("j" er/contract-region "contract"))
+  (general-def 'visual 'global "v" 'hydra-expand-region/body)
+
   (defhydra hydra-fold (:pre (hs-minor-mode 1))
     "fold"
     ("t" fold-dwim-toggle "toggle")
@@ -1168,6 +1213,12 @@ Version 2017-04-19"
      ("q" nil)))
 (use-package goto-last-change
   :bind ("C-x C-j" . goto-last-change))
+(use-package outline-mode
+  :ensure nil
+  :hook (python-mode . outline-minor-mode)
+  :commands outline-minor-mode)
+(use-package realgud 
+  :commands realgud:ipdb)
 (use-package avy
   :diminish avy-mode
   :bind (("C-x C-SPC" . avy-goto-char)
@@ -1176,17 +1227,18 @@ Version 2017-04-19"
   :config
   (setq avy-timeout-seconds 0.4))
 (use-package counsel-projectile
-  :disabled
-  :bind ("C-c p p " . counsel-projectile-switch-project)
+  :general
+  ("C-c p f" 'counsel-projectile-find-file)
   :config
-  (counsel-projectile-mode))
+  (counsel-projectile-mode +1))
 (use-package projectile
-  :disabled
-  :after counsel-projectile
   :diminish projectile-mode
-  :init
-  (projectile-global-mode)
+  :after counsel-projectile
+  :config
+  (projectile-mode +1)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (setq projectile-completion-system 'ivy) ;So projectile works with ivy
+  (setq projectile-git-submodule-command nil)
   (setq projectile-indexing-method 'alien))
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-tools-install))
@@ -1369,16 +1421,13 @@ month and day): " (unless (string= i "")
   :defer 20
   :config
   (which-key-mode t))
+(use-package hl-todo
+  :after python
+  :hook (python-mode . hl-todo-mode))
 ;; abbrev for speed and less strain
 (setq-default abbrev-mode t)
 (diminish 'abbrev-mode)
 (setq save-abbrevs 'silently)
-
-(bind-key "C-x C-o" 'next-multiframe-window)
-
-;; Then reset it as late as possible; these are the reasonable defaults I use.
-(setq gc-cons-threshold 16777216 
-      gc-cons-percentage 0.1)
 
 ;; open cmd
 (defun my-open-cmd ()
@@ -1387,7 +1436,21 @@ month and day): " (unless (string= i "")
   (start-process-shell-command (format "cmd(%s)" default-directory) nil "start cmd"))
 (bind-key "C-x m" 'my-open-cmd)
 
+;; set 80 width columns
+(defun set-window-width (n)
+  "Set the selected window's width."
+  (adjust-window-trailing-edge (selected-window) (- n (window-width)) t))
+(defun set-80-columns ()
+  "Set the selected window to 80 columns."
+  (interactive)
+  (set-window-width 94))
+(general-def 'normal "C-w 8" 'set-80-columns)
+
 (server-start)
 (global-auto-revert-mode)
+
+;; Then reset it as late as possible; these are the reasonable defaults I use.
+(setq gc-cons-threshold 16777216 
+      gc-cons-percentage 0.1)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
