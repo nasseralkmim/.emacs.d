@@ -2,12 +2,12 @@
   "Time when Emacs was started")
 
 ;; increase gc-cons threshold to decrease the load and compile time
-(setq gc-cons-threshold 402653184
+(setq gc-cons-threshold 600000000
       gc-cons-percentage 0.6
-      ;;gc-cons-threshold (* 1024 1024 1024) ;1G
-      jit-lock-stealth-time 1
-      jit-lock-chunk-size 500
-      jit-lock-defer-time 0.5)
+      ;; gc-cons-threshold (* 1024 1024 1024) ;1G
+      jit-lock-stealth-time 0.1
+      jit-lock-chunk-size 100
+      jit-lock-defer-time 0.1)
 
 ;; maybe improve performance on windows
 (setq w32-pipe-read-delay 0)
@@ -22,7 +22,7 @@
 (column-number-mode 1)
 (winner-mode t)
 (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)))
+(setq mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control) . nil)))
 (setq ring-bell-function 'ignore)
 (setq mouse-wheel-progressive-speed nil)
 (setq inhibit-startup-screen t)
@@ -33,7 +33,6 @@
   (setq left-margin-width 2)
   (setq right-margin-width 2)
   (set-window-buffer nil (current-buffer))))
-
 
 ;; UTF-8 please
 (prefer-coding-system 'utf-8)
@@ -156,15 +155,38 @@
   ;; (setq ivy-virtual-abbreviate 'full) ; Show the full virtual file paths
   ;; ;; Do not show "./" and "../" in the counsel-find-file completion list
   (setq ivy-extra-directories nil))
+(use-package ivy-posframe
+  :disabled
+  :after ivy
+  :config
+  (setq ivy-display-function #'ivy-posframe-display-at-point)
+  (ivy-posframe-enable)
+  (setq ivy-posframe-parameters
+      '((left-fringe . 0)
+        (right-fringe . 0))))
 (use-package ivy-prescient
   :after ivy
   :config
   (ivy-prescient-mode))
+(use-package all-the-icons-ivy
+    :after (all-the-icons ivy)
+    :custom (all-the-icons-ivy-file-commands '(counsel-dired-jump
+                                               counsel-find-file
+                                               counsel-file-jump
+                                               counsel-find-library
+                                               counsel-git
+                                               counsel-projectile-find-dir
+                                               counsel-projectile-find-file
+                                               counsel-recentf))
+    :config (all-the-icons-ivy-setup))
 (use-package smartparens
   :diminish smartparens-mode  
   :commands smartparens-mode
   :general
-  ('normal smartparens-mode-map "C-l" 'sp-next-sexp)
+  ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
+  ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
+  ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
+  ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   :init
   (add-hook 'python-mode-hook 'smartparens-mode)
@@ -191,14 +213,16 @@
   :diminish evil-mode
   :defer 1
   :init
-  (setq evil-want-integration nil)
+  (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  :general
+  ("<C-tab>" 'evil-window-next)
+  ("<C-S-iso-left-tab>" 'evil-window-prev)
+  ('normal global "s" 'avy-goto-char-timer)
+  ('normal ";" 'evil-search-forward)
+  ('normal "M-p" 'evil-paste-from-register)
   :config
   (evil-mode 1)
-  (evil-define-key 'normal 'global "s" 'avy-goto-char-timer)
-  ;; (evil-define-key 'normal 'global "j" 'evil-next-visual-line)
-  ;; (evil-define-key 'normal 'global "k" 'evil-previous-visual-line)
-  (evil-define-key 'normal 'global ";" 'evil-search-forward)
   (setq
    lazy-highlight-cleanup nil
    lazy-highlight-max-at-a-time nil
@@ -286,17 +310,18 @@ Version 2017-04-19"
   (setq evil-snipe-spillover-scope 'visible
 	evil-snipe-smart-case t))
 (use-package evil-numbers
-  :after evil org
-  :bind (:map evil-normal-state-map
-              ("C-c =" . evil-numbers/inc-at-pt)
-              ("C-c -" . evil-numbers/dec-at-pt))
-  :diminish evil-numbers-mode)
+  :after evil
+  :general
+  ('normal "C-c =" 'evil-numbers/inc-at-pt)
+  ('normal "C-c -" 'evil-numbers/dec-at-pt)
+  :diminish evil-numbers-modes)
 (use-package evil-multiedit
   :after evil
   :bind (:map evil-normal-state-map
               ("C-;" . evil-multiedit-match-all))
   :config
-  (evil-multiedit-default-keybinds))
+  (evil-multiedit-default-keybinds)
+  (setq evil-multiedit-smart-match-boundaries nil))
 (use-package evil-goggles
   :defer 30
   :after evil
@@ -331,25 +356,24 @@ Version 2017-04-19"
 (use-package evil-mc			; bindings https://github.com/gabesoft/evil-mc/blob/master/evil-mc.el
   :after evil
   :diminish evil-mc-mode
-  :bind (:map evil-normal-state-map
-	      ("C-n" . evil-mc-make-and-goto-next-match)
-	      ("C-p" . evil-mc-make-and-goto-prev-match)
-	      ("C-t" . evil-mc-skip-and-goto-next-match)
-	      ("<escape>" . evil-mc-undo-all-cursors))
+  :general
+  ('normal "g t h" 'evil-mc-make-cursor-here)
+  ('normal "g t q" 'evil-mc-pause-cursors)
+  ('normal "g t r" 'evil-mc-resume-cursors)
+  ('normal "g t n" 'evil-mc-make-and-goto-next-match)
+  ('normal "g t p" 'evil-mc-make-and-goto-prev-match)
+  ('normal "g t N" 'evil-mc-skip-and-goto-next-match)
+  ('normal "g t P" 'evil-mc-skip-and-goto-prev-match)
+  ('normal "g t j" 'evil-mc-make-cursor-move-next-line)
+  ('normal "g t k" 'evil-mc-make-cursor-move-prev-line)
+  ('normal "g t m" 'evil-mc-make-all-cursors)
+  ('normal "<escape>" 'evil-mc-undo-all-cursors)
+  ('global evil-mc-key-map "g r" nil)
   :config
   (global-evil-mc-mode 1)
   (custom-theme-set-faces
    'user
-   '(evil-mc-cursor-bar-face ((t (:background "#c678dd" :foreground "#1B2229" :height 0.9)))))
-  )
-(use-package evil-mc-extras
-  :after evil-mc
-  :bind (:map evil-mc-key-map
-	      ("C-c +" . evil-mc-inc-num-at-each-cursor))
-  :general
-  (general-unbind 'normal 'evil-mc-extras-key-map "g r +" "g r -")
-  :defer 50
-  :config (global-evil-mc-extras-mode 1))
+   '(evil-mc-cursor-bar-face ((t (:background "#c678dd" :foreground "#1B2229" :height 0.9))))))
 (use-package evil-exchange
   :after evil
   :general ('normal "g x" 'evil-exchange)
@@ -357,7 +381,7 @@ Version 2017-04-19"
 (use-package evil-matchit
   :after evil python
   :config
-  (global-evil-matchit-mode 1))
+  (global-evil-matchit-mode 4))
 (use-package multiple-cursors :disabled :defer t)
 (use-package key-chord
   :disabled
@@ -377,7 +401,7 @@ Version 2017-04-19"
   (key-chord-define evil-insert-state-map "[[" "{"))
 (use-package beacon
   :diminish beacon-mode
-  :defer 10
+  :defer 25
   :config
   (setq beacon-blink-delay .5)
   (setq beacon-size 8)
@@ -435,6 +459,8 @@ Version 2017-04-19"
              ("C-c l" . org-store-link)
              ("M-p" . org-previous-item)
              ("M-n" . org-next-item))
+  :general
+  (org-mode-map "<C-tab>" nil)
   :init
   (add-hook 'org-mode-hook 'visual-line-mode)
   :config
@@ -642,9 +668,10 @@ Version 2017-04-19"
 (use-package flyspell
   :diminish flyspell-mode
   :commands flyspell-mode
-  :defer 30
-  :init
-  (add-hook 'org-mode-hook 'flyspell-mode)
+  :hook (('LaTeX-mode . flyspell-mode)
+	 ('org-mode . flyspell-mode))
+  :general
+  ('normal flyspell-mode-map "C-," 'flyspell-goto-next-error)
   :config
   (setq ispell-program-name "hunspell")
   (add-to-list 'ispell-extra-args "--sug-mode=ultra")
@@ -652,15 +679,9 @@ Version 2017-04-19"
   (ispell-set-spellchecker-params)
   (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
 (use-package flyspell-lazy
-  :after flyspell
-  :defer 30
-  :init
-  (add-hook 'LaTeX-mode-hook 'flyspell-lazy-mode)
-  (add-hook 'org-mode-hook 'flyspell-lazy-mode)
-  ;; :config
-  ;; (flyspell-lazy-mode 1)
-  ;; (flyspell-mode 1))
-  )
+  :commands flyspell-lazy-mode
+  :hook ((LaTeX-mode . flyspell-lazy-mode)
+	 (org-mode . flyspell-lazy-mode)))
 (use-package flyspell-correct-ivy
   :demand t
   :after flyspell-lazy
@@ -673,12 +694,15 @@ Version 2017-04-19"
   :commands company-mode
   :hook ((python-mode . company-mode)
 	 (LaTeX-mode . company-mode)
+	 (emacs-lisp-mode . company-mode)
 	 (org-mode . company-mode))
   :config
   (setq company-idle-delay 0.1
         company-echo-delay 0 ; remove annoying blinking)
-        company-minimum-prefix-length 2
-        company-show-numbers t 
+        company-minimum-prefix-length 1
+        company-show-numbers t
+	company-tooltip-limit 10
+	company-transformers nil
         company-require-match 'never  ; 'company-explicit-action-p
 	company-selection-wrap-around t
         company-tooltip-flip-when-above t
@@ -689,6 +713,9 @@ Version 2017-04-19"
       '(company-pseudo-tooltip-unless-just-one-frontend
         company-preview-frontend
         company-echo-metadata-frontend)))
+(use-package company-box
+  :disabled
+  :hook (company-mode . company-box-mode))
 (use-package company-prescient
   :after company
   :config
@@ -706,6 +733,8 @@ Version 2017-04-19"
   :ensure auctex
   :mode ("\\.tex\\'" . latex-mode)
   :bind ("C-S-f" . forward-whitespace)
+  :general
+  ('normal "<SPC> v" 'TeX-view)
   :init
   (add-hook 'LaTeX-mode-hook
             (lambda ()
@@ -802,7 +831,8 @@ Version 2017-04-19"
       )))
 (use-package reftex
   :after latex
-  :bind ("C-c =" . reftex-toc)
+  :commands reftex-toc
+  :general ('normal "<SPC> =" 'reftex-toc)
   :config
   (setq reftex-cite-prompt-optional-args t) ; Prompt for empty optional arguments in cite
   ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
@@ -839,7 +869,7 @@ Version 2017-04-19"
   ;; ;;open pdf with external viwer foxit
   (setq bibtex-completion-pdf-open-function
         (lambda (fpath)
-          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe" nil 0 nil
+          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/Foxit Reader/FoxitReader.exe" nil 0 nil
 			fpath)))
   
 ;; (setq bibtex-completion-pdf-open-function
@@ -929,9 +959,9 @@ Version 2017-04-19"
           treemacs-file-event-delay           5000
           treemacs-file-follow-delay          0.2
           treemacs-follow-after-init          t
-          treemacs-follow-recenter-distance   0.1
+          treemacs-follow-recenter-distance   0.2
           treemacs-git-command-pipe           ""
-          treemacs-goto-tag-strategy          'refetch-index
+          treemacs-goto-tag-strategy'refetch-index
           treemacs-indentation                1
           treemacs-indentation-string         " "
           treemacs-is-never-other-window      nil
@@ -950,11 +980,11 @@ Version 2017-04-19"
           treemacs-space-between-root-nodes   t
           treemacs-tag-follow-cleanup         t
           treemacs-tag-follow-delay           1.5
-          treemacs-width                      25)
+          treemacs-width                      40)
 
     ;; The default width and height of the icons is 22 pixels. If you are
     ;; using a Hi-DPI display, uncomment this to double the icon size.
-    ;;(treemacs-resize-icons 44)
+    (treemacs-resize-icons 12)
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode t)
@@ -992,7 +1022,7 @@ Version 2017-04-19"
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t
 	doom-treemacs-use-generic-icons nil) ; if nil, italics is universally disabled
-  (load-theme 'doom-Iosvkem t)
+  (load-theme 'doom-nord t)
   (doom-themes-org-config)
   (doom-themes-treemacs-config)
 
@@ -1005,7 +1035,6 @@ Version 2017-04-19"
   )
 (use-package treemacs-icons-dired
   :after treemacs dired
-  :ensure t
   :config (treemacs-icons-dired-mode))
 (use-package doom-modeline
   :hook (after-init . doom-modeline-init)
@@ -1014,34 +1043,54 @@ Version 2017-04-19"
   (setq inhibit-compacting-font-caches t)
   (setq doom-modeline-icon t))
 (use-package lsp-mode
-  :disabled
-  :commands lsp)
-(use-package lsp-python
-  :disabled
-  :hook (python-mode . lsp))
+  :commands lsp
+  :general
+  ('normal "K" 'lsp-describe-thing-at-point)
+  ('normal "g d" 'lsp-find-definition)
+  ('normal "g e" 'lsp-find-references)
+  :hook (python-mode . lsp)
+  :config
+  (setq lsp-highlight-symbol-at-point nil))
 (use-package lsp-ui
   :disabled
   :after lsp-mode
-  :hook (lsp-mode . lsp-ui-mode))
+  :commands lsp-ui-mode
+  :commands
+  (setq lsp-ui-doc-enable nil))
 (use-package company-lsp
-  :disabled
   :after lsp-mode
   :config
-  (push 'company-lsp company-backends))
+  (push 'company-lsp company-backends)
+  (setq company-lsp-enable-snippet nil))
+(use-package flymake
+  :commands flymake-mode
+  :general
+  ('normal "C-," 'flymake-goto-next-error)
+  :config
+  (setq flymake-max-parallel-syntax-checks 2
+	flymake-no-changes-timeout 10
+	flymake-number-of-errors-to-display 2))
+(use-package flymake-diagnostic-at-point
+  :after flymake
+  :config
+  (add-hook 'flymake-mode-hook #'flymake-diagnostic-at-point-mode)
+  (setq flymake-diagnostic-at-point-timer-delay 2))
 (use-package dap-mode
-  :disabled
   :after lsp-mode
   :commands dap-debug
+  :hook ((python-mode . dap-ui-mode)
+	 (python-mode . dap-mode))
   :config
   (require 'dap-python))
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
+  :hook (python-mode . toggle-truncate-lines)
   :config
   ;; dont guess the indent offset
-  (setq python-indent-guess-indent-offset nil)
-  (setq company-minimum-prefix-length 1))
+  (setq python-indent-guess-indent-offset nil))
 (use-package anaconda-mode
+  :disabled
   :after python
   :general
   ('normal "g d" 'anaconda-mode-find-definitions)
@@ -1054,7 +1103,9 @@ Version 2017-04-19"
   :after company anaconda-mode
   :config
   (use-package rx) 			; https://github.com/proofit404/company-anaconda/issues/29https://github.com/proofit404/company-anaconda/issues/29
-  (push 'company-anaconda company-backends))
+  (push 'company-anaconda company-backends)
+  (setq company-minimum-prefix-length 1
+	company-idle-delay 0.1))
 (use-package highlight-symbol
   :after python anaconda-mode
   :hook (python-mode . highlight-symbol-mode))
@@ -1063,7 +1114,7 @@ Version 2017-04-19"
   :diminish highlight-indent-guides-mode
   :init
   (add-hook 'python-mode-hook 'highlight-indent-guides-mode)
-  (add-hook 'lisp-interaction-mode-hook 'highlight-indent-guides-mode)
+  (add-hook 'lisp-mode-hook 'highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character))
 (use-package adaptive-wrap
@@ -1215,15 +1266,19 @@ Version 2017-04-19"
   :bind ("C-x C-j" . goto-last-change))
 (use-package outline-mode
   :ensure nil
-  :hook (python-mode . outline-minor-mode)
+  :hook ((python-mode . outline-minor-mode)
+	 (LaTeX-mode . outline-minor-mode)
+	 (emacs-lisp-mode . outline-minor-mode))
   :commands outline-minor-mode)
 (use-package realgud 
+  :disabled
   :commands realgud:ipdb)
 (use-package avy
   :diminish avy-mode
-  :bind (("C-x C-SPC" . avy-goto-char)
-         ("C-x C-x" . avy-goto-word-or-subword-1)
+  :bind (("C-x C-x" . avy-goto-word-or-subword-1)
          ("C-x C-l" . avy-goto-line))
+  :general
+  ('evil-treemacs-state-map "g a" 'avy-goto-char-timer)
   :config
   (setq avy-timeout-seconds 0.4))
 (use-package counsel-projectile
@@ -1450,7 +1505,7 @@ month and day): " (unless (string= i "")
 (global-auto-revert-mode)
 
 ;; Then reset it as late as possible; these are the reasonable defaults I use.
-(setq gc-cons-threshold 16777216 
+(setq gc-cons-threshold 100000000
       gc-cons-percentage 0.1)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
