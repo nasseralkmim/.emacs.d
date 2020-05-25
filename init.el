@@ -1,13 +1,15 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-;; increase gc-cons threshold to decrease the load and compile time
-(setq gc-cons-threshold 600000000
-      gc-cons-percentage 0.6
-      ;; gc-cons-threshold (* 1024 1024 1024) ;1G
-      jit-lock-stealth-time 0.1
-      jit-lock-chunk-size 100
-      jit-lock-defer-time 0.1)
+
+;;; Bootstrap
+;; Speed up bootstrapping
+(setq gc-cons-threshold 402653184
+      gc-cons-percentage 0.6)
+(add-hook 'after-init-hook `(lambda ()
+                              (setq gc-cons-threshold 800000
+                                    gc-cons-percentage 0.1)
+                              (garbage-collect)) t)
 
 ;; maybe improve performance on windows
 (setq w32-pipe-read-delay 0)
@@ -21,8 +23,10 @@
 (global-hl-line-mode 1)
 (column-number-mode 1)
 (winner-mode t)
+
+
 (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
-(setq mouse-wheel-scroll-amount '(5 ((shift) . 1) ((control) . nil)))
+(setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
 (setq ring-bell-function 'ignore)
 (setq mouse-wheel-progressive-speed nil)
 (setq inhibit-startup-screen t)
@@ -52,7 +56,9 @@
   (unless (file-directory-p package-user-dir)
     (make-directory package-user-dir t)))
 
-(setq use-package-verbose t
+(setq use-package-verbose t		; report details
+      use-package-expand-minimally t	; expanded coded as minimal as possible
+      use-package-enable-imenu-support t ; imenu can find definitions
       use-package-always-defer nil      ;I'm not used to that
       use-package-minimum-reported-time 0.01)
 
@@ -81,9 +87,12 @@
   (require 'use-package)
   (setq use-package-always-ensure t))
 
+
+;; (set-face-attribute 'default nil :height 100)
+
 ;; set a default font Iosevka, Hack, PragmataPro
 (set-face-attribute 'default nil
-                    :family "Iosevka ss05"
+                    :family "Iosevka sparkle"
 		    ;; :family "IBM Plex Mono Medium"
                     :height 90
                     :weight 'normal
@@ -106,12 +115,16 @@
 ;; Answering just 'y' or 'n' will do
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; Turn off the blinking cursor
-(blink-cursor-mode -1)
+(blink-cursor-mode 1)
 
 ;; Don't beep at me
 (setq visible-bell t)
 
+(use-package benchmark-init
+  :disabled
+  :config
+  ;; To disable collection of benchmark data after init is done.
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 (use-package general)
 (use-package diminish :defer t)
 (use-package color-identifiers-mode
@@ -123,18 +136,25 @@
   (setq recentf-max-saved-items 500
           recentf-max-menu-items 15
           recentf-auto-cleanup 60))
+(use-package deft
+  :general ('normal "C-c d" 'deft)
+  :config (setq deft-directory "~/OneDrive/Knowledge/ROAM"))
+(use-package swiper
+  :bind (("C-S-s" . swiper-isearch)
+	 ("C-s" . swiper)))
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
-         ("C-s" . counsel-grep-or-swiper)
          ("C-h v" . counsel-describe-variable)
          ("C-h f" . counsel-describe-function)
          ("C-x C-f" . counsel-find-file))
+  :general
+  ('normal org-mode-map "C-c C-j" 'counsel-org-goto)
   :config
   (use-package smex :ensure t))
 (use-package ivy
   :diminish ivy-mode
-  :bind (("C-x b" . ivy-switch-buffer)
-         :map ivy-minibuffer-map
+  :general ('normal :prefix "SPC" "x b" 'ivy-switch-buffer)
+  :bind (:map ivy-minibuffer-map
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line))
   :config
@@ -155,15 +175,10 @@
   ;; (setq ivy-virtual-abbreviate 'full) ; Show the full virtual file paths
   ;; ;; Do not show "./" and "../" in the counsel-find-file completion list
   (setq ivy-extra-directories nil))
-(use-package ivy-posframe
-  :disabled
+(use-package ivy-rich
   :after ivy
   :config
-  (setq ivy-display-function #'ivy-posframe-display-at-point)
-  (ivy-posframe-enable)
-  (setq ivy-posframe-parameters
-      '((left-fringe . 0)
-        (right-fringe . 0))))
+  (ivy-rich-mode 1))
 (use-package ivy-prescient
   :after ivy
   :config
@@ -183,13 +198,14 @@
   :diminish smartparens-mode  
   :commands smartparens-mode
   :general
-  ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
-  ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
-  ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
-  ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
+  ;; ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
+  ;; ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
+  ;; ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
+  ;; ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   :init
   (add-hook 'python-mode-hook 'smartparens-mode)
+  (add-hook 'c++-mode-hook 'smartparens-mode)
   (add-hook 'lisp-interaction-mode-hook 'smartparens-mode)
   (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
   (add-hook 'LaTeX-mode-hook 'smartparens-mode)
@@ -210,8 +226,8 @@
   :disabled
   :hook (python-mode . flycheck-mode))
 (use-package evil
-  :diminish evil-mode
   :defer 1
+  :diminish evil-mode
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -221,21 +237,14 @@
   ('normal global "s" 'avy-goto-char-timer)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
+  ('normal :prefix "SPC" "l" 'evil-last-non-blank)
+  ('normal :prefix "SPC" "h" 'evil-first-non-blank)
   :config
   (evil-mode 1)
   (setq
    lazy-highlight-cleanup nil
    lazy-highlight-max-at-a-time nil
    lazy-highlight-initial-delay 0))
-(use-package evil-escape
-  :after evil
-  :diminish evil-escape-mode
-  :disabled
-  :config
-  (evil-escape-mode)
-  (setq-default evil-escape-key-sequence "jk")
-  (setq-default evil-escape-delay 0.3)
-  (setq-default evil-escape-unordered-key-sequence t))
 (use-package evil-easymotion
   :after evil
   :config
@@ -249,26 +258,24 @@
       "s" 'counsel-imenu
       "q" 'counsel-org-goto-all
       "a" 'evil-append-line
-      "i" 'evil-insert-line
-      "h" 'evil-first-non-blank
-      "l" 'evil-last-non-blank
       "d" 'downcase-word
-      "c" 'capitalize-word
       "u" 'upcase-word
-      "t" 'xah-toggle-letter-case
+      "t" 'org-todo
       "m" 'cfw:open-org-calendar
       "p" 'evil-jump-item
       "g c" 'my-magit-stage-all-and-commit
       "SPC" 'org-agenda-show-and-scroll-up
       "p" 'counsel-evil-registers
-      "x n s" 'org-narrow-to-subtree
-      "x n w" 'widen
-      "x c v" 'org-toggle-inline-images
-      "x c l" 'org-toggle-latex-fragment
-      "x c i" 'org-clock-in
-      "x c o" 'org-clock-out
-      "x c x" 'org-clock-in-last
-      "<tab>" 'next-multiframe-window)
+      "z s" 'org-narrow-to-subtree
+      "z w" 'widen
+      "x v" 'org-toggle-inline-images
+      "x l" 'org-toggle-latex-fragment
+      "x j" 'org-clock-goto
+      "x u" 'outline-up-heading
+      "x x" 'org-clock-in-last
+      "<tab>" 'next-multiframe-window
+      "," 'flyspell-correct-at-point
+      "x s" 'save-buffer)
 
   ;; function to toggle case
   (defun xah-toggle-letter-case ()
@@ -315,13 +322,6 @@ Version 2017-04-19"
   ('normal "C-c =" 'evil-numbers/inc-at-pt)
   ('normal "C-c -" 'evil-numbers/dec-at-pt)
   :diminish evil-numbers-modes)
-(use-package evil-multiedit
-  :after evil
-  :bind (:map evil-normal-state-map
-              ("C-;" . evil-multiedit-match-all))
-  :config
-  (evil-multiedit-default-keybinds)
-  (setq evil-multiedit-smart-match-boundaries nil))
 (use-package evil-goggles
   :defer 30
   :after evil
@@ -336,7 +336,7 @@ Version 2017-04-19"
   :config
   (setq evil-collection-setup-minibuffer t)
   (setq evil-collection-outline-bind-tab-p nil)
-  (delete 'paren evil-collection-mode-list)
+  ;; (delete 'paren evil-collection-mode-list)
   (evil-collection-init))
 (use-package evil-org
   :diminish evil-org-mode
@@ -353,27 +353,6 @@ Version 2017-04-19"
   :after evil
   :config
   (global-evil-surround-mode 1))
-(use-package evil-mc			; bindings https://github.com/gabesoft/evil-mc/blob/master/evil-mc.el
-  :after evil
-  :diminish evil-mc-mode
-  :general
-  ('normal "g t h" 'evil-mc-make-cursor-here)
-  ('normal "g t q" 'evil-mc-pause-cursors)
-  ('normal "g t r" 'evil-mc-resume-cursors)
-  ('normal "g t n" 'evil-mc-make-and-goto-next-match)
-  ('normal "g t p" 'evil-mc-make-and-goto-prev-match)
-  ('normal "g t N" 'evil-mc-skip-and-goto-next-match)
-  ('normal "g t P" 'evil-mc-skip-and-goto-prev-match)
-  ('normal "g t j" 'evil-mc-make-cursor-move-next-line)
-  ('normal "g t k" 'evil-mc-make-cursor-move-prev-line)
-  ('normal "g t m" 'evil-mc-make-all-cursors)
-  ('normal "<escape>" 'evil-mc-undo-all-cursors)
-  ('global evil-mc-key-map "g r" nil)
-  :config
-  (global-evil-mc-mode 1)
-  (custom-theme-set-faces
-   'user
-   '(evil-mc-cursor-bar-face ((t (:background "#c678dd" :foreground "#1B2229" :height 0.9))))))
 (use-package evil-exchange
   :after evil
   :general ('normal "g x" 'evil-exchange)
@@ -382,23 +361,6 @@ Version 2017-04-19"
   :after evil python
   :config
   (global-evil-matchit-mode 4))
-(use-package multiple-cursors :disabled :defer t)
-(use-package key-chord
-  :disabled
-  :after evil
-  :defer 10
-  :config
-  (key-chord-mode 1)
-  (setq key-chord-one-key-delay 0.5) 
-  (key-chord-define evil-insert-state-map "]]" "\\")
-  (key-chord-define evil-insert-state-map ";;" "/")
-  (key-chord-define evil-insert-state-map "::" "?")
-  (key-chord-define evil-insert-state-map "}}" "|")
-  (key-chord-define evil-insert-state-map "==" "+")
-  (key-chord-define evil-insert-state-map "99" "(")
-  (key-chord-define evil-insert-state-map "--" "_")
-  (key-chord-define evil-insert-state-map "''" "^")
-  (key-chord-define evil-insert-state-map "[[" "{"))
 (use-package beacon
   :diminish beacon-mode
   :defer 25
@@ -409,13 +371,15 @@ Version 2017-04-19"
   (setq beacon-blink-duration .5)
   (setq beacon-blink-when-window-scrolls nil)
   (beacon-mode 1))
-(use-package undo-tree
-  :diminish (undo-tree-mode)
-  :defer t)
-(use-package eldoc
-  :ensure nil
-  :defer t
-  :diminish (eldoc-mode))
+(use-package undo-propose
+  :after evil
+  :general
+  ('normal 'global "C-c u" 'undo-propose)
+  ('normal 'global "u" 'undo-only)
+  :init
+  (global-undo-tree-mode -1)
+  :config
+  (setq undo-propose-pop-to-buffer t))
 (use-package magit
   :bind ("C-c g" . magit-status)
   :commands my-magit-stage-all-and-commit
@@ -443,22 +407,21 @@ Version 2017-04-19"
     (jump-to-register :magit-fullscreen)))
 (use-package evil-magit
   :after magit evil)
-(use-package iedit
-  :defer t)
 (use-package rainbow-mode
   :defer 5
   :diminish rainbow-mode
   :config (rainbow-mode))
 (use-package org
   :ensure org-plus-contrib
+  :defer 2
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :bind(("C-c c" . org-capture)
         ("C-c a" . org-agenda)
-        :map org-mode-map
-             ("C-c l" . org-store-link)
-             ("M-p" . org-previous-item)
-             ("M-n" . org-next-item))
+	:map org-mode-map
+	("C-c l" . org-store-link)
+	("M-p" . org-previous-item)
+	("M-n" . org-next-item))
   :general
   (org-mode-map "<C-tab>" nil)
   :init
@@ -479,7 +442,7 @@ Version 2017-04-19"
 	org-edit-src-content-indentation 0
 	org-support-shift-select t
 	line-spacing '0.1 
-	org-ellipsis "…"
+	;; org-ellipsis "…"
 	org-modules '(org-habit)
 	org-cycle-include-plain-lists t
 	org-image-actual-width nil
@@ -493,23 +456,32 @@ Version 2017-04-19"
 	org-fontify-quote-and-verse-blocks t)
 	
   (set-face-attribute 'org-ellipsis nil :underline nil)
-  (eval-after-load 'org
-    '(org-load-modules-maybe t))
+  ;; (eval-after-load 'org
+  ;;   '(org-load-modules-maybe t)) ;; I think this makes org load slowly
   
   (setq org-file-apps '((auto-mode . emacs)
 			("\\.mm\\'" . default)
 			("\\.x?html?\\'" . default)
 			("\\.pdf::\\([0-9]+\\)\\'" . "sumatrapdf \"%s\" -page %1")
-			("\\.pdf\\'" . "\"C:/Program Files (x86)/Foxit Software/Foxit Reader/FoxitReader.exe\" \"%s\" ")
+			("\\.pdf\\'" . "\"c:/Program Files (x86)/Foxit Software/Foxit Reader/Foxit Reader/FoxitReader.exe\" \"%s\" ")
 			;; ("\\.pdf\\'" . default)
 			))
   
   ;; (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
   ;; (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
   ;; org markups meta line --> change to grey100 when presenting
-  (set-face-attribute 'org-meta-line nil :height 0.7)
-  (set-face-attribute 'org-special-keyword nil :height  0.7)
-  (setq org-todo-keywords '((sequence "TODO(t)" "NEXT(n)" "REVW" "|" "DONE(d)")))
+  ;; (set-face-attribute 'org-meta-line nil :height 0.6)
+  ;; (set-face-attribute 'org-drawer nil :height 0.6)
+  ;; (set-face-attribute 'org-date nil :height 0.6)
+  ;; (set-face-attribute 'org-special-keyword nil :height  0.6)
+
+  (custom-set-variables
+   ;; here there is customization for other variables 
+   '(org-priority-faces (quote ((65 . "LightPink") (66 . "OrangeRed") (67 . "IndianRed")))))
+
+  (setq org-todo-keywords '(
+			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
+			    (sequence "R1(!)" "R2(!)" "R3(!)" "R4(!)" "R5(!)" "R6(!)")))
   ;; ;; change todo faces
   (setq org-todo-keyword-faces 
         '(("NEXT" :foreground "#edd400" :weight bold)
@@ -521,9 +493,11 @@ Version 2017-04-19"
    'org-babel-load-languages
    '((python . t)
      (emacs-lisp . t)
+     (C . t)
      (latex . t)
-     (plantuml . t)
      (shell . t)))
+
+  (setq org-babel-C++-compiler "clang")
 
   ;; plantuml jar file path
   (setq org-plantuml-jar-path
@@ -531,6 +505,9 @@ Version 2017-04-19"
   (setq org-babel-default-header-args:python
         '((:exports . "both")
           (:results . "output")))
+  (setq org-babel-default-header-args:C++
+	'((:exports . "both")
+	  (:results . "output")))
 
   ;; Org babel and source blocks
   (setq org-src-fontify-natively t
@@ -555,7 +532,7 @@ Version 2017-04-19"
 	org-agenda-skip-deadline-if-done t
 	org-agenda-skip-timestamp-if-done nil
 	org-agenda-use-time-grid nil
-	org-scheduled-past-days 0)	; don't show delayed task on other days
+	org-scheduled-past-days 1000)	; don't show delayed task on other days
 
   (setq org-imenu-depth 2)
   (setq org-default-notes-file "~/OneDrive/Org/notes.org")
@@ -565,7 +542,7 @@ Version 2017-04-19"
   ;; start agenda on current day
   (setq org-agenda-start-on-weekday 1)
   ;; min and max percentages of agenda window height
-  (setq org-agenda-window-frame-fractions '(0 . 1))
+  ;; (setq org-agenda-window-frame-fractions '(0 . 1))
 
   ;; Days on the overview display
   (setq org-agenda-span 1)
@@ -601,11 +578,26 @@ Version 2017-04-19"
            "* %T \n\n%?")))
   (require 'org-depend)
   )
-(use-package org-timeline
+(use-package org-cliplink
   :after org
-  :disabled
+  :bind (:map org-mode-map
+	      ("C-x p i" . 'org-cliplink)))
+(use-package crux
+  :bind (([remap move-beginning-of-line] . crux-move-beginning-of-line)
+	 ("C-c o" . crux-open-with))
+  :general ('normal :prefix "SPC" "c" 'crux-capitalize-region))
+(use-package org-roam-server
+  :hook (org-roam-mode . org-roam-server-mode))
+(use-package org-roam
+  :custom (org-roam-directory "~/OneDrive/Knowledge/ROAM")
+  :general
+  ('normal :keymap 'org-roam-mode-map :prefix "SPC" "n f" 'org-roam-find-file)
+  ('normal :keymap 'org-roam-mode-map :prefix "SPC" "n l" 'org-roam)
+  (:states '(normal visual) :keymaps 'org-mode-map :prefix "SPC" "n i" 'org-roam-insert)
+  ('insert :keymap 'org-mode-map "C-c n i" 'org-roam-insert)
   :config
-  (add-hook 'org-agenda-finalize-hook 'org-timeline-insert-timeline :append))
+  (org-roam-mode +1)
+  (setq org-roam-completion-system 'ivy))
 (use-package org
   :bind ("C-c y" . my/org-insert-clipboard)
   :config
@@ -638,6 +630,9 @@ Version 2017-04-19"
 (use-package org-clock
   :after org
   :ensure nil
+  :general
+  ('normal 'org-mode-map :prefix "SPC" "x i" 'org-clock-in)
+  ('normal 'org-mode-map :prefix "SPC" "x o" 'org-clock-out)
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
   (setq org-clock-persistence-insinuate t
@@ -692,30 +687,30 @@ Version 2017-04-19"
 (use-package company
   :diminish company-mode
   :commands company-mode
-  :hook ((python-mode . company-mode)
+  :hook (
+	 ;; (python-mode . company-mode)
 	 (LaTeX-mode . company-mode)
+	 (c++-mode . company-mode)
 	 (emacs-lisp-mode . company-mode)
 	 (org-mode . company-mode))
   :config
-  (setq company-idle-delay 0.1
-        company-echo-delay 0 ; remove annoying blinking)
-        company-minimum-prefix-length 1
-        company-show-numbers t
-	company-tooltip-limit 10
-	company-transformers nil
-        company-require-match 'never  ; 'company-explicit-action-p
-	company-selection-wrap-around t
-        company-tooltip-flip-when-above t
-        company-dabbrev-ignore-case nil
-        company-dabbrev-downcase nil)
-  ;; display inline
-  (setq company-frontends
-      '(company-pseudo-tooltip-unless-just-one-frontend
-        company-preview-frontend
-        company-echo-metadata-frontend)))
-(use-package company-box
-  :disabled
-  :hook (company-mode . company-box-mode))
+  ;; (setq company-idle-delay 0.2
+  ;;       company-echo-delay 0 ; remove annoying blinking
+  ;;       company-minimum-prefix-length 2
+  ;;       company-show-numbers t
+  ;; 	company-tooltip-limit 5
+  ;; 	company-transformers nil
+  ;;       company-require-match 'never  ; 'company-explicit-action-p
+  ;; 	company-selection-wrap-around t
+  ;;       company-tooltip-flip-when-above t
+  ;;       company-dabbrev-ignore-case 'keep-prefix 
+  ;;       company-dabbrev-downcase 'case-replace)
+  ;; ;; display inline
+  ;; (setq company-frontends
+  ;;     '(company-pseudo-tooltip-unless-just-one-frontend
+  ;;       company-preview-frontend
+  ;;       company-echo-metadata-frontend))
+  )
 (use-package company-prescient
   :after company
   :config
@@ -766,42 +761,26 @@ Version 2017-04-19"
 
   ;; jump to source
   (setq TeX-source-correlate-mode t)
-  
-  ;; Use pdf tools
-  ;;
-  ;;
-  ;; add "PDF Tools" to the list of possible PDF tools  
-;;   (unless (assoc "PDF Tools" TeX-view-program-list  
-;; 		 (add-to-list 'TeX-view-program-list  
-;; 			      '("PDF Tools" TeX-pdf-tools-sync-view)))
-;;     (add-to-list 'TeX-view-program-selection  
-;; 		 '(output-pdf "PDF Tools")))
-  
-;;     (setq TeX-view-program-selection '((output-pdf "PDF Tools")))
-;;     (evil-define-key 'normal 'pdf-view-mode-map (kbd "M-<left>") 'pdf-history-backward)
-;;     (evil-define-key 'normal 'pdf-view-mode-map (kbd "C-<wheel-up>") 'pdf-view-enlarge)
-;;     (evil-define-key 'normal 'pdf-view-mode-map (kbd "C-<wheel-down>") 'pdf-view-shrink)
-;;     (evil-set-initial-state 'pdf-view-mode 'emacs)
-;; (add-hook 'pdf-view-mode-hook
-;;   (lambda ()
-;;     (set (make-local-variable 'evil-emacs-state-cursor) (list nil))))
-  
-    ;; Update PDF buffers after successful LaTeX runs  
-    (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
-              'TeX-revert-document-buffer)
-  
-  ;; use sumatra to view pdf
-  ;;
-  ;; 
-  ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
-  ;; -set-color-range #fdf4c1 #282828
-  (setq TeX-view-program-list
-        '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
-                          (mode-io-correlate " -forward-search %b %n ") " %o"))))
-  (eval-after-load 'tex
-    '(progn
-       (assq-delete-all 'output-pdf TeX-view-program-selection)
-       (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))))
+
+  ;; Update PDF buffers after successful LaTeX runs  
+  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
+	    'TeX-revert-document-buffer)
+
+    ;; use sumatra to view pdf
+    ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
+    ;; -set-color-range #fdf4c1 #282828
+  (when (eq system-type 'windows-nt)
+   (setq TeX-view-program-list
+	 '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+			   (mode-io-correlate " -forward-search %b %n ") " %o"))))
+   (assq-delete-all 'output-pdf TeX-view-program-selection)
+   (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))
+   )
+  (when (eq system-type 'gnu/linux)
+    ;; (setq TeX-view-program-list '(("evince" "evince --page-index=%(outpage) %o")))
+    (assq-delete-all 'output-pdf TeX-view-program-selection)
+    (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
+    )
   
   ;; Custom functions
   ;;
@@ -841,48 +820,39 @@ Version 2017-04-19"
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:"))
   (setq reftex-default-bibliography "C:/Users/nasse/OneDrive/Bibliography/references-zot.bib"))
-(use-package company-reftex
-  :after latex company
-  :disabled				; it gives me an error, try it later again
-  :config
-  (add-to-list 'company-backends 'company-reftex))
 (use-package company-bibtex
   :after latex company
   :config
   (add-to-list 'company-backends 'company-bibtex)
   (setq company-bibtex-bibliography
-	'("C:/Users/nasse/OneDrive/Bibliography/references-zot.bib")))
+	'("~/OneDrive/Bibliography/references-zot.bib")))
 (use-package ivy-bibtex
   :bind ("C-c b b" . ivy-bibtex)
   :config
   (setq ivy-use-virtual-buffers t)
   (setq ivy-count-format "(%d/%d) ")
   (setq bibtex-completion-bibliography 
-        '("C:/Users/nasse/OneDrive/Bibliography/references-zot.bib"))
-  (setq bibtex-completion-library-path 
-        '("C:/Users/nasse/OneDrive/Bibliography/references-pdf"
-          "C:/Users/nasse/OneDrive/Bibliography/references-etc"))
+        '("~/OneDrive/Bibliography/references-zot.bib"))
+  ;; (setq bibtex-completion-library-path 
+  ;;       '("c:/Users/nasse/OneDrive/Bibliography/references-pdf"
+  ;;         "c:/Users/nasse/OneDrive/Bibliography/references-etc"))
 
   ;; using bibtex path reference to pdf file
   (setq bibtex-completion-pdf-field "File")
-
-  ;; ;;open pdf with external viwer foxit
-  (setq bibtex-completion-pdf-open-function
-        (lambda (fpath)
-          (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/Foxit Reader/FoxitReader.exe" nil 0 nil
-			fpath)))
   
-;; (setq bibtex-completion-pdf-open-function
+  (if (eq system-type 'windows-nt)
+   ;; ;;open pdf with external viwer foxit
+   (setq bibtex-completion-pdf-open-function
+         (lambda (fpath)
+           (call-process "C:/Program Files (x86)/Foxit Software/Foxit Reader/Foxit Reader/FoxitReader.exe" nil 0 nil
+			 fpath)))
+   )
+  
+  ;; (setq bibtex-completion-pdf-open-function
   ;;       (lambda (fpath)
   ;;         (call-process "SumatraPDF" nil 0 nil fpath)))
 
   (setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation))
-(use-package rainbow-delimiters
-  :commands rainbow-delimiters-mode
-  :init
-  (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'LaTex-mode-hook #'rainbow-delimiters-mode)
-  (add-hook 'org-mode-hook 'rainbow-delimiters-mode))
 (use-package dired
   :ensure nil
   :commands dired
@@ -894,57 +864,7 @@ Version 2017-04-19"
     "to be run as hook for `dired-mode'."
     (dired-hide-details-mode 1))
   (add-hook 'dired-mode-hook 'xah-dired-mode-setup))
-(use-package spacemacs-common
-  :disabled
-  :ensure spacemacs-theme
-  :config
-  (load-theme 'spacemacs-dark t)
-  (setq spacemacs-theme-keyword-italic t
-	spacemacs-theme-comment-italic t
-	spacemacs-theme-org-bold t
-	spacemacs-theme-org-height nil
-	spacemacs-theme-org-agenda-height nil
-	spacemacs-theme-org-highlight nil)
-  (custom-theme-set-faces
-   'user
-     `(org-level-5 ((t (:height 0.95 :slant italic))))
-     `(org-level-7 ((t (:height 0.9 :slant italic))))  
-     `(org-level-9 ((t (:height 0.9 :slant italic))))  
-     `(org-table ((t (:family "Monospace Serif" :height 0.8))))
-     `(org-formula ((t (:family "Monospace Serif" :height 0.8 :foreground "chocolate"))))))
-(use-package darktooth-theme
-  :disabled
-  :config
-  (load-theme 'darktooth t))
-(use-package solarized-theme
-  :disabled
-  :config
-  (setq solarized-use-variable-pitch nil)
-  (setq solarized-high-contrast-mode-line nil)
-  (setq solarized-use-less-bold nil)
-  (setq solarized-use-more-italic t)
-  (setq solarized-emphasize-indicators nil)
-  (setq solarized-scale-org-headlines nil)
-  (load-theme 'solarized-dark t))
-(use-package challenger-deep-theme
-  :disabled
-  :config
-  (load-theme 'challenger-deep t)
-  (custom-theme-set-faces
-   'user
-     `(org-level-5 ((t (:height 0.95 :slant italic))))
-     `(org-level-7 ((t (:height 0.9 :slant italic))))  
-     `(org-level-9 ((t (:height 0.9 :slant italic))))  
-     `(org-table ((t (:family "Monospace Serif" :height 0.8))))
-     `(org-formula ((t (:family "Monospace Serif" :height 0.8))))))
-(use-package smart-mode-line
-  :disabled
-  :config
-  (setq sml/name-width 20)
-  (setq sml/shorten-directory t)
-  (setq sml/theme 'respectful)
-  (setq after-save-hook nil)
-  (sml/setup))
+
 (use-package treemacs
   :ensure t
   :defer t
@@ -954,40 +874,41 @@ Version 2017-04-19"
   :config
   (progn
     (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-          treemacs-deferred-git-apply-delay   0.5
-          treemacs-display-in-side-window     t
-          treemacs-file-event-delay           5000
-          treemacs-file-follow-delay          0.2
-          treemacs-follow-after-init          t
-          treemacs-follow-recenter-distance   0.2
-          treemacs-git-command-pipe           ""
-          treemacs-goto-tag-strategy'refetch-index
-          treemacs-indentation                1
-          treemacs-indentation-string         " "
-          treemacs-is-never-other-window      nil
-          treemacs-max-git-entries            5000
-          treemacs-no-png-images              nil
-          treemacs-no-delete-other-windows    t
-          treemacs-project-follow-cleanup     nil
-          treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-          treemacs-recenter-after-file-follow t
-          treemacs-recenter-after-tag-follow  nil
-          treemacs-show-cursor                nil
-          treemacs-show-hidden-files          t
-          treemacs-silent-filewatch           nil
-          treemacs-silent-refresh             nil
-          treemacs-sorting                    'alphabetic-desc
-          treemacs-space-between-root-nodes   t
-          treemacs-tag-follow-cleanup         t
-          treemacs-tag-follow-delay           1.5
-          treemacs-width                      40)
+	  treemacs-deferred-git-apply-delay   0.5
+	  treemacs-display-in-side-window     t
+	  treemacs-file-event-delay           5000
+	  treemacs-file-follow-delay          0.2
+	  treemacs-follow-after-init          nil
+	  treemacs-follow-recenter-distance   0
+	  treemacs-git-command-pipe           ""
+	  treemacs-goto-tag-strategy'refetch-index
+	  treemacs-indentation                1
+	  treemacs-indentation-string         " "
+	  treemacs-is-never-other-window      nil
+	  treemacs-max-git-entries            5000
+	  treemacs-no-png-images              nil
+	  treemacs-no-delete-other-windows    t
+	  treemacs-project-follow-cleanup     nil
+	  treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+	  treemacs-recenter-after-file-follow nil
+	  treemacs-recenter-after-tag-follow  nil
+	  treemacs-show-cursor                nil
+	  treemacs-show-hidden-files          t
+	  treemacs-silent-filewatch           nil
+	  treemacs-silent-refresh             nil
+	  treemacs-sorting 'alphabetic-desc
+	  treemacs-space-between-root-nodes   t
+	  treemacs-tag-follow-cleanup         t
+	  treemacs-tag-follow-delay           1.5
+	  treemacs-width                      25)
 
     ;; The default width and height of the icons is 22 pixels. If you are
     ;; using a Hi-DPI display, uncomment this to double the icon size.
     (treemacs-resize-icons 12)
-    (treemacs-follow-mode t)
+    ;; (treemacs-follow-mode nil)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode t)
+
     (pcase (cons (not (null (executable-find "git")))
                  (not (null (executable-find "python3"))))
       (`(t . t)
@@ -1005,24 +926,28 @@ Version 2017-04-19"
 (use-package treemacs-evil
   :after treemacs evil
   :ensure t)
-(use-package poet-theme
+(use-package solaire-mode
+  :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
+  (minibuffer-setup . solaire-mode-in-minibuffer)
   :config
+  (solaire-mode-swap-bg))
+(use-package base16-theme
   :disabled
-  (load-theme 'poet t)
-  (set-face-attribute 'variable-pitch nil :family "Baskerville"
-		      :height 120)
-  (set-face-attribute 'default nil :family "Iosevka SS05" :height 100)
-  (set-face-attribute 'fixed-pitch nil :family "Iosevka SS05" :height 100)
-  (add-hook 'text-mode-hook
-               (lambda ()
-                (variable-pitch-mode 1))))
+  :config
+  (load-theme 'base16-rebecca t))
+(use-package kaolin-themes
+  :disabled
+  :config
+  (load-theme 'kaolin-ocean t)
+  (kaolin-treemacs-theme))
 (use-package doom-themes
+  :disabled
   :config
   ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+  (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t
 	doom-treemacs-use-generic-icons nil) ; if nil, italics is universally disabled
-  (load-theme 'doom-nord t)
+  (load-theme 'doom-dark+ t)
   (doom-themes-org-config)
   (doom-themes-treemacs-config)
 
@@ -1037,8 +962,9 @@ Version 2017-04-19"
   :after treemacs dired
   :config (treemacs-icons-dired-mode))
 (use-package doom-modeline
-  :hook (after-init . doom-modeline-init)
+  :defer 3
   :config
+  (doom-modeline-mode)
   ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
   (setq doom-modeline-icon t))
@@ -1048,9 +974,12 @@ Version 2017-04-19"
   ('normal "K" 'lsp-describe-thing-at-point)
   ('normal "g d" 'lsp-find-definition)
   ('normal "g e" 'lsp-find-references)
-  :hook (python-mode . lsp)
+  :hook ((python-mode . lsp)
+	 (c++-mode . lsp))
   :config
-  (setq lsp-highlight-symbol-at-point nil))
+  (setq lsp-highlight-symbol-at-point nil
+	lsp-document-highlight-delay 1
+	lsp-enable-snippet nil))
 (use-package lsp-ui
   :disabled
   :after lsp-mode
@@ -1061,7 +990,8 @@ Version 2017-04-19"
   :after lsp-mode
   :config
   (push 'company-lsp company-backends)
-  (setq company-lsp-enable-snippet nil))
+  (setq company-lsp-enable-snippet nil
+	lsp-enable-snippet nil))
 (use-package flymake
   :commands flymake-mode
   :general
@@ -1081,7 +1011,10 @@ Version 2017-04-19"
   :hook ((python-mode . dap-ui-mode)
 	 (python-mode . dap-mode))
   :config
-  (require 'dap-python))
+  (eval-when-compile
+    (require 'cl))
+  (require 'dap-python)
+  (require 'dap-lldb))
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -1089,23 +1022,6 @@ Version 2017-04-19"
   :config
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil))
-(use-package anaconda-mode
-  :disabled
-  :after python
-  :general
-  ('normal "g d" 'anaconda-mode-find-definitions)
-  ('normal "g o d" 'anaconda-mode-find-definitions-other-window)
-  ('normal "g r" 'anaconda-mode-find-references)
-  ('normal "g o r" 'anaconda-mode-find-references-other-window)
-  :hook ((python-mode . anaconda-mode)
-	 (anaconda-mode . anaconda-eldoc-mode)))
-(use-package company-anaconda
-  :after company anaconda-mode
-  :config
-  (use-package rx) 			; https://github.com/proofit404/company-anaconda/issues/29https://github.com/proofit404/company-anaconda/issues/29
-  (push 'company-anaconda company-backends)
-  (setq company-minimum-prefix-length 1
-	company-idle-delay 0.1))
 (use-package highlight-symbol
   :after python anaconda-mode
   :hook (python-mode . highlight-symbol-mode))
@@ -1489,7 +1405,10 @@ month and day): " (unless (string= i "")
   "open cmd at file location"
   (interactive)
   (start-process-shell-command (format "cmd(%s)" default-directory) nil "start cmd"))
-(bind-key "C-x m" 'my-open-cmd)
+(if (eq system-type 'windows-nt)
+    (bind-key "C-x m" 'my-open-cmd))
+(if (eq system-type 'gnu/linux)
+    (global-set-key (kbd "C-x m") (kbd "M-! urxvt RET")))
 
 ;; set 80 width columns
 (defun set-window-width (n)
@@ -1504,8 +1423,7 @@ month and day): " (unless (string= i "")
 (server-start)
 (global-auto-revert-mode)
 
-;; Then reset it as late as possible; these are the reasonable defaults I use.
-(setq gc-cons-threshold 100000000
-      gc-cons-percentage 0.1)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+
+
