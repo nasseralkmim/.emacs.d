@@ -1,8 +1,25 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
+;; Use Straight el
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
 
-;;; Bootstrap
+;; Install use-package
+(straight-use-package 'use-package)
+;; makes :straight t by default
+(setq straight-use-package-by-default t)
+
 ;; Speed up bootstrapping
 (setq gc-cons-threshold 402653184
       gc-cons-percentage 0.6)
@@ -16,14 +33,9 @@
 
 (menu-bar-mode -1)
 (tool-bar-mode -1)
-(show-paren-mode 1)
 (scroll-bar-mode -1)
-(tooltip-mode -1)
-(global-eldoc-mode -1)
 (global-hl-line-mode 1)
-(column-number-mode 1)
 (winner-mode t)
-
 
 (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
 (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
@@ -33,62 +45,12 @@
 (setq user-full-name "Nasser Alkmim"
       user-mail-address "nasser.alkmim@gmail.com")
 
-(lambda () (progn
-  (setq left-margin-width 2)
-  (setq right-margin-width 2)
-  (set-window-buffer nil (current-buffer))))
-
 ;; UTF-8 please
 (prefer-coding-system 'utf-8)
 (set-default-coding-systems 'utf-8)
 (set-terminal-coding-system 'utf-8)
 (set-keyboard-coding-system 'utf-8)
 
-;; Package management
-;; set load-path manually
-;; don't call package-initialize
-(eval-and-compile
-  (setq load-prefer-newer t
-        package-user-dir "~/.emacs.d/elpa"
-        package--init-file-ensured t    ; so it doesn't call package initialize
-        package-enable-at-startup nil)  ; do not automatically load packages
-
-  (unless (file-directory-p package-user-dir)
-    (make-directory package-user-dir t)))
-
-(setq use-package-verbose t		; report details
-      use-package-expand-minimally t	; expanded coded as minimal as possible
-      use-package-enable-imenu-support t ; imenu can find definitions
-      use-package-always-defer nil      ;I'm not used to that
-      use-package-minimum-reported-time 0.01)
-
-;; Manually set loat-path
-(eval-and-compile
-  (setq load-path (append load-path (directory-files package-user-dir t "^[^.]" t))))
-
-(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
-;; (load custom-file)
-
-;; Initialize package management
-(eval-when-compile                      ; when byte compiled skip this
-  (require 'package)
-
-  ;; add aditional package archives
-  (unless (assoc-default "melpa" package-archives)
-    (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/") t))
-  (unless (assoc-default "org" package-archives)
-    (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t))
-
-  ;; initialize packages and ensure that use-package is installed
-  (package-initialize)
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))     ; install if it's missing
-  (require 'use-package)
-  (setq use-package-always-ensure t))
-
-
-;; (set-face-attribute 'default nil :height 100)
 
 ;; set a default font Iosevka, Hack, PragmataPro
 (set-face-attribute 'default nil
@@ -110,7 +72,6 @@
 
 ;; Don't create backups
 (setq make-backup-files nil)
-(set-fringe-mode '(6 . 0))
 
 ;; Answering just 'y' or 'n' will do
 (defalias 'yes-or-no-p 'y-or-n-p)
@@ -121,14 +82,16 @@
 (setq visible-bell t)
 
 (use-package benchmark-init
-  :disabled
   :config
   ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
-(use-package general)
+(use-package general) 			; (general-def 'normal org-mode-map "key" 'def ) example with 2 positional arguments
 (use-package diminish :defer t)
 (use-package color-identifiers-mode
   :defer t)
+(use-package paren
+  :defer 10
+  :config (show-paren-mode 1))
 (use-package recentf
   :defer 10
   :config
@@ -136,6 +99,9 @@
   (setq recentf-max-saved-items 500
           recentf-max-menu-items 15
           recentf-auto-cleanup 60))
+(use-package autorevert
+  :defer 10
+  :config (auto-revert-mode 1))
 (use-package deft
   :general ('normal "C-c d" 'deft)
   :config (setq deft-directory "~/OneDrive/Knowledge/ROAM"))
@@ -150,10 +116,12 @@
   :general
   ('normal org-mode-map "C-c C-j" 'counsel-org-goto)
   :config
-  (use-package smex :ensure t))
+  (use-package smex :straight t))
 (use-package ivy
   :diminish ivy-mode
-  :general ('normal :prefix "SPC" "x b" 'ivy-switch-buffer)
+  :general
+  ('normal :prefix "SPC" "x b" 'ivy-switch-buffer)
+  ('normal "C-x b" 'ivy-switch-buffer)
   :bind (:map ivy-minibuffer-map
          ("C-j" . ivy-next-line)
          ("C-k" . ivy-previous-line))
@@ -198,10 +166,10 @@
   :diminish smartparens-mode  
   :commands smartparens-mode
   :general
-  ;; ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
-  ;; ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
-  ;; ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
-  ;; ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
+  ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
+  ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
+  ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
+  ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   :init
   (add-hook 'python-mode-hook 'smartparens-mode)
@@ -225,12 +193,28 @@
 (use-package flycheck
   :disabled
   :hook (python-mode . flycheck-mode))
+(use-package evil-mc
+  :after evil
+  :general ('visual
+	    "M-n" 'evil-mc-make-and-goto-next-cursor 
+	    "C-n" 'evil-mc-make-and-goto-next-match) 
+  :config (global-evil-mc-mode +1))
+(use-package evil-multiedit
+  :after evil
+  :general
+  ('normal "C-;" 'evil-multiedit-match-all)
+  (:states '(normal visual) "M-d" 'evil-multiedit-match-and-next)
+  (evil-multiedit-state-map "C-n" 'evil-multiedit-next)
+  (evil-multiedit-state-map "C-p" 'evil-multiedit-prev)
+  (evil-multiedit-insert-state-map "C-n" 'evil-multiedit-next)
+  (evil-multiedit-insert-state-map "C-p" 'evil-multiedit-prev)
+  )
 (use-package evil
-  :defer 1
   :diminish evil-mode
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
+  (evil-mode 1)
   :general
   ("<C-tab>" 'evil-window-next)
   ("<C-S-iso-left-tab>" 'evil-window-prev)
@@ -240,7 +224,6 @@
   ('normal :prefix "SPC" "l" 'evil-last-non-blank)
   ('normal :prefix "SPC" "h" 'evil-first-non-blank)
   :config
-  (evil-mode 1)
   (setq
    lazy-highlight-cleanup nil
    lazy-highlight-max-at-a-time nil
@@ -338,6 +321,8 @@ Version 2017-04-19"
   (setq evil-collection-outline-bind-tab-p nil)
   ;; (delete 'paren evil-collection-mode-list)
   (evil-collection-init))
+(use-package rg
+  :general ('normal "C-c r" 'rg-menu))
 (use-package evil-org
   :diminish evil-org-mode
   :after org
@@ -412,8 +397,7 @@ Version 2017-04-19"
   :diminish rainbow-mode
   :config (rainbow-mode))
 (use-package org
-  :ensure org-plus-contrib
-  :defer 2
+  :straight org-plus-contrib
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :bind(("C-c c" . org-capture)
@@ -421,162 +405,95 @@ Version 2017-04-19"
 	:map org-mode-map
 	("C-c l" . org-store-link)
 	("M-p" . org-previous-item)
-	("M-n" . org-next-item))
+	("M-n" . org-next-item)
+	("C-c y" . my/org-insert-clipboard))
   :general
   (org-mode-map "<C-tab>" nil)
-  :init
-  (add-hook 'org-mode-hook 'visual-line-mode)
+  ('normal org-mode-map :prefix "SPC" "x i" 'org-clock-in)
+  ('normal org-mode-map :prefix "SPC" "x o" 'org-clock-out)
+  :hook (org-mode . visual-line-mode)
   :config
   (transient-mark-mode -1)
-  (setq org-special-ctrl-a/e t
-	org-log-done 'time         ;Log the time a task is completed.
-	org-habit-following-days 4
-	org-hide-emphasis-markers t 
-	inhibit-splash-screen t
-	org-startup-indented nil
-	org-hide-leading-stars t 
-	org-startup-align-all-tables t ;align tables on startup
-	org-hide-leading-stars-before-indent-mode nil
-	org-odd-levels-only t
-	org-use-speed-commands t
-	org-edit-src-content-indentation 0
-	org-support-shift-select t
-	line-spacing '0.1 
-	;; org-ellipsis "…"
-	org-modules '(org-habit)
-	org-cycle-include-plain-lists t
-	org-image-actual-width nil
-	org-goto-interface 'outline-path-completion ;; org goto play nice with ivy
-	org-goto-max-level 4
-	org-outline-path-complete-in-steps nil
-	org-startup-with-inline-images t
-	org-cycle-separator-lines 0
-	org-fontify-whole-heading-line t
-	org-fontify-done-headline nil
-	org-fontify-quote-and-verse-blocks t)
-	
-  (set-face-attribute 'org-ellipsis nil :underline nil)
-  ;; (eval-after-load 'org
-  ;;   '(org-load-modules-maybe t)) ;; I think this makes org load slowly
+  (setq
+   org-hide-emphasis-markers t 
+   org-startup-indented nil
+   org-startup-folded t
+   org-hide-leading-stars t 
+   org-hide-leading-stars-before-indent-mode nil
+   org-odd-levels-only t
+   org-edit-src-content-indentation 0
+   org-image-actual-width nil
+   org-goto-interface 'outline-path-completion ;; org goto play nice with ivy
+   org-goto-max-level 4
+   org-outline-path-complete-in-steps nil
+   org-startup-with-inline-images t
+   org-cycle-separator-lines 0
+   org-fontify-quote-and-verse-blocks t
+   )
   
-  (setq org-file-apps '((auto-mode . emacs)
-			("\\.mm\\'" . default)
-			("\\.x?html?\\'" . default)
-			("\\.pdf::\\([0-9]+\\)\\'" . "sumatrapdf \"%s\" -page %1")
-			("\\.pdf\\'" . "\"c:/Program Files (x86)/Foxit Software/Foxit Reader/Foxit Reader/FoxitReader.exe\" \"%s\" ")
-			;; ("\\.pdf\\'" . default)
-			))
-  
-  ;; (set-face-attribute 'org-block-begin-line nil :foreground "#005f87")
-  ;; (set-face-attribute 'org-block-end-line nil :foreground "#3a3a3a")
-  ;; org markups meta line --> change to grey100 when presenting
-  ;; (set-face-attribute 'org-meta-line nil :height 0.6)
-  ;; (set-face-attribute 'org-drawer nil :height 0.6)
-  ;; (set-face-attribute 'org-date nil :height 0.6)
-  ;; (set-face-attribute 'org-special-keyword nil :height  0.6)
-
-  (custom-set-variables
-   ;; here there is customization for other variables 
-   '(org-priority-faces (quote ((65 . "LightPink") (66 . "OrangeRed") (67 . "IndianRed")))))
+  ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+  (setq org-clock-persistence-insinuate t
+	org-clock-persist t
+	org-clock-in-resume t
+	org-clock-out-remove-zero-time-clocks t
+	org-clock-mode-line-total 'current
+	org-duration-format (quote h:mm))
 
   (setq org-todo-keywords '(
 			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
 			    (sequence "R1(!)" "R2(!)" "R3(!)" "R4(!)" "R5(!)" "R6(!)")))
-  ;; ;; change todo faces
-  (setq org-todo-keyword-faces 
-        '(("NEXT" :foreground "#edd400" :weight bold)
-	  ("TODO" :foreground "tomato" :weight bold)
-	  ("DONE" :foreground "medium sea green" :weight bold)
-          ("REVW" :foreground "deep sky blue" :weight bold)))
 
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (emacs-lisp . t)
-     (C . t)
-     (latex . t)
-     (shell . t)))
-
-  (setq org-babel-C++-compiler "clang")
-
-  ;; plantuml jar file path
-  (setq org-plantuml-jar-path
-        (expand-file-name "~/.emacs.d/plantuml.jar"))
-  (setq org-babel-default-header-args:python
-        '((:exports . "both")
-          (:results . "output")))
-  (setq org-babel-default-header-args:C++
-	'((:exports . "both")
-	  (:results . "output")))
+  (use-package ob-python
+    :straight org-plus-contrib
+    :commands (org-babel-execute:python))
 
   ;; Org babel and source blocks
-  (setq org-src-fontify-natively t
-        org-highlight-latex-and-related '(latex)
-        org-src-window-setup 'current-window
-        org-src-strip-leading-and-trailing-blank-lines t
-        org-src-preserve-indentation t  ; preserve indentation in code
-        org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
-        org-src-tab-acts-natively t
-        org-export-babel-evaluate nil
-        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
+  ;; (setq org-src-fontify-natively t
+  ;;       org-highlight-latex-and-related '(latex)
+  ;;       org-src-window-setup 'current-window
+  ;;       org-src-strip-leading-and-trailing-blank-lines t
+  ;;       org-src-preserve-indentation t  ; preserve indentation in code
+  ;;       org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
+  ;;       org-src-tab-acts-natively t
+  ;;       org-export-babel-evaluate nil
+  ;;       org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
 
-  
- ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-    (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
-                                 "~/OneDrive/Org/notes.org"
-                                 "~/OneDrive/Org/journal.org"
-                                 "~/OneDrive/Org/gcal.org"
-                                 "~/OneDrive/Concurso/Notas/notas_concurso.org")))
-  (setq org-agenda-skip-scheduled-if-done t
-	org-agenda-skip-deadline-if-done t
-	org-agenda-skip-timestamp-if-done nil
-	org-agenda-use-time-grid nil
-	org-scheduled-past-days 1000)	; don't show delayed task on other days
+ ;; ;;; display/update images in the buffer after I evaluate
+ ;;  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
 
+  (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
+				 "~/OneDrive/Org/notes.org"
+				 "~/OneDrive/Org/journal.org"
+				 "~/OneDrive/Org/gcal.org"
+				 "~/OneDrive/Concurso/Notas/notas_concurso.org")))
   (setq org-imenu-depth 2)
-  (setq org-default-notes-file "~/OneDrive/Org/notes.org")
 
-  ;; Which days are weekend?
-  ;; (setq org-agenda-weekend-days nil)
-  ;; start agenda on current day
-  (setq org-agenda-start-on-weekday 1)
-  ;; min and max percentages of agenda window height
-  ;; (setq org-agenda-window-frame-fractions '(0 . 1))
+  (defun my/org-insert-clipboard ()
+    (interactive)
+					;make the img directory
+    (setq myvar/folder-path (concat default-directory "img/"))
+					;create the directory if it doesn't exist
+    (if (not (file-exists-p myvar/folder-path))
+	(mkdir myvar/folder-path))
+    (let* ((filename (concat 
+		      (buffer-name)
+		      "_"
+		      (format-time-string "%Y%m%d_%H%M%S_.png")))
+	   (filepath (concat myvar/folder-path
+			     filename))
 
-  ;; Days on the overview display
-  (setq org-agenda-span 1)
+	   ;; (exit-status
+	   ;;  (call-process "convert" nil nil nil
+	   ;;                "clipboard:" image-file))
+	   )
+      ;; http://www.sastibe.de/2018/11/take-screenshots-straight-into-org-files-in-emacs-on-win10/
+      (shell-command "snippingtool /clip")
+      (shell-command (concat "powershell -command \"Add-Type -AssemblyName System.Windows.Forms;if ($([System.Windows.Forms.Clipboard]::ContainsImage())) {$image = [System.Windows.Forms.Clipboard]::GetImage();[System.Drawing.Bitmap]$image.Save('" filepath "',[System.Drawing.Imaging.ImageFormat]::Png); Write-Output 'clipboard content saved as file'} else {Write-Output 'clipboard does not contain image data'}\""))
+      (insert "#+attr_org: :width 400 \n")
+      (insert (concat "[[file:img/" filename "]]"))
+      ;; (org-insert-link nil (concat "file:" filename ) nil)
 
-  ;; (setq org-agenda-time-grid
-  ;;     '((daily today require-timed)
-  ;;       (800 1000 1200 1400 1600 1800 2000)
-  ;;       "......" "----------------"))
-  
-  (setq org-agenda-prefix-format '(
-  ;; (agenda  . " %i %-12:c%?-12t% s") ;; file name + org-agenda-entry-type
-  (agenda  . " %i %-16:c%?-16t% s")
-  (timeline  . "  % s")
-  (todo  . " %i %-12:c")
-  (tags  . " %i %-12:c")
-  (search . " %i %-12:c")))
-
-  (setq org-agenda-custom-commands
-        '(("c" "Simple agenda view"
-           ((agenda "")
-            (todo "TODO")))))
-  
-  ;; (global-set-key (kbd "C-c o") 
-  ;;                 (lambda () (interactive) 
-  ;;                   (find-file "~/OneDrive/Org/notes.org")))
-
-  (setq org-capture-templates
-        '(("t" "Todo" entry (file+datetree "~/OneDrive/Org/gtd.org") 
-           "* TODO %? \n\n Added: %T")
-          ("n" "Notes" entry (file+datetree "~/OneDrive/Org/notes.org") 
-           "* %^{Description} %^g \n\n %? \n\n Added: %T")
-          ("j" "Journal" entry (file+datetree "~/OneDrive/Org/journal.org") 
-           "* %T \n\n%?")))
-  (require 'org-depend)
+      (org-display-inline-images)))
   )
 (use-package org-cliplink
   :after org
@@ -587,79 +504,25 @@ Version 2017-04-19"
 	 ("C-c o" . crux-open-with))
   :general ('normal :prefix "SPC" "c" 'crux-capitalize-region))
 (use-package org-roam-server
-  :hook (org-roam-mode . org-roam-server-mode))
+  :hook (org-roam-mode . org-roam-server-mode)
+  :config
+  (setq org-roam-server-host "127.0.0.1"
+        org-roam-server-port 8080
+        org-roam-server-export-inline-images t
+        org-roam-server-authenticate nil
+        org-roam-server-label-truncate t
+        org-roam-server-label-truncate-length 60
+        org-roam-server-label-wrap-length 20))
 (use-package org-roam
-  :custom (org-roam-directory "~/OneDrive/Knowledge/ROAM")
+  :custom (org-roam-directory "~/OneDrive/nasser-website/content/notes")
   :general
-  ('normal :keymap 'org-roam-mode-map :prefix "SPC" "n f" 'org-roam-find-file)
-  ('normal :keymap 'org-roam-mode-map :prefix "SPC" "n l" 'org-roam)
+  ('normal :prefix "SPC" "n f" 'org-roam-find-file) ; so it can autoload org-roam
+  ('normal org-roam-mode-map :prefix "SPC" "n l" 'org-roam)
   (:states '(normal visual) :keymaps 'org-mode-map :prefix "SPC" "n i" 'org-roam-insert)
-  ('insert :keymap 'org-mode-map "C-c n i" 'org-roam-insert)
+  ('insert org-mode-map "C-c n i" 'org-roam-insert)
   :config
-  (org-roam-mode +1)
+  (org-roam-mode)
   (setq org-roam-completion-system 'ivy))
-(use-package org
-  :bind ("C-c y" . my/org-insert-clipboard)
-  :config
-  (defun my/org-insert-clipboard ()
-    (interactive)
-                                        ;make the img directory
-    (setq myvar/folder-path (concat default-directory "img/"))
-                                        ;create the directory if it doesn't exist
-    (if (not (file-exists-p myvar/folder-path))
-        (mkdir myvar/folder-path))
-    (let* ((filename (concat 
-                        (buffer-name)
-                        "_"
-                        (format-time-string "%Y%m%d_%H%M%S_.png")))
-	   (filepath (concat myvar/folder-path
-			     filename))
-
-           ;; (exit-status
-           ;;  (call-process "convert" nil nil nil
-           ;;                "clipboard:" image-file))
-	   )
-      ;; http://www.sastibe.de/2018/11/take-screenshots-straight-into-org-files-in-emacs-on-win10/
-      (shell-command "snippingtool /clip")
-      (shell-command (concat "powershell -command \"Add-Type -AssemblyName System.Windows.Forms;if ($([System.Windows.Forms.Clipboard]::ContainsImage())) {$image = [System.Windows.Forms.Clipboard]::GetImage();[System.Drawing.Bitmap]$image.Save('" filepath "',[System.Drawing.Imaging.ImageFormat]::Png); Write-Output 'clipboard content saved as file'} else {Write-Output 'clipboard does not contain image data'}\""))
-      (insert "#+attr_org: :width 400 \n")
-      (insert (concat "[[file:img/" filename "]]"))
-  ;; (org-insert-link nil (concat "file:" filename ) nil)
-
-      (org-display-inline-images))))
-(use-package org-clock
-  :after org
-  :ensure nil
-  :general
-  ('normal 'org-mode-map :prefix "SPC" "x i" 'org-clock-in)
-  ('normal 'org-mode-map :prefix "SPC" "x o" 'org-clock-out)
-  :config
-  ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-  (setq org-clock-persistence-insinuate t
-	org-clock-persist t
-	org-clock-in-resume t
-	org-clock-mode-line-total 'current
-	org-duration-format (quote h:mm))
-
-  (setq org-clocktable-defaults
-        '(:maxlevel 2 :lang "en" :scope file :block nil :wstart 1 :mstart 1 :tstart nil :tend nil :step nil :stepskip0 nil :fileskip0 nil :tags nil :emphasize t :link nil :narrow 40! :indent t :formula nil :timestamp nil :level nil :tcolumns 3 :formatter nil))
-
-  ;; remove schedule tag on agenda
-  (setq org-agenda-scheduled-leaders '("" "")
-	org-agenda-block-separator "")
-
-  ;; Save clock data and notes in the LOGBOOK drawer
-  ;; (setq org-clock-into-drawer t)
-  (setq org-log-into-drawer "LOGBOOK")
-  (setq org-clock-into-drawer 1)
-  
-  ;; Removes clocked tasks with 0:00 duration
-  (setq org-clock-out-remove-zero-time-clocks t))
-(use-package org-sticky-header
-  :disabled
-  :hook (org-mode . org-sticky-header-mode)
-  :config
-  (setq org-sticky-header-full-path 'reversed))
 (use-package flyspell
   :diminish flyspell-mode
   :commands flyspell-mode
@@ -725,7 +588,7 @@ Version 2017-04-19"
   :config
   (company-posframe-mode 1))
 (use-package latex
-  :ensure auctex
+  :straight auctex
   :mode ("\\.tex\\'" . latex-mode)
   :bind ("C-S-f" . forward-whitespace)
   :general
@@ -854,7 +717,7 @@ Version 2017-04-19"
 
   (setq ivy-bibtex-default-action 'ivy-bibtex-insert-citation))
 (use-package dired
-  :ensure nil
+  :straight nil
   :commands dired
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
@@ -864,13 +727,11 @@ Version 2017-04-19"
     "to be run as hook for `dired-mode'."
     (dired-hide-details-mode 1))
   (add-hook 'dired-mode-hook 'xah-dired-mode-setup))
-
 (use-package treemacs
-  :ensure t
   :defer t
   ;; :init
   ;; (with-eval-after-load 'winum
-  ;;   (define-key winum-keymap (kbd "M-0") #'treemacs-select-window))
+  ;;   (define-key winum- (kbd "M-0") #'treemacs-select-window))
   :config
   (progn
     (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
@@ -924,40 +785,23 @@ Version 2017-04-19"
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
 (use-package treemacs-evil
-  :after treemacs evil
-  :ensure t)
+  :after treemacs evil)
 (use-package solaire-mode
   :hook ((change-major-mode after-revert ediff-prepare-buffer) . turn-on-solaire-mode)
   (minibuffer-setup . solaire-mode-in-minibuffer)
   :config
   (solaire-mode-swap-bg))
 (use-package base16-theme
-  :disabled
   :config
-  (load-theme 'base16-rebecca t))
-(use-package kaolin-themes
-  :disabled
-  :config
-  (load-theme 'kaolin-ocean t)
-  (kaolin-treemacs-theme))
-(use-package doom-themes
-  :disabled
-  :config
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold nil    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t
-	doom-treemacs-use-generic-icons nil) ; if nil, italics is universally disabled
-  (load-theme 'doom-dark+ t)
-  (doom-themes-org-config)
-  (doom-themes-treemacs-config)
-
-  (custom-theme-set-faces
-   'user
-   `(show-paren-match ((t (:underline t :weight ultra-bold))))
-   ;; `(show-paren-match-expression ((t (:foreground "#e45649" :background "#f0f0f0" :inherit nil))))
-   `(show-paren-match-expression ((t (:inherit 'default :underline nil))))
-   )
-  )
+  (load-theme 'base16-rebecca t) ; rebecca is good too
+  ;; Set the cursor color based on the evil state
+  (defvar my/base16-colors base16-rebecca-colors)
+  (setq evil-emacs-state-cursor   `(,(plist-get my/base16-colors :base0D) box)
+	evil-insert-state-cursor  `(,(plist-get my/base16-colors :base0D) bar)
+	evil-motion-state-cursor  `(,(plist-get my/base16-colors :base0E) box)
+	evil-normal-state-cursor  `(,(plist-get my/base16-colors :base0B) box)
+	evil-replace-state-cursor `(,(plist-get my/base16-colors :base08) bar)
+	evil-visual-state-cursor  `(,(plist-get my/base16-colors :base09) box)))
 (use-package treemacs-icons-dired
   :after treemacs dired
   :config (treemacs-icons-dired-mode))
@@ -1034,18 +878,8 @@ Version 2017-04-19"
   :config
   (setq highlight-indent-guides-method 'character))
 (use-package adaptive-wrap
-  :ensure adaptive-wrap
+  :straight adaptive-wrap
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
-(use-package calfw
-  :commands cfw:open-org-calendar
-  :config
-  (setq cfw:details-window-size 30))
-(use-package calfw-org
-  :after org calfw)
-(use-package toc-org
-  :after org
-  :commands org-export-dispatch
-  :config  (add-hook 'org-mode-hook 'toc-org-enable))
 (use-package hydra
   :defer 5
   :bind (("C-c C-w" . hydra-window-resize/body)
@@ -1179,9 +1013,10 @@ Version 2017-04-19"
      ("<tab>" org-cycle)
      ("q" nil)))
 (use-package goto-last-change
+  :general ('normal "g b" 'goto-last-change)
   :bind ("C-x C-j" . goto-last-change))
 (use-package outline-mode
-  :ensure nil
+  :straight nil
   :hook ((python-mode . outline-minor-mode)
 	 (LaTeX-mode . outline-minor-mode)
 	 (emacs-lisp-mode . outline-minor-mode))
@@ -1189,14 +1024,6 @@ Version 2017-04-19"
 (use-package realgud 
   :disabled
   :commands realgud:ipdb)
-(use-package avy
-  :diminish avy-mode
-  :bind (("C-x C-x" . avy-goto-word-or-subword-1)
-         ("C-x C-l" . avy-goto-line))
-  :general
-  ('evil-treemacs-state-map "g a" 'avy-goto-char-timer)
-  :config
-  (setq avy-timeout-seconds 0.4))
 (use-package counsel-projectile
   :general
   ("C-c p f" 'counsel-projectile-find-file)
@@ -1211,8 +1038,6 @@ Version 2017-04-19"
   (setq projectile-completion-system 'ivy) ;So projectile works with ivy
   (setq projectile-git-submodule-command nil)
   (setq projectile-indexing-method 'alien))
-(use-package pdf-tools
-  :mode ("\\.pdf\\'" . pdf-tools-install))
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 (use-package org-page
@@ -1389,7 +1214,7 @@ month and day): " (unless (string= i "")
 
 )
 (use-package which-key
-  :defer 20
+  :defer 10
   :config
   (which-key-mode t))
 (use-package hl-todo
@@ -1404,11 +1229,9 @@ month and day): " (unless (string= i "")
 (defun my-open-cmd ()
   "open cmd at file location"
   (interactive)
-  (start-process-shell-command (format "cmd(%s)" default-directory) nil "start cmd"))
+  (start-process-shell-command (format "powershell(%s)" default-directory) nil "start powershell"))
 (if (eq system-type 'windows-nt)
     (bind-key "C-x m" 'my-open-cmd))
-(if (eq system-type 'gnu/linux)
-    (global-set-key (kbd "C-x m") (kbd "M-! urxvt RET")))
 
 ;; set 80 width columns
 (defun set-window-width (n)
@@ -1420,10 +1243,9 @@ month and day): " (unless (string= i "")
   (set-window-width 94))
 (general-def 'normal "C-w 8" 'set-80-columns)
 
-(server-start)
-(global-auto-revert-mode)
+(use-package server
+  :defer 10
+  :config (server-start))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-
-
