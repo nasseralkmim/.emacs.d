@@ -1,6 +1,12 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
+(if (eq system-type 'windows-nt)
+    (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
+
+;; development branch of straight
+(setq straight-repository-branch "develop")
+
 ;; Use Straight el
 ;; straight automatically checks if it need to be rebuilt
 (defvar bootstrap-version)
@@ -15,9 +21,6 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-
-;; try develop branch of straight
-(setq straight-repository-branch "develop")
 
 ;; Install use-package
 (straight-use-package 'use-package)
@@ -56,12 +59,12 @@
 
 
 ;; set a default font Iosevka, Hack, PragmataPro
-(set-face-attribute 'default nil :font "Iosevka-10")
-(set-face-attribute 'fixed-pitch nil :font "Iosevka-10")
+(set-face-attribute 'default nil :font "Iosevka etoile-10")
+(set-face-attribute 'fixed-pitch nil :font "Iosevka etoile-10")
 (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
 (variable-pitch-mode)
 ;; ;; specify font for all unicode characters
-(set-fontset-font t 'unicode (font-spec :family "Iosevka") nil 'prepend)
+;;(set-fontset-font t 'unicode (font-spec :family "Iosevka") nil 'prepend)
 ;; For testing purposes: →„Σ"←
 (use-package mixed-pitch
   :hook (text-mode . mixed-pitch-mode))
@@ -120,51 +123,26 @@
 (use-package marginalia
   :config (marginalia-mode))
 (use-package consult
-  :bind (("C-c o" . consult-outline)
-         ("C-x b" . consult-buffer)
-         ("C-s" . consult-line)    ;; "M-s l" is a good alternative
-         ("M-y" . consult-yank-pop)
-         ("<help> a" . consult-apropos)
+  :bind (("C-c o" . consult-imenu)
+	 ("C-x b" . consult-buffer)
+	 ("C-s" . consult-line)    ;; C-r reverse
+	 ("M-y" . consult-yank-pop)
+	 ("<help> a" . consult-apropos)
+	 ("C-S-s" . consult-isearch)
 	 :map minibuffer-local-completion-map
-         ("<tab>" . minibuffer-force-complete))
+	 ("<tab>" . minibuffer-force-complete))
   :general
   ('normal :prefix "SPC" "x b" 'consult-buffer)
-  :config)
-(use-package consult-selectrum
-  :disabled
-  :after selectrum
-  :demand t)
+  ('normal :prefix "SPC" "x o" 'consult-imenu))
 (use-package embark
   :general
-  ("M-o" 'embark-act)
+  ("C-S-a" 'embark-act)
   :config
-  ;; For Selectrum users
-  (defun current-candidate+category ()
-    (when selectrum-active-p
-      (cons (selectrum--get-meta 'category)
-	    (selectrum-get-current-candidate))))
-
-  (add-hook 'embark-target-finders #'current-candidate+category)
-
-  (defun current-candidates+category ()
-    (when selectrum-active-p
-      (cons (selectrum--get-meta 'category)
-	    (selectrum-get-current-candidates
-	     ;; Pass relative file names for dired.
-	     minibuffer-completing-file-name))))
-
-  (add-hook 'embark-candidate-collectors #'current-candidates+category)
-
-  ;; No unnecessary computation delay after injection.
-  (add-hook 'embark-setup-hook 'selectrum-set-selected-candidate)
-
-  ;; for which key
-  (setq embark-action-indicator
-	(lambda (map)
-	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
-	  #'which-key--hide-popup-ignore-command)
-	embark-become-indicator embark-action-indicator)
+  (setq embark-prompter 'embark-completing-read-prompter)
   )
+(use-package embark-consult
+  :hook (embark-collect-mode . embark-consult-preview-minor-mode)
+  :after (embark consult))
 (use-package all-the-icons :defer t)
 (use-package smartparens
   :diminish smartparens-mode  
@@ -183,9 +161,6 @@
   (add-hook 'LaTeX-mode-hook 'smartparens-mode)
   (add-hook 'org-mode-hook 'smartparens-mode)
   :config
-  ;; (sp-local-pair 'org-mode "_" "_" )
-  ;; (sp-local-pair 'org-mode "*" "*" )
-  ;; (sp-local-pair 'latex-mode "$" "$")
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   ;; highligh matching brackets
   (show-smartparens-global-mode 0)
@@ -195,7 +170,7 @@
   (setq sp-show-pair-from-inside t)
   (setq show-paren-style 'mixed)) 
 (use-package flycheck
-  :hook (python-mode . flycheck-mode))
+  :hook ((python-mode . flycheck-mode)))
 (use-package evil-multiedit
   :after evil
   :general
@@ -316,8 +291,7 @@
   :diminish rainbow-mode
   :config (rainbow-mode))
 (use-package org
-  :straight org-plus-contrib
-  :defer 1
+  ;; :straight org-plus-contrib
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :bind(("C-c c" . org-capture)
@@ -341,7 +315,6 @@
    (org-hide-leading-stars-before-indent-mode nil)
    (org-odd-levels-only t)
    (org-edit-src-content-indentation 0)
-   (org-image-actual-width nil)
    (org-goto-interface 'outline-path-completion) ;; org goto play nice with ivy
    (org-goto-max-level 4)
    (org-outline-path-complete-in-steps nil)
@@ -378,16 +351,17 @@
    'org-babel-load-languages
    '((sql . t)
      (ditaa . t)
+     (C . t)
      (python . t)
      (jupyter . t)))
 
   (setq org-ditaa-jar-path "C:/Program Files/ditaa/ditaa.jar")
-  (setq org-image-actual-width 400)
-  (setq python-shell-interpreter "/usr/bin/python3")
-  (setq org-babel-python-command "python3")
+  (setq org-image-actual-width '(350))
+  (setq python-shell-interpreter "/usr/bin/python")
+  (setq org-babel-python-command "python")
   (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
 						      (:session . "python")
-						      (:kernel . "python3")
+						      (:kernel . "python")
 						      (:results . "output")
 						      (:exports . "both")))
 
@@ -397,6 +371,8 @@
 	org-latex-packages-alist '(("newfloat" "minted"))
 	org-latex-pdf-process
 	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	  "bibtex %b"
+	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
   ;; 
   ;; Org babel and source blocks
@@ -419,6 +395,22 @@
 				 "~/OneDrive/Org/gcal.org"
 				 "~/OneDrive/Concurso/Notas/notas_concurso.org")))
   (setq org-imenu-depth 2)
+
+  (require 'ox-latex)
+  (add-to-list 'org-latex-classes
+	       '("koma-article"
+		 "\\documentclass{scrartcl}
+		\\usepackage{microtype}
+		\\usepackage{tgpagella}
+		\\usepackage[scale=.9]{tgheros}
+		\\usepackage{tgcursor}
+		\\usepackage{paralist} "
+		 ("\\section{%s}" . "\\section*{%s}")
+		 ("\\subsection{%s}" . "\\subsection*{%s}")
+		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
+		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
+
   )
 (use-package org-roam-server
   :hook (org-roam-mode . org-roam-server-mode)
@@ -447,23 +439,25 @@
   ("C-M-y" 'org-download-clipboard)
   :config
   (setq
-   ;; org-download-screenshot-method "imagemagick/convert" ; on windows
-   org-download-screenshot-method "xclip" ; on wsl
+   ;; choco install imagemagick.app -PackageParameters LegacySupport=true
+   org-download-screenshot-method "imagemagick/convert"
+   ;; org-download-screenshot-method "xclip" ; on wsl
    org-download-image-dir "."
    org-download-image-html-width 350))
 (use-package flyspell
   :diminish flyspell-mode
   :commands flyspell-mode
-  :hook (('LaTeX-mode . flyspell-mode)
-	 ('org-mode . flyspell-mode))
+  :hook ((LaTeX-mode . flyspell-mode)
+	 (org-mode . flyspell-mode))
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-goto-next-error)
   :config
   (setq ispell-program-name "hunspell")
   (add-to-list 'ispell-extra-args "--sug-mode=ultra")
-  (setq ispell-dictionary "en_US,pt_BR")
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
+  (if (eq system-type 'windows-nt)
+      '((setq ispell-dictionary "en_US,pt_BR")
+       (ispell-hunspell-add-multi-dic "en_US,pt_BR")))
+  (ispell-set-spellchecker-params))
 (use-package flyspell-lazy
   :if (memq system-type '(windows-nt))
   :after flyspell
@@ -490,8 +484,7 @@
   (company-prescient-mode))
 (use-package latex
   :straight auctex
-  :mode ("\\.tex\\'" . latex-mode)
-  :bind ("C-S-f" . forward-whitespace)
+  :mode ("\\.tex\\'" . LaTeX-mode)
   :general
   ('normal "<SPC> v" 'TeX-view)
   :init
@@ -503,6 +496,7 @@
               (reftex-isearch-minor-mode)
               (turn-off-auto-fill)))
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
   :config
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
@@ -517,6 +511,9 @@
                                       '(1 'font-latex-string-face t)
                                       '(2 'font-latex-string-face t)
                                       '(3 'font-latex-string-face t))))
+
+  ;; shell escape for minted (syntax highlight)
+  (setq LaTeX-command "latex -shell-escape")
 
   ;; Method for enabling forward and inverse search 
   (setq TeX-source-correlate-method 'synctex)
@@ -535,7 +532,7 @@
     ;; -set-color-range #fdf4c1 #282828
   (when (eq system-type 'windows-nt)
    (setq TeX-view-program-list
-	 '(("Sumatra PDF" ("\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+ 	 '(("Sumatra PDF" ("\"C:/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
 			   (mode-io-correlate " -forward-search %b %n ") " %o"))))
    (assq-delete-all 'output-pdf TeX-view-program-selection)
    (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))
@@ -545,7 +542,7 @@
     (assq-delete-all 'output-pdf TeX-view-program-selection)
     (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
     )
-  
+
   ;; Custom functions
   ;;
   ;; 
@@ -582,30 +579,26 @@
   (setq reftex-enable-partial-scans t)
   (setq reftex-keep-temporary-buffers nil)
   (setq reftex-save-parse-info t)
-  (setq reftex-trust-label-prefix '("fig:" "eq:"))
-  (setq reftex-default-bibliography "C:/Users/nasse/OneDrive/Bibliography/references-zot.bib"))
-(use-package company-bibtex
-  :after latex company
-  :config
-  (add-to-list 'company-backends 'company-bibtex)
-  (setq company-bibtex-bibliography
-	'("~/OneDrive/Bibliography/references-zot.bib")))
+  (setq reftex-trust-label-prefix '("fig:" "eq:")))
+(use-package outline-magic
+  :after latex
+  :general
+  (LaTeX-mode-map "<tab>" 'outline-cycle))
 (use-package dired
   :straight nil
   :commands dired
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
   (setq dired-auto-revert-buffer t)
-  (setq dired-hide-details-mode t)
-  (defun xah-dired-mode-setup ()
-    "to be run as hook for `dired-mode'."
-    (dired-hide-details-mode 1))
-  (add-hook 'dired-mode-hook 'xah-dired-mode-setup))
+  (setq dired-hide-details-mode t))
+(use-package dired-subtree
+  :after dired
+  :general ('normal dired-mode-map "C-c i" 'dired-subtree-insert))
 (use-package treemacs
   :defer t
   :config
   (progn
-    (setq treemacs-collapse-dirs              (if (executable-find "python3") 3 0)
+    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
 	  treemacs-deferred-git-apply-delay   0.5
 	  treemacs-display-in-side-window     t
 	  treemacs-file-event-delay           5000
@@ -642,7 +635,7 @@
     (treemacs-fringe-indicator-mode t)
 
     (pcase (cons (not (null (executable-find "git")))
-                 (not (null (executable-find "python3"))))
+                 (not (null (executable-find "python"))))
       (`(t . t)
        (treemacs-git-mode 'deferred))
       (`(t . _)
@@ -690,7 +683,9 @@
   :init
   (setq modus-themes-org-blocks 'grayscale)
   (setq modus-themes-no-mixed-fonts nil)
-  (modus-themes-load-vivendi)
+  (if (eq system-type 'windows-nt)
+      (modus-themes-load-operandi)	;operandi on windows
+    (modus-themes-load-vivendi))	;vivendi on wsl
   :config
   :bind ("<f5>" . modus-themes-toggle))
 (use-package htmlize
@@ -698,9 +693,22 @@
 (use-package treemacs-icons-dired
   :after treemacs dired
   :config (treemacs-icons-dired-mode))
-
+(use-package dap-mode
+  :after lsp-mode)
+(use-package dap-cpptools
+  :straight nil
+  :after dap-mode)
+(use-package c++-mode
+  :straight nil
+  :defer t
+  :config
+  (setq company-idle-delay 0
+	company-minimum-prefix-length 1
+	lsp-idle-delay 0.1)
+  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :init (setq lsp-keymap-prefix "C-c l")
   :general
   ('normal "K" 'lsp-describe-thing-at-point)
   ('normal "g d" 'lsp-find-definition)
@@ -712,21 +720,23 @@
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
   (lsp-file-watch-threshold 1500)
-  (lsp-signature-render-documentation nil) ;don't show docstirng in modeline
-  (lsp-signature-auto-activate nil) ; don't show help in the modeline
-  (read-processpre-output-max (* 1024 1024))
-  (lsp-completion-show-detail nil)	;don't show detail on company completion
-  (lsp-completion-show-kind nil)	; don't show kind in company completion
-  (lsp-auto-execute-action nil) 	; don't execute single action
-  (lsp-before-save-edits nil)		; avoid apply edits before saving
-  (lsp-keymap-prefix "C-,")
-  (lsp-eldoc-enable-hover nil)		;don't show eldoc on modeline
-  (lsp-modeline-diagnostics-enable nil)
-  (lsp-modeline-code-actions-enable nil)
-  (lsp-diagnostic-package :none)
-  (lsp-completion-provider :none)
-  (lsp-enabale-links nil)
-  )
+  (if (eq system-type 'windows-nt)		;slow on windows...
+      ((lsp-signature-render-documentation nil) ;don't show docstirng in modeline
+       (lsp-signature-auto-activate nil) ; don't show help in the modeline
+       (read-processpre-output-max (* 1024 1024))
+       (lsp-completion-show-detail nil)	;don't show detail on company completion
+       (lsp-completion-show-kind nil)	; don't show kind in company completion
+       (lsp-auto-execute-action nil) 	; don't execute single action
+       (lsp-before-save-edits nil)		; avoid apply edits before saving
+       (lsp-keymap-prefix "C-,")
+       (lsp-eldoc-enable-hover nil)		;don't show eldoc on modeline
+       (lsp-modeline-diagnostics-enable nil)
+       (lsp-modeline-code-actions-enable nil)
+       (lsp-diagnostic-package :none)
+       (lsp-completion-provider :none)
+       (lsp-enabale-links nil)))
+  :config
+  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
 (use-package lsp-python-ms
   :config (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
@@ -886,7 +896,6 @@
   :bind ("C-=" . er/expand-region))
 (use-package which-key
   :diminish which-key-mode
-  :defer 10
   :config
   (which-key-mode t))
 (use-package hl-todo
@@ -896,6 +905,54 @@
   :mode ("\\.csv\\'" . csv-mode))
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
+(use-package bibtex-actions
+  :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
+  :general
+  (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
+  :config
+  (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib")
+  (setq bibtex-completion-pdf-field "File")
+
+
+  (defun helm-w32-prepare-filename (file)
+    "Convert filename FILE to something usable by external w32 executables."
+    (replace-regexp-in-string ; For UNC paths
+     "/" "\\"
+     (replace-regexp-in-string ; Strip cygdrive paths
+      "/cygdrive/\\(.\\)" "\\1:"
+      file nil nil) nil t))
+  (defun helm-w32-shell-execute-open-file (file)
+    (with-no-warnings
+      (w32-shell-execute "open" (helm-w32-prepare-filename file))))
+  (defun helm-open-file-with-default-tool (file)
+    "Open FILE with the default tool on this platform."
+    (let (process-connection-type)
+      (if (eq system-type 'windows-nt)
+	  (helm-w32-shell-execute-open-file file)
+	)))
+  (setq bibtex-completion-pdf-open-function 'helm-open-file-with-default-tool)
+ 
+  (with-eval-after-load 'embark
+    (setf (alist-get 'bibtex embark-keymap-alist) 'bibtex-actions-map))
+
+  (setq bibtex-actions-icon
+	`((pdf . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
+		  ,(all-the-icons-icon-for-file "foo.pdf" :face 'bibtex-actions-icon-dim)))
+	  (note . (,(all-the-icons-icon-for-file "foo.txt") .
+		   ,(all-the-icons-icon-for-file "foo.txt" :face 'bibtex-actions-icon-dim)))        
+	  (link . 
+		(,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
+		 ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'bibtex-actions-icon-dim)))))
+  ;; Here we define a face to dim non 'active' icons, but preserve alignment
+  (defface bibtex-actions-icon-dim
+    '((((background dark)) :foreground "#282c34")
+      (((background light)) :foreground "#fafafa"))
+    "Face for obscuring/dimming icons"
+    :group 'all-the-icons-faces)
+  )
+
+
+
 ;; abbrev for speed and less strain
 (setq-default abbrev-mode t)
 (diminish 'abbrev-mode)
@@ -916,3 +973,21 @@
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(safe-local-variable-values '((TeX-master . t))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-goggles-change-face ((t (:inherit diff-removed))))
+ '(evil-goggles-delete-face ((t (:inherit diff-removed))))
+ '(evil-goggles-paste-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
+ '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
+ '(evil-goggles-yank-face ((t (:inherit diff-changed)))))
