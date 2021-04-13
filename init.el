@@ -59,7 +59,7 @@
 
 
 ;; set a default font Iosevka, Hack, PragmataPro
-(set-face-attribute 'default nil :font "Iosevka etoile-10")
+(set-face-attribute 'default nil :font "Iosevka-10")
 (set-face-attribute 'fixed-pitch nil :font "Iosevka etoile-10")
 (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
 (variable-pitch-mode)
@@ -108,7 +108,11 @@
   ('normal "C-h f" 'helpful-callable)
   ('normal "C-h v" 'helpful-variable)
   ('normal "C-h k" 'helpful-key))
-(use-package org-cliplink :commands org-cliplink :after org)
+(use-package org-cliplink
+  :commands org-cliplink
+  :after org
+  :general
+  (org-mode-map "C-c C-l" 'org-cliplink))
 (use-package org-appear
   :straight (org-appear :type git :host github :repo "/awth13/org-appear")
   :hook (org-mode . org-appear-mode))
@@ -177,7 +181,9 @@
   ('visual "R" 'evil-multiedit-match-all)
   ("M-d" 'evil-multiedit-match-and-next)
   ("M-C-d" 'evil-multiedit-match-and-prev)
-  (evil-multiedit-state-map "RET" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
+  (evil-multiedit-state-map "<tab>" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
+  (evil-multiedit-state-map "C-j" 'evil-multiedit-next) 
+  (evil-multiedit-state-map "C-k" 'evil-multiedit-prev)
   ('visual "C-S-d" 'evil-multiedit-restore))
 (use-package evil-mc
   :after evil
@@ -339,7 +345,7 @@
 
   (use-package jupyter
     :general
-    ('normal org-mode-map :prefix "SPC" "c j" 'jupyter-org-hydra/body))
+    (org-mode-map "C-c =" 'jupyter-org-hydra/body))
 
   ;; The workaround is to just download and extract the module file
   ;; manually into the root directory of the zmq library.  download
