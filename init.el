@@ -1,9 +1,11 @@
+(set-frame-size (selected-frame) 140 50)
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
 (if (eq system-type 'windows-nt)
     (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
 
+(setq straight-check-for-modifications '(check-on-save find-when-checking))
 ;; development branch of straight
 (setq straight-repository-branch "develop")
 
@@ -37,17 +39,16 @@
                                     gc-cons-percentage 0.1)
                               (garbage-collect)) t)
 (use-package emacs
+  :defer 1
   :general
   ("C-<tab>" 'other-window)
-  :init
+  :config
   (setq w32-pipe-read-delay 0)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (global-hl-line-mode 1)
   (winner-mode t)
-
-  (set-frame-size (selected-frame) 140 50)
 
   (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
@@ -89,22 +90,24 @@
   (setq save-abbrevs 'silently)
   )
 (use-package benchmark-init
+  :disabled
   :config
   ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
 (use-package color-identifiers-mode
   :defer t)
 (use-package paren
+  :defer 1
   :config (show-paren-mode 1))
 (use-package recentf
-  :defer 10
+  :defer 1
   :config
   (recentf-mode t)
   (setq recentf-max-saved-items 500
           recentf-max-menu-items 15
           recentf-auto-cleanup 60))
 (use-package autorevert
-  :defer 10
+  :defer 1
   :config (global-auto-revert-mode 1))
 (use-package helpful
   :general
@@ -120,17 +123,19 @@
   :straight (org-appear :type git :host github :repo "/awth13/org-appear")
   :hook (org-mode . org-appear-mode))
 (use-package selectrum			; like a vertical minibuffer
-  :init
-  (selectrum-mode +1))
+  :init (selectrum-mode t))
 (use-package selectrum-prescient	;prescient provides matching of space-separated components
   :after selectrum
   :config
   (prescient-persist-mode t)
   (selectrum-prescient-mode t))
 (use-package marginalia
+  :defer 1
   :config (marginalia-mode))
 (use-package consult
-  :bind (("C-c o" . consult-imenu)
+  :bind (
+	 ("C-c o" . consult-imenu)
+	 ("C-c C-o" . consult-outline)
 	 ("C-x b" . consult-buffer)
 	 ("C-s" . consult-line)    ;; C-r reverse
 	 ("M-y" . consult-yank-pop)
@@ -140,7 +145,15 @@
 	 ("<tab>" . minibuffer-force-complete))
   :general
   ('normal :prefix "SPC" "x b" 'consult-buffer)
-  ('normal :prefix "SPC" "x o" 'consult-imenu))
+  ('normal :prefix "SPC" "x o" 'consult-imenu)
+  :config
+  ;; C-s C-s to search with previous search
+  (defvar my-consult-line-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map "\C-s" #'previous-history-element)
+      map))
+
+  (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map)))
 (use-package embark
   :general
   ("C-S-a" 'embark-act)
@@ -201,9 +214,11 @@
   ('normal evil-mc-key-map "C-n" 'evil-mc-make-and-goto-next-cursor)
   :config (evil-mc-mode 1))
 (use-package evil
+  :defer 1
   :diminish evil-mode
   :init
   (setq evil-want-keybinding nil)
+  :config
   (evil-mode 1)
   :general
   ('normal global "s" 'avy-goto-char-timer)
@@ -218,8 +233,7 @@
   (setq
    lazy-highlight-cleanup nil
    lazy-highlight-max-at-a-time nil
-   lazy-highlight-initial-delay 0)
-  )
+   lazy-highlight-initial-delay 0))
 (use-package evil-smartparens
   :hook (smartparens-mode . evil-smartparens-mode)
   :after evil)
@@ -274,6 +288,7 @@
   :config
   (global-evil-matchit-mode 4))
 (use-package beacon
+  :defer 1
   :diminish beacon-mode
   :config
   (setq beacon-blink-delay .5)
@@ -291,10 +306,8 @@
   (setq undo-propose-pop-to-buffer t))
 (use-package magit
   :bind ("C-c g" . magit-status))
-(use-package evil-magit
-  :after magit evil)
 (use-package rainbow-mode
-  :defer 5
+  :defer 1
   :diminish rainbow-mode
   :config (rainbow-mode))
 (use-package org
@@ -343,10 +356,6 @@
   (setq org-todo-keywords '(
 			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
 			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)")))
-
-  (use-package jupyter
-    :general
-    (org-mode-map "C-c =" 'jupyter-org-hydra/body))
 
   ;; The workaround is to just download and extract the module file
   ;; manually into the root directory of the zmq library.  download
@@ -419,6 +428,12 @@
 		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
 
   )
+(use-package jupyter
+  :after org
+  :general
+  (org-mode-map "C-c =" 'jupyter-org-hydra/body)
+  :config
+  (add-to-list 'exec-path "/usr/etc"))
 (use-package org-roam-server
   :hook (org-roam-mode . org-roam-server-mode)
   :config
@@ -467,7 +482,10 @@
   (if (eq system-type 'windows-nt)
       '((setq ispell-dictionary "en_US,pt_BR")
        (ispell-hunspell-add-multi-dic "en_US,pt_BR")))
-  (ispell-set-spellchecker-params))
+  (ispell-set-spellchecker-params)
+
+  (setq flyspell-delay 5)		; 5 seconds
+  )
 (use-package flyspell-lazy
   :if (memq system-type '(windows-nt))
   :after flyspell
@@ -485,23 +503,29 @@
   :config
   (add-to-list 'company-backends 'company-capf)
   (if (eq system-type 'gnu/linux)
-      (setq company-idle-delay 0.25
-	    company-minimum-prefix-length 2
-	    lsp-idle-delay 0.25)))
+      (setq company-idle-delay 0
+	    company-minimum-prefix-length 1
+	    company-tooltip-align-annotations t
+	    lsp-idle-delay 0)))
 (use-package company-box
   :diminish company-box-mode
   :if (memq system-type '(gnu/linux))
-  :hook (company-mode . company-box-mode))
+  :hook (company-mode . company-box-mode)
+  :custom
+  ;; Disable `single-candidate' and `echo-area' frontends
+  (company-frontends '(company-box-frontend))
+  (company-box-icon-right-margin 0.5))
 (use-package company-prescient
   :after company
   :config
   (company-prescient-mode))
 (use-package latex
+  :defer t
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :general
   ('normal "<SPC> v" 'TeX-view)
-  :init
+  :config
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (prettify-symbols-mode)
@@ -511,7 +535,6 @@
               (turn-off-auto-fill)))
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
-  :config
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)       ;enable document parsing
@@ -607,9 +630,11 @@
   (setq dired-auto-revert-buffer t))
 (use-package dired-subtree
   :after dired
-  :general ('normal dired-mode-map "C-c i" 'dired-subtree-insert))
+  :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
+(use-package all-the-icons-dired
+  :after dired
+  :hook (dired-mode . all-the-icons-dired-mode))
 (use-package treemacs
-  :defer t
   :config
   (progn
     (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
@@ -670,11 +695,8 @@
   :after treemacs)
 (use-package treemacs-evil
   :after treemacs evil)
-(use-package treemacs-icons-dired
-  :after treemacs dired
-  :ensure t
-  :config (treemacs-icons-dired-mode))
 (use-package solaire-mode
+  :defer 1
   :hook (after-init . solaire-global-mode)
   :config
   (setq solaire-mode-auto-swap-bg nil))
@@ -689,6 +711,7 @@
   (doom-themes-treemacs-config)
   (doom-themes-org-config))
 (use-package doom-modeline
+  :defer 1
   :after solaire-mode
   :config
   (doom-modeline-mode)
@@ -698,7 +721,8 @@
 (use-package mixed-pitch
   :hook (text-mode . mixed-pitch-mode))
 (use-package modus-themes
-  :init
+  :defer 1
+  :config
   (setq modus-themes-org-blocks 'grayscale)
   (load-theme 'modus-vivendi t)
   :bind ("<f5>" . modus-themes-toggle))
@@ -714,21 +738,18 @@
   :after dap-mode)
 (use-package c++-mode
   :straight nil
-  :mode ("\\.cpp\\'" . cc-mode)
+  :mode ("\\.cpp\\'" . c++-mode)
   :general
   (c++-mode-map "C-x c" 'compile)
   :config
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  :init (setq lsp-keymap-prefix "C-c l")
-  :general
-  ('normal "K" 'lsp-describe-thing-at-point)
-  ('normal "g d" 'lsp-find-definition)
-  ('normal "g e" 'lsp-find-references)
-  ('normal lsp-mode-map :prefix "SPC" "c f" 'lsp-format-buffer)
+  ;; :init (setq lsp-keymap-prefix "SPC c")
   :hook ((python-mode . lsp-deferred)
 	 (c++-mode . lsp))
+  :general
+  ('normal org-mode-map :prefix "SPC c" "o" 'lsp-org) ;activate lsp-org inside org-mode source block
   :custom
   (lsp-auto-guess-root t)
   (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
@@ -749,8 +770,9 @@
        (lsp-completion-provider :none)
        (lsp-enabale-links nil)))
   :config
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map))
+  (evil-define-key 'normal lsp-mode-map (kbd "SPC c") lsp-command-map))
 (use-package lsp-python-ms
+  :after lsp
   :config (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
@@ -772,7 +794,6 @@
   :straight adaptive-wrap
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 (use-package hydra
-  :defer 5
   :bind (("C-c C-w" . hydra-window-resize/body)
          ("C-c C-u" . hydra-outline/body)
          ("C-x C-'" . hydra-fold/body))
@@ -908,6 +929,7 @@
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 (use-package which-key
+  :defer 3
   :diminish which-key-mode
   :config
   (which-key-mode t))
@@ -964,8 +986,9 @@
   )
 
 (use-package emacs
+  :defer 1
   :if (memq system-type '(windows-nt))
-  :init
+  :config
   ;; open cmd
   (defun my-open-cmd ()
     "open cmd at file location"
@@ -974,12 +997,10 @@
   (if (eq system-type 'windows-nt)
       (bind-key "C-x m" 'my-open-cmd)))
 (use-package server
-  :defer 10
+  :defer 3
   :config (server-start))
 (use-package table
   :after org)
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-
-
