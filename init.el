@@ -26,6 +26,8 @@
 (straight-use-package 'use-package)
 ;; makes :straight t by default
 (setq straight-use-package-by-default t)
+(use-package general) 			; (general-def 'normal org-mode-map "key" 'def ) example with 2 positional arguments
+(use-package diminish :defer t)
 
 ;; Speed up bootstrapping
 (setq gc-cons-threshold 402653184
@@ -34,64 +36,65 @@
                               (setq gc-cons-threshold 100000000
                                     gc-cons-percentage 0.1)
                               (garbage-collect)) t)
+(use-package emacs
+  :general
+  ("C-<tab>" 'other-window)
+  :init
+  (setq w32-pipe-read-delay 0)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (global-hl-line-mode 1)
+  (winner-mode t)
 
-;; maybe improve performance on windows
-(setq w32-pipe-read-delay 0)
-(menu-bar-mode -1)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(global-hl-line-mode 1)
-(winner-mode t)
+  (set-frame-size (selected-frame) 140 50)
 
-(setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
-(setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
-(setq ring-bell-function 'ignore)
-(setq mouse-wheel-progressive-speed nil)
-(setq inhibit-startup-screen t)
-(setq user-full-name "Nasser Alkmim"
-      user-mail-address "nasser.alkmim@gmail.com")
+  (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
+  (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
+  (setq ring-bell-function 'ignore)
+  (setq mouse-wheel-progressive-speed nil)
+  (setq inhibit-startup-screen t)
+  (setq user-full-name "Nasser Alkmim"
+	user-mail-address "nasser.alkmim@gmail.com")
 
-;; UTF-8 please
-(prefer-coding-system 'utf-8)
-(set-default-coding-systems 'utf-8)
-(set-terminal-coding-system 'utf-8)
-(set-keyboard-coding-system 'utf-8)
+  ;; UTF-8 please
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
 
+  ;; Don't create backups
+  (setq backup-directory-alist `(("." . "~/.saves")))
+  (setq create-lockfiles nil)		; files with # (problem with onedrive...)
 
+  ;; Answering just 'y' or 'n' will do
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (blink-cursor-mode 0)
+
+  ;; Don't beep at me
+  (setq visible-bell t)
+  
 ;; set a default font Iosevka, Hack, PragmataPro
-(set-face-attribute 'default nil :font "Iosevka-10")
-(set-face-attribute 'fixed-pitch nil :font "Iosevka etoile-10")
-(set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
-(variable-pitch-mode)
-;; ;; specify font for all unicode characters
-;;(set-fontset-font t 'unicode (font-spec :family "Iosevka") nil 'prepend)
-;; For testing purposes: →„Σ"←
-(use-package mixed-pitch
-  :hook (text-mode . mixed-pitch-mode))
+  (set-face-attribute 'default nil :font "Iosevka etoile-10")
+  (set-face-attribute 'fixed-pitch nil :font "Iosevka-10")
+  (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
+  ;; ;; specify font for all unicode characters
+  ;;(set-fontset-font t 'unicode (font-spec :family "Iosevka") nil 'prepend)
+  ;; For testing purposes: →„Σ"←
 
-
-;; Don't create backups
-(setq backup-directory-alist `(("." . "~/.saves")))
-(setq create-lockfiles nil)		; files with # (problem with onedrive...)
-
-;; Answering just 'y' or 'n' will do
-(defalias 'yes-or-no-p 'y-or-n-p)
-
-(blink-cursor-mode 1)
-
-;; Don't beep at me
-(setq visible-bell t)
-
+  ;; abbrev for speed and less strain
+  (setq-default abbrev-mode t)
+  (diminish 'abbrev-mode)
+  (setq save-abbrevs 'silently)
+  )
 (use-package benchmark-init
   :config
   ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
-(use-package general) 			; (general-def 'normal org-mode-map "key" 'def ) example with 2 positional arguments
-(use-package diminish :defer t)
 (use-package color-identifiers-mode
   :defer t)
 (use-package paren
-  :defer 10
   :config (show-paren-mode 1))
 (use-package recentf
   :defer 10
@@ -203,8 +206,6 @@
   (setq evil-want-keybinding nil)
   (evil-mode 1)
   :general
-  ("<C-tab>" 'evil-window-next)
-  ("<C-S-tab>" 'evil-window-prev)
   ('normal global "s" 'avy-goto-char-timer)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
@@ -364,7 +365,7 @@
   (setq org-ditaa-jar-path "C:/Program Files/ditaa/ditaa.jar")
   (setq org-image-actual-width '(350))
   (setq python-shell-interpreter "/usr/bin/python")
-  (setq org-babel-python-command "python")
+  (setq org-babel-python-command "python3")
   (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
 						      (:session . "python")
 						      (:kernel . "python")
@@ -442,14 +443,17 @@
 (use-package org-download
   :after org
   :general
-  ("C-M-y" 'org-download-clipboard)
+  ("C-M-y" 'org-download-screenshot)
   :config
   (setq
    ;; choco install imagemagick.app -PackageParameters LegacySupport=true
    org-download-screenshot-method "imagemagick/convert"
-   ;; org-download-screenshot-method "xclip" ; on wsl
    org-download-image-dir "."
-   org-download-image-html-width 350))
+   org-download-image-html-width 350)
+  (if (eq system-type 'gnu/linux)
+      (setq org-download-screenshot-method "convert.exe clipboard: %s") ; add .exe to work within wsl2
+    (setq org-download-screenshot-file "./tmp/screenshot.png")) ; where temporary screenshot will be saved so convert can work
+    )
 (use-package flyspell
   :diminish flyspell-mode
   :commands flyspell-mode
@@ -479,7 +483,11 @@
 	 (emacs-lisp-mode . company-mode)
 	 (org-mode . company-mode))
   :config
-  (add-to-list 'company-backends 'company-capf))
+  (add-to-list 'company-backends 'company-capf)
+  (if (eq system-type 'gnu/linux)
+      (setq company-idle-delay 0.25
+	    company-minimum-prefix-length 2
+	    lsp-idle-delay 0.25)))
 (use-package company-box
   :diminish company-box-mode
   :if (memq system-type '(gnu/linux))
@@ -537,17 +545,17 @@
     ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
     ;; -set-color-range #fdf4c1 #282828
   (when (eq system-type 'windows-nt)
-   (setq TeX-view-program-list
- 	 '(("Sumatra PDF" ("\"C:/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
-			   (mode-io-correlate " -forward-search %b %n ") " %o"))))
-   (assq-delete-all 'output-pdf TeX-view-program-selection)
-   (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF"))
-   )
-  (when (eq system-type 'gnu/linux)
-    ;; (setq TeX-view-program-list '(("evince" "evince --page-index=%(outpage) %o")))
+    (setq TeX-view-program-list
+	  '(("Sumatra PDF" ("\"C:/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
     (assq-delete-all 'output-pdf TeX-view-program-selection)
-    (add-to-list 'TeX-view-program-selection '(output-pdf "Zathura"))
-    )
+    (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
+  (when (eq system-type 'gnu/linux)
+    (setq TeX-view-program-list
+	  '(("Sumatra PDF" ("\"/mnt/c/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
+    (assq-delete-all 'output-pdf TeX-view-program-selection)
+    (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
 
   ;; Custom functions
   ;;
@@ -593,10 +601,10 @@
 (use-package dired
   :straight nil
   :commands dired
+  :hook (dired-mode . dired-hide-details-mode)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
-  (setq dired-auto-revert-buffer t)
-  (setq dired-hide-details-mode t))
+  (setq dired-auto-revert-buffer t))
 (use-package dired-subtree
   :after dired
   :general ('normal dired-mode-map "C-c i" 'dired-subtree-insert))
@@ -607,7 +615,7 @@
     (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
 	  treemacs-deferred-git-apply-delay   0.5
 	  treemacs-display-in-side-window     t
-	  treemacs-file-event-delay           5000
+	  treemacs-file-event-delay           100
 	  treemacs-file-follow-delay          0.2
 	  treemacs-follow-after-init          t
 	  treemacs-follow-recenter-distance   0
@@ -615,7 +623,7 @@
 	  treemacs-goto-tag-strategy'refetch-index
 	  treemacs-indentation                1
 	  treemacs-indentation-string         " "
-	  treemacs-is-never-other-window      nil
+	  treemacs-is-never-other-window      t ; avoid jumping to treemacs when changing window
 	  treemacs-max-git-entries            5000
 	  treemacs-no-png-images              nil
 	  treemacs-no-delete-other-windows    t
@@ -646,6 +654,8 @@
        (treemacs-git-mode 'deferred))
       (`(t . _)
        (treemacs-git-mode 'simple))))
+  :general
+  (treemacs-mode-map "<f8>" 'treemacs-quit)
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
@@ -685,14 +695,12 @@
   ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
   (setq doom-modeline-icon t))
+(use-package mixed-pitch
+  :hook (text-mode . mixed-pitch-mode))
 (use-package modus-themes
   :init
   (setq modus-themes-org-blocks 'grayscale)
-  (setq modus-themes-no-mixed-fonts nil)
-  (if (eq system-type 'windows-nt)
-      (modus-themes-load-operandi)	;operandi on windows
-    (modus-themes-load-vivendi))	;vivendi on wsl
-  :config
+  (load-theme 'modus-vivendi t)
   :bind ("<f5>" . modus-themes-toggle))
 (use-package htmlize
   :defer t)
@@ -706,11 +714,10 @@
   :after dap-mode)
 (use-package c++-mode
   :straight nil
-  :defer t
+  :mode ("\\.cpp\\'" . cc-mode)
+  :general
+  (c++-mode-map "C-x c" 'compile)
   :config
-  (setq company-idle-delay 0
-	company-minimum-prefix-length 1
-	lsp-idle-delay 0.1)
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -919,7 +926,6 @@
   (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib")
   (setq bibtex-completion-pdf-field "File")
 
-
   (defun helm-w32-prepare-filename (file)
     "Convert filename FILE to something usable by external w32 executables."
     (replace-regexp-in-string ; For UNC paths
@@ -957,20 +963,16 @@
     :group 'all-the-icons-faces)
   )
 
-
-
-;; abbrev for speed and less strain
-(setq-default abbrev-mode t)
-(diminish 'abbrev-mode)
-(setq save-abbrevs 'silently)
-
-;; open cmd
-(defun my-open-cmd ()
-  "open cmd at file location"
-  (interactive)
-  (start-process-shell-command (format "pwsh (%s)" default-directory) nil "start pwsh"))
-(if (eq system-type 'windows-nt)
-    (bind-key "C-x m" 'my-open-cmd))
+(use-package emacs
+  :if (memq system-type '(windows-nt))
+  :init
+  ;; open cmd
+  (defun my-open-cmd ()
+    "open cmd at file location"
+    (interactive)
+    (start-process-shell-command (format "pwsh (%s)" default-directory) nil "start pwsh"))
+  (if (eq system-type 'windows-nt)
+      (bind-key "C-x m" 'my-open-cmd)))
 (use-package server
   :defer 10
   :config (server-start))
@@ -979,21 +981,5 @@
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(safe-local-variable-values '((TeX-master . t))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-goggles-change-face ((t (:inherit diff-removed))))
- '(evil-goggles-delete-face ((t (:inherit diff-removed))))
- '(evil-goggles-paste-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
- '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
- '(evil-goggles-yank-face ((t (:inherit diff-changed)))))
+
+
