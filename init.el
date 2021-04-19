@@ -373,11 +373,10 @@
 
   (setq org-ditaa-jar-path "C:/Program Files/ditaa/ditaa.jar")
   (setq org-image-actual-width '(350))
-  (setq python-shell-interpreter "/usr/bin/python")
-  (setq org-babel-python-command "python3")
+  ;; (setq org-babel-python-command "usr/bin/python3")
   (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
 						      (:session . "python")
-						      (:kernel . "python")
+						      (:kernel . "python3")
 						      (:results . "output")
 						      (:exports . "both")))
 
@@ -505,15 +504,12 @@
   (if (eq system-type 'gnu/linux)
       (setq company-idle-delay 0
 	    company-minimum-prefix-length 1
-	    company-tooltip-align-annotations t
 	    lsp-idle-delay 0)))
 (use-package company-box
   :diminish company-box-mode
   :if (memq system-type '(gnu/linux))
   :hook (company-mode . company-box-mode)
   :custom
-  ;; Disable `single-candidate' and `echo-area' frontends
-  (company-frontends '(company-box-frontend))
   (company-box-icon-right-margin 0.5))
 (use-package company-prescient
   :after company
@@ -640,7 +636,7 @@
     (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
 	  treemacs-deferred-git-apply-delay   0.5
 	  treemacs-display-in-side-window     t
-	  treemacs-file-event-delay           100
+	  treemacs-file-event-delay           3000
 	  treemacs-file-follow-delay          0.2
 	  treemacs-follow-after-init          t
 	  treemacs-follow-recenter-distance   0
