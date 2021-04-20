@@ -49,6 +49,7 @@
   (scroll-bar-mode -1)
   (global-hl-line-mode 1)
   (winner-mode t)
+  (fringe-mode 2)
 
   (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
@@ -326,6 +327,7 @@
   ('normal org-mode-map :prefix "SPC" "x o" 'org-clock-out)
   ('normal org-mode-map :prefix "SPC" "x x" 'org-clock-in-last)
   ('normal org-mode-map "[ ]" 'outline-up-heading)
+  ('normal org-mode-map :prefix "SPC" "u" 'outline-up-heading)
   :hook (org-mode . visual-line-mode)
   :custom
    (org-hide-emphasis-markers t) 
@@ -667,7 +669,7 @@
     (treemacs-resize-icons 12)
     ;; (treemacs-follow-mode nil)
     ;; (treemacs-filewatch-mode nil)
-    (treemacs-fringe-indicator-mode t)
+    ;; (treemacs-fringe-indicator-mode t)
 
     (pcase (cons (not (null (executable-find "git")))
                  (not (null (executable-find "python"))))
@@ -692,10 +694,24 @@
 (use-package treemacs-evil
   :after treemacs evil)
 (use-package solaire-mode
-  :defer 1
-  :hook (after-init . solaire-global-mode)
+  :disabled
+  ;; Ensure solaire-mode is running in all solaire-mode buffers
+  :hook (change-major-mode . turn-on-solaire-mode)
+  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
+  ;; itself off every time Emacs reverts the file
+  :hook (after-revert . turn-on-solaire-mode)
+  ;; To enable solaire-mode unconditionally for certain modes:
+  :hook (ediff-prepare-buffer . solaire-mode)
+  ;; Highlight the minibuffer when it is activated:
+  :hook (minibuffer-setup . solaire-mode-in-minibuffer)
   :config
   (setq solaire-mode-auto-swap-bg nil))
+(use-package auto-dim-other-buffers
+  :defer 1
+  :init
+  (add-hook 'after-init-hook (lambda ()
+			       (when (fboundp 'auto-dim-other-buffers-mode)
+				 (auto-dim-other-buffers-mode t)))))
 (use-package doom-themes
   :disabled
   :after solaire-mode
@@ -941,7 +957,9 @@
   :general
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
   :config
-  (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib")
+  (if (eq system-type 'windows-nt)
+      (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib")
+    (setq bibtex-completion-bibliography "/mnt/c/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
   (setq bibtex-completion-pdf-field "File")
 
   (defun helm-w32-prepare-filename (file)
