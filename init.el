@@ -2,8 +2,6 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-(if (eq system-type 'windows-nt)
-    (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
 
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 ;; development branch of straight
@@ -26,8 +24,11 @@
 
 ;; Install use-package
 (straight-use-package 'use-package)
+(setq use-package-always-ensure t
+        use-package-expand-minimally t)
 ;; makes :straight t by default
 (setq straight-use-package-by-default t)
+
 (use-package general) 			; (general-def 'normal org-mode-map "key" 'def ) example with 2 positional arguments
 (use-package diminish :defer t)
 
@@ -39,17 +40,20 @@
                                     gc-cons-percentage 0.1)
                               (garbage-collect)) t)
 (use-package emacs
+  :straight nil
   :defer 1
   :general
   ("C-<tab>" 'other-window)
   :config
+  (when (eq system-type 'windows-nt)
+      (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
+
   (setq w32-pipe-read-delay 0)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (global-hl-line-mode 1)
   (winner-mode t)
-  (fringe-mode 2)
 
   (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
@@ -72,24 +76,23 @@
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  (blink-cursor-mode 0)
+  ;; (blink-cursor-mode 1)
 
   ;; Don't beep at me
-  (setq visible-bell t)
-  
-;; set a default font Iosevka, Hack, PragmataPro
-  (set-face-attribute 'default nil :font "Iosevka etoile-10")
-  (set-face-attribute 'fixed-pitch nil :font "Iosevka-10")
-  (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
-  ;; ;; specify font for all unicode characters
-  ;;(set-fontset-font t 'unicode (font-spec :family "Iosevka") nil 'prepend)
-  ;; For testing purposes: →„Σ"←
-
+  (setq visible-bell t))
+(use-package abbrev
+  :straight nil
+  :config
   ;; abbrev for speed and less strain
   (setq-default abbrev-mode t)
   (diminish 'abbrev-mode)
-  (setq save-abbrevs 'silently)
-  )
+  (setq save-abbrevs 'silently))
+(use-package emacs
+  :disabled
+  :straight nil
+  :config
+  (set-face-attribute 'default nil :font "Iosevka etoile-10")
+  (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10"))
 (use-package benchmark-init
   :disabled
   :config
@@ -99,7 +102,9 @@
   :defer t)
 (use-package paren
   :defer 1
-  :config (show-paren-mode 1))
+  :config
+  (setq show-paren-delay 0)
+  (show-paren-mode 1))
 (use-package recentf
   :defer 1
   :config
@@ -109,7 +114,12 @@
           recentf-auto-cleanup 60))
 (use-package autorevert
   :defer 1
-  :config (global-auto-revert-mode 1))
+  :config
+  (setq auto-revert-interval 2)
+  (setq auto-revert-check-vc-info t)
+  (setq global-auto-revert-non-file-buffers t)
+  (setq auto-revert-verbose nil)
+  (global-auto-revert-mode +1))
 (use-package helpful
   :general
   ('normal "C-h f" 'helpful-callable)
@@ -120,9 +130,6 @@
   :after org
   :general
   (org-mode-map "C-c C-l" 'org-cliplink))
-(use-package org-appear
-  :straight (org-appear :type git :host github :repo "/awth13/org-appear")
-  :hook (org-mode . org-appear-mode))
 (use-package selectrum			; like a vertical minibuffer
   :init (selectrum-mode t))
 (use-package selectrum-prescient	;prescient provides matching of space-separated components
@@ -136,7 +143,7 @@
 (use-package consult
   :bind (
 	 ("C-c o" . consult-imenu)
-	 ("C-c C-o" . consult-outline)
+	 ("M-s" . consult-outline)
 	 ("C-x b" . consult-buffer)
 	 ("C-s" . consult-line)    ;; C-r reverse
 	 ("M-y" . consult-yank-pop)
@@ -159,8 +166,8 @@
   :general
   ("C-S-a" 'embark-act)
   :config
-  (setq embark-prompter 'embark-completing-read-prompter)
-  )
+  ;; actions with "@" when in the prompter
+  (setq embark-prompter 'embark-completing-read-prompter))
 (use-package embark-consult
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
@@ -306,6 +313,8 @@
   :config
   (setq undo-propose-pop-to-buffer t))
 (use-package magit
+  :general
+  (general-unbind 'normal magit-mode-map "C-<tab>")
   :bind ("C-c g" . magit-status))
 (use-package rainbow-mode
   :defer 1
@@ -322,12 +331,14 @@
 	("M-p" . org-previous-item)
 	("M-n" . org-next-item))
   :general
-  (org-mode-map "<C-tab>" nil)
   ('normal org-mode-map :prefix "SPC" "x i" 'org-clock-in)
   ('normal org-mode-map :prefix "SPC" "x o" 'org-clock-out)
   ('normal org-mode-map :prefix "SPC" "x x" 'org-clock-in-last)
   ('normal org-mode-map "[ ]" 'outline-up-heading)
   ('normal org-mode-map :prefix "SPC" "u" 'outline-up-heading)
+  ('normal org-mode-map :prefix "g" "s j" 'org-babel-next-src-block)
+  ('normal org-mode-map :prefix "g" "s k" 'org-babel-previous-src-block)
+  (general-unbind 'normal org-mode-map "g j" "g k")
   :hook (org-mode . visual-line-mode)
   :custom
    (org-hide-emphasis-markers t) 
@@ -345,8 +356,16 @@
    (org-fontify-quote-and-verse-blocks t)
   :config
   (transient-mark-mode -1)
+  (setq org-todo-keywords '(
+			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
+			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)")))
+
   
-  
+)
+(use-package org-clock
+  :straight nil
+  :after org
+  :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
   (setq org-clock-persistence-insinuate t
 	org-clock-persist t
@@ -354,44 +373,11 @@
 	org-clock-out-remove-zero-time-clocks t
 	org-clock-mode-line-total 'current
 	org-duration-format (quote h:mm))
-
-  (setq org-todo-keywords '(
-			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
-			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)")))
-
-  ;; The workaround is to just download and extract the module file
-  ;; manually into the root directory of the zmq library.  download
-  ;; emacs-zmq.dll from:
-  ;; https://github.com/dzop/emacs-zmq/releases/download/v0.10.10/emacs-zmq-x86_64-w64-mingw32.tar.gz
-  ;; and put on .emacs.d/straight/build/zmq
-
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((sql . t)
-     (ditaa . t)
-     (C . t)
-     (python . t)
-     (jupyter . t)))
-
-  (setq org-ditaa-jar-path "C:/Program Files/ditaa/ditaa.jar")
-  (setq org-image-actual-width '(350))
-  ;; (setq org-babel-python-command "usr/bin/python3")
-  (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
-						      (:session . "python")
-						      (:kernel . "python3")
-						      (:results . "output")
-						      (:exports . "both")))
-
-  (setq jupyter-org-resource-directory "./jupyter/")
-  ;; minted code pdf export org
-  (setq org-latex-listings 'minted
-	org-latex-packages-alist '(("newfloat" "minted"))
-	org-latex-pdf-process
-	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "bibtex %b"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-  ;; 
+  )
+(use-package org-src
+  :straight nil
+  :after org
+  :config
   ;; Org babel and source blocks
   (setq org-src-fontify-natively t
 	;; org-highlight-latex-and-related '(latex)
@@ -402,18 +388,28 @@
 	org-src-tab-acts-natively t
 	org-export-babel-evaluate nil
 	org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
-
- ;; ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-
+  )
+(use-package org-agenda
+  :after org
+  :straight nil
+  :config
   (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
 				 "~/OneDrive/Org/notes.org"
 				 "~/OneDrive/Org/journal.org"
 				 "~/OneDrive/Org/gcal.org"
-				 "~/OneDrive/Concurso/Notas/notas_concurso.org")))
-  (setq org-imenu-depth 2)
-
-  (require 'ox-latex)
+				 "~/OneDrive/Concurso/Notas/notas_concurso.org"))))
+(use-package ox-latex
+  :after org
+  :straight nil
+  :config
+  ;; minted code pdf export org
+  (setq org-latex-listings 'minted
+	org-latex-packages-alist '(("newfloat" "minted"))
+	org-latex-pdf-process
+	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	  "bibtex %b"
+	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
   (add-to-list 'org-latex-classes
 	       '("koma-article"
 		 "\\documentclass{scrartcl}
@@ -426,15 +422,53 @@
 		 ("\\subsection{%s}" . "\\subsection*{%s}")
 		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
 		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}")))
-
-  )
+		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+(use-package ob-async
+  :after org
+  :config
+  (setq ob-async-no-async-languages-alist '("python" "jupyter-python")))
 (use-package jupyter
   :after org
   :general
   (org-mode-map "C-c =" 'jupyter-org-hydra/body)
   :config
-  (add-to-list 'exec-path "/usr/etc"))
+  (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
+						      (:session . "default")
+						      (:kernel . "python3")
+						      (:results . "output")
+						      (:exports . "both")))
+  (setq jupyter-org-resource-directory "./jupyter/")
+  ;; problems on windows
+  ;; The workaround is to just download and extract the module file
+  ;; manually into the root directory of the zmq library.  download
+  ;; emacs-zmq.dll from:
+  ;; https://github.com/dzop/emacs-zmq/releases/download/v0.10.10/emacs-zmq-x86_64-w64-mingw32.tar.gz
+  ;; and put on .emacs.d/straight/build/zmq
+  (add-to-list 'exec-path "/usr/etc")
+  
+  ;; use just python instead of jupyter-python
+  (org-babel-jupyter-override-src-block "python")
+
+  (setq org-image-actual-width '(350))
+ ;; ;;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+(use-package org
+  :after jupyter
+  :straight nil
+  :config
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((sql . t)
+     (shell . t)
+     (C . t)
+     (python . t)
+     (jupyter . t)))
+  )
+(use-package ob-shell
+  :straight nil
+  :after org
+  :config
+  (setq org-babel-default-header-args:shell '((:results . "output"))))
 (use-package org-roam-server
   :hook (org-roam-mode . org-roam-server-mode)
   :config
@@ -466,10 +500,9 @@
    org-download-screenshot-method "imagemagick/convert"
    org-download-image-dir "."
    org-download-image-html-width 350)
-  (if (eq system-type 'gnu/linux)
-      (setq org-download-screenshot-method "convert.exe clipboard: %s") ; add .exe to work within wsl2
-    (setq org-download-screenshot-file "./tmp/screenshot.png")) ; where temporary screenshot will be saved so convert can work
-    )
+  (setq org-download-screenshot-method "convert.exe clipboard: %s") ; add .exe to work within wsl2
+  (setq org-download-screenshot-file "./screenshot.png") ; where temporary screenshot will be saved so convert can work
+  )
 (use-package flyspell
   :diminish flyspell-mode
   :commands flyspell-mode
@@ -480,11 +513,10 @@
   :config
   (setq ispell-program-name "hunspell")
   (add-to-list 'ispell-extra-args "--sug-mode=ultra")
-  (if (eq system-type 'windows-nt)
-      '((setq ispell-dictionary "en_US,pt_BR")
-       (ispell-hunspell-add-multi-dic "en_US,pt_BR")))
+  (when (eq system-type 'windows-nt)
+    (setq ispell-dictionary "en_US,pt_BR")
+    (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
   (ispell-set-spellchecker-params)
-
   (setq flyspell-delay 5)		; 5 seconds
   )
 (use-package flyspell-lazy
@@ -503,26 +535,34 @@
 	 (org-mode . company-mode))
   :config
   (add-to-list 'company-backends 'company-capf)
-  (if (eq system-type 'gnu/linux)
-      (setq company-idle-delay 0
-	    company-minimum-prefix-length 1
-	    lsp-idle-delay 0)))
-(use-package company-box
-  :diminish company-box-mode
-  :if (memq system-type '(gnu/linux))
-  :hook (company-mode . company-box-mode)
-  :custom
-  (company-box-icon-right-margin 0.5))
+  (when (eq system-type 'gnu/linux)
+      (setq company-idle-delay 0.2
+	    company-format-margin-function #'company-vscode-dark-icons-margin
+	    company-minimum-prefix-length 2)))
+(use-package company-posframe
+  :diminish company-posframe-mode
+  :after company
+  :config
+  (company-posframe-mode 1)
+  (setq company-posframe-show-metadata nil
+	company-posframe-show-indicator nil))
 (use-package company-prescient
   :after company
   :config
   (company-prescient-mode))
 (use-package latex
-  :defer t
+  :defer
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
+  :custom-face
+  (font-latex-sectioning-2-face ((t (:font "Iosevka aile-11"))))
+  (font-latex-sectioning-3-face ((t (:font "Iosevka aile-10"))))
+  (font-latex-sectioning-4-face ((t (:font "Iosevka aile-9"))))
   :general
   ('normal "<SPC> v" 'TeX-view)
+  (general-unbind 'normal outline-mode-map
+    "g j"
+    "g k")
   :config
   (add-hook 'LaTeX-mode-hook
             (lambda ()
@@ -547,20 +587,13 @@
                                       '(2 'font-latex-string-face t)
                                       '(3 'font-latex-string-face t))))
 
-  ;; shell escape for minted (syntax highlight)
-  (setq LaTeX-command "latex -shell-escape")
+  (setq LaTeX-command "latex -shell-escape") ;; shell escape for minted (syntax highlight)
+  (setq TeX-source-correlate-method 'synctex) ;; Method for enabling forward and inverse search 
+  (setq TeX-source-correlate-start-server t) ;; inhibit the question to start a server process
+  (setq TeX-source-correlate-mode t) ;; jump to source
 
-  ;; Method for enabling forward and inverse search 
-  (setq TeX-source-correlate-method 'synctex)
-  ;; inhibit the question to start a server process
-  (setq TeX-source-correlate-start-server t)
-
-  ;; jump to source
-  (setq TeX-source-correlate-mode t)
-
-  ;; Update PDF buffers after successful LaTeX runs  
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
-	    'TeX-revert-document-buffer)
+	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs  
 
     ;; use sumatra to view pdf
     ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
@@ -573,14 +606,12 @@
     (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
   (when (eq system-type 'gnu/linux)
     (setq TeX-view-program-list
-	  '(("Sumatra PDF" ("\"/mnt/c/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+	  '(("Sumatra PDF" ("\"SumatraPDF.exe\" -reuse-instance"
 			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
     (assq-delete-all 'output-pdf TeX-view-program-selection)
     (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
 
-  ;; Custom functions
-  ;;
-  ;; 
+  ;; Custom function
   (defun my/tex-insert-clipboard ()
     (interactive)
                                         ;make the img directory
@@ -635,44 +666,53 @@
 (use-package treemacs
   :config
   (progn
-    (setq treemacs-collapse-dirs              (if (executable-find "python") 3 0)
-	  treemacs-deferred-git-apply-delay   0.5
-	  treemacs-display-in-side-window     t
-	  treemacs-file-event-delay           3000
-	  treemacs-file-follow-delay          0.2
-	  treemacs-follow-after-init          t
-	  treemacs-follow-recenter-distance   0
-	  treemacs-git-command-pipe           ""
-	  treemacs-goto-tag-strategy'refetch-index
-	  treemacs-indentation                1
-	  treemacs-indentation-string         " "
-	  treemacs-is-never-other-window      t ; avoid jumping to treemacs when changing window
-	  treemacs-max-git-entries            5000
-	  treemacs-no-png-images              nil
-	  treemacs-no-delete-other-windows    t
-	  treemacs-project-follow-cleanup     nil
-	  treemacs-persist-file               (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-	  treemacs-recenter-after-file-follow nil
-	  treemacs-recenter-after-tag-follow  nil
-	  treemacs-show-cursor                nil
-	  treemacs-show-hidden-files          t
-	  treemacs-silent-filewatch           nil
-	  treemacs-silent-refresh             nil
-	  treemacs-sorting 'mod-time-desc
-	  treemacs-space-between-root-nodes   t
-	  treemacs-tag-follow-cleanup         t
-	  treemacs-tag-follow-delay           1.5
-	  treemacs-width                      25)
+    (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
+	  treemacs-deferred-git-apply-delay      0.5
+	  treemacs-directory-name-transformer    #'identity
+	  treemacs-display-in-side-window        t
+	  treemacs-eldoc-display                 t
+	  treemacs-file-event-delay              5000
+	  treemacs-file-extension-regex          treemacs-last-period-regex-value
+	  treemacs-file-follow-delay             0.5
+	  treemacs-file-name-transformer         #'identity
+	  treemacs-follow-after-init             t
+	  treemacs-git-command-pipe              ""
+	  treemacs-goto-tag-strategy             'refetch-index
+	  treemacs-indentation                   1
+	  treemacs-indentation-string            "  "
+	  treemacs-is-never-other-window         t
+	  treemacs-max-git-entries               5000
+	  treemacs-missing-project-action        'ask
+	  treemacs-move-forward-on-expand        nil
+	  treemacs-no-png-images                 nil
+	  treemacs-no-delete-other-windows       t
+	  treemacs-project-follow-cleanup        nil
+	  treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
+	  treemacs-position                      'left
+	  treemacs-read-string-input             'from-child-frame
+	  treemacs-recenter-distance             0.1
+	  treemacs-recenter-after-file-follow    nil
+	  treemacs-recenter-after-tag-follow     nil
+	  treemacs-recenter-after-project-jump   'always
+	  treemacs-recenter-after-project-expand 'on-distance
+	  treemacs-show-cursor                   nil
+	  treemacs-show-hidden-files             t
+	  treemacs-silent-filewatch              nil
+	  treemacs-silent-refresh                nil
+	  treemacs-sorting                       'mod-time-desc
+	  treemacs-space-between-root-nodes      t
+	  treemacs-tag-follow-cleanup            t
+	  treemacs-tag-follow-delay              1.5
+	  treemacs-user-mode-line-format         nil
+	  treemacs-user-header-line-format       nil
+	  treemacs-width                         35
+	  treemacs-workspace-switch-cleanup      nil)
 
-    ;; The default width and height of the icons is 22 pixels. If you are
-    ;; using a Hi-DPI display, uncomment this to double the icon size.
-    (treemacs-resize-icons 12)
-    ;; (treemacs-follow-mode nil)
-    ;; (treemacs-filewatch-mode nil)
-    ;; (treemacs-fringe-indicator-mode t)
-
+    (treemacs-follow-mode t)
+    (treemacs-filewatch-mode t)
+    (treemacs-fringe-indicator-mode 'always)
     (pcase (cons (not (null (executable-find "git")))
-                 (not (null (executable-find "python"))))
+		 (not (null treemacs-python-executable)))
       (`(t . t)
        (treemacs-git-mode 'deferred))
       (`(t . _)
@@ -688,51 +728,59 @@
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
-(use-package treemacs-all-the-icons
-  :disabled
-  :after treemacs)
+
 (use-package treemacs-evil
   :after treemacs evil)
 (use-package solaire-mode
-  :disabled
-  ;; Ensure solaire-mode is running in all solaire-mode buffers
-  :hook (change-major-mode . turn-on-solaire-mode)
-  ;; ...if you use auto-revert-mode, this prevents solaire-mode from turning
-  ;; itself off every time Emacs reverts the file
-  :hook (after-revert . turn-on-solaire-mode)
-  ;; To enable solaire-mode unconditionally for certain modes:
-  :hook (ediff-prepare-buffer . solaire-mode)
-  ;; Highlight the minibuffer when it is activated:
-  :hook (minibuffer-setup . solaire-mode-in-minibuffer)
+  :hook ((change-major-mode . turn-on-solaire-mode)
+         (after-revert . turn-on-solaire-mode)
+         (ediff-prepare-buffer . solaire-mode)
+         (minibuffer-setup . solaire-mode-in-minibuffer))
   :config
-  (setq solaire-mode-auto-swap-bg nil))
-(use-package auto-dim-other-buffers
-  :defer 1
-  :init
-  (add-hook 'after-init-hook (lambda ()
-			       (when (fboundp 'auto-dim-other-buffers-mode)
-				 (auto-dim-other-buffers-mode t)))))
+  (setq solaire-mode-auto-swap-bg t)
+  (solaire-global-mode +1))
 (use-package doom-themes
   :disabled
+  :defer 1
   :after solaire-mode
+  :general
+  ("<f5>" 'ap/load-doom-theme)
   :config
-  (load-theme 'doom-dracula t)
+  (load-theme 'doom-one t)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t
 	doom-themes-treemacs-theme "doom-colors") ; if nil, italics is universally disabled
   (doom-themes-treemacs-config)
-  (doom-themes-org-config))
+  (doom-themes-org-config)
+  
+  (defun ap/load-doom-theme (theme)
+    "Disable active themes and load a Doom theme."
+    (interactive (list (intern (completing-read "Theme: "
+						(->> (custom-available-themes)
+						  (-map #'symbol-name)
+						  (--select (string-prefix-p "doom-" it)))))))
+    (ap/switch-theme theme)
+
+    (set-face-foreground 'org-indent (face-background 'default)))
+  (defun ap/switch-theme (theme)
+    "Disable active themes and load THEME."
+    (interactive (list (intern (completing-read "Theme: "
+						(->> (custom-available-themes)
+						  (-map #'symbol-name))))))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme theme 'no-confirm)))
 (use-package doom-modeline
   :defer 1
-  :after solaire-mode
   :config
   (doom-modeline-mode)
   ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
   (setq doom-modeline-icon t))
 (use-package mixed-pitch
+  :disabled
   :hook (text-mode . mixed-pitch-mode))
 (use-package modus-themes
+  :disabled
   :defer 1
   :config
   (setq modus-themes-org-blocks 'grayscale)
@@ -752,37 +800,20 @@
   :straight nil
   :mode ("\\.cpp\\'" . c++-mode)
   :general
-  (c++-mode-map "C-x c" 'compile)
-  :config
-  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
+  (c++-mode-map "C-x c" 'compile))
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
-  ;; :init (setq lsp-keymap-prefix "SPC c")
+  :init
+  (setq lsp-keymap-prefix "C-l")
+  (setq read-process-output-max (* 1024 1024))
   :hook ((python-mode . lsp-deferred)
-	 (c++-mode . lsp))
-  :general
-  ('normal org-mode-map :prefix "SPC c" "o" 'lsp-org) ;activate lsp-org inside org-mode source block
-  :custom
-  (lsp-auto-guess-root t)
-  (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-  (lsp-file-watch-threshold 1500)
-  (if (eq system-type 'windows-nt)		;slow on windows...
-      ((lsp-signature-render-documentation nil) ;don't show docstirng in modeline
-       (lsp-signature-auto-activate nil) ; don't show help in the modeline
-       (read-processpre-output-max (* 1024 1024))
-       (lsp-completion-show-detail nil)	;don't show detail on company completion
-       (lsp-completion-show-kind nil)	; don't show kind in company completion
-       (lsp-auto-execute-action nil) 	; don't execute single action
-       (lsp-before-save-edits nil)		; avoid apply edits before saving
-       (lsp-keymap-prefix "C-,")
-       (lsp-eldoc-enable-hover nil)		;don't show eldoc on modeline
-       (lsp-modeline-diagnostics-enable nil)
-       (lsp-modeline-code-actions-enable nil)
-       (lsp-diagnostic-package :none)
-       (lsp-completion-provider :none)
-       (lsp-enabale-links nil)))
+	 (c++-mode . lsp-deferred)
+	 (lsp-mode . lsp-enable-which-key-integration))
   :config
-  (evil-define-key 'normal lsp-mode-map (kbd "SPC c") lsp-command-map))
+  (setq
+   lsp-idle-delay 1
+   lsp-ui-doc-delay 3			; show doc only after this time
+   lsp-ui-sideline-enable nil))
 (use-package lsp-python-ms
   :after lsp
   :config (setq lsp-python-ms-auto-install-server t)
@@ -802,6 +833,10 @@
 (use-package python-black
   :after python
   :commands python-black-buffer)
+(use-package elpy
+  :after python org
+  :config
+  (elpy-enable))
 (use-package adaptive-wrap
   :straight adaptive-wrap
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
@@ -957,8 +992,9 @@
   :general
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
   :config
-  (if (eq system-type 'windows-nt)
-      (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib")
+  (when (eq system-type 'windows-nt)
+    (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
+  (when (eq system-type 'gnu/linux)
     (setq bibtex-completion-bibliography "/mnt/c/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
   (setq bibtex-completion-pdf-field "File")
 
@@ -975,9 +1011,10 @@
   (defun helm-open-file-with-default-tool (file)
     "Open FILE with the default tool on this platform."
     (let (process-connection-type)
-      (if (eq system-type 'windows-nt)
-	  (helm-w32-shell-execute-open-file file)
-	)))
+      (when (eq system-type 'windows-nt)
+	(helm-w32-shell-execute-open-file file))
+      (when (eq system-type 'gnu/linux)
+	(shell-command "wslview" file))))
   (setq bibtex-completion-pdf-open-function 'helm-open-file-with-default-tool)
  
   (with-eval-after-load 'embark
@@ -998,7 +1035,8 @@
     "Face for obscuring/dimming icons"
     :group 'all-the-icons-faces)
   )
-
+(use-package epresent
+  :commands epresent-run)
 (use-package emacs
   :defer 1
   :if (memq system-type '(windows-nt))
@@ -1008,7 +1046,7 @@
     "open cmd at file location"
     (interactive)
     (start-process-shell-command (format "pwsh (%s)" default-directory) nil "start pwsh"))
-  (if (eq system-type 'windows-nt)
+  (when (eq system-type 'windows-nt)
       (bind-key "C-x m" 'my-open-cmd)))
 (use-package server
   :defer 3
