@@ -54,6 +54,9 @@
   (global-hl-line-mode 1)
   (winner-mode t)
 
+  (setq-default frame-title-format '("%b [%m]")) ;name on top of window
+  (setq warning-minimum-level :error)		 ;avoid warning buffer
+
   (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
   (setq ring-bell-function 'ignore)
@@ -347,10 +350,7 @@
    (org-startup-folded t)
    (org-hide-leading-stars t) 
    (org-hide-leading-stars-before-indent-mode nil)
-   ;; (org-odd-levels-only t)
    (org-edit-src-content-indentation 0)
-   (org-goto-interface 'outline-path-completion) ;; org goto play nice with ivy
-   (org-goto-max-level 4)
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
    (org-cycle-separator-lines 0)
@@ -360,6 +360,33 @@
   (setq org-todo-keywords '(
 			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
 			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)"))))
+(use-package ob
+  :straight nil
+  :after org
+  :config
+  (add-to-list 'exec-path "~/.local/bin") ;tell emacs where jupyter was installed
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((sql . t)
+     (shell . t)
+     (C . t)
+     (python . t)
+     (jupyter . t)))
+
+  ;; use just python instead of jupyter-python
+  (org-babel-jupyter-override-src-block "python")
+
+  (setq org-babel-default-header-args:python '((:async . "yes")
+					       (:session . "default")
+					       (:kernel . "python3")
+					       (:results . "output")
+					       (:exports . "both")))
+  (setq jupyter-org-resource-directory "./jupyter/")
+  (setq org-image-actual-width '(350))
+  ;; display/update images in the buffer after I evaluate
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+  )
 (use-package org-clock
   :straight nil
   :after org
@@ -427,41 +454,8 @@
   (setq ob-async-no-async-languages-alist '("python" "jupyter-python")))
 (use-package jupyter
   :after org
-  :general
-  (org-mode-map "C-c =" 'jupyter-org-hydra/body)
   :config
-  (setq org-babel-default-header-args:jupyter-python '((:async . "yes")
-						      (:session . "default")
-						      (:kernel . "python3")
-						      (:results . "output")
-						      (:exports . "both")))
-  (setq jupyter-org-resource-directory "./jupyter/")
-  ;; problems on windows
-  ;; The workaround is to just download and extract the module file
-  ;; manually into the root directory of the zmq library.  download
-  ;; emacs-zmq.dll from:
-  ;; https://github.com/dzop/emacs-zmq/releases/download/v0.10.10/emacs-zmq-x86_64-w64-mingw32.tar.gz
-  ;; and put on .emacs.d/straight/build/zmq
-  (add-to-list 'exec-path "/usr/etc")
-  
-  ;; use just python instead of jupyter-python
-  (org-babel-jupyter-override-src-block "python")
-
-  (setq org-image-actual-width '(350))
- ;; ;;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
-(use-package org
-  :after jupyter
-  :straight nil
-  :config
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((sql . t)
-     (shell . t)
-     (C . t)
-     (python . t)
-     (jupyter . t)))
-  )
+  (general-def org-mode-map "C-c =" 'jupyter-org-hydra/body))
 (use-package ob-shell
   :straight nil
   :after org
