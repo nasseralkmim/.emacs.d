@@ -48,7 +48,6 @@
   (when (eq system-type 'windows-nt)
       (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
 
-  (setq w32-pipe-read-delay 0)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
@@ -88,11 +87,12 @@
   (diminish 'abbrev-mode)
   (setq save-abbrevs 'silently))
 (use-package emacs
-  :disabled
   :straight nil
   :config
-  (set-face-attribute 'default nil :font "Iosevka etoile-10")
-  (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10"))
+  ;; (set-face-attribute 'default nil :font "Iosevka etoile-10")
+  ;; (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
+  (set-face-attribute 'default nil :height 90)
+  )
 (use-package benchmark-init
   :disabled
   :config
@@ -237,6 +237,8 @@
   ('normal :prefix "SPC" "a" 'evil-append-line)
   ('normal :prefix "SPC" "x s" 'save-buffer)
   ('normal "[ ]" 'evil-next-close-paren)
+  ('normal "j" 'evil-next-visual-line)
+  ('normal "k" 'evil-previous-visual-line)
   :config
   (setq
    lazy-highlight-cleanup nil
@@ -338,7 +340,6 @@
   ('normal org-mode-map :prefix "SPC" "u" 'outline-up-heading)
   ('normal org-mode-map :prefix "g" "s j" 'org-babel-next-src-block)
   ('normal org-mode-map :prefix "g" "s k" 'org-babel-previous-src-block)
-  (general-unbind 'normal org-mode-map "g j" "g k")
   :hook (org-mode . visual-line-mode)
   :custom
    (org-hide-emphasis-markers t) 
@@ -346,7 +347,7 @@
    (org-startup-folded t)
    (org-hide-leading-stars t) 
    (org-hide-leading-stars-before-indent-mode nil)
-   (org-odd-levels-only t)
+   ;; (org-odd-levels-only t)
    (org-edit-src-content-indentation 0)
    (org-goto-interface 'outline-path-completion) ;; org goto play nice with ivy
    (org-goto-max-level 4)
@@ -358,10 +359,7 @@
   (transient-mark-mode -1)
   (setq org-todo-keywords '(
 			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
-			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)")))
-
-  
-)
+			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)"))))
 (use-package org-clock
   :straight nil
   :after org
@@ -383,7 +381,7 @@
 	;; org-highlight-latex-and-related '(latex)
 	;; org-src-window-setup 'current-window
 	;; org-src-strip-leading-and-trailing-blank-lines t
-	org-src-preserve-indentation t  ; preserve indentation in code
+	;; org-src-preserve-indentation t  ; preserve indentation in code
 	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
 	org-src-tab-acts-natively t
 	org-export-babel-evaluate nil
@@ -468,6 +466,7 @@
   :straight nil
   :after org
   :config
+  (setq org-babel-default-header-args:sh '((:results . "output")))
   (setq org-babel-default-header-args:shell '((:results . "output"))))
 (use-package org-roam-server
   :hook (org-roam-mode . org-roam-server-mode)
@@ -508,10 +507,8 @@
   :commands flyspell-mode
   :hook ((LaTeX-mode . flyspell-mode)
 	 (org-mode . flyspell-mode))
-  :general
-  ('normal flyspell-mode-map "C-," 'flyspell-goto-next-error)
   :config
-  (setq ispell-program-name "hunspell")
+  (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
   (add-to-list 'ispell-extra-args "--sug-mode=ultra")
   (when (eq system-type 'windows-nt)
     (setq ispell-dictionary "en_US,pt_BR")
@@ -519,6 +516,10 @@
   (ispell-set-spellchecker-params)
   (setq flyspell-delay 5)		; 5 seconds
   )
+(use-package flyspell-correct
+  :general
+  ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
+  :after flyspell)
 (use-package flyspell-lazy
   :if (memq system-type '(windows-nt))
   :after flyspell
@@ -540,6 +541,7 @@
 	    company-format-margin-function #'company-vscode-dark-icons-margin
 	    company-minimum-prefix-length 2)))
 (use-package company-posframe
+  :disabled
   :diminish company-posframe-mode
   :after company
   :config
@@ -555,9 +557,10 @@
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face
-  (font-latex-sectioning-2-face ((t (:font "Iosevka aile-11"))))
-  (font-latex-sectioning-3-face ((t (:font "Iosevka aile-10"))))
-  (font-latex-sectioning-4-face ((t (:font "Iosevka aile-9"))))
+  (font-latex-sectioning-2-face ((t (:height 130 :weight bold))))
+  (font-latex-sectioning-3-face ((t (:height 120))))
+  (font-latex-sectioning-4-face ((t (:height 110 :slant italic))))
+  (font-latex-sectioning-5-face ((t (:height 90))))
   :general
   ('normal "<SPC> v" 'TeX-view)
   (general-unbind 'normal outline-mode-map
@@ -649,7 +652,8 @@
 (use-package outline-magic
   :after latex
   :general
-  (LaTeX-mode-map "<tab>" 'outline-cycle))
+  (LaTeX-mode-map "<tab>" 'outline-cycle)
+  ('normal outline-mode-map "C-j" nil))
 (use-package dired
   :straight nil
   :commands dired
@@ -711,12 +715,9 @@
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode 'always)
-    (pcase (cons (not (null (executable-find "git")))
-		 (not (null treemacs-python-executable)))
-      (`(t . t)
-       (treemacs-git-mode 'deferred))
-      (`(t . _)
-       (treemacs-git-mode 'simple))))
+    )
+  (setq treemacs-git-mode nil)
+  (treemacs-resize-icons 12)
   :general
   (treemacs-mode-map "<f8>" 'treemacs-quit)
   :bind
@@ -740,8 +741,7 @@
   (setq solaire-mode-auto-swap-bg t)
   (solaire-global-mode +1))
 (use-package doom-themes
-  :disabled
-  :defer 1
+  :commands ap/load-doom-theme
   :after solaire-mode
   :general
   ("<f5>" 'ap/load-doom-theme)
@@ -842,7 +842,7 @@
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 (use-package hydra
   :bind (("C-c C-w" . hydra-window-resize/body)
-         ("C-c C-u" . hydra-outline/body)
+         ("C-c C-o" . hydra-outline/body)
          ("C-x C-'" . hydra-fold/body))
   :config
   (defhydra hydra-expand-region ()
