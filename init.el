@@ -215,15 +215,9 @@
 (use-package evil-mc
   :after evil
   :general
-  ('normal :prefix "g z" "m" 'evil-mc-make-all-cursors)
-  ('normal :prefix "g z" "u" 'evil-mc-undo-all-cursors)
-  ('normal :prefix "g z" "c" 'evil-mc-make-cursor-here)
-  ('normal :prefix "g z" "n" 'evil-mc-make-and-goto-next-match)
-  ('normal :prefix "g z" "p" 'evil-mc-make-and-goto-prev-match)
-  ('normal :prefix "g z" "N" 'evil-mc-skip-and-goto-next-match)
-  ('normal :prefix "g z" "P" 'evil-mc-skip-and-goto-prev-match)
-  ('normal evil-mc-key-map "C-n" 'evil-mc-make-and-goto-next-cursor)
-  :config (evil-mc-mode 1))
+  ('normal evil-mc-key-map "g c" evil-mc-cursors-map)
+  ('normal evil-mc-key-map "g r" nil)
+  :config (global-evil-mc-mode 1))
 (use-package evil
   :defer 1
   :diminish evil-mode
@@ -349,7 +343,6 @@
    (org-startup-indented nil)
    (org-startup-folded t)
    (org-hide-leading-stars t) 
-   (org-hide-leading-stars-before-indent-mode nil)
    (org-edit-src-content-indentation 0)
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
@@ -375,6 +368,7 @@
 
   ;; use just python instead of jupyter-python
   (org-babel-jupyter-override-src-block "python")
+  (setq org-babel-default-header-args:C++ '((:results . "output")))
 
   (setq org-babel-default-header-args:python '((:async . "yes")
 					       (:session . "default")
@@ -384,21 +378,19 @@
   (setq jupyter-org-resource-directory "./jupyter/")
   (setq org-image-actual-width '(350))
   ;; display/update images in the buffer after I evaluate
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-
-  )
-(use-package org-clock
-  :straight nil
-  :after org
-  :config
-  ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-  (setq org-clock-persistence-insinuate t
-	org-clock-persist t
-	org-clock-in-resume t
-	org-clock-out-remove-zero-time-clocks t
-	org-clock-mode-line-total 'current
-	org-duration-format (quote h:mm))
-  )
+  ;;   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+  ;; (use-package org-clock
+  ;;   :straight nil
+  ;;   :after org
+  ;;   :config
+  ;;   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+  ;;   (setq org-clock-persistence-insinuate t
+  ;; 	org-clock-persist t
+  ;; 	org-clock-in-resume t
+  ;; 	org-clock-out-remove-zero-time-clocks t
+  ;; 	org-clock-mode-line-total 'current
+  ;; 	org-duration-format (quote h:mm))
+)
 (use-package org-src
   :straight nil
   :after org
@@ -408,9 +400,9 @@
 	;; org-highlight-latex-and-related '(latex)
 	;; org-src-window-setup 'current-window
 	;; org-src-strip-leading-and-trailing-blank-lines t
-	;; org-src-preserve-indentation t  ; preserve indentation in code
+	org-src-preserve-indentation t  ; preserve indentation in code
 	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
-	org-src-tab-acts-natively t
+	org-src-tab-acts-natively nil ; evil handles that? default is t...
 	org-export-babel-evaluate nil
 	org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
   )
@@ -531,9 +523,9 @@
   :config
   (add-to-list 'company-backends 'company-capf)
   (when (eq system-type 'gnu/linux)
-      (setq company-idle-delay 0.2
+      (setq company-idle-delay 0
 	    company-format-margin-function #'company-vscode-dark-icons-margin
-	    company-minimum-prefix-length 2)))
+	    company-minimum-prefix-length 1)))
 (use-package company-posframe
   :disabled
   :diminish company-posframe-mode
@@ -550,7 +542,7 @@
   :defer
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
-  :custom-face
+  :custom-face 
   (font-latex-sectioning-2-face ((t (:height 130 :weight bold))))
   (font-latex-sectioning-3-face ((t (:height 120))))
   (font-latex-sectioning-4-face ((t (:height 110 :slant italic))))
@@ -567,6 +559,7 @@
               (LaTeX-math-mode)
               (turn-on-reftex)
               (reftex-isearch-minor-mode)
+	      (outline-hide-sublevels 1)
               (turn-off-auto-fill)))
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
@@ -590,42 +583,58 @@
   (setq TeX-source-correlate-mode t) ;; jump to source
 
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
-	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs  
+	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs
+
+  ;; nomenclature for latex
+  (eval-after-load "tex"
+    '(add-to-list 'TeX-command-list 
+		  '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
+		    (lambda (name command file)
+		      (TeX-run-compile name command file)
+		      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
+		    nil t :help "Create nomenclature file")))
 
     ;; use sumatra to view pdf
     ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
     ;; -set-color-range #fdf4c1 #282828
-  (when (eq system-type 'windows-nt)
-    (setq TeX-view-program-list
-	  '(("Sumatra PDF" ("\"C:/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
-			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
-    (assq-delete-all 'output-pdf TeX-view-program-selection)
-    (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
+  ;; (when (eq system-type 'windows-nt)
+  ;;   (setq TeX-view-program-list
+  ;; 	  '(("Sumatra PDF" ("\"C:/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
+  ;; 			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
+  ;;   (assq-delete-all 'output-pdf TeX-view-program-selection)
+  ;;   (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
+
+
+  ;; use Sumatra PDF on WSL2 (Sumatra PDF.exe on windows PATH variable)
+  ;; %o name of the pdf
+  ;; %n line number
+  ;; %b relative path
   (when (eq system-type 'gnu/linux)
     (setq TeX-view-program-list
-	  '(("Sumatra PDF" ("\"SumatraPDF.exe\" -reuse-instance"
+	  '(("Sumatra PDF" ("\"SumatraPDF.exe\" -reuse-instance "
 			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
     (assq-delete-all 'output-pdf TeX-view-program-selection)
     (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
 
+
   ;; Custom function
   (defun my/tex-insert-clipboard ()
     (interactive)
-                                        ;make the img directory
+					;make the img directory
     (setq myvar/folder-path (concat default-directory "img/"))
-                                        ;create the directory if it doesn't exist
+					;create the directory if it doesn't exist
     (if (not (file-exists-p myvar/folder-path))
-        (mkdir myvar/folder-path))
+	(mkdir myvar/folder-path))
     (setq my/image-path (concat 
-                         myvar/folder-path
-                         "img_"
-                         (format-time-string "%Y%m%d_%H%M%S_.png")))
+			 myvar/folder-path
+			 "img_"
+			 (format-time-string "%Y%m%d_%H%M%S_.png")))
     (let* ((image-file (concat 
-                        "img/img_"
-                        (format-time-string "%Y%m%d_%H%M%S_.png")))
-           (exit-status
-            (call-process "convert" nil nil nil
-                          "clipboard:" my/image-path)))
+			"img/img_"
+			(format-time-string "%Y%m%d_%H%M%S_.png")))
+	   (exit-status
+	    (call-process "convert" nil nil nil
+			  "clipboard:" my/image-path)))
       (insert (format "
 \\begin{figure}[ht!]
   \\centering
@@ -658,9 +667,6 @@
 (use-package dired-subtree
   :after dired
   :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
-(use-package all-the-icons-dired
-  :after dired
-  :hook (dired-mode . all-the-icons-dired-mode))
 (use-package treemacs
   :config
   (progn
@@ -740,7 +746,7 @@
   :general
   ("<f5>" 'ap/load-doom-theme)
   :config
-  (load-theme 'doom-one t)
+  ;; (load-theme 'doom-one t)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
 	doom-themes-enable-italic t
 	doom-themes-treemacs-theme "doom-colors") ; if nil, italics is universally disabled
@@ -754,8 +760,7 @@
 						  (-map #'symbol-name)
 						  (--select (string-prefix-p "doom-" it)))))))
     (ap/switch-theme theme)
-
-    (set-face-foreground 'org-indent (face-background 'default)))
+    (set-face-foreground 'org-hide (face-background 'default)))
   (defun ap/switch-theme (theme)
     "Disable active themes and load THEME."
     (interactive (list (intern (completing-read "Theme: "
@@ -797,6 +802,8 @@
   (c++-mode-map "C-x c" 'compile))
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
+  :general
+  (org-mode-map :prefix "C-l" "o" 'lsp-org)
   :init
   (setq lsp-keymap-prefix "C-l")
   (setq read-process-output-max (* 1024 1024))
@@ -982,39 +989,22 @@
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 (use-package bibtex-actions
-  :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
+  ;; :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
   :general
-  (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
+  ('normal "C-c b" 'bibtex-actions-insert-citation)
   :config
   (when (eq system-type 'windows-nt)
     (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
   (when (eq system-type 'gnu/linux)
-    (setq bibtex-completion-bibliography "/mnt/c/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
+    (setq bibtex-completion-bibliography "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/references.bib"))
   (setq bibtex-completion-pdf-field "File")
 
-  (defun helm-w32-prepare-filename (file)
-    "Convert filename FILE to something usable by external w32 executables."
-    (replace-regexp-in-string ; For UNC paths
-     "/" "\\"
-     (replace-regexp-in-string ; Strip cygdrive paths
-      "/cygdrive/\\(.\\)" "\\1:"
-      file nil nil) nil t))
-  (defun helm-w32-shell-execute-open-file (file)
-    (with-no-warnings
-      (w32-shell-execute "open" (helm-w32-prepare-filename file))))
-  (defun helm-open-file-with-default-tool (file)
-    "Open FILE with the default tool on this platform."
-    (let (process-connection-type)
-      (when (eq system-type 'windows-nt)
-	(helm-w32-shell-execute-open-file file))
-      (when (eq system-type 'gnu/linux)
-	(shell-command "wslview" file))))
-  (setq bibtex-completion-pdf-open-function 'helm-open-file-with-default-tool)
- 
+  ;; Make the 'bibtex-actions' bindings available from `embark-act'.
   (with-eval-after-load 'embark
-    (setf (alist-get 'bibtex embark-keymap-alist) 'bibtex-actions-map))
+    (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map)))
 
-  (setq bibtex-actions-icon
+  ;; configue icons
+  (setq bibtex-actions-symbols
 	`((pdf . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
 		  ,(all-the-icons-icon-for-file "foo.pdf" :face 'bibtex-actions-icon-dim)))
 	  (note . (,(all-the-icons-icon-for-file "foo.txt") .
@@ -1028,6 +1018,7 @@
       (((background light)) :foreground "#fafafa"))
     "Face for obscuring/dimming icons"
     :group 'all-the-icons-faces)
+
   )
 (use-package epresent
   :commands epresent-run)
