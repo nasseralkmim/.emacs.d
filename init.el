@@ -596,53 +596,46 @@
 		      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
 		    nil t :help "Create nomenclature file")))
 
-    ;; use sumatra to view pdf
-    ;; http://stackoverflow.com/questions/14448606/sync-emacs-auctex-with-sumatra-pdf
-    ;; -set-color-range #fdf4c1 #282828
-  ;; (when (eq system-type 'windows-nt)
-  ;;   (setq TeX-view-program-list
-  ;; 	  '(("Sumatra PDF" ("\"C:/Users/nasse/AppData/Local/SumatraPDF/SumatraPDF.exe\" -reuse-instance"
-  ;; 			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
-  ;;   (assq-delete-all 'output-pdf TeX-view-program-selection)
-  ;;   (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
-
-
   ;; use Sumatra PDF on WSL2 (Sumatra PDF.exe on windows PATH variable)
-  ;; %o name of the pdf
-  ;; %n line number
-  ;; %b relative path
-  (when (eq system-type 'gnu/linux)
-    (setq TeX-view-program-list
-	  '(("Sumatra PDF" ("\"SumatraPDF.exe\" -reuse-instance "
-			    (mode-io-correlate " -forward-search %b %n ") " %o"))))
-    (assq-delete-all 'output-pdf TeX-view-program-selection)
-    (add-to-list 'TeX-view-program-selection '(output-pdf "Sumatra PDF")))
+  ;; (when (eq system-type 'gnu/linux)
+  ;;   (setq TeX-view-program-list
+  ;; 	  '(("Sumatra PDF" ("SumatraPDF.exe -reuse-instance"
+  ;; 			    (mode-io-correlate " -forward-search \"%b\" %n ") " %o")))))
+  ;;   (assq-delete-all 'output-pdf TeX-view-program-selection)
+    ;; (add-to-list 'TeX-view-program-selection 
+    ;; 		 '(output-pdf "Sumatra PDF")))
+  (add-to-list 'TeX-view-program-selection
+	       '(output-pdf "Zathura"))
 
-
-  ;; Custom function
-  (defun my/tex-insert-clipboard ()
+  (defun my-tex-insert-clipboard ()
     (interactive)
-					;make the img directory
-    (setq myvar/folder-path (concat default-directory "img/"))
+    (setq folder-path (concat default-directory "img/"));make the img directory
 					;create the directory if it doesn't exist
-    (if (not (file-exists-p myvar/folder-path))
-	(mkdir myvar/folder-path))
-    (setq my/image-path (concat 
-			 myvar/folder-path
-			 "img_"
-			 (format-time-string "%Y%m%d_%H%M%S_.png")))
+    (if (not (file-exists-p folder-path))
+	(mkdir folder-path))
+    ;; correct path to use convert.exe inside wsl and create file
+    (setq wsl-folder-path (replace-regexp-in-string "\n\\'" ""
+						(shell-command-to-string (concat "wslpath -w "
+										 folder-path))))
+
+    (setq image-path (concat wsl-folder-path
+			     "\\img_"
+			     (format-time-string "%Y%m%d_%H%M%S_.png")))
     (let* ((image-file (concat 
 			"img/img_"
 			(format-time-string "%Y%m%d_%H%M%S_.png")))
 	   (exit-status
-	    (call-process "convert" nil nil nil
-			  "clipboard:" my/image-path)))
+	    (call-process "convert.exe" nil nil nil
+			  "clipboard:" image-path)))
       (insert (format "
 \\begin{figure}[ht!]
   \\centering
   \\includegraphics[width=.5\\textwidth]{%s}
-\\end{figure}" image-file))
-      )))
+\\end{figure}" image-file))))
+  )
+(use-package evil-tex
+  :after latex
+  :hook (LaTeX-mode . evil-tex-mode))
 (use-package reftex
   :after latex
   :commands reftex-toc
