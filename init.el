@@ -986,7 +986,7 @@
 (use-package bibtex-actions
   ;; :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
   :general
-  ('normal "C-c b" 'bibtex-actions-insert-citation)
+  ("C-c b" 'bibtex-actions-insert-citation)
   :config
   (when (eq system-type 'windows-nt)
     (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
@@ -994,6 +994,11 @@
     (setq bibtex-completion-bibliography "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/references.bib"))
   (setq bibtex-completion-pdf-field "File")
 
+  ;; set progam to open pdf with default windows application
+  (setq bibtex-completion-pdf-open-function
+  (lambda (fpath)
+    (call-process "cmd.exe" nil 0 nil "/C start" fpath)))
+  
   ;; Make the 'bibtex-actions' bindings available from `embark-act'.
   (with-eval-after-load 'embark
     (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map)))
@@ -1012,9 +1017,7 @@
     '((((background dark)) :foreground "#282c34")
       (((background light)) :foreground "#fafafa"))
     "Face for obscuring/dimming icons"
-    :group 'all-the-icons-faces)
-
-  )
+    :group 'all-the-icons-faces))
 (use-package epresent
   :commands epresent-run)
 (use-package emacs
