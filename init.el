@@ -193,6 +193,7 @@
   (add-hook 'org-mode-hook 'smartparens-mode)
   :config
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
+  (sp-local-pair 'latex-mode "$" "$" :trigger "$")
   ;; highligh matching brackets
   (show-smartparens-global-mode 0)
   ;; so that paren highlights do not override region marking (aka selecting)
@@ -261,7 +262,7 @@
   :diminish evil-goggles-mode
   :config
   (evil-goggles-mode)
-  (setq evil-goggles-pulse nil)
+  (setq evil-goggles-pulse t)
   (setq evil-goggles-duration 0.2)
   (evil-goggles-use-diff-faces))
 (use-package evil-collection
@@ -478,7 +479,7 @@
 (use-package org-download
   :after org
   :general
-  ("C-M-y" 'org-download-screenshot)
+  (org-mode-map "C-M-y" 'org-download-screenshot)
   :config
   (setq
    ;; choco install imagemagick.app -PackageParameters LegacySupport=true
@@ -549,6 +550,7 @@
   (font-latex-sectioning-5-face ((t (:height 90))))
   :general
   ('normal "<SPC> v" 'TeX-view)
+  (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
   (general-unbind 'normal outline-mode-map
     "g j"
     "g k")
