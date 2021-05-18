@@ -1022,8 +1022,8 @@
 
   ;; set progam to open pdf with default windows application
   (setq bibtex-completion-pdf-open-function
-  (lambda (fpath)
-    (call-process "cmd.exe" nil 0 nil "/C start" fpath)))
+	(lambda (fpath)
+	  (call-process "cmd.exe" nil 0 nil (concat "/C start " fpath))))
   
   ;; Make the 'bibtex-actions' bindings available from `embark-act'.
   (with-eval-after-load 'embark
