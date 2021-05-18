@@ -81,7 +81,10 @@
   ;; (blink-cursor-mode 1)
 
   ;; Don't beep at me
-  (setq visible-bell t))
+  (setq visible-bell t)
+
+  ;; Enable recursive minibuffers
+  (setq enable-recursive-minibuffers t))
 (use-package abbrev
   :straight nil
   :config
@@ -133,7 +136,21 @@
   :after org
   :general
   (org-mode-map "C-c C-l" 'org-cliplink))
+(use-package vertico
+  :init
+  (vertico-mode))
+(use-package orderless
+  :after vertico
+  :config
+  (setq completion-styles '(orderless)
+        completion-category-defaults nil
+        completion-category-overrides '((file (styles . (partial-completion))))))
+(use-package savehist
+  :after vertico
+  :config
+  (savehist-mode))
 (use-package selectrum			; like a vertical minibuffer
+  :disabled
   :init (selectrum-mode t))
 (use-package selectrum-prescient	;prescient provides matching of space-separated components
   :after selectrum
@@ -141,7 +158,7 @@
   (prescient-persist-mode t)
   (selectrum-prescient-mode t))
 (use-package marginalia
-  :defer 1
+  :after vertico
   :config (marginalia-mode))
 (use-package consult
   :bind (
@@ -157,13 +174,14 @@
   :general
   ('normal :prefix "SPC" "x b" 'consult-buffer)
   ('normal :prefix "SPC" "x o" 'consult-imenu)
+  :init
+  (advice-add #'register-preview :override #'consult-register-window)
   :config
   ;; C-s C-s to search with previous search
   (defvar my-consult-line-map
     (let ((map (make-sparse-keymap)))
       (define-key map "\C-s" #'previous-history-element)
       map))
-
   (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map)))
 (use-package embark
   :general
@@ -243,6 +261,7 @@
    lazy-highlight-max-at-a-time nil
    lazy-highlight-initial-delay 0))
 (use-package evil-smartparens
+  :disabled
   :hook (smartparens-mode . evil-smartparens-mode)
   :after evil)
 (use-package evil-easymotion
@@ -285,6 +304,8 @@
   (evil-org-agenda-set-keys))
 (use-package evil-surround
   :after evil
+  :general
+  ('normal "g c" 'evil-surround-change)
   :config
   (global-evil-surround-mode 1))
 (use-package evil-exchange
@@ -544,10 +565,10 @@
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face 
-  (font-latex-sectioning-2-face ((t (:height 130 :weight bold))))
-  (font-latex-sectioning-3-face ((t (:height 120))))
-  (font-latex-sectioning-4-face ((t (:height 110 :slant italic))))
-  (font-latex-sectioning-5-face ((t (:height 90))))
+  (font-latex-sectioning-2-face ((t (:height 90 :weight bold))))
+  (font-latex-sectioning-3-face ((t (:height 90 :weight bold :slant italic))))
+  (font-latex-sectioning-4-face ((t (:height 90 :slant italic))))
+  (font-latex-sectioning-5-face ((t (:height 90 :weight light))))
   :general
   ('normal "<SPC> v" 'TeX-view)
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
@@ -650,6 +671,8 @@
 (use-package outline-magic
   :after latex
   :general
+  ('normal outline-mode-map "z j" 'outline-forward-same-level)
+  ('normal outline-mode-map "z k" 'outline-backward-same-level)
   (LaTeX-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "C-j" nil))
 (use-package dired
@@ -799,6 +822,7 @@
   :commands (lsp lsp-deferred)
   :general
   (org-mode-map :prefix "C-l" "o" 'lsp-org)
+  (org-mode-map :prefix "C-l" "d" 'lsp-virtual-buffer-disconnect)
   :init
   (setq lsp-keymap-prefix "C-l")
   (setq read-process-output-max (* 1024 1024))
@@ -818,6 +842,7 @@
                           (lsp-deferred))))  ; or lsp-deferred
 (use-package lsp-ui
   :if (memq system-type '(gnu/linux))
+  :commands lsp-ui-doc
   :after lsp)
 (use-package python		   ; for syntax highlight
   :mode ("\\.py\\'" . python-mode)
@@ -986,7 +1011,8 @@
 (use-package bibtex-actions
   ;; :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
   :general
-  ("C-c b" 'bibtex-actions-insert-citation)
+  ('normal :prefix "C-c b" "b" 'bibtex-actions-insert-citation)
+  ('normal :prefix "C-c b" "r" 'bibtex-actions-refresh)
   :config
   (when (eq system-type 'windows-nt)
     (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
@@ -1030,12 +1056,20 @@
     (interactive)
     (start-process-shell-command (format "pwsh (%s)" default-directory) nil "start pwsh"))
   (when (eq system-type 'windows-nt)
-      (bind-key "C-x m" 'my-open-cmd)))
+    (bind-key "C-x m" 'my-open-cmd)))
 (use-package server
   :defer 3
   :config (server-start))
 (use-package table
   :after org)
-
+(use-package wsl-path
+  :straight nil
+  :load-path "./"
+  :commands (wsl-path-activate
+	     wsl-path-convert-file-name)
+  :init
+  (wsl-path-activate))
+(use-package evil-lispy
+  :hook (emacs-lisp-mode . evil-lispy-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
