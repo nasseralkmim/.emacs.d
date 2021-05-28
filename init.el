@@ -287,7 +287,8 @@
 (use-package evil-collection
   :after evil
   :config
-  (setq evil-collection-setup-minibuffer t)
+  (setq evil-collection-setup-minibuffer t
+	evil-collection-company-use-tng t) ; makes company works betters I think
   (evil-collection-init))
 (use-package rg
   :general ('normal "C-c r" 'rg-menu))
