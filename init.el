@@ -28,7 +28,7 @@
 ;; makes :straight t by default
 (setq straight-use-package-by-default t)
 
-(use-package general) 			; (general-def 'normal org-mode-map "key" 'def ) example with 2 positional arguments
+(use-package general); (general-def 'normal org-mode-map "key" 'def ) example with 2 positional arguments
 (use-package diminish :defer t)
 
 ;; Speed up bootstrapping
@@ -40,10 +40,9 @@
                               (garbage-collect)) t)
 (use-package emacs
   :straight nil
-  :defer 1
   :general
   ("C-<tab>" 'other-window)
-  :config
+  :init
   (when (eq system-type 'windows-nt)
       (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
 
