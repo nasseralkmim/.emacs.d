@@ -193,8 +193,14 @@
   ;; actions with "@" when in the prompter
   ;; prefer the default
   ;; (setq embark-prompter 'embark-completing-read-prompter)
+  (setq embark-action-indicator
+	(lambda (map _target)
+	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
+	  #'which-key--hide-popup-ignore-command)
+	embark-become-indicator embark-action-indicator)
   )
 (use-package embark-consult
+  :demand t				;necessary for consult preview
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
 (use-package all-the-icons :defer t)
@@ -293,7 +299,7 @@
   :after evil
   :config
   (setq evil-collection-setup-minibuffer t
-	evil-collection-company-use-tng t) ; makes company works betters I think
+	evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
 (use-package rg
   :general ('normal "C-c r" 'rg-menu))
@@ -312,6 +318,7 @@
   :after evil
   :general
   ('normal "g c" 'evil-surround-change)
+  ('normal "S" 'evil-surround-region)
   :config
   (global-evil-surround-mode 1))
 (use-package evil-exchange
@@ -854,10 +861,6 @@
 (use-package python-black
   :after python
   :commands python-black-buffer)
-(use-package elpy
-  :after python org
-  :config
-  (elpy-enable))
 (use-package adaptive-wrap
   :straight adaptive-wrap
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
@@ -884,10 +887,8 @@
   ('normal :prefix "C-c b" "b" 'bibtex-actions-insert-citation)
   ('normal :prefix "C-c b" "r" 'bibtex-actions-refresh)
   :config
-  (when (eq system-type 'windows-nt)
-    (setq bibtex-completion-bibliography "C:/Users/nasse/OneDrive/Academy/PhD/bibliography/references.bib"))
-  (when (eq system-type 'gnu/linux)
-    (setq bibtex-completion-bibliography "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/references.bib"))
+  (setq bibtex-completion-bibliography
+	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"))
   (setq bibtex-completion-pdf-field "File")
 
   ;; set progam to open pdf with default windows application
