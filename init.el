@@ -171,11 +171,9 @@
 	 :map minibuffer-local-completion-map
 	 ("<tab>" . minibuffer-force-complete))
   :general
-  ('normal :prefix "SPC" "x b" 'consult-buffer)
-  ('normal :prefix "SPC" "x o" 'consult-imenu)
-  :init
-  (advice-add #'register-preview :override #'consult-register-window)
+  ("M-s" 'consult-imenu)
   :config
+  (setq consult-preview-key nil)
   ;; C-s C-s to search with previous search
   (defvar my-consult-line-map
     (let ((map (make-sparse-keymap)))
@@ -570,7 +568,6 @@
   :config
   (company-prescient-mode))
 (use-package latex
-  :defer
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face 
@@ -585,7 +582,8 @@
     "g j" nil
     "g k" nil)
   ('normal LaTeX-mode-map "g p" preview-map)
-  ('normal preview-map "b" 'preview-buffer
+  (preview-map
+	   "b" 'preview-buffer
 	   "c" 'preview-clearout-buffer
 	   "p" 'preview-at-point)
   :config
@@ -602,7 +600,8 @@
 
   ;; preview latex
   (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
-	preview-scale 1.3)
+	preview-scale-function 1.25
+	preview-auto-cache-preamble t)
 
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
@@ -678,8 +677,8 @@
 (use-package outline-magic
   :after latex
   :general
-  ('normal outline-mode-map "z j" 'outline-forward-same-level)
-  ('normal outline-mode-map "z k" 'outline-backward-same-level)
+  ('normal outline-mode-map "z j" 'outline-next-visible-heading)
+  ('normal outline-mode-map "z k" 'outline-previous-visible-heading)
   ('normal LaTeX-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "C-j" nil))
 (use-package dired
