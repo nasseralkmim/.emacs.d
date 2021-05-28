@@ -188,7 +188,9 @@
   ("C-S-a" 'embark-act)
   :config
   ;; actions with "@" when in the prompter
-  (setq embark-prompter 'embark-completing-read-prompter))
+  ;; prefer the default
+  ;; (setq embark-prompter 'embark-completing-read-prompter)
+  )
 (use-package embark-consult
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
@@ -699,7 +701,7 @@
 	  treemacs-git-command-pipe              ""
 	  treemacs-goto-tag-strategy             'refetch-index
 	  treemacs-indentation                   1
-	  treemacs-indentation-string            "  "
+	  treemacs-indentation-string            " "
 	  treemacs-is-never-other-window         t
 	  treemacs-max-git-entries               5000
 	  treemacs-missing-project-action        'ask
@@ -745,7 +747,6 @@
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
-
 (use-package treemacs-evil
   :after treemacs evil)
 (use-package solaire-mode
@@ -757,10 +758,11 @@
   (setq solaire-mode-auto-swap-bg t)
   (solaire-global-mode +1))
 (use-package doom-themes
+  :disabled
   :commands ap/load-doom-theme
   :after solaire-mode
   :general
-  ("<f5>" 'ap/load-doom-theme)
+  ("<f6>" 'ap/load-doom-theme)
   :config
   ;; (load-theme 'doom-one t)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -785,22 +787,20 @@
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme theme 'no-confirm)))
 (use-package doom-modeline
-  :defer 1
+  :disabled
   :config
   (doom-modeline-mode)
   ;; Don’t compact font caches during GC.
   (setq inhibit-compacting-font-caches t)
   (setq doom-modeline-icon t))
-(use-package mixed-pitch
-  :disabled
-  :hook (text-mode . mixed-pitch-mode))
 (use-package modus-themes
-  :disabled
-  :defer 1
+  :straight nil
   :config
-  (setq modus-themes-org-blocks 'grayscale)
-  (load-theme 'modus-vivendi t)
-  :bind ("<f5>" . modus-themes-toggle))
+  (setq modus-themes-org-blocks 'rainbow
+	)
+  (load-theme 'modus-operandi t)
+  :general
+  ("<f5>"  'modus-themes-toggle))
 (use-package htmlize
   :defer t)
 (use-package treemacs-icons-dired
@@ -1062,12 +1062,11 @@
   :after org)
 (use-package wsl-path
   :straight nil
-  :load-path "./"
+  :load-path "./lisp"
   :commands (wsl-path-activate
 	     wsl-path-convert-file-name)
   :init
   (wsl-path-activate))
-(use-package evil-lispy
-  :hook (emacs-lisp-mode . evil-lispy-mode))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
