@@ -573,9 +573,12 @@
   :general
   ('normal "<SPC> v" 'TeX-view)
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
-  (general-unbind 'normal outline-mode-map
-    "g j"
-    "g k")
+  ('normal outline-mode-map
+    "g j" nil
+    "g k" nil)
+  (LaTeX-mode-map "g p" preview-map)
+  (preview-map "b" 'preview-buffer
+	       "c" 'preview-clearout-buffer)
   :config
   (add-hook 'LaTeX-mode-hook
             (lambda ()
@@ -586,7 +589,12 @@
 	      (outline-hide-sublevels 1)
               (turn-off-auto-fill)))
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+
+  ;; preview latex
   (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
+  (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
+	preview-scale 1.2)
+
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
   (setq TeX-parse-self t)       ;enable document parsing
@@ -595,11 +603,6 @@
   (setq TeX-PDF-mode t)
   (setq TeX-electric-escape t)
   (setq global-font-lock-mode t)
-  (font-lock-add-keywords 'latex-mode
-                          (list (list "\\(«\\(.+?\\|\n\\)\\)\\(+?\\)\\(»\\)"
-                                      '(1 'font-latex-string-face t)
-                                      '(2 'font-latex-string-face t)
-                                      '(3 'font-latex-string-face t))))
 
   (setq LaTeX-command "latex -shell-escape") ;; shell escape for minted (syntax highlight)
   (setq TeX-source-correlate-method 'synctex) ;; Method for enabling forward and inverse search 
@@ -608,6 +611,7 @@
 
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
 	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs
+
 
   ;; nomenclature for latex
   (eval-after-load "tex"
@@ -618,14 +622,7 @@
 		      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
 		    nil t :help "Create nomenclature file")))
 
-  ;; use Sumatra PDF on WSL2 (Sumatra PDF.exe on windows PATH variable)
-  ;; (when (eq system-type 'gnu/linux)
-  ;;   (setq TeX-view-program-list
-  ;; 	  '(("Sumatra PDF" ("SumatraPDF.exe -reuse-instance"
-  ;; 			    (mode-io-correlate " -forward-search \"%b\" %n ") " %o")))))
-  ;;   (assq-delete-all 'output-pdf TeX-view-program-selection)
-    ;; (add-to-list 'TeX-view-program-selection 
-    ;; 		 '(output-pdf "Sumatra PDF")))
+  ;; using zathura on WSL
   (add-to-list 'TeX-view-program-selection
 	       '(output-pdf "Zathura"))
 
