@@ -24,7 +24,7 @@
 ;; Install use-package
 (straight-use-package 'use-package)
 (setq use-package-always-ensure t
-        use-package-expand-minimally t)
+      use-package-expand-minimally t)
 ;; makes :straight t by default
 (setq straight-use-package-by-default t)
 
@@ -581,7 +581,7 @@
   ('normal outline-mode-map
     "g j" nil
     "g k" nil)
-  ('normal LaTeX-mode-map "g p" preview-map)
+  ('normal LaTeX-mode-map "g p" '(:keymap preview-map))
   (preview-map
 	   "b" 'preview-buffer
 	   "c" 'preview-clearout-buffer
@@ -590,7 +590,7 @@
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (prettify-symbols-mode)
-              (LaTeX-math-mode)
+              (LaTeX-math-mode)		; ` easy type greek
               (turn-on-reftex)
               (reftex-isearch-minor-mode)
 	      (outline-hide-sublevels 1)
@@ -602,6 +602,7 @@
   (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
 	preview-scale-function 1.25
 	preview-auto-cache-preamble t)
+
 
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
@@ -804,6 +805,7 @@
   :init
   (setq modus-themes-org-blocks 'rainbow
 	modus-themes-hl-line 'intense-background
+	modus-themes-completions 'opinionated
 	modus-themes-mode-line 'accented-moody)
   (load-theme 'modus-operandi t)
   :general
