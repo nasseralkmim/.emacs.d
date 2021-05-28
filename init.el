@@ -100,7 +100,7 @@
   :config
   ;; (set-face-attribute 'default nil :font "Iosevka etoile-10")
   ;; (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
-  (set-face-attribute 'default nil :height 90)
+  ;; (set-face-attribute 'default nil :height 90)
   )
 (use-package benchmark-init
   :disabled
@@ -161,6 +161,7 @@
   (prescient-persist-mode t)
   (selectrum-prescient-mode t))
 (use-package marginalia
+  :disabled
   :after vertico
   :config (marginalia-mode))
 (use-package consult
@@ -578,10 +579,10 @@
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face 
-  (font-latex-sectioning-2-face ((t (:height 90 :weight bold))))
-  (font-latex-sectioning-3-face ((t (:height 90 :weight bold :slant italic))))
-  (font-latex-sectioning-4-face ((t (:height 90 :slant italic))))
-  (font-latex-sectioning-5-face ((t (:height 90 :weight light))))
+  (font-latex-sectioning-2-face ((t (:weight bold))))
+  (font-latex-sectioning-3-face ((t (:weight bold :slant italic))))
+  (font-latex-sectioning-4-face ((t (:slant italic))))
+  (font-latex-sectioning-5-face ((t (:weight light))))
   :general
   ('normal "<SPC> v" 'TeX-view)
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
@@ -805,9 +806,10 @@
   (setq inhibit-compacting-font-caches t)
   (setq doom-modeline-icon t))
 (use-package modus-themes
-  :config
+  :init
   (setq modus-themes-org-blocks 'rainbow
-	)
+	modus-themes-hl-line 'intense-background
+	modus-themes-mode-line 'accented-moody)
   (load-theme 'modus-operandi t)
   :general
   ("<f5>"  'modus-themes-toggle))
