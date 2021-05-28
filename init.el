@@ -1,4 +1,4 @@
-(set-frame-size (selected-frame) 140 50)
+;; (set-frame-size (selected-frame) 140 50)
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
@@ -43,10 +43,6 @@
   :defer 1
   :general
   ("C-<tab>" 'other-window)
-  ("S-C-<left>" 'shrink-window-horizontally)
-  ("S-C-<right>" 'enlarge-window-horizontally)
-  ("S-C-<down>" 'shrink-window)
-  ("S-C-<up>" 'enlarge-window)
   :config
   (when (eq system-type 'windows-nt)
       (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
@@ -100,7 +96,7 @@
   :config
   ;; (set-face-attribute 'default nil :font "Iosevka etoile-10")
   ;; (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
-  ;; (set-face-attribute 'default nil :height 90)
+  (set-face-attribute 'default nil :height 95)
   )
 (use-package benchmark-init
   :disabled
@@ -589,9 +585,10 @@
   ('normal outline-mode-map
     "g j" nil
     "g k" nil)
-  (LaTeX-mode-map "g p" preview-map)
-  (preview-map "b" 'preview-buffer
-	       "c" 'preview-clearout-buffer)
+  ('normal LaTeX-mode-map "g p" preview-map)
+  ('normal preview-map "b" 'preview-buffer
+	   "c" 'preview-clearout-buffer
+	   "p" 'preview-at-point)
   :config
   (add-hook 'LaTeX-mode-hook
             (lambda ()
@@ -602,11 +599,11 @@
 	      (outline-hide-sublevels 1)
               (turn-off-auto-fill)))
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
+  (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
 
   ;; preview latex
-  (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
   (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
-	preview-scale 1.2)
+	preview-scale 1.3)
 
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
@@ -684,7 +681,7 @@
   :general
   ('normal outline-mode-map "z j" 'outline-forward-same-level)
   ('normal outline-mode-map "z k" 'outline-backward-same-level)
-  (LaTeX-mode-map "<tab>" 'outline-cycle)
+  ('normal LaTeX-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "C-j" nil))
 (use-package dired
   :straight nil
@@ -943,6 +940,8 @@
 	     wsl-path-convert-file-name)
   :init
   (wsl-path-activate))
+(use-package windresize
+  :general ("C-c w" 'windresize))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))

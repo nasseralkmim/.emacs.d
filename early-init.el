@@ -6,5 +6,4 @@
 (setq window-divider-default-places t
       window-divider-default-bottom-width 1
       window-divider-default-right-width 1)
-
 (window-divider-mode)
