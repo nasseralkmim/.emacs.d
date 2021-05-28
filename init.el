@@ -748,6 +748,7 @@
   (treemacs-resize-icons 12)
   :general
   (treemacs-mode-map "<f8>" 'treemacs-quit)
+  ("<f8>" 'treemacs-select-window)
   :bind
   (:map global-map
         ("M-0"       . treemacs-select-window)
