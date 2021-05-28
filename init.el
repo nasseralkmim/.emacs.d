@@ -264,7 +264,25 @@
   (setq
    lazy-highlight-cleanup nil
    lazy-highlight-max-at-a-time nil
-   lazy-highlight-initial-delay 0))
+   lazy-highlight-initial-delay 0)
+  
+  ;; fix tab behavior in org-source-block
+  (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
+    "Bind `evil-default-state' to `insert' before calling FUN with ARGS."
+    (let ((evil-default-state 'insert)
+	  ;; Force insert state
+	  evil-emacs-state-modes
+	  evil-normal-state-modes
+	  evil-motion-state-modes
+	  evil-visual-state-modes
+	  evil-operator-state-modes
+	  evil-replace-state-modes)
+      (apply fun args)
+      (evil-refresh-cursor)))
+
+  (advice-add 'org-babel-do-key-sequence-in-edit-buffer
+	      :around #'evil-org-insert-state-in-edit-buffer)
+  )
 (use-package evil-smartparens
   :disabled
   :hook (smartparens-mode . evil-smartparens-mode)
@@ -806,7 +824,7 @@
   (setq modus-themes-org-blocks 'rainbow
 	modus-themes-hl-line 'intense-background
 	modus-themes-completions 'opinionated
-	modus-themes-mode-line 'accented-moody)
+	modus-themes-mode-line nil)
   (load-theme 'modus-operandi t)
   :general
   ("<f5>"  'modus-themes-toggle))
@@ -942,6 +960,9 @@
   (wsl-path-activate))
 (use-package windresize
   :general ("C-c w" 'windresize))
+(use-package yasnippet
+  :config
+  (yas-global-mode))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
