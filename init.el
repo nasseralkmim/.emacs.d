@@ -844,11 +844,10 @@
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :general
-  (org-mode-map :prefix "C-l" "o" 'lsp-org)
-  (org-mode-map :prefix "C-l" "d" 'lsp-virtual-buffer-disconnect)
-  :init
-  (setq lsp-keymap-prefix "C-l")
-  (setq read-process-output-max (* 1024 1024))
+  ('normal org-mode-map :prefix "g p" 
+		"o" 'lsp-org
+		"d" 'lsp-virtual-buffer-disconnect)
+  ('normal lsp-mode-map "g p" '(:keymap lsp-command-map))
   :hook ((python-mode . lsp-deferred)
 	 (c++-mode . lsp-deferred)
 	 (lsp-mode . lsp-enable-which-key-integration))
