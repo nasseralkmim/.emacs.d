@@ -328,7 +328,7 @@
   :general
   ('normal "g c" 'evil-surround-change)
   ('normal "S" 'evil-surround-region)
-  :config
+  :init					; avoid kybind autoload
   (global-evil-surround-mode 1))
 (use-package evil-exchange
   :after evil
