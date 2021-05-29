@@ -160,20 +160,17 @@
   :after vertico
   :config (marginalia-mode))
 (use-package consult
-  :bind (
-	 ("C-c o" . consult-imenu)
-	 ("M-s" . consult-outline)
-	 ("C-x b" . consult-buffer)
-	 ("C-s" . consult-line)    ;; C-r reverse
-	 ("M-y" . consult-yank-pop)
-	 ("<help> a" . consult-apropos)
-	 ("C-S-s" . consult-isearch)
-	 :map minibuffer-local-completion-map
-	 ("<tab>" . minibuffer-force-complete))
   :general
-  ("M-s" 'consult-imenu)
+  ("M-s" 'consult-outline)
+  ("C-c o" 'consult-imenu)
+  ("C-x b" 'consult-buffer)
+  ("M-y" 'consult-yank-pop)
+  ("C-s" 'consult-line)    ;; C-r reverse
+  (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
-  (setq consult-preview-key nil)
+  (setq consult-preview-key nil
+	consult-narrow-key "<")
+  (consult-customize consult-line :preview-key 'any)
   ;; C-s C-s to search with previous search
   (defvar my-consult-line-map
     (let ((map (make-sparse-keymap)))
