@@ -42,6 +42,7 @@
   :straight nil
   :general
   ("C-<tab>" 'other-window)
+  ("C-c w" 'shrink-window)
   :init
   (when (eq system-type 'windows-nt)
       (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
@@ -591,7 +592,6 @@
   (font-latex-sectioning-4-face ((t (:slant italic))))
   (font-latex-sectioning-5-face ((t (:weight light))))
   :general
-  ('normal "<SPC> v" 'TeX-view)
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
   ('normal outline-mode-map
     "g j" nil
@@ -605,10 +605,10 @@
   (add-hook 'LaTeX-mode-hook
             (lambda ()
               (prettify-symbols-mode)
-              (LaTeX-math-mode)		; ` easy type greek
+              (LaTeX-math-mode)		; ` to easy type greek
               (turn-on-reftex)
               (reftex-isearch-minor-mode)
-	      (outline-hide-sublevels 1)
+	      (outline-hide-sublevels 1) ; start folded
               (turn-off-auto-fill)))
   (add-hook 'LaTeX-mode-hook 'visual-line-mode)
   (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
@@ -617,7 +617,6 @@
   (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
 	preview-scale-function 1.25
 	preview-auto-cache-preamble t)
-
 
   (setq TeX-save-query nil)
   (setq TeX-auto-save t)
@@ -635,7 +634,6 @@
 
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
 	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs
-
 
   ;; nomenclature for latex
   (eval-after-load "tex"
@@ -965,8 +963,6 @@
 	     wsl-path-convert-file-name)
   :init
   (wsl-path-activate))
-(use-package windresize
-  :general ("C-c w" 'windresize))
 (use-package yasnippet
   :config
   (yas-global-mode))
