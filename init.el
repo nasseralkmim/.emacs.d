@@ -746,7 +746,7 @@
 	  treemacs-show-hidden-files             t
 	  treemacs-silent-filewatch              nil
 	  treemacs-silent-refresh                nil
-	  treemacs-sorting                       'mod-time-desc
+	  treemacs-sorting                       'mod-time-desc ; modified early
 	  treemacs-space-between-root-nodes      t
 	  treemacs-tag-follow-cleanup            t
 	  treemacs-tag-follow-delay              1.5
@@ -776,6 +776,7 @@
 (use-package treemacs-evil
   :after treemacs evil)
 (use-package solaire-mode
+  :disabled
   :hook ((change-major-mode . turn-on-solaire-mode)
          (after-revert . turn-on-solaire-mode)
          (ediff-prepare-buffer . solaire-mode)
@@ -855,10 +856,12 @@
 	 (c++-mode . lsp-deferred)
 	 (lsp-mode . lsp-enable-which-key-integration))
   :config
-  (setq
-   lsp-idle-delay 1
-   lsp-ui-doc-delay 3			; show doc only after this time
-   lsp-ui-sideline-enable nil))
+  (setq lsp-idle-delay 1
+	lsp-enable-folding nil		;potential to be slow
+	lsp-enable-text-document-color nil ;potential to be slow
+	lsp-enable-on-type-formatting nil  ;don't format automatically
+	lsp-headerline-breadcrumb-enable nil ;disable breadcrumb
+	))
 (use-package lsp-python-ms
   :after lsp
   :config (setq lsp-python-ms-auto-install-server t)
@@ -868,7 +871,11 @@
 (use-package lsp-ui
   :if (memq system-type '(gnu/linux))
   :commands lsp-ui-doc
-  :after lsp)
+  :after lsp
+  :config
+  (setq
+   lsp-ui-doc-delay 3			; show doc only after this time
+   lsp-ui-sideline-enable nil))
 (use-package python		   ; for syntax highlight
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -902,8 +909,8 @@
 (use-package bibtex-actions
   ;; :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
   :general
-  ('normal :prefix "C-c b" "b" 'bibtex-actions-insert-citation)
-  ('normal :prefix "C-c b" "r" 'bibtex-actions-refresh)
+  (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
+  (:prefix "C-c b" "r" 'bibtex-actions-refresh)
   :config
   (setq bibtex-completion-bibliography
 	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"))
