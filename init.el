@@ -967,6 +967,13 @@
 (use-package yasnippet
   :config
   (yas-global-mode))
+(use-package exec-path-from-shell
+  :init
+  ;; ensures environment variables inside Emacs is the same in the user's shell
+  ;; emacs GUI inherits minimal environment variables
+  ;; I'm using to run jupyter
+  ;; (getenv "SHELL")"/bin/bash"
+  (exec-path-from-shell-initialize))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
