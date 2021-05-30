@@ -52,6 +52,7 @@
   (scroll-bar-mode -1)
   (global-hl-line-mode 1)
   (winner-mode t)
+  (repeat-mode t)
 
   (setq-default frame-title-format '("%b [%m]")) ;name on top of window
   (setq warning-minimum-level :error)		 ;avoid warning buffer
@@ -328,7 +329,6 @@
   :after evil
   :general
   ('normal "g c" 'evil-surround-change)
-  ('normal "S" 'evil-surround-region)
   :init					; avoid kybind autoload
   (global-evil-surround-mode 1))
 (use-package evil-exchange
@@ -709,11 +709,11 @@
   :config
   (progn
     (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
-	  treemacs-deferred-git-apply-delay      0.5
+	  treemacs-deferred-git-apply-delay      0.9
 	  treemacs-directory-name-transformer    #'identity
 	  treemacs-display-in-side-window        t
 	  treemacs-eldoc-display                 t
-	  treemacs-file-event-delay              5000
+	  treemacs-file-event-delay              3000
 	  treemacs-file-extension-regex          treemacs-last-period-regex-value
 	  treemacs-file-follow-delay             0.5
 	  treemacs-file-name-transformer         #'identity
@@ -753,6 +753,7 @@
     (treemacs-follow-mode t)
     (treemacs-filewatch-mode t)
     (treemacs-fringe-indicator-mode 'always)
+    (treemacs-toggle-fixed-width)
     )
   (setq treemacs-git-mode nil)
   (treemacs-resize-icons 12)
