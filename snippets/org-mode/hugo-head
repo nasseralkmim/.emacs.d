@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: notes head
+# key: <head
+# --
+
+#+title: $2
+#+date: `(let ((x (org-insert-time-stamp nil))))`
+#+author: Nasser Alkmim
+#+draft: t
+#+toc: t
+#+tags[]: draft 
