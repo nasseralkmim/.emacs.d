@@ -974,6 +974,13 @@
   ;; I'm using to run jupyter
   ;; (getenv "SHELL")"/bin/bash"
   (exec-path-from-shell-initialize))
+(use-package eww
+  :straight nil
+  :hook (eww-mode-hook . (lambda ()
+			   (eww-toggle-fonts) ; use monospaced
+			   (eww-toggle-images) ; turn images off
+			   ))
+  )	
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
