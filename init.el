@@ -135,7 +135,8 @@
   :commands org-cliplink
   :after org
   :general
-  (org-mode-map "C-c C-l" 'org-cliplink))
+  ;; (org-mode-map "C-c S-l" 'org-cliplink) ; call interactive for now
+  )
 (use-package vertico
   :init
   (vertico-mode))
@@ -375,6 +376,7 @@
 	("M-p" . org-previous-item)
 	("M-n" . org-next-item))
   :general
+  (org-mode-map "C-c C-l" 'org-insert-link)
   ('normal org-mode-map :prefix "SPC" "x i" 'org-clock-in)
   ('normal org-mode-map :prefix "SPC" "x o" 'org-clock-out)
   ('normal org-mode-map :prefix "SPC" "x x" 'org-clock-in-last)
