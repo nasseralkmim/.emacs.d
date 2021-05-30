@@ -168,11 +168,11 @@
   ("C-c o" 'consult-imenu)
   ("C-x b" 'consult-buffer)
   ("M-y" 'consult-yank-pop)
-  ("C-s" 'consult-line)    ;; C-r reverse
+  ("C-s" 'consult-line)
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
-  (setq consult-preview-key nil
-	consult-narrow-key "<")
+  (setq consult-preview-key nil		; no preview
+	consult-narrow-key "<")		; go back to full list command
   (consult-customize consult-line :preview-key 'any)
   ;; C-s C-s to search with previous search
   (defvar my-consult-line-map
@@ -969,6 +969,8 @@
 (use-package yasnippet
   :config
   (yas-global-mode))
+(use-package yasnippet-snippets
+  :after yasnippet)
 (use-package exec-path-from-shell
   :init
   ;; ensures environment variables inside Emacs is the same in the user's shell
@@ -978,10 +980,12 @@
   (exec-path-from-shell-initialize))
 (use-package eww
   :straight nil
-  :hook (eww-mode-hook . (lambda ()
-			   (eww-toggle-fonts) ; use monospaced
-			   (eww-toggle-images) ; turn images off
-			   ))
+  :config
+  (setq shr-use-fonts  nil                          ; No special fonts
+	shr-use-colors t                          ;  colours
+	shr-inhibit-images t			  ; inhibit images
+	shr-indentation 2                           ; Left-side margin
+	shr-width 70)                                ; Fold text to 70 columns
   )	
 
 
