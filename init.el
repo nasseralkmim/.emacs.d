@@ -170,6 +170,7 @@
   :config
   (savehist-mode))
 (use-package marginalia
+  :disabled ;; slow sometimes
   :after vertico
   :config (marginalia-mode))
 (use-package consult
@@ -400,13 +401,14 @@
   :custom
    (org-hide-emphasis-markers t) 
    (org-startup-indented nil)
-   (org-startup-folded t)
+   (org-startup-folded 'content)	; show headings ('fold is good as well)
    (org-hide-leading-stars t) 
    (org-edit-src-content-indentation 0)
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
    (org-cycle-separator-lines 0)
    (org-fontify-quote-and-verse-blocks t)
+   (org-insert-heading-respect-content t) ; insert heading after current tree
   :config
   (transient-mark-mode -1)
   (setq org-todo-keywords '(
