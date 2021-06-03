@@ -254,6 +254,7 @@
   ('normal evil-mc-key-map "g r" nil)
   :config (global-evil-mc-mode 1))
 (use-package evil
+  :defer 1
   :diminish evil-mode
   :init
   (setq evil-want-keybinding nil)
