@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: cpp block
+# key: <cpp
+# --
+#+begin_src C++
+#include <iostream>
+
+int main () {
+  $0
+}
+#+end_src

@@ -3,9 +3,9 @@
 # key: <head
 # --
 
-#+title: $2
+#+title: $1
 #+date: `(let ((x (org-insert-time-stamp nil))))`
 #+author: Nasser Alkmim
 #+draft: t
 #+toc: t
-#+tags[]: draft 
+#+tags[]: draft $0 

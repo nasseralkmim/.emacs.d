@@ -1,4 +1,3 @@
-;; (set-frame-size (selected-frame) 140 50)
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
@@ -6,8 +5,8 @@
 ;; development branch of straight
 (setq straight-repository-branch "develop")
 
-;; Use Straight el
-;; straight automatically checks if it need to be rebuilt
+;; Bootstrap straight.el.
+;; straight automatically checks if it needs to be rebuilt.
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -21,15 +20,26 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; Install use-package
+;; Install use-package macros.
 (straight-use-package 'use-package)
-(setq use-package-always-ensure t
-      use-package-expand-minimally t)
-;; makes :straight t by default
+;; install package with same name expect specified otherwise
 (setq straight-use-package-by-default t)
 
-(use-package general); (general-def 'normal org-mode-map "key" 'def ) example with 2 positional arguments
-(use-package diminish :defer t)
+;; Changes the default paths for lots of
+;; different packages, with the net result that the ~/.emacs.d folder
+;; is much more clean and organized.
+(use-package no-littering
+  :demand t)
+
+;;; Prevent Emacs-provided Org from being loaded
+(straight-register-package 'org)
+(straight-register-package 'org-contrib)
+
+;; General for kybinding
+;; example
+; (general-def 'normal org-mode-map "key" 'def )
+(use-package general :demand t)
+(use-package diminish :demand t)
 
 ;; Speed up bootstrapping
 (setq gc-cons-threshold 402653184
@@ -38,29 +48,36 @@
                               (setq gc-cons-threshold 100000000
                                     gc-cons-percentage 0.1)
                               (garbage-collect)) t)
-(use-package emacs
+(use-package emacs			; basics
   :straight nil
   :general
   ("C-<tab>" 'other-window)
   ("C-c w" 'shrink-window)
+  ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   :init
-  (when (eq system-type 'windows-nt)
-      (setq user-emacs-directory "c:/Users/nasse/.emacs.d/"))
-
+  ;; ui
   (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (global-hl-line-mode 1)
   (winner-mode t)
   (repeat-mode t)
-
   (setq-default frame-title-format '("%b [%m]")) ;name on top of window
+
+  ;; font height
+  (set-face-attribute 'default nil :height 95)
+
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
+  ;; scroll
   (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
+  (setq mouse-wheel-follow-mouse 't)
+  (setq scroll-step 1)
+  ;; (setq mouse-wheel-progressive-speed nil)
+
+  ;; other basiscs
   (setq ring-bell-function 'ignore)
-  (setq mouse-wheel-progressive-speed nil)
   (setq inhibit-startup-screen t)
   (setq user-full-name "Nasser Alkmim"
 	user-mail-address "nasser.alkmim@gmail.com")
@@ -84,7 +101,16 @@
   (setq visible-bell t)
 
   ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t))
+  (setq enable-recursive-minibuffers t)
+
+  (setq completions-detailed t)
+
+  ;; TAB cycle if there are only few candidates
+  (setq completion-cycle-threshold 3)
+
+  ;; Enable indentation+completion using the TAB key.
+  ;; `completion-at-point' is often bound to M-TAB.
+  (setq tab-always-indent 'complete))
 (use-package abbrev
   :straight nil
   :config
@@ -92,13 +118,6 @@
   (setq-default abbrev-mode t)
   (diminish 'abbrev-mode)
   (setq save-abbrevs 'silently))
-(use-package emacs
-  :straight nil
-  :config
-  ;; (set-face-attribute 'default nil :font "Iosevka etoile-10")
-  ;; (set-face-attribute 'variable-pitch nil :font "Iosevka aile-10")
-  (set-face-attribute 'default nil :height 95)
-  )
 (use-package benchmark-init
   :disabled
   :config
@@ -150,16 +169,7 @@
   :after vertico
   :config
   (savehist-mode))
-(use-package selectrum			; like a vertical minibuffer
-  :disabled
-  :init (selectrum-mode t))
-(use-package selectrum-prescient	;prescient provides matching of space-separated components
-  :after selectrum
-  :config
-  (prescient-persist-mode t)
-  (selectrum-prescient-mode t))
 (use-package marginalia
-  :disabled
   :after vertico
   :config (marginalia-mode))
 (use-package consult
@@ -171,15 +181,16 @@
   ("C-s" 'consult-line)
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
-  (setq consult-preview-key nil		; no preview
+  (setq consult-preview-key nil; key to trigger preview
 	consult-narrow-key "<")		; go back to full list command
-  (consult-customize consult-line :preview-key 'any)
   ;; C-s C-s to search with previous search
   (defvar my-consult-line-map
     (let ((map (make-sparse-keymap)))
       (define-key map "\C-s" #'previous-history-element)
       map))
-  (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map)))
+  (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map))
+
+  (consult-customize consult-line :preview-key 'any))
 (use-package embark
   :general
   ("C-S-a" 'embark-act)
@@ -243,7 +254,6 @@
   ('normal evil-mc-key-map "g r" nil)
   :config (global-evil-mc-mode 1))
 (use-package evil
-  :defer 1
   :diminish evil-mode
   :init
   (setq evil-want-keybinding nil)
@@ -265,8 +275,9 @@
    lazy-highlight-cleanup nil
    lazy-highlight-max-at-a-time nil
    lazy-highlight-initial-delay 0)
+  (evil-set-undo-system 'undo-redo)	; use native redo function
   
-  ;; fix tab behavior in org-source-block
+  ;; fix tab behavior in org-mode source block
   (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
     "Bind `evil-default-state' to `insert' before calling FUN with ARGS."
     (let ((evil-default-state 'insert)
@@ -382,8 +393,8 @@
   ('normal org-mode-map :prefix "SPC" "x x" 'org-clock-in-last)
   ('normal org-mode-map "[ ]" 'outline-up-heading)
   ('normal org-mode-map :prefix "SPC" "u" 'outline-up-heading)
-  ('normal org-mode-map :prefix "g" "s j" 'org-babel-next-src-block)
-  ('normal org-mode-map :prefix "g" "s k" 'org-babel-previous-src-block)
+  ('normal org-mode-map :prefix "z" "s j" 'org-babel-next-src-block)
+  ('normal org-mode-map :prefix "z" "s k" 'org-babel-previous-src-block)
   :hook (org-mode . visual-line-mode)
   :custom
    (org-hide-emphasis-markers t) 
@@ -442,14 +453,14 @@
   :straight nil
   :after org
   :config
-  ;; Org babel and source blocks
+  ;; babel and source blocks
   (setq org-src-fontify-natively t
 	;; org-highlight-latex-and-related '(latex)
 	;; org-src-window-setup 'current-window
 	;; org-src-strip-leading-and-trailing-blank-lines t
 	org-src-preserve-indentation t  ; preserve indentation in code
 	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
-	org-src-tab-acts-natively nil ; evil handles that? default is t...
+	org-src-tab-acts-natively t ; evil handles that? default is t...
 	org-export-babel-evaluate nil
 	org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
   )
@@ -573,18 +584,16 @@
       (setq company-idle-delay 0
 	    company-format-margin-function #'company-vscode-dark-icons-margin
 	    company-minimum-prefix-length 1)))
-(use-package company-posframe
-  :disabled
-  :diminish company-posframe-mode
-  :after company
-  :config
-  (company-posframe-mode 1)
-  (setq company-posframe-show-metadata nil
-	company-posframe-show-indicator nil))
 (use-package company-prescient
   :after company
   :config
   (company-prescient-mode))
+(use-package outline
+  :straight nil
+  :general
+  ('normal outline-mode-map "C-j" nil)
+  ('normal outline-mode-map "z j" 'outline-next-visible-heading)
+  ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
 (use-package latex
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
@@ -597,7 +606,8 @@
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
   ('normal outline-mode-map
     "g j" nil
-    "g k" nil)
+    "g k" nil
+    "C-j" nil)
   ('normal LaTeX-mode-map "g p" '(:keymap preview-map))
   (preview-map
 	   "b" 'preview-buffer
@@ -610,14 +620,14 @@
               (LaTeX-math-mode)		; ` to easy type greek
               (turn-on-reftex)
               (reftex-isearch-minor-mode)
+	      (visual-line-mode)
+	      (outline-minor-mode) ; latex like org
 	      (outline-hide-sublevels 1) ; start folded
               (turn-off-auto-fill)))
-  (add-hook 'LaTeX-mode-hook 'visual-line-mode)
-  (add-hook 'LaTeX-mode-hook 'outline-minor-mode) ; latex like org
 
   ;; preview latex
   (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
-	preview-scale-function 1.25
+	preview-scale-function 1.3
 	preview-auto-cache-preamble t)
 
   (setq TeX-save-query nil)
@@ -693,8 +703,6 @@
 (use-package outline-magic
   :after latex
   :general
-  ('normal outline-mode-map "z j" 'outline-next-visible-heading)
-  ('normal outline-mode-map "z k" 'outline-previous-visible-heading)
   ('normal LaTeX-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "C-j" nil))
 (use-package dired
@@ -811,19 +819,12 @@
 						  (-map #'symbol-name))))))
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme theme 'no-confirm)))
-(use-package doom-modeline
-  :disabled
-  :config
-  (doom-modeline-mode)
-  ;; Don’t compact font caches during GC.
-  (setq inhibit-compacting-font-caches t)
-  (setq doom-modeline-icon t))
 (use-package modus-themes
   :init
   (setq modus-themes-org-blocks 'rainbow
 	modus-themes-hl-line 'intense-background
 	modus-themes-completions 'opinionated
-	modus-themes-mode-line nil)
+	modus-themes-mode-line 'moody)
   (load-theme 'modus-operandi t)
   :general
   ("<f5>"  'modus-themes-toggle))
@@ -941,11 +942,11 @@
       (((background light)) :foreground "#fafafa"))
     "Face for obscuring/dimming icons"
     :group 'all-the-icons-faces))
-(use-package epresent
-  :commands epresent-run)
-(use-package emacs
+(use-package emacs			;for windows function
   :defer 1
   :if (memq system-type '(windows-nt))
+  :init
+  (setq user-emacs-directory "c:/Users/nasse/.emacs.d/")
   :config
   ;; open cmd
   (defun my-open-cmd ()
@@ -967,6 +968,7 @@
   :init
   (wsl-path-activate))
 (use-package yasnippet
+  :defer 1
   :config
   (yas-global-mode))
 (use-package yasnippet-snippets
@@ -980,6 +982,7 @@
   (exec-path-from-shell-initialize))
 (use-package eww
   :straight nil
+  :hook (eww-mode-hook . (lambda () (eww-readable)))
   :config
   (setq shr-use-fonts  nil                          ; No special fonts
 	shr-use-colors t                          ;  colours
@@ -987,6 +990,5 @@
 	shr-indentation 2                           ; Left-side margin
 	shr-width 70)                                ; Fold text to 70 columns
   )	
-
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
