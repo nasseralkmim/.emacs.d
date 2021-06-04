@@ -27,13 +27,6 @@
 ;; install package with same name expect specified otherwise
 (setq straight-use-package-by-default t)
 
-;; Changes the default paths for lots of
-;; different packages, with the net result that the ~/.emacs.d folder
-;; is much more clean and organized.
-
-(use-package no-littering
-  :demand t)
-
 ;;; Prevent Emacs-provided Org from being loaded
 (straight-register-package 'org)
 (straight-register-package 'org-contrib)
@@ -114,6 +107,14 @@
   ;; TAB cycle if there are only few candidates
   (setq completion-cycle-threshold 3)
 
+  ;; Grow and shrink minibuffer
+  (setq resize-mini-windows t)
+
+  ;; Do not allow the cursor in the minibuffer prompt
+  (setq minibuffer-prompt-properties
+	'(read-only t cursor-intangible t face minibuffer-prompt))
+  (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
+
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (setq tab-always-indent 'complete))
@@ -166,14 +167,10 @@
 
 (use-package org-cliplink
   :commands org-cliplink
-  :after org
-  :general
-  ;; (org-mode-map "C-c S-l" 'org-cliplink) ; call interactive for now
-  )
+  ;; :general (org-mode-map "C-c S-l" 'org-cliplink) ; call interactive for now
+  :after org)
 
-(use-package vertico
-  :general
-  (minibuffer-local-map "C-n" 'vertico-next)
+(use-package vertico			;vertico sorts by history
   :init
   (vertico-mode))
 
@@ -188,7 +185,7 @@
 
 (use-package savehist
   :after vertico
-  :config
+  :init
   (savehist-mode))
 
 (use-package marginalia
@@ -281,8 +278,6 @@
 (use-package evil-mc
   :after evil
   :general
-  ('normal evil-mc-key-map "g c" '(:keymap evil-mc-cursors-map))
-  ('normal evil-mc-key-map "g r" nil)
   :config (global-evil-mc-mode 1))
 
 (use-package evil
@@ -294,8 +289,8 @@
   ('normal global "s" 'avy-goto-char-timer)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
-  ('normal :prefix "SPC" "l" 'evil-last-non-blank)
-  ('normal :prefix "SPC" "h" 'evil-first-non-blank)
+  ('(normal visual) :prefix "SPC" "l" 'evil-last-non-blank)
+  ('(normal visual) :prefix "SPC" "h" 'evil-first-non-blank)
   ('normal :prefix "SPC" "a" 'evil-append-line)
   ('normal :prefix "SPC" "x s" 'save-buffer)
   ('normal "[ ]" 'evil-next-close-paren)
@@ -332,7 +327,7 @@
 
 (use-package evil-easymotion
   :after evil
-  :config
+  :init
   (evilem-default-keybindings "SPC"))
 
 (use-package evil-snipe
@@ -445,7 +440,7 @@
   :custom
    (org-hide-emphasis-markers t) 
    (org-startup-indented nil)
-   (org-startup-folded 'content)	; show headings ('fold is good as well)
+   (org-startup-folded t)	; folded
    (org-hide-leading-stars t) 
    (org-edit-src-content-indentation 0)
    (org-outline-path-complete-in-steps nil)
@@ -642,7 +637,7 @@
   :config
   (add-to-list 'company-backends 'company-capf)
   (when (eq system-type 'gnu/linux)
-      (setq company-idle-delay 0
+      (setq company-idle-delay 1
 	    company-format-margin-function #'company-vscode-dark-icons-margin
 	    company-minimum-prefix-length 1)))
 
@@ -852,7 +847,8 @@
         ("C-x t M-t" . treemacs-find-tag)))
 
 (use-package treemacs-evil
-  :after treemacs evil)
+  :after treemacs evil
+  :demand)
 
 (use-package solaire-mode
   :disabled
@@ -1052,7 +1048,7 @@
 
 (use-package server
   :defer 3
-  :config (server-start))
+  :init (server-start))
 
 (use-package table
   :after org)
@@ -1069,9 +1065,6 @@
   :defer 1
   :config
   (yas-global-mode))
-
-(use-package yasnippet-snippets
-  :after yasnippet)
 
 (use-package exec-path-from-shell
   :init
