@@ -22,12 +22,15 @@
 
 ;; Install use-package macros.
 (straight-use-package 'use-package)
+(setq use-package-verbose nil
+      use-package-always-defer t)
 ;; install package with same name expect specified otherwise
 (setq straight-use-package-by-default t)
 
 ;; Changes the default paths for lots of
 ;; different packages, with the net result that the ~/.emacs.d folder
 ;; is much more clean and organized.
+
 (use-package no-littering
   :demand t)
 
@@ -38,8 +41,10 @@
 ;; General for kybinding
 ;; example
 ; (general-def 'normal org-mode-map "key" 'def )
-(use-package general :demand t)
-(use-package diminish :demand t)
+
+(use-package general :demand)
+
+(use-package diminish :demand)
 
 ;; Speed up bootstrapping
 (setq gc-cons-threshold 402653184
@@ -48,6 +53,7 @@
                               (setq gc-cons-threshold 100000000
                                     gc-cons-percentage 0.1)
                               (garbage-collect)) t)
+
 (use-package emacs			; basics
   :straight nil
   :general
@@ -82,13 +88,13 @@
   (setq user-full-name "Nasser Alkmim"
 	user-mail-address "nasser.alkmim@gmail.com")
 
-  ;; UTF-8 please
+  ;; UTF-8
   (prefer-coding-system 'utf-8)
   (set-default-coding-systems 'utf-8)
   (set-terminal-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8)
 
-  ;; Don't create backups
+  ;; create backups in separate folder
   (setq backup-directory-alist `(("." . "~/.saves")))
   (setq create-lockfiles nil)		; files with # (problem with onedrive...)
 
@@ -111,6 +117,7 @@
   ;; Enable indentation+completion using the TAB key.
   ;; `completion-at-point' is often bound to M-TAB.
   (setq tab-always-indent 'complete))
+
 (use-package abbrev
   :straight nil
   :config
@@ -118,18 +125,22 @@
   (setq-default abbrev-mode t)
   (diminish 'abbrev-mode)
   (setq save-abbrevs 'silently))
+
 (use-package benchmark-init
   :disabled
   :config
   ;; To disable collection of benchmark data after init is done.
   (add-hook 'after-init-hook 'benchmark-init/deactivate))
+
 (use-package color-identifiers-mode
   :defer t)
+
 (use-package paren
   :defer 1
   :config
   (setq show-paren-delay 0)
   (show-paren-mode 1))
+
 (use-package recentf
   :defer 1
   :config
@@ -137,6 +148,7 @@
   (setq recentf-max-saved-items 500
           recentf-max-menu-items 15
           recentf-auto-cleanup 60))
+
 (use-package autorevert
   :defer 1
   :config
@@ -145,35 +157,46 @@
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
   (global-auto-revert-mode +1))
+
 (use-package helpful
   :general
   ('normal "C-h f" 'helpful-callable)
   ('normal "C-h v" 'helpful-variable)
   ('normal "C-h k" 'helpful-key))
+
 (use-package org-cliplink
   :commands org-cliplink
   :after org
   :general
   ;; (org-mode-map "C-c S-l" 'org-cliplink) ; call interactive for now
   )
+
 (use-package vertico
+  :general
+  (minibuffer-local-map "C-n" 'vertico-next)
   :init
   (vertico-mode))
-(use-package orderless
+
+(use-package orderless	; completion style with flexible candidate filtering
+  ;; default completion needs to be in order
   :after vertico
+  :demand
   :config
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
+
 (use-package savehist
   :after vertico
   :config
   (savehist-mode))
+
 (use-package marginalia
   :disabled ;; slow sometimes
   :after vertico
   :config (marginalia-mode))
-(use-package consult
+
+(use-package consult			; practical commands
   :general
   ("M-s" 'consult-outline)
   ("C-c o" 'consult-imenu)
@@ -192,6 +215,7 @@
   (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map))
 
   (consult-customize consult-line :preview-key 'any))
+
 (use-package embark
   :general
   ("C-S-a" 'embark-act)
@@ -205,11 +229,14 @@
 	  #'which-key--hide-popup-ignore-command)
 	embark-become-indicator embark-action-indicator)
   )
+
 (use-package embark-consult
   :demand t				;necessary for consult preview
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
+
 (use-package all-the-icons :defer t)
+
 (use-package smartparens
   :diminish smartparens-mode  
   :commands smartparens-mode
@@ -236,8 +263,10 @@
   (setq show-paren-when-point-inside-paren t)
   (setq sp-show-pair-from-inside t)
   (setq show-paren-style 'mixed)) 
+
 (use-package flycheck
   :hook ((python-mode . flycheck-mode)))
+
 (use-package evil-multiedit
   :after evil
   :general
@@ -248,18 +277,18 @@
   (evil-multiedit-state-map "C-j" 'evil-multiedit-next) 
   (evil-multiedit-state-map "C-k" 'evil-multiedit-prev)
   ('visual "C-S-d" 'evil-multiedit-restore))
+
 (use-package evil-mc
   :after evil
   :general
-  ('normal evil-mc-key-map "g c" evil-mc-cursors-map)
+  ('normal evil-mc-key-map "g c" '(:keymap evil-mc-cursors-map))
   ('normal evil-mc-key-map "g r" nil)
   :config (global-evil-mc-mode 1))
+
 (use-package evil
-  :defer 1
   :diminish evil-mode
   :init
   (setq evil-want-keybinding nil)
-  :config
   (evil-mode 1)
   :general
   ('normal global "s" 'avy-goto-char-timer)
@@ -294,16 +323,18 @@
       (evil-refresh-cursor)))
 
   (advice-add 'org-babel-do-key-sequence-in-edit-buffer
-	      :around #'evil-org-insert-state-in-edit-buffer)
-  )
+	      :around #'evil-org-insert-state-in-edit-buffer))
+
 (use-package evil-smartparens
   :disabled
   :hook (smartparens-mode . evil-smartparens-mode)
   :after evil)
+
 (use-package evil-easymotion
   :after evil
   :config
   (evilem-default-keybindings "SPC"))
+
 (use-package evil-snipe
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
   :general ('normal "f" 'evil-snipe-f)
@@ -312,22 +343,26 @@
   (evil-snipe-override-mode 1)
   (setq evil-snipe-spillover-scope 'visible
 	evil-snipe-smart-case t))
+
 (use-package evil-goggles
   :after evil
-  :diminish evil-goggles-mode
-  :config
+  :init
   (evil-goggles-mode)
+  :config
   (setq evil-goggles-pulse t)
   (setq evil-goggles-duration 0.2)
   (evil-goggles-use-diff-faces))
+
 (use-package evil-collection
   :after evil
-  :config
-  (setq evil-collection-setup-minibuffer t
+  :init
+  (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
 	evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
+
 (use-package rg
   :general ('normal "C-c r" 'rg-menu))
+
 (use-package evil-org
   :diminish evil-org-mode
   :after org
@@ -339,20 +374,25 @@
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
+
 (use-package evil-surround
   :after evil
   :general
   ('normal "g c" 'evil-surround-change)
-  :init					; avoid kybind autoload
+  ('visual "S" 'evil-Surround-region)
+  :config
   (global-evil-surround-mode 1))
+
 (use-package evil-exchange
   :after evil
   :general ('normal "g x" 'evil-exchange)
   :config (evil-exchange-install))
+
 (use-package evil-matchit
   :after evil python
   :config
   (global-evil-matchit-mode 4))
+
 (use-package beacon
   :defer 1
   :diminish beacon-mode
@@ -363,6 +403,7 @@
   (setq beacon-blink-duration .5)
   (setq beacon-blink-when-window-scrolls nil)
   (beacon-mode 1))
+
 (use-package undo-propose
   :after evil
   :general
@@ -370,14 +411,17 @@
   ('normal 'global "u" 'undo-only)
   :config
   (setq undo-propose-pop-to-buffer t))
+
 (use-package magit
   :general
   (general-unbind 'normal magit-mode-map "C-<tab>")
   :bind ("C-c g" . magit-status))
+
 (use-package rainbow-mode
   :defer 1
   :diminish rainbow-mode
   :config (rainbow-mode))
+
 (use-package org
   ;; :straight org-plus-contrib
   :diminish org-indent-mode
@@ -414,6 +458,7 @@
   (setq org-todo-keywords '(
 			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
 			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)"))))
+
 (use-package ob
   :straight nil
   :after org
@@ -438,20 +483,21 @@
 					       (:exports . "both")))
   (setq jupyter-org-resource-directory "./jupyter/")
   (setq org-image-actual-width '(350))
-  ;; display/update images in the buffer after I evaluate
-  ;;   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
-  ;; (use-package org-clock
-  ;;   :straight nil
-  ;;   :after org
-  ;;   :config
-  ;;   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
-  ;;   (setq org-clock-persistence-insinuate t
-  ;; 	org-clock-persist t
-  ;; 	org-clock-in-resume t
-  ;; 	org-clock-out-remove-zero-time-clocks t
-  ;; 	org-clock-mode-line-total 'current
-  ;; 	org-duration-format (quote h:mm))
-)
+  ;; display/update images in the buffer after I evaluate 
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+
+(use-package org-clock
+  :straight nil
+  :after org
+  :config
+  ;; Save the running clock and all clock history when exiting Emacs, load it on startup
+  (setq org-clock-persistence-insinuate t
+	org-clock-persist t
+	org-clock-in-resume t
+	org-clock-out-remove-zero-time-clocks t
+	org-clock-mode-line-total 'current
+	org-duration-format (quote h:mm)))
+
 (use-package org-src
   :straight nil
   :after org
@@ -467,6 +513,7 @@
 	org-export-babel-evaluate nil
 	org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
   )
+
 (use-package org-agenda
   :after org
   :straight nil
@@ -476,6 +523,7 @@
 				 "~/OneDrive/Org/journal.org"
 				 "~/OneDrive/Org/gcal.org"
 				 "~/OneDrive/Concurso/Notas/notas_concurso.org"))))
+
 (use-package ox-latex
   :after org
   :straight nil
@@ -501,20 +549,24 @@
 		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
 		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
 		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+
 (use-package ob-async
   :after org
   :config
   (setq ob-async-no-async-languages-alist '("python" "jupyter-python")))
+
 (use-package jupyter
   :after org
   :config
   (general-def org-mode-map "C-c =" 'jupyter-org-hydra/body))
+
 (use-package ob-shell
   :straight nil
   :after org
   :config
   (setq org-babel-default-header-args:sh '((:results . "output")))
   (setq org-babel-default-header-args:shell '((:results . "output"))))
+
 (use-package org-roam-server
   :hook (org-roam-mode . org-roam-server-mode)
   :config
@@ -525,6 +577,7 @@
         org-roam-server-label-truncate t
         org-roam-server-label-truncate-length 60
         org-roam-server-label-wrap-length 20))
+
 (use-package org-roam
   :custom
   ;; (org-roam-directory "~/OneDrive/nasser-website/content/roam") ; on windows
@@ -536,6 +589,7 @@
   ('insert org-mode-map "C-c n i" 'org-roam-insert)
   :config
   (org-roam-mode))
+
 (use-package org-download
   :after org
   :general
@@ -549,6 +603,7 @@
   (setq org-download-screenshot-method "convert.exe clipboard: %s") ; add .exe to work within wsl2
   (setq org-download-screenshot-file "./screenshot.png") ; where temporary screenshot will be saved so convert can work
   )
+
 (use-package flyspell
   :diminish flyspell-mode
   :commands flyspell-mode
@@ -563,16 +618,19 @@
   (ispell-set-spellchecker-params)
   (setq flyspell-delay 5)		; 5 seconds
   )
+
 (use-package flyspell-correct
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
   :after flyspell)
+
 (use-package flyspell-lazy
   :if (memq system-type '(windows-nt))
   :after flyspell
   :commands flyspell-lazy-mode
   :hook ((LaTeX-mode . flyspell-lazy-mode)
 	 (org-mode . flyspell-lazy-mode)))
+
 (use-package company
   :diminish company-mode
   :commands company-mode
@@ -587,16 +645,20 @@
       (setq company-idle-delay 0
 	    company-format-margin-function #'company-vscode-dark-icons-margin
 	    company-minimum-prefix-length 1)))
+
 (use-package company-prescient
   :after company
   :config
   (company-prescient-mode))
+
 (use-package outline
   :straight nil
+  :demand
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
+
 (use-package latex
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
@@ -689,9 +751,11 @@
   \\includegraphics[width=.5\\textwidth]{%s}
 \\end{figure}" image-file))))
   )
+
 (use-package evil-tex
   :after latex
   :hook (LaTeX-mode . evil-tex-mode))
+
 (use-package reftex
   :after latex
   :commands reftex-toc
@@ -703,11 +767,13 @@
   (setq reftex-keep-temporary-buffers nil)
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:")))
+
 (use-package outline-magic
   :after latex
   :general
   ('normal LaTeX-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "C-j" nil))
+
 (use-package dired
   :straight nil
   :commands dired
@@ -715,9 +781,11 @@
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
   (setq dired-auto-revert-buffer t))
+
 (use-package dired-subtree
   :after dired
   :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
+
 (use-package treemacs
   :config
   (progn
@@ -782,8 +850,10 @@
         ("C-x t B"   . treemacs-bookmark)
         ("C-x t C-t" . treemacs-find-file)
         ("C-x t M-t" . treemacs-find-tag)))
+
 (use-package treemacs-evil
   :after treemacs evil)
+
 (use-package solaire-mode
   :disabled
   :hook ((change-major-mode . turn-on-solaire-mode)
@@ -793,6 +863,7 @@
   :config
   (setq solaire-mode-auto-swap-bg t)
   (solaire-global-mode +1))
+
 (use-package doom-themes
   :disabled
   :commands ap/load-doom-theme
@@ -822,6 +893,7 @@
 						  (-map #'symbol-name))))))
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme theme 'no-confirm)))
+
 (use-package modus-themes
   :init
   (setq modus-themes-org-blocks 'rainbow
@@ -831,21 +903,27 @@
   (load-theme 'modus-operandi t)
   :general
   ("<f5>"  'modus-themes-toggle))
+
 (use-package htmlize
   :defer t)
+
 (use-package treemacs-icons-dired
   :after treemacs dired
   :config (treemacs-icons-dired-mode))
+
 (use-package dap-mode
   :after lsp-mode)
+
 (use-package dap-cpptools
   :straight nil
   :after dap-mode)
+
 (use-package c++-mode
   :straight nil
   :mode ("\\.cpp\\'" . c++-mode)
   :general
   (c++-mode-map "C-x c" 'compile))
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :general
@@ -864,12 +942,14 @@
 	lsp-enable-on-type-formatting nil  ;don't format automatically
 	lsp-headerline-breadcrumb-enable nil ;disable breadcrumb
 	))
+
 (use-package lsp-python-ms
   :after lsp
   :config (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
                           (lsp-deferred))))  ; or lsp-deferred
+
 (use-package lsp-ui
   :if (memq system-type '(gnu/linux))
   :commands lsp-ui-doc
@@ -878,6 +958,7 @@
   (setq
    lsp-ui-doc-delay 3			; show doc only after this time
    lsp-ui-sideline-enable nil))
+
 (use-package python		   ; for syntax highlight
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -885,29 +966,38 @@
   :config
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil))
+
 (use-package python-black
   :after python
   :commands python-black-buffer)
+
 (use-package adaptive-wrap
   :straight adaptive-wrap
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
+
 (use-package goto-last-change
   :general ('normal "g b" 'goto-last-change)
   :bind ("C-x C-j" . goto-last-change))
+
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
+
 (use-package which-key
   :defer 3
   :diminish which-key-mode
   :config
   (which-key-mode t))
+
 (use-package hl-todo
   :after python
   :hook (python-mode . hl-todo-mode))
+
 (use-package csv-mode
   :mode ("\\.csv\\'" . csv-mode))
+
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
+
 (use-package bibtex-actions
   ;; :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
   :general
@@ -945,6 +1035,7 @@
       (((background light)) :foreground "#fafafa"))
     "Face for obscuring/dimming icons"
     :group 'all-the-icons-faces))
+
 (use-package emacs			;for windows function
   :defer 1
   :if (memq system-type '(windows-nt))
@@ -958,11 +1049,14 @@
     (start-process-shell-command (format "pwsh (%s)" default-directory) nil "start pwsh"))
   (when (eq system-type 'windows-nt)
     (bind-key "C-x m" 'my-open-cmd)))
+
 (use-package server
   :defer 3
   :config (server-start))
+
 (use-package table
   :after org)
+
 (use-package wsl-path
   :straight nil
   :load-path "./lisp"
@@ -970,12 +1064,15 @@
 	     wsl-path-convert-file-name)
   :init
   (wsl-path-activate))
+
 (use-package yasnippet
   :defer 1
   :config
   (yas-global-mode))
+
 (use-package yasnippet-snippets
   :after yasnippet)
+
 (use-package exec-path-from-shell
   :init
   ;; ensures environment variables inside Emacs is the same in the user's shell
@@ -983,6 +1080,7 @@
   ;; I'm using to run jupyter
   ;; (getenv "SHELL")"/bin/bash"
   (exec-path-from-shell-initialize))
+
 (use-package eww
   :straight nil
   :hook (eww-mode-hook . (lambda () (eww-readable)))
@@ -993,5 +1091,11 @@
 	shr-indentation 2                           ; Left-side margin
 	shr-width 70)                                ; Fold text to 70 columns
   )	
+
+(use-package hyperbole
+  :defer t
+  :general
+  ('normal "z h" 'hyperbole)
+  ("M-o" 'hkey-operate))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
