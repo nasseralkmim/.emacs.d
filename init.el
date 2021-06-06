@@ -411,8 +411,8 @@
 
 (use-package magit
   :general
-  (general-unbind 'normal magit-mode-map "C-<tab>")
-  :bind ("C-c g" . magit-status))
+  (magit-mode-map "C-<tab>" nil)
+  ("C-x g" 'magit-status))
 
 (use-package rainbow-mode
   :defer 1
@@ -440,7 +440,7 @@
   ('normal org-mode-map :prefix "z" "s k" 'org-babel-previous-src-block)
   :hook (org-mode . visual-line-mode)
   :custom
-   (org-hide-emphasis-markers t) 
+   (org-hide-emphasis-markers nil) 
    (org-startup-indented nil)
    (org-startup-folded t)	; folded
    (org-hide-leading-stars t) 
@@ -613,8 +613,9 @@
     (setq ispell-dictionary "en_US,pt_BR")
     (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
   (ispell-set-spellchecker-params)
-  (setq flyspell-delay 5)		; 5 seconds
-  )
+
+  (setq flyspell-delay 5		; 5 seconds
+	ispell-personal-dictionary "~/.dotfiles/hunspell/.personal"))
 
 (use-package flyspell-correct
   :general
