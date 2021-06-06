@@ -171,6 +171,7 @@
   :after org)
 
 (use-package vertico			;vertico sorts by history
+  :after consult
   :init
   (vertico-mode))
 
@@ -193,8 +194,9 @@
   :after vertico
   :config (marginalia-mode))
 
-(use-package consult			; practical commands
+(use-package consult	; practical commands to select from lists
   :general
+  ("M-x" 'execute-extended-command)	; autoload consult
   ("M-s" 'consult-outline)
   ("C-c o" 'consult-imenu)
   ("C-x b" 'consult-buffer)
@@ -637,7 +639,7 @@
   :config
   (add-to-list 'company-backends 'company-capf)
   (when (eq system-type 'gnu/linux)
-      (setq company-idle-delay 1
+      (setq company-idle-delay .1
 	    company-format-margin-function #'company-vscode-dark-icons-margin
 	    company-minimum-prefix-length 1)))
 
@@ -1067,10 +1069,11 @@
   (yas-global-mode))
 
 (use-package exec-path-from-shell
+  :disabled
   :init
   ;; ensures environment variables inside Emacs is the same in the user's shell
   ;; emacs GUI inherits minimal environment variables
-  ;; I'm using to run jupyter
+  ;; I'm using to run jupyter with the conda environment as default
   ;; (getenv "SHELL")"/bin/bash"
   (exec-path-from-shell-initialize))
 
