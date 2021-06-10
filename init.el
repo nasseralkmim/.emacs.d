@@ -22,8 +22,10 @@
 
 ;; Install use-package macros.
 (straight-use-package 'use-package)
-(setq use-package-verbose nil
-      use-package-always-defer t)
+(setq use-package-verbose nil		; don't print anything
+      use-package-expand-minimally t	; minimal expanded macro
+      use-package-always-defer t)	; always defer expect when :demand
+
 ;; install package with same name expect specified otherwise
 (setq straight-use-package-by-default t)
 
@@ -51,6 +53,7 @@
   :straight nil
   :general
   ("C-<tab>" 'other-window)
+  ("C-<iso-lefttab>" 'other-frame)
   ("C-c w" 'shrink-window)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   :init
@@ -161,9 +164,10 @@
 
 (use-package helpful
   :general
-  ('normal "C-h f" 'helpful-callable)
-  ('normal "C-h v" 'helpful-variable)
-  ('normal "C-h k" 'helpful-key))
+  ("C-h f" 'helpful-callable)
+  ("C-h d" 'helpful-at-point)
+  ("C-h v" 'helpful-variable)
+  ("C-h k" 'helpful-key))
 
 (use-package org-cliplink
   :commands org-cliplink
@@ -198,6 +202,7 @@
   :general
   ("M-x" 'execute-extended-command)	; autoload consult
   ("M-s" 'consult-outline)
+  ("M-r" 'consult-ripgrep)
   ("C-c o" 'consult-imenu)
   ("C-x b" 'consult-buffer)
   ("M-y" 'consult-yank-pop)
@@ -230,7 +235,7 @@
   )
 
 (use-package embark-consult
-  :demand t				;necessary for consult preview
+  :demand				;necessary for consult preview
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
 
@@ -245,6 +250,9 @@
   ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
   ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
+  ;; binding for Latex
+  ('insert LaTeX-mode-map "<tab>" 'sp-forward-sexp)
+  ('insert LaTeX-mode-map "C-<tab>" 'sp-backward-up-sexp)
   :init
   (add-hook 'python-mode-hook 'smartparens-mode)
   (add-hook 'c++-mode-hook 'smartparens-mode)
@@ -639,10 +647,9 @@
 	 (org-mode . company-mode))
   :config
   (add-to-list 'company-backends 'company-capf)
-  (when (eq system-type 'gnu/linux)
-      (setq company-idle-delay .1
-	    company-format-margin-function #'company-vscode-dark-icons-margin
-	    company-minimum-prefix-length 1)))
+  (setq company-idle-delay .1
+	company-format-margin-function #'company-vscode-dark-icons-margin
+	company-minimum-prefix-length 1))
 
 (use-package company-prescient
   :after company
@@ -661,10 +668,10 @@
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face 
-  (font-latex-sectioning-2-face ((t (:weight bold))))
-  (font-latex-sectioning-3-face ((t (:weight bold :slant italic))))
-  (font-latex-sectioning-4-face ((t (:slant italic))))
-  (font-latex-sectioning-5-face ((t (:weight light))))
+  (font-latex-sectioning-2-face ((t (:underline t :weight bold))))
+  (font-latex-sectioning-3-face ((t (:weight bold))))
+  (font-latex-sectioning-4-face ((t (:weight light :slant normal))))
+  (font-latex-sectioning-5-face ((t (:weight light :slant italic))))
   :general
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
   ('normal outline-mode-map
@@ -690,7 +697,7 @@
 
   ;; preview latex
   (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
-	preview-scale-function 1.3
+	preview-scale-function 1.
 	preview-auto-cache-preamble t)
 
   (setq TeX-save-query nil)
@@ -719,7 +726,8 @@
 		      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
 		    nil t :help "Create nomenclature file")))
 
-  ;; using zathura on WSL
+  ;; using "Zathura" on WSL
+  ;; sometime "PDF Tools" good because of "pdf-view-set-slice-from-bounding-box"
   (add-to-list 'TeX-view-program-selection
 	       '(output-pdf "Zathura"))
 
@@ -776,9 +784,14 @@
   :straight nil
   :commands dired
   :hook (dired-mode . dired-hide-details-mode)
+  :general
+  ("<f7>" 'open-my-notes)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
-  (setq dired-auto-revert-buffer t))
+  (setq dired-auto-revert-buffer t)
+  (defun open-my-notes ()
+    (interactive)
+    (dired "/mnt/c/Users/c8441205/OneDrive/nasser-website/content/notes/")))
 
 (use-package dired-subtree
   :after dired
@@ -826,7 +839,7 @@
 	  treemacs-tag-follow-delay              1.5
 	  treemacs-user-mode-line-format         nil
 	  treemacs-user-header-line-format       nil
-	  treemacs-width                         35
+	  treemacs-width                         25
 	  treemacs-workspace-switch-cleanup      nil)
 
     (treemacs-follow-mode t)
@@ -898,20 +911,31 @@
   (setq modus-themes-org-blocks 'rainbow
 	modus-themes-hl-line 'intense-background
 	modus-themes-completions 'opinionated
-	modus-themes-mode-line 'moody)
+	modus-themes-mode-line 'borderless-accented-moody)
   (load-theme 'modus-operandi t)
   :general
   ("<f5>"  'modus-themes-toggle))
 
-(use-package htmlize
-  :defer t)
-
-(use-package treemacs-icons-dired
-  :after treemacs dired
-  :config (treemacs-icons-dired-mode))
+(use-package htmlize)
 
 (use-package dap-mode
-  :after lsp-mode)
+  :general
+  (lsp-mode-map "<f6>" 'dap-hydra)
+  :after lsp-mode
+  :config
+  (require 'dap-python)
+  (setq dap-python-debugger 'debugpy)
+
+  (dap-register-debug-template "Python :: edelweiss"
+  (list :type "python"
+        :args "testfiles/LinearElasticIsotropic/test.inp"
+        :request "launch"
+        :name "Python :: edelweiss"))
+
+  )
+
+(use-package pyvenv			;change python envirnment
+  :commands pyvenv-activate)
 
 (use-package dap-cpptools
   :straight nil
@@ -988,8 +1012,19 @@
   (which-key-mode t))
 
 (use-package hl-todo
-  :after python
-  :hook (python-mode . hl-todo-mode))
+  :demand
+  :hook ((python-mode . hl-todo-mode)
+	 (LaTeX-mode . hl-todo-mode))
+  :general
+  ('normal hl-todo-mode-map "g t" 'hl-todo-done)
+  :config
+  (defun hl-todo-done ()
+    "Change text from TODO to DONE"
+    (interactive)
+    (if (string= (thing-at-point 'word 'no-properties) "TODO")
+	(let ((bound (bounds-of-thing-at-point 'word)))
+	  (replace-string "TODO" "DONE" 1 (car bound) (cdr bound)))))
+  )
 
 (use-package csv-mode
   :mode ("\\.csv\\'" . csv-mode))
@@ -1045,7 +1080,7 @@
   (defun my-open-cmd ()
     "open cmd at file location"
     (interactive)
-    (start-process-shell-command (format "pwsh (%s)" default-directory) nil "start pwsh"))
+    (start-process-shell-command (format "pwsh.exe (%s)" default-directory) nil "start.exe pwsh"))
   (when (eq system-type 'windows-nt)
     (bind-key "C-x m" 'my-open-cmd)))
 
@@ -1070,7 +1105,6 @@
   (yas-global-mode))
 
 (use-package exec-path-from-shell
-  :disabled
   :init
   ;; ensures environment variables inside Emacs is the same in the user's shell
   ;; emacs GUI inherits minimal environment variables
@@ -1086,13 +1120,31 @@
 	shr-use-colors t                          ;  colours
 	shr-inhibit-images t			  ; inhibit images
 	shr-indentation 2                           ; Left-side margin
-	shr-width 70)                                ; Fold text to 70 columns
-  )	
+	shr-width 70))                                ; Fold text to 70 columns
 
 (use-package hyperbole
-  :defer t
   :general
   ('normal "z h" 'hyperbole)
   ("M-o" 'hkey-operate))
 
+(use-package visual-fill-column
+  :demand
+  :hook (visual-line-mode . visual-fill-column-mode)
+  :init
+  (setq visual-fill-column-center-text t))
+
+(use-package pdf-tools
+  :after latex
+  :init
+  (pdf-loader-install)
+  :config
+  ;; sync pdf in different frame
+  (setq pdf-sync-forward-display-action
+      '(display-buffer-reuse-window (reusable-frames . t))))
+
+(use-package hydra)
+
+(use-package vterm)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+(put 'list-threads 'disabled nil)
