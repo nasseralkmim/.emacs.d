@@ -729,7 +729,7 @@
   ;; using "Zathura" on WSL
   ;; sometime "PDF Tools" good because of "pdf-view-set-slice-from-bounding-box"
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "Zathura"))
+	       '(output-pdf "PDF Tools"))
 
   (defun my-tex-insert-clipboard ()
     (interactive)
@@ -1140,7 +1140,9 @@
   :config
   ;; sync pdf in different frame
   (setq pdf-sync-forward-display-action
-      '(display-buffer-reuse-window (reusable-frames . t))))
+	'(display-buffer-reuse-window (reusable-frames . t)))
+  (setq pdf-sync-backward-display-action
+	'(display-buffer-reuse-window (reusable-frames . t))))
 
 (use-package hydra)
 
