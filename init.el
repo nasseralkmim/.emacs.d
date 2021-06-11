@@ -910,6 +910,7 @@
 
 (use-package htmlize)
 
+;; giving a warning Invalid read syntax: ), 106, 60
 (use-package dap-mode
   :general
   (lsp-mode-map "<f6>" 'dap-hydra)
@@ -919,10 +920,10 @@
   (setq dap-python-debugger 'debugpy)
 
   (dap-register-debug-template "Python :: edelweiss"
-  (list :type "python"
-        :args "testfiles/LinearElasticIsotropic/test.inp"
-        :request "launch"
-        :name "Python :: edelweiss")))
+			       (list :type "python"
+				     :args "testfiles/LinearElasticIsotropic/test.inp"
+				     :request "launch"
+				     :name "Python :: edelweiss")))
 
 (use-package pyvenv			;change python envirnment
   :commands pyvenv-activate)
