@@ -34,20 +34,23 @@
 (straight-register-package 'org-contrib)
 
 ;; General for kybinding
-;; example
-; (general-def 'normal org-mode-map "key" 'def )
-
 (use-package general :demand)
-
 (use-package diminish :demand)
 
 ;; Speed up bootstrapping
-(setq gc-cons-threshold 402653184
-      gc-cons-percentage 0.6)
-(add-hook 'after-init-hook `(lambda ()
-                              (setq gc-cons-threshold 100000000
-                                    gc-cons-percentage 0.1)
-                              (garbage-collect)) t)
+;; (setq gc-cons-threshold 402653184
+;;       gc-cons-percentage 0.6)
+;; (add-hook 'after-init-hook `(lambda ()
+;;                               (setq gc-cons-threshold 100000000
+;;                                     gc-cons-percentage 0.1)
+;;                               (garbage-collect)) t)
+
+;; Minimizes GC interferecen with user activity
+(use-package gcmh
+  :init
+  (setq gcmh-idle-delay 5
+	gcmh-high-cons-threshold (* 16 1024 1024)) 
+  (gcmh-mode 1))
 
 (use-package emacs			; basics
   :straight nil
@@ -92,7 +95,7 @@
 
   ;; create backups in separate folder
   (setq backup-directory-alist `(("." . "~/.saves")))
-  (setq create-lockfiles nil)		; files with # (problem with onedrive...)
+  (setq create-lockfiles nil)		; files with # problem with onedrive...
 
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
@@ -105,6 +108,10 @@
   ;; Enable recursive minibuffers
   (setq enable-recursive-minibuffers t)
 
+  ;;Slow down the UI being updated to improve performance
+  (setq idle-update-delay 1.1)
+
+  ;; add details in completions as prefix/sufix
   (setq completions-detailed t)
 
   ;; TAB cycle if there are only few candidates
@@ -569,7 +576,6 @@
   :straight nil
   :after org
   :config
-  (setq org-babel-default-header-args:sh '((:results . "output")))
   (setq org-babel-default-header-args:shell '((:results . "output"))))
 
 (use-package org-roam-server
@@ -930,9 +936,7 @@
   (list :type "python"
         :args "testfiles/LinearElasticIsotropic/test.inp"
         :request "launch"
-        :name "Python :: edelweiss"))
-
-  )
+        :name "Python :: edelweiss")))
 
 (use-package pyvenv			;change python envirnment
   :commands pyvenv-activate)
@@ -1070,20 +1074,6 @@
     "Face for obscuring/dimming icons"
     :group 'all-the-icons-faces))
 
-(use-package emacs			;for windows function
-  :defer 1
-  :if (memq system-type '(windows-nt))
-  :init
-  (setq user-emacs-directory "c:/Users/nasse/.emacs.d/")
-  :config
-  ;; open cmd
-  (defun my-open-cmd ()
-    "open cmd at file location"
-    (interactive)
-    (start-process-shell-command (format "pwsh.exe (%s)" default-directory) nil "start.exe pwsh"))
-  (when (eq system-type 'windows-nt)
-    (bind-key "C-x m" 'my-open-cmd)))
-
 (use-package server
   :defer 3
   :init (server-start))
@@ -1091,6 +1081,7 @@
 (use-package table
   :after org)
 
+;; needs to be added manually to .emacs.d/lisp folder
 (use-package wsl-path
   :straight nil
   :load-path "./lisp"
