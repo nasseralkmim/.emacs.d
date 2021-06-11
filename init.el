@@ -23,6 +23,7 @@
 ;; Install use-package macros.
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
+      use-package-compute-statistics nil; compute statistics about package initialization
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer expect when :demand
 
@@ -36,14 +37,6 @@
 ;; General for kybinding
 (use-package general :demand)
 (use-package diminish :demand)
-
-;; Speed up bootstrapping
-;; (setq gc-cons-threshold 402653184
-;;       gc-cons-percentage 0.6)
-;; (add-hook 'after-init-hook `(lambda ()
-;;                               (setq gc-cons-threshold 100000000
-;;                                     gc-cons-percentage 0.1)
-;;                               (garbage-collect)) t)
 
 ;; Minimizes GC interferecen with user activity
 (use-package gcmh
@@ -100,7 +93,7 @@
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  ;; (blink-cursor-mode 1)
+  (blink-cursor-mode 1)
 
   ;; Don't beep at me
   (setq visible-bell t)
@@ -137,12 +130,6 @@
   (diminish 'abbrev-mode)
   (setq save-abbrevs 'silently))
 
-(use-package benchmark-init
-  :disabled
-  :config
-  ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
-
 (use-package color-identifiers-mode
   :defer t)
 
@@ -154,11 +141,11 @@
 
 (use-package recentf
   :defer 1
-  :config
+  :init
   (recentf-mode t)
-  (setq recentf-max-saved-items 500
+  (setq recentf-max-saved-items 100
           recentf-max-menu-items 15
-          recentf-auto-cleanup 60))
+          recentf-auto-cleanup 'mode))
 
 (use-package autorevert
   :defer 1
@@ -238,8 +225,7 @@
 	(lambda (map _target)
 	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
 	  #'which-key--hide-popup-ignore-command)
-	embark-become-indicator embark-action-indicator)
-  )
+	embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
   :demand				;necessary for consult preview
@@ -1010,9 +996,9 @@
   :bind ("C-=" . er/expand-region))
 
 (use-package which-key
-  :defer 3
+  :defer 1
   :diminish which-key-mode
-  :config
+  :init
   (which-key-mode t))
 
 (use-package hl-todo
@@ -1027,8 +1013,7 @@
     (interactive)
     (if (string= (thing-at-point 'word 'no-properties) "TODO")
 	(let ((bound (bounds-of-thing-at-point 'word)))
-	  (replace-string "TODO" "DONE" 1 (car bound) (cdr bound)))))
-  )
+	  (replace-string "TODO" "DONE" 1 (car bound) (cdr bound))))))
 
 (use-package csv-mode
   :mode ("\\.csv\\'" . csv-mode))
