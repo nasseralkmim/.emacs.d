@@ -40,6 +40,7 @@
 
 ;; Minimizes GC interferecen with user activity
 (use-package gcmh
+  :diminish gcmh-mode
   :init
   (setq gcmh-idle-delay 5
 	gcmh-high-cons-threshold (* 16 1024 1024)) 
@@ -188,15 +189,16 @@
   (savehist-mode))
 
 (use-package marginalia
-  :disabled ;; slow sometimes
+  :disabled ;; slow for describe variables
   :after vertico
-  :config (marginalia-mode))
+  :init (marginalia-mode))
 
 (use-package consult	; practical commands to select from lists
   :general
   ("M-x" 'execute-extended-command)	; autoload consult
   ("M-s" 'consult-outline)
-  ("M-r" 'consult-ripgrep)
+  ("C-c r" 'consult-ripgrep)
+  ("C-c f" 'consult-find)
   ("C-c o" 'consult-imenu)
   ("C-x b" 'consult-buffer)
   ("M-y" 'consult-yank-pop)
@@ -232,7 +234,7 @@
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
 
-(use-package all-the-icons :defer t)
+(use-package all-the-icons)
 
 (use-package smartparens
   :diminish smartparens-mode  
@@ -244,15 +246,15 @@
   ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   ;; binding for Latex
-  ('insert LaTeX-mode-map "<tab>" 'sp-forward-sexp)
-  ('insert LaTeX-mode-map "C-<tab>" 'sp-backward-up-sexp)
-  :init
-  (add-hook 'python-mode-hook 'smartparens-mode)
-  (add-hook 'c++-mode-hook 'smartparens-mode)
-  (add-hook 'lisp-interaction-mode-hook 'smartparens-mode)
-  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
-  (add-hook 'LaTeX-mode-hook 'smartparens-mode)
-  (add-hook 'org-mode-hook 'smartparens-mode)
+  ('insert smartparens-mode-map "<tab>" 'sp-forward-sexp)
+  ('insert smartparens-mode-map "C-<tab>" 'sp-backward-up-sexp)
+  :hook
+  (python-mode . smartparens-mode)
+  (c++-mode . smartparens-mode)
+  (lisp-interaction-mode . smartparens-mode)
+  (emacs-lisp-mode . smartparens-mode)
+  (LaTeX-mode . smartparens-mode)
+  (org-mode . smartparens-mode)
   :config
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
@@ -689,7 +691,7 @@
 
   ;; preview latex
   (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
-	preview-scale-function 1.
+	preview-scale-function 1.1
 	preview-auto-cache-preamble t)
 
   (setq TeX-save-query nil)
@@ -778,6 +780,8 @@
   :hook (dired-mode . dired-hide-details-mode)
   :general
   ("<f7>" 'open-my-notes)
+  ("C-x j" 'dired-jump)
+  (dired-mode-map "C-c C-d" 'mkdir)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
   (setq dired-auto-revert-buffer t)
@@ -789,70 +793,23 @@
   :after dired
   :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
 
-(use-package treemacs
-  :config
-  (progn
-    (setq treemacs-collapse-dirs                 (if treemacs-python-executable 3 0)
-	  treemacs-deferred-git-apply-delay      0.9
-	  treemacs-directory-name-transformer    #'identity
-	  treemacs-display-in-side-window        t
-	  treemacs-eldoc-display                 t
-	  treemacs-file-event-delay              3000
-	  treemacs-file-extension-regex          treemacs-last-period-regex-value
-	  treemacs-file-follow-delay             0.5
-	  treemacs-file-name-transformer         #'identity
-	  treemacs-follow-after-init             t
-	  treemacs-git-command-pipe              ""
-	  treemacs-goto-tag-strategy             'refetch-index
-	  treemacs-indentation                   1
-	  treemacs-indentation-string            " "
-	  treemacs-is-never-other-window         t
-	  treemacs-max-git-entries               5000
-	  treemacs-missing-project-action        'ask
-	  treemacs-move-forward-on-expand        nil
-	  treemacs-no-png-images                 nil
-	  treemacs-no-delete-other-windows       t
-	  treemacs-project-follow-cleanup        nil
-	  treemacs-persist-file                  (expand-file-name ".cache/treemacs-persist" user-emacs-directory)
-	  treemacs-position                      'left
-	  treemacs-read-string-input             'from-child-frame
-	  treemacs-recenter-distance             0.1
-	  treemacs-recenter-after-file-follow    nil
-	  treemacs-recenter-after-tag-follow     nil
-	  treemacs-recenter-after-project-jump   'always
-	  treemacs-recenter-after-project-expand 'on-distance
-	  treemacs-show-cursor                   nil
-	  treemacs-show-hidden-files             t
-	  treemacs-silent-filewatch              nil
-	  treemacs-silent-refresh                nil
-	  treemacs-sorting                       'mod-time-desc ; modified early
-	  treemacs-space-between-root-nodes      t
-	  treemacs-tag-follow-cleanup            t
-	  treemacs-tag-follow-delay              1.5
-	  treemacs-user-mode-line-format         nil
-	  treemacs-user-header-line-format       nil
-	  treemacs-width                         25
-	  treemacs-workspace-switch-cleanup      nil)
+(use-package treemacs-icons-dired
+  :after dired
+  :init (treemacs-icons-dired-mode))
 
-    (treemacs-follow-mode t)
-    (treemacs-filewatch-mode t)
-    (treemacs-fringe-indicator-mode 'always)
-    (treemacs-toggle-fixed-width)
-    )
-  (setq treemacs-git-mode nil)
+(use-package treemacs
+  :commands (treemacs-icons-dired-mode)	; loads if open dired before
+  :config
+  (setq treemacs-git-mode nil
+   treemacs-sorting 'mod-time-desc ; modified early
+   treemacs-width 25)
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode 'always)
   (treemacs-resize-icons 12)
   :general
   (treemacs-mode-map "<f8>" 'treemacs-quit)
-  ("<f8>" 'treemacs-select-window)
-  :bind
-  (:map global-map
-        ("M-0"       . treemacs-select-window)
-        ("<f8>"       . treemacs-select-window)
-        ("C-x t 1"   . treemacs-delete-other-windows)
-        ("C-x t t"   . treemacs)
-        ("C-x t B"   . treemacs-bookmark)
-        ("C-x t C-t" . treemacs-find-file)
-        ("C-x t M-t" . treemacs-find-tag)))
+  ("<f8>" 'treemacs-select-window))
 
 (use-package treemacs-evil
   :after treemacs evil
@@ -912,6 +869,7 @@
 
 ;; giving a warning Invalid read syntax: ), 106, 60
 (use-package dap-mode
+  :disabled
   :general
   (lsp-mode-map "<f6>" 'dap-hydra)
   :after lsp-mode
@@ -1091,12 +1049,16 @@
 
 (use-package eww
   :straight nil
+  :general
+  ("<f12>" 'eww)
   :hook (eww-mode-hook . (lambda () (eww-readable)))
   :config
   (setq shr-use-fonts  nil                          ; No special fonts
 	shr-use-colors t                          ;  colours
 	shr-inhibit-images t			  ; inhibit images
 	shr-indentation 2                           ; Left-side margin
+	shr-color-visible-luminance-min 80
+	eww-search-prefix "https://www.google.com/search?q="
 	shr-width 70))                                ; Fold text to 70 columns
 
 (use-package hyperbole
@@ -1105,6 +1067,7 @@
   ("M-o" 'hkey-operate))
 
 (use-package visual-fill-column
+  :disabled
   :demand
   :hook (visual-line-mode . visual-fill-column-mode)
   :init
@@ -1123,7 +1086,9 @@
 
 (use-package hydra)
 
-(use-package vterm)
+(use-package vterm
+  :general
+  ("<f9>" 'vterm))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'list-threads 'disabled nil)
