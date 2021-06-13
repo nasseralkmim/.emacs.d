@@ -25,9 +25,10 @@
 (setq use-package-verbose nil		; don't print anything
       use-package-compute-statistics nil; compute statistics about package initialization
       use-package-expand-minimally t	; minimal expanded macro
-      use-package-always-defer t)	; always defer expect when :demand
+      use-package-always-defer t)	; always defer, don't "require", except when :demand
 
-;; install package with same name expect specified otherwise
+;; Install package with same name expect specified otherwise
+;; use-package expands to straight-use-package (excepts when :straight nil)
 (setq straight-use-package-by-default t)
 
 ;;; Prevent Emacs-provided Org from being loaded
@@ -46,18 +47,20 @@
 	gcmh-high-cons-threshold (* 16 1024 1024)) 
   (gcmh-mode 1))
 
-(use-package emacs			; basics
+;; Basics
+(use-package emacs
   :straight nil
   :general
   ("C-<tab>" 'other-window)
   ("C-<iso-lefttab>" 'other-frame)
   ("C-c w" 'shrink-window)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
+  ("C-h j" 'describe-keymap)
   :init
   ;; ui
-  (menu-bar-mode -1)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
+  ;; (menu-bar-mode -1)
+  ;; (tool-bar-mode -1)
+  ;; (scroll-bar-mode -1)
   (global-hl-line-mode 1)
   (winner-mode t)
   (repeat-mode t)
@@ -242,8 +245,8 @@
   ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   ;; binding for Latex
-  ('insert smartparens-mode-map "<tab>" 'sp-forward-sexp)
-  ('insert smartparens-mode-map "C-<tab>" 'sp-backward-up-sexp)
+  ('insert LaTeX-mode-map "<tab>" 'sp-forward-sexp)
+  ('insert LaTeX-mode-map "C-<tab>" 'sp-backward-up-sexp)
   :hook
   (python-mode . smartparens-mode)
   (c++-mode . smartparens-mode)
@@ -434,7 +437,7 @@
   ('normal org-mode-map :prefix "z" "s k" 'org-babel-previous-src-block)
   :hook (org-mode . visual-line-mode)
   :custom
-   (org-hide-emphasis-markers nil) 
+   (org-hide-emphasis-markers t) 
    (org-startup-indented nil)
    (org-startup-folded t)	; folded
    (org-hide-leading-stars t) 
@@ -444,6 +447,7 @@
    (org-cycle-separator-lines 0)
    (org-fontify-quote-and-verse-blocks t)
    (org-insert-heading-respect-content t) ; insert heading after current tree
+   (org-catch-invisible-edits 'smart)
   :config
   (transient-mark-mode -1)
   (setq org-todo-keywords '(
@@ -452,7 +456,7 @@
 
 (use-package ob
   :straight nil
-  :after org jupyter
+  :after (:any org jupyter)
   :config
   (add-to-list 'exec-path "~/.local/bin") ;tell emacs where jupyter was installed
   (org-babel-do-load-languages
@@ -624,21 +628,26 @@
 
 (use-package company
   :diminish company-mode
-  :commands company-mode
   :hook ((python-mode . company-mode)
 	 (LaTeX-mode . company-mode)
 	 (c++-mode . company-mode)
 	 (emacs-lisp-mode . company-mode)
 	 (org-mode . company-mode))
   :config
-  (add-to-list 'company-backends 'company-capf)
+  ;; (add-to-list 'company-backends 'company-capf)
   (setq company-idle-delay .1
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
 
+;; all-language machine learning completion suggestions
+(use-package company-tabnine
+  :after company
+  :init
+  (add-to-list 'company-backends #'company-tabnine))
+
 (use-package company-prescient
   :after company
-  :config
+  :init
   (company-prescient-mode))
 
 (use-package outline
@@ -858,21 +867,21 @@
 
 (use-package htmlize)
 
-;; giving a warning Invalid read syntax: ), 106, 60
+;; :includes so straight can recognize dap-python.el
 (use-package dap-mode
-  :disabled
-  :general
-  (lsp-mode-map "<f6>" 'dap-hydra)
   :after lsp-mode
-  :config
-  (require 'dap-python)
-  (setq dap-python-debugger 'debugpy)
-  ;; better to use launch.json
-  (dap-register-debug-template "Python :: edelweiss"
-			       (list :type "python"
-				     :args "testfiles/LinearElasticIsotropic/test.inp"
-				     :request "launch"
-				     :name "Python :: edelweiss")))
+  :straight (dap-mode :includes dap-python
+		      :type git
+		      :host github
+		      :repo "emacs-lsp/dap-mode") 
+  :general
+  (lsp-mode-map "<f6>" 'dap-hydra))
+
+(use-package dap-python
+  :after dap-mode
+  :demand ; so it loads, "requires", dap-python
+  :init
+  (setq dap-python-debugger 'debugpy))
 
 (use-package pyvenv			;change python envirnment
   :commands pyvenv-activate)
@@ -1070,7 +1079,7 @@
 
 (use-package hydra)
 
-;; terminal emulator based on libvterm (in C)
+;; Terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
   ("<f9>" 'vterm))
