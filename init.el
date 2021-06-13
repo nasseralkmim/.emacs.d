@@ -131,8 +131,7 @@
   (diminish 'abbrev-mode)
   (setq save-abbrevs 'silently))
 
-(use-package color-identifiers-mode
-  :defer t)
+(use-package color-identifiers-mode)
 
 (use-package paren
   :defer 1
@@ -142,10 +141,9 @@
 
 (use-package recentf
   :defer 1
-  :init
+  :config
   (recentf-mode t)
-  (setq recentf-max-saved-items 100
-          recentf-max-menu-items 15
+  (setq recentf-max-saved-items 50
           recentf-auto-cleanup 'mode))
 
 (use-package autorevert
@@ -170,7 +168,6 @@
   :after org)
 
 (use-package vertico			;vertico sorts by history
-  :after consult
   :init
   (vertico-mode))
 
@@ -195,7 +192,6 @@
 
 (use-package consult	; practical commands to select from lists
   :general
-  ("M-x" 'execute-extended-command)	; autoload consult
   ("M-s" 'consult-outline)
   ("C-c r" 'consult-ripgrep)
   ("C-c f" 'consult-find)
@@ -422,16 +418,11 @@
   :diminish rainbow-mode
   :config (rainbow-mode))
 
+(use-package org-contrib)
+
 (use-package org
-  ;; :straight org-plus-contrib
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
-  :bind(("C-c c" . org-capture)
-        ("C-c a" . org-agenda)
-	:map org-mode-map
-	("C-c l" . org-store-link)
-	("M-p" . org-previous-item)
-	("M-n" . org-next-item))
   :general
   (org-mode-map "C-c C-l" 'org-insert-link)
   ('normal org-mode-map :prefix "SPC" "x i" 'org-clock-in)
@@ -461,7 +452,7 @@
 
 (use-package ob
   :straight nil
-  :after org
+  :after org jupyter
   :config
   (add-to-list 'exec-path "~/.local/bin") ;tell emacs where jupyter was installed
   (org-babel-do-load-languages
@@ -511,8 +502,7 @@
 	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
 	org-src-tab-acts-natively t ; evil handles that? default is t...
 	org-export-babel-evaluate nil
-	org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
-  )
+	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
 
 (use-package org-agenda
   :after org
@@ -604,6 +594,7 @@
   )
 
 (use-package flyspell
+  :defer 1
   :diminish flyspell-mode
   :commands flyspell-mode
   :hook ((LaTeX-mode . flyspell-mode)
@@ -794,8 +785,7 @@
   :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
 
 (use-package treemacs-icons-dired
-  :after dired
-  :init (treemacs-icons-dired-mode))
+  :hook (dired-mode . treemacs-icons-dired-mode))
 
 (use-package treemacs
   :commands (treemacs-icons-dired-mode)	; loads if open dired before
@@ -859,6 +849,7 @@
   :init
   (setq modus-themes-org-blocks 'rainbow
 	modus-themes-hl-line 'intense-background
+	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
 	modus-themes-mode-line 'borderless-accented-moody)
   (load-theme 'modus-operandi t)
@@ -876,7 +867,7 @@
   :config
   (require 'dap-python)
   (setq dap-python-debugger 'debugpy)
-
+  ;; better to use launch.json
   (dap-register-debug-template "Python :: edelweiss"
 			       (list :type "python"
 				     :args "testfiles/LinearElasticIsotropic/test.inp"
@@ -912,8 +903,7 @@
 	lsp-enable-folding nil		;potential to be slow
 	lsp-enable-text-document-color nil ;potential to be slow
 	lsp-enable-on-type-formatting nil  ;don't format automatically
-	lsp-headerline-breadcrumb-enable nil ;disable breadcrumb
-	))
+	lsp-headerline-breadcrumb-enable nil))  ;disable breadcrumb
 
 (use-package lsp-python-ms
   :after lsp
@@ -1019,7 +1009,7 @@
     :group 'all-the-icons-faces))
 
 (use-package server
-  :defer 3
+  :defer 1
   :init (server-start))
 
 (use-package table
@@ -1035,12 +1025,13 @@
   (wsl-path-activate))
 
 (use-package yasnippet
-  :defer 1
-  :config
-  (yas-global-mode))
+  :hook
+  (org-mode . yas-global-mode)
+  (prog-mode . yas-global-mode))
 
 (use-package exec-path-from-shell
-  :init
+  :defer 1
+  :config
   ;; ensures environment variables inside Emacs is the same in the user's shell
   ;; emacs GUI inherits minimal environment variables
   ;; I'm using to run jupyter with the conda environment as default
@@ -1066,13 +1057,6 @@
   ('normal "z h" 'hyperbole)
   ("M-o" 'hkey-operate))
 
-(use-package visual-fill-column
-  :disabled
-  :demand
-  :hook (visual-line-mode . visual-fill-column-mode)
-  :init
-  (setq visual-fill-column-center-text t))
-
 (use-package pdf-tools
   :after latex
   :init
@@ -1086,9 +1070,15 @@
 
 (use-package hydra)
 
+;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
   ("<f9>" 'vterm))
+
+(use-package multi-vterm
+  :general
+  ('normal 'vterm-mode-map "<f9>" 'multi-vterm))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'list-threads 'disabled nil)
