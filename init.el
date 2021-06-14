@@ -300,6 +300,7 @@
   ('normal "[ ]" 'evil-next-close-paren)
   ('normal "j" 'evil-next-visual-line)
   ('normal "k" 'evil-previous-visual-line)
+  ('normal "C-c r" nil)
   :config
   (setq
    lazy-highlight-cleanup nil
@@ -1070,7 +1071,9 @@
   ("M-o" 'hkey-operate))
 
 (use-package pdf-tools
-  :after latex
+  :mode ("\\.pdf\\'" . pdf-view-mode)
+  :general
+  (pdf-view-mode-map "M-h" 'pdf-history-backward)
   :init
   (pdf-loader-install)
   :config
@@ -1079,6 +1082,16 @@
 	'(display-buffer-reuse-window (reusable-frames . t)))
   (setq pdf-sync-backward-display-action
 	'(display-buffer-reuse-window (reusable-frames . t))))
+
+(use-package pdf-continuous-scroll-mode
+  :straight (pdf-continuous-scroll-mode
+	     :type git
+	     :host github
+	     :repo "dalanicolai/pdf-continuous-scroll-mode.el")
+  :general
+  ('normal pdf-continuous-scroll-mode-map "j" 'pdf-continuous-scroll-forward
+	   "k" 'pdf-continuous-scroll-backward)
+  :hook (pdf-view . pdf-continuous-scroll-mode))
 
 (use-package hydra)
 
