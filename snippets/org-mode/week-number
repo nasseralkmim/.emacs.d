@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: week number 
+# key: <w
+# --
+Week `(format-time-string "%W")`

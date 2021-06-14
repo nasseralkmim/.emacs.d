@@ -627,7 +627,6 @@
 	 (org-mode . flyspell-lazy-mode)))
 
 (use-package company
-  :defer 1
   :diminish company-mode
   :hook ((python-mode . company-mode)
 	 (LaTeX-mode . company-mode)
@@ -640,11 +639,13 @@
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
 
-;; all-language machine learning completion suggestions
+;; Completion suggestions with machine-learning
 (use-package company-tabnine
   :after company
   :init
-  (add-to-list 'company-backends #'company-tabnine))
+  (add-to-list 'company-backends #'company-tabnine)
+  :config
+  (setq company-tabnine-always-trigger nil))
 
 (use-package company-prescient
   :after company
@@ -884,7 +885,8 @@
   :init
   (setq dap-python-debugger 'debugpy))
 
-(use-package pyvenv			;change python envirnment
+; Change python virtual envirnment variables
+(use-package pyvenv
   :commands pyvenv-activate)
 
 (use-package dap-cpptools
@@ -1040,7 +1042,7 @@
   (prog-mode . yas-global-mode))
 
 (use-package exec-path-from-shell
-  :defer 1
+  :defer 3
   :config
   ;; ensures environment variables inside Emacs is the same in the user's shell
   ;; emacs GUI inherits minimal environment variables
