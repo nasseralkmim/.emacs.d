@@ -67,7 +67,7 @@
   (setq-default frame-title-format '("%b [%m]")) ;name on top of window
 
   ;; font height
-  (set-face-attribute 'default nil :height 95)
+  (set-face-attribute 'default nil :height 90)
 
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
@@ -146,7 +146,7 @@
   :defer 1
   :config
   (recentf-mode t)
-  (setq recentf-max-saved-items 50
+  (setq recentf-max-saved-items 100
           recentf-auto-cleanup 'mode))
 
 (use-package autorevert
@@ -359,9 +359,6 @@
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
 	evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
-
-(use-package rg
-  :general ('normal "C-c r" 'rg-menu))
 
 (use-package evil-org
   :diminish evil-org-mode
@@ -636,13 +633,13 @@
 	 (org-mode . company-mode))
   :config
   ;; (add-to-list 'company-backends 'company-capf)
-  (setq company-idle-delay .1
+  (setq company-idle-delay .2
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
 
 ;; Completion suggestions with machine-learning
 (use-package company-tabnine
-  :after company
+  :after ((:any latex org) company)
   :init
   (add-to-list 'company-backends #'company-tabnine)
   :config
@@ -802,8 +799,10 @@
 (use-package treemacs
   :commands (treemacs-icons-dired-mode)	; loads if open dired before
   :config
-  (setq treemacs-git-mode nil
+  (setq
+   treemacs-git-mode nil
    treemacs-sorting 'mod-time-desc ; modified early
+   treemacs-is-never-other-window t
    treemacs-width 25)
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
@@ -888,7 +887,9 @@
 
 ; Change python virtual envirnment variables
 (use-package pyvenv
-  :commands pyvenv-activate)
+  :commands pyvenv-activate
+  :config
+  (setq pyvenv-default-virtual-env-name "/home/nasser/miniconda3/envs/"))
 
 (use-package dap-cpptools
   :straight nil
@@ -1059,7 +1060,7 @@
   :config
   (setq shr-use-fonts  nil                          ; No special fonts
 	shr-use-colors t                          ;  colours
-	shr-inhibit-images t			  ; inhibit images
+	shr-inhibit-images nil			  ; inhibit images
 	shr-indentation 2                           ; Left-side margin
 	shr-color-visible-luminance-min 80
 	eww-search-prefix "https://www.google.com/search?q="
@@ -1089,9 +1090,10 @@
 	     :host github
 	     :repo "dalanicolai/pdf-continuous-scroll-mode.el")
   :general
-  ('normal pdf-continuous-scroll-mode-map "j" 'pdf-continuous-scroll-forward
+  ('normal pdf-continuous-scroll-mode-map
+	   "j" 'pdf-continuous-scroll-forward
 	   "k" 'pdf-continuous-scroll-backward)
-  :hook (pdf-view . pdf-continuous-scroll-mode))
+  :hook (pdf-view-mode . pdf-continuous-scroll-mode))
 
 (use-package hydra)
 
@@ -1101,8 +1103,10 @@
   ("<f9>" 'vterm))
 
 (use-package multi-vterm
+  :after vterm
   :general
-  ('normal 'vterm-mode-map "<f9>" 'multi-vterm))
+  ('vterm-mode-map "<f9>" 'multi-vterm))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'list-threads 'disabled nil)

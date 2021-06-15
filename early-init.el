@@ -7,8 +7,3 @@
 (push '(menu-bar-lines . 0) default-frame-alist)
 (push '(tool-bar-lines . 0) default-frame-alist)
 (push '(vertical-scroll-bars) default-frame-alist)
-
-
-;; Work around to a crippling performance issue I reported affecting Emacs 28
-;; after cario was made the default: https://debbugs.gnu.org/db/40/40733.html
-(add-to-list 'face-ignored-fonts "Adobe Blank")
