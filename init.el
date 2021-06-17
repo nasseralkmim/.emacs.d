@@ -67,7 +67,7 @@
   (setq-default frame-title-format '("%b [%m]")) ;name on top of window
 
   ;; font height
-  (set-face-attribute 'default nil :height 90)
+  ;; (set-face-attribute 'default nil :height 100)
 
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
@@ -167,7 +167,7 @@
 
 (use-package org-cliplink
   :commands org-cliplink
-  ;; :general (org-mode-map "C-c S-l" 'org-cliplink) ; call interactive for now
+  :general (org-mode-map "C-c l" 'org-cliplink)
   :after org)
 
 (use-package vertico			;vertico sorts by history
@@ -325,16 +325,13 @@
   (advice-add 'org-babel-do-key-sequence-in-edit-buffer
 	      :around #'evil-org-insert-state-in-edit-buffer))
 
-(use-package evil-smartparens
-  :disabled
-  :hook (smartparens-mode . evil-smartparens-mode)
-  :after evil)
-
+;; move around text
 (use-package evil-easymotion
   :after evil
   :init
   (evilem-default-keybindings "SPC"))
 
+;; move aroud text
 (use-package evil-snipe
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
   :general ('normal "f" 'evil-snipe-f)
@@ -344,6 +341,7 @@
   (setq evil-snipe-spillover-scope 'visible
 	evil-snipe-smart-case t))
 
+;; visualize evil commands
 (use-package evil-goggles
   :after evil
   :init
@@ -360,16 +358,17 @@
 	evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
 
+;; navigation: gh, gj, gk, gl
+;; headings: M-ret
 (use-package evil-org
-  :diminish evil-org-mode
-  :after org
-  :init
-  (add-hook 'org-mode-hook 'evil-org-mode)
-  (add-hook 'evil-org-mode-hook
-            (lambda ()
-              (evil-org-set-key-theme)))
+  :straight (:includes evil-org-agenda)
+  :hook (org-mode . evil-org-mode))
+
+;; included in evil-org
+;; load it when using agenda
+(use-package evil-org-agenda
+  :after org-agenda evil-org
   :config
-  (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
 (use-package evil-surround
@@ -502,7 +501,7 @@
 	;; org-src-strip-leading-and-trailing-blank-lines t
 	org-src-preserve-indentation t  ; preserve indentation in code
 	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
-	org-src-tab-acts-natively t ; evil handles that? default is t...
+	org-src-tab-acts-natively nil	; if t, it is slow!
 	org-export-babel-evaluate nil
 	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
 
@@ -1039,17 +1038,22 @@
   (wsl-path-activate))
 
 (use-package yasnippet
-  :hook
-  (org-mode . yas-global-mode)
-  (prog-mode . yas-global-mode))
+  :commands yas-insert-snippet
+  :config
+  (yas-reload-all)
+  (yas-minor-mode))
 
+;; ensures environment variables inside Emacs is the same in the user's shell
 (use-package exec-path-from-shell
   :defer 3
   :config
-  ;; ensures environment variables inside Emacs is the same in the user's shell
+  ;; shell will inherits Emacs's environmental variables
+  ;; remove -l -i flags (login and interactive) so it loads faster
+  ;; set environment variables in ~/.bash_profile instead of ~/.bashrc
+  (setq exec-path-from-shell-arguments nil)
   ;; emacs GUI inherits minimal environment variables
   ;; I'm using to run jupyter with the conda environment as default
-  ;; (getenv "SHELL")"/bin/bash"
+  ;; (getenv "SHELL") "/bin/bash"
   (exec-path-from-shell-initialize))
 
 (use-package eww
@@ -1100,12 +1104,11 @@
 ;; Terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
-  ("<f9>" 'vterm))
+  (vterm-mode-map "<f8>" nil))
 
 (use-package multi-vterm
-  :after vterm
   :general
-  ('vterm-mode-map "<f9>" 'multi-vterm))
+  ("<f9>" 'multi-vterm))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
