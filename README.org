@@ -8,7 +8,7 @@ The configuration core uses:
 4. =general= for keybinding settings. 
 
 Some nice commands to know:
-1. =use-package-report= shows which package were loaded and configured, hence will consume significant loading time.
+1. =use-package-report= shows which package were loaded and configured.
 2. =general-describe-keybindings= shows all keybindings defined using =general=.
 3. =describe-keymap= shows the keybindings for a keymap.
 
