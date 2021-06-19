@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: main 
-# key: <main
+# key: <m
 # --
 int main () {
 $0
