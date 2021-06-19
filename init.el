@@ -23,7 +23,7 @@
 ;; Install use-package macros.
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics t; compute statistics about package initialization
+      use-package-compute-statistics nil; compute statistics about package initialization
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
@@ -57,11 +57,7 @@
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   ("C-h j" 'describe-keymap)
   :init
-  ;; ui
-  ;; (menu-bar-mode -1)
-  ;; (tool-bar-mode -1)
-  ;; (scroll-bar-mode -1)
-  (global-hl-line-mode 1)
+  (global-hl-line-mode t)
   (winner-mode t)
   (repeat-mode t)
   (setq-default frame-title-format '("%b [%m]")) ;name on top of window
@@ -97,7 +93,7 @@
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  (blink-cursor-mode 1)
+  (blink-cursor-mode t)
 
   ;; Don't beep at me
   (setq visible-bell t)
@@ -810,15 +806,28 @@
     (interactive)
     (dired "/mnt/c/Users/c8441205/OneDrive/nasser-website/content/notes/")))
 
+;; enhances dired
+(use-package dired+
+  :demand
+  :after dired)
+
+;; subtree folder expansion
 (use-package dired-subtree
   :after dired
-  :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
+  :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle-and-revert)
+  :config
+  (defun dired-subtree-toggle-and-revert ()
+    (interactive)
+    (dired-subtree-toggle)
+    (revert-buffer)))
 
+;; icons for dired
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-mode))
 
 (use-package treemacs
-  :commands (treemacs-icons-dired-mode)	; loads if open dired before
+  :straight (:includes treemacs-icons-dired)
+  ;; :commands (treemacs-icons-dired-mode)	; loads if open dired before
   :config
   (setq
    treemacs-git-mode nil
