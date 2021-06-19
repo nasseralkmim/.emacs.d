@@ -638,13 +638,19 @@
   :hook ((LaTeX-mode . flyspell-lazy-mode)
 	 (org-mode . flyspell-lazy-mode)))
 
-;; completion pop up
+;; completion in region manually summoned with <tab>
+(use-package corfu
+  :hook ((prog-mode . corfu-mode))
+  :general
+  (corfu-map "<tab>" 'corfu-next
+	     "C-<tab>" 'corfu-previous))
+
+;; completion in region
 (use-package company
+  :disabled
   :diminish company-mode
-  :hook ((python-mode . company-mode)
+  :hook ((prog-mode . company-mode)
 	 (LaTeX-mode . company-mode)
-	 (c++-mode . company-mode)
-	 (emacs-lisp-mode . company-mode)
 	 (org-mode . company-mode))
   :config
   (add-to-list 'company-backends 'company-capf)
