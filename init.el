@@ -809,7 +809,12 @@
 ;; enhances dired
 (use-package dired+
   :demand
-  :after dired)
+  :after dired
+  :custom-face
+  (diredp-omit-file-name ((t (:strike-through nil)))) ; don't strike my text
+  :config
+  ;; keep just one dired buffer please
+  (diredp-toggle-find-file-reuse-dir t))
 
 ;; subtree folder expansion
 (use-package dired-subtree
@@ -827,7 +832,6 @@
 
 (use-package treemacs
   :straight (:includes treemacs-icons-dired)
-  ;; :commands (treemacs-icons-dired-mode)	; loads if open dired before
   :config
   (setq
    treemacs-git-mode nil
@@ -839,11 +843,16 @@
   (treemacs-fringe-indicator-mode 'always)
   (treemacs-resize-icons 12)
   :general
+  (treemacs-mode-map "C-<return>" 'treemacs-display-current-project-exclusively)
   (treemacs-mode-map "<f8>" 'treemacs-quit)
   ("<f8>" 'treemacs-select-window))
 
 (use-package treemacs-evil
   :after treemacs evil
+  :general
+  (treemacs-mode-map :prefix "<treemacs-state>"
+		     "h" 'treemacs-root-up
+		     "l" 'treemacs-root-down)
   :demand)
 
 (use-package solaire-mode
