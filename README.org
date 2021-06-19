@@ -1,0 +1,13 @@
+This is my personal configuration, that I put together over time by collecting from multiple sources.
+
+I try to keep it as simple as possible and to maximize performance.
+The configuration core uses:
+1. =use-package= for organizing configuration
+2. =evil= for VI modal editing style.
+3. =straight= for package management.
+4. =general= for keybinding settings. 
+
+Some nice commands to know,
+1. =use-package-report= shows which package were loaded and configured, hence will consume significant loading time.
+2. =general-describe-keybindings= shows all keybindings defined using =general=.
+3. =describe-keymap= shows the keybindings for a keymap.

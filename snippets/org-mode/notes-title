@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
-# name: notes head
-# key: <head
+# name: notes title
+# key: <t
 # --
 
 #+title: $1

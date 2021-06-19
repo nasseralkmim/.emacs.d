@@ -23,7 +23,7 @@
 ;; Install use-package macros.
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil; compute statistics about package initialization
+      use-package-compute-statistics t; compute statistics about package initialization
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
@@ -136,18 +136,20 @@
 
 (use-package color-identifiers-mode)
 
+;; show matching parenthesis
 (use-package paren
   :defer 1
   :config
   (setq show-paren-delay 0)
   (show-paren-mode 1))
 
+;; save recent visited files
 (use-package recentf
   :defer 1
   :config
-  (recentf-mode t)
-  (setq recentf-max-saved-items 100
-          recentf-auto-cleanup 'mode))
+  (recentf-mode 1)
+  (setq recentf-max-saved-items 25
+	recentf-auto-cleanup 'mode))
 
 (use-package autorevert
   :defer 1
@@ -165,17 +167,15 @@
   ("C-h v" 'helpful-variable)
   ("C-h k" 'helpful-key))
 
-(use-package org-cliplink
-  :commands org-cliplink
-  :general (org-mode-map "C-c l" 'org-cliplink)
-  :after org)
 
-(use-package vertico			;vertico sorts by history
+;; completion UI (vertical minibuffer)
+(use-package vertico
   :init
   (vertico-mode))
 
-(use-package orderless	; completion style with flexible candidate filtering
-  ;; default completion needs to be in order
+:; completion style with flexible, fuzzy candidate filtering
+;; alternative to default completion by tab
+(use-package orderless
   :after vertico
   :demand
   :config
@@ -183,17 +183,19 @@
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
 
+;; save the search history
 (use-package savehist
   :after vertico
   :init
   (savehist-mode))
 
+;; minibuffer annotations details
 (use-package marginalia
-  :disabled ;; slow for describe variables
   :after vertico
   :init (marginalia-mode))
 
-(use-package consult	; practical commands to select from lists
+;; practical commands to select from lists
+(use-package consult	
   :general
   ("M-s" 'consult-outline)
   ("C-c r" 'consult-ripgrep)
@@ -215,6 +217,7 @@
 
   (consult-customize consult-line :preview-key 'any))
 
+;; context menu/action at point or minibuffer
 (use-package embark
   :general
   ("C-S-a" 'embark-act)
@@ -282,7 +285,8 @@
 (use-package evil-mc
   :after evil
   :general
-  :config (global-evil-mc-mode 1))
+  ('(normal visual) "g s" evil-mc-cursors-map)
+  :init (global-evil-mc-mode 1))
 
 (use-package evil
   :diminish evil-mode
@@ -361,6 +365,7 @@
 ;; navigation: gh, gj, gk, gl
 ;; headings: M-ret
 (use-package evil-org
+  :after evil org
   :straight (:includes evil-org-agenda)
   :hook (org-mode . evil-org-mode))
 
@@ -425,13 +430,9 @@
   :mode (("\\.org$" . org-mode))
   :general
   (org-mode-map "C-c C-l" 'org-insert-link)
-  ('normal org-mode-map :prefix "SPC" "x i" 'org-clock-in)
-  ('normal org-mode-map :prefix "SPC" "x o" 'org-clock-out)
-  ('normal org-mode-map :prefix "SPC" "x x" 'org-clock-in-last)
-  ('normal org-mode-map "[ ]" 'outline-up-heading)
-  ('normal org-mode-map :prefix "SPC" "u" 'outline-up-heading)
-  ('normal org-mode-map :prefix "z" "s j" 'org-babel-next-src-block)
-  ('normal org-mode-map :prefix "z" "s k" 'org-babel-previous-src-block)
+  ('normal org-mode-map :prefix "z"
+	   "s j" 'org-babel-next-src-block
+	   "s k" 'org-babel-previous-src-block)
   :hook (org-mode . visual-line-mode)
   :custom
    (org-hide-emphasis-markers t) 
@@ -450,6 +451,12 @@
   (setq org-todo-keywords '(
 			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
 			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)"))))
+
+(use-package ox-extra
+  :after org
+  :demand
+  :config
+(ox-extras-activate '(ignore-headlines)))
 
 (use-package ob
   :straight nil
@@ -480,6 +487,11 @@
 
 (use-package org-clock
   :straight nil
+  :general
+  ('normal org-mode-map :prefix "z x"
+	   "i" 'org-clock-in
+	   "o" 'org-clock-out
+	   "x" 'org-clock-in-last)
   :after org
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
@@ -492,6 +504,9 @@
 
 (use-package org-src
   :straight nil
+  :general
+  ('normal org-mode-map "z e" 'org-edit-special)
+  ('normal org-src-mode-map "z e" 'org-edit-src-exit)
   :after org
   :config
   ;; babel and source blocks
@@ -580,6 +595,13 @@
   :config
   (org-roam-mode))
 
+;; insert web links with better description
+(use-package org-cliplink
+  :commands org-cliplink
+  :general (org-mode-map "C-c l" 'org-cliplink)
+  :after org)
+
+;; copy image from clipboard, save it and insert it
 (use-package org-download
   :after org
   :general
@@ -591,13 +613,10 @@
    org-download-image-dir "."
    org-download-image-html-width 350)
   (setq org-download-screenshot-method "convert.exe clipboard: %s") ; add .exe to work within wsl2
-  (setq org-download-screenshot-file "./screenshot.png") ; where temporary screenshot will be saved so convert can work
-  )
+  (setq org-download-screenshot-file "./screenshot.png")) ; where temporary screenshot will be saved so convert can work
 
+;; languages spell checker
 (use-package flyspell
-  :defer 1
-  :diminish flyspell-mode
-  :commands flyspell-mode
   :hook ((LaTeX-mode . flyspell-mode)
 	 (org-mode . flyspell-mode))
   :config
@@ -623,6 +642,7 @@
   :hook ((LaTeX-mode . flyspell-lazy-mode)
 	 (org-mode . flyspell-lazy-mode)))
 
+;; completion pop up
 (use-package company
   :diminish company-mode
   :hook ((python-mode . company-mode)
@@ -631,13 +651,14 @@
 	 (emacs-lisp-mode . company-mode)
 	 (org-mode . company-mode))
   :config
-  ;; (add-to-list 'company-backends 'company-capf)
+  (add-to-list 'company-backends 'company-capf)
   (setq company-idle-delay .2
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
 
-;; Completion suggestions with machine-learning
+;; completion suggestions with machine-learning
 (use-package company-tabnine
+  :disabled 				; slow
   :after ((:any latex org) company)
   :init
   (add-to-list 'company-backends #'company-tabnine)
@@ -767,6 +788,7 @@
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:")))
 
+;; cycle visibility in outline-minor-mode
 (use-package outline-magic
   :after latex
   :general
@@ -857,7 +879,7 @@
 
 (use-package modus-themes
   :init
-  (setq modus-themes-org-blocks 'rainbow
+  (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-hl-line 'intense-background
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
@@ -1109,6 +1131,19 @@
 (use-package multi-vterm
   :general
   ("<f9>" 'multi-vterm))
+
+(use-package keycast
+  :commands keycast-mode keycast-log-mode)
+
+(use-package gif-screencast
+  :commands gif-screencast
+  :general
+  ("<f6>" 'gif-screencast)
+  (gif-screencast-mode-map "<f6>" 'gif-screencast-stop)
+  :config
+  ;; change the function gif-screencast--generate-gif to generate file without ":"
+  ;; (format-time-string "output-%F-%H-%M-%S.gif" (current-time))
+  (setq gif-screencast-output-directory "./gif/"))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
