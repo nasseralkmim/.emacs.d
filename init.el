@@ -202,16 +202,17 @@
   ("C-s" 'consult-line)
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
-  (setq consult-preview-key nil; key to trigger preview
-	consult-narrow-key "<")		; go back to full list command
+
   ;; C-s C-s to search with previous search
   (defvar my-consult-line-map
     (let ((map (make-sparse-keymap)))
       (define-key map "\C-s" #'previous-history-element)
       map))
   (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map))
-
-  (consult-customize consult-line :preview-key 'any))
+  
+  ;; configure preview behavior
+  (consult-customize consult-buffer :preview-key '(:debounce 1 any))
+  (consult-customize consult-line :preview-key '(:debounce 0 any)))
 
 ;; context menu/action at point or minibuffer
 (use-package embark
