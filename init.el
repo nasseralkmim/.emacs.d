@@ -51,8 +51,8 @@
 (use-package emacs
   :straight nil
   :general
-  ("C-<tab>" 'other-window)
-  ("C-<iso-lefttab>" 'other-frame)
+  ("C-<tab>" 'next-window-any-frame)
+  ("<backtab>" 'previous-window-any-frame)
   ("C-c w" 'shrink-window)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   ("C-h j" 'describe-keymap)
@@ -144,7 +144,7 @@
   :defer 1
   :config
   (recentf-mode 1)
-  (setq recentf-max-saved-items 25
+  (setq recentf-max-saved-items 100
 	recentf-auto-cleanup 'mode))
 
 (use-package autorevert
@@ -188,6 +188,8 @@
 ;; minibuffer annotations details
 (use-package marginalia
   :after vertico
+  :general
+  (minibuffer-local-map "M-A" 'marginalia-cycle)
   :init (marginalia-mode))
 
 ;; practical commands to select from lists
@@ -378,7 +380,7 @@
   :general
   ('normal "g c" 'evil-surround-change)
   ('visual "S" 'evil-Surround-region)
-  :config
+  :init
   (global-evil-surround-mode 1))
 
 (use-package evil-exchange
@@ -413,7 +415,9 @@
 (use-package magit
   :general
   (magit-mode-map "C-<tab>" nil)
-  ("C-x g" 'magit-status))
+  ("C-x g" 'magit-status)
+  :config
+  (setq magit-diff-hide-trailing-cr-characters t))
 
 (use-package rainbow-mode
   :defer 1
@@ -432,22 +436,19 @@
 	   "s k" 'org-babel-previous-src-block)
   :hook (org-mode . visual-line-mode)
   :custom
-   (org-hide-emphasis-markers t) 
-   (org-startup-indented nil)
+   (org-hide-emphasis-markers t) ; avoid noisy //,__, **, 
+   (org-startup-indented nil)		; start collapsed
    (org-startup-folded t)	; folded
-   (org-hide-leading-stars t) 
+   (org-hide-leading-stars t)	; don't show a  bunch of '*'
    (org-edit-src-content-indentation 0)
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
-   (org-cycle-separator-lines 0)
-   (org-fontify-quote-and-verse-blocks t)
+   (org-cycle-separator-lines 0)	; no empty lines between headings
+   (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
    (org-insert-heading-respect-content t) ; insert heading after current tree
    (org-catch-invisible-edits 'smart)
   :config
-  (transient-mark-mode -1)
-  (setq org-todo-keywords '(
-			    (sequence "TODO(t)" "NEXT(n)" "REVW(r)" "|" "DONE(d)")
-			    (sequence "R1(1)" "R2(2)" "R3(3)" "R4(4)" "R5(5)" "R6(6)"))))
+  (transient-mark-mode -1))
 
 (use-package ox-extra
   :after org
@@ -644,7 +645,8 @@
   :hook ((prog-mode . corfu-mode))
   :general
   (corfu-map "<tab>" 'corfu-next
-	     "C-<tab>" 'corfu-previous))
+	     "<backtab>" 'corfu-previous
+	     "C-j" 'corfu-next))
 
 ;; completion in region
 (use-package company
@@ -669,6 +671,7 @@
   (setq company-tabnine-always-trigger nil))
 
 (use-package company-prescient
+  :disabled
   :after company
   :init
   (company-prescient-mode))
@@ -804,34 +807,27 @@
   :hook (dired-mode . dired-hide-details-mode)
   :general
   ("<f7>" 'open-my-notes)
-  ("C-x j" 'dired-jump)
+  ("<f10>" 'dired-jump)
   (dired-mode-map "C-c C-d" 'mkdir)
+  ('normal dired-mode-map "h" 'dired-up-directory)
+  ('normal dired-mode-map "l" 'dired-find-alternate-file)
   :config
-  (setq dired-omit-files "^\\.\\|^#.#$\\|.~$")
-  (setq dired-auto-revert-buffer t)
+  (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
+	dired-auto-revert-buffer t
+	delete-by-moving-to-trash t)	; move to trash
+
+  ;; kill the dired buffer eand enters the current line file or directory
+  (put 'dired-find-alternate-file 'disabled nil)
+
   (defun open-my-notes ()
     (interactive)
     (dired "/mnt/c/Users/c8441205/OneDrive/nasser-website/content/notes/")))
 
-;; enhances dired
-(use-package dired+
-  :demand
-  :after dired
-  :custom-face
-  (diredp-omit-file-name ((t (:strike-through nil)))) ; don't strike my text
-  :config
-  ;; keep just one dired buffer please
-  (diredp-toggle-find-file-reuse-dir t))
-
 ;; subtree folder expansion
 (use-package dired-subtree
-  :after dired
-  :general ('normal dired-mode-map "<tab>" 'dired-subtree-toggle-and-revert)
-  :config
-  (defun dired-subtree-toggle-and-revert ()
-    (interactive)
-    (dired-subtree-toggle)
-    (revert-buffer)))
+  :after dired treemacs-icons-dired
+  :general
+  ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
 
 ;; icons for dired
 (use-package treemacs-icons-dired
@@ -965,30 +961,28 @@
 	lsp-enable-on-type-formatting nil  ;don't format automatically
 	lsp-headerline-breadcrumb-enable nil))  ;disable breadcrumb
 
+;; Microsoft python language server
+;; it seems to be faster than pyls
+;; does not have formating
 (use-package lsp-python-ms
   :after lsp
-  :config (setq lsp-python-ms-auto-install-server t)
+  :init (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
                           (lsp-deferred))))  ; or lsp-deferred
 
-(use-package lsp-ui
-  :if (memq system-type '(gnu/linux))
-  :commands lsp-ui-doc
-  :after lsp
-  :config
-  (setq
-   lsp-ui-doc-delay 3			; show doc only after this time
-   lsp-ui-sideline-enable nil))
 
-(use-package python		   ; for syntax highlight
+(use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :hook (python-mode . toggle-truncate-lines)
+  :general
+  ('insert python-mode-map "C-S-<iso-lefttab>"  '(lambda () (interactive) (indent-to-column 8 4)))
   :config
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil))
 
+;; formatting python code
 (use-package python-black
   :after python
   :commands python-black-buffer)
@@ -998,8 +992,7 @@
   :hook (visual-line-mode . adaptive-wrap-prefix-mode))
 
 (use-package goto-last-change
-  :general ('normal "g b" 'goto-last-change)
-  :bind ("C-x C-j" . goto-last-change))
+  :general ('normal "g b" 'goto-last-change))
 
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
@@ -1037,7 +1030,7 @@
   (:prefix "C-c b" "r" 'bibtex-actions-refresh)
   :config
   (setq bibtex-completion-bibliography
-	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"))
+	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/references.bib"))
   (setq bibtex-completion-pdf-field "File")
 
   ;; set progam to open pdf with default windows application
@@ -1134,17 +1127,6 @@
 	'(display-buffer-reuse-window (reusable-frames . t)))
   (setq pdf-sync-backward-display-action
 	'(display-buffer-reuse-window (reusable-frames . t))))
-
-(use-package pdf-continuous-scroll-mode
-  :straight (pdf-continuous-scroll-mode
-	     :type git
-	     :host github
-	     :repo "dalanicolai/pdf-continuous-scroll-mode.el")
-  :general
-  ('normal pdf-continuous-scroll-mode-map
-	   "j" 'pdf-continuous-scroll-forward
-	   "k" 'pdf-continuous-scroll-backward)
-  :hook (pdf-view-mode . pdf-continuous-scroll-mode))
 
 (use-package hydra)
 
