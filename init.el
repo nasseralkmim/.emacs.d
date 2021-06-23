@@ -977,11 +977,17 @@
 	lsp-enable-on-type-formatting nil  ;don't format automatically
 	lsp-headerline-breadcrumb-enable nil))  ;disable breadcrumb
 
+;; alternative to lsp-python-ms
+(use-package lsp-pyright
+  :hook (python-mode . (lambda ()
+			 (require 'lsp-pyright)
+			 (lsp-deferred))))
+
 ;; Microsoft python language server
 ;; it seems to be faster than pyls
 ;; does not have formating
 (use-package lsp-python-ms
-  :after lsp
+  :disabled
   :init (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
