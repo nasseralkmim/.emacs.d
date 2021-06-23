@@ -487,8 +487,12 @@
 					       (:exports . "both")))
   (setq jupyter-org-resource-directory "./jupyter/")
   (setq org-image-actual-width '(350))
+
   ;; display/update images in the buffer after I evaluate 
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+  ;; tangle blocks after save org buffer
+  (add-hook 'after-save-hook #'org-babel-tangle))
 
 (use-package org-clock
   :straight nil
@@ -568,8 +572,9 @@
 
 (use-package jupyter
   :after org
-  :config
-  (general-def org-mode-map "C-c =" 'jupyter-org-hydra/body))
+  :demand	; dont autoload, just require it after org is loaded
+  :general
+  (org-mode-map "C-c =" 'jupyter-org-hydra/body))
 
 (use-package ob-shell
   :straight nil
@@ -1098,11 +1103,8 @@
 (use-package exec-path-from-shell
   :init
   ;; shell will inherits Emacs's environmental variables
-  ;; remove -l -i flags (login and interactive) so it loads faster
-  ;; set environment variables in ~/.bash_profile instead of ~/.bashrc
-  (setq exec-path-from-shell-arguments nil)
   ;; emacs GUI inherits minimal environment variables
-  ;; I'm using to run jupyter with the conda environment as default
+  ;; I'm using to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
   ;; (getenv "SHELL") "/bin/bash"
   (exec-path-from-shell-initialize))
 
