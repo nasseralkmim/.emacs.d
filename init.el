@@ -465,9 +465,9 @@
 
 (use-package ob
   :straight nil
-  :after (:any org jupyter)		; need to require jupyter before adding to babel
+  :after org
   :init
-  (require 'jupyter)
+  (push '"~/.local/bin" exec-path)	; so it can find jupyter binaries
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((sql . t)
@@ -493,6 +493,11 @@
 
   ;; tangle blocks after save org buffer
   (add-hook 'after-save-hook #'org-babel-tangle))
+
+(use-package jupyter
+  :after org
+  :general
+  (org-mode-map "C-c =" 'jupyter-org-hydra/body))
 
 (use-package org-clock
   :straight nil
@@ -569,12 +574,6 @@
   :after org
   :config
   (setq ob-async-no-async-languages-alist '("python" "jupyter-python")))
-
-(use-package jupyter
-  :after org
-  :demand	; dont autoload, just require it after org is loaded
-  :general
-  (org-mode-map "C-c =" 'jupyter-org-hydra/body))
 
 (use-package ob-shell
   :straight nil
@@ -1107,6 +1106,7 @@
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
 (use-package exec-path-from-shell
+  :disabled
   :init
   ;; shell will inherits Emacs's environmental variables
   ;; emacs GUI inherits minimal environment variables
