@@ -268,6 +268,7 @@
   (setq show-paren-style 'mixed)) 
 
 (use-package flycheck
+  :after lsp
   :hook ((python-mode . flycheck-mode)))
 
 (use-package evil-multiedit
@@ -283,9 +284,11 @@
 
 (use-package evil-mc
   :after evil
+  :diminish evil-mc-mode
   :general
-  ('(normal visual) "g s" evil-mc-cursors-map)
-  :init (global-evil-mc-mode 1))
+  ;; autoload keymap
+  ('(normal visual) "g s" '(:keymap evil-mc-cursors-map))
+  :config (global-evil-mc-mode 1))
 
 (use-package evil
   :diminish evil-mode
@@ -346,6 +349,7 @@
 
 ;; visualize evil commands
 (use-package evil-goggles
+  :diminish evil-goggles-mode
   :after evil
   :init
   (evil-goggles-mode)
@@ -354,7 +358,9 @@
   (setq evil-goggles-duration 0.2)
   (evil-goggles-use-diff-faces))
 
+;; unimpaired is a collection of commands with '[' or ']'
 (use-package evil-collection
+  :diminish evil-collection-unimpaired-mode
   :after evil
   :init
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
@@ -364,6 +370,7 @@
 ;; navigation: gh, gj, gk, gl
 ;; headings: M-ret
 (use-package evil-org
+  :diminish evil-org-mode
   :after evil org
   :straight (:includes evil-org-agenda)
   :hook (org-mode . evil-org-mode))
@@ -454,13 +461,13 @@
   :after org
   :demand
   :config
-(ox-extras-activate '(ignore-headlines)))
+  (ox-extras-activate '(ignore-headlines)))
 
 (use-package ob
   :straight nil
-  :after (:any org jupyter)
-  :config
-  (add-to-list 'exec-path "~/.local/bin") ;tell emacs where jupyter was installed
+  :after (:any org jupyter)		; need to require jupyter before adding to babel
+  :init
+  (require 'jupyter)
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((sql . t)
@@ -568,7 +575,10 @@
   :straight nil
   :after org
   :config
-  (setq org-babel-default-header-args:shell '((:results . "output"))))
+  (setq org-babel-default-header-args:shell
+	'((:results . "output")
+	  (:shebang . "#!/bin/bash -i") ; always get my .bashrc aliases
+	  )))
 
 (use-package org-roam-server
   :hook (org-roam-mode . org-roam-server-mode)
@@ -943,6 +953,7 @@
   :general
   (c++-mode-map "C-x c" 'compile))
 
+
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
   :general
@@ -1041,7 +1052,7 @@
 			  "cmd.exe /C start \"\" "
 			  (shell-quote-argument fpath)))))
   
-  ;; Make the 'bibtex-actions' bindings available from `embark-act'.
+  ;; make the 'bibtex-actions' bindings available from `embark-act'.
   (with-eval-after-load 'embark
     (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map)))
 
@@ -1054,7 +1065,7 @@
 	  (link . 
 		(,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
 		 ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'bibtex-actions-icon-dim)))))
-  ;; Here we define a face to dim non 'active' icons, but preserve alignment
+  ;; here we define a face to dim non 'active' icons, but preserve alignment
   (defface bibtex-actions-icon-dim
     '((((background dark)) :foreground "#282c34")
       (((background light)) :foreground "#fafafa"))
@@ -1085,8 +1096,7 @@
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
 (use-package exec-path-from-shell
-  :defer 3
-  :config
+  :init
   ;; shell will inherits Emacs's environmental variables
   ;; remove -l -i flags (login and interactive) so it loads faster
   ;; set environment variables in ~/.bash_profile instead of ~/.bashrc
@@ -1130,7 +1140,7 @@
 
 (use-package hydra)
 
-;; Terminal emulator based on libvterm (in C)
+;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
   (vterm-mode-map "<f8>" nil))
