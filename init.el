@@ -140,7 +140,7 @@
 
 ;; save recent visited files
 (use-package recentf
-  :defer 1
+  :defer 3
   :config
   (recentf-mode 1)
   (setq recentf-max-saved-items 20
@@ -332,8 +332,9 @@
 
 ;; move around text
 (use-package evil-easymotion
+  :defer 1
   :after evil
-  :init
+  :config
   (evilem-default-keybindings "SPC"))
 
 ;; move aroud text
@@ -350,9 +351,9 @@
 (use-package evil-goggles
   :diminish evil-goggles-mode
   :after evil
-  :init
-  (evil-goggles-mode)
+  :defer 1
   :config
+  (evil-goggles-mode)
   (setq evil-goggles-pulse t)
   (setq evil-goggles-duration 0.2)
   (evil-goggles-use-diff-faces))
@@ -642,16 +643,12 @@
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
   :after flyspell)
 
-(use-package flyspell-lazy
-  :if (memq system-type '(windows-nt))
-  :after flyspell
-  :commands flyspell-lazy-mode
-  :hook ((LaTeX-mode . flyspell-lazy-mode)
-	 (org-mode . flyspell-lazy-mode)))
 
 ;; completion in region manually summoned with <tab>
 (use-package corfu
-  :hook ((prog-mode . corfu-mode))
+  :hook ((prog-mode . corfu-mode)
+	 (LaTeX-mode . corfu-mode)
+	 (org-mode . corfu-mode))
   :general
   (corfu-map "<tab>" 'corfu-next
 	     "<backtab>" 'corfu-previous
@@ -690,6 +687,7 @@
 
 (use-package outline
   :straight nil
+  :defer 1
   :demand
   :general
   ('normal outline-mode-map "C-j" nil)
@@ -908,7 +906,8 @@
     (load-theme theme 'no-confirm)))
 
 (use-package modus-themes
-  :init
+  :defer 1
+  :config
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-hl-line 'intense-background
 	modus-themes-diffs 'desaturated
@@ -1102,7 +1101,8 @@
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
 (use-package exec-path-from-shell
-  :init
+  :defer 3
+  :config
   ;; non interative shell start up faster
   ;; (setq exec-path-from-shell-arguments nil)
   ;; shell will inherits Emacs's environmental variables
