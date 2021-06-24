@@ -143,7 +143,7 @@
   :defer 1
   :config
   (recentf-mode 1)
-  (setq recentf-max-saved-items 100
+  (setq recentf-max-saved-items 20
 	recentf-auto-cleanup 'mode))
 
 (use-package autorevert
@@ -213,7 +213,7 @@
   (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map))
   
   ;; configure preview behavior
-  (consult-customize consult-buffer :preview-key '(:debounce 1 any))
+  (consult-customize consult-buffer consult-bookmark :preview-key '(:debounce 3 any))
   (consult-customize consult-line :preview-key '(:debounce 0 any)))
 
 ;; context menu/action at point or minibuffer
@@ -247,8 +247,7 @@
   ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   ;; binding for Latex
-  ('insert LaTeX-mode-map "<tab>" 'sp-forward-sexp)
-  ('insert LaTeX-mode-map "C-<tab>" 'sp-backward-up-sexp)
+  ('insert "C-<tab>" 'sp-forward-sexp)
   :hook
   (python-mode . smartparens-mode)
   (c++-mode . smartparens-mode)
@@ -489,10 +488,7 @@
   (setq org-image-actual-width '(350))
 
   ;; display/update images in the buffer after I evaluate 
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-
-  ;; tangle blocks after save org buffer
-  (add-hook 'after-save-hook #'org-babel-tangle))
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 
 (use-package jupyter
   :after org
@@ -698,6 +694,7 @@
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
+  ('normal outline-mode-map "z o" 'outline-show-branches)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
 
 (use-package latex
@@ -822,8 +819,6 @@
   :commands dired
   :hook (dired-mode . dired-hide-details-mode)
   :general
-  ("<f7>" 'open-my-notes)
-  ("<f10>" 'dired-jump)
   (dired-mode-map "C-c C-d" 'mkdir)
   ('normal dired-mode-map "h" 'dired-up-directory)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
@@ -833,11 +828,7 @@
 	delete-by-moving-to-trash t)	; move to trash
 
   ;; kill the dired buffer eand enters the current line file or directory
-  (put 'dired-find-alternate-file 'disabled nil)
-
-  (defun open-my-notes ()
-    (interactive)
-    (dired "/mnt/c/Users/c8441205/OneDrive/nasser-website/content/notes/")))
+  (put 'dired-find-alternate-file 'disabled nil))
 
 ;; subtree folder expansion
 (use-package dired-subtree
