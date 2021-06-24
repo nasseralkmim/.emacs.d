@@ -134,10 +134,9 @@
 
 ;; show matching parenthesis
 (use-package paren
-  :defer 1
-  :config
+  :init
   (setq show-paren-delay 0)
-  (show-paren-mode 1))
+  (show-paren-mode t))
 
 ;; save recent visited files
 (use-package recentf
@@ -200,6 +199,7 @@
   ("C-c f" 'consult-find)
   ("C-c o" 'consult-imenu)
   ("C-x b" 'consult-buffer)
+  ("C-x m" 'consult-bookmark)
   ("M-y" 'consult-yank-pop)
   ("C-s" 'consult-line)
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
@@ -541,8 +541,7 @@
   (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
 				 "~/OneDrive/Org/notes.org"
 				 "~/OneDrive/Org/journal.org"
-				 "~/OneDrive/Org/gcal.org"
-				 "~/OneDrive/Concurso/Notas/notas_concurso.org"))))
+				 "~/OneDrive/Org/gcal.org"))))
 
 (use-package ox-latex
   :after org
@@ -660,7 +659,10 @@
   :general
   (corfu-map "<tab>" 'corfu-next
 	     "<backtab>" 'corfu-previous
-	     "C-j" 'corfu-next))
+	     "C-n" 'corfu-next
+	     "C-p" 'corfu-previous)
+  ('insert "C-n" nil
+	   "C-p" nil))
 
 ;; completion in region
 (use-package company
@@ -845,9 +847,12 @@
 
 ;; icons for dired
 (use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-mode))
+  :hook (dired-mode . treemacs-icons-dired-mode)
+  :config 
+  (treemacs-resize-icons 12))
 
 (use-package treemacs
+  :disabled 				; using dired and bookmarks
   :straight (:includes treemacs-icons-dired)
   :config
   (setq
@@ -858,7 +863,6 @@
   (treemacs-follow-mode t)
   (treemacs-filewatch-mode t)
   (treemacs-fringe-indicator-mode 'always)
-  (treemacs-resize-icons 12)
   :general
   (treemacs-mode-map "C-<return>" 'treemacs-display-current-project-exclusively)
   (treemacs-mode-map "<f8>" 'treemacs-quit)
@@ -1051,7 +1055,8 @@
   (:prefix "C-c b" "r" 'bibtex-actions-refresh)
   :config
   (setq bibtex-completion-bibliography
-	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/references.bib"))
+	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"
+	  "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/plasticity.bib"))
   (setq bibtex-completion-pdf-field "File")
 
   ;; set progam to open pdf with default windows application
@@ -1106,8 +1111,9 @@
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
 (use-package exec-path-from-shell
-  :disabled
   :init
+  ;; non interative shell start up faster
+  ;; (setq exec-path-from-shell-arguments nil)
   ;; shell will inherits Emacs's environmental variables
   ;; emacs GUI inherits minimal environment variables
   ;; I'm using to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
