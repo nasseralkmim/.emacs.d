@@ -1009,9 +1009,11 @@
 (use-package goto-last-change
   :general ('normal "g b" 'goto-last-change))
 
+;; easy select region
 (use-package expand-region
   :bind ("C-=" . er/expand-region))
 
+;; key chord hint
 (use-package which-key
   :defer 1
   :diminish which-key-mode
