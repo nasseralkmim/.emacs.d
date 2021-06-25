@@ -169,11 +169,12 @@
   (vertico-mode))
 
 :; completion style with flexible, fuzzy candidate filtering
-;; alternative to default completion by tab
+;; filter with space separated components and match components in any order
 (use-package orderless
   :after vertico
   :demand
   :config
+  ;; partial completion for files to allows path expansion
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         completion-category-overrides '((file (styles . (partial-completion))))))
@@ -450,6 +451,7 @@
    (org-edit-src-content-indentation 0)
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
+   (org-special-ctrl-a/e t)	     ; when jump to beginning of line be aware of *
    (org-cycle-separator-lines 0)	; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
    (org-insert-heading-respect-content t) ; insert heading after current tree
@@ -644,10 +646,10 @@
   :after flyspell)
 
 
-;; completion in region manually summoned with <tab>
+;; completion in region manually summoned with <tab> (no auto pop up)
+;; allows space between filter words (combined with oderless)
 (use-package corfu
   :hook ((prog-mode . corfu-mode)
-	 (LaTeX-mode . corfu-mode)
 	 (org-mode . corfu-mode))
   :general
   (corfu-map "<tab>" 'corfu-next
@@ -692,7 +694,7 @@
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
-  ('normal outline-mode-map "z o" 'outline-show-branches)
+  ('normal outline-mode-map "z o" 'outline-show-children)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
 
 (use-package latex
