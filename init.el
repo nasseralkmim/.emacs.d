@@ -648,7 +648,6 @@
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
   :after flyspell)
 
-
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space between filter words (combined with oderless)
 (use-package corfu
@@ -660,7 +659,11 @@
 	     "C-n" 'corfu-next
 	     "C-p" 'corfu-previous)
   ('insert "C-n" nil
-	   "C-p" nil))
+	   "C-p" nil)
+  :config
+  (setq corfu-auto t
+	corfu-auto-prefix 1
+	corfu-quit-no-match t))
 
 ;; completion in region
 (use-package company
