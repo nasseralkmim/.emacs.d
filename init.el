@@ -195,14 +195,17 @@
 ;; practical commands to select from lists
 (use-package consult	
   :general
-  ("M-s" 'consult-outline)
-  ("C-c r" 'consult-ripgrep)
-  ("C-c f" 'consult-find)
-  ("C-c o" 'consult-imenu)
-  ("C-x b" 'consult-buffer)
-  ("C-x m" 'consult-bookmark)
-  ("M-y" 'consult-yank-pop)
-  ("C-s" 'consult-line)
+  ;; m/f/b <SPC> for bookmarks/files/buffers narrowing
+  ("C-x b" 'consult-buffer)		; enhanced switch to buffer
+  ("M-s" 'consult-outline)		; navigation by headings
+  ("C-c o" 'consult-imenu)		; navigation by "imenu" items
+  ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
+  ("C-s" 'consult-line)			; search lines with preview
+
+  ;; two parts: search  and filter
+  ;; #<search string>#<filter terms> filtering with orderless! amazing!
+  ("C-c r" 'consult-ripgrep)		; search file contents
+  ("C-c f" 'consult-find)		; search files in directories
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
 
@@ -970,13 +973,21 @@
 	lsp-enable-folding nil		;potential to be slow
 	lsp-enable-text-document-color nil ;potential to be slow
 	lsp-enable-on-type-formatting nil  ;don't format automatically
-	lsp-headerline-breadcrumb-enable nil))  ;disable breadcrumb
+	lsp-headerline-breadcrumb-enable nil)  ;disable breadcrumb
+
+  ;; using corfu, not company
+  (setq lsp-completion-provider :none))
 
 ;; alternative to lsp-python-ms
 (use-package lsp-pyright
   :hook (python-mode . (lambda ()
 			 (require 'lsp-pyright)
-			 (lsp-deferred))))
+			 (lsp-deferred)))
+  :config
+  ;; https://github.com/microsoft/pyright/discussions/1466
+  ;; don't infer types from library source
+  ;; treat all as unknowns when type is nonpresent
+  (setq lsp-pyright-use-library-code-for-types nil))
 
 ;; Microsoft python language server
 ;; it seems to be faster than pyls
@@ -1042,8 +1053,8 @@
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
+;; embark front-end to helm-bibtex
 (use-package bibtex-actions
-  ;; :straight (bibtex-actions :host github :repo "bdarcus/bibtex-actions")
   :general
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
   (:prefix "C-c b" "r" 'bibtex-actions-refresh)
@@ -1051,6 +1062,7 @@
   (setq bibtex-completion-bibliography
 	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"
 	  "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/plasticity.bib"))
+
   (setq bibtex-completion-pdf-field "File")
 
   ;; set progam to open pdf with default windows application
@@ -1101,7 +1113,7 @@
   :commands yas-insert-snippet
   :config
   (yas-reload-all)
-  (yas-minor-mode))
+  (yas-global-mode))
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
 (use-package exec-path-from-shell
