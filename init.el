@@ -205,7 +205,7 @@
   ;; two parts: search  and filter
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
   ("C-c r" 'consult-ripgrep)		; search file contents
-  ("C-c f" 'consult-find)		; search files in directories
+  ("C-c f" 'consult-find-fd)		; search files in directories
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
 
@@ -218,7 +218,13 @@
   
   ;; configure preview behavior
   (consult-customize consult-buffer consult-bookmark :preview-key '(:debounce 3 any))
-  (consult-customize consult-line :preview-key '(:debounce 0 any)))
+  (consult-customize consult-line :preview-key '(:debounce 0 any))
+
+  ;; use 'fd' instead of 'find'
+  (defun consult-find-fd (&optional dir initial)
+    (interactive "P")
+    (let ((consult-find-command "fd --color=never --full-path ARG OPTS"))
+      (consult-find dir initial))))
 
 ;; context menu/action at point or minibuffer
 (use-package embark
@@ -873,46 +879,6 @@
 		     "l" 'treemacs-root-down)
   :demand)
 
-(use-package solaire-mode
-  :disabled
-  :hook ((change-major-mode . turn-on-solaire-mode)
-         (after-revert . turn-on-solaire-mode)
-         (ediff-prepare-buffer . solaire-mode)
-         (minibuffer-setup . solaire-mode-in-minibuffer))
-  :config
-  (setq solaire-mode-auto-swap-bg t)
-  (solaire-global-mode +1))
-
-(use-package doom-themes
-  :disabled
-  :commands ap/load-doom-theme
-  :after solaire-mode
-  :general
-  ("<f6>" 'ap/load-doom-theme)
-  :config
-  ;; (load-theme 'doom-one t)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t
-	doom-themes-treemacs-theme "doom-colors") ; if nil, italics is universally disabled
-  (doom-themes-treemacs-config)
-  (doom-themes-org-config)
-  
-  (defun ap/load-doom-theme (theme)
-    "Disable active themes and load a Doom theme."
-    (interactive (list (intern (completing-read "Theme: "
-						(->> (custom-available-themes)
-						  (-map #'symbol-name)
-						  (--select (string-prefix-p "doom-" it)))))))
-    (ap/switch-theme theme)
-    (set-face-foreground 'org-hide (face-background 'default)))
-  (defun ap/switch-theme (theme)
-    "Disable active themes and load THEME."
-    (interactive (list (intern (completing-read "Theme: "
-						(->> (custom-available-themes)
-						  (-map #'symbol-name))))))
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme theme 'no-confirm)))
-
 (use-package modus-themes
   :defer 1
   :config
@@ -930,15 +896,19 @@
 ;; :includes so straight can recognize dap-python.el
 (use-package dap-mode
   :after lsp-mode
-  :straight (dap-mode :includes dap-python
+  :straight (dap-mode :includes (dap-python dap-cpptools)
 		      :type git
 		      :host github
 		      :repo "emacs-lsp/dap-mode") 
   :general
   (lsp-mode-map "<f6>" 'dap-hydra))
 
+(use-package dap-cpptools
+  :after dap-mode c++-mode
+  :demand)
+
 (use-package dap-python
-  :after dap-mode
+  :after dap-mode python
   :demand ; so it loads, "requires", dap-python
   :init
   (setq dap-python-debugger 'debugpy))
