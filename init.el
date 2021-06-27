@@ -57,10 +57,12 @@
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   ("C-h j" 'describe-keymap)
   :init
-  (global-hl-line-mode t)
-  (winner-mode t)
-  (repeat-mode t)
-  (setq-default frame-title-format '("%b [%m]")) ;name on top of window
+  (global-hl-line-mode t) ; highlight current line
+  (winner-mode t)	  ; move between windows configuration
+  (repeat-mode t)	  ; built in command repeater (like hydra)
+
+  ;; name on top of window
+  (setq-default frame-title-format '("%b [%m]"))
 
   ;; font height
   ;; (set-face-attribute 'default nil :height 100)
@@ -664,6 +666,7 @@
 	     "<backtab>" 'corfu-previous
 	     "C-n" 'corfu-next
 	     "C-p" 'corfu-previous)
+  ('normal corfu-map "<escape>" 'corfu-quit)
   ('insert "C-n" nil
 	   "C-p" nil)
   :config
@@ -886,10 +889,16 @@
 	modus-themes-hl-line 'intense-background
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
+	modus-themes-no-mixed-fonts t
 	modus-themes-mode-line 'borderless-accented-moody)
   (load-theme 'modus-operandi t)
   :general
   ("<f5>"  'modus-themes-toggle))
+
+(use-package auto-dim-other-buffers
+  :after modus
+  :init
+  (auto-dim-other-buffers-mode t))
 
 (use-package htmlize)
 
