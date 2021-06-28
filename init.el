@@ -255,6 +255,9 @@
 
 (use-package all-the-icons)
 
+;; automatic insert matching pairs and navigation
+;; for wrap/unwrap I use evil-surround
+;; expand/contract (slurp) is good for elisp
 (use-package smartparens
   :diminish smartparens-mode  
   :commands smartparens-mode
@@ -276,13 +279,14 @@
   :config
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
-  ;; highligh matching brackets
-  (show-smartparens-global-mode 0)
-  ;; so that paren highlights do not override region marking (aka selecting)
-  (setq show-paren-priority -1) 
+  (setq show-paren-priority t) 
   (setq show-paren-when-point-inside-paren t)
   (setq sp-show-pair-from-inside t)
   (setq show-paren-style 'mixed)) 
+
+;; don't include () as part of word, eg when deleting
+(use-package evil-smartparens
+  :hook (smartparens-enabled . evil-smartparens-mode))
 
 (use-package flycheck
   :after lsp
@@ -780,10 +784,11 @@
 		      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
 		    nil t :help "Create nomenclature file")))
 
-  ;; using "Zathura" on WSL
-  ;; sometime "PDF Tools" good because of "pdf-view-set-slice-from-bounding-box"
+  ;; using "Zathura" or "PDF Tools" on WSL
+  ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
+  ;; PDF Toll is good when I'm with just one screen
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "PDF Tools"))
+	       '(output-pdf "Zathura"))
 
   (defun my-tex-insert-clipboard ()
     (interactive)
