@@ -460,6 +460,7 @@
   :mode (("\\.org$" . org-mode))
   :general
   (org-mode-map "C-c C-l" 'org-insert-link)
+  ('normal org-mode-map "z k" 'org-previous-visible-heading)
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
@@ -907,7 +908,7 @@
   ("<f5>"  'modus-themes-toggle))
 
 (use-package auto-dim-other-buffers
-  :after modus
+  :after modus-themes
   :init
   (auto-dim-other-buffers-mode t))
 
