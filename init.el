@@ -226,7 +226,13 @@
   (defun consult-find-fd (&optional dir initial)
     (interactive "P")
     (let ((consult-find-command "fd --color=never --full-path ARG OPTS"))
-      (consult-find dir initial))))
+      (consult-find dir initial)))
+
+  ;; project root (project.el)
+  (setq consult-project-root-function
+	(lambda ()
+	  (when-let (project (project-current))
+	    (car (project-roots project))))))
 
 ;; context menu/action at point or minibuffer
 (use-package embark
