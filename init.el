@@ -714,9 +714,8 @@
   (company-prescient-mode))
 
 (use-package outline
+  :demand				; don't autoload, just load it.
   :straight nil
-  :defer 1
-  :demand
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
@@ -838,8 +837,7 @@
 (use-package outline-magic
   :after latex
   :general
-  ('normal LaTeX-mode-map "<tab>" 'outline-cycle)
-  ('normal outline-mode-map "C-j" nil))
+  ('normal LaTeX-mode-map "<tab>" 'outline-cycle))
 
 (use-package dired
   :straight nil
