@@ -260,7 +260,6 @@
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
   :diminish smartparens-mode  
-  :commands smartparens-mode
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
   ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
@@ -279,14 +278,14 @@
   :config
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
-  (setq show-paren-priority t) 
-  (setq show-paren-when-point-inside-paren t)
-  (setq sp-show-pair-from-inside t)
+  (sp-local-pair 'python-mode "'" "'" :trigger "'")
+  (setq show-paren-when-point-inside-paren t) ; good for evil normal mode
+  (setq sp-show-pair-from-inside t)	      ; highligt after opening
   (setq show-paren-style 'mixed)) 
 
 ;; don't include () as part of word, eg when deleting
 (use-package evil-smartparens
-  :hook (smartparens-enabled . evil-smartparens-mode))
+  :hook (prog-mode . evil-smartparens-mode))
 
 (use-package flycheck
   :after lsp
@@ -847,6 +846,7 @@
   (dired-mode-map "C-c C-d" 'mkdir)
   ('normal dired-mode-map "h" 'dired-up-directory)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
+  (dired-mode-map "SPC" nil)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
