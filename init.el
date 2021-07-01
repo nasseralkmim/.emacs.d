@@ -904,17 +904,19 @@
 	modus-themes-completions 'opinionated
 	modus-themes-no-mixed-fonts t
 	modus-themes-mode-line 'borderless-accented-moody)
-  (load-theme 'modus-operandi t)
-  (add-hook
-   'modus-themes-after-load-theme-hook
-   '(lambda ()
-      (set-face-attribute 'auto-dim-other-buffers-face nil
-			  :foreground (modus-themes-color 'fg-inactive))))
+
+  ;; hook to enforce change when theme is toggled
+  (add-hook 'modus-themes-after-load-theme-hook
+	    (lambda ()
+	      (set-face-attribute 'auto-dim-other-buffers-face nil
+				  :foreground (modus-themes-color 'fg-dim))))
+  ;; runs the hook
+  (modus-themes-load-operandi)
   :general
   ("<f5>"  'modus-themes-toggle))
 
 (use-package auto-dim-other-buffers
-  :after modus-themes
+  :defer 1
   :init
   (auto-dim-other-buffers-mode t))
 
