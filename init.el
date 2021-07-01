@@ -449,10 +449,10 @@
   :config
   (setq magit-diff-hide-trailing-cr-characters t))
 
+;; show colors
 (use-package rainbow-mode
-  :defer 1
-  :diminish rainbow-mode
-  :config (rainbow-mode))
+  :commands rainbow-mode 
+  :diminish rainbow-mode)
 
 (use-package org-contrib)
 
@@ -909,7 +909,7 @@
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (set-face-attribute 'auto-dim-other-buffers-face nil
-				  :foreground (modus-themes-color 'fg-dim))))
+				  :foreground (modus-themes-color 'fg-inactive))))
   ;; runs the hook
   (modus-themes-load-operandi)
   :general
@@ -1001,16 +1001,23 @@
                           (require 'lsp-python-ms)
                           (lsp-deferred))))  ; or lsp-deferred
 
-
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :hook (python-mode . toggle-truncate-lines)
-  :general
-  ('insert python-mode-map "C-S-<iso-lefttab>"  '(lambda () (interactive) (indent-to-column 8 4)))
   :config
   ;; dont guess the indent offset
-  (setq python-indent-guess-indent-offset nil))
+  (setq python-indent-guess-indent-offset nil)
+
+  ;; make indentation aware of docstring
+  (defun my-python-indent-line ()
+    (if (eq (car (python-indent-context)) :inside-docstring)
+	'noindent
+      (python-indent-line)))
+  ;; change default function to identify docstring
+  (defun my-python-mode-hook ()
+    (setq indent-line-function #'my-python-indent-line))
+  (add-hook 'python-mode-hook #'my-python-mode-hook))
 
 ;; formatting python code
 (use-package python-black
@@ -1147,6 +1154,7 @@
 (use-package hyperbole
   :general
   ('normal "z h" 'hyperbole)
+  (hyperbole-mode-map "M-<return>" nil)
   ("M-o" 'hkey-operate))
 
 (use-package pdf-tools
