@@ -60,6 +60,7 @@
   (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
   (repeat-mode t)	  ; built in command repeater (like hydra)
+  (column-number-mode t)  ; show column number in the mode line
 
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
@@ -151,7 +152,7 @@
 (use-package autorevert
   :defer 1
   :config
-  (setq auto-revert-interval 2)
+  (setq auto-revert-interval 5)
   (setq auto-revert-check-vc-info t)
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
@@ -1004,7 +1005,8 @@
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
-  :hook (python-mode . toggle-truncate-lines)
+  :hook ((python-mode . toggle-truncate-lines)
+	 (python-mode . display-fill-column-indicator-mode))
   :config
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil)
