@@ -449,7 +449,9 @@
   (magit-mode-map "C-<tab>" nil)
   ("C-x g" 'magit-status)
   :config
-  (setq magit-diff-hide-trailing-cr-characters t))
+  (setq magit-diff-hide-trailing-cr-characters t)
+  ;; open commit in insert mode
+  (add-hook 'git-commit-mode-hook 'evil-insert-state))
 
 ;; show colors
 (use-package rainbow-mode
