@@ -60,6 +60,7 @@
   (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
   (repeat-mode t)	  ; built in command repeater (like hydra)
+  (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
 
   ;; name on top of window
@@ -268,8 +269,8 @@
   ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
   ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
-  ;; binding for Latex
-  ('insert "C-<tab>" 'sp-forward-sexp)
+  ;; binding all modes for Latex
+  ('insert '(prog-mode-map LaTeX-mode-mpa) "C-<tab>" 'sp-forward-sexp)
   :hook
   (python-mode . smartparens-mode)
   (c++-mode . smartparens-mode)
@@ -1177,7 +1178,8 @@
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
-  (vterm-mode-map "<f8>" nil))
+  (vterm-mode-map "<f8>" nil
+		  ""))
 
 (use-package multi-vterm
   :general
