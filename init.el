@@ -1200,29 +1200,12 @@
   ;; (format-time-string "output-%F-%H-%M-%S.gif" (current-time))
   (setq gif-screencast-output-directory "./gif/"))
 
+(use-package time-stamp
+  :hook (org-mode . (lambda ()
+		      (add-hook 'before-save-hook 'time-stamp)))
+  :config
+  (setq time-stamp-active t
+	time-stamp-format "%Y-%m-%d %H:%M:%S"
+	time-stamp-start "#\\+lastmod:[ \t]*"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-(put 'list-threads 'disabled nil)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   '("2b502f6e3bf0cba42fe7bf83a000f2d358a7020a7780a8682fcfed0c9dbffb5f" "076ee9f2c64746aac7994b697eb7dbde23ac22988d41ef31b714fc6478fee224" default)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-goggles-change-face ((t (:inherit diff-removed))))
- '(evil-goggles-delete-face ((t (:inherit diff-removed))))
- '(evil-goggles-paste-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
- '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
- '(evil-goggles-yank-face ((t (:inherit diff-changed))))
- '(font-latex-sectioning-2-face ((t (:underline t :weight bold))))
- '(font-latex-sectioning-3-face ((t (:weight bold))))
- '(font-latex-sectioning-4-face ((t (:weight light :slant normal))))
- '(font-latex-sectioning-5-face ((t (:weight light :slant italic)))))
