@@ -62,7 +62,7 @@
   (repeat-mode t)	  ; built in command repeater (like hydra)
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
-
+  (fringe-mode '(0 . 0))  ; remove fringes
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
 
@@ -675,6 +675,7 @@
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space between filter words (combined with oderless)
 (use-package corfu
+  :disabled
   :hook ((prog-mode . corfu-mode)
 	 (org-mode . corfu-mode))
   :general
@@ -692,7 +693,6 @@
 
 ;; completion in region
 (use-package company
-  :disabled
   :diminish company-mode
   :hook ((prog-mode . company-mode)
 	 (LaTeX-mode . company-mode)
