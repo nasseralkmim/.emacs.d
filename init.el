@@ -484,7 +484,15 @@
    (org-insert-heading-respect-content t) ; insert heading after current tree
    (org-catch-invisible-edits 'smart)
   :config
-  (transient-mark-mode -1))
+  (transient-mark-mode -1)
+
+  ;; New link type for Org-Hugo internal links
+  ;; https://lucidmanager.org/productivity/create-websites-with-org-mode-and-hugo/
+  (org-link-set-parameters "hugo"
+			   :complete (lambda ()
+				       (concat "{{% ref \""
+					       (file-relative-name (read-file-name "File: "))
+					       "\" %}}"))))
 
 (use-package ox-extra
   :after org
