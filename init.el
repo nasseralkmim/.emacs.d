@@ -1209,11 +1209,13 @@
   (setq gif-screencast-output-directory "./gif/"))
 
 (use-package time-stamp
+  :after org :demand				; load after org
   :hook (org-mode . (lambda ()
 		      (add-hook 'before-save-hook 'time-stamp)))
   :config
   (setq time-stamp-active t
 	time-stamp-format "%Y-%m-%d %H:%M:%S"
+	time-stamp-end "$"		; regex for end of line
 	time-stamp-start "#\\+lastmod:[ \t]*"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))

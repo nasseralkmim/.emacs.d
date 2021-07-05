@@ -5,6 +5,7 @@
 
 #+title: $1
 #+date: `(let ((x (org-insert-time-stamp nil))))`
+#+lastmod: 2021-07-04 21:31:25
 #+author: Nasser Alkmim
 #+draft: t
 #+toc: t
