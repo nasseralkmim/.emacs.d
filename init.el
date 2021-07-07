@@ -654,7 +654,7 @@
   (setq
    ;; choco install imagemagick.app -PackageParameters LegacySupport=true
    org-download-screenshot-method "imagemagick/convert"
-   org-download-image-dir "."
+   org-download-image-dir "./images"
    org-download-image-html-width 350)
   (setq org-download-screenshot-method "convert.exe clipboard: %s") ; add .exe to work within wsl2
   (setq org-download-screenshot-file "./screenshot.png")) ; where temporary screenshot will be saved so convert can work
