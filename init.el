@@ -232,12 +232,9 @@
     (let ((consult-find-command "fd --color=never --full-path ARG OPTS"))
       (consult-find dir initial)))
 
-  ;; set project root from (project.el)
+  ;; set project root from vc.el
   ;; available when a project file is visited (project-switch-project)
-  (setq consult-project-root-function
-	(lambda ()
-	  (when-let (project (project-current))
-	    (car (project-roots project))))))
+  (setq consult-project-root-function #'vc-root-dir))
 
 ;; context menu/action at point or minibuffer
 (use-package embark
