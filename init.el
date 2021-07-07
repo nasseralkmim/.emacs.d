@@ -62,7 +62,9 @@
   (repeat-mode t)	  ; built in command repeater (like hydra)
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
+  
   (fringe-mode '(0 . 0))  ; remove fringes
+  
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
 
@@ -270,7 +272,7 @@
   ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
   ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
   ;; binding all modes for Latex
-  ('insert '(prog-mode-map LaTeX-mode-mpa) "C-<tab>" 'sp-forward-sexp)
+  ('insert '(prog-mode-map LaTeX-mode-map org-mode-map) "C-<tab>" 'sp-forward-sexp)
   :hook
   (python-mode . smartparens-mode)
   (c++-mode . smartparens-mode)
@@ -826,7 +828,7 @@
       (insert (format "
 \\begin{figure}[ht!]
   \\centering
-  \\includegraphics[width=.5\\textwidth]{%s}
+  \\includegraphics[width=.5\\linewidth]{%s}
 \\end{figure}" image-file))))
   )
 
@@ -866,6 +868,9 @@
 	dired-auto-revert-buffer t
 	dired-listing-switches "-alh"	; human readable format when in detail
 	delete-by-moving-to-trash t)	; move to trash
+
+  ;; hook after loading because dired-omit-mode is not autoloaded
+  (add-hook 'dired-mode-hook 'dired-omit-mode)
 
   ;; kill the dired buffer eand enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil))
