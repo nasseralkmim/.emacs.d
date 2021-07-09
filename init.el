@@ -99,7 +99,11 @@
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  (blink-cursor-mode t)
+  (if (display-graphic-p)
+      (blink-cursor-mode 1)
+    (progn
+      (blink-cursor-mode -1)
+      (setq visible-cursor nil)))
 
   ;; Don't beep at me
   (setq visible-bell t)
@@ -925,7 +929,9 @@
 	      (set-face-attribute 'auto-dim-other-buffers-face nil
 				  :foreground (modus-themes-color 'fg-inactive))))
   ;; runs the hook
-  (modus-themes-load-operandi)
+  (if (display-graphic-p)
+      (modus-themes-load-operandi)
+    (modus-themes-load-vivendi))
   :general
   ("<f5>"  'modus-themes-toggle))
 
@@ -1119,8 +1125,7 @@
     :group 'all-the-icons-faces))
 
 (use-package server
-  :defer 1
-  :init (server-start))
+  :init (unless (server-running-p) (server-start)))
 
 (use-package table
   :after org)
@@ -1219,5 +1224,12 @@
 	time-stamp-format "%Y-%m-%d %H:%M:%S"
 	time-stamp-end "$"		; regex for end of line
 	time-stamp-start "#\\+lastmod:[ \t]*"))
+
+(use-package evil-terminal-cursor-changer
+  :if (not (display-graphic-p))
+  :init
+  (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+  )
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
