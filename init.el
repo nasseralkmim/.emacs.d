@@ -778,7 +778,7 @@
   ;; preview latex
   (setq preview-default-option-list '("displaymath" "floats" "graphics"
 				      "textmath" "showlabels")
-	preview-scale-function 1.1
+	preview-scale-function 1.2
 	preview-auto-cache-preamble t)
 
   (setq TeX-save-query nil)
@@ -798,7 +798,7 @@
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
 	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs
 
-  ;; nomenclature for latex
+  ;; nomenclature compilation option for latex
   (eval-after-load "tex"
     '(add-to-list 'TeX-command-list 
 		  '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
@@ -1077,6 +1077,7 @@
   :init
   (which-key-mode t))
 
+;; highligh TODO keyword everywhere
 (use-package hl-todo
   :demand
   :hook ((python-mode . hl-todo-mode)
@@ -1105,6 +1106,7 @@
   :config
   (setq bibtex-completion-bibliography
 	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"
+	  "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/multiphase.bib"
 	  "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/plasticity.bib"))
 
   (setq bibtex-completion-pdf-field "File")
