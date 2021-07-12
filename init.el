@@ -761,6 +761,7 @@
   (preview-map
 	   "b" 'preview-buffer
 	   "c" 'preview-clearout-buffer
+	   "s" 'preview-section
 	   "p" 'preview-at-point)
   :config
   (add-hook 'LaTeX-mode-hook
@@ -775,7 +776,8 @@
               (turn-off-auto-fill)))
 
   ;; preview latex
-  (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath")
+  (setq preview-default-option-list '("displaymath" "floats" "graphics"
+				      "textmath" "showlabels")
 	preview-scale-function 1.1
 	preview-auto-cache-preamble t)
 
@@ -845,7 +847,13 @@
 (use-package reftex
   :after latex
   :commands reftex-toc
-  :general ('normal "<SPC> =" 'reftex-toc)
+  :general
+  ('normal reftex-mode-map :prefix "g r"
+	   "t" 'reftex-toc
+	   "v" 'reftex-view-crossref
+	   "g" 'reftex-goto-label
+	   "r" 'reftex-reference
+	   "c" 'reftex-citation)
   :config
   (setq reftex-cite-prompt-optional-args t) ; Prompt for empty optional arguments in cite
   ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
@@ -1130,7 +1138,8 @@
     :group 'all-the-icons-faces))
 
 (use-package server
-  :init (unless (server-running-p) (server-start)))
+  :defer 1
+  :init (server-start))
 
 (use-package table
   :after org)
