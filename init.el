@@ -1138,8 +1138,10 @@
     :group 'all-the-icons-faces))
 
 (use-package server
-  :defer 1
-  :init (server-start))
+  :straight nil
+  :demand
+  :config (or (server-running-p)
+	    (server-start)))
 
 (use-package table
   :after org)
