@@ -315,6 +315,11 @@
   ;; autoload keymap
   ('(normal visual) "g s" '(:keymap evil-mc-cursors-map))
   ('(normal visual) evil-mc-key-map "g s a" 'evil-mc-make-cursor-in-visual-selection-beg)
+  ('visual evil-mc-cursors-map
+   "n" 'evil-mc-make-and-goto-next-match
+   "p" 'evil-mc-make-and-goto-prev-match
+   "N" 'evil-mc-skip-and-goto-next-match
+   "P" 'evil-mc-skip-and-goto-prev-match)
   :config (global-evil-mc-mode 1))
 
 (use-package evil
