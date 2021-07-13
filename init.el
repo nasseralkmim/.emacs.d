@@ -1243,11 +1243,10 @@
 	time-stamp-end "$"		; regex for end of line
 	time-stamp-start "#\\+lastmod:[ \t]*"))
 
+;; terminal emacs with evil cursor indication
 (use-package evil-terminal-cursor-changer
   :if (not (display-graphic-p))
   :init
-  (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-  )
-
+  (evil-terminal-cursor-changer-activate))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
