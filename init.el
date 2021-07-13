@@ -1233,6 +1233,7 @@
   ;; (format-time-string "output-%F-%H-%M-%S.gif" (current-time))
   (setq gif-screencast-output-directory "./gif/"))
 
+;; update time stamp of org files
 (use-package time-stamp
   :after org :demand				; load after org
   :hook (org-mode . (lambda ()
