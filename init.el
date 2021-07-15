@@ -881,6 +881,7 @@
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
 	dired-listing-switches "-alh"	; human readable format when in detail
+	dired-kill-when-opening-new-dired-buffer t
 	delete-by-moving-to-trash t)	; move to trash
 
   ;; hook after loading because dired-omit-mode is not autoloaded
@@ -1213,8 +1214,7 @@
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
-  (vterm-mode-map "<f8>" nil
-		  ""))
+  (vterm-mode-map "<f8>" nil ""))
 
 (use-package multi-vterm
   :general
