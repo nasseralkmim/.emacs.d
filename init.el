@@ -932,6 +932,35 @@
 		     "l" 'treemacs-root-down)
   :demand)
 
+(use-package doom-themes
+  :commands ap/load-doom-theme
+  :after solaire-mode
+  :general
+  ("<f6>" 'ap/load-doom-theme)
+  :config
+  ;; (load-theme 'doom-one t)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+	doom-themes-enable-italic t
+	doom-themes-treemacs-theme "doom-colors") ; if nil, italics is universally disabled
+  (doom-themes-treemacs-config)
+  (doom-themes-org-config)
+  
+  (defun ap/load-doom-theme (theme)
+    "Disable active themes and load a Doom theme."
+    (interactive (list (intern (completing-read "Theme: "
+						(->> (custom-available-themes)
+						  (-map #'symbol-name)
+						  (--select (string-prefix-p "doom-" it)))))))
+    (ap/switch-theme theme)
+    (set-face-foreground 'org-hide (face-background 'default)))
+  (defun ap/switch-theme (theme)
+    "Disable active themes and load THEME."
+    (interactive (list (intern (completing-read "Theme: "
+						(->> (custom-available-themes)
+						  (-map #'symbol-name))))))
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme theme 'no-confirm)))
+
 (use-package modus-themes
   :defer 1
   :config
