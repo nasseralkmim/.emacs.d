@@ -59,7 +59,6 @@
   :init
   (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
-  (repeat-mode t)	  ; built in command repeater (like hydra)
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
   
@@ -1249,5 +1248,17 @@
   :if (not (display-graphic-p))
   :init
   (evil-terminal-cursor-changer-activate))
+
+(use-package repeat
+  :defer 1
+  :config
+  ;; built-in command repeater (like hydra)
+  (repeat-mode t))
+
+(use-package window
+  :straight nil
+  :general
+  (resize-window-repeat-map "[" 'shrink-window-horizontally)
+  (resize-window-repeat-map "]" 'enlarge-window-horizontally))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
