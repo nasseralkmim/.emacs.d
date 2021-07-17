@@ -243,6 +243,8 @@
 (use-package embark
   :general
   ("C-S-a" 'embark-act)
+  ("C-S-z" 'embark-dwim)
+  ("C-h B" 'embark-bindings)
   :config
   ;; actions with "@" when in the prompter
   ;; prefer the default
@@ -489,6 +491,7 @@
    (org-cycle-separator-lines 0)	; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
    (org-insert-heading-respect-content t) ; insert heading after current tree
+   (org-src-tab-acts-natively t)
    (org-catch-invisible-edits 'smart)
   :config
   (transient-mark-mode -1)
@@ -713,7 +716,7 @@
 	 (LaTeX-mode . company-mode)
 	 (org-mode . company-mode))
   :config
-  (add-to-list 'company-backends 'company-capf)
+  ;; (add-to-list 'company-backends 'company-capf)
   (setq company-idle-delay .2
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
@@ -736,10 +739,12 @@
 (use-package outline
   :demand				; don't autoload, just load it.
   :straight nil
+  :hook (prog-mode . outline-minor-mode)
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ('normal outline-mode-map "z o" 'outline-show-children)
+  ('normal outline-mode-map "z <tab>" 'outline-cycle)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
 
 (use-package latex
@@ -863,6 +868,7 @@
 
 ;; cycle visibility in outline-minor-mode
 (use-package outline-magic
+  :disabled
   :after latex
   :general
   ('normal LaTeX-mode-map "<tab>" 'outline-cycle))
