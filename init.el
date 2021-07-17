@@ -745,6 +745,7 @@
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ('normal outline-mode-map "z o" 'outline-show-children)
   ('normal outline-mode-map "z <tab>" 'outline-cycle)
+  ('normal LaTeX-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
 
 (use-package latex
@@ -865,13 +866,6 @@
   (setq reftex-keep-temporary-buffers nil)
   (setq reftex-save-parse-info t)
   (setq reftex-trust-label-prefix '("fig:" "eq:")))
-
-;; cycle visibility in outline-minor-mode
-(use-package outline-magic
-  :disabled
-  :after latex
-  :general
-  ('normal LaTeX-mode-map "<tab>" 'outline-cycle))
 
 (use-package dired
   :straight nil
