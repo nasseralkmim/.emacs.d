@@ -62,7 +62,7 @@
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
   
-  (fringe-mode '(0 . 0))  ; remove fringes
+  (fringe-mode '(8 . 0))  ; remove fringes
   
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
@@ -478,7 +478,8 @@
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
-  :hook (org-mode . visual-line-mode)
+  :hook ((org-mode . variable-pitch-mode)
+	 (org-mode . visual-line-mode))
   :custom
    (org-hide-emphasis-markers t) ; avoid noisy //,__, **, 
    (org-startup-indented nil)		; start collapsed
@@ -744,8 +745,7 @@
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ('normal outline-mode-map "z o" 'outline-show-children)
-  ('normal outline-mode-map "z <tab>" 'outline-cycle)
-  ('normal LaTeX-mode-map "<tab>" 'outline-cycle)
+  ('normal outline-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
 
 (use-package latex
@@ -927,16 +927,14 @@
   :demand)
 
 (use-package doom-themes
+  :disabled
   :commands ap/load-doom-theme
-  :after solaire-mode
   :general
-  ("<f6>" 'ap/load-doom-theme)
+  ("<f7>" 'ap/load-doom-theme)
   :config
   ;; (load-theme 'doom-one t)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t
-	doom-themes-treemacs-theme "doom-colors") ; if nil, italics is universally disabled
-  (doom-themes-treemacs-config)
+	doom-themes-enable-italic t) ; if nil, italics is universally disabled
   (doom-themes-org-config)
   
   (defun ap/load-doom-theme (theme)
@@ -958,12 +956,17 @@
 (use-package modus-themes
   :defer 1
   :config
-  (setq modus-themes-org-blocks 'tinted-background
-	modus-themes-hl-line 'intense-background
+  (setq modus-themes-org-blocks 'gray-background
+	modus-themes-prompts '(intense italic)
+	modus-themes-hl-line '(background accented)
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
-	modus-themes-no-mixed-fonts t
-	modus-themes-mode-line 'borderless-accented-moody)
+	modus-themes-paren-match '(bold intense underline)
+	modus-themes-no-mixed-fonts nil
+	modus-themes-syntax '(faint alt-syntax green-strings yellow-comments)
+	modus-themes-italic-constructs t
+	modus-themes-fringes 'subtle
+	modus-themes-mode-line '(borderless accented moody))
 
   ;; hook to enforce change when theme is toggled
   (add-hook 'modus-themes-after-load-theme-hook
@@ -1287,6 +1290,8 @@
 (use-package window
   :straight nil
   :general
+  (resize-window-repeat-map "<" 'shrink-window)
+  (resize-window-repeat-map ">" 'enlarge-window)
   (resize-window-repeat-map "[" 'shrink-window-horizontally)
   (resize-window-repeat-map "]" 'enlarge-window-horizontally))
 
