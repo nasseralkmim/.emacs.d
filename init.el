@@ -63,7 +63,9 @@
   (column-number-mode t)  ; show column number in the mode line
   
   (fringe-mode '(8 . 0))  ; remove fringes
-  
+
+  (set-frame-font "Iosevka 11" nil t)
+
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
 
@@ -85,7 +87,7 @@
   (setq user-full-name "Nasser Alkmim"
 	user-mail-address "nasser.alkmim@gmail.com")
 
-  ;; UTF-8
+  ;; UTF-8 encoding
   (prefer-coding-system 'utf-8)
   (set-default-coding-systems 'utf-8)
   (set-terminal-coding-system 'utf-8)
@@ -97,6 +99,9 @@
 
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
+
+  ;; don't ask if it is ok to kill a process when killing a buffer
+  (setq kill-buffer-query-functions nil)
 
   (if (display-graphic-p)
       (blink-cursor-mode 1)
@@ -470,6 +475,7 @@
 (use-package org-contrib)
 
 (use-package org
+  :straight (:includes org-id)
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -478,8 +484,7 @@
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
-  :hook ((org-mode . variable-pitch-mode)
-	 (org-mode . visual-line-mode))
+  :hook ((org-mode . visual-line-mode))
   :custom
    (org-hide-emphasis-markers t) ; avoid noisy //,__, **, 
    (org-startup-indented nil)		; start collapsed
@@ -791,11 +796,12 @@
   (setq TeX-parse-self t)       ;enable document parsing
   (setq-default TeX-master nil) ;make auctex aware of multi-file documents
   (setq reftex-plug-into-AUCTeX t)
-  (setq TeX-PDF-mode t)
+  (setq TeX-PDF-mode t)			; output pdf 
   (setq TeX-electric-escape t)
   (setq global-font-lock-mode t)
 
-  (setq LaTeX-command "latex -shell-escape") ;; shell escape for minted (syntax highlight)
+  (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
+  
   (setq TeX-source-correlate-method 'synctex) ;; Method for enabling forward and inverse search 
   (setq TeX-source-correlate-start-server t) ;; inhibit the question to start a server process
   (setq TeX-source-correlate-mode t) ;; jump to source
@@ -1257,8 +1263,8 @@
 (use-package gif-screencast
   :commands gif-screencast
   :general
-  ("<f6>" 'gif-screencast)
-  (gif-screencast-mode-map "<f6>" 'gif-screencast-stop)
+  ("<f8>" 'gif-screencast)
+  (gif-screencast-mode-map "<f8>" 'gif-screencast-stop)
   :config
   ;; change the function gif-screencast--generate-gif to generate file without ":"
   ;; (format-time-string "output-%F-%H-%M-%S.gif" (current-time))
@@ -1287,6 +1293,7 @@
   ;; built-in command repeater (like hydra)
   (repeat-mode t))
 
+;; built in windows resize functions
 (use-package window
   :straight nil
   :general
@@ -1294,5 +1301,26 @@
   (resize-window-repeat-map ">" 'enlarge-window)
   (resize-window-repeat-map "[" 'shrink-window-horizontally)
   (resize-window-repeat-map "]" 'enlarge-window-horizontally))
+
+;; create backlinks when linking org-mode headings
+(use-package org-super-links
+  :straight (org-super-links :type git :host github :repo "toshism/org-super-links")
+  :after org
+  :general
+  ('normal org-mode-map :prefix "C-c s"
+	   "s" 'org-super-links-link
+	   "l" 'org-super-links-store-link
+	   "p" 'org-super-links-insert-link
+	   "d" 'org-super-links-quick-insert-drawer-link
+	   "i" 'org-super-links-quick-insert-inline-link
+	   "C-d" 'org-super-links-delete-link))
+
+;; for creating org-ids for more robust linking
+(use-package org-id
+  :after org-super-links
+  :demand
+  :config
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
