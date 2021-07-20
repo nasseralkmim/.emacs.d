@@ -1315,7 +1315,8 @@
 	   "i" 'org-super-links-quick-insert-inline-link
 	   "C-d" 'org-super-links-delete-link))
 
-;; for creating org-ids for more robust linking
+;; loads the org-id library from org repository
+;; for creating org-ids for more robust linking, avoid referencing issues
 (use-package org-id
   :after org-super-links
   :demand
