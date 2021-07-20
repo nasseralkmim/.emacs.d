@@ -748,7 +748,8 @@
 (use-package outline
   :demand				; don't autoload, just load it.
   :straight nil
-  :hook (prog-mode . outline-minor-mode)
+  :hook ((prog-mode . outline-minor-mode)
+	 (markdown-mode . outline-minor-mode))
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
@@ -981,7 +982,9 @@
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (set-face-attribute 'auto-dim-other-buffers-face nil
-				  :foreground (modus-themes-color 'fg-inactive))))
+				  :foreground (modus-themes-color 'fg-inactive))
+	      (set-face-attribute 'org-drawer nil
+				  :height 80)))
   ;; runs the hook
   (if (display-graphic-p)
       (modus-themes-load-operandi)
