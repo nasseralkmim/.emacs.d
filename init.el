@@ -64,7 +64,10 @@
   
   (fringe-mode '(8 . 0))  ; remove fringes
 
-  (set-frame-font "Iosevka 11" nil t)
+  ;; Setting typefaces
+  (set-face-attribute 'default nil :font "Hack-11:antialias=1")
+  (set-face-attribute 'fixed-pitch nil :font "Iosevka-11:antialias=1")
+  (set-face-attribute 'variable-pitch nil :font "FiraGO-11:antialias=1")
 
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
