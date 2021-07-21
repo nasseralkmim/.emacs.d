@@ -321,7 +321,7 @@
   :diminish evil-mc-mode
   :general
   ;; autoload keymap, `g s` will trigger the loading of `evil-mc` library
-  ;; change prefix for "cursors-map"
+  ;; change prefix for `cursors-map`
   ('(normal visual) "g s" '(:keymap evil-mc-cursors-map))
   ('(normal visual) evil-mc-key-map "g s a" 'evil-mc-make-cursor-in-visual-selection-beg)
   ;; evil-mc-cursors-map is accessed with evil-mc-cursors-map
