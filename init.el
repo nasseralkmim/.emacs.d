@@ -66,8 +66,8 @@
 
   ;; Setting typefaces
   (set-face-attribute 'default nil :font "Hack-11:antialias=1")
-  (set-face-attribute 'fixed-pitch nil :font "Iosevka-11:antialias=1")
-  (set-face-attribute 'variable-pitch nil :font "FiraGO-11:antialias=1")
+  ;; (set-face-attribute 'fixed-pitch nil :font "Iosevka-11:antialias=1" :inherit t)
+  ;; (set-face-attribute 'variable-pitch nil :font "FiraGO-11:antialias=1" :inherit t)
 
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
@@ -320,14 +320,16 @@
   :after evil
   :diminish evil-mc-mode
   :general
-  ;; autoload keymap
+  ;; autoload keymap, `g s` will trigger the loading of `evil-mc` library
+  ;; change prefix for "cursors-map"
   ('(normal visual) "g s" '(:keymap evil-mc-cursors-map))
   ('(normal visual) evil-mc-key-map "g s a" 'evil-mc-make-cursor-in-visual-selection-beg)
-  ('visual evil-mc-cursors-map
-   "n" 'evil-mc-make-and-goto-next-match
-   "p" 'evil-mc-make-and-goto-prev-match
-   "N" 'evil-mc-skip-and-goto-next-match
-   "P" 'evil-mc-skip-and-goto-prev-match)
+  ;; evil-mc-cursors-map is accessed with evil-mc-cursors-map
+  (evil-mc-cursors-map
+    "n" 'evil-mc-make-and-goto-next-match
+    "p" 'evil-mc-make-and-goto-prev-match
+    "N" 'evil-mc-skip-and-goto-next-match
+    "P" 'evil-mc-skip-and-goto-prev-match)
   :config (global-evil-mc-mode 1))
 
 (use-package evil
