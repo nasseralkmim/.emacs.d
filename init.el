@@ -72,9 +72,6 @@
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
 
-  ;; font height
-  ;; (set-face-attribute 'default nil :height 100)
-
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
   ;; scroll
@@ -290,6 +287,7 @@
   (emacs-lisp-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
   (org-mode . smartparens-mode)
+  (smartparens-mode . smartparens-strict-mode)
   :config
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
@@ -299,12 +297,13 @@
   (setq show-paren-style 'mixed)) 
 
 ;; don't include () as part of word, eg when deleting
+;; need `smartparens-stric-mode` enabled
 (use-package evil-smartparens
-  :hook (prog-mode . evil-smartparens-mode))
+  :hook (smartparens-mode . evil-smartparens-mode))
 
 (use-package flycheck
   :after lsp
-  :hook ((python-mode . flycheck-mode)))
+  :hook (python-mode . flycheck-mode))
 
 (use-package evil-multiedit
   :after evil
@@ -483,6 +482,7 @@
   :mode (("\\.org$" . org-mode))
   :general
   (org-mode-map "C-c C-l" 'org-insert-link)
+  ('normal org-mode-map "z n" 'org-toggle-narrow-to-subtree)
   ('normal org-mode-map "z k" 'org-previous-visible-heading)
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
@@ -893,9 +893,6 @@
 	dired-kill-when-opening-new-dired-buffer t
 	delete-by-moving-to-trash t)	; move to trash
 
-  ;; hook after loading because dired-omit-mode is not autoloaded
-  (add-hook 'dired-mode-hook 'dired-omit-mode)
-
   ;; kill the dired buffer eand enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil))
 
@@ -982,9 +979,7 @@
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (set-face-attribute 'auto-dim-other-buffers-face nil
-				  :foreground (modus-themes-color 'fg-inactive))
-	      (set-face-attribute 'org-drawer nil
-				  :height 80)))
+				  :foreground (modus-themes-color 'fg-inactive))))
   ;; runs the hook
   (if (display-graphic-p)
       (modus-themes-load-operandi)
