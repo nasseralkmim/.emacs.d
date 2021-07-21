@@ -338,7 +338,7 @@
   (setq evil-want-keybinding nil)
   (evil-mode 1)
   :general
-  ('normal global "s" 'avy-goto-char-timer)
+  ('normal override "s" 'avy-goto-char-timer)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
   ('(normal visual) :prefix "SPC" "l" 'evil-last-non-blank)
