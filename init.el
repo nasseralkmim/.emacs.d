@@ -323,11 +323,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq sp-show-pair-from-inside t)	      ; highligt after opening
   (setq show-paren-style 'mixed)) 
 
-;; don't include () as part of word, eg when deleting
-;; need `smartparens-stric-mode` enabled
-(use-package evil-smartparens
-  :hook (smartparens-mode . evil-smartparens-mode))
-
 (use-package flycheck
   :after lsp
   :hook (python-mode . flycheck-mode))
