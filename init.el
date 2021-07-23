@@ -192,11 +192,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-h v" 'helpful-variable)
   ("C-h k" 'helpful-key))
 
-
 ;; completion UI (vertical minibuffer)
 (use-package vertico
+  :straight (vertico :type git :host github :repo "minad/vertico"
+		     :includes vertico-buffer
+		     :files (:defaults "extensions/vertico-buffer.el"))
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :config
+  ;; Use `consult-completion-in-region' if Vertico is enabled.
+  ;; Otherwise use the default `completion--in-region' function.
+  (setq completion-in-region-function
+	(lambda (&rest args)
+	  (apply (if vertico-mode
+		     #'consult-completion-in-region
+		   #'completion--in-region)
+		 args))))
 
 :; completion style with flexible, fuzzy candidate filtering
 ;; filter with space separated components and match components in any order
