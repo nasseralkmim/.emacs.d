@@ -1224,14 +1224,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (yas-global-mode))
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
+;; emacs GUI inherits minimal environment variables
+;; to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
+;; added ~/.local/bin to exec path solves the problem with jupyter
+;; no need for this package, for now, defer with `:commands`
 (use-package exec-path-from-shell
-  :commands (exec-path-from-shell-initialize)
+  :config
   ;; non interative shell start up faster
   ;; (setq exec-path-from-shell-arguments nil)
-  ;; emacs GUI inherits minimal environment variables
-  ;; I'm using to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
-  ;; (getenv "SHELL") "/bin/bash"
-  )
+  :commands (exec-path-from-shell-initialize))
 
 (use-package eww
   :straight nil
