@@ -904,6 +904,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal dired-mode-map "h" 'dired-up-directory)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
   ('normal dired-mode-map "SPC" nil)
+  ("C-x C-j" 'dired-jump-other-window)
+  ("C-x j" 'dired-jump)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
