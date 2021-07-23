@@ -745,26 +745,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion in region
 (use-package company
   :diminish company-mode
-  :hook ((prog-mode . company-mode)
-	 (LaTeX-mode . company-mode)
-	 (org-mode . company-mode))
+  :hook
+  (prog-mode . company-mode)
+  (LaTeX-mode . company-mode)
+  (org-mode . company-mode)
   :config
   ;; (add-to-list 'company-backends 'company-capf)
   (setq company-idle-delay .2
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
 
-;; completion suggestions with machine-learning
-(use-package company-tabnine
-  :disabled 				; slow
-  :after ((:any latex org) company)
-  :init
-  (add-to-list 'company-backends #'company-tabnine)
-  :config
-  (setq company-tabnine-always-trigger nil))
-
+;; Company use prescient.el
+;; used to sorts and filter list of candidates
 (use-package company-prescient
-  :disabled
   :after company
   :init
   (company-prescient-mode))
@@ -772,8 +765,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package outline
   :demand				; don't autoload, just load it.
   :straight nil
-  :hook ((prog-mode . outline-minor-mode)
-	 (markdown-mode . outline-minor-mode))
+  :hook
+  (prog-mode . outline-minor-mode)
+  (markdown-mode . outline-minor-mode)
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
@@ -989,13 +983,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq modus-themes-org-blocks 'gray-background
 	modus-themes-prompts '(intense italic)
-	modus-themes-hl-line '(background accented)
+	modus-themes-hl-line '(background intense accented)
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
 	modus-themes-paren-match '(bold intense underline)
 	modus-themes-no-mixed-fonts nil
 	modus-themes-syntax '(faint alt-syntax green-strings yellow-comments)
 	modus-themes-italic-constructs t
+	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
 	modus-themes-mode-line '(borderless accented moody))
 
@@ -1018,7 +1013,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package htmlize)
 
-;; :includes so straight can recognize dap-python.el
+;; :includes so straight can recognize dap-python.el and dap-cpptools
 (use-package dap-mode
   :after lsp-mode
   :straight (dap-mode :includes (dap-python dap-cpptools)
@@ -1026,10 +1021,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 		      :host github
 		      :repo "emacs-lsp/dap-mode") 
   :general
-  (lsp-mode-map "<f6>" 'dap-hydra))
+  (lsp-mode-map "<f6>" 'dap-hydra)
+  :config
+  (setq dap-ui-controls-mode nil))
 
 (use-package dap-cpptools
-  :after dap-mode c++-mode
+  :after dap-mode
   :demand)
 
 (use-package dap-python
@@ -1228,15 +1225,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
 (use-package exec-path-from-shell
-  :defer 3
-  :config
+  :commands (exec-path-from-shell-initialize)
   ;; non interative shell start up faster
   ;; (setq exec-path-from-shell-arguments nil)
-  ;; shell will inherits Emacs's environmental variables
   ;; emacs GUI inherits minimal environment variables
   ;; I'm using to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
   ;; (getenv "SHELL") "/bin/bash"
-  (exec-path-from-shell-initialize))
+  )
 
 (use-package eww
   :straight nil
