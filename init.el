@@ -36,8 +36,10 @@
 (straight-register-package 'org-contrib)
 
 ;; General for kybinding
-(use-package general :demand)
-(use-package diminish :demand)
+(use-package general
+  :demand)
+(use-package diminish
+  :demand)
 
 ;; Minimizes GC interferecen with user activity
 (use-package gcmh
@@ -772,7 +774,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; limit for lsp mode
   (lsp-after-open-hook . (lambda ()
 			   (setq-local company-tabnine-max-num-results 3)))
-  :config
+  :init
   (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
   (setq company-tabnine-max-num-results 9))
 
@@ -1251,6 +1253,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; (setq exec-path-from-shell-arguments nil)
   :commands (exec-path-from-shell-initialize))
 
+;; browser the web inside emacs
 (use-package eww
   :straight nil
   :general
