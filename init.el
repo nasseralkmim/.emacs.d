@@ -750,8 +750,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (LaTeX-mode . company-mode)
   (org-mode . company-mode)
   :config
-  ;; (add-to-list 'company-backends 'company-capf)
   (setq company-idle-delay .2
+	company-tooltip-align-annotations t
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
 
@@ -761,6 +761,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after company
   :init
   (company-prescient-mode))
+
+;; backend for `company-mode`
+;; all language autocompleter with machine learning
+;; needs to install binary with `company-tabnine-install-binary`
+(use-package company-tabnine
+  :after company
+  :hook
+  (kill-emacs . company-tabnine-kill-process)
+  ;; limit for lsp mode
+  (lsp-after-open-hook . (lambda ()
+			   (setq-local company-tabnine-max-num-results 3)))
+  :config
+  (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
+  (setq company-tabnine-max-num-results 9))
 
 (use-package outline
   :demand				; don't autoload, just load it.
@@ -1069,6 +1083,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq lsp-idle-delay 1
 	lsp-enable-folding nil		;potential to be slow
 	lsp-enable-text-document-color nil ;potential to be slow
+	lsp-keep-workspace-alive nil; terminate server if last workspace buffer is closed
 	lsp-enable-on-type-formatting nil  ;don't format automatically
 	lsp-headerline-breadcrumb-enable nil)  ;disable breadcrumb
 
@@ -1226,7 +1241,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (yas-global-mode))
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
-;; emacs GUI inherits minimal environment variables
+;; emacs' exec-path is not automatically updated from PATH
 ;; to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
 ;; added ~/.local/bin to exec path solves the problem with jupyter
 ;; no need for this package, for now, defer with `:commands`
@@ -1345,6 +1360,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand
   :config
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
+
+;; compile and run code
+(use-package quickrun
+  :commands quickrun quickrun-shell)
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
