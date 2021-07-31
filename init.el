@@ -45,7 +45,7 @@
 (use-package gcmh
   :diminish gcmh-mode
   :init
-  (setq gcmh-idle-delay 5
+  (setq gcmh-idle-delay 0.5
 	gcmh-high-cons-threshold (* 16 1024 1024)) 
   (gcmh-mode 1))
 
@@ -287,7 +287,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	(lambda (map _target)
 	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
 	  #'which-key--hide-popup-ignore-command)
-	embark-become-indicator embark-action-indicator))
+	embark-become-indicator embark-action-indicator)
+  ;; use embark to help find command after prefix
+  (setq prefix-help-command #'embark-prefix-help-command)
+  )
 
 (use-package embark-consult
   :demand				;necessary for consult preview
@@ -1006,7 +1009,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-completions 'opinionated
 	modus-themes-paren-match '(bold intense underline)
 	modus-themes-no-mixed-fonts nil
-	modus-themes-syntax '(faint alt-syntax green-strings yellow-comments)
+	modus-themes-variable-pitch-ui nil
+	modus-themes-syntax '(faint alt-syntax yellow-comments)
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
@@ -1368,5 +1372,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package quickrun
   :commands quickrun quickrun-shell)
 
+;; highligh indentation
+(use-package highlight-indent-guides
+  :hook
+  (prog-mode . highlight-indent-guides-mode)
+  :config
+  (setq highlight-indent-guides-method 'character))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
