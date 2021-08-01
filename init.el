@@ -793,6 +793,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ('normal outline-mode-map "z o" 'outline-show-children)
+  ('normal outline-mode-map "z h" 'outline-hide-body)
   ('normal outline-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
 
@@ -1273,12 +1274,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	shr-color-visible-luminance-min 80
 	eww-search-prefix "https://www.google.com/search?q="
 	shr-width 70))                                ; Fold text to 70 columns
-
-(use-package hyperbole
-  :general
-  ('normal "z h" 'hyperbole)
-  (hyperbole-mode-map "M-<return>" nil)
-  ("M-o" 'hkey-operate))
 
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-view-mode)
