@@ -260,7 +260,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map))
   
   ;; configure preview behavior
-  (consult-customize consult-buffer consult-bookmark :preview-key '(:debounce 3 any))
+  (consult-customize consult-buffer consult-bookmark consult-ripgrep consult-find-fd
+		     :preview-key '(:debounce 3 any))
   (consult-customize consult-line :preview-key '(:debounce 0 any))
 
   ;; use 'fd' instead of 'find'
@@ -279,6 +280,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-S-a" 'embark-act)
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
+  :commands embark-prefix-help-command
   :config
   ;; actions with "@" when in the prompter
   ;; prefer the default
@@ -288,9 +290,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
 	  #'which-key--hide-popup-ignore-command)
 	embark-become-indicator embark-action-indicator)
+
   ;; use embark to help find command after prefix
-  (setq prefix-help-command #'embark-prefix-help-command)
-  )
+  (setq prefix-help-command #'embark-prefix-help-command))
 
 (use-package embark-consult
   :demand				;necessary for consult preview
@@ -779,7 +781,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 			   (setq-local company-tabnine-max-num-results 3)))
   :init
   (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
-  (setq company-tabnine-max-num-results 9))
+  (setq company-tabnine-max-num-results 5))
 
 (use-package outline
   :demand				; don't autoload, just load it.
@@ -1378,5 +1380,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (prog-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character))
+
+(use-package vc-git
+  :straight nil
+  :hook
+  (diff-mode . outline-minor-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
