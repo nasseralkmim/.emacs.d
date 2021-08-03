@@ -142,8 +142,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; TAB cycle if there are only few candidates
   (setq completion-cycle-threshold 3)
 
-  ;; Grow and shrink minibuffer
-  (setq resize-mini-windows t)
+  ;; Avoid grow and shrink minibuffer
+  (setq resize-mini-windows nil)
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
@@ -251,14 +251,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c f" 'consult-find-fd)		; search files in directories
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
-
-  ;; C-s C-s to search with previous search
-  (defvar my-consult-line-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map "\C-s" #'previous-history-element)
-      map))
-  (setf (alist-get #'consult-line consult-config) (list :keymap my-consult-line-map))
-  
   ;; configure preview behavior
   (consult-customize consult-buffer consult-bookmark consult-ripgrep consult-find-fd
 		     :preview-key '(:debounce 3 any))
@@ -773,6 +765,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; all language autocompleter with machine learning
 ;; needs to install binary with `company-tabnine-install-binary`
 (use-package company-tabnine
+  :disabled
   :after company
   :hook
   (kill-emacs . company-tabnine-kill-process)
@@ -784,11 +777,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq company-tabnine-max-num-results 5))
 
 (use-package outline
+  :diminish outline-minor-mode
   :demand				; don't autoload, just load it.
   :straight nil
   :hook
   (prog-mode . outline-minor-mode)
   (markdown-mode . outline-minor-mode)
+  (conf-mode . outline-minor-mode)
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
@@ -1207,7 +1202,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   
   ;; make the 'bibtex-actions' bindings available from `embark-act'.
   (with-eval-after-load 'embark
-    (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map)))
+    (add-to-list 'embark-target-finders 'bibtex-actions-citation-key-at-point)
+    (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map))
+    (add-to-list 'embark-keymap-alist '(citation-key . bibtex-actions-buffer-map)))
+
+  ;; use consult-completing-read for enhanced interface
+  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
 
   ;; configue icons
   (setq bibtex-actions-symbols
@@ -1371,6 +1371,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; highligh indentation
 (use-package highlight-indent-guides
+  :diminish highlight-indent-guides-mode
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :config
