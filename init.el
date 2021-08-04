@@ -1161,8 +1161,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; highligh TODO keyword everywhere
 (use-package hl-todo
   :demand
-  :hook ((python-mode . hl-todo-mode)
-	 (LaTeX-mode . hl-todo-mode))
+  :hook
+  (python-mode . hl-todo-mode)
+  (LaTeX-mode . hl-todo-mode)
+  (org-mode . hl-todo-mode)
   :general
   ('normal hl-todo-mode-map "g t" 'hl-todo-done)
   :config
@@ -1293,7 +1295,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
-  (vterm-mode-map "<f8>" nil ""))
+  (vterm-mode-map "<f9>" nil ""))
 
 (use-package multi-vterm
   :general
@@ -1339,10 +1341,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package window
   :straight nil
   :general
-  (resize-window-repeat-map "<" 'shrink-window)
-  (resize-window-repeat-map ">" 'enlarge-window)
-  (resize-window-repeat-map "[" 'shrink-window-horizontally)
-  (resize-window-repeat-map "]" 'enlarge-window-horizontally))
+  (resize-window-repeat-map "j" 'shrink-window)
+  (resize-window-repeat-map "k" 'enlarge-window)
+  (resize-window-repeat-map "h" 'shrink-window-horizontally)
+  (resize-window-repeat-map "l" 'enlarge-window-horizontally))
 
 ;; create backlinks when linking org-mode headings
 (use-package org-super-links
