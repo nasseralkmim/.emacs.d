@@ -211,7 +211,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 		   #'completion--in-region)
 		 args))))
 
-:; completion style with flexible, fuzzy candidate filtering
+:; completion style with flexible candidate filtering
 ;; filter with space separated components and match components in any order
 (use-package orderless
   :after vertico
@@ -761,21 +761,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (company-prescient-mode))
 
-;; backend for `company-mode`
-;; all language autocompleter with machine learning
-;; needs to install binary with `company-tabnine-install-binary`
-(use-package company-tabnine
-  :disabled
-  :after company
-  :hook
-  (kill-emacs . company-tabnine-kill-process)
-  ;; limit for lsp mode
-  (lsp-after-open-hook . (lambda ()
-			   (setq-local company-tabnine-max-num-results 3)))
-  :init
-  (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
-  (setq company-tabnine-max-num-results 5))
-
 (use-package outline
   :diminish outline-minor-mode
   :demand				; don't autoload, just load it.
@@ -919,6 +904,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   (dired-mode-map "C-c C-d" 'mkdir)
   ('normal dired-mode-map "h" 'dired-up-directory)
+  ("M-o" 'dired-omit-mode)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
   ('normal dired-mode-map "SPC" nil)
   ("C-x C-j" 'dired-jump-other-window)
@@ -1041,9 +1027,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 		      :host github
 		      :repo "emacs-lsp/dap-mode") 
   :general
-  (lsp-mode-map "<f6>" 'dap-hydra)
-  :config
-  (setq dap-ui-controls-mode nil))
+  (lsp-mode-map "<f6>" 'dap-hydra))
 
 (use-package dap-cpptools
   :after dap-mode
@@ -1061,16 +1045,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq pyvenv-default-virtual-env-name "/home/nasser/miniconda3/envs/"))
 
-(use-package dap-cpptools
-  :straight nil
-  :after dap-mode)
-
 (use-package c++-mode
   :straight nil
   :mode ("\\.cpp\\'" . c++-mode)
   :general
   (c++-mode-map "C-x c" 'compile))
-
 
 (use-package lsp-mode
   :commands (lsp lsp-deferred)
@@ -1383,5 +1362,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight nil
   :hook
   (diff-mode . outline-minor-mode))
+
+(use-package tramp
+  :demand
+  :straight nil
+  :config
+  (setq tramp-default-method "ssh"
+	tramp-default-host "138.232.83.174"
+	tramp-verbose 4))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
