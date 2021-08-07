@@ -273,18 +273,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   :commands embark-prefix-help-command
+  :hook
+  ;; use embark to help find command after prefix
+  ;; if this is used before `embark-act`, load the package (because of `:commands`)
+  ;; `which-key` changes this variable as well, so we need to change it after `which-key`
+  (which-key-mode . (lambda ()
+		      (setq prefix-help-command #'embark-prefix-help-command)))
   :config
-  ;; actions with "@" when in the prompter
-  ;; prefer the default
-  ;; (setq embark-prompter 'embark-completing-read-prompter)
+  ;; to select an action, use "@" prefix when in the prompter
   (setq embark-action-indicator
 	(lambda (map _target)
 	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
 	  #'which-key--hide-popup-ignore-command)
-	embark-become-indicator embark-action-indicator)
-
-  ;; use embark to help find command after prefix
-  (setq prefix-help-command #'embark-prefix-help-command))
+	embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
   :demand				;necessary for consult preview

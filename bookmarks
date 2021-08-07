@@ -2,16 +2,16 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("files"
- (filename . "~/.local/share/Trash/files/")
- (front-context-string . "  /home/nasser/.")
- (rear-context-string)
- (position . 1))
-("portman"
- (filename . "/mnt/c/Users/c8441205/OneDrive/Academy/Projects/portman/")
+(("seadrive"
+ (filename . "/mnt/c/Users/c8441205/seadrive/")
  (front-context-string . "  /mnt/c/Users/c")
  (rear-context-string)
  (position . 1))
+("nasser"
+ (filename . "/ssh:138.232.83.174:/home/nasser/")
+ (front-context-string . "/ssh:138.232.83.")
+ (rear-context-string)
+ (position . 3))
 ("notes"
  (filename . "/mnt/c/Users/c8441205/OneDrive/nasser-website/content/notes/")
  (front-context-string . "  /mnt/c/Users/c")
@@ -37,9 +37,4 @@
  (front-context-string)
  (rear-context-string . " Jun 23 10:06   ")
  (position . 654))
-("softwares"
- (filename . "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/softwares/")
- (front-context-string . "EdelweissFE\n  dr")
- (rear-context-string . " Jun 17 10:49   ")
- (position . 257))
 )
