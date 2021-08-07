@@ -1274,11 +1274,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
+  ("C-<f9>" 'vterm)
   (vterm-mode-map "<f9>" nil ""))
 
-(use-package multi-vterm
+;; manage multiple vterm's buffers
+(use-package vterm-toggle
   :general
-  ("<f9>" 'multi-vterm))
+  ("<f9>" 'vterm-toggle)	 
+  (vterm-mode-map "s-n" 'vterm-toggle-forward
+		  "s-p" 'vterm-toggle-backward))
+
 
 (use-package keycast
   :commands keycast-mode keycast-log-mode)
@@ -1372,3 +1377,4 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	tramp-verbose 4))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+
