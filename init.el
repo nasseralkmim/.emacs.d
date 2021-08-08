@@ -954,12 +954,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
 
-;; icons for dired
-;; git information in dired
-(use-package dired-git
-  :diminish dired-git-mode
-  :hook
-  (dired-mode . dired-git-mode))
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-mode)
   :config 
@@ -1396,17 +1390,27 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq highlight-indent-guides-method 'character))
 
+;; emacs built in version control
 (use-package vc-git
   :straight nil
   :hook
   (diff-mode . outline-minor-mode))
 
+;; manage remote files access and manipulations
 (use-package tramp
   :straight nil
   :config
   (setq tramp-default-method "ssh"
 	tramp-default-host "138.232.83.174"
 	tramp-verbose 4))
+
+;; shows git information on fringe
+(use-package diff-hl
+  :defer 3
+  :init
+  (global-diff-hl-mode)
+  :hook
+  (dired-mode . diff-hl-dired-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
