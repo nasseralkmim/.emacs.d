@@ -172,7 +172,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; save recent visited files
 (use-package recentf
-  :defer 3
+  :defer 5
   :config
   (recentf-mode 1)
   (setq recentf-max-saved-items 20
@@ -197,13 +197,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion UI (vertical minibuffer)
 (use-package vertico
   :straight (vertico :type git :host github :repo "minad/vertico"
-		     :includes vertico-buffer
-		     :files (:defaults "extensions/vertico-buffer.el"))
+		     :includes (vertico-buffer vertico-directory)
+		     :files (:defaults "extensions/vertico-buffer.el"
+				       "extensions/vertico-directory.el"))
   :init
   (vertico-mode)
   :config
   ;; Use `consult-completion-in-region' if Vertico is enabled.
-  ;; Otherwise use the default `completion--in-region' function.
+  ;; otherwise use the default `completion--in-region' function
   (setq completion-in-region-function
 	(lambda (&rest args)
 	  (apply (if vertico-mode
@@ -211,7 +212,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 		   #'completion--in-region)
 		 args))))
 
-:; completion style with flexible candidate filtering
+;; vertico directory extension
+;; improves behavior when dealing with directories in the minibuffer
+(use-package vertico-directory
+  :after vertico
+  :general
+  (vertico-map "RET" 'vertico-directory-enter
+	       "DEL" 'vertico-directory-delete-char
+	       "M-DEL" 'vertico-directory-delete-word)
+
+  ;; tidy shadowed file names
+  :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+;; completion style with flexible candidate filtering
 ;; filter with space separated components and match components in any order
 (use-package orderless
   :after vertico
@@ -985,7 +998,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (load-theme theme 'no-confirm)))
 
 (use-package modus-themes
-  :defer 1
   :config
   (setq modus-themes-org-blocks 'gray-background
 	modus-themes-prompts '(intense italic)
@@ -1370,7 +1382,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (diff-mode . outline-minor-mode))
 
 (use-package tramp
-  :demand
   :straight nil
   :config
   (setq tramp-default-method "ssh"
