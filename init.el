@@ -955,6 +955,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
 
 ;; icons for dired
+;; git information in dired
+(use-package dired-git
+  :diminish dired-git-mode
+  :hook
+  (dired-mode . dired-git-mode))
 (use-package treemacs-icons-dired
   :hook (dired-mode . treemacs-icons-dired-mode)
   :config 
