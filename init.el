@@ -256,7 +256,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init (marginalia-mode))
 
 ;; practical navigation and search commands 
-(use-package consult	
+(use-package consult
   :general
   ;; m/f/b <SPC> for bookmarks/files/buffers narrowing
   ("C-x b" 'consult-buffer)		; enhanced switch to buffer
@@ -271,7 +271,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c f" 'consult-find-fd)		; search files in directories
   (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   :config
-  ;; configure preview behavior
+  ;; configure preview behavior to `any` key and specific time delay
   (consult-customize consult-buffer consult-bookmark consult-ripgrep consult-find-fd
 		     :preview-key '(:debounce 3 any))
   (consult-customize consult-line :preview-key '(:debounce 0 any))
@@ -286,7 +286,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; available when a project file is visited (project-switch-project)
   (setq consult-project-root-function #'vc-root-dir))
 
-;; context menu/action at point or minibuffer
+;; context menu/action at point or inside the minibuffer (on the top candidate)
+;; or in a region
+;; `embark-collect` allows acting on a `set of targets` (snapshot or live)
+;; `live` works like a completion narrowing that Vertico does 
+;; `export` the set of targets are shown in an appropriate major-mode
 (use-package embark
   :general
   ("C-S-a" 'embark-act)
@@ -294,12 +298,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-h B" 'embark-bindings)
   :commands embark-prefix-help-command
   :hook
-  ;; use embark to help find command after prefix
+  ;; use embark to help find command after prefix (C-h after a prefix key)
   ;; if this is used before `embark-act`, load the package (because of `:commands`)
   ;; `which-key` changes this variable as well, so we need to change it after `which-key`
   (which-key-mode . (lambda ()
 		      (setq prefix-help-command #'embark-prefix-help-command)))
   :config
+  ;; reminder of available actions
   ;; to select an action, use "@" prefix when in the prompter
   (setq embark-action-indicator
 	(lambda (map _target)
@@ -307,6 +312,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	  #'which-key--hide-popup-ignore-command)
 	embark-become-indicator embark-action-indicator))
 
+;; allows consult previews as you move around an auto-updating embark collect
+;; buffer
+;; `exbark-collects` grep results to a grep buffer
 (use-package embark-consult
   :demand				;necessary for consult preview
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
