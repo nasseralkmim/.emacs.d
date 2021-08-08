@@ -197,9 +197,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion UI (vertical minibuffer)
 (use-package vertico
   :straight (vertico :type git :host github :repo "minad/vertico"
-		     :includes (vertico-buffer vertico-directory)
+		     :includes (vertico-buffer
+				vertico-directory
+				vertico-repeat)
 		     :files (:defaults "extensions/vertico-buffer.el"
-				       "extensions/vertico-directory.el"))
+				       "extensions/vertico-directory.el"
+				       "extensions/vertico-repeat.el"))
   :init
   (vertico-mode)
   :config
@@ -212,7 +215,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 		   #'completion--in-region)
 		 args))))
 
-;; vertico directory extension
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
   :after vertico
@@ -220,9 +222,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (vertico-map "RET" 'vertico-directory-enter
 	       "DEL" 'vertico-directory-delete-char
 	       "M-DEL" 'vertico-directory-delete-word)
-
   ;; tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
+
+;; repeat last vertico session
+(use-package vertico-repeat
+  :after vertico
+  :general
+  ("M-r" 'vertico-repeat))
 
 ;; completion style with flexible candidate filtering
 ;; filter with space separated components and match components in any order
