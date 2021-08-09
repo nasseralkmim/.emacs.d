@@ -1412,5 +1412,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh))
 
+;; built in substitute for `list-buffer`
+(use-package ibuffer
+  :general
+  ("C-x C-b" 'ibuffer))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
