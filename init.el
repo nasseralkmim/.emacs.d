@@ -1,6 +1,13 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
+;; computer specific setting
+;; laptop: lt135-c842
+(defvar host (substring (shell-command-to-string "hostname") 0 -1))
+(if (string= host "lt135-c842")
+    (setq workstation nil)
+  (setq workstation t))
+
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 ;; development branch of straight
 (setq straight-repository-branch "develop")
@@ -1193,12 +1200,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
   (:prefix "C-c b" "r" 'bibtex-actions-refresh)
   :config
-  (setq bibtex-completion-bibliography
-	'("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"
-	  "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/multiphase.bib"
-	  "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/plasticity.bib"))
+  (if workstation
+      (setq bibtex-completion-bibliography "~/bibliography.bib")
+    (setq bibtex-completion-bibliography
+	    '("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"
+	      "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/multiphase.bib"
+	      "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/plasticity.bib")))
 
-  (setq bibtex-completion-pdf-field "File")
+  (setq bibtex-completion-library-path "C:/Users/c8441205/seadrive/Nasser A/My Libraries/PhD/bibliography//pdf")
 
   ;; set progam to open pdf with default windows application
   (setq bibtex-completion-pdf-open-function
@@ -1393,7 +1402,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vc-git
   :straight nil
   :hook
-  (diff-mode . outline-minor-mode))
+  (diff-mode . outline-minor-mode)
+  (vc-git-region-history-mode . outline-minor-mode))
 
 ;; manage remote files access and manipulations
 (use-package tramp
