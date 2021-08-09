@@ -1301,13 +1301,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
-  ("C-<f9>" 'vterm)
   (vterm-mode-map "<f9>" nil ""))
 
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
   :general
-  ("<f9>" 'vterm-toggle)	 
+  ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
   (vterm-mode-map "s-n" 'vterm-toggle-forward
 		  "s-p" 'vterm-toggle-backward))
 
@@ -1406,10 +1405,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; shows git information on fringe
 (use-package diff-hl
-  :defer 3
-  :init
-  (global-diff-hl-mode)
   :hook
+  (prog-mode . global-diff-hl-mode)
   (dired-mode . diff-hl-dired-mode)
   ;; integration with magit
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
