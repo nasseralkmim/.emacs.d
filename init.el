@@ -530,7 +530,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package org-contrib)
 
 (use-package org
-  :straight (:includes org-id)
+  :straight (:includes (org-id oc ob))
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -573,7 +573,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package ob
-  :straight nil
   :after org
   :init
   (push '"~/.local/bin" exec-path)	; so it can find jupyter binaries
@@ -787,6 +786,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode . company-mode)
   :config
   (setq company-idle-delay .2
+	company-dabbrev-ignore-case nil	; dont ignore case
 	company-tooltip-align-annotations t
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
@@ -1023,7 +1023,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq modus-themes-org-blocks 'gray-background
 	modus-themes-prompts '(intense italic)
-	modus-themes-hl-line '(background intense accented)
+	modus-themes-hl-line '()
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
 	modus-themes-paren-match '(bold intense underline)
@@ -1201,30 +1201,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation
 	   "r" 'bibtex-actions-refresh)
   :config
-  ;; computer specific setting
-  ;; laptop: lt135-c842
-  (defvar host (substring (shell-command-to-string "hostname") 0 -1))
-  (if (string= host "lt135-c842")
-      (setq workstation nil)
-    (setq workstation t))
-  
-  (if workstation
-      (setq bibtex-completion-bibliography "~/bibliography.bib")
-    (setq bibtex-completion-bibliography
-	    '("/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/numerical.bib"
-	      "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/multiphase.bib"
-	      "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/plasticity.bib")))
+  (setq bibtex-completion-bibliography "~/.bibliography.bib")
 
-  (setq bibtex-completion-pdf-field "File")
-
-  ;; set progam to open pdf with default windows application
-  (setq bibtex-completion-pdf-open-function
-	(lambda (fpath)
-	  ;; (call-process "cmd.exe" nil 0 nil (concat "/C start " fpath))
-	  ;; (call-process "wslview" nil 0 nil fpath) ; does not work with path with spaces
-	  (shell-command (concat
-			  "cmd.exe /C start \"\" "
-			  (shell-quote-argument fpath)))))
+  ;; windows wsl config
+  (when (string= host "lt135-c842")
+    ;; gets the path from windows Zotero
+    (setq bibtex-completion-pdf-field "File")
+    ;; set progam to open pdf with default windows application
+    (setq bibtex-completion-pdf-open-function
+	  (lambda (fpath)
+	    (shell-command (concat
+			    "cmd.exe /C start \"\" "
+			    (shell-quote-argument fpath))))))
   
   ;; make the 'bibtex-actions' bindings available from `embark-act'.
   (with-eval-after-load 'embark
@@ -1236,17 +1224,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
 
   ;; update cache when bib change
-  (bibtex-actions-with-filenotify-global #'bibtex-actions-refresh)
+  ;; not working for now
+  ;; (bibtex-actions-with-filenotify-global #'bibtex-actions-refresh)
 
-  ;; configue icons
+  ;; configue icons for rich display
   (setq bibtex-actions-symbols
 	`((pdf . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
 		  ,(all-the-icons-icon-for-file "foo.pdf" :face 'bibtex-actions-icon-dim)))
 	  (note . (,(all-the-icons-icon-for-file "foo.txt") .
-		   ,(all-the-icons-icon-for-file "foo.txt" :face 'bibtex-actions-icon-dim)))        
+		   ,(all-the-icons-icon-for-file "foo.txt" :face
+						 'bibtex-actions-icon-dim)))
 	  (link . 
 		(,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
 		 ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'bibtex-actions-icon-dim)))))
+
   ;; here we define a face to dim non 'active' icons, but preserve alignment
   (defface bibtex-actions-icon-dim
     '((((background dark)) :foreground "#282c34")
@@ -1397,6 +1388,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand
   :config
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
+
+(use-package oc
+  :after org
+  :config
+  (setq org-cite-global-bibliography "~/.bibliography.bib"))
+  )
 
 ;; compile and run code
 (use-package quickrun
