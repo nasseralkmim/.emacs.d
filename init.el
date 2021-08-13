@@ -735,17 +735,24 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; languages spell checker
 (use-package flyspell
   :hook ((LaTeX-mode . flyspell-mode)
-	 (org-mode . flyspell-mode))
+	 (org-mode . flyspell-mode)
+	 (prorg-mode . flyspell-prog-mode))
   :config
+  ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
-  (add-to-list 'ispell-extra-args "--sug-mode=ultra")
   (when (eq system-type 'windows-nt)
     (setq ispell-dictionary "en_US,pt_BR")
     (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
   (ispell-set-spellchecker-params)
 
-  (setq flyspell-delay 5		; 5 seconds
+  (setq flyspell-issue-message-flag nil ; don't emit messages
 	ispell-personal-dictionary "~/.dotfiles/hunspell/.personal"))
+
+;; flyspell uses `hooks` and `sit-for` to delay
+;; this uses `idle-timers`
+(use-package flyspell-lazy
+  :hook
+  (flyspell-mode . flyspell-lazy-mode))
 
 (use-package flyspell-correct
   :general
