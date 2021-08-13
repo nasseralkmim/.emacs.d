@@ -1,12 +1,6 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-;; computer specific setting
-;; laptop: lt135-c842
-(defvar host (substring (shell-command-to-string "hostname") 0 -1))
-(if (string= host "lt135-c842")
-    (setq workstation nil)
-  (setq workstation t))
 
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 ;; development branch of straight
@@ -1200,6 +1194,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
   (:prefix "C-c b" "r" 'bibtex-actions-refresh)
   :config
+  ;; computer specific setting
+  ;; laptop: lt135-c842
+  (defvar host (substring (shell-command-to-string "hostname") 0 -1))
+  (if (string= host "lt135-c842")
+      (setq workstation nil)
+    (setq workstation t))
+  
   (if workstation
       (setq bibtex-completion-bibliography "~/bibliography.bib")
     (setq bibtex-completion-bibliography
@@ -1207,12 +1208,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	      "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/multiphase.bib"
 	      "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/bibliography/plasticity.bib")))
 
-  (setq bibtex-completion-library-path "C:/Users/c8441205/seadrive/Nasser A/My Libraries/PhD/bibliography//pdf")
+  (setq bibtex-completion-pdf-field "File")
 
   ;; set progam to open pdf with default windows application
   (setq bibtex-completion-pdf-open-function
 	(lambda (fpath)
 	  ;; (call-process "cmd.exe" nil 0 nil (concat "/C start " fpath))
+	  ;; (call-process "wslview" nil 0 nil fpath) ; does not work with path with spaces
 	  (shell-command (concat
 			  "cmd.exe /C start \"\" "
 			  (shell-quote-argument fpath)))))
@@ -1225,6 +1227,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; use consult-completing-read for enhanced interface
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+
+  ;; update cache when bib change
+  (bibtex-actions-with-filenotify-global #'bibtex-actions-refresh)
 
   ;; configue icons
   (setq bibtex-actions-symbols

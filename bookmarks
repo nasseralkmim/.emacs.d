@@ -3,11 +3,11 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("seadrive"
- (filename . "/mnt/c/Users/c8441205/seadrive/")
+ (filename . "/mnt/c/Users/c8441205/seadrive/Nasser A/My Libraries/")
  (front-context-string . "  /mnt/c/Users/c")
  (rear-context-string)
  (position . 1))
-("nasser"
+("remote"
  (filename . "/ssh:138.232.83.174:/home/nasser/")
  (front-context-string . "/ssh:138.232.83.")
  (rear-context-string)
