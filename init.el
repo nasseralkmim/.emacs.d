@@ -1191,8 +1191,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; embark front-end to helm-bibtex
 (use-package bibtex-actions
   :general
-  (:prefix "C-c b" "b" 'bibtex-actions-insert-citation)
-  (:prefix "C-c b" "r" 'bibtex-actions-refresh)
+  (:prefix "C-c b" "b" 'bibtex-actions-insert-citation
+	   "r" 'bibtex-actions-refresh)
   :config
   ;; computer specific setting
   ;; laptop: lt135-c842
