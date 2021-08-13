@@ -1224,8 +1224,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
 
   ;; update cache when bib change
-  ;; not working for now
-  ;; (bibtex-actions-with-filenotify-global #'bibtex-actions-refresh)
+  (bibtex-actions-with-filenotify-global #'bibtex-actions-refresh)
+  (add-hook
+   'LaTeX-mode-hook (lambda ()
+		      (bibtex-actions-with-filenotify-local #'bibtex-actions-refresh)))
 
   ;; configue icons for rich display
   (setq bibtex-actions-symbols
@@ -1392,8 +1394,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package oc
   :after org
   :config
-  (setq org-cite-global-bibliography "~/.bibliography.bib"))
-  )
+  (setq org-cite-global-bibliography '("~/.bibliography.bib")))
 
 ;; compile and run code
 (use-package quickrun
