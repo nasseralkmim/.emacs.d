@@ -165,12 +165,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package color-identifiers-mode)
 
-;; show matching parenthesis
-(use-package paren
-  :init
-  (setq show-paren-delay 0)
-  (show-paren-mode t))
-
 ;; save recent visited files
 (use-package recentf
   :defer 5
@@ -327,6 +321,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
+  :straight (:includes (smartparens-c smartparens-python))
   :diminish smartparens-mode  
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
@@ -337,20 +332,26 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; binding all modes for Latex
   ('insert '(prog-mode-map LaTeX-mode-map org-mode-map) "C-<tab>" 'sp-forward-sexp)
   :hook
-  (python-mode . smartparens-mode)
-  (c++-mode . smartparens-mode)
-  (lisp-interaction-mode . smartparens-mode)
-  (emacs-lisp-mode . smartparens-mode)
+  (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
   (org-mode . smartparens-mode)
   (smartparens-mode . smartparens-strict-mode)
+  (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
   (sp-local-pair 'python-mode "'" "'" :trigger "'")
-  (setq show-paren-when-point-inside-paren t) ; good for evil normal mode
-  (setq sp-show-pair-from-inside t)	      ; highligt after opening
-  (setq show-paren-style 'mixed)) 
+  (sp-pair "<" ">" :actions :rem)	      ; remove
+  (sp-local-pair 'html-mode "<" ">" :trigger "<")
+  (setq sp-show-pair-delay 0
+	sp-show-pair-from-inside t)
+  ) 
+
+(use-package smartparens-c
+  :after smartparens)
+
+(use-package smartparens-python
+  :after smartparens)
 
 (use-package flycheck
   :after lsp
@@ -786,7 +787,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode . company-mode)
   :config
   (setq company-idle-delay .2
-	company-dabbrev-ignore-case nil	; dont ignore case
 	company-tooltip-align-annotations t
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
