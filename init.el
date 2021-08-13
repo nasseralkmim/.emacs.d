@@ -1417,7 +1417,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package diff-hl
   :hook
   (prog-mode . diff-hl-mode)
-  (dired-mode . diff-hl-dired-mode)
+  ;; (dired-mode . diff-hl-dired-mode)
   ;; integration with magit
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh))
