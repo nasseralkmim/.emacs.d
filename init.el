@@ -343,8 +343,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (sp-pair "<" ">" :actions :rem)	      ; remove
   (sp-local-pair 'html-mode "<" ">" :trigger "<")
   (setq sp-show-pair-delay 0
-	sp-show-pair-from-inside t)
-  ) 
+	sp-show-pair-from-inside t))
 
 (use-package smartparens-c
   :after smartparens)
@@ -1037,8 +1036,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; hook to enforce change when theme is toggled
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
-	      (set-face-attribute 'auto-dim-other-buffers-face nil
-				  :foreground (modus-themes-color 'fg-inactive))))
+	      (progn 
+		(set-face-attribute 'auto-dim-other-buffers-face nil
+				    :foreground (modus-themes-color 'fg-inactive))
+		(set-face-attribute 'sp-show-pair-match-content-face nil
+				    :background (modus-themes-color 'bg-paren-expression)))))
+
   ;; runs the hook
   (if (display-graphic-p)
       (modus-themes-load-operandi)
@@ -1437,4 +1440,3 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-x C-b" 'ibuffer))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-
