@@ -1,7 +1,6 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
 ;; development branch of straight
 (setq straight-repository-branch "develop")
@@ -1054,7 +1053,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package htmlize)
 
-;; :includes so straight can recognize dap-python.el and dap-cpptools
+;; `:includes` so straight can recognize dap-python.el and dap-cpptools
 (use-package dap-mode
   :after lsp-mode
   :straight (dap-mode :includes (dap-python dap-cpptools)
@@ -1074,11 +1073,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq dap-python-debugger 'debugpy))
 
-; Change python virtual envirnment variables
+; change python virtual envirnment variables
 (use-package pyvenv
   :commands pyvenv-activate
   :config
-  (setq pyvenv-default-virtual-env-name "/home/nasser/miniconda3/envs/"))
+  (setq pyvenv-default-virtual-env-name "~/miniconda3/envs/"))
 
 (use-package c++-mode
   :straight nil
