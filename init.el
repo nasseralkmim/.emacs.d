@@ -340,7 +340,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
   (sp-local-pair 'python-mode "'" "'" :trigger "'")
-  (sp-pair "'" "'" :trigger "'")
   (sp-pair "<" ">" :actions :rem)	      ; remove
   (sp-local-pair 'html-mode "<" ">" :trigger "<")
   (setq sp-show-pair-delay 0
