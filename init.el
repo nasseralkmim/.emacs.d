@@ -1023,7 +1023,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq modus-themes-org-blocks 'gray-background
 	modus-themes-prompts '(intense italic)
-	modus-themes-hl-line '()
+	modus-themes-hl-line '(accented)
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
 	modus-themes-paren-match '(bold underline)
