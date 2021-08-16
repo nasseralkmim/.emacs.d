@@ -340,6 +340,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
   (sp-local-pair 'python-mode "'" "'" :trigger "'")
+  (sp-pair "'" "'" :trigger "'")
   (sp-pair "<" ">" :actions :rem)	      ; remove
   (sp-local-pair 'html-mode "<" ">" :trigger "<")
   (setq sp-show-pair-delay 0
@@ -786,6 +787,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq company-idle-delay .2
 	company-tooltip-align-annotations t
+	company-dabbrev-downcase nil	; don't replace case
 	company-format-margin-function #'company-vscode-dark-icons-margin
 	company-minimum-prefix-length 1))
 
@@ -1024,7 +1026,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-hl-line '()
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
-	modus-themes-paren-match '(bold intense underline)
+	modus-themes-paren-match '(bold underline)
 	modus-themes-no-mixed-fonts nil
 	modus-themes-variable-pitch-ui nil
 	modus-themes-syntax '(faint alt-syntax yellow-comments)
@@ -1204,16 +1206,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "r" 'bibtex-actions-refresh)
   :config
   (setq bibtex-completion-bibliography "~/.bibliography.bib")
+  (setq bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/")
 
   ;; windows wsl config
+  (defvar host (substring (shell-command-to-string "hostname") 0 -1))
   (when (string= host "lt135-c842")
-    ;; gets the path from windows Zotero
-    (setq bibtex-completion-pdf-field "File")
-    ;; set progam to open pdf with default windows application
+    (setq bibtex-completion-library-path
+	  "/mnt/c/Users/c8441205/seadrive/Nasser A/My Libraries/PhD/bibliography/pdf/")
     (setq bibtex-completion-pdf-open-function
-	  (lambda (fpath)
-	    (shell-command (concat
-			    "cmd.exe /C start \"\" "
+	  (lambda (fpath) (shell-command (concat
+			    ;; "cmd.exe /C start \"\" " ; this is to use with windows zotero file path (slower)
+			    "wslview "	; version 3.2.1 works with spaces in path
 			    (shell-quote-argument fpath))))))
   
   ;; make the 'bibtex-actions' bindings available from `embark-act'.
@@ -1226,28 +1229,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
 
   ;; update cache when bib change
-  (bibtex-actions-with-filenotify-global #'bibtex-actions-refresh)
-  (add-hook
-   'LaTeX-mode-hook (lambda ()
-		      (bibtex-actions-with-filenotify-local #'bibtex-actions-refresh)))
-
-  ;; configue icons for rich display
-  (setq bibtex-actions-symbols
-	`((pdf . (,(all-the-icons-icon-for-file "foo.pdf" :face 'all-the-icons-dred) .
-		  ,(all-the-icons-icon-for-file "foo.pdf" :face 'bibtex-actions-icon-dim)))
-	  (note . (,(all-the-icons-icon-for-file "foo.txt") .
-		   ,(all-the-icons-icon-for-file "foo.txt" :face
-						 'bibtex-actions-icon-dim)))
-	  (link . 
-		(,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'all-the-icons-dpurple) .
-		 ,(all-the-icons-faicon "external-link-square" :v-adjust 0.02 :face 'bibtex-actions-icon-dim)))))
-
-  ;; here we define a face to dim non 'active' icons, but preserve alignment
-  (defface bibtex-actions-icon-dim
-    '((((background dark)) :foreground "#282c34")
-      (((background light)) :foreground "#fafafa"))
-    "Face for obscuring/dimming icons"
-    :group 'all-the-icons-faces))
+  (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
 
 (use-package server
   :straight nil
@@ -1440,3 +1422,25 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-x C-b" 'ibuffer))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(warning-suppress-types '((auto-save))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(evil-goggles-change-face ((t (:inherit diff-removed))))
+ '(evil-goggles-delete-face ((t (:inherit diff-removed))))
+ '(evil-goggles-paste-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
+ '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
+ '(evil-goggles-yank-face ((t (:inherit diff-changed))))
+ '(font-latex-sectioning-2-face ((t (:underline t :weight bold))))
+ '(font-latex-sectioning-3-face ((t (:weight bold))))
+ '(font-latex-sectioning-4-face ((t (:weight light :slant normal))))
+ '(font-latex-sectioning-5-face ((t (:weight light :slant italic)))))
