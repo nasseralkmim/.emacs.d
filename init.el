@@ -797,6 +797,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (company-prescient-mode))
 
+;; folding
 (use-package outline
   :diminish outline-minor-mode
   :demand				; don't autoload, just load it.
@@ -811,7 +812,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal outline-mode-map "z o" 'outline-show-children)
   ('normal outline-mode-map "z h" 'outline-hide-body)
   ('normal outline-mode-map "<tab>" 'outline-cycle)
-  ('normal outline-mode-map "z k" 'outline-previous-visible-heading))  
+  ('normal outline-mode-map "z k" 'outline-previous-visible-heading)
+  :config
+  (setq outline-minor-mode-cycle t
+	outline-minor-mode-highlight 'append))  
 
 (use-package latex
   :straight auctex
@@ -1020,7 +1024,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package modus-themes
   :config
-  (setq modus-themes-org-blocks 'gray-background
+  (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
 	modus-themes-hl-line '(accented)
 	modus-themes-diffs 'desaturated
@@ -1298,7 +1302,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
-  (vterm-mode-map "<f9>" nil ""))
+  (vterm-mode-map "<f9>" nil))
 
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
@@ -1420,26 +1424,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("C-x C-b" 'ibuffer))
 
+;; better code highlight and fold
+(use-package tree-sitter
+  :diminish tree-sitter-mode
+  :hook
+  (python-mode . tree-sitter-mode)
+  (python-mode . tree-sitter-hl-mode))
+
+(use-package tree-sitter-langs
+  :demand)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(warning-suppress-types '((auto-save))))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-goggles-change-face ((t (:inherit diff-removed))))
- '(evil-goggles-delete-face ((t (:inherit diff-removed))))
- '(evil-goggles-paste-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
- '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
- '(evil-goggles-yank-face ((t (:inherit diff-changed))))
- '(font-latex-sectioning-2-face ((t (:underline t :weight bold))))
- '(font-latex-sectioning-3-face ((t (:weight bold))))
- '(font-latex-sectioning-4-face ((t (:weight light :slant normal))))
- '(font-latex-sectioning-5-face ((t (:weight light :slant italic)))))

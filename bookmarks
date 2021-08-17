@@ -23,8 +23,8 @@
  (rear-context-string)
  (position . 1))
 ("phd-notes.tex"
- (filename . "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/writings/phd-notes/phd-notes.tex")
- (front-context-string . "\\documentclass{a")
+ (filename . "/mnt/c/Users/c8441205/seadrive/Nasser A/My Libraries/PhD/writings/phd-notes/phd-notes.tex")
+ (front-context-string . "\\documentclass[t")
  (rear-context-string)
  (position . 1))
 ("nasser-website"
@@ -32,9 +32,4 @@
  (front-context-string . "content\n  drwxrw")
  (rear-context-string . " Jun 17 11:16   ")
  (position . 433))
-("PhD"
- (filename . "/mnt/c/Users/c8441205/OneDrive/Academy/PhD/")
- (front-context-string)
- (rear-context-string . " Jun 23 10:06   ")
- (position . 654))
 )
