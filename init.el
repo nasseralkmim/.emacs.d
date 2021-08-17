@@ -1432,6 +1432,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . tree-sitter-hl-mode))
 
 (use-package tree-sitter-langs
+  :after tree-sitter
   :demand)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
