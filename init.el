@@ -1208,8 +1208,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation
 	   "r" 'bibtex-actions-refresh)
   :config
-  (setq bibtex-completion-bibliography "~/.bibliography.bib")
-  (setq bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/")
+  (setq bibtex-completion-bibliography "~/.bibliography.bib"
+	bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
+	bibtex-completion-pdf-open-function (lambda (fpath)
+					      (call-process "xdg-open" nil 0 nil fpath)))
 
   ;; windows wsl config
   (defvar host (substring (shell-command-to-string "hostname") 0 -1))
