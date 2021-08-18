@@ -823,8 +823,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom-face 
   (font-latex-sectioning-2-face ((t (:underline t :weight bold))))
   (font-latex-sectioning-3-face ((t (:weight bold))))
-  (font-latex-sectioning-4-face ((t (:weight light :slant normal))))
-  (font-latex-sectioning-5-face ((t (:weight light :slant italic))))
+  (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
+  (font-latex-sectioning-5-face ((t (:weight normal :slant italic))))
   :general
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
   ('normal outline-mode-map
@@ -886,7 +886,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
   ;; PDF Toll is good when I'm with just one screen
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "Zathura"))
+	       '(output-pdf "Okular"))
 
   (defun my-tex-insert-clipboard ()
     (interactive)
