@@ -337,7 +337,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (smartparens-mode . smartparens-strict-mode)
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
-  (sp-local-pair 'latex-mode "\\left(" "\\right)" :trigger "\\l(")
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
   (sp-local-pair 'python-mode "'" "'" :trigger "'")
   (sp-pair "<" ">" :actions :rem)	      ; remove
@@ -1204,6 +1203,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; embark front-end to helm-bibtex
 (use-package bibtex-actions
+  :straight (:includes oc-bibtex-actions)
   :general
   (:prefix "C-c b" "b" 'bibtex-actions-insert-citation
 	   "r" 'bibtex-actions-refresh)
@@ -1230,11 +1230,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map))
     (add-to-list 'embark-keymap-alist '(citation-key . bibtex-actions-buffer-map)))
 
-  ;; use consult-completing-read for enhanced interface
-  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
-
   ;; update cache when bib change
   (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
+
+;; bibtex action just for org-mode (from package bibtex-actions)
+(use-package oc-bibtex-actions
+  :after (org oc bibtex-actions)
+  :general
+  ("C-c b" 'org-cite-insert)
+  ("M-o" 'org-open-at-point))
 
 (use-package server
   :straight nil
@@ -1436,5 +1440,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package tree-sitter-langs
   :after tree-sitter
   :demand)
+
+;; use tree sitter as evil text objects
+(use-package evil-textobj-treesitter
+  :straight (el-patch :type git
+                      :host github
+                      :repo "meain/evil-textobj-treesitter"
+                      :files (:defaults "queries"))
+  :after tree-sitter
+  :config
+  (define-key evil-outer-text-objects-map "s" (evil-textobj-treesitter-get-textobj "statement.outer"))
+  (define-key evil-inner-text-objects-map "n" (evil-textobj-treesitter-get-textobj "scopename.inner"))
+  (define-key evil-outer-text-objects-map "c" (evil-textobj-treesitter-get-textobj "call.outer"))
+  (define-key evil-inner-text-objects-map "c" (evil-textobj-treesitter-get-textobj "call.inner"))
+  (define-key evil-outer-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.outer"))
+  (define-key evil-inner-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.inner")))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
