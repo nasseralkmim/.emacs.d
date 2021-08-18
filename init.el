@@ -198,16 +198,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 				       "extensions/vertico-directory.el"
 				       "extensions/vertico-repeat.el"))
   :init
-  (vertico-mode)
-  :config
-  ;; Use `consult-completion-in-region' if Vertico is enabled.
-  ;; otherwise use the default `completion--in-region' function
-  (setq completion-in-region-function
-	(lambda (&rest args)
-	  (apply (if vertico-mode
-		     #'consult-completion-in-region
-		   #'completion--in-region)
-		 args))))
+  (vertico-mode))
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
