@@ -633,7 +633,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	;; org-src-strip-leading-and-trailing-blank-lines t
 	org-src-preserve-indentation t  ; preserve indentation in code
 	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
-	org-src-tab-acts-natively nil	; if t, it is slow!
+	org-src-tab-acts-natively t	; if t, it is slow!
 	org-export-babel-evaluate nil
 	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
 
