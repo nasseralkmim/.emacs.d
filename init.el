@@ -644,6 +644,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after org
   :straight nil
   :config
+  ;; change scale of latex preview in org-mode
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5))
   ;; minted code pdf export org
   (setq org-latex-listings 'minted
 	org-latex-packages-alist '(("newfloat" "minted"))
