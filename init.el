@@ -270,6 +270,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; available when a project file is visited (project-switch-project)
   (setq consult-project-root-function #'vc-root-dir))
 
+;; visit openend directories
+(use-package consult-dir
+  :straight (consult-dir :type git :host github :repo "karthink/consult-dir") 
+  :general
+  ("C-x C-d" 'consult-dir)
+  (vertico-map "C-x C-d" 'consult-dir))
+
 ;; context menu/action at point or inside the minibuffer (on the top candidate)
 ;; or in a region
 ;; `embark-collect` allows acting on a `set of targets` (snapshot or live)
