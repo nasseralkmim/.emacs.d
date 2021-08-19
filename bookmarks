@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("workstation-seadrive"
+(("workstation-phd-notes"
+ (filename . "~/SeaDrive/My Libraries/PhD/writings/phd-notes/phd-notes.tex")
+ (front-context-string . "\\documentclass[t")
+ (rear-context-string)
+ (position . 1))
+("workstation-seadrive"
  (filename . "~/SeaDrive/My Libraries/")
  (front-context-string . "  /home/nasser/S")
  (rear-context-string)
