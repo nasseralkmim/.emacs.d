@@ -49,8 +49,8 @@
 	gcmh-high-cons-threshold (* 16 1024 1024)) 
   (gcmh-mode 1))
 
-;; Basics
-(use-package emacs
+;; Basics and better default
+((use-package emacs
   :straight nil
   :general
   ("C-<tab>" 'next-window-any-frame)
@@ -66,8 +66,6 @@
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
   
-  (fringe-mode '(8 . 0))  ; remove fringes
-
   ;; Setting typefaces
   (defun zoom-frame (&optional amt frame)
     "Increaze FRAME font size by amount AMT. Defaults to selected
@@ -85,8 +83,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (interactive "p")
     (zoom-frame (- (or amt 1)) frame))
 
-  ;; (set-face-attribute 'default nil :font "Hack" :height 105)
-
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
 
@@ -97,7 +93,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
   (setq mouse-wheel-follow-mouse 't)
   (setq scroll-step 1)
-  ;; (setq mouse-wheel-progressive-speed nil)
 
   ;; other basiscs
   (setq ring-bell-function 'ignore)
@@ -118,40 +113,32 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; Answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  ;; don't ask if it is ok to kill a process when killing a buffer
-  (setq kill-buffer-query-functions nil)
-
   (if (display-graphic-p)
       (blink-cursor-mode 1)
     (progn
       (blink-cursor-mode -1)
       (setq visible-cursor nil)))
-
-  ;; Don't beep at me
-  (setq visible-bell t)
-
-  ;; Enable recursive minibuffers
-  (setq enable-recursive-minibuffers t)
-
-  ;;Slow down the UI being updated to improve performance
-  (setq idle-update-delay 1.1)
-
-  ;; add details in completions as prefix/sufix
-  (setq completions-detailed t)
-
-  ;; TAB cycle if there are only few candidates
-  (setq completion-cycle-threshold 3)
-
-  ;; Avoid grow and shrink minibuffer
-  (setq resize-mini-windows nil)
+  
+  (setq-default
+   completion-cycle-threshold 3	    ; TAB cycle if there are only few candidates
+   completions-detailed t	    ; add details in completions as prefix/sufix
+   idle-update-delay 1.1  ; Slow down the UI being updated to improve performance
+   enable-recursive-minibuffers t	; Enable recursive minibuffers
+   resize-mini-windows nil		; Avoid grow and shrink minibuffer
+   visible-bell t			; Don't beep at me
+   kill-buffer-query-functions nil ; don't ask if it is ok to kill a process when killing a buffer
+   )
 
   ;; Do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
 	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-  ;; don't insert tab when indent
-  (setq indent-tabs-mode nil))
+  (setq-default
+   indent-tabs-mode nil	     ; don't insert tab when indent
+   tab-always-indent 'complete ; tab indents first, then tries to complete
+   help-window-select t	    ; focus on help window when openend
+   window-combination-resize t)) ; resize windows proportionaly
 
 (use-package abbrev
   :straight nil

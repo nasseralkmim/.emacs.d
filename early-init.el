@@ -3,8 +3,18 @@
 (advice-add 'package--ensure-init-file :override 'ignore)
 ;; inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
-;; prevent glimpse of UI been disabled
-(push '(menu-bar-lines . 0) default-frame-alist)
-(push '(tool-bar-lines . 0) default-frame-alist)
-(push '(vertical-scroll-bars) default-frame-alist)
-(setq gc-cons-threshold most-positive-fixnum)
+(setq-default
+ load-prefer-newer t
+ mode-line-format nil
+ package-enable-at-startup nil
+ package-native-compile t)
+
+(setq-default
+ default-frame-alist
+ '((horizontal-scroll-bars . nil)       ;; No horizontal scroll-bars
+   (menu-bar-lines . 0)                 ;; No menu bar
+   (right-divider-width . 1)            ;; Thin vertical window divider
+   (right-fringe . 8)                   ;; Thin right fringe
+   (tool-bar-lines . 0)                 ;; No tool bar
+   (vertical-scroll-bars . nil)))       ;; No vertical scroll-bars
+
