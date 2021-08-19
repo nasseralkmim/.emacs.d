@@ -32,12 +32,12 @@
  (front-context-string . "  /mnt/c/Users/c")
  (rear-context-string)
  (position . 1))
-("init.el"
+("init"
  (filename . "~/.emacs.d/init.el")
  (front-context-string . "(defvar my-start")
  (rear-context-string)
  (position . 1))
-("phd-notes.tex"
+("phd-notes"
  (filename . "/mnt/c/Users/c8441205/seadrive/Nasser A/My Libraries/PhD/writings/phd-notes/phd-notes.tex")
  (front-context-string . "\\documentclass[t")
  (rear-context-string)
