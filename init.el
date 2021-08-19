@@ -150,12 +150,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
-  ;; 
-  (setq indent-tabs-mode nil)
-
-  ;; Enable indentation+completion using the TAB key.
-  ;; `completion-at-point' is often bound to M-TAB.
-  (setq tab-always-indent 'complete))
+  ;; don't insert tab when indent
+  (setq indent-tabs-mode nil))
 
 (use-package abbrev
   :straight nil
