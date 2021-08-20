@@ -1068,11 +1068,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq dap-python-debugger 'debugpy))
 
-; change python virtual envirnment variables
+;; change python virtual envirnment variables
+;; obs: lsp-restart-workspace if change virtualenv 
 (use-package pyvenv
-  :commands pyvenv-activate
+  :commands pyvenv-activate pyvenv-workon
   :config
-  (setq pyvenv-default-virtual-env-name "~/miniconda3/envs/"))
+  (setenv "WORK_HOME" "~/.virtualenvs"))
 
 (use-package c++-mode
   :straight nil
@@ -1225,8 +1226,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package oc-bibtex-actions
   :after (org oc bibtex-actions)
   :general
-  ("C-c b" 'org-cite-insert)
-  ("M-o" 'org-open-at-point))
+  (org-mode-map "C-c b" 'org-cite-insert)
+  (org-mode-mpa "M-o" 'org-open-at-point))
 
 (use-package server
   :straight nil

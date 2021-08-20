@@ -3,11 +3,6 @@
 (advice-add 'package--ensure-init-file :override 'ignore)
 ;; inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
-(setq-default
- load-prefer-newer t
- mode-line-format nil
- package-enable-at-startup nil
- package-native-compile t)
 
 (setq-default
  default-frame-alist
