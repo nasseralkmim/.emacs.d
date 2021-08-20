@@ -1068,7 +1068,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq dap-python-debugger 'debugpy))
 
-;; change python virtual envirnment variables
+;; change python virtual envirnment
 ;; obs: lsp-restart-workspace if change virtualenv 
 (use-package pyvenv
   :commands pyvenv-activate pyvenv-workon
