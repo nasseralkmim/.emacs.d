@@ -873,7 +873,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
   ;; PDF Toll is good when I'm with just one screen
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "Okular"))
+	       '(output-pdf "Evince"))
 
   (defun my-tex-insert-clipboard ()
     (interactive)
@@ -1190,26 +1190,27 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
+;; bibtex backend functions that bibtex-actions use.
+(use-package bibtex-completion)
+
 ;; embark front-end to helm-bibtex
+;; useful to insert citations and open pdf
 (use-package bibtex-actions
   :straight (:includes oc-bibtex-actions)
   :general
-  (:prefix "C-c b" "b" 'bibtex-actions-insert-citation
-	   "r" 'bibtex-actions-refresh)
+  (:prefix "C-c b"
+           "b" 'bibtex-actions-insert-citation
+           "r" 'bibtex-actions-refresh)
   :config
   (setq bibtex-completion-bibliography "~/.bibliography.bib"
 	bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
 	bibtex-completion-pdf-open-function (lambda (fpath)
 					      (call-process "xdg-open" nil 0 nil fpath)))
 
-  ;; windows wsl config
-  (defvar host (substring (shell-command-to-string "hostname") 0 -1))
-  (when (string= host "lt135-c842")
-    (setq bibtex-completion-library-path
-	  "/mnt/c/Users/c8441205/seadrive/Nasser A/My Libraries/PhD/bibliography/pdf/")
+  ;; windows wsl config for opening with default windows pdf reader
+  (when (string-match "-[Mm]icrosoft" operating-system-release)
     (setq bibtex-completion-pdf-open-function
 	  (lambda (fpath) (shell-command (concat
-			    ;; "cmd.exe /C start \"\" " ; this is to use with windows zotero file path (slower)
 			    "wslview "	; version 3.2.1 works with spaces in path
 			    (shell-quote-argument fpath))))))
   
@@ -1221,13 +1222,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; update cache when bib change
   (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
-
-;; bibtex action just for org-mode (from package bibtex-actions)
-(use-package oc-bibtex-actions
-  :after (org oc bibtex-actions)
-  :general
-  (org-mode-map "C-c b" 'org-cite-insert)
-  (org-mode-mpa "M-o" 'org-open-at-point))
 
 (use-package server
   :straight nil
@@ -1373,8 +1367,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
 
+;; citations support in org-mode
 (use-package oc
   :after org
+  :general
+  (org-mode-map "C-c b" 'org-cite-insert)
   :config
   (setq org-cite-global-bibliography '("~/.bibliography.bib")))
 
