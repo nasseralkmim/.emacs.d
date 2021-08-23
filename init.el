@@ -322,7 +322,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
-  (sp-local-pair 'python-mode "'" "'" :trigger "'")
+  (sp-pair "'" "'" :trigger "'")
   (sp-pair "<" ">" :actions :rem)	      ; remove
   (sp-local-pair 'html-mode "<" ">" :trigger "<")
   (setq sp-show-pair-delay 0
