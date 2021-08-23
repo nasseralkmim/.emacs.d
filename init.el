@@ -1046,6 +1046,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("<f5>"  'modus-themes-toggle))
 
+;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
   :defer 1
   :init
