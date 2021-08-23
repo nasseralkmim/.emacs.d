@@ -801,6 +801,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
+  ('normal outline-mode-map "z b" 'outline-show-branches)
+  ('normal outline-mode-map "z t" 'outline-show-subtree)
   ('normal outline-mode-map "z o" 'outline-show-children)
   ('normal outline-mode-map "z h" 'outline-hide-body)
   ('normal outline-mode-map "z a" 'outline-show-all)
