@@ -386,6 +386,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('(normal visual) "] [" 'evil-previous-open-paren)
   ('normal "j" 'evil-next-visual-line)
   ('normal "k" 'evil-previous-visual-line)
+  ('normal "z q" 'evil-scroll-line-to-top)
   ('normal "C-c r" nil)
   :config
   (setq
