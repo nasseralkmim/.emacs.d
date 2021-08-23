@@ -383,6 +383,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal :prefix "SPC" "a" 'evil-append-line)
   ('normal :prefix "SPC" "x s" 'save-buffer)
   ('normal "[ ]" 'evil-next-close-paren)
+  ('normal "] [" 'evil-previous-open-paren)
   ('normal "j" 'evil-next-visual-line)
   ('normal "k" 'evil-previous-visual-line)
   ('normal "C-c r" nil)
