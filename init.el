@@ -363,7 +363,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     "p" 'evil-mc-make-and-goto-prev-match
     "N" 'evil-mc-skip-and-goto-next-match
     "P" 'evil-mc-skip-and-goto-prev-match)
-  :config (global-evil-mc-mode 1))
+  :config
+  (global-evil-mc-mode 1)
+  (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete)))
+        evil-mc-known-commands)
+  )
 
 (use-package evil
   :diminish evil-mode
@@ -524,15 +528,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "s k" 'org-babel-previous-src-block)
   :hook ((org-mode . visual-line-mode))
   :custom
-   (org-hide-emphasis-markers t) ; avoid noisy //,__, **, 
+   (org-hide-emphasis-markers t)        ; avoid noisy //,__, **, 
    (org-startup-indented nil)		; start collapsed
-   (org-startup-folded t)	; folded
-   (org-hide-leading-stars t)	; don't show a  bunch of '*'
+   (org-startup-folded t)               ; folded in "overview" state
+   (org-hide-leading-stars t)           ; don't show a  bunch of '*'
    (org-edit-src-content-indentation 0)
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
-   (org-special-ctrl-a/e t)	     ; when jump to beginning of line be aware of *
-   (org-cycle-separator-lines 0)	; no empty lines between headings
+   (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
+   (org-cycle-separator-lines 0)  ; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
    (org-insert-heading-respect-content t) ; insert heading after current tree
    (org-src-tab-acts-natively t)
@@ -798,6 +802,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ('normal outline-mode-map "z o" 'outline-show-children)
   ('normal outline-mode-map "z h" 'outline-hide-body)
+  ('normal outline-mode-map "z a" 'outline-show-all)
   ('normal outline-mode-map "<tab>" 'outline-cycle)
   ('normal outline-mode-map "z k" 'outline-previous-visible-heading)
   :config

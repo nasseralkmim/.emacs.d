@@ -27,7 +27,7 @@
  (front-context-string . "(defvar my-start")
  (rear-context-string)
  (position . 1))
-("nasser-website"
+("website"
  (filename . "~/OneDrive/nasser-website/")
  (front-context-string . "content\n  drwxrw")
  (rear-context-string . " Jun 17 11:16   ")
