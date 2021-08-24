@@ -1217,14 +1217,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; embark front-end to helm-bibtex
 ;; useful to insert citations and open pdf
 (use-package bibtex-actions
-  :after embark
   :straight (:includes oc-bibtex-actions)
   :general
   (:prefix "C-c b"
            "b" 'bibtex-actions-insert-citation
            "r" 'bibtex-actions-refresh)
   :config
-  (setq bibtex-actions-bibliography "~/.bibliography.bib"
+  (setq bibtex-completion-bibliography "~/.bibliography.bib"
 	bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
 	bibtex-completion-pdf-open-function (lambda (fpath)
 					      (call-process "xdg-open" nil 0 nil fpath)))
