@@ -5,9 +5,9 @@
 ;; development branch of straight
 (setq straight-repository-branch "develop")
 
-;; Bootstrap straight.el
+;; bootstrap straight.el
 ;; straight automatically checks if it needs to be rebuilt
-;; straight generate also automatically generate autoloads 
+;; straight generates autoloads 
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -21,7 +21,7 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; install use-package
+;; install `use-package`
 ;; `alway-defer` means that for a package to load, or there is a hook or bind
 ;; if there is none, need to explicitly add `:demand` to load the package
 ;; can also load with `:defer time`
@@ -31,21 +31,21 @@
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
-;; Install package with same name expect specified otherwise
+;; install package with same name expect specified otherwise
 ;; use-package expands to straight-use-package (excepts when :straight nil)
 (setq straight-use-package-by-default t)
 
-;;; Prevent Emacs-provided Org from being loaded
+;; prevent Emacs-provided Org from being loaded
 (straight-register-package 'org)
 (straight-register-package 'org-contrib)
 
-;; General for kybinding
+;; general for kybinding
 (use-package general
   :demand)
 (use-package diminish
   :demand)
 
-;; Minimizes GC interferecen with user activity
+;; minimizes GC interferecen with user activity
 (use-package gcmh
   :diminish gcmh-mode
   :init
@@ -53,7 +53,7 @@
 	gcmh-high-cons-threshold (* 16 1024 1024)) 
   (gcmh-mode 1))
 
-;; Basics and better default
+;; basics and better default
 (use-package emacs
   :straight nil
   :general
@@ -71,7 +71,7 @@
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
   
-  ;; Setting typefaces
+  ;; setting typefaces
   (defun zoom-frame (&optional amt frame)
     "Increaze FRAME font size by amount AMT. Defaults to selected
 frame if FRAME is nil, and to 1 if AMT is nil."
@@ -115,7 +115,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq backup-directory-alist `(("." . "~/.saves")))
   (setq create-lockfiles nil)		; files with # problem with onedrive...
 
-  ;; Answering just 'y' or 'n' will do
+  ;; answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
   (if (display-graphic-p)
@@ -134,7 +134,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    kill-buffer-query-functions nil ; don't ask if it is ok to kill a process when killing a buffer
    )
 
-  ;; Do not allow the cursor in the minibuffer prompt
+  ;; do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
 	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
