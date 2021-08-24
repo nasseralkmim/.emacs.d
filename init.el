@@ -5,8 +5,9 @@
 ;; development branch of straight
 (setq straight-repository-branch "develop")
 
-;; Bootstrap straight.el.
-;; straight automatically checks if it needs to be rebuilt.
+;; Bootstrap straight.el
+;; straight automatically checks if it needs to be rebuilt
+;; straight generate also automatically generate autoloads 
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -20,7 +21,10 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-;; Install use-package macros.
+;; install use-package
+;; `alway-defer` means that for a package to load, or there is a hook or bind
+;; if there is none, need to explicitly add `:demand` to load the package
+;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
       use-package-compute-statistics nil; compute statistics about package initialization
@@ -271,6 +275,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `live` works like a completion narrowing that Vertico does 
 ;; `export` the set of targets are shown in an appropriate major-mode
 (use-package embark
+  :demand                               ; load it independently of bind and hook
   :general
   ("C-S-a" 'embark-act)
   ("C-S-z" 'embark-dwim)
@@ -1204,19 +1209,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-;; bibtex backend functions that bibtex-actions use.
-(use-package bibtex-completion)
+;; backend for bibtex-action
+;; straight create proper autoloads for it
+(use-package bibtex-completion
+  :demand)
 
 ;; embark front-end to helm-bibtex
 ;; useful to insert citations and open pdf
 (use-package bibtex-actions
+  :after embark
   :straight (:includes oc-bibtex-actions)
   :general
   (:prefix "C-c b"
            "b" 'bibtex-actions-insert-citation
            "r" 'bibtex-actions-refresh)
   :config
-  (setq bibtex-completion-bibliography "~/.bibliography.bib"
+  (setq bibtex-actions-bibliography "~/.bibliography.bib"
 	bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
 	bibtex-completion-pdf-open-function (lambda (fpath)
 					      (call-process "xdg-open" nil 0 nil fpath)))
@@ -1229,10 +1237,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 			    (shell-quote-argument fpath))))))
   
   ;; make the 'bibtex-actions' bindings available from `embark-act'.
-  (with-eval-after-load 'embark
-    (add-to-list 'embark-target-finders 'bibtex-actions-citation-key-at-point)
-    (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map))
-    (add-to-list 'embark-keymap-alist '(citation-key . bibtex-actions-buffer-map)))
+  (add-to-list 'embark-target-finders 'bibtex-actions-citation-key-at-point)
+  (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map))
+  (add-to-list 'embark-keymap-alist '(citation-key . bibtex-actions-buffer-map))
 
   ;; update cache when bib change
   (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
