@@ -57,6 +57,7 @@
   ("<backtab>" 'previous-window-any-frame)
   ("C-c w" 'shrink-window)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
+  ("C-M-e" 'eval-defun)
   ("C-h j" 'describe-keymap)
   ("C-M-=" 'zoom-frame)
   ("C-M--" 'zoom-frame-out)
@@ -322,7 +323,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
-  (sp-pair "'" "'" :trigger "'")
+  (sp-pair "'" "'")
   (sp-pair "<" ">" :actions :rem)	      ; remove
   (sp-local-pair 'html-mode "<" ">" :trigger "<")
   (setq sp-show-pair-delay 0
@@ -543,6 +544,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-insert-heading-respect-content t) ; insert heading after current tree
    (org-src-tab-acts-natively t)
    (org-catch-invisible-edits 'smart)
+   (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
   :config
   (transient-mark-mode -1)
 
@@ -1056,6 +1058,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (auto-dim-other-buffers-mode t))
 
+;; syntax highlight in html export of org-mode source blocks
+;; does not work well with modus-themes and tree-sitter
 (use-package htmlize)
 
 ;; `:includes` so straight can recognize dap-python.el and dap-cpptools
