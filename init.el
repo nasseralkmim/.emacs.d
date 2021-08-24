@@ -22,8 +22,8 @@
   (load bootstrap-file nil 'nomessage))
 
 ;; install `use-package`
-;; `alway-defer` means that for a package to load, or there is a hook or bind
-;; if there is none, need to explicitly add `:demand` to load the package
+;; `alway-defer` means that for a package to load we need a `:hook` or using a `:general` keybinding 
+;; if there is none, we need to explicitly add `:demand` to load the package
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
@@ -55,7 +55,7 @@
 
 ;; basics and better default
 (use-package emacs
-  :straight nil
+  :straight (:type built-in)
   :general
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
@@ -146,7 +146,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    window-combination-resize t)) ; resize windows proportionaly
 
 (use-package abbrev
-  :straight nil
+  :straight (:type built-in)
   :config
   ;; abbrev for speed and less strain
   (setq-default abbrev-mode t)
@@ -524,7 +524,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package org-contrib)
 
 (use-package org
-  :straight (:includes (org-id oc ob))
+  :straight (:includes (org-id oc ob org-clock org-src org-agenda ox-latex ob-shell))
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -600,7 +600,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode-map "C-c =" 'jupyter-org-hydra/body))
 
 (use-package org-clock
-  :straight nil
   :general
   ('normal org-mode-map :prefix "z x"
 	   "i" 'org-clock-in
@@ -617,7 +616,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	org-duration-format (quote h:mm)))
 
 (use-package org-src
-  :straight nil
   :general
   ('normal org-mode-map "z e" 'org-edit-special)
   ('normal org-src-mode-map "z e" 'org-edit-src-exit)
@@ -636,7 +634,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package org-agenda
   :after org
-  :straight nil
   :config
   (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
 				 "~/OneDrive/Org/notes.org"
@@ -645,7 +642,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package ox-latex
   :after org
-  :straight nil
   :config
   ;; change scale of latex preview in org-mode
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
@@ -679,7 +675,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq ob-async-no-async-languages-alist '("python" "jupyter-python")))
 
 (use-package ob-shell
-  :straight nil
   :after org
   :config
   (setq org-babel-default-header-args:shell
@@ -799,9 +794,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; folding
 (use-package outline
+  :straight (:type built-in)
   :diminish outline-minor-mode
-  :demand				; don't autoload, just load it.
-  :straight nil
   :hook
   (prog-mode . outline-minor-mode)
   (markdown-mode . outline-minor-mode)
@@ -941,7 +935,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq reftex-trust-label-prefix '("fig:" "eq:")))
 
 (use-package dired
-  :straight nil
+  :straight (:type built-in)
   :commands dired
   :hook (dired-mode . dired-hide-details-mode)
   :general
@@ -1095,7 +1089,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setenv "WORK_HOME" "~/.virtualenvs"))
 
 (use-package c++-mode
-  :straight nil
+  :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :general
   (c++-mode-map "C-x c" 'compile))
@@ -1244,7 +1238,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
 
 (use-package server
-  :straight nil
+  :straight (:type built-in)
   :demand
   :config (or (server-running-p)
 	    (server-start)))
@@ -1280,7 +1274,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; browser the web inside emacs
 (use-package eww
-  :straight nil
+  :straight (:type built-in)
   :general
   ("<f12>" 'eww)
   :hook (eww-mode-hook . (lambda () (eww-readable)))
@@ -1359,7 +1353,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; built in windows resize functions
 (use-package window
-  :straight nil
+  :straight (:type built-in)
   :general
   (resize-window-repeat-map "j" 'shrink-window)
   (resize-window-repeat-map "k" 'enlarge-window)
@@ -1409,14 +1403,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; emacs built in version control
 (use-package vc-git
-  :straight nil
+  :straight (:type built-in)
   :hook
   (diff-mode . outline-minor-mode)
   (vc-git-region-history-mode . outline-minor-mode))
 
 ;; manage remote files access and manipulations
 (use-package tramp
-  :straight nil
+  :straight (:type built-in)
   :config
   (setq tramp-default-method "ssh"
 	tramp-default-host "138.232.83.174"
