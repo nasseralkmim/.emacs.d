@@ -746,6 +746,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; flyspell uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
 (use-package flyspell-lazy
+  :if (string-match "-[Mm]icrosoft" operating-system-release)
   :hook
   (flyspell-mode . flyspell-lazy-mode)
   :config
