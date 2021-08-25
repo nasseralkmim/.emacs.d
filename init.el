@@ -453,6 +453,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
 	evil-collection-company-use-tng nil) ; makes company works betters I think
+  ;; remove `zk` binding, I prefer to use it to go up a heading
+  (evil-define-minor-mode-key 'normal 'outline-minor-mode "zk" nil)
   (evil-collection-init))
 
 ;; navigation: gh, gj, gk, gl
@@ -800,16 +802,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (prog-mode . outline-minor-mode)
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
+  (LaTeX-mode . outline-minor-mode)
+  (org-mode . outline-minor-mode)
   :general
-  ('normal outline-mode-map "C-j" nil)
-  ('normal outline-mode-map "z j" 'outline-next-visible-heading)
-  ('normal outline-mode-map "z b" 'outline-show-branches)
-  ('normal outline-mode-map "z t" 'outline-show-subtree)
-  ('normal outline-mode-map "z o" 'outline-show-children)
-  ('normal outline-mode-map "z h" 'outline-hide-body)
-  ('normal outline-mode-map "z a" 'outline-show-all)
-  ('normal outline-mode-map "<tab>" 'outline-cycle)
-  ('normal outline-mode-map "z k" 'outline-previous-visible-heading)
+  ('normal outline-minor-mode-map "C-j" nil)
+  ('normal outline-minor-mode-map "z j" 'outline-next-visible-heading)
+  ('normal outline-minor-mode-map "z b" 'outline-show-branches)
+  ('normal outline-minor-mode-map "z t" 'outline-show-subtree)
+  ('normal outline-minor-mode-map "z o" 'outline-show-children)
+  ('normal outline-minor-mode-map "z h" 'outline-hide-body)
+  ('normal outline-minor-mode-map "z a" 'outline-show-all)
+  ('normal outline-minor-mode-map "<tab>" 'outline-cycle)
+  ('normal outline-minor-mode-map "z k" 'outline-previous-visible-heading)
   :config
   (setq outline-minor-mode-cycle t
 	outline-minor-mode-highlight 'append))  
