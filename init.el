@@ -747,7 +747,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; this uses `idle-timers`
 (use-package flyspell-lazy
   :hook
-  (flyspell-mode . flyspell-lazy-mode))
+  (flyspell-mode . flyspell-lazy-mode)
+  :config
+  (setq flyspell-lazy-idle-seconds 1))
 
 (use-package flyspell-correct
   :general
@@ -891,15 +893,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (defun my-tex-insert-clipboard ()
     (interactive)
+    (if (string-match "-[Mm]icrosoft" operating-system-release)
+      (setq convert-program "convert.exe")
+      (setq convert-program "import"))
     (setq folder-path (concat default-directory "img/"));make the img directory
 					;create the directory if it doesn't exist
     (if (not (file-exists-p folder-path))
 	(mkdir folder-path))
     ;; correct path to use convert.exe inside wsl and create file
-    (setq wsl-folder-path (replace-regexp-in-string "\n\\'" ""
-						(shell-command-to-string (concat "wslpath -w "
-										 folder-path))))
-
+    (if (string-match "-[Mm]icrosoft" operating-system-release)
+      (setq wsl-folder-path (replace-regexp-in-string "\n\\'" ""
+                                                      (shell-command-to-string (concat "wslpath -w "
+                                                                                       folder-path))))
+      (setq wsl-folder-path folder-path)) 
     (setq image-path (concat wsl-folder-path
 			     "\\img_"
 			     (format-time-string "%Y%m%d_%H%M%S_.png")))
@@ -907,7 +913,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 			"img/img_"
 			(format-time-string "%Y%m%d_%H%M%S_.png")))
 	   (exit-status
-	    (call-process "convert.exe" nil nil nil
+	    (call-process convert-program nil nil nil
 			  "clipboard:" image-path)))
       (insert (format "
 \\begin{figure}[ht!]
