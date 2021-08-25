@@ -1351,14 +1351,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package repeat
   :straight (:type built-in)
-  :demand
-  :config
+  :init
   ;; built-in command repeater (like hydra)
   (repeat-mode t))
 
 ;; built in windows resize functions
 (use-package window
   :straight (:type built-in)
+  :demand
   :general
   (resize-window-repeat-map "j" 'shrink-window)
   (resize-window-repeat-map "k" 'enlarge-window)
