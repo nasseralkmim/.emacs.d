@@ -894,9 +894,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (defun my-tex-insert-clipboard ()
     (interactive)
-    (if (string-match "-[Mm]icrosoft" operating-system-release)
-      (setq convert-program "convert.exe")
-      (setq convert-program "import"))
     (setq folder-path (concat default-directory "img/"));make the img directory
 					;create the directory if it doesn't exist
     (if (not (file-exists-p folder-path))
@@ -908,14 +905,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                                                                        folder-path))))
       (setq wsl-folder-path folder-path)) 
     (setq image-path (concat wsl-folder-path
-			     "\\img_"
+                             ;; wsl adjustment :/
+			     (if (string-match "-[Mm]icrosoft" operating-system-release)
+                                 "\\img_"
+                               "\img_")
 			     (format-time-string "%Y%m%d_%H%M%S_.png")))
     (let* ((image-file (concat 
 			"img/img_"
 			(format-time-string "%Y%m%d_%H%M%S_.png")))
 	   (exit-status
-	    (call-process convert-program nil nil nil
-			  "clipboard:" image-path)))
+            ;; for wsl to use windows imagemagick :/
+            (if (string-match "-[Mm]icrosoft" operating-system-release)
+                (call-process "convert.exe" nil nil nil
+                              "clipboard:" image-path)
+              (call-process "import" nil nil nil image-path))))
       (insert (format "
 \\begin{figure}[ht!]
   \\centering
