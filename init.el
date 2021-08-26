@@ -1218,9 +1218,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :mode ("\\.yaml\\'" . yaml-mode))
 
 ;; backend for bibtex-action
-;; straight create proper autoloads for it
-(use-package bibtex-completion
-  :demand)
+;; auto defer and straight creates proper autoloads
+(use-package bibtex-completion)
+
+(use-package citeproc)
 
 ;; embark front-end to helm-bibtex
 ;; useful to insert citations and open pdf
@@ -1250,6 +1251,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; update cache when bib change
   (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
+
+;; bibtex actions on org cite targets
+(use-package oc-bibtex-actions
+  :after org bibtex-actions
+  :demand)
 
 (use-package server
   :straight (:type built-in)
