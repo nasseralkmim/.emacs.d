@@ -976,35 +976,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
 
-(use-package treemacs-icons-dired
-  :hook (dired-mode . treemacs-icons-dired-mode)
-  :config 
-  (treemacs-resize-icons 12))
-
-(use-package treemacs
-  :disabled 				; using dired and bookmarks
-  :straight (:includes treemacs-icons-dired)
-  :config
-  (setq
-   treemacs-git-mode nil
-   treemacs-sorting 'mod-time-desc ; modified early
-   treemacs-is-never-other-window t
-   treemacs-width 25)
-  (treemacs-follow-mode t)
-  (treemacs-filewatch-mode t)
-  (treemacs-fringe-indicator-mode 'always)
+;; open dired as a sidebar
+(use-package dired-sidebar
   :general
-  (treemacs-mode-map "C-<return>" 'treemacs-display-current-project-exclusively)
-  (treemacs-mode-map "<f8>" 'treemacs-quit)
-  ("<f8>" 'treemacs-select-window))
+  ("<f7>" 'dired-sidebar-toggle-sidebar))
 
-(use-package treemacs-evil
-  :after treemacs evil
-  :general
-  (treemacs-mode-map :prefix "<treemacs-state>"
-		     "h" 'treemacs-root-up
-		     "l" 'treemacs-root-down)
-  :demand)
+;; icons for dired
+(use-package all-the-icons-dired
+  :custom (all-the-icons-dired-monochrome nil)
+  :hook (dired-mode . all-the-icons-dired-mode))
 
 (use-package doom-themes
   :disabled
