@@ -1472,25 +1472,3 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (define-key evil-inner-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.inner")))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-agenda-files nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(evil-goggles-change-face ((t (:inherit diff-removed))))
- '(evil-goggles-delete-face ((t (:inherit diff-removed))))
- '(evil-goggles-paste-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
- '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
- '(evil-goggles-yank-face ((t (:inherit diff-changed))))
- '(font-latex-sectioning-2-face ((t (:underline t :weight bold))))
- '(font-latex-sectioning-3-face ((t (:weight bold))))
- '(font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
- '(font-latex-sectioning-5-face ((t (:weight normal :slant italic)))))
