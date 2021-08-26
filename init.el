@@ -494,10 +494,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :defer 1
   :diminish beacon-mode
   :config
-  (setq beacon-blink-delay .5)
-  (setq beacon-size 8)
+  (setq beacon-blink-delay 0)
+  (setq beacon-size 40)
   (setq beacon-blink-when-focused t)
-  (setq beacon-blink-duration .5)
+  (setq beacon-blink-duration .3)
   (setq beacon-blink-when-window-scrolls nil)
   (beacon-mode 1))
 
