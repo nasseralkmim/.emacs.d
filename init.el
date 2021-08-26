@@ -591,7 +591,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 					       (:results . "output")
 					       (:exports . "both")))
   (setq jupyter-org-resource-directory "./jupyter/")
-  (setq org-image-actual-width '(350))
+  (setq org-image-actual-width t)
 
   ;; display/update images in the buffer after I evaluate 
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
@@ -720,11 +720,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode-map "C-M-y" 'org-download-screenshot)
   :config
   (setq
-   ;; choco install imagemagick.app -PackageParameters LegacySupport=true
-   org-download-screenshot-method "imagemagick/convert"
    org-download-image-dir "./images"
    org-download-image-html-width 350)
-  (setq org-download-screenshot-method "convert.exe clipboard: %s") ; add .exe to work within wsl2
+  ;; for wsl
+  (when (string-match "-[Mm]icrosoft" operating-system-release)
+    (setq org-download-screenshot-method "convert.exe clipboard: %s")) ; add .exe to work within wsl2
+  
   (setq org-download-screenshot-file "./screenshot.png")) ; where temporary screenshot will be saved so convert can work
 
 ;; languages spell checker
@@ -979,7 +980,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; open dired as a sidebar
 (use-package dired-sidebar
   :general
-  ("<f7>" 'dired-sidebar-toggle-sidebar))
+  ("C-x C-j" 'dired-sidebar-toggle-sidebar))
 
 ;; icons for dired
 (use-package all-the-icons-dired
@@ -1234,7 +1235,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; bibtex actions on org cite targets
 (use-package oc-bibtex-actions
-  :after org bibtex-actions
+  :after org
   :demand)
 
 (use-package server
