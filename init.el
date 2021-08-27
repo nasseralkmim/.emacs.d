@@ -891,7 +891,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
   ;; PDF Toll is good when I'm with just one screen
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "Evince"))
+	       '(output-pdf "Zathura"))
 
   (defun my-tex-insert-clipboard ()
     (interactive)
@@ -980,7 +980,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; open dired as a sidebar
 (use-package dired-sidebar
   :general
-  ("C-x C-j" 'dired-sidebar-toggle-sidebar))
+  ("C-x C-j" 'dired-sidebar-toggle-sidebar)
+  ('normal dired-sidebar-mode-map
+           "l" 'dired-sidebar-find-file
+           "h" 'dired-sidebar-up-directory))
 
 ;; icons for dired
 (use-package all-the-icons-dired
