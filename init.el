@@ -1205,45 +1205,26 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-;; backend for bibtex-action
-;; auto defer and straight creates proper autoloads
-(use-package bibtex-completion)
-
-(use-package citeproc)
-
-;; embark front-end to helm-bibtex
-;; useful to insert citations and open pdf
-(use-package bibtex-actions
-  :straight (:includes oc-bibtex-actions)
+;; search bibtex bibliography with consult
+(use-package consult-bibtex
+  :straight (consult-bibtex :host github :repo "mohkale/consult-bibtex")
   :general
-  (:prefix "C-c b"
-           "b" 'bibtex-actions-insert-citation
-           "r" 'bibtex-actions-refresh)
+  ("C-c b" 'consult-bibtex)
   :config
+  (with-eval-after-load 'embark
+    (add-to-list 'embark-keymap-alist '(bibtex-completion . consult-bibtex-embark-map)))
+
   (setq bibtex-completion-bibliography "~/.bibliography.bib"
-	bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
-	bibtex-completion-pdf-open-function (lambda (fpath)
-					      (call-process "xdg-open" nil 0 nil fpath)))
+        bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
+        bibtex-completion-pdf-open-function (lambda (fpath)
+                                              (call-process "xdg-open" nil 0 nil fpath)))
 
   ;; windows wsl config for opening with default windows pdf reader
   (when (string-match "-[Mm]icrosoft" operating-system-release)
     (setq bibtex-completion-pdf-open-function
-	  (lambda (fpath) (shell-command (concat
-			    "wslview "	; version 3.2.1 works with spaces in path
-			    (shell-quote-argument fpath))))))
-  
-  ;; make the 'bibtex-actions' bindings available from `embark-act'.
-  (add-to-list 'embark-target-finders 'bibtex-actions-citation-key-at-point)
-  (add-to-list 'embark-keymap-alist '(bibtex . bibtex-actions-map))
-  (add-to-list 'embark-keymap-alist '(citation-key . bibtex-actions-buffer-map))
-
-  ;; update cache when bib change
-  (bibtex-actions-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
-
-;; bibtex actions on org cite targets
-(use-package oc-bibtex-actions
-  :after org
-  :demand)
+          (lambda (fpath) (shell-command (concat
+                                          "wslview "	; version 3.2.1 works with spaces in path
+                                          (shell-quote-argument fpath)))))))
 
 (use-package server
   :straight (:type built-in)
