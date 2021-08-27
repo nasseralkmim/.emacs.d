@@ -591,7 +591,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 					       (:results . "output")
 					       (:exports . "both")))
   (setq jupyter-org-resource-directory "./jupyter/")
-  (setq org-image-actual-width t)
+  (setq org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
 
   ;; display/update images in the buffer after I evaluate 
   (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
