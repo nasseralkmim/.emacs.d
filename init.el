@@ -983,12 +983,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-x C-j" 'dired-sidebar-toggle-sidebar)
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file
-           "h" 'dired-sidebar-up-directory))
+           "h" 'dired-sidebar-up-directory)
+  :custom
+  (dired-sidebar-theme 'vscode)
+  (dired-sidebar-use-custom-font t))
 
-;; icons for dired
-(use-package all-the-icons-dired
-  :custom (all-the-icons-dired-monochrome nil)
-  :hook (dired-mode . all-the-icons-dired-mode))
+;; icons for dired sidebar
+(use-package vscode-icon
+  :commands (vscode-icon-for-file)
+  :custom
+  (vscode-icon-size 15))
 
 (use-package doom-themes
   :disabled
