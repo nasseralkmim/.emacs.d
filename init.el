@@ -971,16 +971,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; kill the dired buffer eand enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil))
 
-;; subtree folder expansion
-(use-package dired-subtree
-  :after dired treemacs-icons-dired
-  :general
-  ('normal dired-mode-map "<tab>" 'dired-subtree-toggle))
-
 ;; open dired as a sidebar
 (use-package dired-sidebar
   :general
   ("C-x C-j" 'dired-sidebar-toggle-sidebar)
+  ("C-x j" 'dired-sidebar-jump-to-sidebar)
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file
            "h" 'dired-sidebar-up-directory)
