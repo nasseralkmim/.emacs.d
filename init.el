@@ -1221,6 +1221,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                           "wslview "	; version 3.2.1 works with spaces in path
                                           (shell-quote-argument fpath)))))))
 
+;; search bibliography by keyword or doi
+;; helm-bibtex dependency
+(use-package biblio
+  :commands biblio-lookup)
+
 (use-package server
   :straight (:type built-in)
   :demand
