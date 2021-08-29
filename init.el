@@ -324,12 +324,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
   (org-mode . smartparens-mode)
-  (smartparens-mode . smartparens-strict-mode)
+  (smartparens-mode . smartparens-strict-mode) ; enforce pairs to be balanced
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   (sp-local-pair 'latex-mode "$" "$" :trigger "$")
-  (sp-pair "'" "'")
-  (sp-pair "<" ">" :actions :rem)	      ; remove
+  (sp-pair "<" nil :actions :rem)	      ; not good for math symbols 
+  (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil) ; disable ' in elisp
   (sp-local-pair 'html-mode "<" ">" :trigger "<")
   (setq sp-show-pair-delay 0
 	sp-show-pair-from-inside t))
@@ -1017,6 +1017,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (load-theme theme 'no-confirm)))
 
 (use-package modus-themes
+  :hook (org-mode . (lambda () (modus-themes-load-operandi)))
   :config
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
@@ -1201,6 +1202,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :mode ("\\.yaml\\'" . yaml-mode))
 
 ;; search bibtex bibliography with consult
+;; depends on helm-bibtex
 (use-package consult-bibtex
   :straight (consult-bibtex :host github :repo "mohkale/consult-bibtex")
   :general
@@ -1427,6 +1429,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . tree-sitter-mode)
   (python-mode . tree-sitter-hl-mode))
 
+;; langage bundle for `tree-sitter`
 (use-package tree-sitter-langs
   :after tree-sitter
   :demand)
