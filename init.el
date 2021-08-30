@@ -974,8 +974,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; open dired as a sidebar
 (use-package dired-sidebar
   :general
-  ("C-x C-j" 'dired-sidebar-toggle-sidebar)
-  ("C-x j" 'dired-sidebar-jump-to-sidebar)
+  ("C-x j" 'dired-sidebar-toggle-sidebar)
+  ("C-x C-j" 'dired-sidebar-show-sidebar)
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file
            "h" 'dired-sidebar-up-directory)
