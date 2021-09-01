@@ -891,7 +891,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
   ;; PDF Toll is good when I'm with just one screen
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "Zathura"))
+	       '(output-pdf "Okular"))
 
   (defun my-tex-insert-clipboard ()
     (interactive)
@@ -1376,7 +1376,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package oc
   :after org
   :general
-  (org-mode-map "C-c b" 'org-cite-insert)
+  (org-mode-map "C-c C-b" 'org-cite-insert)
   :config
   (setq org-cite-global-bibliography '("~/.bibliography.bib")))
 
