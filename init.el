@@ -867,7 +867,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq reftex-plug-into-AUCTeX t)
   (setq TeX-PDF-mode t)			; output pdf 
   (setq TeX-electric-escape t)
-  (setq global-font-lock-mode t)
 
   (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
   
