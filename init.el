@@ -1016,7 +1016,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (load-theme theme 'no-confirm)))
 
 (use-package modus-themes
-  :hook (org-mode . (lambda () (modus-themes-load-operandi)))
   :config
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
