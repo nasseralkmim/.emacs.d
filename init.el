@@ -27,7 +27,7 @@
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil; compute statistics about package initialization
+      use-package-compute-statistics t; compute statistics about package initialization
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
@@ -275,7 +275,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `live` works like a completion narrowing that Vertico does 
 ;; `export` the set of targets are shown in an appropriate major-mode
 (use-package embark
-  :demand                               ; load it independently of bind and hook
+  ;; :demand                               ; load it independently of bind and hook
   :general
   ("C-S-a" 'embark-act)
   ("C-S-z" 'embark-dwim)
