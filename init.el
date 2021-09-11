@@ -27,7 +27,7 @@
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics t; compute statistics about package initialization
+      use-package-compute-statistics nil; compute statistics about package initialization
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
@@ -561,7 +561,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 			   :complete (lambda ()
 				       (concat "{{% ref \""
 					       (file-relative-name (read-file-name "File: "))
-					       "\" %}}"))))
+					       "\" %}}")))
+
+  ;; remove org-cycle-hide-drawers from cycle hook
+  (setq org-cycle-hook
+        '(org-cycle-hide-archived-subtrees
+          org-cycle-show-empty-lines
+          org-optimize-window-after-visibility-change)))
 
 (use-package ox-extra
   :after org
