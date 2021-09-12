@@ -216,7 +216,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; partial completion for files to allows path expansion
   (setq completion-styles '(orderless)
         completion-category-defaults nil
-        completion-category-overrides '((file (styles . (partial-completion))))))
+        read-file-name-completion-ignore-case t
+        completion-category-overrides '((file (styles . (partial-completion)))
+                                        ;; navigate files with initials
+                                        (minibuffer (initials)))))
 
 ;; save the search history
 (use-package savehist
