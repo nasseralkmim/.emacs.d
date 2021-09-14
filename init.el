@@ -208,7 +208,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-r" 'vertico-repeat))
 
 ;; completion style with flexible candidate filtering
-;; filter with space separated components and match components in any order
+;; filter with space-separated components and match components in any order
 (use-package orderless
   :after vertico
   :demand
@@ -770,9 +770,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space between filter words (combined with oderless)
 (use-package corfu
-  :disabled
-  :hook ((prog-mode . corfu-mode)
-	 (org-mode . corfu-mode))
+  :hook
+  (prog-mode . corfu-mode)
+  (org-mode . corfu-mode)
+  (LaTeX-mode . corfu-mode)
   :general
   (corfu-map "<tab>" 'corfu-next
 	     "<backtab>" 'corfu-previous
@@ -786,8 +787,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
+;; completion any text based on buffer contents
+(use-package dabbrev
+  :general
+  ("M-/" 'dabbrev-completion)           ; this can be completed with corfu
+  ("C-M-/" 'dabbrev-expand))
+
 ;; completion in region
 (use-package company
+  :disabled
   :diminish company-mode
   :hook
   (prog-mode . company-mode)
