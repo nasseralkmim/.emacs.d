@@ -791,7 +791,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package dabbrev
   :general
   ("M-/" 'dabbrev-completion)           ; this can be completed with corfu
-  ("C-M-/" 'dabbrev-expand))
+  ("C-M-/" 'dabbrev-expand)
+  :config
+  ;; don't change case
+  (setq dabbrev-case-replace nil))
 
 ;; completion in region
 (use-package company
@@ -1054,6 +1057,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	      (progn 
 		(set-face-attribute 'auto-dim-other-buffers-face nil
 				    :foreground (modus-themes-color 'fg-inactive))
+                (set-face-attribute 'font-latex-sectioning-1-face nil
+                                    :foreground (modus-themes-color 'fg-alt))
+                (set-face-attribute 'font-latex-sectioning-2-face nil
+                                    :foreground (modus-themes-color 'fg-special-warm))
+                (set-face-attribute 'font-latex-sectioning-3-face nil
+                                    :foreground (modus-themes-color 'fg-special-cold))
 		(set-face-attribute 'sp-show-pair-match-content-face nil
 				    :background (modus-themes-color 'bg-paren-expression)))))
 
