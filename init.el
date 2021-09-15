@@ -1051,14 +1051,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-fringes 'subtle
 	modus-themes-mode-line '(borderless accented moody))
 
-  ;; hook to enforce change when theme is toggled
+  ;; hook to enforce change when theme is toggled (which loads the theme)
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (progn 
 		(set-face-attribute 'auto-dim-other-buffers-face nil
-				    :foreground (modus-themes-color 'fg-inactive))
+                                    :foreground (modus-themes-color 'fg-inactive))
 		(set-face-attribute 'sp-show-pair-match-content-face nil
-				    :background (modus-themes-color 'bg-paren-expression)))))
+                                    :background (modus-themes-color 'bg-paren-expression)))))
 
   ;; runs the hook
   (if (display-graphic-p)
