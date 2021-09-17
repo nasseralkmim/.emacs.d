@@ -993,14 +993,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; open dired as a sidebar
 (use-package dired-sidebar
   :general
-  ("C-x j" 'dired-sidebar-toggle-sidebar)
-  ("C-x C-j" 'dired-sidebar-show-sidebar)
+  ("C-x C-j" 'dired-sidebar-jump)
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file
            "h" 'dired-sidebar-up-directory)
   :custom
   (dired-sidebar-theme 'vscode)
-  (dired-sidebar-use-custom-font t))
+  (dired-sidebar-use-custom-font t)
+  :config
+  (defun dired-sidebar-jump ()
+    (interactive)
+    (dired-sidebar-show-sidebar)
+    (dired-sidebar-jump-to-sidebar)))
 
 ;; icons for dired sidebar
 (use-package vscode-icon
