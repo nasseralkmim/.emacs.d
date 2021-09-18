@@ -189,7 +189,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 				       "extensions/vertico-directory.el"
 				       "extensions/vertico-repeat.el"))
   :init
-  (vertico-mode))
+  (vertico-mode)
+  :config
+  (setq vertico-resize 'fixed))
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
@@ -1133,11 +1135,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq lsp-keymap-prefix "C-l")
   (setq read-process-output-max (* 1024 1024))
-  :hook ((python-mode . lsp-deferred)
-	 (c++-mode . lsp-deferred)
-	 (lsp-mode . lsp-enable-which-key-integration))
+  :hook
+  (python-mode . lsp-deferred)
+  (c++-mode . lsp-deferred)
+  (lsp-mode . lsp-enable-which-key-integration)
   :config
-  (setq lsp-idle-delay 1
+  (setq lsp-idle-delay 0.5
 	lsp-enable-folding nil		;potential to be slow
 	lsp-enable-text-document-color nil ;potential to be slow
 	lsp-keep-workspace-alive nil; terminate server if last workspace buffer is closed
@@ -1463,8 +1466,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; langage bundle for `tree-sitter`
 (use-package tree-sitter-langs
-  :after tree-sitter
-  :demand)
+  :demand                               ; require it after loading tree-sitter
+  :after tree-sitter)
 
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-treesitter
