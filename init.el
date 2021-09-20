@@ -1002,6 +1002,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom
   (dired-sidebar-theme 'vscode)
   (dired-sidebar-use-custom-font t)
+  (dired-sidebar-one-instance-p t)      ; just one buffer is enough
   :config
   (defun dired-sidebar-jump ()
     (interactive)
