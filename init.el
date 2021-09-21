@@ -1485,4 +1485,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (define-key evil-outer-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.outer"))
   (define-key evil-inner-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.inner")))
 
+(use-package hide-comnt
+  :commands hide/show-comments-toggle)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
