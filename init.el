@@ -848,6 +848,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face 
+  (font-latex-sectioning-1-face ((t (:weight bold :slant italic))))
   (font-latex-sectioning-2-face ((t (:underline t :weight bold))))
   (font-latex-sectioning-3-face ((t (:weight bold))))
   (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
@@ -864,18 +865,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "c" 'preview-clearout-buffer
 	   "s" 'preview-section
 	   "p" 'preview-at-point)
+  :hook
+  (LaTeX-mode . (lambda ()
+                  (prettify-symbols-mode)
+                  (LaTeX-math-mode)		; ` to easy type greek
+                  (TeX-fold-mode)               ; fold footnotes, comments etc (C-c C-o C-o DWIM)
+                  (TeX-fold-buffer)             ; start tex folded (C-c C-o b clears out)
+                  (turn-on-reftex)
+                  (reftex-isearch-minor-mode)
+                  (visual-line-mode)
+                  (outline-minor-mode) ; latex like org
+                  (outline-hide-sublevels 1) ; start folded
+                  (turn-off-auto-fill)))
   :config
-  (add-hook 'LaTeX-mode-hook
-            (lambda ()
-              (prettify-symbols-mode)
-              (LaTeX-math-mode)		; ` to easy type greek
-              (turn-on-reftex)
-              (reftex-isearch-minor-mode)
-	      (visual-line-mode)
-	      (outline-minor-mode) ; latex like org
-	      (outline-hide-sublevels 1) ; start folded
-              (turn-off-auto-fill)))
-
   ;; preview latex
   (setq preview-default-option-list '("displaymath" "floats" "graphics"
 				      "textmath" "showlabels")
@@ -1486,6 +1488,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (define-key evil-inner-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.inner")))
 
 (use-package hide-comnt
+  :general ("C-c C-h" 'hide/show-comments-toggle)
   :commands hide/show-comments-toggle)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
