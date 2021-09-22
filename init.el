@@ -878,25 +878,28 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                   (outline-hide-sublevels 1) ; start folded
                   (turn-off-auto-fill)))
   :config
-  ;; preview latex
+  ;; basics configs
+  (setq TeX-save-query nil
+        TeX-auto-save t
+        TeX-parse-self t       ;enable document parsing
+        reftex-plug-into-AUCTeX t
+        TeX-PDF-mode t			; output pdf 
+        TeX-electric-escape t
+        TeX-master nil) ;make auctex aware of multi-file documents
+
+  ;; specific config
+  (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
+  
+  ;; variables for jumping between source and pdf
+  (setq TeX-source-correlate-method 'synctex ;; Method for enabling forward and inverse search 
+        TeX-source-correlate-start-server t ;; inhibit the question to start a server process
+        TeX-source-correlate-mode t) ;; jump to source
+
+  ;; preview latex config
   (setq preview-default-option-list '("displaymath" "floats" "graphics"
 				      "textmath" "showlabels")
 	preview-scale-function 1.2
 	preview-auto-cache-preamble t)
-
-  (setq TeX-save-query nil)
-  (setq TeX-auto-save t)
-  (setq TeX-parse-self t)       ;enable document parsing
-  (setq-default TeX-master nil) ;make auctex aware of multi-file documents
-  (setq reftex-plug-into-AUCTeX t)
-  (setq TeX-PDF-mode t)			; output pdf 
-  (setq TeX-electric-escape t)
-
-  (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
-  
-  (setq TeX-source-correlate-method 'synctex) ;; Method for enabling forward and inverse search 
-  (setq TeX-source-correlate-start-server t) ;; inhibit the question to start a server process
-  (setq TeX-source-correlate-mode t) ;; jump to source
 
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
 	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs
@@ -916,6 +919,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-to-list 'TeX-view-program-selection
 	       '(output-pdf "Okular"))
 
+  ;; function definition, not the best...
   (defun my-tex-insert-clipboard ()
     (interactive)
     (setq folder-path (concat default-directory "img/"));make the img directory
