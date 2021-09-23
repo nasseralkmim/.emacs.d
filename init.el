@@ -1111,6 +1111,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
+        modus-themes-headings '(rainbow overline)
 	modus-themes-mode-line '(borderless accented moody))
 
   ;; hook to enforce change when theme is toggled (which loads the theme)
@@ -1120,18 +1121,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 		(set-face-attribute 'auto-dim-other-buffers-face nil
                                     :foreground (modus-themes-color 'fg-inactive))
 		(set-face-attribute 'sp-show-pair-match-content-face nil
-                                    :background (modus-themes-color 'bg-paren-expression))
-                (with-eval-after-load 'font-latex
-                  (set-face-attribute 'font-latex-sectioning-2-face nil
-                                      :foreground (modus-themes-color 'fg-special-cold)
-                                      :underline t :weight 'bold :slant 'italic)
-                  (set-face-attribute 'font-latex-sectioning-4-face nil
-                                      :weight 'normal :slant 'normal)
-                  (set-face-attribute 'font-latex-sectioning-5-face nil
-                                      :weight 'normal :slant 'italic)
-                  (set-face-attribute 'font-latex-sectioning-3-face nil
-                                      :foreground (modus-themes-color 'fg-special-calm)
-                                      :weight 'bold)))))
+                                    :background (modus-themes-color 'bg-paren-expression)))))
 
   ;; runs the hook
   (if (display-graphic-p)
