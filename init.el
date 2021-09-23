@@ -788,7 +788,52 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq corfu-auto t
 	corfu-auto-prefix 1
-	corfu-quit-no-match t))
+	corfu-quit-no-match t)
+   (autoload 'dabbrev--reset-global-variables "dabbrev")
+   :init
+   ;; back end to complete file path
+   (defvar comint-completion-addsuffix)
+   (autoload 'comint--match-partial-filename "comint")
+   (defun file-completion-at-point-function ()
+     "File name completion-at-point-function."
+     (when (comint--match-partial-filename)
+       (let ((comint-completion-addsuffix))
+         (when-let (result (comint--complete-file-name-data))
+           `(,@result
+             :exclusive no
+             :annotation-function ,(lambda (_) " (File)"))))))
+
+   ;; dabbrev completion backend
+   (defun dabbrev-completion-at-point-function ()
+     (dabbrev--reset-global-variables)
+     (let* ((inhibit-message t)
+            (message-log-max nil)
+            (abbrev (dabbrev--abbrev-at-point))
+            (min-len (+ 2 (length abbrev))))
+       (pcase (and (not (string-match-p "[ \t]" abbrev))
+                   ;; Interruptible scanning, good idea?
+                   (while-no-input
+                     (or (dabbrev--find-all-expansions
+                          abbrev (dabbrev--ignore-case-p abbrev))
+                         t)))
+         ('nil (keyboard-quit))
+         ('t nil)
+         (table
+          ;; Ignore completions which are too short
+          (setq table (seq-remove (lambda (x) (< (length x) min-len)) table))
+          (when table
+            `(,(progn (search-backward abbrev) (point))
+              ,(progn (search-forward abbrev) (point))
+              ,table
+              :exclusive 'no
+              :annotation-function ,(lambda (_) " (Dabbrev)")))))))
+   ;; add to completion at point functions
+   (add-hook 'completion-at-point-functions
+             #'dabbrev-completion-at-point-function
+             'append)
+   (add-hook 'completion-at-point-functions
+             #'file-completion-at-point-function
+             'append))
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
