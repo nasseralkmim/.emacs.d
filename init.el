@@ -867,13 +867,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "p" 'preview-at-point)
   :hook
   (LaTeX-mode . (lambda ()
-                  (prettify-symbols-mode)
-                  (LaTeX-math-mode)		; ` to easy type greek
-                  (TeX-fold-mode)               ; fold footnotes, comments etc (C-c C-o C-o DWIM)
-                  (TeX-fold-buffer)             ; start tex folded (C-c C-o b clears out)
-                  (turn-on-reftex)
+                  (prettify-symbols-mode) ; for greek letters and other math symbols
+                  (LaTeX-math-mode)       ; ` to easy type greek
+                  (TeX-fold-mode) ; fold footnotes, comments etc (C-c C-o C-o DWIM)
+                  (turn-on-reftex)      ; foor labels
                   (reftex-isearch-minor-mode)
-                  (visual-line-mode)
                   (outline-minor-mode) ; latex like org
                   (outline-hide-sublevels 1) ; start folded
                   (turn-off-auto-fill)))
