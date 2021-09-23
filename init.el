@@ -660,6 +660,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.5)
 	org-startup-with-latex-preview t
         org-preview-latex-image-directory "~/.cache/ltximg/")
+
   ;; minted code pdf export org
   (setq org-latex-listings 'minted
 	org-latex-packages-alist '(("newfloat" "minted"))
@@ -836,7 +837,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal outline-minor-mode-map "z b" 'outline-show-branches)
   ('normal outline-minor-mode-map "z t" 'outline-show-subtree)
   ('normal outline-minor-mode-map "z o" 'outline-show-children)
-  ('normal outline-minor-mode-map "z h" 'outline-hide-body)
+  ('normal outline-minor-mode-map "z h" 'outline-hide-sublevels)
   ('normal outline-minor-mode-map "z a" 'outline-show-all)
   ('normal outline-minor-mode-map "<tab>" 'outline-cycle)
   ('normal outline-minor-mode-map "z k" 'outline-previous-visible-heading)
@@ -861,10 +862,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     "C-j" nil)
   ('normal LaTeX-mode-map "g p" '(:keymap preview-map))
   (preview-map
-	   "b" 'preview-buffer
-	   "c" 'preview-clearout-buffer
-	   "s" 'preview-section
-	   "p" 'preview-at-point)
+   "b" 'preview-buffer
+   "c" 'preview-clearout-buffer
+   "s" 'preview-section
+   "p" 'preview-at-point)
+  ('normal LaTeX-mode-map "g f" '(:keymap TeX-fold-keymap))
+  (TeX-fold-keymap
+   "b" 'TeX-fold-buffer
+   "c" 'TeX-fold-clearout-buffer
+   "f" 'TeX-fold-dwim)
   :hook
   (LaTeX-mode . (lambda ()
                   (prettify-symbols-mode) ; for greek letters and other math symbols
