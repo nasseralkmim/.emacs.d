@@ -913,9 +913,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         TeX-electric-escape t
         TeX-master nil) ;make auctex aware of multi-file documents
 
-  ;; fold config
-  (setq TeX-fold-auto t                 ; after inserting macro
-        )
   ;; specific config
   (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
   
