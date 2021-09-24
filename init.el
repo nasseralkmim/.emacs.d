@@ -1111,7 +1111,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
-        modus-themes-headings '((2 . (rainbow background))
+        modus-themes-headings '((1 . (rainbow background))
+                                (2 . (rainbow background))
                                 (3 . (rainbow background))
                                 (4 . (rainbow background))
                                 (5 . (rainbow overline)))
