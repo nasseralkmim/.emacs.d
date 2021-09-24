@@ -1088,7 +1088,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
-        modus-themes-headings '((t . (rainbow background overline)))
+        modus-themes-headings '((t . (rainbow overline)))
 	modus-themes-mode-line '(borderless accented moody))
 
   ;; hook to enforce change when theme is toggled (which loads the theme)
