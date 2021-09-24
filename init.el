@@ -696,29 +696,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	  (:shebang . "#!/bin/bash -i") ; always get my .bashrc aliases
 	  )))
 
-(use-package org-roam-server
-  :hook (org-roam-mode . org-roam-server-mode)
-  :config
-  (setq org-roam-server-host "127.0.0.1"
-        org-roam-server-port 8080
-        org-roam-server-export-inline-images t
-        org-roam-server-authenticate nil
-        org-roam-server-label-truncate t
-        org-roam-server-label-truncate-length 60
-        org-roam-server-label-wrap-length 20))
-
-(use-package org-roam
-  :custom
-  ;; (org-roam-directory "~/OneDrive/nasser-website/content/roam") ; on windows
-  (org-roam-directory "/mnt/c/Users/nasse/OneDrive/nasser-website/content/roam") ; on linux with wsl
-  :general
-  ('normal :prefix "SPC" "n f" 'org-roam-find-file) ; so it can autoload org-roam
-  ('normal org-roam-mode-map :prefix "SPC" "n l" 'org-roam)
-  (:states '(normal visual) :keymaps 'org-mode-map :prefix "SPC" "n i" 'org-roam-insert)
-  ('insert org-mode-map "C-c n i" 'org-roam-insert)
-  :config
-  (org-roam-mode))
-
 ;; insert web links with better description
 (use-package org-cliplink
   :commands org-cliplink
@@ -1115,7 +1092,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                 (2 . (rainbow background))
                                 (3 . (rainbow background))
                                 (4 . (rainbow background))
-                                (5 . (rainbow overline)))
+                                (5 . (rainbow background overline))
+                                (6 . (rainbow background overline)))
 	modus-themes-mode-line '(borderless accented moody))
 
   ;; hook to enforce change when theme is toggled (which loads the theme)
