@@ -872,7 +872,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face 
   (font-latex-sectioning-1-face ((t (:weight bold :slant italic))))
-  (font-latex-sectioning-2-face ((t (:underline t :weight bold))))
+  (font-latex-sectioning-2-face ((t (:weight bold))))
   (font-latex-sectioning-3-face ((t (:weight bold))))
   (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
   (font-latex-sectioning-5-face ((t (:weight normal :slant italic))))
@@ -913,6 +913,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         TeX-electric-escape t
         TeX-master nil) ;make auctex aware of multi-file documents
 
+  ;; fold config
+  (setq TeX-fold-auto t                 ; after inserting macro
+        )
   ;; specific config
   (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
   
