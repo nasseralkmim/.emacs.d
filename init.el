@@ -56,6 +56,8 @@
 ;; basics and better default
 (use-package emacs
   :straight (:type built-in)
+  :custom-face 
+  (font-lock-comment-face ((t (:foreground "gray60"))))
   :general
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
