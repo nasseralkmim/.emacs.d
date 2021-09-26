@@ -317,7 +317,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
-  :straight (:includes (smartparens-c smartparens-python))
+  :straight (:includes (smartparens-c smartparens-python smartparens-org))
   :diminish smartparens-mode  
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
@@ -342,9 +342,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	sp-show-pair-from-inside t))
 
 (use-package smartparens-c
+  :demand
   :after smartparens)
 
 (use-package smartparens-python
+  :demand
+  :after smartparens)
+
+;; emphasis markers
+(use-package smartparens-org
+  :demand
   :after smartparens)
 
 (use-package flycheck
