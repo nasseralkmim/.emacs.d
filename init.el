@@ -317,7 +317,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
-  :straight (:includes (smartparens-c smartparens-python smartparens-org))
+  :straight (:includes (smartparens-c
+                        smartparens-python
+                        smartparens-org
+                        smartparens-latex))
   :diminish smartparens-mode  
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
@@ -349,10 +352,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand
   :after smartparens)
 
+(use-package smartparens-latex
+  :demand
+  :after smartparens)
+
 ;; emphasis markers
 (use-package smartparens-org
   :demand
-  :after smartparens)
+  :after smartparens
+  :config
+  ;; avoid "*" pair when it means multiplication inside a src block
+  (sp-local-pair 'org-mode "*" "*"
+                 :unless '(sp-point-after-word-p) :post-handlers '(("[d1]" "SPC"))))
 
 (use-package flycheck
   :after lsp
