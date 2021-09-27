@@ -687,20 +687,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	  "bibtex %b"
 	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
-  (add-to-list 'org-latex-classes
-	       '("koma-article"
-		 "\\documentclass{scrartcl}
-		\\usepackage{microtype}
-		\\usepackage{tgpagella}
-		\\usepackage[scale=.9]{tgheros}
-		\\usepackage{tgcursor}
-		\\usepackage{paralist} "
-		 ("\\section{%s}" . "\\section*{%s}")
-		 ("\\subsection{%s}" . "\\subsection*{%s}")
-		 ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
-		 ("\\paragraph{%s}" . "\\paragraph*{%s}")
-		 ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))))
+	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 
 (use-package ob-async
   :after org
