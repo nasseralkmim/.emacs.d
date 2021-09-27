@@ -397,8 +397,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (global-evil-mc-mode 1)
   (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete)))
-        evil-mc-known-commands)
-  )
+        evil-mc-known-commands))
 
 (use-package evil
   :diminish evil-mode
@@ -784,11 +783,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "C-p" nil)
   :config
   (setq corfu-auto t
+        corfu-auto-delay 0.1
 	corfu-auto-prefix 1
 	corfu-quit-no-match t)
    (autoload 'dabbrev--reset-global-variables "dabbrev")
    :init
-   ;; back end to complete file path
+   ;; backend to complete file path
    (defvar comint-completion-addsuffix)
    (autoload 'comint--match-partial-filename "comint")
    (defun file-completion-at-point-function ()
@@ -824,6 +824,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
               ,table
               :exclusive 'no
               :annotation-function ,(lambda (_) " (Dabbrev)")))))))
+
    ;; add to completion at point functions
    (add-hook 'completion-at-point-functions
              #'dabbrev-completion-at-point-function
