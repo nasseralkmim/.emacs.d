@@ -58,6 +58,7 @@
   :straight (:type built-in)
   :custom-face 
   (font-lock-comment-face ((t (:foreground "gray60"))))
+  (org-block ((t (:background "gray97"))))
   :general
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
