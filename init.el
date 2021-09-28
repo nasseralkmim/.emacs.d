@@ -74,16 +74,16 @@
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
   
-  ;; setting typefaces
+  ;; setting typeface size
   (defun zoom-frame (&optional amt frame)
     "Increaze FRAME font size by amount AMT. Defaults to selected
 frame if FRAME is nil, and to 1 if AMT is nil."
     (interactive "p")
     (let* ((frame (or frame (selected-frame)))
-	   (font (face-attribute 'default :font frame))
-	   (size (font-get font :size))
-	   (amt (or amt 1))
-	   (new-size (+ size amt)))
+           (font (face-attribute 'default :font frame))
+           (size (font-get font :size))
+           (amt (or amt 1))
+           (new-size (+ size amt)))
       (set-frame-font (font-spec :size new-size) t `(,frame))))
 
   (defun zoom-frame-out (&optional amt frame)
@@ -134,8 +134,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    enable-recursive-minibuffers t	; Enable recursive minibuffers
    resize-mini-windows nil		; Avoid grow and shrink minibuffer
    visible-bell t			; Don't beep at me
-   kill-buffer-query-functions nil ; don't ask if it is ok to kill a process when killing a buffer
-   )
+   kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
 
   ;; do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
@@ -1119,6 +1118,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
   :defer 1
+  :custom-face
+  (auto-dim-other-buffers-face ((t (:background "gray94"))))
   :init
   (auto-dim-other-buffers-mode t))
 
