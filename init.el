@@ -629,7 +629,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package jupyter
   :after org
   :general
-  (org-mode-map "C-c =" 'jupyter-org-hydra/body))
+  (org-mode-map "C-c =" 'jupyter-org-hydra/body)
+  :config
+  ;; don't try to change image size, I will do it manually
+  (setq jupyter-org-adjust-image-size nil))
 
 (use-package org-clock
   :general
