@@ -1044,6 +1044,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file
            "h" 'dired-sidebar-up-directory)
+  :hook (dired-sidebar-mode . visual-line-mode)
   :custom
   (dired-sidebar-theme 'vscode)
   (dired-sidebar-use-custom-font t)
