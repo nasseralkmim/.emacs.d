@@ -593,6 +593,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; so it shows the plots inside a "results drawer" when the heading is opened
   (setq org-cycle-hook
         '(org-cycle-hide-archived-subtrees
+          org-cycle-hide-drawers
           org-cycle-show-empty-lines
           org-optimize-window-after-visibility-change)))
 
@@ -682,7 +683,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after org
   :config
   ;; change scale of latex preview in org-mode
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.2)
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
 	org-startup-with-latex-preview t
         org-preview-latex-image-directory "~/.cache/ltximg/")
 
@@ -938,7 +939,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; preview latex config
   (setq preview-default-option-list '("displaymath" "floats" "graphics"
 				      "textmath" "showlabels")
-	preview-scale-function 1.2
+	preview-scale-function 1.1
 	preview-auto-cache-preamble t)
 
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
@@ -1432,13 +1433,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (org-super-links :type git :host github :repo "toshism/org-super-links")
   :after org
   :general
-  ('normal org-mode-map :prefix "C-c s"
-	   "s" 'org-super-links-link
-	   "l" 'org-super-links-store-link
-	   "p" 'org-super-links-insert-link
-	   "d" 'org-super-links-quick-insert-drawer-link
-	   "i" 'org-super-links-quick-insert-inline-link
-	   "C-d" 'org-super-links-delete-link))
+  (org-mode-map :prefix "C-c s"
+                "s" 'org-super-links-link
+                "l" 'org-super-links-store-link
+                "p" 'org-super-links-insert-link
+                "d" 'org-super-links-quick-insert-drawer-link
+                "i" 'org-super-links-quick-insert-inline-link
+                "C-d" 'org-super-links-delete-link))
 
 ;; loads the org-id library from org repository
 ;; for creating org-ids for more robust linking, avoid referencing issues
