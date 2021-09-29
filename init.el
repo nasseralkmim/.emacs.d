@@ -590,6 +590,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 					       "\" %}}")))
 
   ;; remove org-cycle-hide-drawers from cycle hook
+  ;; so it shows the plots inside a "results drawer" when the heading is opened
   (setq org-cycle-hook
         '(org-cycle-hide-archived-subtrees
           org-cycle-show-empty-lines
@@ -909,11 +910,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (LaTeX-mode . (lambda ()
                   (prettify-symbols-mode) ; for greek letters and other math symbols
-                  (LaTeX-math-mode)       ; ` to easy type greek
+                  (LaTeX-math-mode)       ; easy to type greek letters
                   (TeX-fold-mode) ; fold (reduce clutter) footnotes, comments etc (C-c C-o C-o DWIM)
                   (turn-on-reftex)      ; foor labels
                   (reftex-isearch-minor-mode)
-                  (outline-minor-mode) ; latex like org
+                  (outline-minor-mode)       ; latex like org
                   (outline-hide-sublevels 1) ; start folded
                   (turn-off-auto-fill)))
   :config
