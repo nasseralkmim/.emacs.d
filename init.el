@@ -676,7 +676,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq org-src-fontify-natively t
 	org-src-window-setup 'current-window ; don't move my windows around!
 	org-src-preserve-indentation t  ; preserve indentation in code
-	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
+	org-adapt-indentation nil ; no extra whitespace!
 	org-src-tab-acts-natively t	; if t, it is slow!
 	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
 
@@ -790,7 +790,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	corfu-auto-prefix 1
 	corfu-quit-no-match t)
    (autoload 'dabbrev--reset-global-variables "dabbrev")
-   :init
    ;; backend to complete file path
    (defvar comint-completion-addsuffix)
    (autoload 'comint--match-partial-filename "comint")
