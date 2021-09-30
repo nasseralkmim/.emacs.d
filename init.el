@@ -553,7 +553,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package org
   :straight (:includes (org-id oc ob org-clock org-src org-agenda
-                               ox-latex ob-shell ob-python))
+                               ox-latex ob-shell ob-python ox-html))
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -598,6 +598,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand
   :config
   (ox-extras-activate '(ignore-headlines)))
+
+(use-package ox-html
+  :after org
+  :config
+  ;; don't scale svg images
+  (setq org-html-head "<style> .org-svg {width: auto} </style>"))
 
 (use-package ob
   :after org
