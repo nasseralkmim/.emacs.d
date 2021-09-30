@@ -565,7 +565,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "s k" 'org-babel-previous-src-block)
   :hook
   (org-mode . visual-line-mode)
-  (org-babel-after-execute . (lambda () (org-display-inline-images nil t)))
   :custom
    (org-hide-emphasis-markers t)        ; avoid noisy //,__, **, 
    (org-startup-indented nil)		; start collapsed
@@ -591,7 +590,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         '(org-cycle-hide-archived-subtrees
           org-cycle-hide-drawers
           org-cycle-show-empty-lines
-          org-optimize-window-after-visibility-change)))
+          org-optimize-window-after-visibility-change))
+
+  ;; display images after executing
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+  )
 
 (use-package ox-extra
   :after org
@@ -628,8 +631,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;;       				       (:results . "output")
   ;;       				       (:exports . "both")))
   ;; (setq jupyter-org-resource-directory "./jupyter/")
-
-  ;; display/update images in the buffer after I evaluate 
   )
 
 (use-package ob-python
@@ -637,8 +638,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq org-babel-python-command "python3") ; use python3 please!
   (setq org-babel-default-header-args:python '((:results . "output")
-                                               (:async . "yes")
-                                               (:exports . "both"))))
+                                               (:eval . "never-export") ; don't eval blocks when exporting 
+                                               (:exports . "results")))) ; export only plots by default
 
 (use-package jupyter
   :disabled
@@ -673,13 +674,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; babel and source blocks
   (setq org-src-fontify-natively t
-	;; org-highlight-latex-and-related '(latex)
-	;; org-src-window-setup 'current-window
-	;; org-src-strip-leading-and-trailing-blank-lines t
+	org-src-window-setup 'current-window ; don't move my windows around!
 	org-src-preserve-indentation t  ; preserve indentation in code
 	org-adapt-indentation nil ; Non-nil means adapt indentation to outline node level.
 	org-src-tab-acts-natively t	; if t, it is slow!
-	org-export-babel-evaluate nil
 	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
 
 (use-package org-agenda
