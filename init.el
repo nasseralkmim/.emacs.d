@@ -552,7 +552,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package org-contrib)
 
 (use-package org
-  :straight (:includes (org-id oc ob org-clock org-src org-agenda ox-latex ob-shell))
+  :straight (:includes (org-id oc ob org-clock org-src org-agenda
+                               ox-latex ob-shell ob-python))
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -562,7 +563,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
-  :hook ((org-mode . visual-line-mode))
+  :hook
+  (org-mode . visual-line-mode)
+  (org-babel-after-execute . org-display-inline-images)
   :custom
    (org-hide-emphasis-markers t)        ; avoid noisy //,__, **, 
    (org-startup-indented nil)		; start collapsed
@@ -578,16 +581,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-src-tab-acts-natively t)
    (org-catch-invisible-edits 'smart)
    (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
+   (org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
   :config
   (transient-mark-mode -1)
-
-  ;; New link type for Org-Hugo internal links
-  ;; https://lucidmanager.org/productivity/create-websites-with-org-mode-and-hugo/
-  (org-link-set-parameters "hugo"
-			   :complete (lambda ()
-				       (concat "{{% ref \""
-					       (file-relative-name (read-file-name "File: "))
-					       "\" %}}")))
 
   ;; remove org-cycle-hide-drawers from cycle hook
   ;; so it shows the plots inside a "results drawer" when the heading is opened
@@ -613,24 +609,33 @@ frame if FRAME is nil, and to 1 if AMT is nil."
      (shell . t)
      (C . t)
      (python . t)
-     (jupyter . t)))
+     ;; (jupyter . t)
+     ))
 
   ;; use just python instead of jupyter-python
-  (org-babel-jupyter-override-src-block "python")
-  (setq org-babel-default-header-args:C++ '((:results . "output")))
+  ;; (org-babel-jupyter-override-src-block "python")
+  ;; (setq org-babel-default-header-args:C++ '((:results . "output")))
 
-  (setq org-babel-default-header-args:python '((:async . "yes")
-					       (:session . "default")
-					       (:kernel . "python3")
-					       (:results . "output")
-					       (:exports . "both")))
-  (setq jupyter-org-resource-directory "./jupyter/")
-  (setq org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
+  ;; (setq org-babel-default-header-args:python '((:async . "yes")
+  ;;       				       (:session . "default")
+  ;;       				       (:kernel . "python3")
+  ;;       				       (:results . "output")
+  ;;       				       (:exports . "both")))
+  ;; (setq jupyter-org-resource-directory "./jupyter/")
 
   ;; display/update images in the buffer after I evaluate 
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+  )
+
+(use-package ob-python
+  :after org
+  :config
+  (setq org-babel-python-command "python3") ; use python3 please!
+  (setq org-babel-default-header-args:python '((:results . "output")
+                                               (:async . "yes")
+                                               (:exports . "both"))))
 
 (use-package jupyter
+  :disabled
   :after org
   :general
   (org-mode-map "C-c =" 'jupyter-org-hydra/body)

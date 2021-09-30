@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: python figure
+# key: <f
+# --
+#+header: :var fname="figure.svg" :epilogue plt.savefig(fname) :return fname :results file value
