@@ -565,7 +565,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "s k" 'org-babel-previous-src-block)
   :hook
   (org-mode . visual-line-mode)
-  (org-babel-after-execute . org-display-inline-images)
+  (org-babel-after-execute . (lambda () (org-display-inline-images nil t)))
   :custom
    (org-hide-emphasis-markers t)        ; avoid noisy //,__, **, 
    (org-startup-indented nil)		; start collapsed
