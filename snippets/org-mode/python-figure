@@ -3,5 +3,5 @@
 # key: <f
 # --
 #+header: :var fname="figures/figure.svg"
-#+header:epilogue plt.savefig(fname)
-#+header:return fname :results file value
+#+header: :epilogue plt.savefig(fname)
+#+header: :return fname :results file value
