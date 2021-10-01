@@ -945,6 +945,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         TeX-electric-escape t
         TeX-master nil) ;make auctex aware of multi-file documents
 
+  ;; start latex buffer folded
+  (add-hook 'find-file-hook 'TeX-fold-buffer t)
+  
   ;; specific config
   (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
   
@@ -954,13 +957,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         TeX-source-correlate-mode t) ;; jump to source
 
   ;; preview latex config
-  (setq preview-default-option-list '("displaymath" "floats" "graphics"
-				      "textmath" "showlabels")
+  (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath" "showlabels")
 	preview-scale-function 1.1
 	preview-auto-cache-preamble t)
 
+  ;; update PDF buffers after successful LaTeX runs
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
-	    'TeX-revert-document-buffer) ;; Update PDF buffers after successful LaTeX runs
+	    'TeX-revert-document-buffer) 
 
   ;; nomenclature compilation option for latex
   (eval-after-load "tex"
