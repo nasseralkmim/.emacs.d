@@ -143,7 +143,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (setq-default
    indent-tabs-mode nil	     ; don't insert tab when indent
-   tab-always-indent 'complete ; tab indents first, then tries to complete
+   ;; this is giving me problems when creating new lines in org-mode source blocks
+   ;; tab-always-indent 'complete ; tab indents first, then tries to complete
    help-window-select t	    ; focus on help window when openend
    window-combination-resize t)) ; resize windows proportionaly
 
@@ -491,11 +492,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-collection-init))
 
 ;; navigation: gh, gj, gk, gl
+;; cycling headings: tab
 ;; headings: M-ret
 (use-package evil-org
+  :straight (:includes evil-org-agenda)
   :diminish evil-org-mode
   :after evil org
-  :straight (:includes evil-org-agenda)
   :hook (org-mode . evil-org-mode))
 
 ;; included in evil-org
@@ -630,7 +632,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq org-babel-python-command "python3") ; python3 please!
   (setq org-babel-default-header-args:python '((:results . "output")
-                                               (:noweb . "yes") ; can use other blocks with <<>> syntax
+                                               (:noweb . "yes") ; referencing other blocks with <<>> syntax
                                                (:eval . "never-export") ; don't eval blocks when exporting 
                                                (:exports . "results")))) ; export only plots by default
 
@@ -851,6 +853,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (company-prescient-mode))
 
 ;; folding
+;; note: evil collection also sets a bunch of keybindings
 (use-package outline
   :straight (:type built-in)
   :diminish outline-minor-mode
@@ -859,7 +862,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
-  (org-mode . outline-minor-mode)
   :general
   ('normal outline-minor-mode-map "C-j" nil)
   ('normal outline-minor-mode-map "z j" 'outline-next-visible-heading)
