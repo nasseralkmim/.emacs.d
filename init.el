@@ -556,6 +556,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-startup-folded t)               ; folded in "overview" state
    (org-hide-leading-stars t)           ; don't show a  bunch of '*'
    (org-edit-src-content-indentation 0)
+   (org-pretty-entities t)              ; for latex
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
    (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
@@ -578,8 +579,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           org-optimize-window-after-visibility-change))
 
   ;; display images after executing
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-  )
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
 
 (use-package ox-extra
   :after org
@@ -1426,9 +1426,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; loads the org-id library from org repository
 ;; for creating org-ids for more robust linking, avoid referencing issues
 (use-package org-id
-  :after org-super-links
-  :demand
-  :config
+  :after org
+  :init
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
 
 ;; citations support in org-mode
