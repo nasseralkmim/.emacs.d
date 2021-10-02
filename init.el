@@ -1251,16 +1251,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-;; search bibtex bibliography with consult
-;; depends on helm-bibtex
-(use-package consult-bibtex
-  :straight (consult-bibtex :host github :repo "mohkale/consult-bibtex")
-  :general
-  ("C-c b" 'consult-bibtex)
-  :config
-  (with-eval-after-load 'embark
-    (add-to-list 'embark-keymap-alist '(bibtex-completion . consult-bibtex-embark-map)))
-
+;; dependency of consult-bitex
+(use-package bibtex-completion
+  :after consult-bibtex
+  :straight (bibtex-completion :host github
+                               :repo "tmalsburg/helm-bibtex"
+                               :files (:defaults (:exclude "helm-bibtex.el" "ivy-bibtex.el")))
+  :init
   (setq bibtex-completion-bibliography "~/.bibliography.bib"
         bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
         bibtex-completion-pdf-open-function (lambda (fpath)
@@ -1272,6 +1269,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (lambda (fpath) (shell-command (concat
                                           "wslview "	; version 3.2.1 works with spaces in path
                                           (shell-quote-argument fpath)))))))
+
+
+;; search bibtex bibliography with consult
+;; depends on helm-bibtex
+(use-package consult-bibtex
+  :straight (consult-bibtex :host github
+                            :repo "mohkale/consult-bibtex")
+  :general
+  ("C-c b" 'consult-bibtex)
+  :config
+  (with-eval-after-load 'embark
+    (add-to-list 'embark-keymap-alist '(bibtex-completion . consult-bibtex-embark-map))))
 
 ;; search bibliography by keyword or doi
 ;; helm-bibtex dependency
