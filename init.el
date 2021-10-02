@@ -339,8 +339,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   ;; (sp-local-pair 'latex-mode "$" "$" :trigger "$")
-  ;; (sp-pair "<" nil :actions :rem)	      ; not good for math symbols 
-  ;; (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil) ; disable ' in elisp
   ;; (sp-local-pair 'html-mode "<" ">" :trigger "<")
   (setq sp-show-pair-delay 0
 	sp-show-pair-from-inside t))
@@ -620,44 +618,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package ob
   :after org
   :init
-  (push '"~/.local/bin" exec-path)	; so it can find jupyter binaries
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((sql . t)
      (shell . t)
      (C . t)
-     (python . t)
-     ;; (jupyter . t)
-     ))
-
-  ;; use just python instead of jupyter-python
-  ;; (org-babel-jupyter-override-src-block "python")
-  ;; (setq org-babel-default-header-args:C++ '((:results . "output")))
-
-  ;; (setq org-babel-default-header-args:python '((:async . "yes")
-  ;;       				       (:session . "default")
-  ;;       				       (:kernel . "python3")
-  ;;       				       (:results . "output")
-  ;;       				       (:exports . "both")))
-  ;; (setq jupyter-org-resource-directory "./jupyter/")
-  )
+     (python . t))))
 
 (use-package ob-python
   :after org
   :config
-  (setq org-babel-python-command "python3") ; use python3 please!
+  (setq org-babel-python-command "python3") ; python3 please!
   (setq org-babel-default-header-args:python '((:results . "output")
+                                               (:noweb . "yes") ; can use other blocks with <<>> syntax
                                                (:eval . "never-export") ; don't eval blocks when exporting 
                                                (:exports . "results")))) ; export only plots by default
-
-(use-package jupyter
-  :disabled
-  :after org
-  :general
-  (org-mode-map "C-c =" 'jupyter-org-hydra/body)
-  :config
-  ;; don't try to change image size, I will do it manually
-  (setq jupyter-org-adjust-image-size nil))
 
 (use-package org-clock
   :general
