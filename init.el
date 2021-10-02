@@ -346,32 +346,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package smartparens-config
   :demand
-  :after smartparens)
-
-(use-package smartparens-c
-  :disabled
-  :demand
-  :after smartparens)
-
-(use-package smartparens-python
-  :disabled
-  :demand
-  :after smartparens)
-
-(use-package smartparens-latex
-  :disabled
-  :demand
-  :after smartparens)
-
-;; emphasis markers
-(use-package smartparens-org
-  :disabled
-  :demand
-  :after smartparens
-  :config
-  ;; avoid "*" pair when it means multiplication inside a src block
-  (sp-local-pair 'org-mode "*" "*"
-                 :unless '(sp-point-after-word-p) :post-handlers '(("[d1]" "SPC"))))
+  :requires smartparens)
 
 (use-package flycheck
   :after lsp
@@ -503,7 +478,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; included in evil-org
 ;; load it when using agenda
 (use-package evil-org-agenda
-  :after org-agenda evil-org
+  :requires evil-org
   :config
   (evil-org-agenda-set-keys))
 
@@ -569,6 +544,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode-map "C-c C-l" 'org-insert-link)
   ('normal org-mode-map "z n" 'org-toggle-narrow-to-subtree)
   ('normal org-mode-map "z k" 'org-previous-visible-heading)
+  ('normal org-mode-map "z j" 'org-next-visible-heading)
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
@@ -632,7 +608,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq org-babel-python-command "python3") ; python3 please!
   (setq org-babel-default-header-args:python '((:results . "output")
-                                               (:noweb . "yes") ; referencing other blocks with <<>> syntax
+                                               (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
                                                (:eval . "never-export") ; don't eval blocks when exporting 
                                                (:exports . "results")))) ; export only plots by default
 
