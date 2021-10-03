@@ -593,30 +593,23 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; don't scale svg images
   (setq org-html-head "<style> .org-svg {width: auto} </style>"))
 
-(use-package ob
-  :after org
-  :init
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((sql . t)
-     (shell . t)
-     (C . t)
-     (python . t))))
-
+;; load ob-python only when executing python block
 (use-package ob-python
   :after org
-  :config
+  :commands org-babel-execute:python org-babel-expand-body:python
+  :init
   (setq org-babel-python-command "python3") ; python3 please!
-  (setq org-babel-default-header-args:python '((:results . "output")
-                                               (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
-                                               (:eval . "never-export") ; don't eval blocks when exporting 
-                                               (:exports . "results")))) ; export only plots by default
+  (setq org-babel-default-header-args:python
+        '((:results . "output")
+          (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
+          (:eval . "never-export") ; don't eval blocks when exporting 
+          (:exports . "results")))) ; export only plots by default
 
 (use-package org-clock
   :general
   ('normal org-mode-map :prefix "z x"
-	   "i" 'org-clock-in
-	   "o" 'org-clock-out
+           "i" 'org-clock-in
+           "o" 'org-clock-out
 	   "x" 'org-clock-in-last)
   :after org
   :config
@@ -674,7 +667,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package ob-shell
   :after org
-  :config
+  :commands org-babel-execute:sh org-babel-expand-body:sh
+  :init
   (setq org-babel-default-header-args:shell
 	'((:results . "output")
 	  (:shebang . "#!/bin/bash -i") ; always get my .bashrc aliases
