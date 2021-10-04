@@ -348,6 +348,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand
   :requires smartparens)
 
+;; makes evil play nice with smartparens-strict-mode
+;; eg, "dW" will keep the enclosing parenthesis
+(use-package evil-smartparens
+  :hook (smartparens-enabled . evil-smartparens-mode))
+
 (use-package flycheck
   :after lsp
   :hook (python-mode . flycheck-mode))
