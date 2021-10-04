@@ -603,7 +603,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; load ob-python only when executing python block
 (use-package ob-python
   :after org
-  :commands org-babel-execute:python org-babel-expand-body:python
+  :commands org-babel-execute:python
   :init
   (setq org-babel-python-command "python3") ; python3 please!
   (setq org-babel-default-header-args:python
@@ -674,12 +674,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package ob-shell
   :after org
-  :commands org-babel-execute:sh org-babel-expand-body:sh
+  :commands org-babel-execute:sh
   :init
   (setq org-babel-default-header-args:shell
 	'((:results . "output")
-	  (:shebang . "#!/bin/bash -i") ; always get my .bashrc aliases
-	  )))
+          ;; always get my .bashrc aliases
+          (:shebang . "#!/bin/bash -i"))))
 
 ;; insert web links with better description
 (use-package org-cliplink
