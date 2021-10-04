@@ -346,7 +346,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package smartparens-config
   :demand
-  :requires smartparens)
+  :after smartparens)
 
 ;; makes evil play nice with smartparens-strict-mode
 ;; eg, "dW" will keep the enclosing parenthesis
