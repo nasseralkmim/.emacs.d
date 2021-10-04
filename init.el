@@ -545,6 +545,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal org-mode-map "z n" 'org-toggle-narrow-to-subtree)
   ('normal org-mode-map "z k" 'org-previous-visible-heading)
   ('normal org-mode-map "z j" 'org-next-visible-heading)
+  ('normal org-mode-map "g k" 'org-backward-heading-same-level)
+  ('normal org-mode-map "g j" 'org-forward-heading-same-level)
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
