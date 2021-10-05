@@ -350,10 +350,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; makes evil play nice with smartparens-strict-mode
 ;; eg, "dW" will keep the enclosing parenthesis
+;; it is a bit slow sometimes when deleting whole line
 (use-package evil-smartparens
   :general
   ('normal evil-smartparens-mode-map "C" nil) ; does not work well in latex
-  :hook (smartparens-enabled . evil-smartparens-mode))
+  :hook (smartparens-enabled . evil-smartparens-mode)
+  :config
+  (setq evil-smartparens-threshold 500)) ; reduce for performance
 
 (use-package flycheck
   :after lsp
