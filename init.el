@@ -558,7 +558,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-startup-folded t)               ; folded in "overview" state
    (org-hide-leading-stars t)           ; don't show a  bunch of '*'
    (org-edit-src-content-indentation 0)
-   (org-pretty-entities t)              ; for latex
    (org-outline-path-complete-in-steps nil)
    (org-startup-with-inline-images t)
    (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
