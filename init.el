@@ -602,7 +602,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq org-babel-default-header-args:python
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
-          (:eval . "never-export") ; don't eval blocks when exporting 
+          (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
 
 (use-package org-clock
@@ -1022,7 +1022,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (defun dired-sidebar-jump ()
     (interactive)
     (dired-sidebar-show-sidebar)
-    (dired-sidebar-jump-to-sidebar)))
+    (dired-sidebar-jump-to-sidebar))
+
+  ;; avoid fixing window size
+  (add-hook 'dired-sidebar-mode-hook #'(lambda ()
+                                         (setq window-size-fixed nil))))
 
 ;; icons for dired sidebar
 (use-package vscode-icon
