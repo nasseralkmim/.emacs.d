@@ -62,7 +62,7 @@
   :general
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
-  ("C-c w" 'shrink-window)
+  ("C-c w" 'enlarge-window-horizontally)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   ("C-M-e" 'eval-defun)
   ("C-h j" 'describe-keymap)
