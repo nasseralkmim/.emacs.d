@@ -564,7 +564,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-cycle-separator-lines 0)  ; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
    (org-insert-heading-respect-content t) ; insert heading after current tree
-   (org-src-tab-acts-natively t)
    (org-catch-invisible-edits 'smart)
    (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
    (org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
@@ -627,7 +626,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal org-mode-map "z e" 'org-edit-special)
   ('normal org-src-mode-map "z e" 'org-edit-src-exit)
   :after org
-  :config
+  :init
   ;; babel and source blocks
   (setq org-src-fontify-natively t
 	org-src-window-setup 'current-window ; don't move my windows around!
@@ -638,7 +637,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package org-agenda
   :after org
-  :config
+  :init
   (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
 				 "~/OneDrive/Org/notes.org"
 				 "~/OneDrive/Org/journal.org"
@@ -646,7 +645,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package ox-latex
   :after org
-  :config
+  :init
   ;; change scale of latex preview in org-mode
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
 	org-startup-with-latex-preview t
