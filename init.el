@@ -1249,7 +1249,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-;; dependency of consult-bitex
+;; dependency of consult-bibtex
 (use-package bibtex-completion
   :after consult-bibtex
   :straight (bibtex-completion :host github
