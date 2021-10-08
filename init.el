@@ -1262,6 +1262,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                               (call-process "xdg-open" nil 0 nil fpath)))
 
   ;; windows wsl config for opening with default windows pdf reader
+  ;; depends on `wslview` to be installed in wsl
   (when (string-match "-[Mm]icrosoft" operating-system-release)
     (setq bibtex-completion-pdf-open-function
           (lambda (fpath) (shell-command (concat
