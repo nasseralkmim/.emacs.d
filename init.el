@@ -270,7 +270,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; available when a project file is visited (project-switch-project)
   (setq consult-project-root-function #'vc-root-dir))
 
-;; visit openend directories
+;; insert recent openend directories in prompt
 (use-package consult-dir
   :straight (consult-dir :type git :host github :repo "karthink/consult-dir") 
   :general
