@@ -167,6 +167,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	recentf-auto-cleanup 'mode))
 
 (use-package autorevert
+  :if (not (eq system-type 'windows-nt)) ; dont run on windows
   :defer 1
   :config
   (setq auto-revert-interval 5)
@@ -234,6 +235,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; minibuffer annotations details
 (use-package marginalia
+  :if (not (eq system-type 'windows-nt)) ; dont run on windows
   :after vertico
   :general
   (minibuffer-local-map "M-A" 'marginalia-cycle)
@@ -542,6 +544,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :mode (("\\.org$" . org-mode))
   :general
   (org-mode-map "C-c C-l" 'org-insert-link)
+  ('normal org-mode-map "TAB" 'org-cycle)
   ('normal org-mode-map "z n" 'org-toggle-narrow-to-subtree)
   ('normal org-mode-map "z k" 'org-previous-visible-heading)
   ('normal org-mode-map "z j" 'org-next-visible-heading)
@@ -697,15 +700,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; languages spell checker
 (use-package flyspell
+  :if (not (eq system-type 'windows-nt)) ; dont run on windows
   :hook ((LaTeX-mode . flyspell-mode)
 	 (org-mode . flyspell-mode)
 	 (prorg-mode . flyspell-prog-mode))
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
-  (when (eq system-type 'windows-nt)
-    (setq ispell-dictionary "en_US,pt_BR")
-    (ispell-hunspell-add-multi-dic "en_US,pt_BR"))
   (ispell-set-spellchecker-params)
 
   (setq flyspell-issue-message-flag nil ; don't emit messages
@@ -714,6 +715,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; flyspell uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
 (use-package flyspell-lazy
+  :if (not (eq system-type 'windows-nt)) ; dont run on windows
   :if (string-match "-[Mm]icrosoft" operating-system-release)
   :hook
   (flyspell-mode . flyspell-lazy-mode)
@@ -1274,6 +1276,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; search bibtex bibliography with consult
 ;; depends on helm-bibtex
 (use-package consult-bibtex
+  :if (not (eq system-type 'windows-nt)) ; dont run on windows
   :straight (consult-bibtex :host github
                             :repo "mohkale/consult-bibtex")
   :general
@@ -1298,6 +1301,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; needs to be added manually to .emacs.d/lisp folder
 (use-package wsl-path
+  :disabled
+  :if (not (string-match "-[Mm]icrosoft" operating-system-release))
   :straight nil
   :load-path "./lisp"
   :commands (wsl-path-activate
@@ -1396,6 +1401,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-terminal-cursor-changer-activate))
 
 (use-package repeat
+  :if (string-greaterp emacs-version "28.1") ; need emacs > 28
   :straight (:type built-in)
   :init
   ;; built-in command repeater (like hydra)
@@ -1511,5 +1517,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :commands hide/show-comments-toggle)
 
 (use-package wgrep)
+
+;; config for windows
+((use-package emacs
+  :if (eq system-type 'windows-nt)
+  :init
+  (setq recentf-auto-cleanup 'never
+        w32-get-true-file-attributes nil) ; improve save to disk speed
+  )
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
