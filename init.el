@@ -186,12 +186,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion UI (vertical minibuffer)
 (use-package vertico
   :straight (vertico :type git :host github :repo "minad/vertico"
-		     :includes (vertico-buffer
-				vertico-directory
-				vertico-repeat)
-		     :files (:defaults "extensions/vertico-buffer.el"
-				       "extensions/vertico-directory.el"
-				       "extensions/vertico-repeat.el"))
+        	     :includes (vertico-buffer
+        			vertico-directory
+        			vertico-repeat)
+        	     :files (:defaults "extensions/vertico-buffer.el"
+        			       "extensions/vertico-directory.el"
+        			       "extensions/vertico-repeat.el"))
   :init
   (vertico-mode)
   :config
@@ -216,9 +216,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion style with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
 (use-package orderless
-  :after vertico
-  :demand
-  :config
+  :init
   ;; partial completion for files to allows path expansion
   (setq completion-styles '(orderless)
         completion-category-defaults nil
@@ -229,14 +227,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; save the search history
 (use-package savehist
-  :after vertico
   :init
   (savehist-mode))
 
 ;; minibuffer annotations details
 (use-package marginalia
   :if (not (eq system-type 'windows-nt)) ; dont run on windows
-  :after vertico
   :general
   (minibuffer-local-map "M-A" 'marginalia-cycle)
   :init (marginalia-mode))
@@ -250,16 +246,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
   ("C-s" 'consult-line)			; search lines with preview
-
   ;; two parts: search  and filter
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
   ("C-c r" 'consult-ripgrep)		; search file contents
   ("C-c f" 'consult-find-fd)		; search files in directories
-  (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
+  ;; (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
+  ;; hook for using default completion mode
+  :hook (completion-list-mode . consult-preview-at-point-mode)
   :config
   ;; configure preview behavior to `any` key and specific time delay
   (consult-customize consult-buffer consult-bookmark consult-ripgrep consult-find-fd
-		     :preview-key '(:debounce 3 any))
+		     :preview-key '(:debounce 5 any))
   (consult-customize consult-line :preview-key '(:debounce 0 any))
 
   ;; use 'fd' instead of 'find'
@@ -285,7 +282,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `live` works like a completion narrowing that Vertico does 
 ;; `export` the set of targets are shown in an appropriate major-mode
 (use-package embark
-  ;; :demand                               ; load it independently of bind and hook
+  :demand                               ; load it independently of bind and hook
   :general
   ("C-S-a" 'embark-act)
   ("C-S-z" 'embark-dwim)
@@ -602,6 +599,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :commands org-babel-execute:python
   :init
   (setq org-babel-python-command "python3") ; python3 please!
+  (when (eq system-type 'windows-nt)
+    (setq org-babel-python-command "python")) ; windows uses python for versions > 3, argh... 
   (setq org-babel-default-header-args:python
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
@@ -1098,7 +1097,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
-  :if (not (display-graphic-p))         ; only in gui
+  :if (display-graphic-p)         ; only in gui
   :defer 1
   :custom-face
   (auto-dim-other-buffers-face ((t (:background "gray94"))))
@@ -1343,6 +1342,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	shr-width 70))                                ; Fold text to 70 columns
 
 (use-package pdf-tools
+  :if (eq system-type 'windows-nt)
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :general
   (pdf-view-mode-map "M-h" 'pdf-history-backward)
@@ -1351,9 +1351,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; sync pdf in different frame
   (setq pdf-sync-forward-display-action
-	'(display-buffer-reuse-window (reusable-frames . t)))
+        '(display-buffer-reuse-window (reusable-frames . t)))
   (setq pdf-sync-backward-display-action
-	'(display-buffer-reuse-window (reusable-frames . t))))
+        '(display-buffer-reuse-window (reusable-frames . t))))
 
 (use-package hydra)
 
@@ -1519,11 +1519,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package wgrep)
 
 ;; config for windows
-((use-package emacs
+(use-package emacs
   :if (eq system-type 'windows-nt)
   :init
-  (setq recentf-auto-cleanup 'never
-        w32-get-true-file-attributes nil) ; improve save to disk speed
-  )
+  (setq w32-get-true-file-attributes nil
+        recentf-auto-cleanup 'never))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
