@@ -1509,4 +1509,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general ('normal "g h c" 'hide/show-comments-toggle)
   :commands hide/show-comments-toggle)
 
+(use-package wgrep)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
