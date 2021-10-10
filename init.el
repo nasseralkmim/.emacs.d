@@ -55,7 +55,6 @@
 
 ;; basics and better default
 (use-package emacs
-  :straight (:type built-in)
   :custom-face 
   (font-lock-comment-face ((t (:foreground "gray60"))))
   (org-block ((t (:background "gray97"))))
@@ -1407,8 +1406,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package modus-themes
   :if (not (display-graphic-p))
   :straight (:type built-in)
+  :custom-face 
+  (font-lock-comment-face ((t (:foreground nil))))
+  (org-block ((t (:background nil))))
   :init
-  (load-theme 'modus-vivendi t))
+  (modus-themes-load-vivendi))
 
 (use-package repeat
   :if (string-greaterp emacs-version "28.1") ; need emacs > 28
