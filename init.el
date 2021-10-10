@@ -167,7 +167,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	recentf-auto-cleanup 'mode))
 
 (use-package autorevert
-  :if (not (eq system-type 'windows-nt)) ; dont run on windows
+  :if (eq system-type 'gnu/linux)
   :defer 1
   :config
   (setq auto-revert-interval 5)
@@ -232,7 +232,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; minibuffer annotations details
 (use-package marginalia
-  :if (not (eq system-type 'windows-nt)) ; dont run on windows
+  :if (eq system-type 'gnu/linux)
   :general
   (minibuffer-local-map "M-A" 'marginalia-cycle)
   :init (marginalia-mode))
@@ -646,6 +646,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 				 "~/OneDrive/Org/gcal.org"))))
 
 (use-package ox-latex
+  :if (eq system-type 'gnu/linux)
   :after org
   :init
   ;; change scale of latex preview in org-mode
@@ -699,7 +700,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; languages spell checker
 (use-package flyspell
-  :if (not (eq system-type 'windows-nt)) ; dont run on windows
+  :if (eq system-type 'gnu/linux)
   :hook ((LaTeX-mode . flyspell-mode)
 	 (org-mode . flyspell-mode)
 	 (prorg-mode . flyspell-prog-mode))
@@ -714,7 +715,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; flyspell uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
 (use-package flyspell-lazy
-  :if (not (eq system-type 'windows-nt)) ; dont run on windows
+  :if (eq system-type 'gnu/linux)
   :if (string-match "-[Mm]icrosoft" operating-system-release)
   :hook
   (flyspell-mode . flyspell-lazy-mode)
@@ -819,6 +820,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Company use prescient.el
 ;; used to sorts and filter list of candidates
 (use-package company-prescient
+  :disabled
   :after company
   :init
   (company-prescient-mode))
@@ -1275,7 +1277,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; search bibtex bibliography with consult
 ;; depends on helm-bibtex
 (use-package consult-bibtex
-  :if (not (eq system-type 'windows-nt)) ; dont run on windows
+  :if (eq system-type 'gnu/linux)
   :straight (consult-bibtex :host github
                             :repo "mohkale/consult-bibtex")
   :general
