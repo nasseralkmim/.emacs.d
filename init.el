@@ -1065,6 +1065,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (load-theme theme 'no-confirm)))
 
 (use-package modus-themes
+  :if (display-graphic-p)
   :config
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
@@ -1401,6 +1402,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :if (not (display-graphic-p))
   :init
   (evil-terminal-cursor-changer-activate))
+
+;; load built-in modus when in terminal
+(use-package modus-themes
+  :if (not (display-graphic-p))
+  :straight (:type built-in)
+  :init
+  (load-theme 'modus-vivendi t))
 
 (use-package repeat
   :if (string-greaterp emacs-version "28.1") ; need emacs > 28
