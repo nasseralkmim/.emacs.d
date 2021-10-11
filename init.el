@@ -1412,7 +1412,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (modus-themes-load-vivendi))
 
 (use-package repeat
-  :if (string-greaterp emacs-version "28.1") ; need emacs > 28
+  :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
   :init
   ;; built-in command repeater (like hydra)
