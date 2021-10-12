@@ -875,7 +875,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                   (TeX-fold-mode) ; fold (reduce clutter) footnotes, comments etc (C-c C-o C-o DWIM)
                   (turn-on-reftex)      ; foor labels
                   (reftex-isearch-minor-mode)
-                  (outline-minor-mode)       ; latex like org
+                  ;; (outline-minor-mode)       ; latex like org
+                  (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
                   (turn-off-auto-fill)))
   :config
@@ -1009,7 +1010,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file
            "h" 'dired-sidebar-up-directory)
-  :hook (dired-sidebar-mode . visual-line-mode)
   :custom
   (dired-sidebar-theme 'vscode)
   (dired-sidebar-use-custom-font t)
