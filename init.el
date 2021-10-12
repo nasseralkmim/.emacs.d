@@ -1204,11 +1204,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after python
   :commands python-black-buffer)
 
-(use-package adaptive-wrap
-  :diminish visual-line-mode
-  :straight adaptive-wrap
-  :hook (visual-line-mode . adaptive-wrap-prefix-mode))
-
 (use-package goto-last-change
   :general ('normal "g b" 'goto-last-change))
 
