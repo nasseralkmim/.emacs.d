@@ -997,7 +997,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
 	dired-listing-switches "-alh"	; human readable format when in detail
-	dired-kill-when-opening-new-dired-buffer t
+	dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
 	delete-by-moving-to-trash t)	; move to trash
 
   ;; kill the dired buffer eand enters the current line file or directory
@@ -1013,7 +1013,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom
   (dired-sidebar-theme 'vscode)
   (dired-sidebar-use-custom-font t)
-  (dired-sidebar-one-instance-p t)      ; just one buffer is enough
+  (dired-sidebar-one-instance-p t)      ; just sidebar per frame
   :config
   (defun dired-sidebar-jump ()
     (interactive)
