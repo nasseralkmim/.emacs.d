@@ -4,7 +4,7 @@
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("log"
  (filename . "~/SeaDrive/My Libraries/PhD/log.org")
- (front-context-string . "#+title: Week lo")
+ (front-context-string . "* 2021\n** Goals\n")
  (rear-context-string)
  (position . 1))
 ("simulations"
