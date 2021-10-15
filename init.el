@@ -1526,4 +1526,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq w32-get-true-file-attributes nil
         recentf-auto-cleanup 'never))
 
+;; use emacs to edit text within chrome
+(use-package atomic-chrome
+  :commands atomic-chrome-start-server)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
