@@ -379,7 +379,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil
   :diminish evil-mode
   :init
-  (setq evil-want-keybinding t ; load evil keybindings
+  (setq evil-want-keybinding nil ; preference for evil-collection
         evil-want-minibuffer t); evil in minibuffer
   (evil-mode 1)
   :general
