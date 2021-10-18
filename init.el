@@ -955,7 +955,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   (dired-mode-map "C-c C-d" 'mkdir)
   ('normal dired-mode-map "h" 'dired-up-directory)
-  ("M-o" 'dired-omit-mode)
+  (dired-mode-map "M-o" 'dired-omit-mode)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
   ('normal dired-mode-map "SPC" nil)
   ("C-x C-j" 'dired-jump-other-window)
