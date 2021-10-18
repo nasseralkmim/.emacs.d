@@ -964,6 +964,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after latex
   :hook (LaTeX-mode . evil-tex-mode))
 
+;; labels, references, citations and indices in LaTeX
+;; usually: C-c RET -> eqref -> TAB -> select label with completion
 (use-package reftex
   :after latex
   :commands reftex-toc
@@ -975,12 +977,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "r" 'reftex-reference
 	   "c" 'reftex-citation)
   :config
-  (setq reftex-cite-prompt-optional-args t) ; Prompt for empty optional arguments in cite
-  ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
-  (setq reftex-enable-partial-scans t)
-  (setq reftex-keep-temporary-buffers nil)
-  (setq reftex-save-parse-info t)
-  (setq reftex-trust-label-prefix '("fig:" "eq:")))
+  (setq reftex-cite-prompt-optional-args t ; Prompt for empty optional arguments in cite
+        ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
+        reftex-enable-partial-scans t
+        reftex-keep-temporary-buffers nil
+        reftex-save-parse-info t
+        reftex-trust-label-prefix '("fig:" "eq:") ; speed up parsing of labels
+        ;; don't ask which refecence macro after `reftex-referene'
+        reftex-ref-macro-prompt nil
+        reftex-label-menu-flags '(nil nil nil nil nil nil nil nil) ; show just equations in the label menu
+        ))
 
 (use-package dired
   :straight (:type built-in)
