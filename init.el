@@ -55,9 +55,6 @@
 
 ;; basics and better default
 (use-package emacs
-  :custom-face 
-  (font-lock-comment-face ((t (:foreground "gray60"))))
-  (org-block ((t (:background "gray97"))))
   :general
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
@@ -146,6 +143,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    ;; tab-always-indent 'complete ; tab indents first, then tries to complete
    help-window-select t	    ; focus on help window when openend
    window-combination-resize t)) ; resize windows proportionaly
+
+
+;; custom theme
+(use-package emacs
+  :custom-face 
+  (font-lock-comment-face ((t (:foreground "gray60"))))
+  (org-block ((t (:background "gray97"))))
+  (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face)))))
 
 (use-package abbrev
   :straight (:type built-in)
