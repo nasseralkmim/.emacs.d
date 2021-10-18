@@ -1497,4 +1497,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package atomic-chrome
   :commands atomic-chrome-start-server)
 
+;; easily change windows
+(use-package ace-window
+  :general
+  ('normal "C-w C-w" 'ace-window))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
