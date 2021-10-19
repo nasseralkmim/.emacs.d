@@ -662,11 +662,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 
-;; auto latex fragment in org
-(use-package org-fragtog
-  :after org
-  :hook (org-mode . org-fragtog-mode))
-
 (use-package ob-async
   :after org
   :config
