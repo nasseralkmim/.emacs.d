@@ -2,4 +2,4 @@
 # name: sup
 # key: u 
 # --
-${1:symbol}^\{${2:superscript}\}
+${}^{${}}
