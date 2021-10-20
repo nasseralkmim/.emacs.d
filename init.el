@@ -808,10 +808,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :custom-face 
-  (font-latex-sectioning-1-face ((t (:weight bold :slant italic))))
+  (font-latex-sectioning-1-face ((t (:weight bold :slant italic :overline t))))
   (font-latex-sectioning-2-face ((t (:weight bold))))
   (font-latex-sectioning-3-face ((t (:weight bold))))
-  (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
+  (font-latex-sectioning-4-face ((t (:weight normal :slant normal :underline t))))
   (font-latex-sectioning-5-face ((t (:weight normal :slant italic))))
   :general
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
