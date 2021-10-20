@@ -145,13 +145,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    help-window-select t	    ; focus on help window when openend
    window-combination-resize t)) ; resize windows proportionaly
 
-
-;; custom theme
+;; custom emacs theme
 (use-package emacs
   :custom-face 
   (font-lock-comment-face ((t (:foreground "gray60"))))
   (org-block ((t (:background "gray97"))))
-  (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face)))))
+  (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face))))
+  (font-latex-string-face ((t (:foreground "SaddleBrown")))))
 
 (use-package abbrev
   :straight (:type built-in)
