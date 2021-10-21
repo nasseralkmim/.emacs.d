@@ -1414,10 +1414,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq org-cite-global-bibliography '("~/.bibliography.bib")))
 
-;; compile and run code
-(use-package quickrun
-  :commands quickrun quickrun-shell)
-
 ;; highligh indentation
 (use-package highlight-indent-guides
   :diminish highlight-indent-guides-mode
