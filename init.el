@@ -1380,6 +1380,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package window
   :straight (:type built-in)
   :general
+  ("C-x C-o" 'other-window)
   (resize-window-repeat-map "j" 'shrink-window)
   (resize-window-repeat-map "k" 'enlarge-window)
   (resize-window-repeat-map "h" 'shrink-window-horizontally)
