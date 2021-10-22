@@ -228,10 +228,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("M-r" 'vertico-repeat))
 
-;; show completion candidates in one line
-(use-package vertico-flat
-  :hook (vertico-mode . vertico-flat-mode))
-
 ;; completion style with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
 (use-package orderless
