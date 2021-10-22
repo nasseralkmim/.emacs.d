@@ -748,6 +748,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq corfu-auto t
         corfu-auto-delay 0.1
+        corfu-quit-at-boundary t    ; after `np.` quit the completion
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
@@ -1150,9 +1151,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (defun org-babel-edit-prep:python (babel-info)
     (setq-local buffer-file-name (->> babel-info caddr (alist-get :tangle)))
-    (setq-local lsp-enable-file-watchers nil)
     (lsp)))
-
 
 ;; Microsoft python language server
 ;; it seems to be faster than pyls
