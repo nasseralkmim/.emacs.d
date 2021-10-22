@@ -207,9 +207,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         			       "extensions/vertico-directory.el"
         			       "extensions/vertico-repeat.el"))
   :init
-  (vertico-mode)
-  :config
-  (setq vertico-resize 'fixed))
+  (vertico-mode))
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
