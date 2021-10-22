@@ -1500,5 +1500,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal "C-w C-w" 'ace-window))
 
+;; highlight parensthesis
+(use-package highlight-parentheses
+  :hook (prog-mode . highlight-parentheses-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
