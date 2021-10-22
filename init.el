@@ -202,12 +202,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (vertico :type git :host github :repo "minad/vertico"
         	     :includes (vertico-buffer
         			vertico-directory
+                                vertico-flat
         			vertico-repeat)
         	     :files (:defaults "extensions/vertico-buffer.el"
         			       "extensions/vertico-directory.el"
+        			       "extensions/vertico-flat.el"
         			       "extensions/vertico-repeat.el"))
   :init
-  (vertico-mode))
+  (vertico-mode)
+  (setq vertico-resize t))
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
@@ -224,6 +227,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after vertico
   :general
   ("M-r" 'vertico-repeat))
+
+;; show completion candidates in one line
+(use-package vertico-flat
+  :hook (vertico-mode . vertico-flat-mode))
 
 ;; completion style with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
