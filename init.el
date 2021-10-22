@@ -1366,9 +1366,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package modus-themes
   :if (not (display-graphic-p))
   :straight (:type built-in)
-  :custom-face 
-  (font-lock-comment-face ((t (:foreground nil))))
-  (org-block ((t (:background nil))))
   :init
   (modus-themes-load-vivendi))
 
