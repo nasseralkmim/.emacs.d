@@ -147,6 +147,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; custom emacs theme
 (use-package emacs
+  :if (display-graphic-p)
   :custom-face 
   (font-lock-comment-face ((t (:foreground "gray60"))))
   (org-block ((t (:background "gray97"))))
@@ -1501,5 +1502,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package ace-window
   :general
   ('normal "C-w C-w" 'ace-window))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
