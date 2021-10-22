@@ -251,13 +251,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
   ("C-s" 'consult-line)			; search lines with preview
+  ("C-c m" 'consult-mark)
   ;; two parts: search  and filter
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
   ("C-c r" 'consult-ripgrep)		; search file contents
   ("C-c f" 'consult-find-fd)		; search files in directories
   ;; (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
+  :hook
   ;; hook for using default completion mode
-  :hook (completion-list-mode . consult-preview-at-point-mode)
+  (completion-list-mode . consult-preview-at-point-mode)
   :config
   ;; configure preview behavior to `any` key and specific time delay
   (consult-customize consult-buffer consult-bookmark consult-ripgrep consult-find-fd
