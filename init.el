@@ -1131,6 +1131,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; using corfu, not company
   (setq lsp-completion-provider :none))
 
+;; language server for type checker/completion/doc string
 ;; alternative to lsp-python-ms
 (use-package lsp-pyright
   :hook (python-mode . (lambda ()
@@ -1141,6 +1142,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; don't infer types from library source
   ;; treat all as unknowns when type is nonpresent
   (setq lsp-pyright-use-library-code-for-types nil))
+
+;; lsp mode on org-edit-special
+(use-package ob-python
+  :after org
+  :commands org-babel-execute:python
+  :init
+  (defun org-babel-edit-prep:python (babel-info)
+    (setq-local buffer-file-name (->> babel-info caddr (alist-get :tangle)))
+    (setq-local lsp-enable-file-watchers nil)
+    (lsp)))
+
 
 ;; Microsoft python language server
 ;; it seems to be faster than pyls
