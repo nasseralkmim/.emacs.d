@@ -149,10 +149,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package emacs
   :if (display-graphic-p)
   :custom-face 
+  ;; latex
+  (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
+  (font-latex-sectioning-2-face ((t (:weight bold))))
+  (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
+  (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
+  (font-latex-sectioning-5-face ((t (:weight normal :slant italic :overline t))))
+  (font-latex-string-face ((t (:foreground "SaddleBrown"))))
+  ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
+  ;; org
   (org-block ((t (:background "gray97"))))
-  (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face))))
-  (font-latex-string-face ((t (:foreground "SaddleBrown")))))
+  (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face)))))
 
 (use-package abbrev
   :straight (:type built-in)
@@ -264,7 +272,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; configure preview behavior to `any` key and specific time delay
   (consult-customize consult-buffer consult-bookmark consult-ripgrep consult-find-fd
-		     :preview-key '(:debounce 5 any))
+                     :preview-key '(:debounce 5 any))
   (consult-customize consult-line :preview-key '(:debounce 0 any))
 
   ;; use 'fd' instead of 'find'
@@ -811,12 +819,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package latex
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
-  :custom-face 
-  (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
-  (font-latex-sectioning-2-face ((t (:weight bold))))
-  (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
-  (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
-  (font-latex-sectioning-5-face ((t (:weight normal :slant italic :overline t))))
   :general
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
   ('normal outline-mode-map
@@ -1045,7 +1047,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
-        modus-themes-headings '((t . (rainbow overline)))
+        modus-themes-headings '((t . (rainbow)))
 	modus-themes-mode-line '(borderless accented moody))
 
   ;; hook to enforce change when theme is toggled (which loads the theme)
