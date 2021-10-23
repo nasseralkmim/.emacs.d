@@ -1084,7 +1084,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
-  :if (display-graphic-p)         ; only in gui
   :custom-face
   (auto-dim-other-buffers-face ((t (:background "gray94"))))
   :init
