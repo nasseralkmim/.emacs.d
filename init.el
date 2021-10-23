@@ -1049,8 +1049,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (mapc #'disable-theme custom-enabled-themes)
     (load-theme theme 'no-confirm)))
 
+;; load modus in terminal
 (use-package modus-themes
-  :if (display-graphic-p)
+  :if (not (display-graphic-p))
   :config
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
@@ -1060,7 +1061,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	modus-themes-paren-match '(bold underline)
 	modus-themes-no-mixed-fonts nil
 	modus-themes-variable-pitch-ui nil
-	modus-themes-syntax '(faint alt-syntax yellow-comments)
+	modus-themes-syntax '(faint)
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
@@ -1071,17 +1072,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (progn 
-		(set-face-attribute 'auto-dim-other-buffers-face nil
-                                    :foreground (modus-themes-color 'fg-inactive))
+                (if (featurep 'auto-dim-other-buffers)
+		    (set-face-attribute 'auto-dim-other-buffers-face nil
+                                        :foreground (modus-themes-color 'fg-inactive)))
 		(set-face-attribute 'sp-show-pair-match-content-face nil
                                     :background (modus-themes-color 'bg-paren-expression)))))
-
-  ;; runs the hook
-  (if (display-graphic-p)
-      (modus-themes-load-operandi)
-    (modus-themes-load-vivendi))
   :general
-  ("<f5>"  'modus-themes-toggle))
+  ("<f5>"  'modus-themes-toggle)
+  :init
+  (modus-themes-load-vivendi))
 
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
@@ -1391,13 +1390,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :if (not (display-graphic-p))
   :init
   (evil-terminal-cursor-changer-activate))
-
-;; load built-in modus when in terminal
-(use-package modus-themes
-  :if (not (display-graphic-p))
-  :straight (:type built-in)
-  :init
-  (modus-themes-load-vivendi))
 
 (use-package repeat
   :if (string-greaterp emacs-version "28") ; need emacs > 28
