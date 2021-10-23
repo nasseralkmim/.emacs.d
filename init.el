@@ -197,8 +197,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-h v" 'helpful-variable)
   ("C-h k" 'helpful-key))
 
+;; enhances default minibuffer and completions buffer
+;; easily navigate from minibuffer into completions buffer
+(use-package mct
+  :straight (mct :type git :host gitlab :repo "protesilaos/mct")
+  :init
+  (mct-mode)
+  :config
+  (setq mct-live-update-delay 0
+        mct-minimum-input 1))
+
 ;; completion UI (vertical minibuffer)
 (use-package vertico
+  :disabled
   :straight (vertico :type git :host github :repo "minad/vertico"
         	     :includes (vertico-buffer
         			vertico-directory
@@ -216,6 +227,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
+  :straight nil
   :after vertico
   :general
   (vertico-map "RET" 'vertico-directory-enter
@@ -226,6 +238,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; repeat last vertico session
 (use-package vertico-repeat
+  :straight nil
   :after vertico
   :general
   ("M-r" 'vertico-repeat))
