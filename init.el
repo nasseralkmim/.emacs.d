@@ -141,7 +141,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq-default
    indent-tabs-mode nil	     ; don't insert tab when indent
    ;; this is giving me problems when creating new lines in org-mode source blocks
-   ;; tab-always-indent 'complete ; tab indents first, then tries to complete
+   tab-always-indent 'complete ; tab indents first, then tries to complete
    help-window-select t	    ; focus on help window when openend
    window-combination-resize t)) ; resize windows proportionaly
 
@@ -208,6 +208,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         			       "extensions/vertico-directory.el"
         			       "extensions/vertico-flat.el"
         			       "extensions/vertico-repeat.el"))
+  :general
+  ('insert vertico-map "C-k" 'vertico-exit-input)
   :init
   (vertico-mode)
   (setq vertico-resize t))
