@@ -419,6 +419,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         evil-want-minibuffer t); evil in minibuffer
   (evil-mode 1)
   :general
+  (evil-motion-state-map "C-i" nil)     ; avoid conflicting with tab in terminal
   ('normal override "s" 'avy-goto-char-timer)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
