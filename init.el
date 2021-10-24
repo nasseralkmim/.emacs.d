@@ -1024,33 +1024,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom
   (vscode-icon-size 15))
 
-(use-package doom-themes
-  :disabled
-  :commands ap/load-doom-theme
-  :general
-  ("<f7>" 'ap/load-doom-theme)
-  :config
-  ;; (load-theme 'doom-one t)
-  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
-	doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (doom-themes-org-config)
-  
-  (defun ap/load-doom-theme (theme)
-    "Disable active themes and load a Doom theme."
-    (interactive (list (intern (completing-read "Theme: "
-						(->> (custom-available-themes)
-						  (-map #'symbol-name)
-						  (--select (string-prefix-p "doom-" it)))))))
-    (ap/switch-theme theme)
-    (set-face-foreground 'org-hide (face-background 'default)))
-  (defun ap/switch-theme (theme)
-    "Disable active themes and load THEME."
-    (interactive (list (intern (completing-read "Theme: "
-						(->> (custom-available-themes)
-						  (-map #'symbol-name))))))
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme theme 'no-confirm)))
-
 ;; load modus in terminal
 (use-package modus-themes
   :if (not (display-graphic-p))
