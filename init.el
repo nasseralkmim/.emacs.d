@@ -158,6 +158,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (font-latex-string-face ((t (:foreground "SaddleBrown"))))
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
+  ;; auto-dim-other-buffers
+  (auto-dim-other-buffers-face ((t (:background "gray94"))))
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face)))))
@@ -243,7 +245,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("M-r" 'vertico-repeat))
 
-;; completion style with flexible candidate filtering
+;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
 (use-package orderless
   :init
@@ -316,7 +318,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package embark
   :demand                               ; load it independently of bind and hook
   :general
-  ("C-S-a" 'embark-act)
+  ("M-a" 'embark-act)
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   :commands embark-prefix-help-command
@@ -346,6 +348,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package all-the-icons)
 
 ;; automatic insert matching pairs and navigation
+;; highlight matching parens
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
@@ -416,7 +419,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         evil-want-minibuffer t); evil in minibuffer
   (evil-mode 1)
   :general
-  (evil-motion-state-map "C-i" nil)
   ('normal override "s" 'avy-goto-char-timer)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
@@ -1085,7 +1087,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
   :custom-face
-  (auto-dim-other-buffers-face ((t (:background "gray94"))))
   :init
   (auto-dim-other-buffers-mode t))
 
