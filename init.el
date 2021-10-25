@@ -357,15 +357,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; if this is used before `embark-act`, load the package (because of `:commands`)
   ;; `which-key` changes this variable as well, so we need to change it after `which-key`
   (which-key-mode . (lambda ()
-		      (setq prefix-help-command #'embark-prefix-help-command)))
-  :config
-  ;; reminder of available actions
-  ;; to select an action, use "@" prefix when in the prompter
-  (setq embark-action-indicator
-	(lambda (map _target)
-	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
-	  #'which-key--hide-popup-ignore-command)
-	embark-become-indicator embark-action-indicator))
+		      (setq prefix-help-command #'embark-prefix-help-command))))
 
 ;; allows consult previews as you move around an auto-updating embark collect
 ;; buffer
