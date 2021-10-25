@@ -63,30 +63,11 @@
   ("C-x C-e" 'eval-defun)
   ("C-x e" 'eval-last-sexp)
   ("C-h j" 'describe-keymap)
-  ("C-M-=" 'zoom-frame)
-  ("C-M--" 'zoom-frame-out)
   :init
   (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
-  
-  ;; setting typeface size
-  (defun zoom-frame (&optional amt frame)
-    "Increaze FRAME font size by amount AMT. Defaults to selected
-frame if FRAME is nil, and to 1 if AMT is nil."
-    (interactive "p")
-    (let* ((frame (or frame (selected-frame)))
-           (font (face-attribute 'default :font frame))
-           (size (font-get font :size))
-           (amt (or amt 1))
-           (new-size (+ size amt)))
-      (set-frame-font (font-spec :size new-size) t `(,frame))))
-
-  (defun zoom-frame-out (&optional amt frame)
-    "Call `zoom-frame' with negative argument."
-    (interactive "p")
-    (zoom-frame (- (or amt 1)) frame))
 
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
@@ -163,6 +144,29 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face)))))
+
+;; change typeface size font
+(use-package emacs
+  :general
+  ("C-M-=" 'zoom-frame)
+  ("C-M--" 'zoom-frame-out)
+  :init
+  ;; setting typeface size
+  (defun zoom-frame (&optional amt frame)
+    "Increaze FRAME font size by amount AMT. Defaults to selected
+frame if FRAME is nil, and to 1 if AMT is nil."
+    (interactive "p")
+    (let* ((frame (or frame (selected-frame)))
+           (font (face-attribute 'default :font frame))
+           (size (font-get font :size))
+           (amt (or amt 1))
+           (new-size (+ size amt)))
+      (set-frame-font (font-spec :size new-size) t `(,frame))))
+
+  (defun zoom-frame-out (&optional amt frame)
+    "Call `zoom-frame' with negative argument."
+    (interactive "p")
+    (zoom-frame (- (or amt 1)) frame)))
 
 (use-package abbrev
   :straight (:type built-in)
