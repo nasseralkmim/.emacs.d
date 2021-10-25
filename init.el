@@ -1399,7 +1399,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; for creating org-ids for more robust linking, avoid referencing issues
 (use-package org-id
   :after org
+  :demand                               ; explicitly require org-id
   :init
+  ;; automatic generate id for headings
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
 
 ;; citations support in org-mode
