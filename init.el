@@ -345,6 +345,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `embark-collect` allows acting on a `set of targets` (snapshot or live)
 ;; `live` works like a completion narrowing that Vertico does 
 ;; `export` the set of targets are shown in an appropriate major-mode
+;; embark-mixed-indicator: if no action is selected, buffer will pop up
 (use-package embark
   :demand                               ; load it independently of bind and hook
   :general
