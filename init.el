@@ -1425,7 +1425,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (:type built-in)
   :hook
   (diff-mode . outline-minor-mode)
-  (log-edit . evil-insert-state) ; enters commit in insert
   (vc-git-region-history-mode . outline-minor-mode))
 
 ;; manage remote files access and manipulations
