@@ -801,9 +801,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('insert "C-n" nil
 	   "C-p" nil)
   :config
-  (setq corfu-auto t
+  (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.1
-        corfu-quit-at-boundary t    ; after `np.` quit the completion
+        ;; after `np.` quit the completion
+        ;; if nil: allow space separated orderless completion style
+        ;; if t: quit at boundary
+        corfu-quit-at-boundary nil
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
