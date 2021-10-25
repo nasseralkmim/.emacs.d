@@ -201,7 +201,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; enhances default minibuffer and completions buffer
 ;; easily navigate from minibuffer into completions buffer
+;; problems: no history
 (use-package mct
+  :disabled
   :straight (mct :type git :host gitlab :repo "protesilaos/mct")
   :init
   (mct-mode)
@@ -211,7 +213,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; completion UI (vertical minibuffer)
 (use-package vertico
-  :disabled
   :straight (vertico :type git :host github :repo "minad/vertico"
         	     :includes (vertico-buffer
         			vertico-directory
