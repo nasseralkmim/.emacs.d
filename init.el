@@ -259,6 +259,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                    #'completion--in-region)
                  args))))
 
+;; display completions in anotherbuffer instead of minibuffer
+;; avoids window been pushed up
+(use-package vertico-buffer
+  :straight nil
+  :after vertico
+  :init
+  (vertico-buffer-mode)
+  (setq vertico-buffer-display-action '(display-buffer-in-side-window
+                                        (window-height . 13)
+                                        (side . bottom))))
+
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
 (use-package orderless
