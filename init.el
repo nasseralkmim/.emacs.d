@@ -252,6 +252,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; use vertico to complete in region with orderless in terminal
 (use-package vertico
+  :straight nil
   :if (not (display-graphic-p))
   :config
   ;; Use `consult-completion-in-region' if Vertico is enabled.
@@ -271,7 +272,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (vertico-buffer-mode)
   (setq vertico-buffer-display-action '(display-buffer-in-side-window
-                                        (window-height . 13)
+                                        (window-height . 10)
                                         (side . bottom))))
 
 ;; `completion STYLE` with flexible candidate filtering
