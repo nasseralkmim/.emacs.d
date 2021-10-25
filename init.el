@@ -201,7 +201,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; enhances default minibuffer and completions buffer
 ;; easily navigate from minibuffer into completions buffer
-;; problems: no history
+;; problems: no history sorting...
 (use-package mct
   :disabled
   :straight (mct :type git :host gitlab :repo "protesilaos/mct")
@@ -245,6 +245,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after vertico
   :general
   ("M-r" 'vertico-repeat))
+
+;; use vertico to complete in region with orderless in terminal
+(use-package vertico
+  :if (not (display-graphic-p))
+  :config
+  ;; Use `consult-completion-in-region' if Vertico is enabled.
+  ;; Otherwise use the default `completion--in-region' function.
+  (setq completion-in-region-function
+        (lambda (&rest args)
+          (apply (if vertico-mode
+                     #'consult-completion-in-region
+                   #'completion--in-region)
+                 args))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
