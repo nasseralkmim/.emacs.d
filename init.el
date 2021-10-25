@@ -443,7 +443,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-mode 1)
   :general
   (evil-motion-state-map "C-i" nil)     ; avoid conflicting with tab in terminal
-  ('normal override "s" 'avy-goto-char-timer)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
   ('(normal visual) :prefix "SPC" "l" 'evil-last-non-blank)
@@ -1528,5 +1527,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; highlight parensthesis
 (use-package highlight-parentheses
   :hook (prog-mode . highlight-parentheses-mode))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
