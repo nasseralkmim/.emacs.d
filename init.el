@@ -790,10 +790,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space between filter words (combined with oderless)
 (use-package corfu
-  :hook
-  (prog-mode . corfu-mode)
-  (org-mode . corfu-mode)
-  (LaTeX-mode . corfu-mode)
+  :init
+  (corfu-global-mode)
   :general
   (corfu-map "<tab>" 'corfu-next
 	     "<backtab>" 'corfu-previous
