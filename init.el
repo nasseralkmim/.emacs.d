@@ -863,10 +863,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq outline-minor-mode-cycle t
 	outline-minor-mode-highlight 'append))  
 
-(use-package outline-minor-faces
-  :after outline
-  :hook (outline-minor-mode . outline-minor-faces-add-font-lock-keywords))
-
 (use-package latex
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
