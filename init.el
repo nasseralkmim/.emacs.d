@@ -793,12 +793,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal corfu-map "<escape>" 'corfu-quit)
   ('insert "C-n" nil
 	   "C-p" nil)
+  :hook
+  ;; after `np.` quit the completion
+  ;; if nil: allow space separated orderless completion style
+  ;; if t: quit at boundary
+  (python-mode . (lambda ()
+                   (setq-local corfu-quit-at-boundary t)))
   :config
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.1
-        ;; after `np.` quit the completion
-        ;; if nil: allow space separated orderless completion style
-        ;; if t: quit at boundary
         corfu-quit-at-boundary nil
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
