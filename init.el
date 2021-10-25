@@ -154,7 +154,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (font-latex-sectioning-2-face ((t (:weight bold))))
   (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
   (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
-  (font-latex-sectioning-5-face ((t (:weight normal :slant italic :overline t))))
+  (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
   (font-latex-string-face ((t (:foreground "SaddleBrown"))))
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
