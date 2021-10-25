@@ -201,7 +201,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; enhances default minibuffer and completions buffer
 ;; easily navigate from minibuffer into completions buffer
-;; problems: no history sorting...
+;; problems: no history sorting, no reverse
 (use-package mct
   :disabled
   :straight (mct :type git :host gitlab :repo "protesilaos/mct")
