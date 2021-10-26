@@ -1047,6 +1047,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; icons for dired sidebar
 (use-package vscode-icon
+  :if (display-graphic-p)
   :commands (vscode-icon-for-file)
   :custom
   (vscode-icon-size 15))
@@ -1054,7 +1055,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; load modus in terminal
 (use-package modus-themes
   :if (not (display-graphic-p))
-  :config
+  :init
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
 	modus-themes-hl-line '(accented)
@@ -1074,15 +1075,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (progn 
-                (if (featurep 'auto-dim-other-buffers)
-		    (set-face-attribute 'auto-dim-other-buffers-face nil
-                                        :foreground (modus-themes-color 'fg-dim)))
-		(set-face-attribute 'sp-show-pair-match-content-face nil
+                (set-face-attribute 'auto-dim-other-buffers-face nil
+                                    :foreground (modus-themes-color 'fg-dim))
+                (set-face-attribute 'sp-show-pair-match-content-face nil
                                     :background (modus-themes-color 'bg-paren-expression)))))
+  (modus-themes-load-vivendi)
   :general
-  ("<f5>"  'modus-themes-toggle)
-  :init
-  (modus-themes-load-vivendi))
+  ("<f5>"  'modus-themes-toggle))
 
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
@@ -1445,6 +1444,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (prog-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character))
+
+;; suppress error on tui
+(use-package highlight-indent-guides
+  :if (not (display-graphic-p))
+  :config
+  (setq highlight-indent-guides-suppress-auto-error t))
 
 ;; emacs built in version control
 (use-package vc-git
