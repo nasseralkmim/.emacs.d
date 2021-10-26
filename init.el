@@ -1075,17 +1075,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (progn 
-                (set-face-attribute 'auto-dim-other-buffers-face nil
-                                    :foreground (modus-themes-color 'fg-dim))
-                (set-face-attribute 'sp-show-pair-match-content-face nil
-                                    :background (modus-themes-color 'bg-paren-expression)))))
+                (eval-after-load 'auto-dim-other-buffers
+                  '(set-face-attribute 'auto-dim-other-buffers-face nil
+                                      :foreground (modus-themes-color 'fg-dim)))
+                (eval-after-load 'smartparens
+                  '(set-face-attribute 'sp-show-pair-match-content-face nil
+                                      :background (modus-themes-color 'bg-paren-expression))))))
   (modus-themes-load-vivendi)
   :general
   ("<f5>"  'modus-themes-toggle))
 
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
-  :custom-face
   :init
   (auto-dim-other-buffers-mode t))
 
