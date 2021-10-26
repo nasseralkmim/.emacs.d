@@ -1076,7 +1076,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	      (progn 
                 (if (featurep 'auto-dim-other-buffers)
 		    (set-face-attribute 'auto-dim-other-buffers-face nil
-                                        :foreground (modus-themes-color 'fg-inactive)))
+                                        :foreground (modus-themes-color 'fg-dim)))
 		(set-face-attribute 'sp-show-pair-match-content-face nil
                                     :background (modus-themes-color 'bg-paren-expression)))))
   :general
