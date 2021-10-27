@@ -42,6 +42,8 @@
 ;; general for kybinding
 (use-package general
   :demand)
+
+;; control minor-mode indication in the mode-lie
 (use-package diminish
   :demand)
 
