@@ -217,7 +217,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq mct-live-update-delay 0
         mct-minimum-input 1))
 
-;; completion UI (vertical minibuffer)
+;; completion UI (vertical list in minibuffer)
 (use-package vertico
   :straight (vertico :type git :host github :repo "minad/vertico"
         	     :includes (vertico-buffer
@@ -279,6 +279,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
+;; filter means how a input string is matched against candidates
 (use-package orderless
   :init
   ;; partial completion for files to allows path expansion
