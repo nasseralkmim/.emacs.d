@@ -1534,5 +1534,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package highlight-parentheses
   :hook (prog-mode . highlight-parentheses-mode))
 
+;; moving cursor around fast and efficiently
+(use-package avy
+  :general
+  ('normal "s" 'avy-goto-char-timer))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
