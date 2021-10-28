@@ -810,6 +810,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
+(use-package +capf
+  :straight nil
+  :load-path "./lisp"
+  :after corfu
+  :demand
+  :config
+  (add-to-list 'completion-at-point-functions
+               '+file-completion-at-point-function)
+  (add-to-list 'completion-at-point-functions
+               '+dabbrev-completion-at-point-function))
+
 ;; completion any text based on buffer contents
 (use-package dabbrev
   :general
