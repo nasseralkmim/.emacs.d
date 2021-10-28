@@ -597,6 +597,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :mode (("\\.org$" . org-mode))
   :general
   (org-mode-map "C-c C-l" 'org-insert-link)
+  (org-mode-map "C-c ," 'org-insert-structure-template)
   ('normal org-mode-map "TAB" 'org-cycle)
   ('normal org-mode-map "z n" 'org-toggle-narrow-to-subtree)
   ('normal org-mode-map "z k" 'org-previous-visible-heading)
