@@ -85,8 +85,6 @@
   ;; other basiscs
   (setq ring-bell-function 'ignore)
   (setq inhibit-startup-screen t)
-  (setq user-full-name "Nasser Alkmim"
-	user-mail-address "nasser.alkmim@gmail.com")
 
   ;; UTF-8 encoding
   (prefer-coding-system 'utf-8)
