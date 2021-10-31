@@ -756,9 +756,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; languages spell checker
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
-  :hook ((LaTeX-mode . flyspell-mode)
-	 (org-mode . flyspell-mode)
-	 (prorg-mode . flyspell-prog-mode))
+  :hook
+  (LaTeX-mode . flyspell-mode)
+  (org-mode . flyspell-mode)
+  (prorg-mode . flyspell-prog-mode)
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
@@ -777,9 +778,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq flyspell-lazy-idle-seconds 1))
 
+;; convenient functions for correctiong
 (use-package flyspell-correct
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
+  ('normal flyspell-mode-map "[ ," 'flyspell-correct-wrapper)
   :after flyspell)
 
 ;; completion in region manually summoned with <tab> (no auto pop up)
