@@ -127,7 +127,8 @@
    window-combination-resize t)) ; resize windows proportionaly
 
 ;; custom emacs theme
-(use-package emacs
+(use-package custom-emacs-theme
+  :straight (emacs :type built-in)
   :if (display-graphic-p)
   :custom-face 
   ;; latex
@@ -143,7 +144,8 @@
   (auto-dim-other-buffers-face ((t (:background "gray94"))))
   ;; org
   (org-block ((t (:background "gray97"))))
-  (org-meta-line ((t (:height 90 :inherit 'font-lock-comment-face)))))
+  (org-meta-line ((t (:height 0.9 :inherit 'font-lock-comment-face))))
+  (org-drawer ((t (:inherit 'font-lock-comment-face :height 0.9)))))
 
 ;; change typeface size font
 (use-package emacs
