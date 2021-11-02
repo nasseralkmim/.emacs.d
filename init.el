@@ -127,7 +127,7 @@
    window-combination-resize t)) ; resize windows proportionaly
 
 ;; custom emacs theme
-(use-package custom-emacs-theme
+(use-package custom-theme
   :straight (emacs :type built-in)
   :if (display-graphic-p)
   :custom-face 
