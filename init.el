@@ -905,6 +905,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                   (reftex-isearch-minor-mode)
                   (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
+                  (yas-minor-mode)
                   (turn-off-auto-fill)))
   :config
   ;; basics configs
@@ -964,7 +965,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	preview-auto-cache-preamble t))
 
 ;; latex function
-(use-package latex
+(use-package latex-clipboard
   :straight nil
   :after latex
   :general
