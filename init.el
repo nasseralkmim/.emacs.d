@@ -887,17 +887,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :general
-  (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
   ('normal outline-mode-map
     "g j" nil
     "g k" nil
     "C-j" nil)
-  ('normal LaTeX-mode-map "g p" '(:keymap preview-map))
-  (preview-map
-   "b" 'preview-buffer
-   "c" 'preview-clearout-buffer
-   "s" 'preview-section
-   "p" 'preview-at-point)
   ('normal LaTeX-mode-map "g f" '(:keymap TeX-fold-keymap))
   (TeX-fold-keymap
    "b" 'TeX-fold-buffer
@@ -910,7 +903,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                   (TeX-fold-mode) ; fold (reduce clutter) footnotes, comments etc (C-c C-o C-o DWIM)
                   (turn-on-reftex)      ; foor labels
                   (reftex-isearch-minor-mode)
-                  ;; (outline-minor-mode)       ; latex like org
                   (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
                   (turn-off-auto-fill)))
@@ -935,11 +927,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         TeX-source-correlate-start-server t ;; inhibit the question to start a server process
         TeX-source-correlate-mode t) ;; jump to source
 
-  ;; preview latex config
-  (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath" "showlabels")
-	preview-scale-function 1.1
-	preview-auto-cache-preamble t)
-
   ;; update PDF buffers after successful LaTeX runs
   (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
 	    'TeX-revert-document-buffer) 
@@ -957,8 +944,32 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
   ;; PDF Toll is good when I'm with just one screen
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "Okular"))
+	       '(output-pdf "Okular")))
 
+;; preview in latex
+(use-package preview
+  :straight nil
+  :after latex
+  :general
+  ('normal LaTeX-mode-map "g p" '(:keymap preview-map))
+  (preview-map
+   "b" 'preview-buffer
+   "c" 'preview-clearout-buffer
+   "s" 'preview-section
+   "p" 'preview-at-point)
+  :init
+  ;; preview latex config
+  (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath" "showlabels")
+	preview-scale-function 1.1
+	preview-auto-cache-preamble t))
+
+;; latex function
+(use-package latex
+  :straight nil
+  :after latex
+  :general
+  (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
+  :init
   ;; function definition, not the best...
   (defun my-tex-insert-clipboard ()
     (interactive)
@@ -991,10 +1002,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 \\begin{figure}[ht!]
   \\centering
   \\includegraphics[width=.5\\linewidth]{%s}
-\\end{figure}" image-file))))
-  )
+\\end{figure}" image-file)))))
 
-(use-package evil-tex
+
+  (use-package evil-tex
   :after latex
   :hook (LaTeX-mode . evil-tex-mode))
 
