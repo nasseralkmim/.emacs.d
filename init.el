@@ -1281,7 +1281,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (setq bibtex-completion-pdf-open-function
           (lambda (fpath) (shell-command (concat
                                           "wslview "	; version 3.2.1 works with spaces in path
-                                          (shell-quote-argument fpath)))))))
+                                          (shell-quote-argument fpath))))))
+  :config
+  ;; dont prompt for anything, just insert the citation please.
+  (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
 
 
 ;; search bibtex bibliography with consult
