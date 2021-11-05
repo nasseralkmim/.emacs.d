@@ -521,8 +521,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
 	evil-collection-company-use-tng nil) ; makes company works betters I think
-  ;; remove `zk` binding, I prefer to use it to go up a heading
-  (evil-define-minor-mode-key 'normal 'outline-minor-mode "zk" nil)
   (evil-collection-init))
 
 ;; navigation: gh, gj, gk, gl
@@ -864,7 +862,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; note: evil collection also sets a bunch of keybindings
 (use-package outline
   :straight (:type built-in)
-  :diminish outline-minor-mode
+  ;; :diminish outline-minor-mode
   :hook
   (prog-mode . outline-minor-mode)
   (markdown-mode . outline-minor-mode)
@@ -879,8 +877,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal outline-mode-map "z h" 'outline-hide-sublevels)
   ('normal outline-mode-map "z a" 'outline-show-all)
   ('normal outline-mode-map "<tab>" 'outline-cycle)
-  ('normal outline-mode-map "z k" 'outline-previous-visible-heading)
   :config
+  ;; need to rebind after loading outline
+  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
+  ;; evil-collection end up binding last...
+  (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
   (setq outline-minor-mode-cycle t
 	outline-minor-mode-highlight 'append))  
 
