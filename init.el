@@ -878,7 +878,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal outline-minor-mode-map "z o" 'outline-show-children)
   ('normal outline-minor-mode-map "z h" 'outline-hide-sublevels)
   ('normal outline-minor-mode-map "z a" 'outline-show-all)
-  ('normal :keymaps 'override "<tab>" 'outline-cycle)
+  ('normal outline-minor-mode-map "<tab>" 'outline-cycle)
   ('normal outline-minor-mode-map "z k" 'outline-previous-visible-heading)
   :config
   (setq outline-minor-mode-cycle t
