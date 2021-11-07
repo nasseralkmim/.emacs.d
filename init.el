@@ -275,7 +275,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (vertico-buffer-mode)
   (setq vertico-buffer-display-action '(display-buffer-in-side-window
-                                        (window-height . 10)
+                                        (window-height . 13)
                                         (side . bottom))))
 
 ;; `completion STYLE` with flexible candidate filtering
