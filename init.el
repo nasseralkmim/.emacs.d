@@ -1587,6 +1587,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (defun lsp-grammarly-start ()
     (interactive)
     (require 'lsp-grammarly)
-    (lsp-deferred)))
+    (lsp-deferred))
+  :config
+  (setq lsp-grammarly-audience "expert"))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
