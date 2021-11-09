@@ -120,6 +120,9 @@
 	'(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
+  ;; don't need to confirm to revert buffer
+  (setq revert-without-query t)
+
   (setq-default
    indent-tabs-mode nil	     ; don't insert tab when indent
    ;; this is giving me problems when creating new lines in org-mode source blocks
