@@ -408,8 +408,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package flycheck
   :hook
-  (python-mode . flycheck-mode)
-  (LaTeX-mode . flycheck-mode))
+  (python-mode . flycheck-mode))
 
 (use-package evil-multiedit
   :after evil
