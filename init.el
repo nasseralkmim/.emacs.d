@@ -407,8 +407,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after smartparens)
 
 (use-package flycheck
-  :after lsp
-  :hook (python-mode . flycheck-mode))
+  :hook
+  (python-mode . flycheck-mode)
+  (LaTeX-mode . flycheck-mode))
 
 (use-package evil-multiedit
   :after evil
@@ -1580,7 +1581,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal "s" 'avy-goto-char-timer))
 
+;; flychecker is better
 (use-package lsp-grammarly
+  :disabled
   :if (eq system-type 'gnu/linux)
   :commands lsp-grammarly-start
   :init
@@ -1590,6 +1593,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (lsp-deferred))
   :config
   (setq lsp-grammarly-audience "expert"))
+
+;; grammarly as a flychecker
+(use-package flycheck-grammarly
+  :demand
+  :after flycheck)
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
