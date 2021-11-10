@@ -1580,7 +1580,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal "s" 'avy-goto-char-timer))
 
-;; flychecker is better
 (use-package lsp-grammarly
   :disabled
   :if (eq system-type 'gnu/linux)
@@ -1595,8 +1594,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; grammarly as a flychecker
 (use-package flycheck-grammarly
+  :disabled
   :demand
   :after flycheck)
 
+(use-package lsp-ltex
+  :hook (text-mode . (lambda ()
+                       (require 'lsp-ltex)
+                       (lsp-deferred))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
