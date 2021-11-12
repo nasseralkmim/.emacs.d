@@ -972,7 +972,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    "p" 'preview-at-point)
   :init
   ;; preview latex config
-  (setq preview-default-option-list '("displaymath" "floats" "graphics" "textmath" "showlabels")
+  (setq preview-default-option-list '("displaymath" "floats" "textmath" "showlabels")
 	preview-scale-function 1.1
 	preview-auto-cache-preamble t))
 
