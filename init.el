@@ -795,6 +795,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space between filter words (combined with oderless)
 (use-package corfu
+  :straight (corfu :type git :host github :repo "minad/corfu")
   :init
   (corfu-global-mode)
   :general
@@ -832,9 +833,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package kind-icon
   :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
   :after corfu
-  :custom
-  (kind-icon-default-face 'corfu-background)
-  (corfu-kind-formatter #'kind-icon-formatted))
+  :demand
+  :init
+  (setq kind-icon-default-face 'corfu-background
+        corfu-kind-formatter #'kind-icon-formatted))
+
+(use-package svg-lib
+  :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
@@ -972,7 +977,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    "p" 'preview-at-point)
   :init
   ;; preview latex config
-  (setq preview-default-option-list '("displaymath" "floats" "textmath" "showlabels")
+  (setq preview-default-option-list '("displaymath" "textmath" "showlabels")
 	preview-scale-function 1.1
 	preview-auto-cache-preamble t))
 
