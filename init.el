@@ -1210,7 +1210,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; https://github.com/microsoft/pyright/discussions/1466
   ;; don't infer types from library source
   ;; treat all as unknowns when type is nonpresent
-  (setq lsp-pyright-use-library-code-for-types nil))
+  (setq lsp-pyright-use-library-code-for-types nil)
+  (setq lsp-pyright-python-executable-cmd "python3"))
 
 ;; lsp mode on org-edit-special
 (use-package ob-python
