@@ -831,12 +831,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                '+dabbrev-completion-at-point-function))
 
 (use-package kind-icon
+  :disabled
   :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
   :after corfu
   :demand
-  :init
+  :config
+  ;; Helper
+  (defun corfu-kind-formatter (formatter)
+    (lambda ()
+      (when-let (kind (plist-get corfu--extra :company-kind))
+        (lambda (cand)
+          (funcall formatter (funcall kind cand))))))
+
   (setq kind-icon-default-face 'corfu-background
-        corfu-kind-formatter #'kind-icon-formatted))
+        corfu-margin-formatters (corfu-kind-formatter #'kind-icon-formatted)))
 
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
