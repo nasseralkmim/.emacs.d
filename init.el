@@ -829,6 +829,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-to-list 'completion-at-point-functions
                '+dabbrev-completion-at-point-function))
 
+(use-package kind-icon
+  :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-background)
+  (corfu-kind-formatter #'kind-icon-formatted))
+
 ;; completion any text based on buffer contents
 (use-package dabbrev
   :general
