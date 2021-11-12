@@ -1620,7 +1620,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after flycheck)
 
 (use-package lsp-ltex
-  :hook (text-mode . (lambda ()
+  :hook (LaTeX-mode . (lambda ()
                        (require 'lsp-ltex)
                        (lsp-deferred))))
 
