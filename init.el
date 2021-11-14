@@ -299,6 +299,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (savehist-mode))
 
+;; icons for completion candidates
+(use-package all-the-icons-completion
+  :hook
+  (marginalia-mode . all-the-icons-completion-marginalia-setup))
+
 ;; minibuffer annotations details
 (use-package marginalia
   :if (eq system-type 'gnu/linux)
@@ -375,7 +380,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
 
-(use-package all-the-icons)
+;; utility for using icons fonts
+(use-package all-the-icons
+  :if (display-graphic-p))
 
 ;; automatic insert matching pairs and navigation
 ;; highlight matching parens
