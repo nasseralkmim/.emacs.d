@@ -133,7 +133,7 @@
 ;; custom emacs theme
 (use-package custom-theme
   :straight (emacs :type built-in)
-  :if (display-graphic-p)
+  :when (display-graphic-p)
   :custom-face 
   ;; latex
   (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
@@ -259,7 +259,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; use vertico to complete in region with orderless in terminal
 (use-package vertico
   :straight nil
-  :if (not (display-graphic-p))
+  :unless (display-graphic-p)
   :config
   ;; Use `consult-completion-in-region' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
@@ -298,11 +298,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package savehist
   :init
   (savehist-mode))
-
-;; icons for completion candidates
-(use-package all-the-icons-completion
-  :hook
-  (marginalia-mode . all-the-icons-completion-marginalia-setup))
 
 ;; minibuffer annotations details
 (use-package marginalia
@@ -382,7 +377,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; utility for using icons fonts
 (use-package all-the-icons
-  :if (display-graphic-p))
+  :custom
+  (all-the-icons-scale-factor 0.8))
 
 ;; automatic insert matching pairs and navigation
 ;; highlight matching parens
@@ -1076,31 +1072,28 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file
            "h" 'dired-sidebar-up-directory)
-  :hook (dired-sidebar-mode . visual-line-mode)
-  :custom
-  (dired-sidebar-theme 'vscode)
-  (dired-sidebar-use-custom-font t)
-  (dired-sidebar-one-instance-p t)      ; just sidebar per frame
+  :hook
+  (dired-sidebar-mode . visual-line-mode)
+  ;; avoid fixing window size
+  (dired-sidebar-mode . (lambda () (setq window-size-fixed nil)))
   :config
+  (setq dired-sidebar-one-instance-p t)      ; just sidebar per frame
   (defun dired-sidebar-jump ()
     (interactive)
     (dired-sidebar-show-sidebar)
-    (dired-sidebar-jump-to-sidebar))
-
-  ;; avoid fixing window size
-  (add-hook 'dired-sidebar-mode-hook #'(lambda ()
-                                         (setq window-size-fixed nil))))
+    (dired-sidebar-jump-to-sidebar)))
 
 ;; icons for dired sidebar
 (use-package vscode-icon
-  :if (display-graphic-p)
+  :disabled
+  : (display-graphic-p)
   :commands (vscode-icon-for-file)
   :custom
   (vscode-icon-size 15))
 
 ;; load modus in terminal
 (use-package modus-themes
-  :if (not (display-graphic-p))
+  :unless (display-graphic-p)
   :init
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
@@ -1437,7 +1430,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; terminal emacs with evil cursor indication
 (use-package evil-terminal-cursor-changer
-  :if (not (display-graphic-p))
+  :unless (display-graphic-p)
   :init
   (evil-terminal-cursor-changer-activate))
 
@@ -1498,7 +1491,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; suppress error on tui
 (use-package highlight-indent-guides
-  :if (not (display-graphic-p))
+  :unless (display-graphic-p)
   :config
   (setq highlight-indent-guides-suppress-auto-error t))
 
@@ -1611,5 +1604,23 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook (LaTeX-mode . (lambda ()
                        (require 'lsp-ltex)
                        (lsp-deferred))))
+
+;; icons for completion candidates
+(use-package all-the-icons-completion
+  :when (display-graphic-p)
+  :after marginalia
+  :init
+  (all-the-icons-completion-mode))
+
+;; icons for dired
+(use-package all-the-icons-dired
+  :when (display-graphic-p)
+  :hook
+  (dired-mode . (lambda ()
+                  ;; don't enable in dired-sidebar
+                  (unless (eq major-mode 'dired-sidebar-mode)
+                    (all-the-icons-dired-mode))))
+  :init
+  (setq all-the-icons-dired-monochrome nil))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
