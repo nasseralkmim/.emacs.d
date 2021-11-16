@@ -910,7 +910,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                   (prettify-symbols-mode) ; for greek letters and other math symbols
                   (LaTeX-math-mode)       ; easy to type greek letters
                   (TeX-fold-mode) ; fold (reduce clutter) footnotes, comments etc (C-c C-o C-o DWIM)
-                  (turn-on-reftex)      ; foor labels
                   (reftex-isearch-minor-mode)
                   (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
@@ -1024,6 +1023,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package reftex
   :after latex
   :commands reftex-toc
+  :hook
+  (LaTeX-mode . (lambda ()
+                  (turn-on-reftex)))
   :general
   ('normal reftex-mode-map :prefix "g r"
 	   "t" 'reftex-toc
@@ -1040,8 +1042,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         reftex-trust-label-prefix '("fig:" "eq:") ; speed up parsing of labels
         ;; don't ask which refecence macro after `reftex-referene'
         reftex-ref-macro-prompt nil
-        reftex-label-menu-flags '(nil nil nil nil nil nil nil nil) ; show just equations in the label menu
-        ))
+        ;; show just equations in the label menu
+        reftex-label-menu-flags '(nil nil nil nil nil nil nil nil)))
 
 (use-package dired
   :straight (:type built-in)
