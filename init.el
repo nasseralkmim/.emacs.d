@@ -1211,7 +1211,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; lsp mode on org-edit-special
 (use-package ob-python
-  :after org
+  :disabled
+  :after org lsp
   :commands org-babel-execute:python
   :init
   (defun org-babel-edit-prep:python (babel-info)
