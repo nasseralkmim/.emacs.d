@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
-# name: To the power
-# key: up
+# name: To the power iteration
+# key: ip
 # condition: (and (texmathp) 'auto)
 # group: math
 # --
-`(backward-delete-char 1)`^{$1}
+`(backward-delete-char 1)`^{($1)}
