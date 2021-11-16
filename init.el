@@ -1638,4 +1638,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (python-mode . eglot-ensure))
 
+;; icons for completion in region
+;; still in development
+(use-package kind-icon
+  :disabled
+  :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
+  :after corfu
+  :custom
+  (kind-icon-default-face 'corfu-background)
+  :init
+  (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
