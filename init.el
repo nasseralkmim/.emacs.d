@@ -1020,7 +1020,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; labels, references, citations and indices in LaTeX
 ;; usually: C-c RET -> eqref -> TAB -> select label with completion
+;; disabled: prefer now just using completions
 (use-package reftex
+  :disabled
   :after latex
   :commands reftex-toc
   :hook
@@ -1128,6 +1130,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; dim other buffer so we know what is the current working one.
 (use-package auto-dim-other-buffers
+  :disabled
   :init
   (auto-dim-other-buffers-mode t))
 
@@ -1169,6 +1172,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (c++-mode-map "C-x c" 'compile))
 
 (use-package lsp-mode
+  :disabled
   :commands (lsp lsp-deferred)
   :general
   (org-mode-map :prefix "C-l" "o" 'lsp-org)
@@ -1194,6 +1198,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; language server for type checker/completion/doc string
 ;; alternative to lsp-python-ms
 (use-package lsp-pyright
+  :disabled
   :hook (python-mode . (lambda ()
 			 (require 'lsp-pyright)
 			 (lsp-deferred)))
@@ -1603,6 +1608,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after flycheck)
 
 (use-package lsp-ltex
+  :disabled
   :hook (LaTeX-mode . (lambda ()
                        (require 'lsp-ltex)
                        (lsp-deferred))))
@@ -1624,5 +1630,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                     (all-the-icons-dired-mode))))
   :init
   (setq all-the-icons-dired-monochrome nil))
+
+;; simple LSP client
+;; alternative to lsp, too many dependencies
+;; python language server: pyls (need to install)
+(use-package eglot
+  :hook
+  (python-mode . eglot-ensure))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
