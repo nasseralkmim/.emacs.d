@@ -1639,14 +1639,31 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; alternative to lsp, too many dependencies
 ;; python language server: pyls (need to install)
 (use-package eglot
+  :general
+  ('normal eglot-mode-map :prefix "gl"
+           "l" 'eglot-code-actions)
   :hook
   (python-mode . eglot-ensure))
+
+;; set up for ltex language server
+;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz -P ~/tmp
+(use-package eglot-ltex
+  :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
+  :hook
+  (LaTeX-mode . (lambda ()
+                  (require 'eglot-ltex)
+                  (call-interactively #'eglot)))
+  :init
+  (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.1.0/"))
+
+(use-package svg-lib
+  :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
 
 ;; icons for completion in region
 ;; still in development
 (use-package kind-icon
   :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
-  :after corfu
+  :after corfu 
   :custom
   (kind-icon-default-face 'corfu-background)
   :demand
