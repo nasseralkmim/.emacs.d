@@ -149,7 +149,8 @@
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-meta-line ((t (:height 0.9 :inherit 'font-lock-comment-face))))
-  (org-drawer ((t (:inherit 'font-lock-comment-face :height 0.9)))))
+  (org-drawer ((t (:inherit 'font-lock-comment-face :height 0.9))))
+  (org-verbatim ((t (:box t)))))
 
 ;; change typeface size font
 (use-package emacs
