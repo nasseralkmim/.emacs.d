@@ -621,7 +621,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (org-mode . visual-line-mode)
   :custom
-   (org-hide-emphasis-markers t)        ; avoid noisy //,__, **, 
+   (org-hide-emphasis-markers nil)        ; avoid noisy //,__, **(makes anoying to edit) 
    (org-startup-indented nil)		; start collapsed
    (org-startup-folded t)               ; folded in "overview" state
    (org-hide-leading-stars t)           ; don't show a  bunch of '*'
@@ -1670,5 +1670,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
-
+;; change font on windows wsl gui
+(use-package emacs
+  :when (and (string-match-p "Microsoft" (shell-command-to-string "uname -a"))
+             (display-graphic-p))
+  :config
+  (set-face-attribute 'default nil :height 98))
+ 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
