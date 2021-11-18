@@ -734,7 +734,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package ob-async
   :after org
   :config
-  (setq ob-async-no-async-languages-alist '("python" "jupyter-python")))
+  (setq ob-async-no-async-languages-alist '("python")))
 
 (use-package ob-shell
   :after org
