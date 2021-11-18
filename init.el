@@ -190,7 +190,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :defer 5
   :config
   (recentf-mode 1)
-  (setq recentf-max-saved-items 20
+  (setq recentf-max-saved-items 50
 	recentf-auto-cleanup 'mode))
 
 (use-package autorevert
