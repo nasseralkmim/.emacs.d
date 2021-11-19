@@ -58,7 +58,7 @@
 ;; basics and better default
 (use-package emacs
   :general
-  ('normal "gy" 'revert-buffer)
+  ('normal "gy" 'revert-buffer-quick)
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
   ("C-c w" 'enlarge-window-horizontally)
@@ -1645,9 +1645,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (python-mode . eglot-ensure))
 
+;; only for linux
 ;; set up for ltex language server
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz -P ~/tmp
 (use-package eglot-ltex
+  :unless (string-match-p "Microsoft" (shell-command-to-string "uname -a"))
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :hook
   (LaTeX-mode . (lambda ()
