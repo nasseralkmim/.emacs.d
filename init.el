@@ -208,7 +208,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-h f" 'helpful-callable)
   ("C-h d" 'helpful-at-point)
   ("C-h v" 'helpful-variable)
-  ("C-h k" 'helpful-key))
+  ("C-h k" 'helpful-key)
+  :config
+  ;; don't create multiple buffers, just switch the current
+  (defun pop-or-switch-to-buffer (buffer-name)
+    (if (eq major-mode 'helpful-mode)
+        (switch-to-buffer buffer-name)
+      (pop-to-buffer buffer-name)))
+  (setq helpful-switch-buffer-function 'pop-or-switch-to-buffer))
 
 ;; enhances default minibuffer and completions buffer
 ;; easily navigate from minibuffer into completions buffer
