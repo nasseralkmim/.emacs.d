@@ -625,6 +625,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
+  ('normal org-mode-map :prefix "SPC x"
+           "l" 'org-latex-preview
+           "v" 'org-toggle-inline-images
+           "es" 'org-babel-execute-subtree) 
   :hook
   (org-mode . visual-line-mode)
   :custom
