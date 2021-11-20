@@ -832,7 +832,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.1
-        corfu-quit-at-boundary nil
+        corfu-quit-at-boundary nil      ; for orderless completion, faster!
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
@@ -1643,6 +1643,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                   ;; don't enable in dired-sidebar
                   (unless (eq major-mode 'dired-sidebar-mode)
                     (all-the-icons-dired-mode))))
+  :custom-face
+  (all-the-icons-dired-dir-face ((t (:foreground "goldenrod"))))
   :init
   (setq all-the-icons-dired-monochrome nil))
 
