@@ -190,7 +190,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :defer 5
   :config
   (recentf-mode 1)
-  (setq recentf-max-saved-items 50
+  (setq recentf-max-saved-items 25
 	recentf-auto-cleanup 'mode))
 
 (use-package autorevert
@@ -772,10 +772,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    org-download-image-dir "./images"
    org-download-image-html-width 350)
   ;; for wsl
-  (when (string-match "-[Mm]icrosoft" operating-system-release)
-    (setq org-download-screenshot-method "convert.exe clipboard: %s")) ; add .exe to work within wsl2
+   ; add .exe to work within wsl2
   
   (setq org-download-screenshot-file "./screenshot.png")) ; where temporary screenshot will be saved so convert can work
+
+;; wsl specific config
+(use-package org-download
+  :after org-download
+  :when (string-match "-[Mm]icrosoft" operating-system-release)
+  :init
+  (setq org-download-screenshot-method "convert.exe clipboard: %s"))
 
 ;; languages spell checker
 (use-package flyspell
@@ -1321,6 +1327,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; config for wsl opening pdf on windows with wsl, a mess!
 (use-package bibtex-completion
+  :disabled
   :when (string-match "-[Mm]icrosoft" operating-system-release)
   :after consult-bibtex
   :init
