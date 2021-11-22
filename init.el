@@ -771,16 +771,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq
    org-download-image-dir "./images"
    org-download-image-html-width 350)
-  ;; for wsl
-   ; add .exe to work within wsl2
-  
-  (setq org-download-screenshot-file "./screenshot.png")) ; where temporary screenshot will be saved so convert can work
+  ;; where temporary screenshot will be saved so convert can work
+  (setq org-download-screenshot-file "./screenshot.png")) 
 
 ;; wsl specific config
 (use-package org-download
   :after org-download
   :when (string-match "-[Mm]icrosoft" operating-system-release)
   :init
+  ;; add .exe to work within wsl2
   (setq org-download-screenshot-method "convert.exe clipboard: %s"))
 
 ;; languages spell checker
@@ -1325,10 +1324,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; dont prompt for anything, just insert the citation please.
   (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
 
-;; config for wsl opening pdf on windows with wsl, a mess!
+;; not working when files are from linux seadrive... argh!
 (use-package bibtex-completion
-  :disabled
   :when (string-match "-[Mm]icrosoft" operating-system-release)
+  :disabled
   :after consult-bibtex
   :init
   ;; depends on `wslview` to be installed in wsl
@@ -1336,6 +1335,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         (lambda (fpath) (shell-command (concat
                                         "wslview "	; version 3.2.1 works with spaces in path
                                         (shell-quote-argument fpath))))))
+
+;; using okular to at leat view the documents...
+(use-package bibtex-completion
+  :when (string-match "-[Mm]icrosoft" operating-system-release)
+  :after consult-bibtex
+  :init
+  (setq bibtex-completion-pdf-open-function (lambda (fpath)
+                                              (call-process "okular" nil 0 nil fpath))))
 
 ;; search bibtex bibliography with consult
 ;; depends on helm-bibtex
