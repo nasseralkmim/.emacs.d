@@ -1315,18 +1315,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
         bibtex-completion-pdf-open-function (lambda (fpath)
                                               (call-process "xdg-open" nil 0 nil fpath)))
-
-  ;; windows wsl config for opening with default windows pdf reader
-  ;; depends on `wslview` to be installed in wsl
-  (when (string-match "-[Mm]icrosoft" operating-system-release)
-    (setq bibtex-completion-pdf-open-function
-          (lambda (fpath) (shell-command (concat
-                                          "wslview "	; version 3.2.1 works with spaces in path
-                                          (shell-quote-argument fpath))))))
   :config
   ;; dont prompt for anything, just insert the citation please.
   (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
 
+;; config for wsl opening pdf on windows with wsl, a mess!
+(use-package bibtex-completion
+  :when (string-match "-[Mm]icrosoft" operating-system-release)
+  :after consult-bibtex
+  :init
+  ;; depends on `wslview` to be installed in wsl
+  (setq bibtex-completion-pdf-open-function
+        (lambda (fpath) (shell-command (concat
+                                        "wslview "	; version 3.2.1 works with spaces in path
+                                        (shell-quote-argument fpath))))))
 
 ;; search bibtex bibliography with consult
 ;; depends on helm-bibtex
@@ -1662,7 +1664,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; set up for ltex language server
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz -P ~/tmp
 (use-package eglot-ltex
-  :unless (string-match-p "Microsoft" (shell-command-to-string "uname -a"))
+  :unless (string-match "-[Mm]icrosoft" operating-system-release)
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :hook
   (LaTeX-mode . (lambda ()
@@ -1687,7 +1689,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; change font on windows wsl gui
 (use-package emacs
-  :when (and (string-match-p "Microsoft" (shell-command-to-string "uname -a"))
+  :when (and (string-match "-[Mm]icrosoft" operating-system-release)
              (display-graphic-p))
   :config
   (set-face-attribute 'default nil :height 98))
