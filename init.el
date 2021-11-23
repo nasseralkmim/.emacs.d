@@ -743,9 +743,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
 
+;; adds keyword `async' to source blocks
 (use-package ob-async
   :after org
   :config
+  ;; ob-python defines its own `async' keyword (which needs a session)
   (setq ob-async-no-async-languages-alist '("python")))
 
 (use-package ob-shell
