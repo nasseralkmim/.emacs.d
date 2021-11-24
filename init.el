@@ -746,6 +746,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; adds keyword `async' to source blocks
 (use-package ob-async
   :after org
+  :demand
   :config
   ;; ob-python defines its own `async' keyword (which needs a session)
   (setq ob-async-no-async-languages-alist '("python")))
@@ -1710,5 +1711,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
              (display-graphic-p))
   :config
   (set-face-attribute 'default nil :height 98))
- 
+
+
+(use-package image-mode
+  :straight (:type built-in)
+  :config
+  (setq image-animate-loop t))
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
