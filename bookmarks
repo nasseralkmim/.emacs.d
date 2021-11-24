@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("log"
+(("analysis"
+ (filename . "~/nethome/analysis/")
+ (front-context-string)
+ (rear-context-string . "Nov 24 09:08 ..\n")
+ (position . 165))
+("log"
  (filename . "~/SeaDrive/My Libraries/PhD/log.org")
  (front-context-string . "* 2021\n** Goals\n")
  (rear-context-string)
