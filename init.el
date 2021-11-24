@@ -1700,7 +1700,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
   :after corfu 
   :custom
-  (kind-icon-default-face 'corfu-background)
+  (kind-icon-default-face 'corfu-default)
   :demand
   :init
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
