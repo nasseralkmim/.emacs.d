@@ -853,16 +853,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
-(use-package +capf
-  :straight nil
-  :load-path "./lisp"
+;; `completion at point' extensions for specific candidates in `completion in region'
+(use-package cape
+  :straight (cape :type git :host github :repo "minad/cape")
   :after corfu
-  :demand
-  :config
-  (add-to-list 'completion-at-point-functions
-               '+file-completion-at-point-function)
-  (add-to-list 'completion-at-point-functions
-               '+dabbrev-completion-at-point-function))
+  :init
+  ;; Add `completion-at-point-functions', used by `completion-at-point'.
+  (add-to-list 'completion-at-point-functions #'cape-file-capf)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev-capf)
+  (add-to-list 'completion-at-point-functions #'cape-keyword-capf))
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
