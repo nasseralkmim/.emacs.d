@@ -3,10 +3,10 @@
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
 (("analysis"
- (filename . "~/nethome/analysis/")
- (front-context-string)
- (rear-context-string . "Nov 24 09:08 ..\n")
- (position . 165))
+ (filename . "/mnt/nethome/analysis/")
+ (front-context-string . "  /mnt/nethome/a")
+ (rear-context-string)
+ (position . 1))
 ("log"
  (filename . "~/SeaDrive/My Libraries/PhD/log.org")
  (front-context-string . "* 2021\n** Goals\n")
