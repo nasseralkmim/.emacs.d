@@ -679,13 +679,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :commands org-babel-execute:python
   :init
   (setq org-babel-python-command "python3") ; python3 please!
-  (when (eq system-type 'windows-nt)
-    (setq org-babel-python-command "python")) ; windows uses python for versions > 3, argh... 
   (setq org-babel-default-header-args:python
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
+
+;; for windows
+(use-package ob-python
+  :after org
+  :when (eq system-type 'windows-nt)
+  :init
+  ;; windows uses python for versions > 3, argh... 
+  (setq org-babel-python-command "python"))
 
 (use-package org-clock
   :general
