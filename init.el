@@ -753,14 +753,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package ob-async
   :after org
   :demand
-  :config
+  :init (org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))
+  :config   ; first load with demand, require `ob-async', then configure the variable
   ;; ob-python defines its own `async' keyword (which needs a session)
   (setq ob-async-no-async-languages-alist '("python")))
 
 (use-package ob-shell
   :after org
-  :commands org-babel-execute:sh
-  :init
+  :commands org-babel-execute:shell org-babel-execute:sh
+  :demand
+  :config
   (setq org-babel-default-header-args:shell
 	'((:results . "output")
           ;; always get my .bashrc aliases
