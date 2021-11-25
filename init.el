@@ -1685,18 +1685,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (python-mode . eglot-ensure))
 
-;; only for linux
 ;; set up for ltex language server
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz -P ~/tmp
 (use-package eglot-ltex
-  :unless (string-match "-[Mm]icrosoft" operating-system-release)
+  :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
-  :hook
-  (LaTeX-mode . (lambda ()
-                  (require 'eglot-ltex)
-                  (call-interactively #'eglot)))
+  :commands start-language-server
   :init
-  (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.1.0/"))
+  (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.1.0/")
+  (defun start-language-server ()
+    (interactive)
+    (require 'eglot-ltex)
+    (call-interactively #'eglot)))
 
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
