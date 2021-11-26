@@ -1725,6 +1725,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq image-animate-loop t))
 
 (use-package org-sticky-header
-  :hook (org-mode . org-sticky-header-mode))
+  :hook (org-mode . org-sticky-header-mode)
+  :config
+  (setq org-sticky-header-full-path t))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
