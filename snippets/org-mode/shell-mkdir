@@ -2,6 +2,4 @@
 # name: shell mkdir
 # key: mkd
 # --
-#+begin_src sh
-mkdir $folder
-#+end_src
+src_sh{mkdir $folder}
