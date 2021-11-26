@@ -1719,9 +1719,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (set-face-attribute 'default nil :height 98))
 
-
 (use-package image-mode
   :straight (:type built-in)
   :config
   (setq image-animate-loop t))
+
+(use-package org-sticky-header
+  :hook (org-mode . org-sticky-header-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
