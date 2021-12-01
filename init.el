@@ -859,9 +859,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after corfu
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-file-capf)
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev-capf)
-  (add-to-list 'completion-at-point-functions #'cape-keyword-capf))
+  (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
+  (add-to-list 'completion-at-point-functions #'cape-keyword))
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
