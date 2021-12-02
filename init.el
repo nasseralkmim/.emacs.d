@@ -1736,7 +1736,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (topsy :type git :host github :repo "alphapapa/topsy.el")
   :hook (prog-mode . topsy-mode))
 
-;; avoid popping buffers everywhere
+;; avoid popping buffers everywhere, anoying
 (use-package shackle
   :config
   ;; use the current windows always
