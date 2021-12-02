@@ -1724,9 +1724,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq image-animate-loop t))
 
+;; show the breadcrumb on top of org buffer
 (use-package org-sticky-header
   :hook (org-mode . org-sticky-header-mode)
   :config
-  (setq org-sticky-header-full-path t))
+  (setq org-sticky-header-full-path 'full
+        org-sticky-header-outline-path-separator " > "))
+
+;; sticky header for progamming modes
+(use-package topsy
+  :straight (topsy :type git :host github :repo "alphapapa/topsy.el")
+  :hook (prog-mode . topsy-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
