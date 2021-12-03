@@ -1328,7 +1328,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                :files (:defaults (:exclude "helm-bibtex.el" "ivy-bibtex.el")))
   :init
   (setq bibtex-completion-bibliography "~/.bibliography.bib"
-        bibtex-completion-library-path "~/SeaDrive/My Libraries/PhD/bibliography/pdf/"
+        bibtex-completion-library-path "~/SeaDrive/My Libraries/bibliography/pdf/"
         bibtex-completion-pdf-open-function (lambda (fpath)
                                               (call-process "xdg-open" nil 0 nil fpath)))
   :config
@@ -1742,5 +1742,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; use the current windows always
   (setq shackle-default-rule '(:popup t))
   (shackle-mode))
+
+;; work git hosts (forges)
+(use-package forge
+  :after magit)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
