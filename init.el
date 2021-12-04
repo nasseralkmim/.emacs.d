@@ -1748,4 +1748,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package forge
   :after magit)
 
+;; mass copy, paste and move for dired
+(use-package dired-ranger
+  :after dired
+  :general
+  ('normal dired-mode-map :prefix "C-c"
+           "c" 'dired-ranger-copy
+           "v" 'dired-ranger-paste
+           "x" 'dired-ranger-move))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
