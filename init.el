@@ -61,7 +61,6 @@
   ('normal "gy" 'revert-buffer-quick)
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
-  ("C-c w" 'enlarge-window-horizontally)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   ("C-x C-e" 'eval-defun)
   ("C-x e" 'eval-last-sexp)
@@ -1495,6 +1494,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package window
   :straight (:type built-in)
   :general
+  ("C-c w" 'enlarge-window-horizontally)
   ("C-x C-o" 'other-window)
   (resize-window-repeat-map "j" 'shrink-window)
   (resize-window-repeat-map "k" 'enlarge-window)
