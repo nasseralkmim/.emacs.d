@@ -411,6 +411,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   (setq sp-show-pair-delay 0
+        sp-max-prefix-length 25         ; reduces work
+        sp-max-pair-length 4            ; reduces work
 	sp-show-pair-from-inside t))
 
 (use-package smartparens-config
@@ -1170,6 +1172,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; `:includes` so straight can recognize dap-python.el and dap-cpptools
 (use-package dap-mode
+  :disabled
   :after lsp-mode
   :straight (dap-mode :includes (dap-python dap-cpptools)
 		      :type git
@@ -1179,10 +1182,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (lsp-mode-map "<f6>" 'dap-hydra))
 
 (use-package dap-cpptools
+  :disabled
   :after dap-mode
   :demand)
 
 (use-package dap-python
+  :disabled
   :after dap-mode python
   :demand ; so it loads, "requires", dap-python
   :init
@@ -1748,7 +1753,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package forge
   :after magit)
 
-;; mass copy, paste and move for dired
+;; mass copy-paste or copy-move (analogous to cut-paste) for dired
 (use-package dired-ranger
   :after dired
   :general
