@@ -314,6 +314,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (minibuffer-local-map "M-A" 'marginalia-cycle)
   :init (marginalia-mode))
 
+;; enhances multiple commands based on completion
 ;; practical navigation and search commands 
 (use-package consult
   :general
