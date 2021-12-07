@@ -1015,7 +1015,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; function definition, not the best...
   (defun my-tex-insert-clipboard ()
     (interactive)
-    (setq folder-path (concat default-directory "img/"));make the img directory
+    (setq folder-path (concat default-directory "images/"));make the img directory
 					;create the directory if it doesn't exist
     (if (not (file-exists-p folder-path))
 	(mkdir folder-path))
@@ -1032,7 +1032,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                "\img_")
 			     (format-time-string "%Y%m%d_%H%M%S_.png")))
     (let* ((image-file (concat 
-			"img/img_"
+			"images/img_"
 			(format-time-string "%Y%m%d_%H%M%S_.png")))
 	   (exit-status
             ;; for wsl to use windows imagemagick :/
