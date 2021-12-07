@@ -1334,7 +1334,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                :files (:defaults (:exclude "helm-bibtex.el" "ivy-bibtex.el")))
   :init
   (setq bibtex-completion-bibliography "~/.bibliography.bib"
-        bibtex-completion-library-path "~/SeaDrive/My Libraries/bibliography/pdf/"
+        bibtex-completion-library-path "~/SeaDrive/My Libraries/bibliography/"
         bibtex-completion-pdf-open-function (lambda (fpath)
                                               (call-process "xdg-open" nil 0 nil fpath)))
   :config
