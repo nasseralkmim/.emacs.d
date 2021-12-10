@@ -902,6 +902,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
 (use-package outline
+  :mode ("\\.inp\\'" . outline-minor-mode)
   :straight (:type built-in)
   ;; :diminish outline-minor-mode
   :hook
@@ -1637,7 +1638,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :general
-  ('normal "s" 'avy-goto-char-timer))
+  ('normal "s" 'avy-goto-char-timer)
+  :config
+  (setq avy-timeout-seconds 0.2         ; quicker
+        avy-all-windows nil))           ; restrict to one buffer
 
 (use-package lsp-grammarly
   :disabled
@@ -1693,7 +1697,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (python-mode . eglot-ensure))
 
-;; set up for ltex language server
+;; add ltex language server to eglot
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz -P ~/tmp
 (use-package eglot-ltex
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
