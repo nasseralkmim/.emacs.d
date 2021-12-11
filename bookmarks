@@ -28,8 +28,8 @@
  (rear-context-string)
  (position . 1))
 ("notes"
- (filename . "~/OneDrive/nasser-website/content/notes/")
- (front-context-string . "  /home/nasser/O")
+ (filename . "~/SeaDrive/My Libraries/notes/")
+ (front-context-string . "  /home/nasser/S")
  (rear-context-string)
  (position . 1))
 ("remote"
