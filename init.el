@@ -59,6 +59,7 @@
 (use-package emacs
   :general
   ('normal "gy" 'revert-buffer-quick)
+  ('insert "C-v" 'yank)                 ; for helping in minibuffer..
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
