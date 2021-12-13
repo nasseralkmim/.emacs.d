@@ -1698,7 +1698,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . eglot-ensure))
 
 ;; add ltex language server to eglot
-;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz -P ~/tmp
+;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
+;; need java (open JDK 11 development kit)
 (use-package eglot-ltex
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
