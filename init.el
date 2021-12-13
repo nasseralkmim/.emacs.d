@@ -1768,4 +1768,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            "v" 'dired-ranger-paste
            "x" 'dired-ranger-move))
 
+;; open with external program
+(use-package openwith
+  :defer 1
+  :config
+  (openwith-mode)
+  (setq openwith-associations '(("\\.pdf\\'" "okular" (file)))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
