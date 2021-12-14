@@ -145,8 +145,6 @@
   (font-latex-string-face ((t (:foreground "SaddleBrown"))))
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
-  ;; auto-dim-other-buffers
-  (auto-dim-other-buffers-face ((t (:background "gray94"))))
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-meta-line ((t (:height 0.9 :inherit 'font-lock-comment-face))))
@@ -1163,11 +1161,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("<f5>"  'modus-themes-toggle))
 
-;; dim other buffer so we know what is the current working one.
-(use-package auto-dim-other-buffers
-  :disabled
+
+;; change backgroud of other windows
+(use-package highlight-current-window
+  :straight nil
   :init
-  (auto-dim-other-buffers-mode t))
+  (defun highlight-selected-window ()
+    "Highlight selected window with a different background color."
+    (walk-windows (lambda (w)
+                    (unless (eq w (selected-window)) 
+                      (with-current-buffer (window-buffer w)
+                        (buffer-face-set '(:background "gray94"))))))
+    (buffer-face-set 'default))
+
+  (add-hook 'buffer-list-update-hook 'highlight-selected-window))
+
 
 ;; syntax highlight in html export of org-mode source blocks
 ;; does not work well with modus-themes and tree-sitter
