@@ -436,6 +436,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-multiedit-state-map "<tab>" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
   (evil-multiedit-state-map "C-j" 'evil-multiedit-next) 
   (evil-multiedit-state-map "C-k" 'evil-multiedit-prev)
+  (evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
   ('visual "C-S-d" 'evil-multiedit-restore))
 
 (use-package evil-mc
