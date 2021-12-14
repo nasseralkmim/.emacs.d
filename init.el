@@ -1784,4 +1784,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (openwith-mode)
   (setq openwith-associations '(("\\.pdf\\'" "okular" (file)))))
 
+;; convert pdf to svg to display inline org image
+(use-package org-inline-pdf
+  :hook (org-mode . org-inline-pdf-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
