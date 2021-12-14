@@ -1392,8 +1392,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package server
   :straight (:type built-in)
   :demand
-  :config (or (server-running-p)
-	    (server-start)))
+  :config
+  (or (server-running-p)
+      (server-start)))
 
 (use-package table
   :after org)
