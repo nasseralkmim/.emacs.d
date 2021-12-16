@@ -1047,8 +1047,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   \\includegraphics[width=.5\\linewidth]{%s}
 \\end{figure}" image-file)))))
 
+;; fake headers for latex
+(use-package latex-fake-header
+  :straight nil
+  :after latex
+  :init
+  ;; extra outline headers 
+  (setq TeX-outline-extra
+        '(("&paragraph" 5)))
 
-  (use-package evil-tex
+  ;; add font locking to the headers
+  (font-lock-add-keywords
+   'latex-mode
+   '(("^&\\(chapter\\|\\(sub\\|subsub\\)?section\\|paragraph\\)" 0 'font-lock-keyword-face t)
+     ("^&paragraph{\\(.*\\)}"     1 'font-latex-sectioning-5-face t))))
+
+(use-package evil-tex
   :after latex
   :hook (LaTeX-mode . evil-tex-mode))
 
