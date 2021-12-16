@@ -1790,4 +1790,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package org-inline-pdf
   :hook (org-mode . org-inline-pdf-mode))
 
+;; editing operations based on code structure
+(use-package tree-edit
+  :hook (python-mode . evil-tree-edit-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
