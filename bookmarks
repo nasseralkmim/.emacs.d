@@ -12,11 +12,6 @@
  (front-context-string . "  /home/nasser/S")
  (rear-context-string)
  (position . 1))
-("phd-notes"
- (filename . "~/SeaDrive/My Libraries/writings/phd-notes/phd-notes.tex")
- (front-context-string . "\\documentclass[t")
- (rear-context-string)
- (position . 1))
 ("seadrive"
  (filename . "~/SeaDrive/My Libraries/")
  (front-context-string . "  /home/nasser/S")
