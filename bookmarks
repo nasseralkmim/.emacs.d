@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("log"
+(("posts"
+ (filename . "~/OneDrive/nasser-website/content/notes/")
+ (front-context-string . "/home/nasser/One")
+ (rear-context-string)
+ (position . 3))
+("log"
  (filename . "~/SeaDrive/My Libraries/PhD/log.org")
  (front-context-string . "* 2021\n** Goals\n")
  (rear-context-string)
@@ -32,9 +37,4 @@
  (front-context-string . "(defvar my-start")
  (rear-context-string)
  (position . 1))
-("website"
- (filename . "~/OneDrive/nasser-website/")
- (front-context-string . "content\n  drwxrw")
- (rear-context-string . " Jun 17 11:16   ")
- (position . 433))
 )
