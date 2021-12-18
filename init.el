@@ -1179,6 +1179,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; change backgroud of other windows
 (use-package highlight-current-window
+  :when (display-graphic-p)
   :straight nil
   :init
   (defun highlight-selected-window ()
@@ -1775,7 +1776,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; avoid popping buffers everywhere, anoying
 (use-package shackle
-  :config
+  :init
   ;; use the current windows always
   (setq shackle-default-rule '(:popup t))
   (shackle-mode))
