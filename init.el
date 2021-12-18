@@ -782,12 +782,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after org
   :general
   (org-mode-map "C-M-y" 'org-download-screenshot)
-  :config
+  :init
   (setq
    org-download-image-dir "./images"
-   org-download-image-html-width 350)
-  ;; where temporary screenshot will be saved so convert can work
-  (setq org-download-screenshot-file "./screenshot.png")) 
+   org-download-image-html-width 350)) 
 
 ;; wsl specific config
 (use-package org-download
