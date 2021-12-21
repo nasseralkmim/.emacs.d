@@ -1772,13 +1772,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (topsy :type git :host github :repo "alphapapa/topsy.el")
   :hook (prog-mode . topsy-mode))
 
-;; avoid popping buffers everywhere, anoying
-(use-package shackle
-  :init
-  ;; use the current windows always
-  (setq shackle-default-rule '(:select t))
-  (shackle-mode))
-
 ;; work git hosts (forges)
 (use-package forge
   :after magit)
