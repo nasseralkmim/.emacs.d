@@ -1776,7 +1776,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package shackle
   :init
   ;; use the current windows always
-  (setq shackle-default-rule '(:popup t))
+  (setq shackle-default-rule '(:select t))
   (shackle-mode))
 
 ;; work git hosts (forges)
@@ -1802,9 +1802,5 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; convert pdf to svg to display inline org image
 (use-package org-inline-pdf
   :hook (org-mode . org-inline-pdf-mode))
-
-;; editing operations based on code structure
-(use-package tree-edit
-  :hook (python-mode . evil-tree-edit-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
