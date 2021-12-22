@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("posts"
+(("src"
+ (filename . "~/.local/src/")
+ (front-context-string . "  /home/nasser/.")
+ (rear-context-string)
+ (position . 1))
+("posts"
  (filename . "~/OneDrive/nasser-website/content/notes/")
  (front-context-string . "/home/nasser/One")
  (rear-context-string)
