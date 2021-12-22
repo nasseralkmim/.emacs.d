@@ -838,7 +838,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	     "<backtab>" 'corfu-previous
 	     "C-n" 'corfu-next
 	     "C-p" 'corfu-previous)
-  ('normal corfu-map "<escape>" 'corfu-quit)
+  (corfu-map "<escape>" 'corfu-quit)
   ('insert "C-n" nil
 	   "C-p" nil)
   :hook
