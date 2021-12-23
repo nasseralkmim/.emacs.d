@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: To the power
-# key: up
+# key: =
 # condition: (and (texmathp) 'auto)
 # group: math
 # --

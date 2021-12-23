@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: subscript
+# key: -
+# condition: (and (texmathp) 'auto)
+# --
+`(delete-backward-char 1)`_{$0}

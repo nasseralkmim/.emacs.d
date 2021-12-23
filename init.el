@@ -1429,6 +1429,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (wsl-path-activate))
 
 (use-package yasnippet
+  :hook
+  (LaTeX-mode . yas-global-mode)
+  (org-mode . yas-global-mode)
   :commands yas-insert-snippet
   :config
   (yas-reload-all)
