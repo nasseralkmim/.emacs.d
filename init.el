@@ -1108,8 +1108,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
-	dired-listing-switches "-alh"	; human readable format when in detail
+	dired-listing-switches "-AGhlv --group-directories-first --time-style=long-iso"	; human readable format when in detail
 	dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
+        dired-recursive-copies 'always
+        dired-recursive-deletes 'always
 	delete-by-moving-to-trash t)	; move to trash
 
   ;; kill the dired buffer eand enters the current line file or directory
@@ -1133,13 +1135,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (dired-sidebar-show-sidebar)
     (dired-sidebar-jump-to-sidebar)))
 
-;; icons for dired sidebar
-(use-package vscode-icon
+;; improved dired, does not work well
+(use-package dirvish
   :disabled
-  : (display-graphic-p)
-  :commands (vscode-icon-for-file)
-  :custom
-  (vscode-icon-size 15))
+  :straight (dirvish :type git :host github :repo "alexluigit/dirvish")
+  :after dired
+  :init
+  (dirvish-override-dired-jump)
+  :config
+  ;; don't show preview
+  (setq dirvish-enable-preview nil))
 
 ;; load modus in terminal
 (use-package modus-themes
