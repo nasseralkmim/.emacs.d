@@ -1366,14 +1366,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         bibtex-completion-library-path "~/SeaDrive/My Libraries/bibliography/"
         bibtex-completion-pdf-open-function (lambda (fpath)
                                               (call-process "xdg-open" nil 0 nil fpath)))
-  :config
   ;; dont prompt for anything, just insert the citation please.
   (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
 
 ;; not working when files are from linux seadrive... argh!
 (use-package bibtex-completion
-  :when (string-match "-[Mm]icrosoft" operating-system-release)
   :disabled
+  :when (string-match "-[Mm]icrosoft" operating-system-release)
   :after consult-bibtex
   :init
   ;; depends on `wslview` to be installed in wsl
@@ -1402,8 +1401,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (with-eval-after-load 'embark
     (add-to-list 'embark-keymap-alist '(bibtex-completion . consult-bibtex-embark-map))))
 
-;; search bibliography by keyword or doi
-;; helm-bibtex dependency
+;; bibtex completion add option for pdf view (one for annotation other for viewing)
+(use-package consult-bibtex
+  :straight nil
+  :after consult-bibtex
+  :init
+  (defun bibtex-completion-open-pdf-annotation (keys &optional fallback-action)
+    (let ((bibtex-completion-pdf-open-function
+           (lambda (fpath) (call-process "xournalpp" nil 0 nil fpath))))
+      (bibtex-completion-open-pdf keys fallback-action)))
+  (consult-bibtex-embark-action consult-bibtex-open-pdf-annotation bibtex-completion-open-pdf-annotation)
+  (define-key consult-bibtex-embark-map "n" #'consult-bibtex-open-pdf-annotation))
+
 (use-package biblio
   :commands biblio-lookup)
 
