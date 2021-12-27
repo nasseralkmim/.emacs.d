@@ -138,9 +138,9 @@
   :custom-face 
   ;; latex
   (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
-  (font-latex-sectioning-2-face ((t (:weight bold))))
+  (font-latex-sectioning-2-face ((t (:weight bold :box t))))
   (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
-  (font-latex-sectioning-4-face ((t (:weight normal :slant normal))))
+  (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
   (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
   (font-latex-string-face ((t (:foreground "SaddleBrown"))))
   ;; general
