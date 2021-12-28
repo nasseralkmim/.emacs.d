@@ -529,8 +529,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :defer 1
   :config
   (evil-goggles-mode)
-  (setq evil-goggles-pulse t)
-  (setq evil-goggles-duration 0.2)
+  (setq evil-goggles-duration 0.8        ; show what I copied
+        evil-goggles-blocking-duration 0 ; don't want to wait when deleting)
   (evil-goggles-use-diff-faces))
 
 ;; unimpaired is a collection of commands with '[' or ']'
