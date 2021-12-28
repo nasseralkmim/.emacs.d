@@ -849,7 +849,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                    (setq-local corfu-quit-at-boundary t)))
   :config
   (setq corfu-auto t                    ; enables timer-based completion
-        corfu-auto-delay 0.2
+        corfu-auto-delay 0.4
         corfu-quit-at-boundary nil      ; for orderless completion, faster!
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
