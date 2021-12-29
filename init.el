@@ -71,7 +71,7 @@
   (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
-  (pixel-scroll-precision-mode t)   ; text scroll pixel by pixel
+  (setq indicate-empty-lines ) 
 
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
@@ -130,6 +130,12 @@
    tab-always-indent 'complete ; tab indents first, then tries to complete
    help-window-select t	    ; focus on help window when openend
    window-combination-resize t)) ; resize windows proportionaly
+
+(use-package emacs
+  :if (string-greaterp emacs-version "29") ; need emacs > 29
+  :init
+   ; text scroll pixel by pixel
+  (pixel-scroll-precision-mode t))
 
 ;; custom emacs theme
 (use-package custom-theme
