@@ -416,7 +416,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (smartparens-mode . smartparens-strict-mode) ; enforce pairs to be balanced
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
-  (setq sp-show-pair-delay 0
+  (setq sp-show-pair-delay 0.125
         sp-max-prefix-length 25         ; reduces work
         sp-max-pair-length 4            ; reduces work
 	sp-show-pair-from-inside t))
