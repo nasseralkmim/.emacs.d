@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: partial
+# key: del
+# condition: (texmathp)
+# group: math
+# --
+\partial 
