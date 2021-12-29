@@ -1635,19 +1635,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after tree-sitter)
 
 ;; use tree sitter as evil text objects
-(use-package evil-textobj-treesitter
-  :straight (el-patch :type git
+(use-package evil-textobj-tree-sitter
+  :disabled
+  :straight (evil-textobj-tree-sitter :type git
                       :host github
-                      :repo "meain/evil-textobj-treesitter"
+                      :repo "meain/evil-textobj-tree-sitter"
                       :files (:defaults "queries"))
   :after tree-sitter
   :config
-  (define-key evil-outer-text-objects-map "s" (evil-textobj-treesitter-get-textobj "statement.outer"))
-  (define-key evil-inner-text-objects-map "n" (evil-textobj-treesitter-get-textobj "scopename.inner"))
-  (define-key evil-outer-text-objects-map "c" (evil-textobj-treesitter-get-textobj "call.outer"))
-  (define-key evil-inner-text-objects-map "c" (evil-textobj-treesitter-get-textobj "call.inner"))
-  (define-key evil-outer-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.outer"))
-  (define-key evil-inner-text-objects-map "f" (evil-textobj-treesitter-get-textobj "function.inner")))
+  (define-key evil-outer-text-objects-map "s" (evil-textobj-tree-sitter-get-textobj "statement.outer"))
+  (define-key evil-inner-text-objects-map "n" (evil-textobj-tree-sitter-get-textobj "scopename.inner"))
+  (define-key evil-outer-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.outer"))
+  (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.inner"))
+  (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
+  (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner")))
 
 (use-package hide-comnt
   :general ('normal "g h c" 'hide/show-comments-toggle)
