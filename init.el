@@ -1795,7 +1795,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (topsy :type git :host github :repo "alphapapa/topsy.el")
   :hook (prog-mode . topsy-mode))
 
-;; work git hosts (forges)
+;; work git servers (forges)
 (use-package forge
   :after magit)
 
