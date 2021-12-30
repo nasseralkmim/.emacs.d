@@ -1062,8 +1062,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; add font locking to the headers
   (font-lock-add-keywords
    'latex-mode
-   '(("^&\\(chapter\\|\\(sub\\|subsub\\)?section\\|paragraph\\)" 0 'font-lock-keyword-face t)
-     ("^&paragraph{\\(.*\\)}"     1 'font-latex-sectioning-5-face t))))
+   '(("^%\\(chapter\\|\\(sub\\|subsub\\)?section\\|paragraph\\)" 0 'font-lock-keyword-face t)
+     ("^%paragraph{\\(.*\\)}"     1 'font-latex-sectioning-5-face t))))
 
 (use-package evil-tex
   :after latex
