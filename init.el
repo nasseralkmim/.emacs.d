@@ -71,7 +71,7 @@
   (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
-  (setq indicate-empty-lines t) 
+  (setq-default indicate-empty-lines t) 
 
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
