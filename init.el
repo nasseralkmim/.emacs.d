@@ -727,7 +727,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq org-src-fontify-natively t
 	org-src-window-setup 'current-window ; don't move my windows around!
 	org-src-preserve-indentation t  ; preserve indentation in code
-	org-adapt-indentation nil ; no extra whitespace!
+	org-adapt-indentation 'headline-data ; align property drawer with heading
 	org-src-tab-acts-natively t	; if t, it is slow!
 	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
 
