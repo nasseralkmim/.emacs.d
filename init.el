@@ -1739,9 +1739,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package eglot
   :general
   ('normal eglot-mode-map :prefix "gl"
-           "l" 'eglot-code-actions)
-  :hook
-  (python-mode . eglot-ensure))
+           "l" 'eglot-code-actions))
 
 ;; add ltex language server to eglot
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
