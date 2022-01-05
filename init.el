@@ -1550,6 +1550,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c w" 'enlarge-window-horizontally)
   ("C-x C-o" 'other-window)
   (resize-window-repeat-map "j" 'shrink-window)
+  (resize-window-repeat-map "w" 'shrink-window)
   (resize-window-repeat-map "k" 'enlarge-window)
   (resize-window-repeat-map "h" 'shrink-window-horizontally)
   (resize-window-repeat-map "l" 'enlarge-window-horizontally))
