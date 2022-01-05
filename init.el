@@ -69,7 +69,7 @@
   :init
   (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
-  (setq-default fill-column 80)	  ; column length
+  (setq-default fill-column 120)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
   (setq-default indicate-empty-lines t) 
 
@@ -1740,7 +1740,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package eglot
   :general
   ('normal eglot-mode-map :prefix "gl"
-           "l" 'eglot-code-actions))
+           "l" 'eglot-code-actions
+           "r" 'eglot-rename))
 
 ;; add ltex language server to eglot
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
