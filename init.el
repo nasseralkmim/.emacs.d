@@ -239,17 +239,26 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (vertico :type git :host github :repo "minad/vertico"
         	     :includes (vertico-buffer
         			vertico-directory
+                                vertico-reverse
                                 vertico-flat
         			vertico-repeat)
         	     :files (:defaults "extensions/vertico-buffer.el"
         			       "extensions/vertico-directory.el"
         			       "extensions/vertico-flat.el"
+        			       "extensions/vertico-reverse.el"
         			       "extensions/vertico-repeat.el"))
   :general
   ('insert vertico-map "C-k" 'vertico-exit-input)
   :init
   (vertico-mode)
   (setq vertico-resize t))
+
+;; reverses order of vertico
+;; using this instead of vertico-buffer
+(use-package vertico-reverse
+  :after vertico
+  :init
+  (vertico-reverse-mode))
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
@@ -286,6 +295,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; display completions in anotherbuffer instead of minibuffer
 ;; avoids window been pushed up
 (use-package vertico-buffer
+  :disabled
   :straight nil
   :after vertico
   :init
