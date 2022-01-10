@@ -286,13 +286,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (vertico-map "C-SPC" 'vertico-multiform-reverse)
   :init
   (vertico-multiform-mode)
-  (setq vertico-multiform-categories
-        '((t unobtrusive)
-          (file buffer index)
-          (consult-line buffer)
-          (consult-buffer buffer index)
-          (consult-bibtex buffer)
-          (consult-ripgrep buffer))))
+  (setq vertico-multiform-commands
+        '((t unobtrusive))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
