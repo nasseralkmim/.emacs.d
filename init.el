@@ -237,37 +237,29 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion UI (vertical list in minibuffer)
 (use-package vertico
   :straight (vertico :type git :host github :repo "minad/vertico"
-        	     :includes (vertico-buffer
-        			vertico-directory
+                     :includes (vertico-buffer
+                                vertico-directory
                                 vertico-reverse
                                 vertico-flat
-        			vertico-repeat
+                                vertico-repeat
                                 vertico-unobtrusive
                                 vertico-multiform)
-        	     :files (:defaults "extensions/vertico-buffer.el"
-        			       "extensions/vertico-directory.el"
-        			       "extensions/vertico-flat.el"
-        			       "extensions/vertico-reverse.el"
+                     :files (:defaults "extensions/vertico-buffer.el"
+                                       "extensions/vertico-directory.el"
+                                       "extensions/vertico-flat.el"
+                                       "extensions/vertico-reverse.el"
                                        "extensions/vertico-repeat.el"
                                        "extensions/vertico-unobtrusive.el"
-                                       "extensions/vertico-multiform.el"
-                                       ))
+                                       "extensions/vertico-multiform.el"))
   :general
   ('insert vertico-map "C-k" 'vertico-exit-input)
   :init
   (vertico-mode)
   (setq vertico-resize t))
 
-;; reverses order of vertico
-;; using this instead of vertico-buffer
-(use-package vertico-reverse
-  :disabled
-  :after vertico
-  :init
-  (vertico-reverse-mode))
-
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
+  :straight nil
   :after vertico
   :general
   (vertico-map "RET" 'vertico-directory-enter
@@ -278,6 +270,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; repeat last vertico session
 (use-package vertico-repeat
+  :straight nil
   :after vertico
   :general
   ("M-r" 'vertico-repeat))
@@ -296,32 +289,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                    #'completion--in-region)
                  args))))
 
-;; display completions in anotherbuffer instead of minibuffer
-;; avoids window been pushed up
-(use-package vertico-buffer
-  :after vertico
-  :init
-  (vertico-buffer-mode)
-  (setq vertico-buffer-display-action '(display-buffer-in-side-window
-                                        (window-height . 10)
-                                        (side . bottom))))
 
 ;; allows different completion UI configuration
 (use-package vertico-multiform
-  :disabled
+  :straight nil
   :after vertico
+  :general
+  (vertico-map "C-SPC" 'vertico-multiform-reverse)
   :init
   (vertico-multiform-mode)
   (setq vertico-multiform-categories
-        '((file reverse)
-          (consult-buffer buffer)
-          (consult-grep buffer)
-          (t unobtrusive))))
-
-;; shows only the topmost
-(use-package vertico-unobtrusive
-  :disabled
-  :after vertico)
+        '((t unobtrusive)
+          (file buffer index)
+          (consult-line buffer)
+          (consult-buffer buffer index)
+          (consult-bibtex buffer)
+          (consult-ripgrep buffer))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
