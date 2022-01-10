@@ -222,18 +222,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (pop-to-buffer buffer-name)))
   (setq helpful-switch-buffer-function 'pop-or-switch-to-buffer))
 
-;; enhances default minibuffer and completions buffer
-;; easily navigate from minibuffer into completions buffer
-;; problems: no history sorting, no reverse
-(use-package mct
-  :disabled
-  :straight (mct :type git :host gitlab :repo "protesilaos/mct")
-  :init
-  (mct-mode)
-  :config
-  (setq mct-live-update-delay 0
-        mct-minimum-input 1))
-
 ;; completion UI (vertical list in minibuffer)
 (use-package vertico
   :straight (vertico :type git :host github :repo "minad/vertico"
