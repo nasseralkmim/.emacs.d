@@ -287,7 +287,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (vertico-multiform-mode)
   (setq vertico-multiform-commands
-        '((t unobtrusive))))
+        '((find-file buffer)
+          (consult-bibtex buffer)
+          (consult-line unobtrusive)
+          (consult-buffer unobtrusive))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
