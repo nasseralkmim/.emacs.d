@@ -241,12 +241,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         			vertico-directory
                                 vertico-reverse
                                 vertico-flat
-        			vertico-repeat)
+        			vertico-repeat
+                                vertico-unobtrusive
+                                vertico-multiform)
         	     :files (:defaults "extensions/vertico-buffer.el"
         			       "extensions/vertico-directory.el"
         			       "extensions/vertico-flat.el"
         			       "extensions/vertico-reverse.el"
-        			       "extensions/vertico-repeat.el"))
+                                       "extensions/vertico-repeat.el"
+                                       "extensions/vertico-unobtrusive.el"
+                                       "extensions/vertico-multiform.el"
+                                       ))
   :general
   ('insert vertico-map "C-k" 'vertico-exit-input)
   :init
@@ -256,13 +261,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; reverses order of vertico
 ;; using this instead of vertico-buffer
 (use-package vertico-reverse
+  :disabled
   :after vertico
   :init
   (vertico-reverse-mode))
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
-  :straight nil
   :after vertico
   :general
   (vertico-map "RET" 'vertico-directory-enter
@@ -273,7 +278,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; repeat last vertico session
 (use-package vertico-repeat
-  :straight nil
   :after vertico
   :general
   ("M-r" 'vertico-repeat))
@@ -283,7 +287,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight nil
   :unless (display-graphic-p)
   :config
-  ;; Use `consult-completion-in-region' if Vertico is enabled.
+  ;; Use `consult-completion-in-regionegion' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
   (setq completion-in-region-function
         (lambda (&rest args)
@@ -295,14 +299,29 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; display completions in anotherbuffer instead of minibuffer
 ;; avoids window been pushed up
 (use-package vertico-buffer
-  :disabled
-  :straight nil
   :after vertico
   :init
   (vertico-buffer-mode)
   (setq vertico-buffer-display-action '(display-buffer-in-side-window
-                                        (window-height . 13)
+                                        (window-height . 10)
                                         (side . bottom))))
+
+;; allows different completion UI configuration
+(use-package vertico-multiform
+  :disabled
+  :after vertico
+  :init
+  (vertico-multiform-mode)
+  (setq vertico-multiform-categories
+        '((file reverse)
+          (consult-buffer buffer)
+          (consult-grep buffer)
+          (t unobtrusive))))
+
+;; shows only the topmost
+(use-package vertico-unobtrusive
+  :disabled
+  :after vertico)
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
