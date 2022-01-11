@@ -231,10 +231,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                 vertico-flat
                                 vertico-repeat
                                 vertico-unobtrusive
+                                vertico-grid
                                 vertico-multiform)
                      :files (:defaults "extensions/vertico-buffer.el"
                                        "extensions/vertico-directory.el"
                                        "extensions/vertico-flat.el"
+                                       "extensions/vertico-grid.el"
                                        "extensions/vertico-reverse.el"
                                        "extensions/vertico-repeat.el"
                                        "extensions/vertico-unobtrusive.el"
@@ -287,11 +289,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (vertico-multiform-mode)
   (setq vertico-multiform-commands
-        '((find-file buffer)
-          (consult-bibtex buffer)
-          (consult-outline unobtrusive)
+        '((consult-outline unobtrusive)
           (consult-line unobtrusive)
-          (consult-buffer unobtrusive))))
+          (consult-buffer unobtrusive)
+          (t buffer
+             (vertico-buffer-display-action . (display-buffer-at-bottom
+                                               (window-height . 10)))))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
