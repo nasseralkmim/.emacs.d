@@ -283,12 +283,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight nil
   :after vertico
   :general
-  (vertico-map "C-SPC" 'vertico-multiform-reverse)
+  (vertico-map "C-<tab>" 'vertico-multiform-reverse)
   :init
   (vertico-multiform-mode)
   (setq vertico-multiform-commands
         '((find-file buffer)
           (consult-bibtex buffer)
+          (consult-outline unobtrusive)
           (consult-line unobtrusive)
           (consult-buffer unobtrusive))))
 
@@ -1115,7 +1116,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
         dired-recursive-copies 'always
         dired-recursive-deletes 'always
-	delete-by-moving-to-trash t)	; move to trash
+	delete-by-moving-to-trash nil)	; move to trash (problem with naming)
 
   ;; kill the dired buffer eand enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil))
