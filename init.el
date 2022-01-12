@@ -637,7 +637,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "s k" 'org-babel-previous-src-block)
   ('normal org-mode-map :prefix "SPC"
            "xl" 'org-latex-preview
-           "xv" 'org-toggle-inline-images
            "ves" 'org-babel-execute-subtree
            "vg" 'org-babel-goto-named-src-block) 
   :hook
@@ -694,6 +693,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
+
+;; custom org function
+(use-package org-custom
+  :straight nil
+  :after org
+  :general
+  ('normal org-mode-map :prefix "SPC"
+           "xv" 'org-toggle-inline-images-refresh)
+  :init
+  (defun org-toggle-inline-images-refresh ()
+    (interactive)
+    (org-toggle-inline-images)
+    (org-toggle-inline-images)))
 
 ;; for windows
 (use-package ob-python
