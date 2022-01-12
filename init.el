@@ -1738,8 +1738,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; simple LSP client
 ;; alternative to lsp, too many dependencies
-;; python language server: pyls (need to install)
 (use-package eglot
+  :hook
+  (python-mode . eglot-ensure) ; works if there is only one server available
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
