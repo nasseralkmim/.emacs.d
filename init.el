@@ -69,7 +69,7 @@
   :init
   (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
-  (setq-default fill-column 120)	  ; column length
+  (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
   (setq-default indicate-empty-lines t) 
 
