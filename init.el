@@ -1519,6 +1519,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (vterm-mode-map "s-n" 'vterm-toggle-forward
 		  "s-p" 'vterm-toggle-backward))
 
+(use-package open-term
+  :straight nil
+  :general
+  ('normal "<f7>" 'open-term-here)
+  :init
+  (when (string= (system-name) "ryzen-ms7c37")
+    (setq term-emulator "gnome-terminal"))
+  (defun open-term-here ()
+    (interactive)
+    (call-process term-emulator)))
 
 (use-package keycast
   :commands keycast-mode keycast-log-mode)
