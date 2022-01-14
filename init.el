@@ -445,7 +445,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-multiedit-state-map "C-j" 'evil-multiedit-next) 
   (evil-multiedit-state-map "C-k" 'evil-multiedit-prev)
   (evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
-  ('visual "C-S-d" 'evil-multiedit-restore))
+  ('visual "C-S-d" 'evil-multiedit-restore)
+  :config
+  (setq evil-multiedit-follow-matches t)
+  (defun make-evil-multiedit-case-sensitive (fn &rest args)
+    (let ((case-fold-search (not iedit-case-sensitive)))
+      (apply fn args)))
+
+  (advice-add #'evil-multiedit-match-and-next :around #'make-evil-multiedit-case-sensitive))
 
 (use-package evil-mc
   :after evil
@@ -466,8 +473,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete)))
         evil-mc-known-commands)
   (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
-        evil-mc-known-commands)
-  )
+        evil-mc-known-commands))
 
 (use-package evil
   :diminish evil-mode
@@ -641,6 +647,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            "vg" 'org-babel-goto-named-src-block) 
   :hook
   (org-mode . visual-line-mode)
+  (org-mode . org-indent-mode)          ; align with heading
   :custom
    (org-hide-emphasis-markers nil)        ; avoid noisy //,__, **(makes anoying to edit) 
    (org-startup-indented nil)		; start collapsed
