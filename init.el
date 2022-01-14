@@ -151,6 +151,9 @@
   (font-latex-string-face ((t (:foreground "SaddleBrown"))))
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
+  ;; evil
+  (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
+  (evil-snipe-first-match-face ((t (:inherit 'isearch))))
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-inline-src-block ((t (:background "gray97" :height 0.9))))
