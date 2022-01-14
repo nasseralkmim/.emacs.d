@@ -153,8 +153,10 @@
   (font-lock-comment-face ((t (:foreground "gray60"))))
   ;; org
   (org-block ((t (:background "gray97"))))
+  (org-inline-src-block ((t (:background "gray97" :height 0.9))))
   (org-meta-line ((t (:height 0.9 :inherit 'font-lock-comment-face))))
   (org-drawer ((t (:inherit 'font-lock-comment-face :height 0.9))))
+  (org-macro ((t (:inherit 'font-lock-comment-face :height 0.9))))
   (org-verbatim ((t (:box t)))))
 
 ;; change typeface size font

@@ -4,5 +4,5 @@
 # --
 #+header: :var figure="${}"
 #+header: :var folder="${}"
-#+header: :epilogue fname=f'{folder}/{figure}';plt.savefig(fname)
+#+header: :epilogue fname=f'{folder}/{figure}';plt.savefig(fname, bbox_inches="tight")
 #+header: :return fname :results file value
