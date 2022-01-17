@@ -408,7 +408,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
   :straight (:includes smartparens-config)
-  :diminish smartparens-mode  
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
   ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
@@ -1182,9 +1181,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package modus-themes
   ;; :unless (display-graphic-p)
   :init
-  (setq modus-themes-org-blocks 'tinted-background
+  (setq modus-themes-org-blocks 'gray-background
 	modus-themes-prompts '(intense italic)
-	modus-themes-hl-line '(accented)
+	modus-themes-hl-line '(accented intense)
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
 	modus-themes-paren-match '(bold underline)
@@ -1207,10 +1206,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
                                       :background (modus-themes-color 'bg-paren-expression))))))
-  (modus-themes-load-vivendi)
+  (modus-themes-load-operandi)
   :general
   ("<f5>"  'modus-themes-toggle))
-
 
 ;; change backgroud of other windows
 (use-package highlight-current-window
