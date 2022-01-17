@@ -139,6 +139,7 @@
 
 ;; custom emacs theme
 (use-package custom-theme
+  :disabled
   :straight (emacs :type built-in)
   :when (display-graphic-p)
   :custom-face 
@@ -1179,7 +1180,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; load modus in terminal
 (use-package modus-themes
-  :unless (display-graphic-p)
+  ;; :unless (display-graphic-p)
   :init
   (setq modus-themes-org-blocks 'tinted-background
 	modus-themes-prompts '(intense italic)
@@ -1533,7 +1534,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package terminal-here
   :general
-  ('normal "<f7>" 'terminal-here-launch))
+  ('normal "<f7>" 'terminal-here-launch)
+  :config
+  (when (string= system-name "ryzen-ms7c37")
+    (setq terminal-here-terminal-command 'gnome-terminal)))
 
 (use-package keycast
   :commands keycast-mode keycast-log-mode)
