@@ -1083,7 +1083,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   ;; extra outline headers 
   (setq TeX-outline-extra
-        '(("&paragraph" 5)))
+        '(("%paragraph" 5)))
 
   ;; add font locking to the headers
   (font-lock-add-keywords
