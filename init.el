@@ -772,6 +772,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; change scale of latex preview in org-mode
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
 	org-startup-with-latex-preview t
+        org-latex-image-default-width nil ; don't scale my images!
+        org-latex-images-centered nil     ; sometimes I want side-by-side images
         org-preview-latex-image-directory "~/.cache/ltximg/")
 
   ;; minted code pdf export org
@@ -1185,6 +1187,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-drawer ((t (:height 0.9))))
   (org-macro ((t (:height 0.9))))
   (org-verbatim ((t (:box t))))
+  (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
+  (font-latex-sectioning-2-face ((t (:weight bold :box t))))
+  (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
+  (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
+  (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
   :init
   (setq modus-themes-org-blocks 'gray-background
 	modus-themes-prompts '(intense italic)
@@ -1216,8 +1223,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("<f5>"  'modus-themes-toggle))
 
 ;; change backgroud of other windows
+;; when with custom theme and GUI
 (use-package highlight-current-window
-  :when (display-graphic-p)
+  :when (and 'display-graphic-p (not (featurep 'modus-themes)))
   :straight nil
   :init
   (defun highlight-selected-window ()
