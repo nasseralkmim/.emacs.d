@@ -139,7 +139,6 @@
 
 ;; custom emacs theme
 (use-package custom-theme
-  :disabled
   :straight (emacs :type built-in)
   :when (display-graphic-p)
   :custom-face 
@@ -778,12 +777,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; minted code pdf export org
   (setq org-latex-listings 'minted
-	org-latex-packages-alist '(("newfloat" "minted"))
 	org-latex-pdf-process
 	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
 	  "bibtex %b"
 	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")))
+	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
+  ;; extra latex packages for every header
+  (setq org-latex-packages-alist '(("newfloat" "minted" nil)
+                                   ("a4paper, margin=20mm" "geometry" nil)))
+
+  (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil))
+  )
 
 ;; adds keyword `async' to source blocks
 (use-package ob-async
@@ -1181,7 +1186,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; load modus in terminal
 (use-package modus-themes
-  ;; :unless (display-graphic-p)
+  :disabled
   :custom-face
   (org-meta-line ((t (:height 0.9))))
   (org-drawer ((t (:height 0.9))))
@@ -1218,7 +1223,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
                                       :background (modus-themes-color 'bg-paren-expression))))))
-  (modus-themes-load-operandi)
+  (if (display-graphic-p)
+      (modus-themes-load-operandi)
+    (modus-themes-load-vivendi))
   :general
   ("<f5>"  'modus-themes-toggle))
 
@@ -1863,5 +1870,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; convert pdf to svg to display inline org image
 (use-package org-inline-pdf
   :hook (org-mode . org-inline-pdf-mode))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
