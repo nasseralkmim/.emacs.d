@@ -1793,6 +1793,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
+           "h" 'eldoc
            "r" 'eglot-rename))
 
 ;; add ltex language server to eglot
