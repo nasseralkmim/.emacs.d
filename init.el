@@ -360,7 +360,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; set project root from vc.el
   ;; available when a project file is visited (project-switch-project)
-  (setq consult-project-root-function #'vc-root-dir))
+  ;; #'vc-root-dir
+  (setq consult-project-root-function nil))
 
 ;; insert recent openend directories in prompt
 (use-package consult-dir
