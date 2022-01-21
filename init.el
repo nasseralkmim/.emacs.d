@@ -437,6 +437,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (python-mode . flycheck-mode))
 
+(use-package flymake
+  :config
+  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
+  (setq python-flymake-command '("flake8" "-")))
+
 (use-package evil-multiedit
   :after evil
   :custom-face
