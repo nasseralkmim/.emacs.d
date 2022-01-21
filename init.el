@@ -151,6 +151,7 @@
   (font-latex-string-face ((t (:foreground "SaddleBrown"))))
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
+  (region ((t (:background "#bcbcbc"))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
   (evil-snipe-first-match-face ((t (:inherit 'isearch))))
@@ -440,7 +441,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package flymake
   :config
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
-  (setq python-flymake-command '("flake8" "-")))
+  (setq python-flymake-command '("flake8" "-")
+        python-check-command "/home/nasser/.local/bin/flake8"))
 
 (use-package evil-multiedit
   :after evil
