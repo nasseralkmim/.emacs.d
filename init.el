@@ -151,7 +151,7 @@
   (font-latex-string-face ((t (:foreground "SaddleBrown"))))
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
-  (region ((t (:background "#bcbcbc"))))
+  (region ((t (:background "#efdfff"))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
   (evil-snipe-first-match-face ((t (:inherit 'isearch))))
