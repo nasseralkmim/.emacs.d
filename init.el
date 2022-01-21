@@ -160,10 +160,7 @@
   (org-meta-line ((t (:height 0.9 :inherit 'font-lock-comment-face))))
   (org-drawer ((t (:inherit 'font-lock-comment-face :height 0.9))))
   (org-macro ((t (:inherit 'font-lock-comment-face :height 0.9))))
-  (org-verbatim ((t (:box t))))
-  :config
-  (set-face-attribute 'default nil :family "Iosevka" :height 105)
-  (set-face-attribute 'variable-pitch nil :family "Iosevka Aile" :height 105))
+  (org-verbatim ((t (:box t)))))
 
 ;; change typeface size font
 (use-package emacs
