@@ -1174,11 +1174,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; avoid fixing window size
   (dired-sidebar-mode . (lambda () (setq window-size-fixed nil)))
   :config
-  (setq dired-sidebar-one-instance-p t)      ; just sidebar per frame
+  (setq dired-sidebar-one-instance-p t      ; just sidebar per frame
+        dired-sidebar-use-magit-integration nil) ; open dwim, not parent git
   (defun dired-sidebar-jump ()
     (interactive)
-    (dired-sidebar-show-sidebar)
-    (dired-sidebar-jump-to-sidebar)))
+    (dired-sidebar-show-sidebar)        ;show the side bar
+    (dired-sidebar-toggle-with-current-directory) ; hide it and re opening with current dir
+    (dired-sidebar-toggle-with-current-directory)))
 
 ;; improved dired, does not work well
 (use-package dirvish
