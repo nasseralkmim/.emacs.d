@@ -1196,7 +1196,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; load modus in terminal
 (use-package modus-themes
-  :disabled
+  :unless (display-graphic-p)
   :custom-face
   (org-meta-line ((t (:height 0.9))))
   (org-drawer ((t (:height 0.9))))
