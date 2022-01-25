@@ -179,7 +179,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            (size (font-get font :size))
            (amt (or amt 1))
            (new-size (+ size amt)))
-      (set-frame-font (font-spec :size new-size) t `(,frame))))
+      (set-frame-font (font-spec :size new-size) t t)))
 
   (defun zoom-frame-out (&optional amt frame)
     "Call `zoom-frame' with negative argument."
