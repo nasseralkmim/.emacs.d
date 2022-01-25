@@ -728,11 +728,27 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ('normal org-mode-map :prefix "SPC"
            "xv" 'org-toggle-inline-images-refresh)
+  ('normal org-mode-map "C-+" 'org-zoom-inline-images)
+  ('normal org-mode-map "C-_" 'org-zoom-out-inline-images)
   :init
   (defun org-toggle-inline-images-refresh ()
     (interactive)
     (org-toggle-inline-images)
-    (org-toggle-inline-images)))
+    (org-toggle-inline-images))
+
+  (defun org-zoom-inline-images (&optional amt)
+    (interactive)
+    (let* ((size (if org-image-actual-width
+                     org-image-actual-width
+                   300))
+           (amt (or amt 50))
+           (new-size (+ size amt)))
+      (setq-local org-image-actual-width new-size)
+      (org-toggle-inline-images-refresh)))
+
+  (defun org-zoom-out-inline-images (&optional amt)
+    (interactive)
+    (org-zoom-inline-images (- (or amt 50)))))
 
 ;; for windows
 (use-package ob-python
