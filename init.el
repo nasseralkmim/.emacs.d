@@ -360,8 +360,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; set project root from vc.el
   ;; available when a project file is visited (project-switch-project)
-  ;; #'vc-root-dir
-  (setq consult-project-root-function nil))
+  ;; #'vc-root-dir ; using current folder as default
+  ;; added --no-ignore-vcs to avoid skipping files in gitignore
+  (setq consult-project-root-function nil
+        consult-ripgrep-args 
+        "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs .")
+  )
 
 ;; insert recent openend directories in prompt
 (use-package consult-dir
@@ -687,7 +691,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           org-optimize-window-after-visibility-change))
 
   ;; display images after executing
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append))
+  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+  ;; add extra todo keywords
+  (setq org-todo-keywords '((sequence "TODO" "PROG" "DONE"))
+        org-todo-keyword-faces '(("PROG" . (:foregroud "blue")))))
 
 (use-package ox-extra
   :after org
