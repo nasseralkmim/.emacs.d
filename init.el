@@ -677,6 +677,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
    (org-insert-heading-respect-content t) ; insert heading after current tree
    (org-catch-invisible-edits 'smart)
+   (org-tags-column 0)                        ; tag right after text
    (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
    (org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
   :config
