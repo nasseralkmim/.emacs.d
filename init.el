@@ -1477,6 +1477,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; search bibtex bibliography with consult
 ;; depends on helm-bibtex
 (use-package consult-bibtex
+  :disabled
   :if (eq system-type 'gnu/linux)
   :straight (consult-bibtex :host github
                             :repo "mohkale/consult-bibtex")
@@ -1497,6 +1498,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (bibtex-completion-open-pdf keys fallback-action)))
   (consult-bibtex-embark-action consult-bibtex-open-pdf-annotation bibtex-completion-open-pdf-annotation)
   (define-key consult-bibtex-embark-map "n" #'consult-bibtex-open-pdf-annotation))
+
+(use-package citar
+  :general
+  ("C-c b" 'citar-insert-citation)
+  :custom
+  (citar-bibliography "~/.bibliography.bib"))
 
 (use-package biblio
   :commands biblio-lookup)
