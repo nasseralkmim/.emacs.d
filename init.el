@@ -169,8 +169,7 @@
   :init
   (set-face-attribute 'default nil :family "Roboto Mono" :weight 'regular)
   (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'bold)
-  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'italic :weight 'regular :height 90)
-  (set-fontset-font t 'unicode (font-spec :name "Inconsolata Light") nil))
+  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'italic :weight 'regular :height 90))
 
 ;; change typeface size font
 (use-package emacs
