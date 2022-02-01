@@ -1503,7 +1503,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("C-c b" 'citar-insert-citation)
   :custom
-  (citar-bibliography "~/.bibliography.bib"))
+  (citar-bibliography "~/.bibliography.bib")
+  :config
+  (setq citar-library-paths '("~/SeaDrive/My Libraries/bibliography/"))
+  ;; symbols
+  (setq citar-symbols
+        `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
+          (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
+          (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
+  (setq citar-symbol-separator "  "))
 
 (use-package biblio
   :commands biblio-lookup)
@@ -1908,7 +1916,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :defer 1
   :config
   (openwith-mode)
-  (setq openwith-associations '(("\\.pdf\\'" "okular" (file)))))
+  (setq openwith-associations '(("\\.pdf\\'" "okular" (file))
+                                ("\\.xopp\\'" "xournalpp" (file)))))
 
 ;; convert pdf to svg to display inline org image
 (use-package org-inline-pdf
