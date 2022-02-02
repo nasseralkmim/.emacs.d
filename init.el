@@ -166,9 +166,9 @@
 ;; typeface
 (use-package custom-typefaces
   :straight nil
+  :disabled
   :init
   (set-face-attribute 'default nil :family "Roboto Mono" :weight 'regular)
-  (set-face-attribute 'bold nil :family "Roboto Mono" :weight 'bold)
   (set-face-attribute 'italic nil :family "Victor Mono" :slant 'italic :weight 'regular :height 90))
 
 ;; change typeface size font
