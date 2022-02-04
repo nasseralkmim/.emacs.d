@@ -154,7 +154,7 @@
   (region ((t (:background "#efdfff"))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
-  (evil-snipe-first-match-face ((t (:inherit 'isearch))))
+  (evil-snipe-first-match-face ((t (:inherit 'match))))
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-inline-src-block ((t (:background "gray97" :height 0.9))))
@@ -566,7 +566,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after evil
   :init
   (evil-goggles-mode)
-  (setq evil-goggles-duration 0.8        ; show what I copied
+  (setq evil-goggles-duration 1        ; show what I copied
         evil-goggles-blocking-duration 0) ; don't want to wait when deleting
   (evil-goggles-use-diff-faces))
 
@@ -1930,12 +1930,5 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; convert pdf to svg to display inline org image
 (use-package org-inline-pdf
   :hook (org-mode . org-inline-pdf-mode))
-
-(use-package cursor-flash
-  :straight (cursor-flash :type git :host github :repo "Boruch-Baum/emacs-cursor-flash")
-  :config
-  (setq cursor-flash-interval 0.3)
-  (cursor-flash-mode))
-
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
