@@ -1931,5 +1931,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package org-inline-pdf
   :hook (org-mode . org-inline-pdf-mode))
 
+(use-package cursor-flash
+  :straight (cursor-flash :type git :host github :repo "Boruch-Baum/emacs-cursor-flash")
+  :config
+  (setq cursor-flash-interval 0.3)
+  (cursor-flash-mode))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
