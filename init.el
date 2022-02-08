@@ -453,6 +453,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . flycheck-mode))
 
 (use-package flymake
+  :hook (LaTeX-mode . flymake-mode)
   :config
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
   (setq python-flymake-command '("flake8" "-")
@@ -1871,7 +1872,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package flymake-languagetool
   :hook (LaTeX-mode . flymake-languagetool-load)
   :init
-  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.6/languagetool-server.jar"))
+  ;; (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.6/languagetool-server.jar")
+  ;; Remote server config with LanguageTool's free API
+  (setq flymake-languagetool-url "https://api.languagetool.org")
+  (setq flymake-languagetool-server-port nil)
+  (setq flymake-languagetool-server-jar nil))
 
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
