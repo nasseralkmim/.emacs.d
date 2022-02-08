@@ -154,7 +154,7 @@
   (region ((t (:background "#efdfff"))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
-  (evil-snipe-first-match-face ((t (:inherit 'isearch))))
+  (evil-snipe-first-match-face ((t (:inherit 'match))))
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-inline-src-block ((t (:background "gray97" :height 0.9))))
@@ -223,6 +223,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (global-auto-revert-mode +1))
 
 (use-package helpful
+  :disabled
   :general
   ("C-h f" 'helpful-callable)
   ("C-h d" 'helpful-at-point)
@@ -907,7 +908,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after flyspell)
 
 ;; completion in region manually summoned with <tab> (no auto pop up)
-;; allows space between filter words (combined with oderless)
+;; allows space (separator M-SPC) between filter words (combined with oderless)
 (use-package corfu
   :straight (corfu :type git :host github :repo "minad/corfu")
   :init
@@ -920,16 +921,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal corfu-map "<escape>" 'corfu-quit)
   ('insert "C-n" nil
 	   "C-p" nil)
-  :hook
-  ;; after `np.` quit the completion
-  ;; if nil: allow space separated orderless completion style
-  ;; if t: quit at boundary
-  (python-mode . (lambda ()
-                   (setq-local corfu-quit-at-boundary t)))
   :config
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.4
-        corfu-quit-at-boundary nil      ; for orderless completion, faster!
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
@@ -1462,20 +1456,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; dont prompt for anything, just insert the citation please.
   (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
 
-;; not working when files are from linux seadrive... argh!
-(use-package bibtex-completion
-  :disabled
-  :when (string-match "-[Mm]icrosoft" operating-system-release)
-  :after consult-bibtex
-  :init
-  ;; depends on `wslview` to be installed in wsl
-  (setq bibtex-completion-pdf-open-function
-        (lambda (fpath) (shell-command (concat
-                                        "wslview "	; version 3.2.1 works with spaces in path
-                                        (shell-quote-argument fpath))))))
-
 ;; using okular to at leat view the documents...
-(use-package bibtex-completion
+(use-package bibtex-completion-wsl
+  :straight nil
   :when (string-match "-[Mm]icrosoft" operating-system-release)
   :after consult-bibtex
   :init
@@ -1495,7 +1478,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (add-to-list 'embark-keymap-alist '(bibtex-completion . consult-bibtex-embark-map))))
 
 ;; bibtex completion add option for pdf view (one for annotation other for viewing)
-(use-package consult-bibtex
+(use-package consult-bibtex-annotation
   :straight nil
   :after consult-bibtex
   :init
@@ -1507,11 +1490,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (define-key consult-bibtex-embark-map "n" #'consult-bibtex-open-pdf-annotation))
 
 (use-package citar
-  :disabled
   :general
+  :disabled
   ("C-c b" 'citar-insert-citation)
   :custom
-  (citar-bibliography "~/.bibliography.bib")
+  (citar-bibliography '("~/.bibliography.bib"))
   :config
   (setq citar-library-paths '("~/SeaDrive/My Libraries/bibliography/"))
   ;; symbols
@@ -1519,7 +1502,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
           (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
           (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
-  (setq citar-symbol-separator "  "))
+  (setq citar-symbol-separator "  ")
+
+  ;; don't prompt files, just open
+  (setq citar-file-open-prompt nil)
+
+  ;; refresh cache after bib changes
+  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
+ 
+;; function to open with xournal
+(use-package citar-annotation
+  :straight nil
+  :after citar
+  :disabled
+  :init)
 
 (use-package biblio
   :commands biblio-lookup)
