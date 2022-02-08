@@ -223,12 +223,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (global-auto-revert-mode +1))
 
 (use-package helpful
-  :disabled
   :general
   ("C-h f" 'helpful-callable)
   ("C-h d" 'helpful-at-point)
   ("C-h v" 'helpful-variable)
   ("C-h k" 'helpful-key)
+  :init
+  (defvar read-symbol-positions-list nil) ; fix bug in upstream emacs
   :config
   ;; don't create multiple buffers, just switch the current
   (defun pop-or-switch-to-buffer (buffer-name)
