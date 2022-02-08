@@ -1864,6 +1864,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (require 'eglot-ltex)
     (call-interactively #'eglot)))
 
+;; use language tool with flymake
+;; download latest version https://languagetool.org/download/
+;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
+;; unzip <download> -d ~/.opt/
+(use-package flymake-languagetool
+  :hook (LaTeX-mode . flymake-languagetool-load)
+  :init
+  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.6/languagetool-server.jar"))
+
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
 
