@@ -702,12 +702,46 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           org-cycle-show-empty-lines
           org-optimize-window-after-visibility-change))
 
-  ;; display images after executing
-  (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
-
   ;; add extra todo keywords
   (setq org-todo-keywords '((sequence "TODO" "PROG" "DONE"))
         org-todo-keyword-faces '(("PROG" . (:foregroud "blue")))))
+
+;; bug when display image using :dir
+;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
+(use-package org-display-inline-image-hack
+  :straight nil
+  :after org
+  :init
+  ;; previous solution was just to add this hook to babel execute
+  ;; (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+
+  ;; another solution is to rebind the key to add additional function call
+  ;; (define-key org-mode-map (kbd "C-c C-c")
+  ;;   (lambda () (interactive) (org-ctrl-c-ctrl-c)
+  ;;                            (org-display-inline-image)))
+
+  (setq org-startup-with-inline-images t)
+  (require 'subr-x)
+  (defun ded:org-babel-inline-display-subtree ()
+    "Redisplay inline images in subtree if cursor in source block with :result 
+file."
+
+    (when (org-in-src-block-p)
+      (let (beg end
+                (default-directory (if-let ((fname (buffer-file-name)))
+                                       (file-name-directory fname)
+                                     default-directory)))
+        (save-mark-and-excursion
+          (org-mark-subtree)
+          (setq beg (point))
+          (setq end (mark)))
+        (when-let ((info (org-babel-get-src-block-info t))
+                   (params (org-babel-process-params (nth 2 info)))
+                   (result-params (cdr (assq :result-params params)))
+                   ((member "file" result-params)))
+          (org-display-inline-images nil nil beg end)))))
+
+  (add-hook 'org-babel-after-execute-hook #'ded:org-babel-inline-display-subtree))
 
 (use-package ox-extra
   :after org
