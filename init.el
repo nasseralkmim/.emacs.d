@@ -454,7 +454,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . flycheck-mode))
 
 (use-package flymake
-  :hook (LaTeX-mode . flymake-mode)
   :config
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
   (setq python-flymake-command '("flake8" "-")
@@ -713,13 +712,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after org
   :init
   ;; previous solution was just to add this hook to babel execute
-  ;; (add-hook 'org-babel-after-execute-hook 'org-display-inline-images 'append)
+  ;; (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
 
   ;; another solution is to rebind the key to add additional function call
   ;; (define-key org-mode-map (kbd "C-c C-c")
   ;;   (lambda () (interactive) (org-ctrl-c-ctrl-c)
   ;;                            (org-display-inline-image)))
-
+  
   (setq org-startup-with-inline-images t)
   (require 'subr-x)
   (defun ded:org-babel-inline-display-subtree ()
@@ -741,7 +740,13 @@ file."
                    ((member "file" result-params)))
           (org-display-inline-images nil nil beg end)))))
 
-  (add-hook 'org-babel-after-execute-hook #'ded:org-babel-inline-display-subtree))
+  (add-hook 'org-babel-after-execute-hook #'ded:org-babel-inline-display-subtree)
+
+  ;; problem when eval whole subtree, it was not showing images outside the subtree
+  (define-key org-mode-map (kbd "C-c C-v C-s")
+              (lambda () (interactive)
+                (org-babel-execute-subtree)
+                (org-redisplay-inline-images))))
 
 (use-package ox-extra
   :after org
@@ -773,7 +778,7 @@ file."
   :after org
   :general
   ('normal org-mode-map :prefix "SPC"
-           "xv" 'org-toggle-inline-images-refresh)
+           "xv" 'org-redisplay-inline-images)
   ('normal org-mode-map "C-+" 'org-zoom-inline-images)
   ('normal org-mode-map "C-_" 'org-zoom-out-inline-images)
   :init
@@ -790,7 +795,7 @@ file."
            (amt (or amt 50))
            (new-size (+ size amt)))
       (setq-local org-image-actual-width new-size)
-      (org-toggle-inline-images-refresh)))
+      (org-redisplay-inline-images)))
 
   (defun org-zoom-out-inline-images (&optional amt)
     (interactive)
@@ -1644,6 +1649,7 @@ file."
   :general
   ('normal "<f7>" 'terminal-here-launch)
   :config
+  ;; change terminal command
   (when (string= system-name "ryzen-ms7c37")
     (setq terminal-here-terminal-command 'gnome-terminal)))
 
@@ -1827,6 +1833,7 @@ file."
 (use-package avy
   :general
   ('normal "s" 'avy-goto-char-timer)
+  :demand
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
         avy-all-windows nil))           ; restrict to one buffer
@@ -1880,6 +1887,7 @@ file."
 (use-package eglot
   :hook
   (python-mode . eglot-ensure) ; works if there is only one server available
+  (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
