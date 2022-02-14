@@ -152,6 +152,7 @@
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
   (region ((t (:background "#efdfff"))))
+  (iedit-occurrence ((t (:background "plum1"))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
   (evil-snipe-first-match-face ((t (:inherit 'match))))
@@ -161,7 +162,9 @@
   (org-meta-line ((t (:height 0.9 :inherit 'font-lock-comment-face))))
   (org-drawer ((t (:inherit 'font-lock-comment-face :height 0.9))))
   (org-macro ((t (:inherit 'font-lock-comment-face :height 0.9))))
-  (org-verbatim ((t (:box t)))))
+  (org-verbatim ((t (:box t))))
+  :init
+  (provide 'custom-theme))
 
 ;; typeface
 (use-package custom-typefaces
@@ -461,8 +464,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package evil-multiedit
   :after evil
-  :custom-face
-  (iedit-occurrence ((t (:background "plum1"))))
   :general
   ('visual "R" 'evil-multiedit-match-all)
   ("M-d" 'evil-multiedit-match-and-next)
@@ -711,42 +712,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight nil
   :after org
   :init
-  ;; previous solution was just to add this hook to babel execute
-  ;; (add-hook 'org-babel-after-execute-hook 'org-display-inline-images)
-
-  ;; another solution is to rebind the key to add additional function call
-  ;; (define-key org-mode-map (kbd "C-c C-c")
-  ;;   (lambda () (interactive) (org-ctrl-c-ctrl-c)
-  ;;                            (org-display-inline-image)))
-  
-  (setq org-startup-with-inline-images t)
-  (require 'subr-x)
-  (defun ded:org-babel-inline-display-subtree ()
-    "Redisplay inline images in subtree if cursor in source block with :result 
-file."
-
-    (when (org-in-src-block-p)
-      (let (beg end
-                (default-directory (if-let ((fname (buffer-file-name)))
-                                       (file-name-directory fname)
-                                     default-directory)))
-        (save-mark-and-excursion
-          (org-mark-subtree)
-          (setq beg (point))
-          (setq end (mark)))
-        (when-let ((info (org-babel-get-src-block-info t))
-                   (params (org-babel-process-params (nth 2 info)))
-                   (result-params (cdr (assq :result-params params)))
-                   ((member "file" result-params)))
-          (org-display-inline-images nil nil beg end)))))
-
-  (add-hook 'org-babel-after-execute-hook #'ded:org-babel-inline-display-subtree)
-
-  ;; problem when eval whole subtree, it was not showing images outside the subtree
-  (define-key org-mode-map (kbd "C-c C-v C-s")
-              (lambda () (interactive)
-                (org-babel-execute-subtree)
-                (org-redisplay-inline-images))))
+  ;; (remove-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
+  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images 'append))
 
 (use-package ox-extra
   :after org
@@ -771,6 +738,13 @@ file."
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
+
+(use-package ob-core
+  :straight nil
+  :after org
+  :init
+  ;; mkdirp allows creating the :dir if it does not exist
+  (add-to-list 'org-babel-default-header-args '(:mkdirp . "yes")))
 
 ;; custom org function
 (use-package org-custom
@@ -853,7 +827,7 @@ file."
   :init
   ;; change scale of latex preview in org-mode
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
-	org-startup-with-latex-preview t
+	;; org-startup-with-latex-preview t ; takes too much time for large documents
         org-latex-image-default-width nil ; don't scale my images!
         org-latex-images-centered nil     ; sometimes I want side-by-side images
         org-preview-latex-image-directory "~/.cache/ltximg/")
@@ -1983,6 +1957,24 @@ file."
 ;; convert pdf to svg to display inline org image
 (use-package org-inline-pdf
   :hook (org-mode . org-inline-pdf-mode))
+
+(use-package doom-themes
+  :disabled
+  :init
+  ;; Global settings (defaults)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-palenight t)
+
+  ;; Enable flashing mode-line on errors
+  (doom-themes-visual-bell-config)
+  ;; Enable custom neotree theme (all-the-icons must be installed!)
+  (doom-themes-neotree-config)
+  ;; or for treemacs users
+  (setq doom-themes-treemacs-theme "doom-atom") ; use "doom-colors" for less minimal icon theme
+  (doom-themes-treemacs-config)
+  ;; Corrects (and improves) org-mode's native fontification.
+  (doom-themes-org-config))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
