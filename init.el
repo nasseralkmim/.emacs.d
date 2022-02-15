@@ -153,6 +153,7 @@
   (font-lock-comment-face ((t (:foreground "gray60"))))
   (region ((t (:background "#efdfff"))))
   (iedit-occurrence ((t (:background "plum1"))))
+  (mode-line-active ((t (:background "paleturquoise" :box (:line-width -1 :style released-button)))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
   (evil-snipe-first-match-face ((t (:inherit 'match))))
@@ -171,6 +172,7 @@
   :straight nil
   :init
   ;; victor mono: thin, condensed, italics is informal
+  ;; fira code: ligatures
   (set-face-attribute 'default nil :family "Victor Mono" :weight 'regular))
 
 ;; change typeface size font
