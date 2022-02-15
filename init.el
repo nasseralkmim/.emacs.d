@@ -169,10 +169,9 @@
 ;; typeface
 (use-package custom-typefaces
   :straight nil
-  :disabled
   :init
-  (set-face-attribute 'default nil :family "Roboto Mono" :weight 'regular)
-  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'italic :weight 'regular :height 90))
+  ;; victor mono: thin, condensed, italics is informal
+  (set-face-attribute 'default nil :family "Victor Mono" :weight 'regular))
 
 ;; change typeface size font
 (use-package emacs
@@ -1284,7 +1283,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
 (use-package highlight-current-window
-  :when (and 'display-graphic-p (not (featurep 'modus-themes)))
+  :after custom-theme                   ; only when my theme is used 
+  :when (display-graphic-p)
   :straight nil
   :init
   (defun highlight-selected-window ()
@@ -1964,7 +1964,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
         doom-themes-enable-italic t) ; if nil, italics is universally disabled
-  (load-theme 'doom-palenight t)
+  (load-theme 'doom-one-light t)
 
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
