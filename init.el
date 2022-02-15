@@ -154,7 +154,7 @@
   (region ((t (:background "#efdfff"))))
   (iedit-occurrence ((t (:background "plum1"))))
   (mode-line-active ((t (:background "paleturquoise" :box (:line-width -1 :style released-button)))))
-  (mode-line-inactive ((t (:foreground "gray40"))))
+  (mode-line-inactive ((t (:background "gray80" :box (:line-width -1 :style released-button)))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
   (evil-snipe-first-match-face ((t (:inherit 'match))))
@@ -177,7 +177,8 @@
   (set-face-attribute 'default nil :family "Victor Mono" :weight 'regular))
 
 ;; change typeface size font
-(use-package emacs
+(use-package emacs-zoom
+  :straight nil
   :general
   ("C-M-=" 'zoom-frame)
   ("C-M--" 'zoom-frame-out)
@@ -198,6 +199,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     "Call `zoom-frame' with negative argument."
     (interactive "p")
     (zoom-frame (- (or amt 1)) frame)))
+
+;; avoid creating new popping windows
+(use-package emacs-display
+  :straight nil
+  :init
+  ;; reuse existing windows including other frames
+  (customize-set-variable 'display-buffer-base-action
+                          '((display-buffer-reuse-window display-buffer-same-window)
+                            (reusable-frames . t)))
+  ;; avoid resizing
+  (customize-set-variable 'even-window-sizes nil))
 
 (use-package abbrev
   :straight (:type built-in)
