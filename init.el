@@ -154,6 +154,7 @@
   (region ((t (:background "#efdfff"))))
   (iedit-occurrence ((t (:background "plum1"))))
   (mode-line-active ((t (:background "paleturquoise" :box (:line-width -1 :style released-button)))))
+  (mode-line-inactive ((t (:foreground "gray40"))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
   (evil-snipe-first-match-face ((t (:inherit 'match))))
