@@ -174,7 +174,7 @@
   :init
   ;; victor mono: thin, condensed, italics is informal
   ;; fira code: ligatures
-  (set-face-attribute 'default nil :family "Victor Mono" :weight 'regular))
+  (set-face-attribute 'default nil :family "Victor Mono" :weight 'medium))
 
 ;; change typeface size font
 (use-package emacs-zoom
@@ -841,7 +841,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   ;; change scale of latex preview in org-mode
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
-	;; org-startup-with-latex-preview t ; takes too much time for large documents
+	org-startup-with-latex-preview t
         org-latex-image-default-width nil ; don't scale my images!
         org-latex-images-centered nil     ; sometimes I want side-by-side images
         org-preview-latex-image-directory "~/.cache/ltximg/")
