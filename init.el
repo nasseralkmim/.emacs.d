@@ -200,14 +200,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (interactive "p")
     (zoom-frame (- (or amt 1)) frame)))
 
-;; avoid creating new popping windows
-(use-package emacs-display
+;; controls the behavior of windows
+(use-package emacs-display-windows
   :straight nil
   :init
   ;; reuse existing windows including other frames
-  (customize-set-variable 'display-buffer-base-action
-                          '((display-buffer-reuse-window display-buffer-same-window)
-                            (reusable-frames . t)))
+  (customize-set-variable
+   'display-buffer-base-action          ; define a priorized list of actions
+   '((display-buffer--maybe-same-window
+      display-buffer-reuse-window                  ; reuse help buffers for instance
+      display-buffer--maybe-pop-up-frame-or-window ; pop up transient buffers
+      display-buffer-in-previous-window
+      ;; display-buffer-same-window     ; problems with magit popup
+      display-buffer-below-selected     ; magit pop up at bottom of selected
+      display-buffer-at-bottom)
+     (reusable-frames . t)))
   ;; avoid resizing
   (customize-set-variable 'even-window-sizes nil))
 
