@@ -153,7 +153,7 @@
   (font-lock-comment-face ((t (:foreground "gray60"))))
   (region ((t (:background "#efdfff"))))
   (iedit-occurrence ((t (:background "plum1"))))
-  (mode-line-active ((t (:background "paleturquoise" :box (:line-width -1 :style released-button)))))
+  (mode-line-active ((t (:background "pale turquoise" :box (:line-width -1 :style released-button)))))
   (mode-line-inactive ((t (:background "gray80" :box (:line-width -1 :style released-button)))))
   ;; evil
   (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
@@ -690,9 +690,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	   "s j" 'org-babel-next-src-block
 	   "s k" 'org-babel-previous-src-block)
   ('normal org-mode-map :prefix "SPC"
-           "xl" 'org-latex-preview
            "ves" 'org-babel-execute-subtree
            "vg" 'org-babel-goto-named-src-block) 
+  ('normal org-mode-map :prefix "g" "pp" 'org-latex-preview)
   :hook
   (org-mode . visual-line-mode)
   (org-mode . org-indent-mode)          ; align with heading
@@ -734,7 +734,30 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after org
   :init
   ;; (remove-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
-  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images 'append))
+  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images 'append)
+
+  (require 'subr-x)
+  (defun ded:org-babel-inline-display-subtree ()
+    "Redisplay inline images in subtree if cursor in source block with :result 
+graphics."
+
+    (when (org-in-src-block-p)
+      (let (beg end
+                (default-directory (if-let ((fname (buffer-file-name)))
+                                       (file-name-directory fname)
+                                     default-directory)))
+        (save-mark-and-excursion
+          (org-mark-subtree)
+          (setq beg (point))
+          (setq end (mark)))
+        (when-let ((info (org-babel-get-src-block-info t))
+                   (params (org-babel-process-params (nth 2 info)))
+                   (result-params (cdr (assq :result-params params)))
+                   ((member "file" result-params)))
+          (org-display-inline-images nil nil beg end)))))
+
+  (add-hook 'org-babel-after-execute-hook 
+            #'ded:org-babel-inline-display-subtree))
 
 (use-package ox-extra
   :after org
