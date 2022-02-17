@@ -129,7 +129,10 @@
    ;; this is giving me problems when creating new lines in org-mode source blocks
    tab-always-indent 'complete ; tab indents first, then tries to complete
    help-window-select t	    ; focus on help window when openend
-   window-combination-resize t)) ; resize windows proportionaly
+   window-combination-resize t) ; resize windows proportionaly
+
+  (setq yank-pop-change-selection t)    ;change selection when using yank pop
+  )
 
 (use-package emacs
   :if (string-greaterp emacs-version "29") ; need emacs > 29
@@ -446,6 +449,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
+  :diminish smartparens-mode
   :straight (:includes smartparens-config)
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
@@ -1032,6 +1036,7 @@ graphics."
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
 (use-package outline
+  :diminish outline-minor-mode
   :mode ("\\.inp\\'" . outline-minor-mode)
   :straight (:type built-in)
   ;; :diminish outline-minor-mode
@@ -1341,8 +1346,8 @@ graphics."
                         (buffer-face-set '(:background "gray94"))))))
     (buffer-face-set 'default))
 
-  (add-hook 'buffer-list-update-hook 'highlight-selected-window))
-
+  (add-hook 'buffer-list-update-hook 'highlight-selected-window)
+  (diminish 'buffer-face-mode))
 
 ;; syntax highlight in html export of org-mode source blocks
 ;; does not work well with modus-themes and tree-sitter
@@ -1603,6 +1608,7 @@ graphics."
   (wsl-path-activate))
 
 (use-package yasnippet
+  :diminish yas-minor-mode
   :hook
   (LaTeX-mode . yas-global-mode)
   (org-mode . yas-global-mode)
@@ -1847,6 +1853,7 @@ graphics."
 
 ;; highlight parensthesis
 (use-package highlight-parentheses
+  :diminish highlight-parentheses-mode
   :hook (prog-mode . highlight-parentheses-mode))
 
 ;; moving cursor around fast and efficiently
@@ -2022,5 +2029,12 @@ graphics."
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
 
+(use-package eldoc
+  :straight nil
+  :diminish eldoc-mode)
+
+;; save windows configurations and use regular bookmarks file
+(use-package burly
+  :straight (burly :type git :host github :repo "alphapapa/burly.el"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
