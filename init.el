@@ -148,10 +148,10 @@
   (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
   (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
   (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
-  (font-latex-string-face ((t (:foreground "SaddleBrown"))))
+  (font-latex-string-face ((t (:foreground "saddle brown"))))
   ;; general
   (font-lock-comment-face ((t (:foreground "gray60"))))
-  (region ((t (:background "#efdfff"))))
+  (region ((t (:background "gainsboro"))))
   (iedit-occurrence ((t (:background "plum1"))))
   (mode-line-active ((t (:background "pale turquoise" :box (:line-width -1 :style released-button)))))
   (mode-line-inactive ((t (:background "gray80" :box (:line-width -1 :style released-button)))))
@@ -734,14 +734,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after org
   :init
   ;; (remove-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
-  (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images 'append)
+  ;; (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images 'append)
 
   (require 'subr-x)
   (defun ded:org-babel-inline-display-subtree ()
     "Redisplay inline images in subtree if cursor in source block with :result 
 graphics."
 
-    (when (org-in-src-block-p)
+    (org-babel-when-in-src-block
       (let (beg end
                 (default-directory (if-let ((fname (buffer-file-name)))
                                        (file-name-directory fname)
@@ -754,7 +754,8 @@ graphics."
                    (params (org-babel-process-params (nth 2 info)))
                    (result-params (cdr (assq :result-params params)))
                    ((member "file" result-params)))
-          (org-display-inline-images nil nil beg end)))))
+          ;; (org-display-inline-images nil nil beg end)
+          (org-redisplay-inline-images)))))
 
   (add-hook 'org-babel-after-execute-hook 
             #'ded:org-babel-inline-display-subtree))
