@@ -164,9 +164,9 @@
   ;; org
   (org-block ((t (:background "gray97"))))
   (org-inline-src-block ((t (:background "gray97" :height 0.9))))
-  (org-meta-line ((t (:height 0.9 :inherit 'font-lock-comment-face))))
-  (org-drawer ((t (:inherit 'font-lock-comment-face :height 0.9))))
-  (org-macro ((t (:inherit 'font-lock-comment-face :height 0.9))))
+  (org-meta-line ((t (:foreground "gray60" :height 0.9))))
+  (org-drawer ((t (:inherit 'org-meta-line))))
+  (org-macro ((t (:inherit 'org-meta-line))))
   (org-verbatim ((t (:box t))))
   :init
   (provide 'custom-theme))
@@ -177,7 +177,10 @@
   :init
   ;; victor mono: thin, condensed, italics is informal
   ;; fira code: ligatures
-  (set-face-attribute 'default nil :family "Victor Mono" :weight 'medium))
+  (set-face-attribute 'default nil :family "Victor Mono" :weight 'medium)
+  (set-face-attribute 'italic nil :family "Victor Mono" :weight 'medium :slant 'oblique)
+  (set-face-attribute 'fixed-pitch nil :family "Victor Mono" :weight 'medium)
+  (set-face-font 'font-lock-comment-face "Victor Mono Italic"))
 
 ;; change typeface size font
 (use-package emacs-zoom
