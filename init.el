@@ -181,8 +181,9 @@
   (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
   (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
   :custom-face 
-  ;; outline 4 inherits from comment face... make it normal instead of italic
-  (outline-4 ((t (:inherit font-lock-comment-face :slant oblique)))))
+  ;; outline 4 inherits from comment face... make it oblique instead of italic
+  (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
+  (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique)))))
 
 ;; change typeface size font
 (use-package emacs-zoom
@@ -1006,7 +1007,7 @@ graphics."
 	   "C-p" nil)
   :config
   (setq corfu-auto t                    ; enables timer-based completion
-        corfu-auto-delay 0.4
+        corfu-auto-delay 0.1
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
@@ -1834,7 +1835,6 @@ graphics."
 
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter
-  :disabled
   :straight (evil-textobj-tree-sitter :type git
                       :host github
                       :repo "meain/evil-textobj-tree-sitter"
@@ -2057,3 +2057,5 @@ graphics."
   :straight (burly :type git :host github :repo "alphapapa/burly.el"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+
+
