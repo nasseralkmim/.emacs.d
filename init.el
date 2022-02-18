@@ -146,14 +146,14 @@
   :when (display-graphic-p)
   :custom-face 
   ;; latex
-  (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
+  (font-latex-sectioning-1-face ((t (:weight bold :slant oblique :box t))))
   (font-latex-sectioning-2-face ((t (:weight bold :box t))))
   (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
   (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
-  (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
+  (font-latex-sectioning-5-face ((t (:weight normal :slant oblique :underline t))))
   (font-latex-string-face ((t (:foreground "saddle brown"))))
   ;; general
-  (font-lock-comment-face ((t (:foreground "gray60"))))
+  (font-lock-comment-face ((t (:foreground "gray60" :slant italic))))
   (region ((t (:background "gainsboro"))))
   (iedit-occurrence ((t (:background "plum1"))))
   (mode-line-active ((t (:background "pale turquoise" :box (:line-width -1 :style released-button)))))
@@ -177,10 +177,12 @@
   :init
   ;; victor mono: thin, condensed, italics is informal
   ;; fira code: ligatures
-  (set-face-attribute 'default nil :family "Victor Mono" :weight 'medium)
-  (set-face-attribute 'italic nil :family "Victor Mono" :weight 'medium :slant 'oblique)
-  (set-face-attribute 'fixed-pitch nil :family "Victor Mono" :weight 'medium)
-  (set-face-font 'font-lock-comment-face "Victor Mono Italic"))
+  (set-face-attribute 'default nil :family "Victor Mono")
+  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
+  (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
+  :custom-face 
+  ;; outline 4 inherits from comment face... make it normal instead of italic
+  (outline-4 ((t (:inherit font-lock-comment-face :slant oblique)))))
 
 ;; change typeface size font
 (use-package emacs-zoom
@@ -766,6 +768,20 @@ graphics."
 
   (add-hook 'org-babel-after-execute-hook 
             #'ded:org-babel-inline-display-subtree))
+
+;; problem with babel execute subtree and showing images outside the subtree
+(use-package org-display-inline-image-after-execute-subtreee
+  :straight nil
+  :after org
+  :general
+  (org-mode-map "C-c C-v C-s" 'org-redisplay-after-execute-subtree )
+  :init
+  (defun org-redisplay-after-execute-subtree ()
+    "Redisplay images after execute subtree"
+    (interactive)
+    (org-babel-execute-subtree)
+    (org-redisplay-inline-images))
+)
 
 (use-package ox-extra
   :after org
