@@ -521,7 +521,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     "P" 'evil-mc-skip-and-goto-prev-match)
   :config
   (global-evil-mc-mode 1)
+  ;; extra commands for multiple cursts
   (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete)))
+        evil-mc-known-commands)
+  (push '(evil-org-delete-char . ((:default . evil-mc-execute-default-evil-delete)))
+        evil-mc-known-commands)
+  (push '(evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
         evil-mc-known-commands)
   (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
         evil-mc-known-commands))
@@ -610,16 +615,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; cycling headings: tab
 ;; headings: M-ret
 (use-package evil-org
+  :disabled
   :straight (:includes evil-org-agenda)
   :diminish evil-org-mode
   :after evil org
+  :general ('normal org-mode-map "x" 'evil-delete-char)
   :hook (org-mode . evil-org-mode))
 
 ;; included in evil-org
 ;; load it when using agenda
 (use-package evil-org-agenda
-  :requires evil-org
-  :config
+  :straight nil
+  :after evil-org
+  :init
   (evil-org-agenda-set-keys))
 
 (use-package evil-surround
@@ -1349,7 +1357,6 @@ graphics."
 (use-package highlight-current-window
   :after custom-theme                   ; only when my theme is used 
   :when (display-graphic-p)
-  :diminish (buffer-face-mode)
   :straight nil
   :init
   (defun highlight-selected-window ()
@@ -1360,8 +1367,13 @@ graphics."
                         (buffer-face-set '(:background "gray94"))))))
     (buffer-face-set 'default))
 
-  (add-hook 'buffer-list-update-hook 'highlight-selected-window)
-  (diminish 'buffer-face-mode))
+  (add-hook 'buffer-list-update-hook 'highlight-selected-window))
+
+;; this mode is used to highlight current window
+(use-package face-remap
+  :after custom-theme
+  :straight nil
+  :diminish (buffer-face-mode))
 
 ;; syntax highlight in html export of org-mode source blocks
 ;; does not work well with modus-themes and tree-sitter
