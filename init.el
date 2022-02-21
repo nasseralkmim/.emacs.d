@@ -282,14 +282,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                 vertico-unobtrusive
                                 vertico-grid
                                 vertico-multiform)
-                     :files (:defaults "extensions/vertico-buffer.el"
-                                       "extensions/vertico-directory.el"
-                                       "extensions/vertico-flat.el"
-                                       "extensions/vertico-grid.el"
-                                       "extensions/vertico-reverse.el"
-                                       "extensions/vertico-repeat.el"
-                                       "extensions/vertico-unobtrusive.el"
-                                       "extensions/vertico-multiform.el"))
+                     :files (:defaults "extensions/*"))
   :general
   ('insert vertico-map "C-k" 'vertico-exit-input)
   :init
@@ -1356,6 +1349,7 @@ graphics."
 (use-package highlight-current-window
   :after custom-theme                   ; only when my theme is used 
   :when (display-graphic-p)
+  :diminish (buffer-face-mode)
   :straight nil
   :init
   (defun highlight-selected-window ()
@@ -2057,5 +2051,4 @@ graphics."
   :straight (burly :type git :host github :repo "alphapapa/burly.el"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-
 

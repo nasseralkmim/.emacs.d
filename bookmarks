@@ -16,10 +16,10 @@
  (rear-context-string)
  (position . 1))
 ("posts"
- (filename . "~/OneDrive/nasser-website/content/notes/")
- (front-context-string . "/home/nasser/One")
- (rear-context-string)
- (position . 3))
+ (filename . "~/Documents/nasser-website/content/notes/")
+ (front-context-string . ".git\n  drwxr-xr-")
+ (rear-context-string . "022-02-19 17:23 ")
+ (position . 101))
 ("log"
  (filename . "~/SeaDrive/My Libraries/PhD/log.org")
  (front-context-string . "* 2021\n** Goals\n")
