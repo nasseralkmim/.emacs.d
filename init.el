@@ -361,7 +361,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :if (eq system-type 'gnu/linux)
   :general
   (minibuffer-local-map "M-A" 'marginalia-cycle)
-  :init (marginalia-mode))
+  :init
+  (marginalia-mode))
 
 ;; enhances multiple commands based on completion
 ;; practical navigation and search commands 
@@ -553,6 +554,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq
    lazy-highlight-cleanup nil
    lazy-highlight-max-at-a-time nil
+   evil-kill-on-visual-paste nil        ; don't add replaced test onto kill ring
    lazy-highlight-initial-delay 0)
   (evil-set-undo-system 'undo-redo)	; use native redo function
   
@@ -1788,7 +1790,8 @@ graphics."
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :config
-  (setq highlight-indent-guides-method 'character))
+  (setq highlight-indent-guides-method 'character
+        highlight-indent-guides-responsive 'stack))
 
 ;; suppress error on tui
 (use-package highlight-indent-guides
@@ -2059,6 +2062,11 @@ graphics."
 ;; save windows configurations and use regular bookmarks file
 (use-package burly
   :straight (burly :type git :host github :repo "alphapapa/burly.el"))
+
+;; view large files
+(use-package vlf
+  :defer 1)
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
