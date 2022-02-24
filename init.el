@@ -1790,8 +1790,7 @@ graphics."
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :config
-  (setq highlight-indent-guides-method 'character
-        highlight-indent-guides-responsive 'stack))
+  (setq highlight-indent-guides-method 'character))
 
 ;; suppress error on tui
 (use-package highlight-indent-guides
