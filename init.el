@@ -108,7 +108,7 @@
       (setq visible-cursor nil)))
   
   (setq-default
-   completion-cycle-threshold 3	    ; TAB cycle if there are only few candidates
+   completion-cycle-threshold nil    ; show all candidates
    completions-detailed t	    ; add details in completions as prefix/sufix
    idle-update-delay 1.1  ; Slow down the UI being updated to improve performance
    enable-recursive-minibuffers t	; Enable recursive minibuffers
@@ -1021,6 +1021,17 @@ graphics."
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
+
+(use-package corfu-doc
+  :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
+  :after corfu
+  :custom
+  (corfu-doc-delay 0.5)
+  (corfu-doc-max-width 70)
+  (corfu-doc-max-height 20)
+  (corfu-echo-documentation nil)
+  :config
+  (corfu-doc-mode))
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
