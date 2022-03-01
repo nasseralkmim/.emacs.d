@@ -1880,7 +1880,9 @@ graphics."
 
 ;; use emacs to edit text within chrome
 (use-package atomic-chrome
-  :commands atomic-chrome-start-server)
+  :commands atomic-chrome-start-server
+  :config
+  (setq atomic-chrome-default-major-mode 'LaTeX-mode))
 
 ;; easily change windows
 (use-package ace-window
@@ -1955,7 +1957,14 @@ graphics."
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
            "h" 'eldoc
-           "r" 'eglot-rename))
+           "r" 'eglot-rename)
+  :config
+  ;; show flymake over eldoc
+  ;; https://github.com/joaotavora/eglot/issues/8
+  (advice-add 'eglot-eldoc-function :around
+              (lambda (oldfun)
+                (let ((help (help-at-pt-kbd-string)))
+                  (if help (message "%s" help) (funcall oldfun))))))
 
 ;; add ltex language server to eglot
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
@@ -2077,6 +2086,18 @@ graphics."
 (use-package vlf
   :defer 1)
 
+;; use hideshow package together
+(use-package bicycle
+  :after outline
+  :general
+  ('normal outline-mode-map "<tab>" 'bicycle-cycle)
+  ('normal outline-mode-map "z-<tab>" 'bicycle-cycle-global))
+
+(use-package hideshow
+  :diminish hs-minor-mode
+  :hook
+  (prog-mode . hs-minor-mode)
+  (LaTeX-mode . hs-minor-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
