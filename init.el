@@ -493,10 +493,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('visual "R" 'evil-multiedit-match-all)
   ("M-d" 'evil-multiedit-match-and-next)
   ("M-C-d" 'evil-multiedit-match-and-prev)
-  (evil-multiedit-state-map "<tab>" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
+  (evil-multiedit-state-map "<RET>" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
   (evil-multiedit-state-map "C-j" 'evil-multiedit-next) 
   (evil-multiedit-state-map "C-k" 'evil-multiedit-prev)
-  (evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
+  ('normal evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
   ('visual "C-S-d" 'evil-multiedit-restore)
   :config
   (setq evil-multiedit-follow-matches t)
@@ -1085,7 +1085,7 @@ graphics."
   ('normal outline-mode-map "z o" 'outline-show-children)
   ('normal outline-mode-map "z h" 'outline-hide-sublevels)
   ('normal outline-mode-map "z a" 'outline-show-all)
-  ('normal outline-mode-map "<tab>" 'outline-cycle)
+  ;; ('normal outline-mode-map "S-<tab>" 'outline-cycle)
   :config
   ;; need to rebind after loading outline
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
@@ -2085,19 +2085,6 @@ graphics."
 ;; view large files
 (use-package vlf
   :defer 1)
-
-;; use hideshow package together
-(use-package bicycle
-  :after outline
-  :general
-  ('normal outline-mode-map "<tab>" 'bicycle-cycle)
-  ('normal outline-mode-map "z-<tab>" 'bicycle-cycle-global))
-
-(use-package hideshow
-  :diminish hs-minor-mode
-  :hook
-  (prog-mode . hs-minor-mode)
-  (LaTeX-mode . hs-minor-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
