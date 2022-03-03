@@ -612,22 +612,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-collection-init))
 
 ;; navigation: gh, gj, gk, gl
-;; cycling headings: tab
+;; promoting/demoting headings: M-hjkl
 ;; headings: M-ret
 (use-package evil-org
-  :disabled
   :straight (:includes evil-org-agenda)
   :diminish evil-org-mode
   :after evil org
   :general ('normal org-mode-map "x" 'evil-delete-char)
-  :hook (org-mode . evil-org-mode))
-
-;; included in evil-org
-;; load it when using agenda
-(use-package evil-org-agenda
-  :straight nil
-  :after evil-org
-  :init
+  :hook (org-mode . evil-org-mode)
+  :config
+  (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
 
 (use-package evil-surround
