@@ -1003,7 +1003,6 @@ graphics."
 	     "<backtab>" 'corfu-previous
 	     "C-n" 'corfu-next
 	     "C-p" 'corfu-previous)
-  ('normal corfu-map "<escape>" 'corfu-quit)
   ('insert "C-n" nil
 	   "C-p" nil)
   :config
