@@ -128,7 +128,7 @@
    indent-tabs-mode nil	     ; don't insert tab when indent
    ;; this is giving me problems when creating new lines in org-mode source blocks
    tab-always-indent 'complete ; tab indents first, then tries to complete
-   help-window-select t	    ; focus on help window when openend
+   help-window-select t	    ; focus on help window when openend, then quit with `q'
    window-combination-resize t) ; resize windows proportionaly
 
   (setq yank-pop-change-selection t)    ;change selection when using yank pop
@@ -1703,7 +1703,7 @@ graphics."
 
 (use-package terminal-here
   :general
-  ('normal "<f7>" 'terminal-here-launch)
+  ('normal "C-<f7>" 'terminal-here-launch)
   :config
   ;; change terminal command
   (when (string= system-name "ryzen-ms7c37")
@@ -2078,6 +2078,34 @@ graphics."
 ;; view large files
 (use-package vlf
   :defer 1)
+
+;; requires dtach `yay dtach'
+;; run shell commands detached from emacs
+(use-package dtache
+  :straight (dtache :type git :host gitlab :repo "niklaseklund/dtache"
+                    :includes (dtache-consult dtache-org) )
+  :general
+  ('normal "<f7>" 'dtache-open-session)
+  :hook (after-init . dtache-setup)
+  :config
+  (setq dtache-max-command-length 150)
+  ;; add embar actions for 'dtache-open-session'
+  (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
+  (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map)))
+
+;; add `:dtache t' option to sh source block
+(use-package dtache-org
+  :after (dtache org)
+  :init
+  (dtache-org-setup))
+
+;; does not have embark actions
+;; has cool narrowing, but embark enhances workflow better
+(use-package dtache-consult
+  :disabled
+  :after dtache
+  :general
+  ([remap dtache-open-session] 'dtache-consult-session))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
