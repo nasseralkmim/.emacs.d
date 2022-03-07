@@ -708,7 +708,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-hide-leading-stars t)           ; don't show a  bunch of '*'
    (org-edit-src-content-indentation 0)
    (org-outline-path-complete-in-steps nil)
-   (org-startup-with-inline-images t)
    (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
    (org-cycle-separator-lines 0)  ; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
@@ -779,11 +778,20 @@ graphics."
     (org-redisplay-inline-images))
 )
 
-(use-package ox-extra
+
+;; only allows startup image when in the workstation
+(use-package org-inline-image-config
+  :straight nil
   :after org
-  :demand
-  :config
-  (ox-extras-activate '(ignore-headlines)))
+  :init
+  (if (string= system-name "ryzen-ms7c37")
+   (setq org-startup-with-inline-images t)))
+
+(use-package ox-extra
+    :after org
+    :demand
+    :config
+    (ox-extras-activate '(ignore-headlines)))
 
 (use-package ox-html
   :after org
