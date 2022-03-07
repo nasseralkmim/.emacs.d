@@ -334,9 +334,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         '((consult-outline unobtrusive)
           (consult-line unobtrusive)
           (consult-buffer unobtrusive)
-          (t buffer
-             (vertico-buffer-display-action . (display-buffer-at-bottom
-                                               (window-height . 10)))))))
+          ;; (t buffer
+          ;;    (vertico-buffer-display-action . (display-buffer-at-bottom
+          ;;                                      (window-height . 10))))
+          )))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
@@ -778,15 +779,6 @@ graphics."
     (org-redisplay-inline-images))
 )
 
-
-;; only allows startup image when in the workstation
-(use-package org-inline-image-config
-  :straight nil
-  :after org
-  :init
-  (if (string= system-name "ryzen-ms7c37")
-   (setq org-startup-with-inline-images t)))
-
 (use-package ox-extra
     :after org
     :demand
@@ -899,7 +891,7 @@ graphics."
   :init
   ;; change scale of latex preview in org-mode
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
-	org-startup-with-latex-preview t
+	;; org-startup-with-latex-preview t
         org-latex-image-default-width nil ; don't scale my images!
         org-latex-images-centered nil     ; sometimes I want side-by-side images
         org-preview-latex-image-directory "~/.cache/ltximg/")
@@ -2054,7 +2046,9 @@ graphics."
                                 ("\\.xopp\\'" "xournalpp" (file)))))
 
 ;; convert pdf to svg to display inline org image
+;; only when in the workstation, otherwise too slow
 (use-package org-inline-pdf
+  :when (string= system-name "ryzen-ms7c37")
   :hook (org-mode . org-inline-pdf-mode))
 
 (use-package doom-themes
