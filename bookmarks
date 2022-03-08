@@ -44,10 +44,10 @@
  (rear-context-string)
  (position . 1))
 ("remote"
- (filename . "/ssh:138.232.83.174:/home/nasser/")
- (front-context-string . "/ssh:138.232.83.")
+ (filename . "/ssh:138.232.83.174:~/SeaDrive/My Libraries/simulations/")
+ (front-context-string . "  /ssh:138.232.8")
  (rear-context-string)
- (position . 3))
+ (position . 1))
 ("init"
  (filename . "~/.emacs.d/init.el")
  (front-context-string . "(defvar my-start")
