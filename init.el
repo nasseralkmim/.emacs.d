@@ -2090,7 +2090,6 @@ graphics."
   ('normal "<f7>" 'dtache-open-session)
   :hook (after-init . dtache-setup)
   :config
-  (setq dtache-max-command-length 150)
   ;; add embar actions for 'dtache-open-session'
   (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
   (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map)))
