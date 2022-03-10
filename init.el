@@ -495,7 +495,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('visual "R" 'evil-multiedit-match-all)
   ("M-d" 'evil-multiedit-match-and-next)
   ("M-C-d" 'evil-multiedit-match-and-prev)
-  (evil-multiedit-state-map "<RET>" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
+  ('(normal visual) evil-multiedit-state-map "<RET>" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
   (evil-multiedit-state-map "C-j" 'evil-multiedit-next) 
   (evil-multiedit-state-map "C-k" 'evil-multiedit-prev)
   ('normal evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
@@ -530,6 +530,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (push '(evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
         evil-mc-known-commands)
   (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
+        evil-mc-known-commands)
+  (push '(sp-forward-sexp . ((:default . evil-mc-execute-default-call)))
         evil-mc-known-commands))
 
 (use-package evil
@@ -2089,6 +2091,7 @@ graphics."
                     :includes (dtache-consult dtache-org) )
   :general
   ('normal "<f7>" 'dtache-open-session)
+  ('normal dired-mode-map "&" 'dtache-shell-command)
   :hook (after-init . dtache-setup)
   :config
   ;; add embar actions for 'dtache-open-session'
