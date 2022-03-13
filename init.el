@@ -1015,6 +1015,7 @@ graphics."
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-tex)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
 
@@ -1504,6 +1505,14 @@ graphics."
   :after python
   :commands python-black-buffer)
 
+(use-package numpydoc
+  :after python
+  :custom
+  (numpydoc-insert-examples-block nil)
+  (numpydoc-template-long nil)
+  :general
+  (python-mode-map "C-c C-n" 'numpydoc-generate))
+
 (use-package goto-last-change
   :general ('normal "g b" 'goto-last-change))
 
@@ -1836,6 +1845,7 @@ graphics."
 
 ;; better code highlight and fold
 (use-package tree-sitter
+  :disabled
   :diminish tree-sitter-mode
   :hook
   (python-mode . tree-sitter-mode)
@@ -1843,11 +1853,13 @@ graphics."
 
 ;; langage bundle for `tree-sitter`
 (use-package tree-sitter-langs
+  :disabled
   :demand                               ; require it after loading tree-sitter
   :after tree-sitter)
 
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter
+  :disabled
   :straight (evil-textobj-tree-sitter :type git
                       :host github
                       :repo "meain/evil-textobj-tree-sitter"
