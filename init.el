@@ -475,7 +475,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package smartparens-config
   :demand
-  :after smartparens)
+  :after smartparens
+  :config
+  (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
 ;; experimenting with built in flymake
 (use-package flycheck
@@ -514,14 +516,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ;; autoload keymap, `g s` will trigger the loading of `evil-mc` library
   ;; change prefix for `cursors-map`
-  ('(normal visual) "g s" '(:keymap evil-mc-cursors-map))
-  ('(normal visual) evil-mc-key-map "g s a" 'evil-mc-make-cursor-in-visual-selection-beg)
+  ;; ('(normal visual) "g s" '(:keymap evil-mc-cursors-map))
+  ;; ('(normal visual) evil-mc-key-map "g s a" 'evil-mc-make-cursor-in-visual-selection-beg)
   ;; evil-mc-cursors-map is accessed with evil-mc-cursors-map
-  (evil-mc-cursors-map
-    "n" 'evil-mc-make-and-goto-next-match
-    "p" 'evil-mc-make-and-goto-prev-match
-    "N" 'evil-mc-skip-and-goto-next-match
-    "P" 'evil-mc-skip-and-goto-prev-match)
+  ;; (evil-mc-cursors-map
+  ;;   "n" 'evil-mc-make-and-goto-next-match
+  ;;   "p" 'evil-mc-make-and-goto-prev-match
+  ;;   "N" 'evil-mc-skip-and-goto-next-match
+  ;;   "P" 'evil-mc-skip-and-goto-prev-match)
   :config
   (global-evil-mc-mode 1)
   ;; extra commands for multiple cursts
