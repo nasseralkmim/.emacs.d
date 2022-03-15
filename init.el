@@ -2126,5 +2126,13 @@ graphics."
   :general
   ([remap dtache-open-session] 'dtache-consult-session))
 
+
+;; helps with windows popups
+(use-package popper
+  :defer 1
+  :init
+  (popper-mode))
+
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
