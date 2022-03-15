@@ -514,16 +514,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after evil
   :diminish evil-mc-mode
   :general
-  ;; autoload keymap, `g s` will trigger the loading of `evil-mc` library
-  ;; change prefix for `cursors-map`
-  ;; ('(normal visual) "g s" '(:keymap evil-mc-cursors-map))
-  ;; ('(normal visual) evil-mc-key-map "g s a" 'evil-mc-make-cursor-in-visual-selection-beg)
-  ;; evil-mc-cursors-map is accessed with evil-mc-cursors-map
-  ;; (evil-mc-cursors-map
-  ;;   "n" 'evil-mc-make-and-goto-next-match
-  ;;   "p" 'evil-mc-make-and-goto-prev-match
-  ;;   "N" 'evil-mc-skip-and-goto-next-match
-  ;;   "P" 'evil-mc-skip-and-goto-prev-match)
+  ;; autoload keymap, will trigger the loading of `evil-mc` library
+  ;; use prefix for `cursors-map` from evil collection
+  ('(normal visual) "g ." '(:keymap evil-mc-cursors-map))
   :config
   (global-evil-mc-mode 1)
   ;; extra commands for multiple cursts
@@ -2136,7 +2129,8 @@ graphics."
   ;; treat those as popups
   (setq popper-reference-buffers
       '("\\*Messages\\*"
-        "Output\\*$"
+        ("Output\\*$" . hide)           ;auto hide the buffer
+        ("output\\*$" . hide)           ;for preview latex error
         help-mode
         compilation-mode))
   (popper-mode +1))
