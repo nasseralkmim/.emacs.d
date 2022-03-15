@@ -2130,8 +2130,16 @@ graphics."
 ;; helps with windows popups
 (use-package popper
   :defer 1
+  :general
+  ("C-`" 'popper-toggle-latest)
   :init
-  (popper-mode))
+  ;; treat those as popups
+  (setq popper-reference-buffers
+      '("\\*Messages\\*"
+        "Output\\*$"
+        help-mode
+        compilation-mode))
+  (popper-mode +1))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
