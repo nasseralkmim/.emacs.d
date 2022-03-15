@@ -555,7 +555,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    lazy-highlight-max-at-a-time nil
    evil-kill-on-visual-paste nil        ; don't add replaced test onto kill ring
    lazy-highlight-initial-delay 0)
+
   (evil-set-undo-system 'undo-redo)	; use native redo function
+
+  (add-to-list 'evil-insert-state-modes 'log-edit-mode)
   
   ;; fix tab behavior in org-mode source block
   (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
