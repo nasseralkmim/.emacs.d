@@ -335,10 +335,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         '((consult-outline unobtrusive)
           (consult-line unobtrusive)
           (consult-buffer unobtrusive)
-          ;; (t buffer
-          ;;    (vertico-buffer-display-action . (display-buffer-at-bottom
-          ;;                                      (window-height . 10))))
-          )))
+          (dtache-open-session buffer
+             (vertico-buffer-display-action . (display-buffer-at-bottom
+                                               (window-height . 13))))))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
@@ -1843,7 +1842,6 @@ graphics."
 
 ;; better code highlight and fold
 (use-package tree-sitter
-  :disabled
   :diminish tree-sitter-mode
   :hook
   (python-mode . tree-sitter-mode)
@@ -1851,7 +1849,6 @@ graphics."
 
 ;; langage bundle for `tree-sitter`
 (use-package tree-sitter-langs
-  :disabled
   :demand                               ; require it after loading tree-sitter
   :after tree-sitter)
 
@@ -2127,13 +2124,14 @@ graphics."
 (use-package popper
   :defer 1
   :general
-  ("C-`" 'popper-toggle-latest)
+  (popper-mode-map "C-`" 'popper-toggle-latest)
   :init
   ;; treat those as popups
   (setq popper-reference-buffers
       '("\\*Messages\\*"
-        ("Output\\*$" . hide)           ;auto hide the buffer
-        ("output\\*$" . hide)           ;for preview latex error
+        "Output\\*$" 
+        "output\\*$"           ;for preview latex error
+        ".log$"              ;for dtache log
         help-mode
         compilation-mode))
   (popper-mode +1))
