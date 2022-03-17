@@ -1377,11 +1377,12 @@ graphics."
 
 ;; dimm other buffers
 (use-package dimmer
-  :defer 1
-  :config
-  (setq dimmer-fraction 0.4)
-  (dimmer-configure-posframe)           ;avoid dimming posframe
-  (dimmer-mode t))
+:defer 1
+:config
+(setq dimmer-fraction 0.4)
+(add-to-list
+ 'dimmer-exclusion-regexp-list "^ \\*.*posframe.*buffer.*\\*$")
+(dimmer-mode t))
 
 ;; this mode is used to highlight current window
 (use-package face-remap
