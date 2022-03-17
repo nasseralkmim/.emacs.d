@@ -1360,6 +1360,7 @@ graphics."
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
 (use-package highlight-current-window
+  :disabled
   :after custom-theme                   ; only when my theme is used 
   :when (display-graphic-p)
   :straight nil
@@ -1373,6 +1374,14 @@ graphics."
     (buffer-face-set 'default))
 
   (add-hook 'buffer-list-update-hook 'highlight-selected-window))
+
+;; dimm other buffers
+(use-package dimmer
+  :defer 1
+  :config
+  (setq dimmer-fraction 0.4)
+  (dimmer-configure-posframe)           ;avoid dimming posframe
+  (dimmer-mode t))
 
 ;; this mode is used to highlight current window
 (use-package face-remap
