@@ -337,7 +337,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (consult-buffer unobtrusive)
           (dtache-open-session buffer
              (vertico-buffer-display-action . (display-buffer-at-bottom
-                                               (window-height . 13))))))))
+                                               (window-height . 13)))))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
@@ -1377,12 +1377,14 @@ graphics."
 
 ;; dimm other buffers
 (use-package dimmer
-:defer 1
-:config
-(setq dimmer-fraction 0.4)
-(add-to-list
- 'dimmer-exclusion-regexp-list "^ \\*.*posframe.*buffer.*\\*$")
-(dimmer-mode t))
+  :defer 1
+  :config
+  (setq dimmer-fraction 0.4)
+  (dimmer-configure-magit)
+  (dimmer-configure-posframe)
+  (add-to-list
+   'dimmer-exclusion-regexp-list "^ \\*.*posframe.*buffer.*\\*$")
+  (dimmer-mode t))
 
 ;; this mode is used to highlight current window
 (use-package face-remap
