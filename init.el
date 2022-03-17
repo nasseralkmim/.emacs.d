@@ -1360,7 +1360,6 @@ graphics."
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
 (use-package highlight-current-window
-  :disabled
   :after custom-theme                   ; only when my theme is used 
   :when (display-graphic-p)
   :straight nil
@@ -1377,13 +1376,14 @@ graphics."
 
 ;; dimm other buffers
 (use-package dimmer
+  :disabled                             ;does not work well with child frames
   :defer 1
   :config
-  (setq dimmer-fraction 0.4)
+  (setq dimmer-fraction 0.8)
   (dimmer-configure-magit)
   (dimmer-configure-posframe)
   (add-to-list
-   'dimmer-exclusion-regexp-list "^ \\*.*posframe.*buffer.*\\*$")
+   'dimmer-exclusion-regexp-list "*corfu*")
   (dimmer-mode t))
 
 ;; this mode is used to highlight current window
