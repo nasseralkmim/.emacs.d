@@ -776,8 +776,14 @@ graphics."
     "Redisplay images after execute subtree"
     (interactive)
     (org-babel-execute-subtree)
-    (org-redisplay-inline-images))
-)
+    (org-redisplay-inline-images)))
+
+;; org export
+(use-package ox
+  :straight nil
+  :after org
+  :init
+  (setq org-export-in-background t))
 
 (use-package ox-extra
     :after org
