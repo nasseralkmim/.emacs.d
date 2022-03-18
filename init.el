@@ -485,6 +485,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . flycheck-mode))
 
 (use-package flymake
+  :general
+  (flymake-mode-map "M-n" 'flymake-goto-next-error)
+  (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
   (setq python-flymake-command '("flake8" "-")
@@ -1978,14 +1981,7 @@ graphics."
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
            "h" 'eldoc
-           "r" 'eglot-rename)
-  :config
-  ;; show flymake over eldoc
-  ;; https://github.com/joaotavora/eglot/issues/8
-  (advice-add 'eglot-eldoc-function :around
-              (lambda (oldfun)
-                (let ((help (help-at-pt-kbd-string)))
-                  (if help (message "%s" help) (funcall oldfun))))))
+           "r" 'eglot-rename))
 
 ;; add ltex language server to eglot
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
