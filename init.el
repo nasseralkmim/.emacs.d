@@ -168,6 +168,13 @@
   (org-drawer ((t (:inherit 'org-meta-line))))
   (org-macro ((t (:inherit 'org-meta-line))))
   (org-verbatim ((t (:box t))))
+  ;; rainbow delimiter from modus operandi
+  (rainbow-delimiters-depth-1-face ((t (:foreground "#000000"))))
+  (rainbow-delimiters-depth-2-face ((t (:foreground "#a8007f"))))
+  (rainbow-delimiters-depth-3-face ((t (:foreground "#005f88"))))
+  (rainbow-delimiters-depth-4-face ((t (:foreground "#904200"))))
+  (rainbow-delimiters-depth-5-face ((t (:foreground "#7f10d0"))))
+  (rainbow-delimiters-depth-6-face ((t (:foreground "#006800"))))
   :init
   (provide 'custom-theme))
 
@@ -2150,6 +2157,8 @@ graphics."
         compilation-mode))
   (popper-mode +1))
 
+(use-package rainbow-delimiters
+  :hook (smartparens-mode . rainbow-delimiters-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
