@@ -536,6 +536,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
         evil-mc-known-commands)
   (push '(sp-forward-sexp . ((:default . evil-mc-execute-default-call)))
+        evil-mc-known-commands)
+  (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region)))
         evil-mc-known-commands))
 
 (use-package evil
@@ -558,6 +560,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "k" 'evil-previous-visual-line)
   ('normal "z q" 'evil-scroll-line-to-top)
   ('normal "C-c r" nil)
+  ('normal "C-S-o" 'evil-jump-forward)
   :config
   (setq
    lazy-highlight-cleanup nil
