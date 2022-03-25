@@ -1625,15 +1625,27 @@ graphics."
   (consult-bibtex-embark-action consult-bibtex-open-pdf-annotation bibtex-completion-open-pdf-annotation)
   (define-key consult-bibtex-embark-map "n" #'consult-bibtex-open-pdf-annotation))
 
+;; option to open with evince for printing
+(use-package consult-bibtex-evince
+  :straight nil
+  :after consult-bibtex
+  :init
+  (defun bibtex-completion-open-pdf-evince (keys &optional fallback-action)
+    (let ((bibtex-completion-pdf-open-function
+           (lambda (fpath) (call-process "evince" nil 0 nil fpath))))
+      (bibtex-completion-open-pdf keys fallback-action)))
+  (consult-bibtex-embark-action consult-bibtex-open-pdf-evince bibtex-completion-open-pdf-evince)
+  (define-key consult-bibtex-embark-map "p" #'consult-bibtex-open-pdf-evince))
+
 (use-package citar
-  :general
   :disabled
+  :general
   ("C-c b" 'citar-insert-citation)
   :custom
   (citar-bibliography '("~/.bibliography.bib"))
   :config
   (setq citar-library-paths '("~/SeaDrive/My Libraries/bibliography/"))
-  ;; symbols
+  ;; icons
   (setq citar-symbols
         `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
           (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
@@ -1845,6 +1857,8 @@ graphics."
 ;; emacs built in version control
 (use-package vc-git
   :straight (:type built-in)
+  :general
+  ("C-x v p" 'vc-push)
   :hook
   (diff-mode . outline-minor-mode)
   (vc-git-region-history-mode . outline-minor-mode))
