@@ -183,9 +183,9 @@
   :init
   ;; victor mono: thin, condensed, italics is informal
   ;; fira code: ligatures
-  (set-face-attribute 'default nil :family "Victor Mono")
-  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
-  (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
+  (set-face-attribute 'default nil :family "Victor Mono" :font (font-spec :antialias nil))
+  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias nil))
+  (set-face-attribute 'fixed-pitch nil :family "Victor Mono" :font (font-spec :antialias nil))
   :custom-face 
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
