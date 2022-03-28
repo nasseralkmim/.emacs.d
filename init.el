@@ -1128,6 +1128,7 @@ graphics."
                   (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
                   (yas-minor-mode)
+                  (eldoc-mode -1)       ; turn eldoc mode off
                   (turn-off-auto-fill)))
   :config
   ;; basics configs
