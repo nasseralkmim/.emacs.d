@@ -2163,6 +2163,7 @@ graphics."
   :defer 1
   :general
   (popper-mode-map "C-`" 'popper-toggle-latest)
+  (popper-mode-map "C-M-`" 'popper-cycle)
   :init
   ;; treat those as popups
   (setq popper-reference-buffers
@@ -2171,8 +2172,10 @@ graphics."
         "output\\*$"           ;for preview latex error
         ".log$"              ;for dtache log
         help-mode
+        "\\*Python\\*"
         compilation-mode))
-  (popper-mode +1))
+  (popper-mode +1)
+  (popper-echo-mode +1))
 
 (use-package rainbow-delimiters
   :hook (smartparens-mode . rainbow-delimiters-mode))
