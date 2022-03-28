@@ -112,7 +112,6 @@
    completions-detailed t	    ; add details in completions as prefix/sufix
    idle-update-delay 1.1  ; Slow down the UI being updated to improve performance
    enable-recursive-minibuffers t	; Enable recursive minibuffers
-   resize-mini-windows nil		; Avoid grow and shrink minibuffer
    visible-bell t			; Don't beep at me
    kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
 
