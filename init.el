@@ -1128,7 +1128,6 @@ graphics."
                   (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
                   (yas-minor-mode)
-                  (eldoc-mode -1)       ; turn eldoc mode off
                   (turn-off-auto-fill)))
   :config
   ;; basics configs
@@ -2019,7 +2018,12 @@ graphics."
   (defun start-language-server ()
     (interactive)
     (require 'eglot-ltex)
-    (call-interactively #'eglot)))
+    (call-interactively #'eglot))
+  :hook
+  ;; when in latex don't use multiline minibuffer
+  ;; avoid sily documentation in the minibuffer
+  (eglot-managed-mode . (lambda ()
+                          (setq eldoc-echo-area-use-multiline-p nil))))
 
 ;; use language tool with flymake
 ;; download latest version https://languagetool.org/download/
