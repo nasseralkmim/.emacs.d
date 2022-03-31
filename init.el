@@ -1,4 +1,4 @@
-(defvar my-start-time (current-time)
+ (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
@@ -491,7 +491,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . flycheck-mode))
 
 (use-package flymake
-  :hook (LaTeX-mode . flymake-mode)
   :general
   ('normal flymake-mode-map "M-n" 'flymake-goto-next-error) 
   ('normal flymake-mode-map "M-N" 'flymake-goto-prev-error)
@@ -977,7 +976,7 @@ graphics."
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
   :hook
-  ;; (LaTeX-mode . flyspell-mode)
+  (LaTeX-mode . flyspell-mode)
   (org-mode . flyspell-mode)
   (prorg-mode . flyspell-prog-mode)
   :config
@@ -1141,7 +1140,7 @@ graphics."
         TeX-master nil) ;make auctex aware of multi-file documents
 
   ;; start latex buffer folded
-  (add-hook 'find-file-hook 'TeX-fold-buffer t)
+  ;; (add-hook 'find-file-hook 'TeX-fold-buffer t)
   
   ;; specific config
   (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
@@ -2004,6 +2003,7 @@ graphics."
   :hook
   (python-mode . eglot-ensure) ; works if there is only one server available
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
+  (c++-mode . eglot-ensure) ; works if there is only one server available
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
@@ -2035,6 +2035,7 @@ graphics."
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
 (use-package flymake-languagetool
+  :disabled                             ;too slow
   :hook
   (LaTeX-mode . flymake-languagetool-load)
   :init
@@ -2192,6 +2193,11 @@ graphics."
 
 (use-package rainbow-delimiters
   :hook (smartparens-mode . rainbow-delimiters-mode))
+
+;; alternative to flyspell
+(use-package spell-fu
+  :disabled
+  :hook (LaTeX-mode . spell-fu-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
