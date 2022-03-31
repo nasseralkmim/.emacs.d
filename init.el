@@ -491,9 +491,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (python-mode . flycheck-mode))
 
 (use-package flymake
+  :hook (LaTeX-mode . flymake-mode)
   :general
-  (flymake-mode-map "M-n" 'flymake-goto-next-error)
-  (flymake-mode-map "M-N" 'flymake-goto-prev-error)
+  ('normal flymake-mode-map "M-n" 'flymake-goto-next-error) 
+  ('normal flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
   (setq python-flymake-command '("flake8" "-")
@@ -976,7 +977,7 @@ graphics."
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
   :hook
-  (LaTeX-mode . flyspell-mode)
+  ;; (LaTeX-mode . flyspell-mode)
   (org-mode . flyspell-mode)
   (prorg-mode . flyspell-prog-mode)
   :config
@@ -1242,7 +1243,10 @@ graphics."
    '(("^%\\(chapter\\|\\(sub\\|subsub\\)?section\\|paragraph\\)" 0 'font-lock-keyword-face t)
      ("^%paragraph{\\(.*\\)}"     1 'font-latex-sectioning-5-face t))))
 
+;; text objects for latex editing
+;; math, commands, delimiters are usefull
 (use-package evil-tex
+  :general (evil-tex-mode-map "M-n" nil) ; using with flymake
   :after latex
   :hook (LaTeX-mode . evil-tex-mode))
 
@@ -1999,7 +2003,7 @@ graphics."
 (use-package eglot
   :hook
   (python-mode . eglot-ensure) ; works if there is only one server available
-  (LaTeX-mode . eglot-ensure) ; works if there is only one server available
+  ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
@@ -2010,6 +2014,7 @@ graphics."
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
 ;; need java (open JDK 11 development kit)
 (use-package eglot-ltex
+  :disabled ;using flymake with language tool
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-language-server
@@ -2030,13 +2035,17 @@ graphics."
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
 (use-package flymake-languagetool
-  :hook (LaTeX-mode . flymake-languagetool-load)
+  :hook
+  (LaTeX-mode . flymake-languagetool-load)
   :init
-  ;; (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.6/languagetool-server.jar")
+  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.6/languagetool-server.jar")
+  ;; not working
   ;; Remote server config with LanguageTool's free API
-  (setq flymake-languagetool-url "https://api.languagetool.org")
-  (setq flymake-languagetool-server-port nil)
-  (setq flymake-languagetool-server-jar nil))
+  ;; (setq flymake-languagetool-url "https://api.languagetool.org")
+  ;; (setq flymake-languagetool-server-port nil)
+  ;; (setq flymake-languagetool-server-jar nil)
+  ;; activate spell checker as well (instead of flyspell)
+  (setq flymake-languagetool-check-spelling t))
 
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
