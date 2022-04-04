@@ -162,8 +162,8 @@
   (evil-snipe-first-match-face ((t (:inherit 'match))))
   ;; org
   (org-block ((t (:background "gray97"))))
-  (org-inline-src-block ((t (:background "gray97" :height 0.9))))
-  (org-meta-line ((t (:foreground "gray60" :height 0.9))))
+  (org-inline-src-block ((t (:background "gray97"))))
+  (org-meta-line ((t (:foreground "gray60"))))
   (org-drawer ((t (:inherit 'org-meta-line))))
   (org-macro ((t (:inherit 'org-meta-line))))
   (org-verbatim ((t (:box t))))
@@ -805,6 +805,11 @@ graphics."
   :config
   ;; don't scale svg images
   (setq org-html-head "<style> .org-svg {width: auto} </style>"))
+
+(use-package ob-C
+  :straight nil
+  :after org
+  :commands org-babel-execute:C++)
 
 ;; load ob-python only when executing python block
 (use-package ob-python
