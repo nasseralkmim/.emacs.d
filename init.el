@@ -484,13 +484,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
-;; experimenting with built in flymake
-(use-package flycheck
-  :disabled
-  :hook
-  (python-mode . flycheck-mode))
-
 (use-package flymake
+  :hook
+  (LaTeX-mode . flymake-mode)
   :general
   ('normal flymake-mode-map "M-n" 'flymake-goto-next-error) 
   ('normal flymake-mode-map "M-N" 'flymake-goto-prev-error)
@@ -1965,12 +1961,6 @@ graphics."
   :config
   (setq lsp-grammarly-audience "expert"))
 
-;; grammarly as a flychecker
-(use-package flycheck-grammarly
-  :disabled
-  :demand
-  :after flycheck)
-
 (use-package lsp-ltex
   :disabled
   :hook (LaTeX-mode . (lambda ()
@@ -2204,6 +2194,11 @@ graphics."
   :hook (org-mode . org-modern-mode)
   :custom
   (org-modern-star nil))
+
+(use-package flymake-grammarly
+  :hook (LaTeX-mode . flymake-grammarly-load)
+  :custom
+  (flymake-grammarly-check-time 1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
