@@ -2201,7 +2201,9 @@ graphics."
 
 ;; eye candy for org
 (use-package org-modern
-  :hook (org-mode . org-modern-mode))
+  :hook (org-mode . org-modern-mode)
+  :custom
+  (org-modern-star nil))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
