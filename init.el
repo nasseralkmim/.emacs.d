@@ -1,4 +1,4 @@
- (defvar my-start-time (current-time)
+(defvar my-start-time (current-time)
   "Time when Emacs was started")
 
 (setq straight-check-for-modifications '(check-on-save find-when-checking))
@@ -141,41 +141,10 @@
 
 ;; custom emacs theme
 (use-package custom-theme
-  :straight (emacs :type built-in)
+  :straight nil
   :when (display-graphic-p)
-  :custom-face 
-  ;; latex
-  (font-latex-sectioning-1-face ((t (:weight bold :slant oblique :box t))))
-  (font-latex-sectioning-2-face ((t (:weight bold :box t))))
-  (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
-  (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
-  (font-latex-sectioning-5-face ((t (:weight normal :slant oblique :underline t))))
-  (font-latex-string-face ((t (:foreground "saddle brown"))))
-  ;; general
-  (font-lock-comment-face ((t (:foreground "gray60" :slant italic))))
-  (region ((t (:background "gainsboro"))))
-  (iedit-occurrence ((t (:background "plum1"))))
-  (mode-line-active ((t (:background "pale turquoise" :box (:line-width -1 :style released-button)))))
-  (mode-line-inactive ((t (:background "gray80" :box (:line-width -1 :style released-button)))))
-  ;; evil
-  (evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
-  (evil-snipe-first-match-face ((t (:inherit 'match))))
-  ;; org
-  (org-block ((t (:background "gray97"))))
-  (org-inline-src-block ((t (:background "gray97"))))
-  (org-meta-line ((t (:foreground "gray60"))))
-  (org-drawer ((t (:inherit 'org-meta-line))))
-  (org-macro ((t (:inherit 'org-meta-line))))
-  (org-verbatim ((t (:box t))))
-  ;; rainbow delimiter from modus operandi
-  (rainbow-delimiters-depth-1-face ((t (:foreground "#000000"))))
-  (rainbow-delimiters-depth-2-face ((t (:foreground "#a8007f"))))
-  (rainbow-delimiters-depth-3-face ((t (:foreground "#005f88"))))
-  (rainbow-delimiters-depth-4-face ((t (:foreground "#904200"))))
-  (rainbow-delimiters-depth-5-face ((t (:foreground "#7f10d0"))))
-  (rainbow-delimiters-depth-6-face ((t (:foreground "#006800"))))
   :init
-  (provide 'custom-theme))
+  (load-theme 'custom t))
 
 ;; typeface
 (use-package custom-typefaces
@@ -1429,8 +1398,7 @@ graphics."
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
-(use-package highlight-current-window
-  :after custom-theme                   ; only when my theme is used 
+(use-package highlight-current-window 
   :when (display-graphic-p)
   :straight nil
   :init
@@ -1442,7 +1410,11 @@ graphics."
                         (buffer-face-set '(:background "gray94"))))))
     (buffer-face-set 'default))
 
-  (add-hook 'buffer-list-update-hook 'highlight-selected-window))
+  (add-hook 'buffer-list-update-hook 'highlight-selected-window)
+  (defun disable-window-highlight ()
+    "Disable window highlight"
+    (interactive)
+    (remove-hook 'buffer-list-update-hook 'highlight-selected-window)))
 
 ;; dimm other buffers
 (use-package dimmer
@@ -1458,7 +1430,6 @@ graphics."
 
 ;; this mode is used to highlight current window
 (use-package face-remap
-  :after custom-theme
   :straight nil
   :diminish (buffer-face-mode))
 
@@ -2255,3 +2226,24 @@ graphics."
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(all-the-icons-dired-dir-face ((t (:foreground "goldenrod"))))
+ '(evil-goggles-change-face ((t (:inherit diff-removed))))
+ '(evil-goggles-delete-face ((t (:inherit diff-removed))))
+ '(evil-goggles-paste-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
+ '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
+ '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
+ '(evil-goggles-yank-face ((t (:inherit diff-changed))))
+ '(outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
+ '(tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique)))))
