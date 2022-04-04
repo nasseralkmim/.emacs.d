@@ -778,7 +778,8 @@ graphics."
 (use-package ob-C
   :straight nil
   :after org
-  :commands org-babel-execute:C++)
+  :commands org-babel-execute:C++
+  :init (org-babel-do-load-languages 'org-babel-load-languages '((C . t))))
 
 ;; load ob-python only when executing python block
 (use-package ob-python
@@ -1411,10 +1412,12 @@ graphics."
     (buffer-face-set 'default))
 
   (add-hook 'buffer-list-update-hook 'highlight-selected-window)
-  (defun disable-window-highlight ()
+  (defun disable-window-highlight (theme &rest args)
     "Disable window highlight"
-    (interactive)
-    (remove-hook 'buffer-list-update-hook 'highlight-selected-window)))
+    (remove-hook 'buffer-list-update-hook 'highlight-selected-window))
+  ;; disable this when changing theme
+  ;; only use when default theme
+  (advice-add 'disable-theme :after #'disable-window-highlight))
 
 ;; dimm other buffers
 (use-package dimmer
