@@ -186,6 +186,7 @@
   (set-face-attribute 'default nil :family "Victor Mono" :font (font-spec :antialias nil))
   (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias nil))
   (set-face-attribute 'fixed-pitch nil :family "Victor Mono" :font (font-spec :antialias nil))
+  (set-face-attribute 'variable-pitch nil :family "Input Sans" :font (font-spec :antialias nil))
   :custom-face 
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
@@ -1102,6 +1103,53 @@ graphics."
   (setq outline-minor-mode-cycle t
 	outline-minor-mode-highlight 'append))  
 
+;; regex for outline in python
+;; aboid problems with docstring spaces
+(use-package outline-python
+  :disabled
+  :straight nil
+  :after outline
+  :init
+  (defun python-mode-outline-hook ()
+    (setq outline-level 'python-outline-level)
+    (setq outline-regexp
+          (rx (or
+               ;; Commented outline heading
+               (group
+                (* space)	 ; 0 or more spaces
+                (one-or-more (syntax comment-start))
+                (one-or-more space)
+                ;; Heading level
+                (group (repeat 1 8 "\*"))  ; Outline stars
+                (one-or-more space))
+
+               ;; Python keyword heading
+               (group
+                ;; Heading level
+                (group (* space))	; 0 or more spaces
+                bow
+                ;; Keywords
+                (or "class" "def" "else" "elif" "except" "for" "if" "try" "while")
+                eow)))))
+
+  (defun python-outline-level ()
+    (or
+     ;; Commented outline heading
+     (and (string-match (rx
+                         (* space)
+                         (one-or-more (syntax comment-start))
+                         (one-or-more space)
+                         (group (one-or-more "\*"))
+                         (one-or-more space))
+                        (match-string 0))
+          (- (match-end 0) (match-beginning 0)))
+
+     ;; Python keyword heading, set by number of indentions
+     ;; Add 8 (the highest standard outline level) to every Python keyword heading
+     (+ 8 (- (match-end 0) (match-beginning 0)))))
+
+  (add-hook 'python-mode-hook 'python-mode-outline-hook))
+
 (use-package latex
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
@@ -1130,7 +1178,7 @@ graphics."
   (setq TeX-save-query nil
         TeX-auto-save t
         TeX-parse-self t       ;enable document parsing
-        reftex-plug-into-AUCTeX t
+        reftex-plug-into-AUCTeX t       ; integrate reftex with auctex
         TeX-PDF-mode t			; output pdf 
         TeX-electric-escape t
         TeX-master nil) ;make auctex aware of multi-file documents
@@ -1262,7 +1310,7 @@ graphics."
 	   "g" 'reftex-goto-label
 	   "r" 'reftex-reference
 	   "c" 'reftex-citation)
-  :config
+  :init
   (setq reftex-cite-prompt-optional-args t ; Prompt for empty optional arguments in cite
         ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
         reftex-enable-partial-scans t
