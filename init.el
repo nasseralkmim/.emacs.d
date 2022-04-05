@@ -71,7 +71,7 @@
   (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
-  (setq-default indicate-empty-lines t) 
+  (setq-default indicate-empty-lines nil) ; cleaner
 
   ;; name on top of window
   (setq-default frame-title-format '("%b [%m]"))
@@ -775,11 +775,11 @@ graphics."
   ;; don't scale svg images
   (setq org-html-head "<style> .org-svg {width: auto} </style>"))
 
+;; load ob-C when executing C++ source block
 (use-package ob-C
   :straight nil
   :after org
-  :commands org-babel-execute:C++
-  :init (org-babel-do-load-languages 'org-babel-load-languages '((C . t))))
+  :commands org-babel-execute:C++)
 
 ;; load ob-python only when executing python block
 (use-package ob-python
