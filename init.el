@@ -379,7 +379,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq consult-project-root-function nil
         consult-ripgrep-args 
         "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs .")
-  )
+
+  ;; previous consult line 
+  (defvar my-consult-line-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map "\C-s" #'previous-history-element)
+      map))
+  (consult-customize consult-line :keymap my-consult-line-map)
+  (defvar my-consult-outline-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map "\M-s" #'previous-history-element)
+      map))
+  (consult-customize consult-outline :keymap my-consult-outline-map))
 
 ;; insert recent openend directories in prompt
 (use-package consult-dir
@@ -929,7 +940,7 @@ graphics."
   :commands org-babel-execute:shell org-babel-execute:sh
   :demand
   :config
-  (setq org-babel-default-header-args:shell
+  (setq org-babel-default-header-args:sh
 	'((:results . "output")
           ;; always get my .bashrc aliases
           (:shebang . "#!/bin/bash -i"))))
