@@ -1090,7 +1090,8 @@ graphics."
   ;; evil-collection end up binding last...
   (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
   (setq outline-minor-mode-cycle t
-	outline-minor-mode-highlight 'append))  
+	;; outline-minor-mode-highlight 'append  ;; bug with C++ source block
+        ))  
 
 ;; regex for outline in python
 ;; aboid problems with docstring spaces
