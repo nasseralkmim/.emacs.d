@@ -449,6 +449,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	sp-show-pair-from-inside t))
 
 (use-package smartparens-config
+  :straight nil
   :demand
   :after smartparens
   :config
@@ -657,8 +658,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package org-contrib)
 
 (use-package org
-  :straight (:includes (org-id oc ob org-clock org-src org-agenda
-                               ox-latex ob-shell ob-python ox-html))
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -770,6 +769,7 @@ graphics."
     (ox-extras-activate '(ignore-headlines)))
 
 (use-package ox-html
+  :straight nil
   :after org
   :config
   ;; don't scale svg images
@@ -779,10 +779,17 @@ graphics."
 (use-package ob-C
   :straight nil
   :after org
-  :commands org-babel-execute:C++)
+  :commands org-babel-execute:C++
+  :config
+  (setq org-babel-default-header-args:C++
+        '((:results . "output")
+          (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
+          (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
+          (:exports . "results"))))
 
 ;; load ob-python only when executing python block
 (use-package ob-python
+  :straight nil
   :after org
   :commands org-babel-execute:python
   :init
@@ -831,6 +838,7 @@ graphics."
 
 ;; for windows
 (use-package ob-python
+  :straight nil
   :after org
   :when (eq system-type 'windows-nt)
   :init
@@ -838,6 +846,7 @@ graphics."
   (setq org-babel-python-command "python"))
 
 (use-package org-clock
+  :straight nil
   :general
   ('normal org-mode-map :prefix "z x"
            "i" 'org-clock-in
@@ -854,6 +863,7 @@ graphics."
 	org-duration-format (quote h:mm)))
 
 (use-package org-src
+  :straight nil
   :general
   ('normal org-mode-map "z e" 'org-edit-special)
   ('normal org-src-mode-map "z e" 'org-edit-src-exit)
@@ -864,10 +874,12 @@ graphics."
 	org-src-window-setup 'current-window ; don't move my windows around!
 	org-src-preserve-indentation t  ; preserve indentation in code
 	org-adapt-indentation nil ; no extra space... better use indent mode (virtual)
+        org-edit-src-content-indentation 0 ; dont indent source code
 	org-src-tab-acts-natively t	; if t, it is slow!
 	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
 
 (use-package org-agenda
+  :straight nil
   :after org
   :init
   (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
@@ -876,6 +888,7 @@ graphics."
 				 "~/OneDrive/Org/gcal.org"))))
 
 (use-package ox-latex
+  :straight nil
   :if (eq system-type 'gnu/linux)
   :after org
   :init
@@ -911,6 +924,7 @@ graphics."
   (setq ob-async-no-async-languages-alist '("python")))
 
 (use-package ob-shell
+  :straight nil
   :after org
   :commands org-babel-execute:shell org-babel-execute:sh
   :demand
@@ -1849,6 +1863,7 @@ graphics."
 ;; loads the org-id library from org repository
 ;; for creating org-ids for more robust linking, avoid referencing issues
 (use-package org-id
+  :straight nil
   :after org
   :demand                               ; explicitly require org-id
   :init
@@ -1857,6 +1872,7 @@ graphics."
 
 ;; citations support in org-mode
 (use-package oc
+  :straight nil
   :after org
   :general
   (org-mode-map "C-c C-b" 'org-cite-insert)
