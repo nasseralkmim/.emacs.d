@@ -1354,7 +1354,7 @@ graphics."
 
 ;; load modus in terminal
 (use-package modus-themes
-  :unless (display-graphic-p)
+  ;; :unless (display-graphic-p)
   :custom-face
   (org-meta-line ((t (:height 0.9))))
   (org-drawer ((t (:height 0.9))))
@@ -1391,8 +1391,8 @@ graphics."
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
                                       :background (modus-themes-color 'bg-paren-expression))))))
-  (if (display-graphic-p)
-      (modus-themes-load-operandi)
+  ;; use modus always in terminal
+  (if  (not (display-graphic-p))
     (modus-themes-load-vivendi))
   :general
   ("<f5>"  'modus-themes-toggle))
@@ -1421,15 +1421,13 @@ graphics."
 
 ;; dimm other buffers
 (use-package dimmer
-  :disabled                             ;does not work well with child frames
   :defer 1
   :config
-  (setq dimmer-fraction 0.8)
+  (setq dimmer-fraction 0.4)
   (dimmer-configure-magit)
   (dimmer-configure-posframe)
   (add-to-list
-   'dimmer-exclusion-regexp-list "*corfu*")
-  (dimmer-mode t))
+   'dimmer-exclusion-regexp-list "*corfu*"))
 
 ;; this mode is used to highlight current window
 (use-package face-remap
@@ -2228,25 +2226,3 @@ graphics."
   (flymake-grammarly-check-time 1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(all-the-icons-dired-dir-face ((t (:foreground "goldenrod"))))
- '(evil-goggles-change-face ((t (:inherit diff-removed))))
- '(evil-goggles-delete-face ((t (:inherit diff-removed))))
- '(evil-goggles-paste-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-add-face ((t (:inherit diff-added))))
- '(evil-goggles-undo-redo-change-face ((t (:inherit diff-changed))))
- '(evil-goggles-undo-redo-remove-face ((t (:inherit diff-removed))))
- '(evil-goggles-yank-face ((t (:inherit diff-changed))))
- '(outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
- '(tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique)))))
