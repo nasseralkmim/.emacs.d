@@ -1426,6 +1426,7 @@ graphics."
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
 (use-package highlight-current-window 
+  :disabled
   :when (display-graphic-p)
   :straight nil
   :init
