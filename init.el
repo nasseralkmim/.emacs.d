@@ -1449,11 +1449,13 @@ graphics."
 (use-package dimmer
   :defer 1
   :config
-  (setq dimmer-fraction 0.4)
+  (setq dimmer-fraction 0.3)
   (dimmer-configure-magit)
   (dimmer-configure-posframe)
   (add-to-list
-   'dimmer-exclusion-regexp-list "*corfu*"))
+   ;; corfu buffer is '<buffer *corfy*>'
+   'dimmer-exclusion-regexp-list "\\*.*corfu.*\\*") ;has corfu in the name
+  (dimmer-mode))
 
 ;; this mode is used to highlight current window
 (use-package face-remap
@@ -1494,6 +1496,7 @@ graphics."
   :config
   (setenv "WORK_HOME" "~/.virtualenvs"))
 
+;; mode for C++
 (use-package c++-mode
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
