@@ -609,9 +609,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
   :general
   ('normal "f" 'evil-snipe-f)
-  ('motion evil-snipe-local-mode-map
-           "t" 'evil-snipe-t
-           "T" 'evil-snipe-T)
+  ('normal "s" 'evil-snipe-s)
+  ;; ('motion evil-snipe-local-mode-map
+  ;;          "t" 'evil-snipe-t
+  ;;          "T" 'evil-snipe-T)
   :after evil
   :config
   (evil-snipe-override-mode 1)
@@ -619,7 +620,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         evil-snipe-smart-case t)
   ;; "f [" goes to parenthesis or bracket
   (push '(?\[ "[[{(]") evil-snipe-aliases)
-  (evil-snipe-def 2 inclusive "t" "T")  ;define t to be like s
+  ;; (evil-snipe-def 2 inclusive "t" "T")  ;define t to be like s
   )
 
 ;; visualize evil commands
@@ -2039,7 +2040,7 @@ graphics."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :general
-  ('normal "s" 'avy-goto-char-timer)
+  ('normal "t" 'avy-goto-char-timer)
   :demand
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
