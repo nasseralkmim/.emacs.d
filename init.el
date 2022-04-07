@@ -475,7 +475,38 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
   (setq python-flymake-command '("flake8" "-")
-        python-check-command "/home/nasser/.local/bin/flake8"))
+        python-check-command "/home/nasser/.local/bin/flake8")
+  ;; delay check, check only on save
+  (setq flymake-no-changes-timeout nil))
+
+;; flymake just for C++ in org edit special
+;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Example_002d_002d_002dConfiguring-a-tool-called-directly.html
+(use-package flymake
+  :disabled                             ;not working with org edit special
+  :init
+  (defun flymake-cc-init ()
+    (let* (;; Create temp file which is copy of current file
+           (temp-file   (flymake-proc-init-create-temp-buffer-copy
+                         'flymake-proc-create-temp-inplace))
+           ;; Get relative path of temp file from current directory
+           (local-file  (file-relative-name
+                         temp-file
+                         (file-name-directory buffer-file-name))))
+
+      ;; Construct compile command which is defined list.
+      ;; First element is program name, "g++" in this case.
+      ;; Second element is list of options.
+      ;; So this means "g++ -Wall -Wextra -fsyntax-only tempfile-path"
+      (list "g++" (list "-Wall" "-Wextra" "-fsyntax-only" local-file))))
+
+  (defun flymake-in-org-edit-special (&optional ARG PRED)
+    (when (eq major-mode 'c++-mode)
+      (flymake-mode)
+      ;; Enable above flymake setting for C++ files(suffix is '.cpp')
+      (add-to-list 'flymake-proc-allowed-file-name-masks
+                   '("\\.cpp$" flymake-cc-init))))
+
+  (add-hook 'org-src-mode-hook 'flymake-in-org-edit-special))
 
 (use-package evil-multiedit
   :after evil
@@ -700,7 +731,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
    (org-cycle-separator-lines 0)  ; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
-   (org-insert-heading-respect-content t) ; insert heading after current tree
+   (org-insert-heading-respect-content nil) ; insert heading after current tree
    (org-catch-invisible-edits 'show-and-error) ;make visible then abort
    (org-tags-column 0)                        ; tag right after text
    (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
@@ -1382,9 +1413,9 @@ graphics."
 (use-package modus-themes
   ;; :unless (display-graphic-p)
   :custom-face
-  (org-meta-line ((t (:height 0.9))))
-  (org-drawer ((t (:height 0.9))))
-  (org-macro ((t (:height 0.9))))
+  ;; (org-meta-line ((t (:height 0.9))))
+  ;; (org-drawer ((t (:height 0.9))))
+  ;; (org-macro ((t (:height 0.9))))
   (org-verbatim ((t (:box t))))
   (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
   (font-latex-sectioning-2-face ((t (:weight bold :box t))))
@@ -1402,7 +1433,7 @@ graphics."
 	modus-themes-variable-pitch-ui nil
 	modus-themes-syntax '(faint)
 	modus-themes-italic-constructs t
-	modus-themes-bold-constructs t
+	modus-themes-bold-constructs nil
 	modus-themes-fringes 'subtle
         modus-themes-headings '((t . (rainbow)))
 	modus-themes-mode-line '(borderless accented moody))
