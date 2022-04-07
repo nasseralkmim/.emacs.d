@@ -1,3 +1,3 @@
 ;; Dtache Session Version: 0.5.0
 
-((7ffeb3557ff304d92f2677e0e59e30a6 . #s(dtache-session 7ffeb3557ff304d92f2677e0e59e30a6 "cd ~/2D_Tunnel_Nasser/ && sh RUN" org "~/SeaDrive/My Libraries/simulations/mpfem/test/" "/tmp/dtache" nil ("ryzen-ms7c37" . local) t (:attach dtache-shell-command-attach-session :view dtache-view-dwim :run dtache-shell-command) (:start 1649081529.4170172 :end 1649083430.1424463 :duration 1900.725429058075) (unknown . 0) 7546046 inactive)))
+nil

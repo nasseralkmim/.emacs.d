@@ -607,12 +607,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; move aroud text
 (use-package evil-snipe
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
-  :general ('normal "f" 'evil-snipe-f)
+  :general
+  ('normal "f" 'evil-snipe-f)
+  ('motion evil-snipe-local-mode-map
+           "t" 'evil-snipe-t
+           "T" 'evil-snipe-T)
   :after evil
   :config
   (evil-snipe-override-mode 1)
   (setq evil-snipe-spillover-scope 'visible
-	evil-snipe-smart-case t))
+        evil-snipe-smart-case t)
+  ;; "f [" goes to parenthesis or bracket
+  (push '(?\[ "[[{(]") evil-snipe-aliases)
+  (evil-snipe-def 2 inclusive "t" "T")  ;define t to be like s
+  )
 
 ;; visualize evil commands
 (use-package evil-goggles
