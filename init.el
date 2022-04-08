@@ -1434,7 +1434,6 @@ graphics."
 	modus-themes-prompts '(intense italic)
 	modus-themes-hl-line '(accented intense)
 	modus-themes-diffs 'desaturated
-	modus-themes-completions 'opinionated
 	modus-themes-paren-match '(bold underline)
 	modus-themes-no-mixed-fonts t
 	modus-themes-variable-pitch-ui nil
@@ -1448,18 +1447,22 @@ graphics."
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
-	      (progn 
+              (progn 
                 ;; use oblique version of Victor for italic
                 (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias t))
-                ;; and use the italic (informal) for comments
-                (set-face-attribute 'tree-sitter-hl-face:comment nil :family "Victor Mono" :slant 'italic :font (font-spec :antialias t))
                 ;; change for specific modes
+                ;; and use the italic (informal) for comments
+                ;; tree sitter does not work in terminal apparently
+                (when (display-graphic-p)
+                 (eval-after-load 'tree-sitter
+                   (set-face-attribute 'tree-sitter-hl-face:comment nil
+                                       :family "Victor Mono" :slant 'italic :font (font-spec :antialias t))))
                 (eval-after-load 'auto-dim-other-buffers
                   '(set-face-attribute 'auto-dim-other-buffers-face nil
-                                      :foreground (modus-themes-color 'fg-dim)))
+                                       :foreground (modus-themes-color 'fg-dim)))
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
-                                      :background (modus-themes-color 'bg-paren-expression))))))
+                                       :background (modus-themes-color 'bg-paren-expression))))))
   ;; use modus always in terminal
   (if  (not (display-graphic-p))
     (modus-themes-load-vivendi))
@@ -2304,5 +2307,11 @@ graphics."
     (interactive)
     (flymake-mode)
     (flymake-grammarly-load)))
+
+(use-package virtual-comment
+  :diminish virtual-comment-mode
+  :hook 
+  (python-mode . virtual-comment-mode)
+  (c++-mode . virtual-comment-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
