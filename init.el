@@ -148,15 +148,14 @@
 
 ;; typeface
 (use-package custom-typefaces
-  :disabled
   :straight nil
   :init
-  ;; victor mono: thin, condensed, italics is informal
+  ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
   ;; fira code: ligatures
-  (set-face-attribute 'default nil :family "Victor Mono" :font (font-spec :antialias nil))
-  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias nil))
-  (set-face-attribute 'fixed-pitch nil :family "Victor Mono" :font (font-spec :antialias nil))
-  (set-face-attribute 'variable-pitch nil :family "Input Sans" :font (font-spec :antialias nil))
+  (set-face-attribute 'default nil :family "Victor Mono" :font (font-spec :antialias t))
+  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias t))
+  (set-face-attribute 'fixed-pitch nil :family "Victor Mono" :font (font-spec :antialias t))
+  (set-face-attribute 'variable-pitch nil :family "Input Sans" :font (font-spec :antialias t))
   :custom-face 
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
@@ -739,7 +738,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
    (org-cycle-separator-lines 0)  ; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
-   (org-insert-heading-respect-content nil) ; insert heading after current tree
+   (org-insert-heading-respect-content t) ; insert heading after current tree
    (org-catch-invisible-edits 'show-and-error) ;make visible then abort
    (org-tags-column 0)                        ; tag right after text
    (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
@@ -961,8 +960,7 @@ graphics."
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
                                    ("a4paper, margin=20mm" "geometry" nil)))
 
-  (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil))
-  )
+  (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil)))
 
 ;; adds keyword `async' to source blocks
 (use-package ob-async
@@ -982,7 +980,8 @@ graphics."
   (setq org-babel-default-header-args:sh
 	'((:results . "output")
           ;; always get my .bashrc aliases
-          (:shebang . "#!/bin/bash -i"))))
+          ;; (:shebang . "#!/bin/bash -i") ;; does not play nice with dtache
+          )))
 
 ;; insert web links with better description
 (use-package org-cliplink
@@ -1437,11 +1436,11 @@ graphics."
 	modus-themes-diffs 'desaturated
 	modus-themes-completions 'opinionated
 	modus-themes-paren-match '(bold underline)
-	modus-themes-no-mixed-fonts nil
+	modus-themes-no-mixed-fonts t
 	modus-themes-variable-pitch-ui nil
 	modus-themes-syntax '(faint)
 	modus-themes-italic-constructs t
-	modus-themes-bold-constructs nil
+	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
         modus-themes-headings '((t . (rainbow)))
 	modus-themes-mode-line '(borderless accented moody))
@@ -1450,6 +1449,11 @@ graphics."
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
 	      (progn 
+                ;; use oblique version of Victor for italic
+                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias t))
+                ;; and use the italic (informal) for comments
+                (set-face-attribute 'tree-sitter-hl-face:comment nil :family "Victor Mono" :slant 'italic :font (font-spec :antialias t))
+                ;; change for specific modes
                 (eval-after-load 'auto-dim-other-buffers
                   '(set-face-attribute 'auto-dim-other-buffers-face nil
                                       :foreground (modus-themes-color 'fg-dim)))
