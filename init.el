@@ -148,6 +148,7 @@
 
 ;; typeface
 (use-package custom-typefaces
+  :disabled
   :straight nil
   :init
   ;; victor mono: thin, condensed, italics is informal
@@ -467,8 +468,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
 (use-package flymake
-  :hook
-  (LaTeX-mode . flymake-mode)
   :general
   ('normal flymake-mode-map "M-n" 'flymake-goto-next-error) 
   ('normal flymake-mode-map "M-N" 'flymake-goto-prev-error)
@@ -1219,7 +1218,6 @@ graphics."
   (setq TeX-save-query nil
         TeX-auto-save t
         TeX-parse-self t       ;enable document parsing
-        reftex-plug-into-AUCTeX t       ; integrate reftex with auctex
         TeX-PDF-mode t			; output pdf 
         TeX-electric-escape t
         TeX-master nil) ;make auctex aware of multi-file documents
@@ -1357,6 +1355,7 @@ graphics."
         reftex-enable-partial-scans t
         reftex-keep-temporary-buffers nil
         reftex-save-parse-info t
+        reftex-plug-into-AUCTeX t       ; integrate reftex with auctex
         reftex-trust-label-prefix '("fig:" "eq:") ; speed up parsing of labels
         ;; don't ask which refecence macro after `reftex-referene'
         reftex-ref-macro-prompt nil
@@ -2293,8 +2292,13 @@ graphics."
   (org-modern-star nil))
 
 (use-package flymake-grammarly
-  :hook (LaTeX-mode . flymake-grammarly-load)
   :custom
-  (flymake-grammarly-check-time 1))
+  (flymake-grammarly-check-time 1)
+  :commands load-flymake-with-grammar
+  :init
+  (defun load-flymake-with-grammar ()
+    (interactive)
+    (flymake-mode)
+    (flymake-grammarly-load)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
