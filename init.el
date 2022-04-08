@@ -152,10 +152,10 @@
   :init
   ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
   ;; fira code: ligatures
-  (set-face-attribute 'default nil :family "Victor Mono" :font (font-spec :antialias t))
-  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias t))
-  (set-face-attribute 'fixed-pitch nil :family "Victor Mono" :font (font-spec :antialias t))
-  (set-face-attribute 'variable-pitch nil :family "Input Sans" :font (font-spec :antialias t))
+  (set-face-attribute 'default nil :family "Victor Mono")
+  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
+  (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
+  (set-face-attribute 'variable-pitch nil :family "Input Sans")
   :custom-face 
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
@@ -1449,14 +1449,14 @@ graphics."
 	    (lambda ()
               (progn 
                 ;; use oblique version of Victor for italic
-                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :font (font-spec :antialias t))
+                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
                 ;; change for specific modes
                 ;; and use the italic (informal) for comments
-                ;; tree sitter does not work in terminal apparently
+                ;; tree sitter does not work in terminal, apparently
                 (when (display-graphic-p)
-                 (eval-after-load 'tree-sitter
-                   (set-face-attribute 'tree-sitter-hl-face:comment nil
-                                       :family "Victor Mono" :slant 'italic :font (font-spec :antialias t))))
+                  (eval-after-load 'tree-sitter-hl
+                    '(set-face-attribute 'tree-sitter-hl-face:comment nil
+                                         :family "Victor Mono" :slant 'italic)))
                 (eval-after-load 'auto-dim-other-buffers
                   '(set-face-attribute 'auto-dim-other-buffers-face nil
                                        :foreground (modus-themes-color 'fg-dim)))
