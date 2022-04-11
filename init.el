@@ -1633,6 +1633,7 @@ graphics."
   :commands python-black-buffer)
 
 (use-package numpydoc
+  :disabled
   :after python
   :custom
   (numpydoc-insert-examples-block nil)
@@ -2312,6 +2313,9 @@ graphics."
   :diminish virtual-comment-mode
   :hook 
   (python-mode . virtual-comment-mode)
-  (c++-mode . virtual-comment-mode))
+  (c++-mode . virtual-comment-mode)
+  :config
+  (with-eval-after-load 'evil
+    (evil-set-initial-state 'virtual-comment-make-mode 'insert)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
