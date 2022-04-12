@@ -618,6 +618,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         evil-snipe-smart-case t)
   ;; "f [" goes to parenthesis or bracket
   (push '(?\[ "[[{(]") evil-snipe-aliases)
+  (push '(?\] "[]})]") evil-snipe-aliases)
   ;; (evil-snipe-def 2 inclusive "t" "T")  ;define t to be like s
   )
 
@@ -1054,7 +1055,7 @@ graphics."
 	   "C-p" nil)
   :config
   (setq corfu-auto t                    ; enables timer-based completion
-        corfu-auto-delay 0.1
+        corfu-auto-delay 0.2
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
 
