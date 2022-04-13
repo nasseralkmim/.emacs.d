@@ -319,14 +319,38 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; filter with space-separated components and match components in any order
 ;; filter means how a input string is matched against candidates
 (use-package orderless
-  :init
+  :demand
+  :config
   ;; partial completion for files to allows path expansion
   (setq completion-styles '(orderless)
         completion-category-defaults nil
         read-file-name-completion-ignore-case t
         completion-category-overrides '((file (styles . (partial-completion)))
                                         ;; navigate files with initials
-                                        (minibuffer (initials)))))
+                                        (minibuffer (initials))))
+
+  ;; components ending in "~"  match in flex style
+  ;; flex style: keep order, but not necessarily consecutive
+  (defun flex-if-twiddle (pattern _index _total)
+    (when (string-suffix-p "~" pattern)
+      `(orderless-flex . ,(substring pattern 0 -1))))
+
+  (defun literal-if-hat (pattern _index _total)
+    (when (string-prefix-p "=" pattern)
+      `(orderless-literal . ,(substring pattern 1))))
+
+  ;; component start with "!" filter by string not in the candidate
+  (defun without-if-bang (pattern _index _total)
+    (cond
+     ((equal "!" pattern)
+      '(orderless-literal . ""))
+     ((string-prefix-p "!" pattern)
+      `(orderless-without-literal . ,(substring pattern 1)))))
+
+  (setq orderless-matching-styles '(orderless-regexp)
+        orderless-style-dispatchers '(flex-if-twiddle
+                                      literal-if-hat
+                                      without-if-bang)))
 
 ;; save the search history
 (use-package savehist
@@ -468,8 +492,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package flymake
   :general
-  ('normal flymake-mode-map "M-n" 'flymake-goto-next-error) 
-  ('normal flymake-mode-map "M-N" 'flymake-goto-prev-error)
+  (flymake-mode-map "M-n" 'flymake-goto-next-error) 
+  (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
   (setq python-flymake-command '("flake8" "-")
@@ -739,7 +763,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
    (org-cycle-separator-lines 0)  ; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
-   (org-insert-heading-respect-content t) ; insert heading after current tree
+   (org-insert-heading-respect-content nil) ; insert heading after current tree
    (org-catch-invisible-edits 'show-and-error) ;make visible then abort
    (org-tags-column 0)                        ; tag right after text
    (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
