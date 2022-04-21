@@ -879,7 +879,8 @@ graphics."
   :after org
   :init
   ;; mkdirp allows creating the :dir if it does not exist
-  (add-to-list 'org-babel-default-header-args '(:mkdirp . "yes")))
+  (add-to-list 'org-babel-default-header-args '(:mkdirp . "yes"))
+  (add-to-list 'org-babel-default-header-args '(:noweb . "no-export")))
 
 ;; custom org function
 (use-package org-custom
@@ -1004,6 +1005,7 @@ graphics."
   :config
   (setq org-babel-default-header-args:sh
 	'((:results . "output")
+          (:noweb . "no-export")
           ;; always get my .bashrc aliases
           ;; (:shebang . "#!/bin/bash -i") ;; does not play nice with dtache
           )))
@@ -1395,6 +1397,7 @@ graphics."
   ('normal dired-mode-map "h" 'dired-up-directory)
   (dired-mode-map "M-o" 'dired-omit-mode)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
+  ('normal dired-mode-map "C-<return>" 'dired-find-file-other-window)
   ('normal dired-mode-map "SPC" nil)
   ("C-x C-j" 'dired-jump-other-window)
   ("C-x j" 'dired-jump)
