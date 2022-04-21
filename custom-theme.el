@@ -30,6 +30,11 @@
                         `(rainbow-delimiters-depth-3-face ((t (:foreground "#005f88"))))
                         `(rainbow-delimiters-depth-4-face ((t (:foreground "#904200"))))
                         `(rainbow-delimiters-depth-5-face ((t (:foreground "#7f10d0"))))
-                        `(rainbow-delimiters-depth-6-face ((t (:foreground "#006800")))))
+                        `(rainbow-delimiters-depth-6-face ((t (:foreground "#006800"))))
+                        ;; dired subtree
+                        `(dired-subtree-depth-1-face ((t (:foreground "#000000"))))
+                        `(dired-subtree-depth-2-face ((t (:foreground "#000000"))))
+                        `(dired-subtree-depth-3-face ((t (:foreground "#000000"))))
+                        `(dired-subtree-depth-4-face ((t (:foreground "#000000")))))
 
 (provide-theme 'custom)
