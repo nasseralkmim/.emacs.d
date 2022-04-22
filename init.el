@@ -2346,4 +2346,14 @@ graphics."
   (with-eval-after-load 'evil
     (evil-set-initial-state 'virtual-comment-make-mode 'insert)))
 
+;; improve org latex support
+(use-package org-auctex
+  :disabled; does not play nicely when there is $ in shell src blocks
+  :after org
+  :straight (org-auctex :type git :host github :repo "karthink/org-auctex")
+  :hook (org-mode . org-auctex-mode)
+  :general
+  ('normal org-mode-map "g p b" 'org-auctex-preview-buffer)
+  ('normal org-mode-map "g p c" 'org-auctex-preview-clearout-buffer))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
