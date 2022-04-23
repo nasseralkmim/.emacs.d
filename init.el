@@ -2356,4 +2356,10 @@ graphics."
   ('normal org-mode-map "g p b" 'org-auctex-preview-buffer)
   ('normal org-mode-map "g p c" 'org-auctex-preview-clearout-buffer))
 
+(use-package pulsing-cursor
+  :straight (pulsing-cursor :type git :host github :repo "jasonjckn/pulsing-cursor")
+  :defer 1
+  :config
+  (pulsing-cursor-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
