@@ -26,8 +26,9 @@
 ;; if there is none, we need to explicitly add `:demand` to load the package
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
-(setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil; compute statistics about package initialization
+(setq use-package-verbose 'debug		; don't print anything
+      use-package-compute-statistics t; compute statistics about package initialization
+      use-package-minimum-reported-time 0.001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
@@ -362,7 +363,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :if (eq system-type 'gnu/linux)
   :general
   (minibuffer-local-map "M-A" 'marginalia-cycle)
-  :init
+  :defer 1
+  :config
   (marginalia-mode))
 
 ;; enhances multiple commands based on completion
@@ -430,7 +432,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `export` the set of targets are shown in an appropriate major-mode
 ;; embark-mixed-indicator: if no action is selected, buffer will pop up
 (use-package embark
-  :demand                               ; load it independently of bind and hook
+  ;; :demand                               ; load it independently of bind and hook
   :general
   ("M-a" 'embark-act)
   ("C-S-z" 'embark-dwim)
@@ -650,7 +652,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil-goggles
   :diminish evil-goggles-mode
   :after evil
-  :init
+  :defer 1
+  :config
   (evil-goggles-mode)
   (setq evil-goggles-duration 0.8        ; show what I copied
         evil-goggles-blocking-duration 0) ; don't want to wait when deleting
@@ -691,8 +694,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general ('normal "g x" 'evil-exchange)
   :config (evil-exchange-install))
 
+;; jump to matched tags
 (use-package evil-matchit
-  :after evil python
+  :disabled
+  :after python evil
   :config
   (global-evil-matchit-mode 4))
 
@@ -1040,11 +1045,11 @@ graphics."
   :hook
   (LaTeX-mode . flyspell-mode)
   (org-mode . flyspell-mode)
-  (prorg-mode . flyspell-prog-mode)
+  (prog-mode . flyspell-prog-mode)
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
-  (ispell-set-spellchecker-params)
+  ;; (ispell-set-spellchecker-params) ; makes initial load slow...
 
   (setq flyspell-issue-message-flag nil ; don't emit messages
 	ispell-personal-dictionary "~/.dotfiles/hunspell/.personal"))
@@ -1070,8 +1075,7 @@ graphics."
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
 (use-package corfu
   :straight (corfu :type git :host github :repo "minad/corfu")
-  :init
-  (corfu-global-mode)
+  :defer 1
   :general
   (corfu-map "<tab>" 'corfu-next
 	     "<backtab>" 'corfu-previous
@@ -1080,6 +1084,7 @@ graphics."
   ('insert "C-n" nil
 	   "C-p" nil)
   :config
+  (corfu-global-mode)
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.2
 	corfu-auto-prefix 1
@@ -1922,7 +1927,8 @@ graphics."
 (use-package repeat
   :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
-  :init
+  :defer 1
+  :config
   ;; built-in command repeater (like hydra)
   (repeat-mode t))
 
@@ -2103,7 +2109,8 @@ graphics."
 (use-package all-the-icons-completion
   :when (display-graphic-p)
   :after marginalia
-  :init
+  :defer 1
+  :config
   (all-the-icons-completion-mode))
 
 ;; icons for dired
@@ -2180,8 +2187,8 @@ graphics."
   :after corfu 
   :custom
   (kind-icon-default-face 'corfu-default)
-  :demand
-  :init
+  :defer 1
+  :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 ;; change font on windows wsl gui
@@ -2273,11 +2280,12 @@ graphics."
   :general
   ('normal "<f7>" 'dtache-open-session)
   ('normal dired-mode-map "&" 'dtache-shell-command)
-  :hook (after-init . dtache-setup)
   :config
-  ;; add embar actions for 'dtache-open-session'
-  (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
-  (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map)))
+  (dtache-setup)
+  (with-eval-after-load 'embark
+    ;; add embar actions for 'dtache-open-session'
+    (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
+    (add-to-list 'embark-keyma-alist '(dtache . embark-dtache-map))))
 
 ;; add `:dtache t' option to sh source block
 (use-package dtache-org
