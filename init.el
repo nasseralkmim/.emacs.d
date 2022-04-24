@@ -1042,10 +1042,6 @@ graphics."
 ;; languages spell checker
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
-  :hook
-  (LaTeX-mode . flyspell-mode)
-  (org-mode . flyspell-mode)
-  (prog-mode . flyspell-prog-mode)
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
@@ -1064,12 +1060,18 @@ graphics."
   :config
   (setq flyspell-lazy-idle-seconds 1))
 
-;; convenient functions for correctiong
+;; convenient functions for correcting
 (use-package flyspell-correct
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
   ('normal flyspell-mode-map "[ ," 'flyspell-correct-wrapper)
   :after flyspell)
+
+;; attempt to make flyspell faster by restricting to region, instead of buffer
+(use-package wucuo
+  :hook
+  (text-mode . wucuo-start)
+  (prog-mode . wucuo-start))
 
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
