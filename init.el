@@ -2291,7 +2291,8 @@ graphics."
 
 ;; add `:dtache t' option to sh source block
 (use-package dtache-org
-  :after (dtache org)
+  :commands org-babel-execute:sh        ;load when executing code
+  :after org
   :init
   (dtache-org-setup))
 
