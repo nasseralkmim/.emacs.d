@@ -1484,7 +1484,7 @@ graphics."
 	    (lambda ()
               (progn 
                 ;; use oblique version of Victor for italic
-                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
+                ;; (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
                 ;; change for specific modes
                 ;; and use the italic (informal) for comments
                 ;; tree sitter does not work in terminal, apparently
@@ -2287,7 +2287,7 @@ graphics."
   (with-eval-after-load 'embark
     ;; add embar actions for 'dtache-open-session'
     (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
-    (add-to-list 'embark-keyma-alist '(dtache . embark-dtache-map))))
+    (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map))))
 
 ;; add `:dtache t' option to sh source block
 (use-package dtache-org
@@ -2354,6 +2354,7 @@ graphics."
   (python-mode . virtual-comment-mode)
   (c++-mode . virtual-comment-mode)
   :config
+  (setq virtual-comment-face 'lazy-highlight)
   (with-eval-after-load 'evil
     (evil-set-initial-state 'virtual-comment-make-mode 'insert)))
 
