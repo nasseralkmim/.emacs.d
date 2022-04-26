@@ -1398,7 +1398,9 @@ graphics."
 (use-package dired
   :straight (:type built-in)
   :commands dired
-  :hook (dired-mode . dired-hide-details-mode)
+  :hook
+  (dired-mode . dired-hide-details-mode)
+  (dired-mode . (lambda () (toggle-truncate-lines)))
   :general
   (dired-mode-map "C-c C-d" 'mkdir)
   ('normal dired-mode-map "h" 'dired-up-directory)
