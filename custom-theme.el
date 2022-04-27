@@ -35,6 +35,8 @@
                         `(dired-subtree-depth-1-face ((t (:foreground "#000000"))))
                         `(dired-subtree-depth-2-face ((t (:foreground "#000000"))))
                         `(dired-subtree-depth-3-face ((t (:foreground "#000000"))))
-                        `(dired-subtree-depth-4-face ((t (:foreground "#000000")))))
+                        `(dired-subtree-depth-4-face ((t (:foreground "#000000"))))
+                        ;; smartparens
+                        `(sp-show-pair-match-content-face ((t (:inherit 'highlight)))))
 
 (provide-theme 'custom)
