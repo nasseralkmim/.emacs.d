@@ -2039,7 +2039,7 @@ graphics."
   :diminish tree-sitter-mode
   :hook
   (python-mode . tree-sitter-mode)
-  (python-mode . tree-sitter-hl-mode))
+  (tree-sitter-after-on . tree-sitter-hl-mode))
 
 ;; langage bundle for `tree-sitter`
 (use-package tree-sitter-langs
