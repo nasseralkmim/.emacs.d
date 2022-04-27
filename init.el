@@ -1488,6 +1488,12 @@ graphics."
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
               (progn 
+                ;; adjust org
+                (eval-after-load 'org-modern
+                  (global-org-modern-mode))
+                ;; reset icons cache to match theme
+                (eval-after-load 'kind-icon
+                  (kind-icon-reset-cache))
                 ;; use oblique version of Victor for italic
                 ;; (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
                 ;; change for specific modes
