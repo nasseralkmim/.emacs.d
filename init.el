@@ -26,8 +26,8 @@
 ;; if there is none, we need to explicitly add `:demand` to load the package
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
-(setq use-package-verbose 'debug		; don't print anything
-      use-package-compute-statistics t; compute statistics about package initialization
+(setq use-package-verbose t		; don't print anything
+      use-package-compute-statistics nil; compute statistics about package initialization
       use-package-minimum-reported-time 0.001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
@@ -2341,8 +2341,8 @@ graphics."
   (org-modern-star nil))
 
 (use-package flymake-grammarly
-  :custom
-  (flymake-grammarly-check-time 1)
+  :config
+  (setq flymake-grammarly-check-time 5)
   :commands load-flymake-with-grammar
   :init
   (defun load-flymake-with-grammar ()
