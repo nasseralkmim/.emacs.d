@@ -388,8 +388,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (completion-list-mode . consult-preview-at-point-mode)
   :config
   ;; configure preview behavior to `any` key and specific time delay
-  (consult-customize consult-buffer consult-bookmark consult-ripgrep consult-find-fd
+  (consult-customize consult-buffer consult-bookmark
                      :preview-key '(:debounce 5 any))
+  ;; use a key for preview from ripgrep and find
+  (consult-customize consult-ripgrep consult-find-fd
+                     :preview-key (kbd "M-."))
   (consult-customize consult-line :preview-key '(:debounce 0 any))
 
   ;; use 'fd' instead of 'find'
@@ -404,7 +407,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; added --no-ignore-vcs to avoid skipping files in gitignore
   (setq consult-project-root-function nil
         consult-ripgrep-args 
-        "rg --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs .")
+        "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs .")
 
   ;; previous consult line 
   (defvar my-consult-line-map
