@@ -1545,9 +1545,31 @@ graphics."
   (setq dimmer-fraction 0.3)
   (dimmer-configure-magit)
   (dimmer-configure-posframe)
-  (add-to-list
-   ;; corfu buffer is '<buffer *corfy*>'
-   'dimmer-exclusion-regexp-list "\\*.*corfu.*\\*") ;has corfu in the name
+  ;; make it compatible to corfu
+  ;; https://github.com/gonewest818/dimmer.el/issues/62
+  (defun advise-dimmer-config-change-handler ()
+    "Advise to only force process if no predicate is truthy."
+    (let ((ignore (cl-some (lambda (f) (and (fboundp f) (funcall f)))
+                           dimmer-prevent-dimming-predicates)))
+      (unless ignore
+        (when (fboundp 'dimmer-process-all)
+          (dimmer-process-all t)))))
+
+  (defun corfu-frame-p ()
+    "Check if the buffer is a corfu frame buffer."
+    (string-match-p "\\` \\*corfu" (buffer-name)))
+
+  (defun dimmer-configure-corfu ()
+    "Convenience settings for corfu users."
+    (add-to-list
+     'dimmer-prevent-dimming-predicates
+     #'corfu-frame-p))
+
+  (advice-add
+   'dimmer-config-change-handler
+   :override 'advise-dimmer-config-change-handler)
+
+  (dimmer-configure-corfu)
   (dimmer-mode))
 
 ;; this mode is used to highlight current window
