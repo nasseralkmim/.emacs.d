@@ -745,7 +745,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   (org-mode-map "C-c C-l" 'org-insert-link)
   (org-mode-map "C-c ," 'org-insert-structure-template)
-  ('normal org-mode-map "TAB" 'org-cycle)
+  ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
   ('normal org-mode-map "z n" 'org-toggle-narrow-to-subtree)
   ('normal org-mode-map "z k" 'org-previous-visible-heading)
   ('normal org-mode-map "z j" 'org-next-visible-heading)
@@ -1089,7 +1089,7 @@ graphics."
   ('insert "C-n" nil
 	   "C-p" nil)
   :config
-  (corfu-global-mode)
+  (global-corfu-mode)
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.2
 	corfu-auto-prefix 1
@@ -1114,8 +1114,8 @@ graphics."
   (corfu-doc-max-width 70)
   (corfu-doc-max-height 20)
   (corfu-echo-documentation nil)
-  :config
-  (corfu-doc-mode))
+  :hook
+  (python-mode . corfu-doc-mode)) 
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
