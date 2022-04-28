@@ -1458,7 +1458,7 @@ graphics."
 
 ;; load modus in terminal
 (use-package modus-themes
-  ;; :unless (display-graphic-p)
+  :when (display-graphic-p)
   :custom-face
   ;; (org-meta-line ((t (:height 0.9))))
   ;; (org-drawer ((t (:height 0.9))))
@@ -1469,7 +1469,7 @@ graphics."
   (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
   (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
   (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
-  :init
+  :config
   (setq modus-themes-org-blocks 'gray-background
 	modus-themes-prompts '(intense italic)
 	modus-themes-hl-line '(accented intense)
@@ -1488,14 +1488,14 @@ graphics."
   (add-hook 'modus-themes-after-load-theme-hook
 	    (lambda ()
               (progn 
-                ;; adjust org
+                ;; adjust org modern
                 (eval-after-load 'org-modern
                   (global-org-modern-mode))
                 ;; reset icons cache to match theme
                 (eval-after-load 'kind-icon
                   (kind-icon-reset-cache))
                 ;; use oblique version of Victor for italic
-                ;; (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
+                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
                 ;; change for specific modes
                 ;; and use the italic (informal) for comments
                 ;; tree sitter does not work in terminal, apparently
@@ -1509,11 +1509,14 @@ graphics."
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
                                        :background (modus-themes-color 'bg-paren-expression))))))
-  ;; use modus always in terminal
-  (if  (not (display-graphic-p))
-    (modus-themes-load-vivendi))
   :general
   ("<f5>"  'modus-themes-toggle))
+
+;; modus in terminal
+(use-package modus-themes
+  :unless (display-graphic-p)
+  :init
+  (modus-themes-load-vivendi))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
@@ -2367,6 +2370,7 @@ graphics."
 
 ;; eye candy for org
 (use-package org-modern
+  :when (display-graphic-p)             ;only when gui
   :hook (org-mode . org-modern-mode)
   :custom
   (org-modern-star nil))
