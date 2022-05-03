@@ -1014,7 +1014,7 @@ graphics."
   (setq org-babel-default-header-args:sh
 	'((:results . "output")
           (:noweb . "no-export")
-          ;; always get my .bashrc aliases
+          ;; always get my .bashrc aliases ;; not always
           ;; (:shebang . "#!/bin/bash -i") ;; does not play nice with dtache
           )))
 
