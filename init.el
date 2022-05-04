@@ -1079,7 +1079,8 @@ graphics."
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
 (use-package corfu
-  :straight (corfu :type git :host github :repo "minad/corfu")
+  :straight (corfu :type git :host github :repo "minad/corfu"
+                   :files (:defaults "extensions/*"))
   :defer 1
   :general
   (corfu-map "<tab>" 'corfu-next
@@ -1094,6 +1095,14 @@ graphics."
         corfu-auto-delay 0.2
 	corfu-auto-prefix 1
 	corfu-quit-no-match t))
+
+;; corfu extension
+(use-package corfu-history
+  :straight nil
+  :after corfu
+  :demand
+  :config
+  (corfu-history-mode))
 
 ;; `completion at point' extensions for specific candidates in `completion in region'
 (use-package cape
