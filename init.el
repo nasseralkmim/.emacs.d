@@ -312,7 +312,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         '((consult-outline unobtrusive)
           (consult-line unobtrusive)
           (consult-buffer unobtrusive)
-          (dtache-open-session buffer
+          (dtache-open-session buffer   ; open dtache sessions in a buffer
              (vertico-buffer-display-action . (display-buffer-at-bottom
                                                (window-height . 13)))))))
 
@@ -446,7 +446,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; if this is used before `embark-act`, load the package (because of `:commands`)
   ;; `which-key` changes this variable as well, so we need to change it after `which-key`
   (which-key-mode . (lambda ()
-		      (setq prefix-help-command #'embark-prefix-help-command))))
+                      (setq prefix-help-command #'embark-prefix-help-command)))
+  :config
+  ;; hide the mode line of the Embark live/completions buffers
+  (add-to-list 'display-buffer-alist
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none)))))
 
 ;; allows consult previews as you move around an auto-updating embark collect
 ;; buffer
