@@ -769,7 +769,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode . visual-line-mode)
   (org-mode . org-indent-mode)          ; align with heading
   :custom
-   (org-hide-emphasis-markers nil)        ; avoid noisy //,__, **(makes anoying to edit) 
+   (org-hide-emphasis-markers nil)        ; avoid noisy //,__, **(makes annoying to edit) 
    (org-startup-indented nil)		; start collapsed
    (org-startup-folded t)               ; folded in "overview" state
    (org-hide-leading-stars t)           ; don't show a  bunch of '*'
@@ -778,7 +778,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
    (org-cycle-separator-lines 0)  ; no empty lines between headings
    (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
-   (org-insert-heading-respect-content nil) ; insert heading after current tree
+   (org-insert-heading-respect-content t) ; insert heading after current tree
    (org-catch-invisible-edits 'show-and-error) ;make visible then abort
    (org-tags-column 0)                        ; tag right after text
    (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
@@ -2421,11 +2421,5 @@ graphics."
   :general
   ('normal org-mode-map "g p b" 'org-auctex-preview-buffer)
   ('normal org-mode-map "g p c" 'org-auctex-preview-clearout-buffer))
-
-(use-package pulsing-cursor
-  :straight (pulsing-cursor :type git :host github :repo "jasonjckn/pulsing-cursor")
-  :defer 1
-  :config
-  (pulsing-cursor-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
