@@ -380,6 +380,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c m" 'consult-mark)
   ;; two parts: search  and filter
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
+  ;; command line can be specified after "--", example: #<search string> -- -C 10 for context!! WHAT!
   ("C-c r" 'consult-ripgrep)		; search file contents
   ("C-c f" 'consult-find-fd)		; search files in directories
   ;; (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
