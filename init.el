@@ -2369,6 +2369,7 @@ graphics."
         "Output\\*$" 
         "output\\*$"           ;for preview latex error
         ".log$"              ;for dtache log
+        "\\*Dtache Shell Command\\*"
         help-mode
         "\\*Python\\*"
         compilation-mode))
