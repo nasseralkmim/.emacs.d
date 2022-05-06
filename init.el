@@ -336,7 +336,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (when (string-suffix-p "~" pattern)
       `(orderless-flex . ,(substring pattern 0 -1))))
 
-  (defun literal-if-hat (pattern _index _total)
+  (defun literal-if-equal (pattern _index _total)
     (when (string-prefix-p "=" pattern)
       `(orderless-literal . ,(substring pattern 1))))
 
@@ -350,7 +350,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (setq orderless-matching-styles '(orderless-regexp)
         orderless-style-dispatchers '(flex-if-twiddle
-                                      literal-if-hat
+                                      literal-if-equal
                                       without-if-bang)))
 
 ;; save the search history
@@ -486,8 +486,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
-  (org-mode . smartparens-mode)
-  (smartparens-mode . smartparens-strict-mode) ; enforce pairs to be balanced
+  ;; (org-mode . smartparens-mode) ; messing with org-mode
+  ;; (smartparens-mode . smartparens-strict-mode) ; enforce pairs to be balanced
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   (setq sp-show-pair-delay 0.125
@@ -768,22 +768,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (org-mode . visual-line-mode)
   (org-mode . org-indent-mode)          ; align with heading
-  :custom
-   (org-hide-emphasis-markers nil)        ; avoid noisy //,__, **(makes annoying to edit) 
-   (org-startup-indented nil)		; start collapsed
-   (org-startup-folded t)               ; folded in "overview" state
-   (org-hide-leading-stars t)           ; don't show a  bunch of '*'
-   (org-edit-src-content-indentation 0)
-   (org-outline-path-complete-in-steps nil)
-   (org-special-ctrl-a/e t)       ; when jump to beginning of line be aware of *
-   (org-cycle-separator-lines 0)  ; no empty lines between headings
-   (org-fontify-quote-and-verse-blocks t) ; yes syntax highlighting
-   (org-insert-heading-respect-content t) ; insert heading after current tree
-   (org-catch-invisible-edits 'show-and-error) ;make visible then abort
-   (org-tags-column 0)                        ; tag right after text
-   (org-html-htmlize-output-type 'inline-css)   ; nil to export as plain text
-   (org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
   :config
+  (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
+        org-startup-indented nil		; start collapsed
+        org-startup-folded t               ; folded in "overview" state
+        org-hide-leading-stars t           ; don't show a  bunch of '*'
+        org-edit-src-content-indentation 0
+        org-outline-path-complete-in-steps nil
+        org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
+        org-cycle-separator-lines 0  ; no empty lines between headings
+        org-fontify-quote-and-verse-blocks t ; yes syntax highlighting
+        org-insert-heading-respect-content t ; insert heading after current tree
+        org-catch-invisible-edits 'show-and-error ;make visible then abort
+        org-tags-column 0                        ; tag right after text
+        org-html-htmlize-output-type 'inline-css   ; nil to export as plain text
+        org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
   (transient-mark-mode -1)
 
   ;; remove org-cycle-hide-drawers from cycle hook
