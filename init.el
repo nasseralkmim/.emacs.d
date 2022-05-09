@@ -2421,4 +2421,11 @@ graphics."
   ('normal org-mode-map "g p b" 'org-auctex-preview-buffer)
   ('normal org-mode-map "g p c" 'org-auctex-preview-clearout-buffer))
 
+;; query for org
+(use-package org-ql
+  :disabled
+  :after org
+  :straight (org-ql :host github :repo "alphapapa/org-ql"
+            :files (:defaults (:exclude "helm-org-ql.el"))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
