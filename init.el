@@ -730,6 +730,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq undo-propose-pop-to-buffer t))
 
+;; visual undo
+(use-package vundo
+  :commands vundo)
+
 (use-package magit
   :general
   ('normal magit-section-mode-map "C-<tab>" nil)
