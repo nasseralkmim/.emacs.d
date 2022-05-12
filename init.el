@@ -736,7 +736,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package magit
   :general
-  ('normal magit-section-mode-map "C-<tab>" nil)
+  (magit-section-mode-map "C-<tab>" nil)
   ("C-x g" 'magit-status)
   :config
   (setq magit-diff-hide-trailing-cr-characters t)
