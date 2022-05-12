@@ -1432,6 +1432,7 @@ graphics."
   ('normal dired-mode-map "SPC" nil)
   ("C-x C-j" 'dired-jump-other-window)
   ("C-x j" 'dired-jump)
+  ('normal dired-mode-map "M-&" 'dired-do-async-shell-command)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
@@ -2375,6 +2376,8 @@ graphics."
         ".log$"              ;for dtache log
         "\\*Dtache Shell Command\\*"
         help-mode
+        "Command\\*$"                   ;for shell command
+        "Help\\*$"
         "\\*Python\\*"
         compilation-mode))
   (popper-mode +1)
