@@ -377,6 +377,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
   ("C-s" 'consult-line)			; search lines with preview
+  ("C-S-s" 'consult-focus-lines)	; show only matching results
   ("C-c m" 'consult-mark)
   ;; two parts: search  and filter
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
