@@ -2392,6 +2392,12 @@ graphics."
 (use-package rainbow-delimiters
   :hook (smartparens-mode . rainbow-delimiters-mode))
 
+;; highlight scope defined by delimiters
+;; useful sometimes in tex
+(use-package rainbow-blocks
+  :diminish rainbow-blocks-mode
+  :hook (LaTeX-mode . rainbow-blocks-mode))
+
 ;; alternative to flyspell
 (use-package spell-fu
   :disabled
