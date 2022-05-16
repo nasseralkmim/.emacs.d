@@ -634,6 +634,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; move around text
 (use-package evil-easymotion
+  :disabled
   :defer 1
   :after evil
   :config
@@ -2141,6 +2142,9 @@ graphics."
 (use-package avy
   :general
   ('normal "t" 'avy-goto-char-timer)
+  ('normal :prefix "SPC"
+           "j" 'avy-goto-line-below
+           "k" 'avy-goto-line-above)
   :demand
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
