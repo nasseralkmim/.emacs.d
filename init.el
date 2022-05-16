@@ -1392,7 +1392,7 @@ graphics."
 
 ;; labels, references, citations and indices in LaTeX
 ;; usually: C-c RET -> eqref -> TAB -> select label with completion
-;; disabled: prefer now just using completions
+;; disabled: prefer now just using completions (no more automatic label)
 (use-package reftex
   :disabled
   :after latex

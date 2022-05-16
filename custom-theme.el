@@ -2,11 +2,11 @@
 
 (custom-theme-set-faces `custom
                         ;; latex
-                        `(font-latex-sectioning-1-face ((t (:weight bold :slant oblique :box t))))
-                        `(font-latex-sectioning-2-face ((t (:weight bold :box t))))
-                        `(font-latex-sectioning-3-face ((t (:weight bold :underline t))))
-                        `(font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
-                        `(font-latex-sectioning-5-face ((t (:weight normal :slant oblique :underline t))))
+                        `(font-latex-sectioning-1-face ((t (:weight bold :slant oblique :box t :inherit outline-1))))
+                        `(font-latex-sectioning-2-face ((t (:weight bold :box t :inherit outline-2))))
+                        `(font-latex-sectioning-3-face ((t (:weight bold :underline t :inherit outline-3))))
+                        `(font-latex-sectioning-4-face ((t (:weight bold :slant normal :inherit outline-4))))
+                        `(font-latex-sectioning-5-face ((t (:weight normal :slant oblique :underline t :inherit outline-5))))
                         `(font-latex-string-face ((t (:foreground "saddle brown"))))
                         ;; general
                         `(font-lock-comment-face ((t (:foreground "gray60" :slant italic))))
