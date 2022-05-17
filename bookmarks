@@ -53,7 +53,7 @@
  (rear-context-string)
  (position . 1))
 ("posts"
- (filename . "~/Documents/nasser-website/content/notes/")
+ (filename . "~/Website/content/notes/")
  (front-context-string . ".git\n  drwxr-xr-")
  (rear-context-string . "022-02-19 17:23 ")
  (position . 101))
