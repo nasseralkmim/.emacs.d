@@ -738,10 +738,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package magit
   :general
-  (magit-section-mode-map "C-<tab>" nil)
-  ('normal magit-section-mode-map "C-<tab>" nil)
   ("C-x g" 'magit-status)
   :config
+  (general-def magit-section-mode-map "C-<tab>" nil)
+  (general-def 'normal magit-section-mode-map "C-<tab>" nil)
   (setq magit-diff-hide-trailing-cr-characters t)
   ;; open commit in insert mode
   (add-hook 'git-commit-mode-hook 'evil-insert-state))
@@ -1200,6 +1200,22 @@ graphics."
   (setq outline-minor-mode-cycle t
 	;; outline-minor-mode-highlight 'append  ;; bug with C++ source block
         ))  
+
+;; trying to make outline work with python docstring
+(use-package outline-python
+  :disabled
+  :straight nil
+  :after outline
+  :init
+  (add-hook 'python-mode-hook  '(lambda ()
+                                  (setq outline-regexp
+                                        (rx (group 
+                                             ;; Heading level
+                                             (group (* space)) ; 0 or more spaces
+                                             bow
+                                             ;; Keywords
+                                             (or "class" "def" "else" "elif" "except" "for" "if" "try" "while")
+                                             eow))))))
 
 (use-package latex
   :straight auctex
