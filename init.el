@@ -1674,6 +1674,8 @@ graphics."
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
+  :general
+  (python-mode-map "<backtab>" nil)
   :hook ((python-mode . toggle-truncate-lines)
 	 (python-mode . display-fill-column-indicator-mode))
   :config
@@ -1907,7 +1909,8 @@ graphics."
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
-  (vterm-mode-map "<f9>" nil))
+  (vterm-mode-map "<f9>" nil
+                  "<backtab>" nil))
 
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
