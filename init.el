@@ -2364,8 +2364,11 @@ graphics."
 ;; highlight scope defined by delimiters
 ;; useful sometimes in tex
 (use-package rainbow-blocks
+  :disabled
   :diminish rainbow-blocks-mode
-  :hook (LaTeX-mode . rainbow-blocks-mode))
+  :hook (LaTeX-mode . rainbow-blocks-mode)
+  :config
+  (setq rainbow-blocks-outermost-only-face-count 1))
 
 ;; alternative to flyspell
 (use-package spell-fu
