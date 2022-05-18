@@ -154,7 +154,7 @@
   ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
   ;; fira code: ligatures
   (set-face-attribute 'default nil :family "Victor Mono")
-  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
+  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
   (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
   (set-face-attribute 'variable-pitch nil :family "Input Sans")
   :custom-face 
@@ -1487,14 +1487,14 @@ graphics."
                 (eval-after-load 'kind-icon
                   (kind-icon-reset-cache))
                 ;; use oblique version of Victor for italic
-                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique)
+                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
                 ;; change for specific modes
                 ;; and use the italic (informal) for comments
                 ;; tree sitter does not work in terminal, apparently
                 (when (display-graphic-p)
                   (eval-after-load 'tree-sitter-hl
                     '(set-face-attribute 'tree-sitter-hl-face:comment nil
-                                         :family "Victor Mono" :slant 'italic)))
+                                         :family "Victor Mono" :slant 'italic :weight 'semibold)))
                 (eval-after-load 'auto-dim-other-buffers
                   '(set-face-attribute 'auto-dim-other-buffers-face nil
                                        :foreground (modus-themes-color 'fg-dim)))
@@ -2395,7 +2395,8 @@ graphics."
   (python-mode . virtual-comment-mode)
   (c++-mode . virtual-comment-mode)
   :config
-  (setq virtual-comment-face 'lazy-highlight)
+  (setq virtual-comment-face 'lazy-highlight
+        virtual-comment-default-file "~/.emacs.d/.evc")
   (with-eval-after-load 'evil
     (evil-set-initial-state 'virtual-comment-make-mode 'insert)))
 

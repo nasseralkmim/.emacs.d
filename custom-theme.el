@@ -9,7 +9,7 @@
                         `(font-latex-sectioning-5-face ((t (:weight normal :slant oblique :underline t :inherit outline-5))))
                         `(font-latex-string-face ((t (:foreground "saddle brown"))))
                         ;; general
-                        `(font-lock-comment-face ((t (:foreground "gray60" :slant italic))))
+                        `(font-lock-comment-face ((t (:foreground "gray60" :slant italic :weight medium))))
                         `(region ((t (:background "gainsboro"))))
                         `(iedit-occurrence ((t (:background "plum1"))))
                         `(mode-line-active ((t (:background "pale turquoise" :box (:line-width -1 :style released-button)))))

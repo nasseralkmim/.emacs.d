@@ -62,8 +62,8 @@
  (front-context-string . "**** Week 18 <20")
  (rear-context-string . "aper GAMM 2022.\n")
  (position . 29900))
-("simulations"
- (filename . "~/SeaDrive/My Libraries/simulations/")
+("analysis"
+ (filename . "~/SeaDrive/My Libraries/analysis/")
  (front-context-string . "  /home/nasser/S")
  (rear-context-string)
  (position . 1))
