@@ -644,11 +644,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil-snipe
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
   :general
-  ('normal "f" 'evil-snipe-f)
-  ('normal "s" 'evil-snipe-s)
-  ;; ('motion evil-snipe-local-mode-map
-  ;;          "t" 'evil-snipe-t
-  ;;          "T" 'evil-snipe-T)
+  ('normal "f" 'evil-snipe-f
+           "t" 'evil-snipe-s)
   :after evil
   :config
   (evil-snipe-override-mode 1)
@@ -2114,7 +2111,7 @@ graphics."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :general
-  ('normal "t" 'avy-goto-char-timer)
+  ('normal "s" 'avy-goto-char-timer)
   ('normal :prefix "SPC"
            "j" 'avy-goto-line-below
            "k" 'avy-goto-line-above)
