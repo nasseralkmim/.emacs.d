@@ -1112,7 +1112,9 @@ graphics."
   :after corfu
   :demand
   :config
-  (corfu-history-mode))
+  (corfu-history-mode 1)
+  (savehist-mode 1)
+  (add-to-list 'savehist-additional-variables 'corfu-history))
 
 ;; `completion at point' extensions for specific candidates in `completion in region'
 (use-package cape
