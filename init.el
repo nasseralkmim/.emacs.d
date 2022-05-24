@@ -757,18 +757,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode-map "C-c C-l" 'org-insert-link)
   (org-mode-map "C-c ," 'org-insert-structure-template)
   ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
-  ('normal org-mode-map "z n" 'org-toggle-narrow-to-subtree)
-  ('normal org-mode-map "z k" 'org-previous-visible-heading)
-  ('normal org-mode-map "z j" 'org-next-visible-heading)
-  ('normal org-mode-map "g k" 'org-backward-heading-same-level)
-  ('normal org-mode-map "g j" 'org-forward-heading-same-level)
   ('normal org-mode-map :prefix "z"
 	   "s j" 'org-babel-next-src-block
-	   "s k" 'org-babel-previous-src-block)
+	   "s k" 'org-babel-previous-src-block
+           "n" 'org-toggle-narrow-to-subtree
+           "k" 'org-previous-visible-heading
+           "j" 'org-next-visible-heading)
   ('normal org-mode-map :prefix "SPC"
            "ves" 'org-babel-execute-subtree
            "vg" 'org-babel-goto-named-src-block) 
-  ('normal org-mode-map :prefix "g" "pp" 'org-latex-preview)
+  ('normal org-mode-map :prefix "g"
+           "k" 'org-backward-heading-same-level
+           "j" 'org-forward-heading-same-level
+           "n" 'org-babel-next-src-block
+           "p" 'org-babel-previous-src-block)
   :hook
   (org-mode . visual-line-mode)
   (org-mode . org-indent-mode)          ; align with heading
@@ -1358,16 +1360,15 @@ graphics."
   :after latex
   :hook (LaTeX-mode . evil-tex-mode))
 
-;; labels, references, citations and indices in LaTeX
-;; usually: C-c RET -> eqref -> TAB -> select label with completion
-;; disabled: prefer now just using completions (no more automatic label)
+;; Creates UNIQUE labels, helps referencing them (not so good)
+;; AUCTeX defaut: C-c RET -> eqref -> prompts for label (can be with completion)
+;; RefTeX interface: C-c RET -> eqref -> TAB -> select label with completion
 (use-package reftex
   :disabled
   :after latex
   :commands reftex-toc
   :hook
-  (LaTeX-mode . (lambda ()
-                  (turn-on-reftex)))
+  (LaTeX-mode . (lambda () (turn-on-reftex))) ; reftex-mode
   :general
   ('normal reftex-mode-map :prefix "g r"
 	   "t" 'reftex-toc
