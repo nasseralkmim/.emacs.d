@@ -1244,11 +1244,11 @@ graphics."
   :config
   ;; basics configs
   (setq TeX-save-query nil
-        TeX-auto-save t
-        TeX-parse-self t       ;enable document parsing
+        TeX-auto-save t   ; enable parse on save (to force parse use C-c C-n (TeX-normal-mode))
+        TeX-parse-self t ; enable document parsing to get labels for completion
         TeX-PDF-mode t			; output pdf 
         TeX-electric-escape t
-        TeX-master nil) ;make auctex aware of multi-file documents
+        TeX-master nil) ; make auctex aware of multi-file documents
 
   ;; start latex buffer folded
   ;; (add-hook 'find-file-hook 'TeX-fold-buffer t)
