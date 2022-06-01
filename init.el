@@ -1469,7 +1469,7 @@ graphics."
 	modus-themes-paren-match '(bold underline)
 	modus-themes-no-mixed-fonts t
 	modus-themes-variable-pitch-ui nil
-	modus-themes-syntax '(faint)
+	modus-themes-syntax '(faint alt-syntax)
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
