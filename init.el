@@ -508,9 +508,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (flymake-mode-map "M-n" 'flymake-goto-next-error) 
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
-  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
-  (setq python-flymake-command '("flake8" "-")
-        python-check-command "/home/nasser/.local/bin/flake8")
   ;; delay check, check only on save
   (setq flymake-no-changes-timeout nil))
 
@@ -1690,7 +1687,11 @@ graphics."
   ;; change default function to identify docstring
   (defun my-python-mode-hook ()
     (setq indent-line-function #'my-python-indent-line))
-  (add-hook 'python-mode-hook #'my-python-mode-hook))
+  (add-hook 'python-mode-hook #'my-python-mode-hook)
+
+  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
+  (setq python-flymake-command '("flake8" "-")
+        python-check-command "/home/nasser/.local/bin/flake8"))
 
 ;; formatting python code
 (use-package python-black
