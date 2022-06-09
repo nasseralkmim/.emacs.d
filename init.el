@@ -503,16 +503,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
-;; built in alternative to smart paren
-(use-package elec-pair
-  :hook
-  (org-mode . electric-pair-mode)       ; instead of smartparens
-  :config
-  ;; disable "<"
-  (setq-local electric-pair-inhibit-predicate
-              `(lambda (c)
-                 (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c)))))
-
 (use-package flymake
   :general
   (flymake-mode-map "M-n" 'flymake-goto-next-error) 
