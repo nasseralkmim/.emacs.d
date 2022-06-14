@@ -571,6 +571,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; extra commands for multiple cursts
   (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete)))
         evil-mc-known-commands)
+  (push '(org-yank . ((:default . evil-mc-execute-default-call)))
+        evil-mc-known-commands)
   (push '(evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
         evil-mc-known-commands)
   (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
