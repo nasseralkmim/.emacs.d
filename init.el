@@ -1922,6 +1922,10 @@ graphics."
   (vterm-mode-map "s-n" 'vterm-toggle-forward
 		  "s-p" 'vterm-toggle-backward))
 
+;; multiple terminals
+(use-package multi-vterm
+  :commands multi-vterm)
+
 (use-package terminal-here
   :general
   ('normal "C-<f7>" 'terminal-here-launch)
@@ -1983,8 +1987,11 @@ graphics."
 ;; create backlinks when linking org-mode headings
 (use-package org-super-links
   :straight (org-super-links :type git :host github :repo "toshism/org-super-links")
-  :after org
+  ;; :after org  ; can use outside of org-mode, so use the keybindings to load
   :general
+  ('normal :prefix "C-c s"
+                "l" 'org-super-links-store-link
+                "p" 'org-super-links-insert-link)
   (org-mode-map :prefix "C-c s"
                 "s" 'org-super-links-link
                 "l" 'org-super-links-store-link
@@ -2427,3 +2434,4 @@ graphics."
             :files (:defaults (:exclude "helm-org-ql.el"))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+(put 'magit-diff-edit-hunk-commit 'disabled nil)
