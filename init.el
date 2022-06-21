@@ -546,11 +546,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('visual "R" 'evil-multiedit-match-all)
   ("M-d" 'evil-multiedit-match-and-next)
   ("M-C-d" 'evil-multiedit-match-and-prev)
-  ('(normal visual) evil-multiedit-state-map "<RET>" 'evil-multiedit-toggle-or-restrict-region) ;RET will toggle the region under the cursor
-  (evil-multiedit-state-map "C-j" 'evil-multiedit-next) 
-  (evil-multiedit-state-map "C-k" 'evil-multiedit-prev)
+  ('(normal visual) evil-multiedit-mode-map "M-t" 'evil-multiedit-toggle-or-restrict-region) 
   ('normal evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
   ('visual "C-S-d" 'evil-multiedit-restore)
+  ('insert evil-multiedit-mode-map "<RET>" nil) ; avoid toggling when completing with corfu
   :config
   (setq evil-multiedit-follow-matches t)
   (defun make-evil-multiedit-case-sensitive (fn &rest args)
