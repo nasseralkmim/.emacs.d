@@ -740,7 +740,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (general-def 'normal magit-section-mode-map "C-<tab>" nil)
   (setq magit-diff-hide-trailing-cr-characters t)
   ;; open commit in insert mode
-  (add-hook 'git-commit-mode-hook 'evil-insert-state))
+  (add-hook 'git-commit-mode-hook 'evil-insert-state)
+  ;; auto refresh magit
+  (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
 
 ;; show colors
 (use-package rainbow-mode
