@@ -1404,7 +1404,6 @@ graphics."
   ('normal dired-mode-map "SPC" nil)
   ("C-x C-j" 'dired-jump-other-window)
   ("C-x j" 'dired-jump)
-  ('normal dired-mode-map "M-&" 'dired-do-async-shell-command)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
@@ -1469,7 +1468,7 @@ graphics."
 	modus-themes-paren-match '(bold underline)
 	modus-themes-no-mixed-fonts t
 	modus-themes-variable-pitch-ui nil
-	modus-themes-syntax '(faint alt-syntax)
+	modus-themes-syntax '(alt-syntax)
 	modus-themes-italic-constructs t
 	modus-themes-bold-constructs t
 	modus-themes-fringes 'subtle
@@ -2326,7 +2325,7 @@ graphics."
                     :includes (dtache-consult dtache-org) )
   :general
   ('normal "<f7>" 'dtache-open-session)
-  ('normal dired-mode-map "&" 'dtache-shell-command)
+  ('normal dired-mode-map "M-&" 'dtache-shell-command)
   :config
   (dtache-setup)
   (with-eval-after-load 'embark
