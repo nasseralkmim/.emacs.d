@@ -2125,7 +2125,7 @@ graphics."
 (use-package avy
   :general
   ('normal "s" 'avy-goto-char-timer)
-  ('normal :prefix "SPC"
+  ('(normal visual) :prefix "SPC"
            "j" 'avy-goto-line-below
            "k" 'avy-goto-line-above)
   :demand
