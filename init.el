@@ -682,7 +682,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight (:includes evil-org-agenda)
   :diminish evil-org-mode
   :after evil org
-  :general ('normal org-mode-map "x" 'evil-delete-char)
+  :general
+  ('normal org-mode-map "x" 'evil-delete-char)
+  ('normal org-mode-map "z b" 'evil-scroll-line-to-bottom)
   :hook (org-mode . evil-org-mode)
   :config
   (require 'evil-org-agenda)
@@ -2365,6 +2367,7 @@ graphics."
         "\\*Dtache Shell Command\\*"
         help-mode
         "Command\\*$"                   ;for shell command
+        "^\\*Async.*"                   ; async commands
         "Help\\*$"
         "\\*Python\\*"
         compilation-mode))
