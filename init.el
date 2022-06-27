@@ -437,6 +437,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `export` the set of targets are shown in an appropriate major-mode
 ;; embark-mixed-indicator: if no action is selected, buffer will pop up
 (use-package embark
+  :straight (:includes embark-org :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
   ("M-a" 'embark-act)
@@ -463,6 +464,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand				;necessary for consult preview
   :hook (embark-collect-mode . embark-consult-preview-minor-mode)
   :after (embark consult))
+
+;; targets for org mode
+(use-package embark-org
+  :after embark
+  :demand)
 
 ;; utility for using icons fonts
 (use-package all-the-icons
@@ -773,6 +779,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            "j" 'org-forward-heading-same-level
            "n" 'org-babel-next-src-block
            "p" 'org-babel-previous-src-block)
+  ;; global map
+  ('(normal visual) "M-o" 'org-open-at-point-global)
   :hook
   (org-mode . visual-line-mode)
   (org-mode . org-indent-mode)          ; align with heading
