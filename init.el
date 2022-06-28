@@ -2378,7 +2378,7 @@ graphics."
         "\\*Dtache Shell Command\\*"
         help-mode
         "Command\\*$"                   ;for shell command
-        "^\\*Async.*"                   ; async commands
+        ("^\\*Async.*" . hide)                   ; async commands
         "Help\\*$"
         "\\*Python\\*"
         compilation-mode))
