@@ -341,6 +341,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       `(orderless-literal . ,(substring pattern 1))))
 
   ;; component start with "!" filter by string not in the candidate
+  ;; useful to:
+  ;; 1. exclude pattern from `consult-focus`
   (defun without-if-bang (pattern _index _total)
     (cond
      ((equal "!" pattern)
