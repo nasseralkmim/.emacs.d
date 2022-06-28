@@ -744,6 +744,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package magit
   :general
   ("C-x g" 'magit-status)
+  ("C-c g" 'magit-file-dispatch)
   :config
   (general-def magit-section-mode-map "C-<tab>" nil)
   (general-def 'normal magit-section-mode-map "C-<tab>" nil)
