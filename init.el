@@ -744,7 +744,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package magit
   :general
   ("C-x g" 'magit-status)
-  ("C-c g" 'magit-file-dispatch)
+  ("C-x C-g" 'magit-file-dispatch)
   :config
   (general-def magit-section-mode-map "C-<tab>" nil)
   (general-def 'normal magit-section-mode-map "C-<tab>" nil)
@@ -2353,13 +2353,24 @@ graphics."
   :init
   (dtache-org-setup))
 
-;; does not have embark actions
-;; has cool narrowing, but embark enhances workflow better
-(use-package dtache-consult
+;; for some reason it can not properly parse inline variable definition
+;; eg: var=1 && echo $var does not work
+;; requires dtach `yay dtach'
+;; run shell commands detached from emacs
+(use-package detached
   :disabled
-  :after dtache
+  :defer 1
+  :straight (detached :type git :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
-  ([remap dtache-open-session] 'dtache-consult-session))
+  ('normal "<f7>" 'detached-consult-session)
+  ('normal dired-mode-map "M-&" 'detached-shell-command)
+  :custom ((detached-show-output-on-attach t))
+  :init
+  (detached-init)
+  (with-eval-after-load 'embark
+    ;; add embar actions for 'detached-open-session'
+    (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
+    (add-to-list 'embark-keymap-alist '(detached . embark-detached-map))))
 
 
 ;; helps with windows popups
