@@ -512,6 +512,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
 (use-package flymake
+  :hook (python-mode . flymake-mode)
   :general
   (flymake-mode-map "M-n" 'flymake-goto-next-error) 
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
@@ -2192,6 +2193,8 @@ graphics."
   (python-mode . eglot-ensure) ; works if there is only one server available
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
+  :config
+  (setq eglot-stay-out-of 'flymake)     ; using own flymake command (flake8)
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
