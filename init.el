@@ -1931,6 +1931,7 @@ graphics."
 
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
+  :disabled
   :general
   ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
   (vterm-mode-map "s-n" 'vterm-toggle-forward
@@ -1938,6 +1939,7 @@ graphics."
 
 ;; multiple terminals
 (use-package multi-vterm
+  :general ("<f9>" 'multi-vterm)
   :commands multi-vterm)
 
 (use-package terminal-here
@@ -2194,7 +2196,7 @@ graphics."
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
   :config
-  (setq eglot-stay-out-of 'flymake)     ; using own flymake command (flake8)
+  (add-to-list 'eglot-stay-out-of 'flymake)     ; using own flymake command (flake8)
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
@@ -2393,6 +2395,7 @@ graphics."
         help-mode
         "Command\\*$"                   ;for shell command
         ("^\\*Async.*" . hide)                   ; async commands
+        "\\*xref\\*"
         "Help\\*$"
         "\\*Python\\*"
         compilation-mode))
