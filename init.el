@@ -163,12 +163,13 @@
   (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique)))))
 
 ;; change typeface size font
-(use-package emacs-zoom
+(use-package emacs-frame-zoom
   :straight nil
   :general
   ("C-M-=" 'zoom-frame)
   ("C-M--" 'zoom-frame-out)
   :init
+  ;; ref: https://stackoverflow.com/questions/24705984/increase-decrease-font-size-in-an-emacs-frame-not-just-buffer
   ;; setting typeface size
   (defun zoom-frame (&optional amt frame)
     "Increaze FRAME font size by amount AMT. Defaults to selected
@@ -179,12 +180,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            (size (font-get font :size))
            (amt (or amt 1))
            (new-size (+ size amt)))
+      ;; change size of images on org buffers
+      (dolist (buffer (buffer-list))
+        (with-current-buffer buffer
+          (when (string-equal major-mode "org-mode")
+            (org-zoom-inline-images))))
       (set-frame-font (font-spec :size new-size) t t)))
 
   (defun zoom-frame-out (&optional amt frame)
     "Call `zoom-frame' with negative argument."
     (interactive "p")
-    (zoom-frame (- (or amt 1)) frame)))
+    (zoom-frame (- (or amt 1)) frame)
+    ;; change size of images on org buffers
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (string-equal major-mode "org-mode")
+          (org-zoom-out-inline-images))))))
 
 ;; controls the behavior of windows
 (use-package emacs-display-windows
@@ -917,7 +928,7 @@ graphics."
   (add-to-list 'org-babel-default-header-args '(:noweb . "no-export")))
 
 ;; custom org function
-(use-package org-custom
+(use-package org-image-resize-inline
   :straight nil
   :after org
   :general
@@ -926,24 +937,25 @@ graphics."
   ('normal org-mode-map "C-+" 'org-zoom-inline-images)
   ('normal org-mode-map "C-_" 'org-zoom-out-inline-images)
   :init
-  (defun org-toggle-inline-images-refresh ()
-    (interactive)
-    (org-toggle-inline-images)
-    (org-toggle-inline-images))
-
   (defun org-zoom-inline-images (&optional amt)
-    (interactive)
+    (interactive "p")
+    ;; get size specified or start with 300
     (let* ((size (if org-image-actual-width
                      org-image-actual-width
                    300))
-           (amt (or amt 50))
+           ;; amount can be specified with prefix argument
+           ;; or use default value
+           (amt (if (eq current-prefix-arg nil)
+                    50
+                  current-prefix-arg))
            (new-size (+ size amt)))
-      (setq-local org-image-actual-width new-size)
+      (setq org-image-actual-width new-size)
       (org-redisplay-inline-images)))
 
-  (defun org-zoom-out-inline-images (&optional amt)
+  (defun org-zoom-out-inline-images ()
     (interactive)
-    (org-zoom-inline-images (- (or amt 50)))))
+      (setq org-image-actual-width nil)
+      (org-redisplay-inline-images)))
 
 ;; for windows
 (use-package ob-python
