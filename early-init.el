@@ -13,3 +13,11 @@
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)))       ;; No vertical scroll-bars
 
+;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
+;; native compilation settings
+(when (featurep 'native-compile)
+  ;; silence compiler warnings as they can be pretty disruptive
+  (setq native-comp-async-report-warnings-errors nil)
+
+  ;; make native compilation happens asynchronously
+  (setq native-comp-deferred-compilation t))
