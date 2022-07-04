@@ -1056,6 +1056,14 @@ graphics."
           ;; (:shebang . "#!/bin/bash -i") ;; does not play nice with dtache
           )))
 
+;; for UML diagrams in org-mode
+;; need to install `yay plantuml`
+(use-package ob-plantuml
+  :straight nil
+  :commands org-babel-execute:plantuml
+  :config
+  (setq org-plantuml-exec-mode 'plantuml))
+
 ;; insert web links with better description
 (use-package org-cliplink
   :commands org-cliplink
