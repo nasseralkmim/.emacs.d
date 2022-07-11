@@ -777,6 +777,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
+  ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
   (org-mode-map "C-c C-l" 'org-insert-link)
   (org-mode-map "C-c ," 'org-insert-structure-template)
   ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
@@ -1946,12 +1947,12 @@ graphics."
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
   :general
+  ;; ("<f9>" 'vterm-other-window)
   (vterm-mode-map "<f9>" nil
                   "<backtab>" nil))
 
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
-  :disabled
   :general
   ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
   (vterm-mode-map "s-n" 'vterm-toggle-forward
@@ -1959,6 +1960,7 @@ graphics."
 
 ;; multiple terminals
 (use-package multi-vterm
+  :disabled
   :general ("<f9>" 'multi-vterm)
   :commands multi-vterm)
 
@@ -2320,11 +2322,30 @@ graphics."
   (setq openwith-associations '(("\\.pdf\\'" "okular" (file))
                                 ("\\.xopp\\'" "xournalpp" (file)))))
 
+(use-package org-file-apps
+  :straight nil
+  :after org
+  :init
+  (setq org-file-apps
+        '((auto-mode . emacs)
+          (directory . emacs)
+          ("\\.mm\\'" . default)
+          ("\\.x?html?\\'" . default)
+          ("\\.pdf\\'" . default)
+          ("\\.pdf::\\([0-9]+\\)?\\'" . "okular %s -p %1")))) ; if file has ::<page> opens at this page
+
 ;; convert pdf to svg to display inline org image
 ;; only when in the workstation, otherwise too slow
+;; requires pdf-tools
 (use-package org-inline-pdf
   :when (string= system-name "ryzen-ms7c37")
   :hook (org-mode . org-inline-pdf-mode))
+
+;; insert org link to specified page in pdf
+;; uses regular org functions `org-insert-link-global'
+(use-package org-pdftools
+  :disabled t                             ;org file apps with regex is enough!
+  :hook (org-mode . org-pdftools-setup-link))
 
 (use-package doom-themes
   :disabled
