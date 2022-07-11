@@ -2,4 +2,4 @@
 # name: bibliography link
 # key: <b
 # --
-`(save-excursion (backward-sexp) (kill-word 1))`% [[file:~/SeaDrive/My Libraries/bibliography/`(yank)`.pdf::$1]]
+`(save-excursion (backward-sexp) (kill-sexp) (delete-char 1))`% [[file:~/SeaDrive/My Libraries/bibliography/`(yank)`.pdf::$1]]
