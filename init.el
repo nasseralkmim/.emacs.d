@@ -918,6 +918,8 @@ graphics."
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
+          ;; add tag variable to all python blocks... maybe not ideal, but usefull
+          (:var . "_tag_=(org-entry-get (point) \"TAGS\")")
           (:exports . "results")))) ; export only plots by default
 
 (use-package ob-core
