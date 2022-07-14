@@ -2334,7 +2334,8 @@ graphics."
           ("\\.mm\\'" . default)
           ("\\.x?html?\\'" . default)
           ("\\.pdf\\'" . default)
-          ("\\.pdf::\\([0-9]+\\)?\\'" . "okular %s -p %1")))) ; if file has ::<page> opens at this page
+          ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1")
+          ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1")))) ; if file has ::<page> opens at this page
 
 ;; convert pdf to svg to display inline org image
 ;; only when in the workstation, otherwise too slow
