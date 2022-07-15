@@ -323,9 +323,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         '((consult-outline unobtrusive)
           (consult-line unobtrusive)
           (consult-buffer unobtrusive)
-          (dtache-open-session buffer   ; open dtache sessions in a buffer
-                               (vertico-buffer-display-action . (display-buffer-at-bottom
-                                                                 (window-height . 13)))))))
+          ;; (dtache-open-session buffer   ; open dtache sessions in a buffer
+          ;;                      (vertico-buffer-display-action . (display-buffer-at-bottom
+          ;;                                                        (window-height . 13))))
+          )))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
