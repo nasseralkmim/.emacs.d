@@ -923,6 +923,19 @@ graphics."
           (:var . "_tag_=(org-entry-get (point) \"TAGS\")")
           (:exports . "results")))) ; export only plots by default
 
+(use-package ob-julia
+  :straight nil
+  :after org
+  :commands org-babel-execute:julia
+  :config
+  (setq org-babel-default-header-args:julia
+        '((:results . "output")
+          (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
+          (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
+          ;; add tag variable to all python blocks... maybe not ideal, but usefull
+          (:var . "_tag_=(org-entry-get (point) \"TAGS\")")
+          (:exports . "results"))))
+
 (use-package ob-core
   :straight nil
   :after org
@@ -1472,18 +1485,20 @@ graphics."
     (interactive)
     (dired-sidebar-show-sidebar)        ;show the side bar
     (dired-sidebar-toggle-with-current-directory) ; hide it and re opening with current dir
-    (dired-sidebar-toggle-with-current-directory)))
+    (dired-sidebar-toggle-with-current-directory)
+    ;; call dired so it uses dirvish
+    (dired-jump)))
 
-;; improved dired, does not work well
+;; improved dired
 (use-package dirvish
-  :disabled
   :straight (dirvish :type git :host github :repo "alexluigit/dirvish")
-  :after dired
   :init
-  (dirvish-override-dired-jump)
+  ;; Let Dirvish take over Dired globally
+  (dirvish-override-dired-mode)
   :config
   ;; don't show preview
-  (setq dirvish-enable-preview nil))
+  ;; (setq dirvish-enable-preview nil)
+  )
 
 ;; load modus in terminal
 (use-package modus-themes
