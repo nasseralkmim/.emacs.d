@@ -933,7 +933,6 @@ graphics."
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           ;; add tag variable to all python blocks... maybe not ideal, but usefull
-          (:var . "_tag_=(org-entry-get (point) \"TAGS\")")
           (:exports . "results"))))
 
 (use-package julia-mode
@@ -1467,7 +1466,7 @@ graphics."
         dired-recursive-deletes 'always
 	delete-by-moving-to-trash nil)	; move to trash (problem with naming)
 
-  ;; kill the dired buffer eand enters the current line file or directory
+  ;; kill the dired buffer and enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil))
 
 ;; open dired as a sidebar
@@ -1499,7 +1498,9 @@ graphics."
   ;; Let Dirvish take over Dired globally
   (dirvish-override-dired-mode)
   :config
-  (setq dirvish-attributes '(collapse file-size)))
+  (setq dirvish-attributes '(collapse file-size))
+  ;; kill buffer after entry file, avoid accumulate buffers
+  (put 'dired-find-alternate-file 'disabled nil))  
 
 ;; load modus in terminal
 (use-package modus-themes
@@ -1968,6 +1969,7 @@ graphics."
   :general
   ;; ("<f9>" 'vterm-other-window)
   (vterm-mode-map "<f9>" nil
+                  "C-w" nil
                   "<backtab>" nil))
 
 ;; manage multiple vterm's buffers
