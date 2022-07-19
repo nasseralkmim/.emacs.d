@@ -927,7 +927,7 @@ graphics."
   :straight nil
   :after org
   :commands org-babel-execute:julia
-  :config
+  :init
   (setq org-babel-default-header-args:julia
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
