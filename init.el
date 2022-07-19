@@ -2464,6 +2464,7 @@ graphics."
   :defer 1
   :general
   (popper-mode-map "C-`" 'popper-toggle-latest)
+  (popper-mode-map "C-@" 'popper-toggle-latest) ; for term
   (popper-mode-map "C-M-`" 'popper-cycle)
   :init
   ;; treat those as popups
