@@ -936,6 +936,9 @@ graphics."
           (:var . "_tag_=(org-entry-get (point) \"TAGS\")")
           (:exports . "results"))))
 
+(use-package julia-mode
+  :mode ("\\.jl\\'" . julia-mode))
+
 (use-package ob-core
   :straight nil
   :after org
@@ -1496,7 +1499,7 @@ graphics."
   ;; Let Dirvish take over Dired globally
   (dirvish-override-dired-mode)
   :config
-  (setq dirvish-attributes '(collapse git-msg file-size)))
+  (setq dirvish-attributes '(collapse file-size)))
 
 ;; load modus in terminal
 (use-package modus-themes
