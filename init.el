@@ -1496,9 +1496,7 @@ graphics."
   ;; Let Dirvish take over Dired globally
   (dirvish-override-dired-mode)
   :config
-  ;; don't show preview
-  ;; (setq dirvish-enable-preview nil)
-  )
+  (setq dirvish-attributes '(collapse git-msg file-size)))
 
 ;; load modus in terminal
 (use-package modus-themes
