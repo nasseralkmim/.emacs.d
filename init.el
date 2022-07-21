@@ -924,6 +924,7 @@ graphics."
           (:exports . "results")))) ; export only plots by default
 
 (use-package ob-julia
+  :disabled
   :straight nil
   :after org
   :commands org-babel-execute:julia
@@ -937,6 +938,21 @@ graphics."
 
 (use-package julia-mode
   :mode ("\\.jl\\'" . julia-mode))
+
+(use-package julia-vterm)
+
+(use-package ob-julia-vterm
+  :after org
+  :commands org-babel-execute:julia-vterm
+  :init
+  (setq org-babel-default-header-args:julia-vterm
+        '((:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
+          (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
+          (:exports . "results")))
+
+  ;; alias
+  (defalias 'org-babel-execute:julia 'org-babel-execute:julia-vterm)
+  (defalias 'org-babel-variable-assignments:julia 'org-babel-variable-assignments:julia-vterm))
 
 (use-package ob-core
   :straight nil
