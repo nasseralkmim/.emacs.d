@@ -2543,5 +2543,10 @@ graphics."
   :straight (org-ql :host github :repo "alphapapa/org-ql"
             :files (:defaults (:exclude "helm-org-ql.el"))))
 
+;; allows inline animations in org
+(use-package org-inline-anim
+  :after org
+  :commands org-inline-anim-mode)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'magit-diff-edit-hunk-commit 'disabled nil)
