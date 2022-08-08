@@ -1517,6 +1517,8 @@ graphics."
   (dirvish-override-dired-mode)
   :config
   (setq dirvish-attributes '(collapse file-size))
+  (setq dired-mouse-drag-files t)                   ; added in Emacs 29
+  (setq mouse-drag-and-drop-region-cross-program t) ; added in Emacs 29
   ;; kill buffer after entry file, avoid accumulate buffers
   (put 'dired-find-alternate-file 'disabled nil))  
 
