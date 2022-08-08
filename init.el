@@ -1510,6 +1510,8 @@ graphics."
 ;; improved dired
 (use-package dirvish
   :straight (dirvish :type git :host github :repo "alexluigit/dirvish")
+  :general
+  ('normal dired-mode-map "Y" 'dirvish-copy-file-path)
   :init
   ;; Let Dirvish take over Dired globally
   (dirvish-override-dired-mode)
