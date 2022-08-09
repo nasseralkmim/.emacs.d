@@ -1486,7 +1486,7 @@ graphics."
   (put 'dired-find-alternate-file 'disabled nil))
 
 ;; open dired as a sidebar
-(use-package dired-sidebar
+((use-package dired-sidebar
   :general
   ("C-x C-j" 'dired-sidebar-jump)
   ('normal dired-sidebar-mode-map
@@ -1504,8 +1504,9 @@ graphics."
     (dired-sidebar-show-sidebar)        ;show the side bar
     (dired-sidebar-toggle-with-current-directory) ; hide it and re opening with current dir
     (dired-sidebar-toggle-with-current-directory)
-    ;; call dired so it uses dirvish
-    (dired-jump)))
+    ;; call dired again so it uses dirvish
+    (dired "./")
+    ))
 
 ;; improved dired
 (use-package dirvish
