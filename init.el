@@ -2001,8 +2001,8 @@ graphics."
 
 ;; multiple terminals
 (use-package multi-vterm
-  :disabled
-  :general ("<f9>" 'multi-vterm)
+  :general
+  ("S-<f9>" 'multi-vterm)
   :commands multi-vterm)
 
 (use-package terminal-here
@@ -2447,19 +2447,13 @@ graphics."
 ;; run shell commands detached from emacs
 (use-package detached
   :disabled
-  :defer 1
   :straight (detached :type git :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ('normal "<f7>" 'detached-consult-session)
   ('normal dired-mode-map "M-&" 'detached-shell-command)
   :custom ((detached-show-output-on-attach t))
   :init
-  (detached-init)
-  (with-eval-after-load 'embark
-    ;; add embar actions for 'detached-open-session'
-    (defvar embark-detached-map (make-composed-keymap detached-action-map embark-general-map))
-    (add-to-list 'embark-keymap-alist '(detached . embark-detached-map))))
-
+  (detached-init))
 
 ;; helps with windows popups
 (use-package popper
