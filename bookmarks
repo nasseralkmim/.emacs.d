@@ -2,7 +2,13 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("alienware"
+(("workstation"
+ (filename . "/ssh:138.232.83.174:~/")
+ (front-context-string . ".cache\n  drwxr-x")
+ (rear-context-string . "022-08-10 11:20 ")
+ (position . 82)
+ (last-modified 25336 63645 208373 860000))
+("alienware"
  (filename . "/ssh:138.232.83.149:~/")
  (front-context-string . ".cache\n  drwxr-x")
  (rear-context-string . "022-08-09 14:17 ")
@@ -90,11 +96,6 @@
 ("notes"
  (filename . "~/SeaDrive/My Libraries/notes/")
  (front-context-string . "  /home/nasser/S")
- (rear-context-string)
- (position . 1))
-("remote"
- (filename . "/ssh:138.232.83.174:~/SeaDrive/My Libraries/simulations/")
- (front-context-string . "  /ssh:138.232.8")
  (rear-context-string)
  (position . 1))
 ("init"

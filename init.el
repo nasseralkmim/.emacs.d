@@ -2127,7 +2127,14 @@ graphics."
   :config
   (setq tramp-default-method "ssh"
 	tramp-default-host "138.232.83.174"
-	tramp-verbose 4))
+	tramp-verbose 4)
+  ;; apparently makes it faster
+  ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
+  (setq remote-file-name-inhibit-cache nil)
+  (setq vc-ignore-dir-regexp
+        (format "%s\\|%s"
+                vc-ignore-dir-regexp
+                tramp-file-name-regexp)))
 
 ;; shows git information on fringe
 (use-package diff-hl
