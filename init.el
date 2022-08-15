@@ -1206,6 +1206,7 @@ graphics."
   (add-to-list 'completion-at-point-functions #'cape-keyword))
 
 (use-package corfu-doc
+  :when (display-graphic-p)
   :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
   :after corfu
   :custom
