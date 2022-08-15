@@ -2100,11 +2100,19 @@ graphics."
 
 ;; highligh indentation
 (use-package highlight-indent-guides
+  :disabled
   :diminish highlight-indent-guides-mode
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character))
+
+;; highlight based on scope
+(use-package hl-indent-scope
+  :straight (hl-indent-scope :type git :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
+  :diminish highlight-indent-guides-mode
+  :hook
+  (prog-mode . highlight-indent-guides-mode))
 
 ;; suppress error on tui
 (use-package highlight-indent-guides
