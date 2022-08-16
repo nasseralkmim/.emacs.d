@@ -2140,7 +2140,6 @@ graphics."
   :straight (:type built-in)
   :config
   (setq tramp-default-method "ssh"
-	tramp-default-host "138.232.83.174"
 	tramp-verbose 4)
   ;; apparently makes it faster
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
