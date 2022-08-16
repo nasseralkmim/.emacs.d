@@ -876,6 +876,13 @@ graphics."
     (org-babel-execute-subtree)
     (org-redisplay-inline-images)))
 
+;; org image remote
+(use-package org-display-inline-image-remote
+  :straight nil
+  :after org
+  :init
+  (setq org-display-remote-inline-images 'download))
+
 ;; org export
 (use-package ox
   :straight nil
