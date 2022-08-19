@@ -1512,10 +1512,14 @@ graphics."
     (dired-sidebar-toggle-with-current-directory) ; hide it and re opening with current dir
     (dired-sidebar-toggle-with-current-directory)
     ;; call dired again so it uses dirvish
-    (dired "./")))
+    ;; not using dirvish now (problems with tram)
+    ;; (dired "./")
+    ))
 
 ;; improved dired
+;; problem with tramp
 (use-package dirvish
+  :disabled
   :straight (dirvish :type git :host github :repo "alexluigit/dirvish")
   :general
   ('normal dired-mode-map "Y" 'dirvish-copy-file-path)
