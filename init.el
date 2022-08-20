@@ -1594,7 +1594,7 @@ graphics."
 (use-package modus-themes
   :unless (display-graphic-p)
   :init
-  (modus-themes-load-vivendi))
+  (modus-themes-load-operandi))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
