@@ -2127,8 +2127,9 @@ graphics."
 
 ;; suppress error on tui
 (use-package highlight-indent-guides
+  :after highlight-indent-guides
   :unless (display-graphic-p)
-  :config
+  :init
   (setq highlight-indent-guides-suppress-auto-error t))
 
 ;; emacs built in version control
