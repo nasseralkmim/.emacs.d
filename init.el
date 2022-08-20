@@ -2526,7 +2526,7 @@ graphics."
 
 ;; eye candy for org
 (use-package org-modern
-  :when (display-graphic-p)             ;only when gui
+  ;; :when (display-graphic-p)             ;only when gui
   :hook (org-mode . org-modern-mode)
   :custom
   (org-modern-star nil))
