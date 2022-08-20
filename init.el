@@ -1536,7 +1536,7 @@ graphics."
 
 ;; load modus in terminal
 (use-package modus-themes
-  :when (display-graphic-p)
+  ;; :when (display-graphic-p)
   :custom-face
   ;; (org-meta-line ((t (:height 0.9))))
   ;; (org-drawer ((t (:height 0.9))))
