@@ -1562,31 +1562,32 @@ graphics."
         modus-themes-headings '((t . (rainbow)))
 	modus-themes-mode-line '(borderless accented moody))
 
-  ;; hook to enforce change when theme is toggled (which loads the theme)
-  (add-hook 'modus-themes-after-load-theme-hook
-	    (lambda ()
-              (progn 
-                ;; adjust org modern
-                (eval-after-load 'org-modern
-                  (global-org-modern-mode))
-                ;; reset icons cache to match theme
-                (eval-after-load 'kind-icon
-                  (kind-icon-reset-cache))
-                ;; use oblique version of Victor for italic
-                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
-                ;; change for specific modes
-                ;; and use the italic (informal) for comments
-                ;; tree sitter does not work in terminal, apparently
-                (when (display-graphic-p)
-                  (eval-after-load 'tree-sitter-hl
-                    '(set-face-attribute 'tree-sitter-hl-face:comment nil
-                                         :family "Victor Mono" :slant 'italic :weight 'semibold)))
-                (eval-after-load 'auto-dim-other-buffers
-                  '(set-face-attribute 'auto-dim-other-buffers-face nil
-                                       :foreground (modus-themes-color 'fg-dim)))
-                (eval-after-load 'smartparens
-                  '(set-face-attribute 'sp-show-pair-match-content-face nil
-                                       :background (modus-themes-color 'bg-paren-expression))))))
+  (when (display-graphic-p)
+    ;; hook to enforce change when theme is toggled (which loads the theme)
+    (add-hook 'modus-themes-after-load-theme-hook
+              (lambda ()
+                (progn 
+                  ;; adjust org modern if GUI
+                  (eval-after-load 'org-modern
+                    (global-org-modern-mode))
+                  ;; reset icons cache to match theme
+                  (eval-after-load 'kind-icon
+                    (kind-icon-reset-cache))
+                  ;; use oblique version of Victor for italic
+                  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
+                  ;; change for specific modes
+                  ;; and use the italic (informal) for comments
+                  ;; tree sitter does not work in terminal, apparently
+                  (when (display-graphic-p)
+                    (eval-after-load 'tree-sitter-hl
+                      '(set-face-attribute 'tree-sitter-hl-face:comment nil
+                                           :family "Victor Mono" :slant 'italic :weight 'semibold)))
+                  (eval-after-load 'auto-dim-other-buffers
+                    '(set-face-attribute 'auto-dim-other-buffers-face nil
+                                         :foreground (modus-themes-color 'fg-dim)))
+                  (eval-after-load 'smartparens
+                    '(set-face-attribute 'sp-show-pair-match-content-face nil
+                                         :background (modus-themes-color 'bg-paren-expression)))))))
   :general
   ("<f5>"  'modus-themes-toggle))
 
