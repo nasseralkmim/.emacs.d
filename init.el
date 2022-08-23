@@ -2574,5 +2574,9 @@ graphics."
   :after org
   :commands org-inline-anim-mode)
 
+;; eldoc in childframe
+(use-package eldoc-box
+  :hook (c++-mode . eldoc-box-hover-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'magit-diff-edit-hunk-commit 'disabled nil)
