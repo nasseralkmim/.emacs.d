@@ -2590,5 +2590,22 @@ graphics."
   :general
   (dired-mode-map "C-c C-r" 'dired-rsync))
 
+;; function to run local command on remote file
+;; https://emacs.stackexchange.com/questions/42252/run-local-command-on-remote-file-with-tramp
+(use-package dired-local-command-on-remote
+  :straight nil
+  :after dired
+  :general
+  ('normal dired-mode-map "\"" 'dired-do-local-command)
+  :init
+  (defun dired-do-local-command ()
+    (interactive)
+    (let* ((marked-files (dired-get-marked-files nil current-prefix-arg))
+           (local-tmp-files (mapcar #'file-local-copy marked-files))
+           (num-files (length local-tmp-files))
+           (default-directory temporary-file-directory)
+           (command (dired-read-shell-command "! on %s: " num-files marked-files)))
+      (dired-do-shell-command command num-files local-tmp-files))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'magit-diff-edit-hunk-commit 'disabled nil)
