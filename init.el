@@ -2584,5 +2584,11 @@ graphics."
   :straight nil
   :hook (dired-mode . dired-async-mode))
 
+;; try later as alternative to dired-async
+(use-package dired-rsync
+  :after dired
+  :general
+  (dired-mode-map "C-c C-r" 'dired-rsync))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'magit-diff-edit-hunk-commit 'disabled nil)
