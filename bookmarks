@@ -83,9 +83,10 @@
  (position . 101))
 ("log"
  (filename . "~/SeaDrive/My Libraries/notes/log-notes/log.org")
- (front-context-string . "**** Week 18 <20")
- (rear-context-string . "aper GAMM 2022.\n")
- (position . 29900))
+ (front-context-string . "2. [ ] update sa")
+ (rear-context-string . "(=bamg-1=)}}}]]\n")
+ (position . 38297)
+ (last-modified 25350 9169 936733 824000))
 ("analysis"
  (filename . "~/SeaDrive/My Libraries/analysis/")
  (front-context-string . "  /home/nasser/S")

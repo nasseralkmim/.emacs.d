@@ -141,11 +141,11 @@
   (pixel-scroll-precision-mode t))
 
 ;; custom emacs theme
-(use-package custom-theme
+(use-package alkna-theme
   :straight nil
   :when (display-graphic-p)
   :init
-  (load-theme 'custom t))
+  (load-theme 'alkna t))
 
 ;; typeface
 (use-package custom-typefaces
@@ -1605,12 +1605,14 @@ graphics."
   :straight nil
   :init
   (defun highlight-selected-window ()
-    "Highlight selected window with a different background color."
-    (walk-windows (lambda (w)
-                    (unless (eq w (selected-window)) 
-                      (with-current-buffer (window-buffer w)
-                        (buffer-face-set '(:background "gray94"))))))
-    (buffer-face-set 'default))
+    "Highlight selected window with a different background color.
+Only if there is more than one window opened."
+    (when (> (length (window-list)) 1)
+      (walk-windows (lambda (w)
+                      (unless (eq w (selected-window)) 
+                        (with-current-buffer (window-buffer w)
+                          (buffer-face-set '(:background "gray94"))))))
+      (buffer-face-set 'default)))
 
   (add-hook 'buffer-list-update-hook 'highlight-selected-window)
   (defun disable-window-highlight (theme &rest args)

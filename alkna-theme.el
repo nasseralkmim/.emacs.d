@@ -1,6 +1,6 @@
-(deftheme custom)
+(deftheme alkna)
 
-(custom-theme-set-faces `custom
+(custom-theme-set-faces `alkna
                         ;; latex
                         `(font-latex-sectioning-1-face ((t (:weight bold :slant oblique :box t :inherit outline-1))))
                         `(font-latex-sectioning-2-face ((t (:weight bold :box t :inherit outline-2))))
@@ -9,7 +9,7 @@
                         `(font-latex-sectioning-5-face ((t (:weight normal :slant oblique :underline t :inherit outline-5))))
                         `(font-latex-string-face ((t (:foreground "saddle brown"))))
                         ;; general
-                        `(font-lock-comment-face ((t (:foreground "gray50" :slant italic :weight medium))))
+                        `(font-lock-comment-face ((t (:foreground "#aa9e9f" :slant italic :weight medium))))
                         `(region ((t (:background "gainsboro"))))
                         `(iedit-occurrence ((t (:background "plum1"))))
                         `(mode-line-active ((t (:background "pale turquoise" :box (:line-width -1 :style released-button)))))
@@ -39,4 +39,4 @@
                         ;; smartparens
                         `(sp-show-pair-match-content-face ((t (:inherit 'highlight)))))
 
-(provide-theme 'custom)
+(provide-theme 'alkna)
