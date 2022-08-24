@@ -2146,7 +2146,8 @@ graphics."
 (use-package tramp
   :straight (:type built-in)
   :config
-  (setq tramp-default-method "ssh"
+  ;; scp is faster than ssh for copying files
+  (setq tramp-default-method "scp"
 	tramp-verbose 4)
   ;; apparently makes it faster
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
@@ -2577,6 +2578,11 @@ graphics."
 ;; eldoc in childframe
 (use-package eldoc-box
   :hook (c++-mode . eldoc-box-hover-mode))
+
+;; async support for dired
+(use-package dired-async
+  :straight nil
+  :hook (dired-mode . dired-async-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
 (put 'magit-diff-edit-hunk-commit 'disabled nil)
