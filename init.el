@@ -2578,7 +2578,9 @@ Only if there is more than one window opened."
   :commands org-inline-anim-mode)
 
 ;; eldoc in childframe
+;; sometimes it gets in the way
 (use-package eldoc-box
+  :disabled
   :hook (c++-mode . eldoc-box-hover-mode))
 
 ;; async support for dired
