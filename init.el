@@ -927,7 +927,6 @@ graphics."
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           ;; add tag variable to all python blocks... maybe not ideal, but usefull
-          (:var . "_tag_=(org-entry-get (point) \"TAGS\")")
           (:exports . "results")))) ; export only plots by default
 
 (use-package ob-julia
@@ -1159,6 +1158,7 @@ graphics."
   :after flyspell)
 
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
+;; note: makes it slow when saving the buffer
 (use-package wucuo
   :hook
   (text-mode . wucuo-start)
@@ -2548,14 +2548,17 @@ Only if there is more than one window opened."
 
 (use-package virtual-comment
   :diminish virtual-comment-mode
+  :general
+  ('normal "C-<return>" 'virtual-comment-make)
   :hook 
   (python-mode . virtual-comment-mode)
   (c++-mode . virtual-comment-mode)
   :config
   (setq virtual-comment-face 'lazy-highlight
         virtual-comment-default-file "~/.emacs.d/.evc")
+  ;; make comment start in "insert" mode
   (with-eval-after-load 'evil
-    (evil-set-initial-state 'virtual-comment-make-mode 'insert)))
+    (evil-set-initial-state 'text-mode 'insert)))
 
 ;; improve org latex support
 (use-package org-auctex
