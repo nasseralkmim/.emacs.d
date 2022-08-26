@@ -2613,6 +2613,7 @@ Only if there is more than one window opened."
 
 (use-package markdown-mode
   :straight nil
+  :after eglot                          ; uses markdown faces in eldoc
   :init
   ;; remove underline for line break in markdown
   (set-face-underline 'markdown-line-break-face nil))
