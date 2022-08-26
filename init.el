@@ -1481,6 +1481,7 @@ graphics."
   ('normal dired-mode-map "SPC" nil)
   ("C-x C-j" 'dired-jump-other-window)
   ("C-x j" 'dired-jump)
+  (dired-jump-map "j" nil)             ; remove repeat with "j"
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
 	dired-auto-revert-buffer t
