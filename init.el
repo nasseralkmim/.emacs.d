@@ -1473,7 +1473,8 @@ graphics."
   (dired-mode . dired-hide-details-mode)
   ;; (dired-mode . (lambda () (toggle-truncate-lines)))
   :general
-  (dired-mode-map "C-c C-d" 'mkdir)
+  (dired-mode-map "C-c C-d" 'mkdir
+                  "C-," 'dired-omit-mode)
   ('normal dired-mode-map "h" 'dired-up-directory)
   (dired-mode-map "M-o" 'dired-omit-mode)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
@@ -2620,4 +2621,3 @@ Only if there is more than one window opened."
   (set-face-underline 'markdown-line-break-face nil))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
-(put 'magit-diff-edit-hunk-commit 'disabled nil)
