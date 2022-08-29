@@ -2126,7 +2126,7 @@ Only if there is more than one window opened."
 
 ;; highlight based on scope
 (use-package hl-indent-scope
-  :straight (hl-indent-scope :type git :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
+  :straight (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
   :hook
   (prog-mode . hl-indent-scope-mode))
 
