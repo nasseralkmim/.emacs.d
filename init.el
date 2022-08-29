@@ -2555,10 +2555,7 @@ Only if there is more than one window opened."
   (c++-mode . virtual-comment-mode)
   :config
   (setq virtual-comment-face 'lazy-highlight
-        virtual-comment-default-file "~/.emacs.d/.evc")
-  ;; make comment start in "insert" mode
-  (with-eval-after-load 'evil
-    (evil-set-initial-state 'text-mode 'insert)))
+        virtual-comment-default-file "~/.emacs.d/.evc"))
 
 ;; improve org latex support
 (use-package org-auctex
