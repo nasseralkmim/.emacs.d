@@ -2616,11 +2616,4 @@ Only if there is more than one window opened."
            (command (dired-read-shell-command "! on %s: " num-files marked-files)))
       (dired-do-shell-command command num-files local-tmp-files))))
 
-(use-package markdown-mode
-  :straight nil
-  :after eglot                          ; uses markdown faces in eldoc
-  :init
-  ;; remove underline for line break in markdown
-  (set-face-underline 'markdown-line-break-face nil))
-
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
