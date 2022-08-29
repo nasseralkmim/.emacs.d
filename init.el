@@ -2007,7 +2007,9 @@ Only if there is more than one window opened."
   ;; ("<f9>" 'vterm-other-window)
   (vterm-mode-map "<f9>" nil
                   "C-w" nil
-                  "<backtab>" nil))
+                  "<backtab>" nil)
+  :config
+  (setq vterm-max-scrollback 20000))
 
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
