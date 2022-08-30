@@ -2481,7 +2481,7 @@ Only if there is more than one window opened."
 ;; run shell commands detached from emacs
 (use-package detached
   :disabled
-  :straight (detached :type git :repo "https://git.sr.ht/~niklaseklund/detached.el")
+  :straight (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ('normal "<f7>" 'detached-consult-session)
   ('normal dired-mode-map "M-&" 'detached-shell-command)
