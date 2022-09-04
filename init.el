@@ -2457,8 +2457,8 @@ Only if there is more than one window opened."
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
 (use-package dtache
-  :straight (dtache :type git :host gitlab :repo "niklaseklund/dtache"
-                    :includes (dtache-consult dtache-org) )
+  :disabled
+  :straight (dtache :type git :host gitlab :repo "niklaseklund/dtache")
   :general
   ('normal "<f7>" 'dtache-open-session)
   ('normal dired-mode-map "M-&" 'dtache-shell-command)
@@ -2470,18 +2470,18 @@ Only if there is more than one window opened."
     (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map))))
 
 ;; add `:dtache t' option to sh source block
+;; dtache org setup requires calls to ssh to recover the sessions
 (use-package dtache-org
+  :disabled
+  :straight nil
   :commands org-babel-execute:sh        ;load when executing code
-  :after org
+  :after org dtache
   :init
   (dtache-org-setup))
 
-;; for some reason it can not properly parse inline variable definition
-;; eg: var=1 && echo $var does not work
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
 (use-package detached
-  :disabled
   :straight (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ('normal "<f7>" 'detached-consult-session)
