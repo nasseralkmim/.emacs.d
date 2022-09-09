@@ -589,18 +589,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (global-evil-mc-mode 1)
   ;; extra commands for multiple cursts
-  (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete)))
-        evil-mc-known-commands)
-  (push '(org-yank . ((:default . evil-mc-execute-default-call)))
-        evil-mc-known-commands)
-  (push '(evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
-        evil-mc-known-commands)
-  (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call)))
-        evil-mc-known-commands)
-  (push '(sp-forward-sexp . ((:default . evil-mc-execute-default-call)))
-        evil-mc-known-commands)
-  (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region)))
-        evil-mc-known-commands))
+  (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete))) evil-mc-known-commands)
+  (push '(org-yank . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
+  (push '(evil-paste-before . ((:default . evil-mc-execute-default-evil-paste))) evil-mc-known-commands)
+  (push '(evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
+  (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
+  (push '(sp-forward-sexp . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
+  (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region))) evil-mc-known-commands))
 
 (use-package evil
   :diminish evil-mode
@@ -926,7 +921,6 @@ graphics."
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
-          ;; add tag variable to all python blocks... maybe not ideal, but usefull
           (:exports . "results")))) ; export only plots by default
 
 (use-package ob-julia
@@ -2504,7 +2498,7 @@ Only if there is more than one window opened."
         "Output\\*$" 
         "output\\*$"           ;for preview latex error
         ".log$"              ;for dtache log
-        "\\*Dtache Shell Command\\*"
+        "^\\*Detached Shell.*"
         help-mode
         "Command\\*$"                   ;for shell command
         ("^\\*Async.*" . hide)                   ; async commands
