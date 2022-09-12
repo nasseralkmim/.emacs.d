@@ -2531,7 +2531,9 @@ Only if there is more than one window opened."
   ;; :when (display-graphic-p)             ;only when gui
   :hook (org-mode . org-modern-mode)
   :custom
-  (org-modern-star nil))
+  (org-modern-star nil)
+  ;; don't add fringe, does not play nicely with org indent
+  (org-modern-block-fringe nil))
 
 (use-package flymake-grammarly
   :config
