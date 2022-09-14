@@ -2143,6 +2143,14 @@ Only if there is more than one window opened."
   (vc-git-region-history-mode . outline-minor-mode))
 
 ;; manage remote files access and manipulations
+;; to use without password, first create and copy the key to the remote
+;; `ssh-keygen -b 4096'
+;; `ssh-copy-id <remote-address>'
+;; then add to `~/.ssh/config'
+;;  Host <name>  
+;;    HostName ip  
+;;    IdentityFile path-to-ssh-key  
+;;    User root
 (use-package tramp
   :straight (:type built-in)
   :config
