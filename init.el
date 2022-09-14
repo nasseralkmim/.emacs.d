@@ -1154,6 +1154,7 @@ graphics."
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
 (use-package wucuo
+  :disabled ;; using vale
   :hook
   (text-mode . wucuo-start)
   (prog-mode . wucuo-start))
@@ -2619,5 +2620,28 @@ Only if there is more than one window opened."
            (default-directory temporary-file-directory)
            (command (dired-read-shell-command "! on %s: " num-files marked-files)))
       (dired-do-shell-command command num-files local-tmp-files))))
+
+;; use vale with flymake
+;; need ~/.vale.ini with minimum:
+;;
+;; MinAlertLevel = suggestion
+;; [*]
+;; BasedOnStyles = Vale
+;;
+;; or more elaboratate https://vale.sh/generator/
+;; for write good, download wget https://github.com/errata-ai/write-good/releases/download/v0.4.0/write-good.zip 
+;; and unzip write-good.zip -d ~/.config/vale/styles/
+;; add add to the .vale.ini the "StylesPath = /home/nasser/.config/vale/styles"
+(use-package flymake-vale
+  :straight (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
+  :commands load-flymake-with-vale
+  :hook
+  (org-mode . load-flymake-with-vale)
+  (LaTeX-mode . load-flymake-with-vale)
+  :init
+  (defun load-flymake-with-vale ()
+    (interactive)
+    (flymake-vale-load)
+    (flymake-mode)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
