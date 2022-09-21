@@ -2644,4 +2644,11 @@ Only if there is more than one window opened."
     (flymake-vale-load)
     (flymake-mode)))
 
+;; enhances outline-cycle command
+(use-package bicycle
+  :after outline
+  :demand
+  :general
+  (outline-minor-mode-cycle-map "TAB" 'bicycle-cycle))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
