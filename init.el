@@ -1320,6 +1320,7 @@ graphics."
         TeX-parse-self t ; enable document parsing to get labels for completion
         TeX-PDF-mode t			; output pdf 
         TeX-electric-escape t
+        TeX-insert-macro-default-style 'mandatory-args-only ; don't ask for optional argument afte "C-c m"
         TeX-master nil) ; make auctex aware of multi-file documents
 
   ;; start latex buffer folded
