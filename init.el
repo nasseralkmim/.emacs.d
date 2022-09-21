@@ -2082,7 +2082,7 @@ Only if there is more than one window opened."
   :straight (org-super-links :type git :host github :repo "toshism/org-super-links")
   ;; :after org  ; can use outside of org-mode, so use the keybindings to load
   :general
-  ('normal :prefix "C-c s"
+  (:prefix "C-c s"
                 "l" 'org-super-links-store-link
                 "p" 'org-super-links-insert-link)
   (org-mode-map :prefix "C-c s"
