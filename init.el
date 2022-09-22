@@ -141,11 +141,11 @@
   (pixel-scroll-precision-mode t))
 
 ;; custom emacs theme
-(use-package alkna-theme
+(use-package seralk-theme
   :straight nil
   :when (display-graphic-p)
   :init
-  (load-theme 'alkna t))
+  (load-theme 'seralk t))
 
 ;; typeface
 (use-package custom-typefaces

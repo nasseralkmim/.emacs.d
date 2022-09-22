@@ -1,6 +1,6 @@
-(deftheme alkna)
+(deftheme seralk)
 
-(custom-theme-set-faces `alkna
+(custom-theme-set-faces `seralk
                         ;; latex
                         `(font-latex-sectioning-1-face ((t (:weight bold :slant oblique :box t :inherit outline-1))))
                         `(font-latex-sectioning-2-face ((t (:weight bold :box t :inherit outline-2))))
@@ -39,4 +39,4 @@
                         ;; smartparens
                         `(sp-show-pair-match-content-face ((t (:inherit 'highlight)))))
 
-(provide-theme 'alkna)
+(provide-theme 'seralk)
