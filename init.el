@@ -530,7 +530,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; delay check, check only on save
-  (setq flymake-no-changes-timeout nil))
+  (setq flymake-no-changes-timeout nil)
+  ;; avoid warning in the flymake log
+  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
 ;; flymake just for C++ in org edit special
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Example_002d_002d_002dConfiguring-a-tool-called-directly.html
@@ -1126,6 +1128,9 @@ graphics."
 ;; languages spell checker
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
+  :hook
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-mode)
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
@@ -2547,7 +2552,7 @@ Only if there is more than one window opened."
 
 (use-package flymake-grammarly
   :config
-  (setq flymake-grammarly-check-time 5)
+  (setq flymake-grammarly-check-time 0.2)
   :commands load-flymake-with-grammar
   :init
   (defun load-flymake-with-grammar ()
