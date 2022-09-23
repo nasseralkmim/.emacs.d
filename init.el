@@ -2335,18 +2335,21 @@ Only if there is more than one window opened."
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
 (use-package flymake-languagetool
-  :disabled                             ;too slow
-  :hook
-  (LaTeX-mode . flymake-languagetool-load)
+  :commands load-flymake-with-languagetool
   :init
-  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.6/languagetool-server.jar")
+  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.8/languagetool-server.jar")
   ;; not working
   ;; Remote server config with LanguageTool's free API
   ;; (setq flymake-languagetool-url "https://api.languagetool.org")
   ;; (setq flymake-languagetool-server-port nil)
   ;; (setq flymake-languagetool-server-jar nil)
+
   ;; activate spell checker as well (instead of flyspell)
-  (setq flymake-languagetool-check-spelling t))
+  (setq flymake-languagetool-check-spelling t)
+  (defun load-flymake-with-languagetool ()
+    (interactive)
+    (flymake-languagetool-load)
+    (flymake-mode)))
 
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
