@@ -1,3 +1,3 @@
 ;; Detached Emacsen
 
-((2135778 (args . "emacs") (pmem . 0.287507177351217) (rss . 189292) (vsize . 750092) (thcount . 4) (nice . 0) (pri . 20) (pcpu . 2.9946805017403295) (etime 0 152 270000 0) (start 25389 23428 710000 0) (ctime 0 1 910000 0) (cstime 0 0 50000 0) (cutime 0 1 860000 0) (time 0 4 560000 0) (stime 0 0 450000 0) (utime 0 4 110000 0) (cmajflt . 10) (cminflt . 42428) (majflt . 12) (minflt . 27850) (tpgid . -1) (ttname . "") (sess . 1247282) (pgrp . 1247282) (ppid . 1247391) (state . "R") (comm . "emacs") (group . "nasser") (egid . 1001) (user . "nasser") (euid . 1001)))
+nil

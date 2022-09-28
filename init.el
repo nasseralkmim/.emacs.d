@@ -2660,4 +2660,8 @@ Only if there is more than one window opened."
   :general
   (outline-minor-mode-cycle-map "TAB" 'bicycle-cycle))
 
+;; query synonyms
+(use-package le-thesaurus
+  :commands le-thesaurus-get-synonyms)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
