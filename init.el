@@ -2654,11 +2654,12 @@ Only if there is more than one window opened."
     (flymake-mode)))
 
 ;; enhances outline-cycle command
+;; binds tab anywhere, default is smarter (indent-for-tab-command)
 (use-package bicycle
+  :disabled
   :after outline
-  :demand
   :general
-  (outline-minor-mode-cycle-map "TAB" 'bicycle-cycle))
+  (outline-minor-mode-cycle-map "TAB" nil))
 
 ;; query synonyms
 (use-package le-thesaurus
