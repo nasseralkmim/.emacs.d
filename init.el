@@ -2358,7 +2358,8 @@ Only if there is more than one window opened."
 ;; unzip <download> -d ~/.opt/
 (use-package flymake-languagetool
   :commands load-flymake-with-languagetool
-  :init
+  :hook (text-mode . flymake-languagetool-maybe-load)
+  :config
   (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.8/languagetool-server.jar")
   ;; not working
   ;; Remote server config with LanguageTool's free API
