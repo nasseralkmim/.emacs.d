@@ -2300,10 +2300,23 @@ Only if there is more than one window opened."
 (use-package eglot
   :hook
   (python-mode . eglot-ensure) ; works if there is only one server available
+  (eglot-managed-mode . (lambda ()
+                          ;; https://old.reddit.com/r/emacs/comments/xq6rpa/weekly_tips_tricks_c_thread/
+                          ;; re-enable flymake checkers because eglot clobbers
+                          ;; them when starting
+                          (when (derived-mode-p 'python-mode)
+                            (add-hook 'flymake-diagnostic-functions 
+                                      'python-flymake nil t))))
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
   :config
-  (add-to-list 'eglot-stay-out-of 'flymake)     ; using own flymake command (flake8)
+  ;; using a hook to 
+  ;; (add-to-list 'eglot-stay-out-of 'flymake)     ; using own flymake command (flake8)
+
+  ;; add watch mode "-w" for performance
+  ;; pyright only reanalyze the files that have been modified
+  (add-to-list 'eglot-server-programs
+               `(python-mode "pyright-langserver" "--watch" "--stdio"))
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
