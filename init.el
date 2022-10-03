@@ -2323,6 +2323,15 @@ Only if there is more than one window opened."
            "h" 'eldoc
            "r" 'eglot-rename))
 
+;; trying
+;; use mypy check for type in python
+(use-package flymake-mypy
+  :straight (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
+  :demand
+  :hook ((eglot-managed-mode . (lambda ()
+                 (when (derived-mode-p 'python-mode)
+                   (flymake-mypy-enable))))))
+
 ;; add ltex language server to eglot
 ;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
 ;; need java (open JDK 11 development kit)
