@@ -1128,9 +1128,10 @@ graphics."
 ;; languages spell checker
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
-  :hook
-  (text-mode . flyspell-mode)
-  (prog-mode . flyspell-mode)
+  ;; :hook
+  ;; using wucuo
+  ;; (text-mode . flyspell-mode)
+  ;; (prog-mode . flyspell-mode)
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
@@ -1159,7 +1160,7 @@ graphics."
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
 (use-package wucuo
-  :disabled ;; using vale
+  ;; :disabled ;; using vale
   :hook
   (text-mode . wucuo-start)
   (prog-mode . wucuo-start))
