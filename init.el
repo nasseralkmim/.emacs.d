@@ -1128,10 +1128,9 @@ graphics."
 ;; languages spell checker
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
-  ;; :hook
-  ;; using wucuo
-  ;; (text-mode . flyspell-mode)
-  ;; (prog-mode . flyspell-mode)
+  :hook
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-mode)
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
@@ -1160,7 +1159,7 @@ graphics."
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
 (use-package wucuo
-  ;; :disabled ;; using vale
+  :disabled ;; using vale
   :hook
   (text-mode . wucuo-start)
   (prog-mode . wucuo-start))
@@ -2359,7 +2358,8 @@ Only if there is more than one window opened."
 ;; unzip <download> -d ~/.opt/
 (use-package flymake-languagetool
   :commands load-flymake-with-languagetool
-  :hook (text-mode . flymake-languagetool-maybe-load)
+  ;; better to do manually, sometimes slow to start
+  ;; :hook (text-mode . flymake-languagetool-maybe-load)
   :config
   (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.8/languagetool-server.jar")
   ;; not working
@@ -2369,11 +2369,7 @@ Only if there is more than one window opened."
   ;; (setq flymake-languagetool-server-jar nil)
 
   ;; activate spell checker as well (instead of flyspell)
-  (setq flymake-languagetool-check-spelling t)
-  (defun load-flymake-with-languagetool ()
-    (interactive)
-    (flymake-languagetool-load)
-    (flymake-mode)))
+  (setq flymake-languagetool-check-spelling t))
 
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
