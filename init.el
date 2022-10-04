@@ -1571,10 +1571,10 @@ graphics."
               (progn 
                 ;; adjust org modern if GUI
                 (eval-after-load 'org-modern
-                  (global-org-modern-mode))
+                  '(global-org-modern-mode))
                 ;; reset icons cache to match theme
                 (eval-after-load 'kind-icon
-                  (kind-icon-reset-cache))
+                  '(kind-icon-reset-cache))
                 ;; recompute face for indentation guide
                 (eval-after-load 'hl-indent-scope
                   '(hl-indent-scope--auto-color-calc))
