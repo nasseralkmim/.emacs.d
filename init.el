@@ -362,6 +362,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
      ((string-prefix-p "!" pattern)
       `(orderless-without-literal . ,(substring pattern 1)))))
 
+  ;; match components based on regex
+  ;; components separated by space
   (setq orderless-matching-styles '(orderless-regexp)
         orderless-style-dispatchers '(flex-if-twiddle
                                       literal-if-equal
