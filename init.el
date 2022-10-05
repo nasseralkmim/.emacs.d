@@ -2690,4 +2690,9 @@ Only if there is more than one window opened."
 (use-package le-thesaurus
   :commands le-thesaurus-get-synonyms)
 
+;; org-mode toc heading
+(use-package org-make-toc
+  :after org
+  :commands org-make-toc-insert org-make-toc)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
