@@ -2700,4 +2700,8 @@ Only if there is more than one window opened."
   :after org
   :commands org-make-toc-insert org-make-toc)
 
+;; more color in dired
+(use-package diredfl
+  :hook (dired-mode . diredfl-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
