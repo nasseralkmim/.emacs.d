@@ -1708,7 +1708,12 @@ Only if there is more than one window opened."
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :general
-  (c++-mode-map "C-x c" 'compile))
+  (c++-mode-map "C-x c" 'compile)
+  :config
+  ;; change style curly braces on their on line without offset
+  ;; https://en.wikipedia.org/wiki/Indentation_style#Variant:_Linux_kernel
+  (setq c-default-style "linux"
+        c-basic-offset 2))
 
 (use-package lsp-mode
   :disabled
