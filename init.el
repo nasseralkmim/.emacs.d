@@ -2741,5 +2741,9 @@ its results, otherwise display STDERR with
               nil)
           (buffer-string))))))
 
+;; dim text color from surroundings
+(use-package focus
+  :commands focus-mode)
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
