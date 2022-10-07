@@ -2709,7 +2709,7 @@ Only if there is more than one window opened."
   :straight nil
   :after org
   :init
-  (defvar org-babel-eval-verbose t
+  (defvar org-babel-eval-verbose nil
     "A non-nil value makes `org-babel-eval' display")
 
   (defun org-babel-eval (command query)
