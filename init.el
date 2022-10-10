@@ -1092,9 +1092,14 @@ graphics."
   (setq org-babel-default-header-args:sh
 	'((:results . "output")
           (:noweb . "no-export")
+          ;; 
           ;; always get my .bashrc aliases ;; not always
-          ;; (:shebang . "#!/bin/bash -i") ;; does not play nice with dtache
-          )))
+          ;; does not play nice with dtache
+          ;; (:shebang . "#!/bin/bash -i")
+          ;; 
+          ;; print stderr output (like C++ compiling errors)
+          ;; https://emacs.stackexchange.com/questions/59875/org-src-block-does-not-return-any-output
+          (:prologue . "exec 2>&1"))))
 
 ;; for UML diagrams in org-mode
 ;; need to install `yay plantuml`
@@ -2710,6 +2715,7 @@ Only if there is more than one window opened."
   :hook (dired-mode . diredfl-mode))
 
 ;; show org-babel error or warning when execute block
+;; just using prologue command is sufficient
 (use-package org-babel-eval-verbose
   :straight nil
   :after org
