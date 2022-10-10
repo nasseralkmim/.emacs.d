@@ -2551,6 +2551,7 @@ Only if there is more than one window opened."
         "Command\\*$"                   ;for shell command
         ("^\\*Async.*" . hide)                   ; async commands
         "\\*xref\\*"
+        "\\*eldoc\\*"                   ; eldoc buffer
         "Help\\*$"
         "\\*Python\\*"
         compilation-mode))
