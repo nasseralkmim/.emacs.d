@@ -2486,7 +2486,11 @@ Only if there is more than one window opened."
 
 (use-package eldoc
   :straight nil
-  :diminish eldoc-mode)
+  :diminish eldoc-mode
+  :config
+  ;; never resize echo area display, use always 1 truncated line
+  ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
+  (setq eldoc-echo-area-use-multiline-p nil))
 
 ;; save windows configurations and use regular bookmarks file
 (use-package burly
