@@ -1351,6 +1351,17 @@ graphics."
   (add-hook 'TeX-after-compilation-finished-functions  
 	    'TeX-revert-document-buffer) 
 
+  ;; TODO: currently does not work
+  ;; remove intermediate files
+  ;; file argument because of `TeX-after-compilation-finished-functions'
+  (defun TeX-clean-intermediate (file)
+    (let ((buf (find-buffer-visiting file)))
+      (when buf
+        (with-current-buffer buf
+          (setq TeX-clean-confirm nil)          ; don't ask to confirm
+          (TeX-clean t)))))
+    ;; (add-hook 'TeX-after-compilation-finished-functions #'TeX-clean-intermediate) 
+
   ;; nomenclature compilation option for latex
   (eval-after-load "tex"
     '(add-to-list 'TeX-command-list 
