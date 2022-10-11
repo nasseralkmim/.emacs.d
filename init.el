@@ -1348,7 +1348,7 @@ graphics."
         TeX-source-correlate-mode t) ;; jump to source
 
   ;; update PDF buffers after successful LaTeX runs
-  (add-hook 'TeX-after-TeX-LaTeX-command-finished-hook  
+  (add-hook 'TeX-after-compilation-finished-functions  
 	    'TeX-revert-document-buffer) 
 
   ;; nomenclature compilation option for latex
