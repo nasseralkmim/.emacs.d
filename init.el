@@ -1139,7 +1139,7 @@ graphics."
   :if (eq system-type 'gnu/linux)
   :hook
   (text-mode . flyspell-mode)
-  (prog-mode . flyspell-mode)
+  ;; (prog-mode . flyspell-mode) not in programming modes
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
@@ -2699,6 +2699,7 @@ Only if there is more than one window opened."
   :hook
   (org-mode . load-flymake-with-vale)
   (LaTeX-mode . load-flymake-with-vale)
+  (prog-mode . load-flymake-with-vale)
   :init
   (defun load-flymake-with-vale ()
     (interactive)
