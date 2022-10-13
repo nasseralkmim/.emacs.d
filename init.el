@@ -1258,6 +1258,14 @@ graphics."
   :init
   (company-prescient-mode))
 
+;; allows selectively display portions of program
+;; bicycle uses it together with outline
+(use-package hideshow
+  :straight nil
+  :diminish hs-minor-mode
+  :hook
+  (prog-mode . hs-minor-mode))
+
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
 (use-package outline
@@ -2709,10 +2717,10 @@ Only if there is more than one window opened."
 ;; enhances outline-cycle command
 ;; binds tab anywhere, default is smarter (indent-for-tab-command)
 (use-package bicycle
-  :disabled
   :after outline
-  :general
-  (outline-minor-mode-cycle-map "TAB" nil))
+  :config
+  ;; replace outline-cycle
+  (advice-add 'outline-cycle :override #'bicycle-cycle))
 
 ;; query synonyms
 (use-package le-thesaurus
@@ -2769,5 +2777,18 @@ its results, otherwise display STDERR with
 (use-package focus
   :commands focus-mode)
 
+;; trying instead of outline-minor-mode for programming
+(use-package origami
+  :disabled
+  :straight (origami :type git :host github :repo "elp-revive/origami.el")
+  :hook (prog-mode . origami-mode)
+  :general
+  ('normal origami-mode-map :prefix "Z"
+           "o" 'origami-show-only-node
+           "a" 'origami-recursively-toggle-node
+           "h" 'origami-toggle-all-nodes
+           "j" 'origami-next-fold
+           "k" 'origami-previous-fold
+           ))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
