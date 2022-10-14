@@ -1657,7 +1657,7 @@ Only if there is more than one window opened."
 
 ;; dimm other buffers
 (use-package dimmer
-  :defer 1
+  :commands dimmer-mode
   :config
   (setq dimmer-fraction 0.3)
   (dimmer-configure-magit)
@@ -1686,8 +1686,7 @@ Only if there is more than one window opened."
    'dimmer-config-change-handler
    :override 'advise-dimmer-config-change-handler)
 
-  (dimmer-configure-corfu)
-  (dimmer-mode))
+  (dimmer-configure-corfu))
 
 ;; this mode is used to highlight current window
 (use-package face-remap
