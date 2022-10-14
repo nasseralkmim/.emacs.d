@@ -1588,7 +1588,7 @@ graphics."
 	modus-themes-variable-pitch-ui nil
 	modus-themes-syntax '(alt-syntax)
 	modus-themes-italic-constructs t
-	modus-themes-bold-constructs t
+	modus-themes-bold-constructs nil
 	modus-themes-fringes 'subtle
         modus-themes-headings '((t . (rainbow)))
 	modus-themes-mode-line '(borderless accented moody))
