@@ -2778,7 +2778,7 @@ its results, otherwise display STDERR with
 
 ;; trying instead of outline-minor-mode for programming
 (use-package origami
-  :disabled
+  :disabled                             ; bicycle is better
   :straight (origami :type git :host github :repo "elp-revive/origami.el")
   :hook (prog-mode . origami-mode)
   :general
@@ -2787,7 +2787,16 @@ its results, otherwise display STDERR with
            "a" 'origami-recursively-toggle-node
            "h" 'origami-toggle-all-nodes
            "j" 'origami-next-fold
-           "k" 'origami-previous-fold
-           ))
+           "k" 'origami-previous-fold))
+
+;; list imenu entries in a buffer
+;; better faces than consult-imenu
+(use-package imenu-list
+  :general ("C-c o" 'imenu-list-smart-toggle)
+  :config
+  (setq imenu-list-auto-resize t
+        imenu-list-auto-update nil      ; I want to keep the list from a file
+        imenu-list-position 'left
+        imenu-list-focus-after-activation t))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
