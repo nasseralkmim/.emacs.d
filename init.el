@@ -2142,7 +2142,8 @@ Only if there is more than one window opened."
   :demand                               ; explicitly require org-id
   :init
   ;; automatic generate id for headings
-  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
+  (setq org-id-link-to-org-use-id t)
+  )
 
 ;; citations support in org-mode
 (use-package oc
@@ -2802,5 +2803,26 @@ its results, otherwise display STDERR with
         imenu-list-auto-update nil      ; I want to keep the list from a file
         imenu-list-position 'left
         imenu-list-focus-after-activation t))
+
+;; deal with ANSI escape sequences for coloring
+(use-package ansi-color
+  :init
+  ;; for compile mode
+  ;; https://www.reddit.com/r/emacs/comments/kbwkca/compile_buffer_show_weird_symbols/
+  (defun colorize-compilation-buffer ()
+    (ansi-color-apply-on-region compilation-filter-start (point)))
+  (add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
+
+  ;; for org babel
+  ;; https://emacs.stackexchange.com/questions/44664/apply-ansi-color-escape-sequences-for-org-babel-results
+  (defun ek/babel-ansi ()
+    (when-let ((beg (org-babel-where-is-src-block-result nil nil)))
+      (save-excursion
+        (goto-char beg)
+        (when (looking-at org-babel-result-regexp)
+          (let ((end (org-babel-result-end))
+                (ansi-color-context-region nil))
+            (ansi-color-apply-on-region beg end))))))
+  (add-hook 'org-babel-after-execute-hook 'ek/babel-ansi))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
