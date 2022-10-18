@@ -2841,4 +2841,8 @@ its results, otherwise display STDERR with
     (org-babel-detangle)
     (find-file buffer-file-name)))
 
+;; format code when saving based on `.clang-format' file
+(use-package clang-format+
+  :hook (c++-mode . clang-format+-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
