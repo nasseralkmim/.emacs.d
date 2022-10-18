@@ -1732,6 +1732,9 @@ Only if there is more than one window opened."
 (use-package c++-mode
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
+  :hook
+  ;; guess the style based on guess
+  (c++-mode . (lambda () (c-guess-buffer)))
   :general
   (c++-mode-map "C-x c" 'compile)
   :config
