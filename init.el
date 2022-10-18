@@ -2364,6 +2364,7 @@ Only if there is more than one window opened."
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
            "h" 'eldoc
+           "f" 'eglot-format-buffer
            "r" 'eglot-rename))
 
 ;; trying
