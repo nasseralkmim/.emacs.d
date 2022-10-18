@@ -1737,8 +1737,12 @@ Only if there is more than one window opened."
   :config
   ;; change style curly braces on their on line without offset
   ;; https://en.wikipedia.org/wiki/Indentation_style#Variant:_Linux_kernel
+  ;; 
+  ;; alternatively: to get style from `.clang-format' file
+  ;; one first use `eglot-format' (which uses `clangd' server) that can read `.clang-format'
+  ;; then `c-guess-buffer-no-install' to set it
   (setq c-default-style "linux"
-        c-basic-offset 2))
+        c-basic-offset 2)) 
 
 (use-package lsp-mode
   :disabled
