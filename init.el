@@ -2829,4 +2829,16 @@ its results, otherwise display STDERR with
             (ansi-color-apply-on-region beg end))))))
   (add-hook 'org-babel-after-execute-hook 'ek/babel-ansi))
 
+;; custom detangle function
+(use-package org-babel-detangle
+  :straight nil
+  :after org
+  :commands org-babel-detangle-bg
+  :init
+  (defun org-babel-detangle-bg ()
+    "Use `org-babel-detangle' but maintain focus on source code"
+    (interactive)
+    (org-babel-detangle)
+    (find-file buffer-file-name)))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
