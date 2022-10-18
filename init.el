@@ -2309,6 +2309,7 @@ Only if there is more than one window opened."
                        (lsp-deferred))))
 
 ;; icons for completion candidates
+;; fork adds support for M-x, imenu
 (use-package all-the-icons-completion
   :straight (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
   :when (display-graphic-p)
