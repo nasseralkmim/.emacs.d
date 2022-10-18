@@ -2310,6 +2310,7 @@ Only if there is more than one window opened."
 
 ;; icons for completion candidates
 (use-package all-the-icons-completion
+  :straight (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
   :when (display-graphic-p)
   :after marginalia
   :defer 1
