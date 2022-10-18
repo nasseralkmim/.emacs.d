@@ -2315,7 +2315,8 @@ Only if there is more than one window opened."
   :after marginalia
   :defer 1
   :config
-  (all-the-icons-completion-mode))
+  (all-the-icons-completion-mode)
+  (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
 
 ;; icons for dired
 (use-package all-the-icons-dired
