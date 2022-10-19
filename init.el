@@ -2628,12 +2628,7 @@ Only if there is more than one window opened."
 (use-package flymake-grammarly
   :config
   (setq flymake-grammarly-check-time 0.2)
-  :commands load-flymake-with-grammarly
-  :init
-  (defun load-flymake-with-grammarly ()
-    (interactive)
-    (flymake-mode)
-    (flymake-grammarly-load)))
+  :commands load-flymake-with-grammarly)
 
 (use-package virtual-comment
   :diminish virtual-comment-mode
