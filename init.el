@@ -1191,7 +1191,7 @@ graphics."
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.2
 	corfu-auto-prefix 1
-	corfu-quit-no-match t))
+	corfu-quit-no-match 'separator))
 
 ;; corfu extension
 (use-package corfu-history
