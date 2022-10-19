@@ -2404,7 +2404,7 @@ Only if there is more than one window opened."
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
 (use-package flymake-languagetool
-  :commands load-flymake-with-languagetool
+  :commands flymake-languagetool-maybe-load
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
   :config
