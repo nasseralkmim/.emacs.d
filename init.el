@@ -907,7 +907,9 @@ graphics."
 (use-package ob-C
   :straight nil
   :after org
-  :commands org-babel-execute:C++
+  :commands
+  (org-babel-execute:C++
+   org-babel-execute:C)
   :config
   (setq org-babel-default-header-args:C++
         '((:results . "output")
@@ -1746,6 +1748,11 @@ Only if there is more than one window opened."
   ;; then `c-guess-buffer-no-install' to set it
   (setq c-default-style "linux"
         c-basic-offset 2)) 
+
+(use-package c-mode
+  :straight (:type built-in)
+  :general
+  (c-mode-map "C-x c" 'compile))
 
 (use-package lsp-mode
   :disabled
