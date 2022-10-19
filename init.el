@@ -1224,7 +1224,7 @@ graphics."
   (corfu-doc-max-height 20)
   (corfu-echo-documentation nil)
   :hook
-  (python-mode . corfu-doc-mode)) 
+  (prog-mode . corfu-doc-mode)) 
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
