@@ -1752,7 +1752,10 @@ Only if there is more than one window opened."
 (use-package c-mode
   :straight (:type built-in)
   :general
-  (c-mode-map "C-x c" 'compile))
+  (c-mode-map "C-x c" 'compile)
+  :hook
+  ;; use `//' for comments
+  (c-mode . (lambda () c-toggle-comment-style -1)))
 
 (use-package lsp-mode
   :disabled
