@@ -1755,7 +1755,7 @@ Only if there is more than one window opened."
   (c-mode-map "C-x c" 'compile)
   :hook
   ;; use `//' for comments
-  (c-mode . (lambda () c-toggle-comment-style -1)))
+  (c-mode . (lambda () (c-toggle-comment-style -1))))
 
 (use-package lsp-mode
   :disabled
