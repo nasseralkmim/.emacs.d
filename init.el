@@ -459,6 +459,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-a" 'embark-act)
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
+  (embark-function-map "h" 'helpful-symbol)
+  (embark-variable-map "h" 'helpful-symbol)
   :commands embark-prefix-help-command
   :hook
   ;; use embark to help find command after prefix (C-h after a prefix key)
