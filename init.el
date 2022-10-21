@@ -915,6 +915,12 @@ graphics."
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
+          (:exports . "results")))
+  ;; same for C
+  (setq org-babel-default-header-args:C
+        '((:results . "output")
+          (:noweb . "no-export")
+          (:eval . "never-export")
           (:exports . "results"))))
 
 ;; load ob-python only when executing python block
