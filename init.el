@@ -972,6 +972,8 @@ graphics."
 (use-package ob-core
   :straight nil
   :after org
+  :general
+  ('normal org-mode-map "g s" (general-simulate-key "C-u C-u C-c C-v C-t"))
   :init
   ;; mkdirp allows creating the :dir if it does not exist
   (add-to-list 'org-babel-default-header-args '(:mkdirp . "yes"))
@@ -1759,6 +1761,7 @@ Only if there is more than one window opened."
 
 (use-package c-mode
   :straight (:type built-in)
+  :mode ("\\.c\\'" . c-mode)
   :general
   (c-mode-map "C-x c" 'compile)
   :hook
