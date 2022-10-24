@@ -2859,4 +2859,10 @@ its results, otherwise display STDERR with
 (use-package clang-format+
   :hook (c++-mode . clang-format+-mode))
 
+;; debugge
+(use-package gud
+  :config
+  ;; display source code
+  (setq gdb-many-windows t))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
