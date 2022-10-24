@@ -2719,6 +2719,8 @@ Only if there is more than one window opened."
            (command (dired-read-shell-command "! on %s: " num-files marked-files)))
       (dired-do-shell-command command num-files local-tmp-files))))
 
+;; custom writing rules
+;; download vale and put on path (~/.local/bin/)
 ;; use vale with flymake
 ;; need ~/.vale.ini with minimum:
 ;;
