@@ -2732,16 +2732,7 @@ Only if there is more than one window opened."
 ;; add add to the .vale.ini the "StylesPath = /home/nasser/.config/vale/styles"
 (use-package flymake-vale
   :straight (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
-  :commands load-flymake-with-vale
-  :hook
-  (org-mode . load-flymake-with-vale)
-  (LaTeX-mode . load-flymake-with-vale)
-  (prog-mode . load-flymake-with-vale)
-  :init
-  (defun load-flymake-with-vale ()
-    (interactive)
-    (flymake-vale-load)
-    (flymake-mode)))
+  :commands flymake-vale-load)
 
 ;; enhances outline-cycle command
 ;; binds tab anywhere, default is smarter (indent-for-tab-command)
