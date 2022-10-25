@@ -2866,4 +2866,10 @@ its results, otherwise display STDERR with
   ;; display source code
   (setq gdb-many-windows t))
 
+(use-package org-footnote
+  :after org
+  :init
+  ;; put footnotes at the current section
+  (setq org-footnote-section nil))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
