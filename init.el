@@ -2256,6 +2256,7 @@ Only if there is more than one window opened."
   :hook
   (python-mode . tree-sitter-mode)
   (c++-mode . tree-sitter-mode)
+  (c-mode . tree-sitter-mode)
   (tree-sitter-after-on . tree-sitter-hl-mode))
 
 ;; langage bundle for `tree-sitter`
