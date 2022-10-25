@@ -1759,7 +1759,7 @@ Only if there is more than one window opened."
   (setq c-default-style "linux"
         c-basic-offset 2)) 
 
-(use-package c-mode
+(use-package cc-mode
   :straight (:type built-in)
   :mode ("\\.c\\'" . c-mode)
   :general
