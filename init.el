@@ -2867,6 +2867,7 @@ its results, otherwise display STDERR with
   (setq gdb-many-windows t))
 
 (use-package org-footnote
+  :straight nil
   :after org
   :init
   ;; put footnotes at the current section
