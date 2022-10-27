@@ -1069,7 +1069,7 @@ graphics."
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
 	;; org-startup-with-latex-preview t
         org-latex-image-default-width nil ; don't scale my images!
-        org-latex-images-centered nil     ; sometimes I want side-by-side images
+        org-latex-images-centered t
         org-preview-latex-image-directory "~/.cache/ltximg/")
 
   ;; minted code pdf export org
