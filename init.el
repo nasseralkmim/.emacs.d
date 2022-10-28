@@ -2873,4 +2873,14 @@ its results, otherwise display STDERR with
   ;; put footnotes at the current section
   (setq org-footnote-section nil))
 
+(use-package org-tree-slide
+  :after org
+  :commands org-tree-slide-mode
+  :config
+  ;; add keybindings after loading
+  ;; (with-eval-after-load "org-tree-slide"
+  ;;   (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
+  ;;   (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree))
+  )
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
