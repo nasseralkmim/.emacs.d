@@ -1884,6 +1884,7 @@ Only if there is more than one window opened."
   :demand
   :hook
   (python-mode . hl-todo-mode)
+  (prog-mode . hl-todo-mode)
   (LaTeX-mode . hl-todo-mode)
   (org-mode . hl-todo-mode)
   :general
@@ -2403,15 +2404,16 @@ Only if there is more than one window opened."
                    (flymake-mypy-enable))))))
 
 ;; add ltex language server to eglot
-;; need to manually download the language server: wget https://github.com/valentjn/ltex-ls/releases/download/15.1.0/ltex-ls-15.1.0-linux-x64.tar.gz
+;; need to manually download the language server:
+;; wget https://github.com/valentjn/ltex-ls/releases/download/15.2.0/ltex-ls-15.2.0-linux-x64.tar.gz
 ;; need java (open JDK 11 development kit)
 (use-package eglot-ltex
-  :disabled ;using flymake with language tool
+  ;; :disabled ;using flymake with language tool
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-language-server
   :init
-  (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.1.0/")
+  (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.2.0/")
   (defun start-language-server ()
     (interactive)
     (require 'eglot-ltex)
@@ -2431,7 +2433,7 @@ Only if there is more than one window opened."
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
   :config
-  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.8/languagetool-server.jar")
+  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.9/languagetool-server.jar")
   ;; not working
   ;; Remote server config with LanguageTool's free API
   ;; (setq flymake-languagetool-url "https://api.languagetool.org")
@@ -2439,7 +2441,8 @@ Only if there is more than one window opened."
   ;; (setq flymake-languagetool-server-jar nil)
 
   ;; activate spell checker as well (instead of flyspell)
-  (setq flymake-languagetool-check-spelling t))
+  ;; (setq flymake-languagetool-check-spelling t)
+  )
 
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
