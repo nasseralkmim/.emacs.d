@@ -2411,10 +2411,10 @@ Only if there is more than one window opened."
   ;; :disabled ;using flymake with language tool
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
-  :commands start-language-server
+  :commands start-eglot-ltex
   :init
   (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.2.0/")
-  (defun start-language-server ()
+  (defun start-eglot-ltex ()
     (interactive)
     (require 'eglot-ltex)
     (call-interactively #'eglot))
@@ -2520,7 +2520,7 @@ Only if there is more than one window opened."
 ;; only when in the workstation, otherwise too slow
 ;; requires pdf-tools
 (use-package org-inline-pdf
-  :when (string= system-name "ryzen-ms7c37")
+  :when (eq system-type 'gnu/linux)
   :hook (org-mode . org-inline-pdf-mode))
 
 ;; insert org link to specified page in pdf
