@@ -1136,7 +1136,8 @@ graphics."
   :init
   (setq
    org-download-image-dir "./images"
-   org-download-image-html-width 350)) 
+   org-download-image-html-width 350
+   org-download-image-latex-width 350)) 
 
 ;; wsl specific config
 (use-package org-download
@@ -2074,7 +2075,8 @@ Only if there is more than one window opened."
                   "C-w" nil
                   "<backtab>" nil)
   :config
-  (setq vterm-max-scrollback 20000))
+  (setq vterm-max-scrollback 20000
+        vterm-timer-delay 0))
 
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
