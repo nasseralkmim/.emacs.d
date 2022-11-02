@@ -2895,4 +2895,9 @@ its results, otherwise display STDERR with
   ;;   (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree))
   )
 
+(use-package gdb
+  :straight nil
+  :config
+  (setq gdb-locals-value-limit 1000))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
