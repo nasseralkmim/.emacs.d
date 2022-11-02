@@ -1139,6 +1139,7 @@ graphics."
   :after org
   :general
   (org-mode-map "C-M-y" 'org-download-screenshot)
+  (org-mode-map "C-M-S-y" 'org-download-clipboard)
   :init
   (setq
    org-download-image-dir "./images"
