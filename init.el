@@ -2900,4 +2900,16 @@ its results, otherwise display STDERR with
   :config
   (setq gdb-locals-value-limit 1000))
 
+;; irony mode for org-edit-special c++ 
+(use-package irony
+  :hook
+  (org-src-mode . (lambda ()
+                          (when (string-equal major-mode "c++-mode")
+                            (irony-mode)))))
+
+;; eldoc support for irony
+(use-package irony-eldoc
+  :hook
+  (irony-mode . irony-eldoc))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
