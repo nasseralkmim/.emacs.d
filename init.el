@@ -820,7 +820,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
         org-cycle-separator-lines 0  ; no empty lines between headings
         org-fontify-quote-and-verse-blocks t ; yes syntax highlighting
-        org-insert-heading-respect-content nil ; insert heading after current tree
+        org-insert-heading-respect-content nil ; nil: heading after current line/ t: after current subtree
         org-catch-invisible-edits 'show-and-error ;make visible then abort
         org-tags-column 0                        ; tag right after text
         org-html-htmlize-output-type 'inline-css   ; nil to export as plain text
@@ -2913,5 +2913,9 @@ its results, otherwise display STDERR with
 (use-package irony-eldoc
   :hook
   (irony-mode . irony-eldoc))
+
+(use-package org-rainbow-tags
+  :straight (:host github :repo "KaratasFurkan/org-rainbow-tags")
+  :hook (org-mode . org-rainbow-tags-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
