@@ -816,6 +816,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         org-startup-folded t               ; folded in "overview" state
         org-hide-leading-stars t           ; don't show a  bunch of '*'
         org-edit-src-content-indentation 0
+        org-pretty-entities t           ; show entities as UTF8 chars
+        org-ellipsis "…"                ;use single character for elipses
         org-outline-path-complete-in-steps nil
         org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
         org-cycle-separator-lines 0  ; no empty lines between headings
