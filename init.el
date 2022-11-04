@@ -151,6 +151,7 @@
 (use-package custom-typefaces
   :straight nil
   :init
+  ;; to check typefaces: fc-list | grep <typeface>
   ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
   ;; fira code: ligatures
   (set-face-attribute 'default nil :family "Victor Mono")
@@ -2329,7 +2330,8 @@ Only if there is more than one window opened."
   :demand
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
-        avy-all-windows nil))           ; restrict to one buffer
+        avy-all-windows-alt t           ; allow all windows when `C-u`
+        avy-all-windows nil))           ; restrict to one window
 
 (use-package lsp-grammarly
   :disabled
