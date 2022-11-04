@@ -541,7 +541,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; delay check, check only on save
-  (setq flymake-no-changes-timeout nil)
+  (setq flymake-no-changes-timeout 1)
   ;; avoid warning in the flymake log
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
@@ -1201,7 +1201,7 @@ graphics."
 (use-package corfu
   :straight (corfu :type git :host github :repo "minad/corfu"
                    :files (:defaults "extensions/*"))
-  :defer 1
+  ;; :defer 1
   :general
   (corfu-map "<tab>" 'corfu-next
 	     "<backtab>" 'corfu-previous
@@ -2917,8 +2917,17 @@ its results, otherwise display STDERR with
   :hook
   (irony-mode . irony-eldoc))
 
+;; tags with different colors in org
 (use-package org-rainbow-tags
   :straight (:host github :repo "KaratasFurkan/org-rainbow-tags")
   :hook (org-mode . org-rainbow-tags-mode))
+
+;; python support for org-edit-special
+(use-package elpy
+  :hook
+  (org-src-mode . (lambda ()
+                          (when (string-equal major-mode "python-mode")
+                            (setq elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
+                            (elpy-enable)))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
