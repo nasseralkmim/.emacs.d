@@ -1112,6 +1112,7 @@ graphics."
   :config
   (setq org-babel-default-header-args:sh
 	'((:results . "output")
+          (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:noweb . "no-export")
           ;; 
           ;; always get my .bashrc aliases ;; not always
@@ -1147,7 +1148,7 @@ graphics."
   (setq
    org-download-image-dir "./images"
    org-download-image-html-width 350
-   org-download-image-latex-width 350)) 
+   org-download-image-latex-width ".3\textwidth")) 
 
 ;; wsl specific config
 (use-package org-download
@@ -2563,7 +2564,7 @@ Only if there is more than one window opened."
 (use-package eldoc
   :straight nil
   :diminish eldoc-mode
-  :hook (org-mode .eldoc-mode)
+  :hook (org-mode . eldoc-mode)
   :config
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
