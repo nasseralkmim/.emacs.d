@@ -20,6 +20,7 @@
                         ;; org
                         `(org-block ((t (:background "gray97"))))
                         `(org-inline-src-block ((t (:background "gray97"))))
+                        `(org-ellipsis ((t (:ellipsis nil))))
                         `(org-meta-line ((t (:foreground "gray60"))))
                         `(org-drawer ((t (:inherit 'org-meta-line))))
                         `(org-macro ((t (:inherit 'org-meta-line))))
