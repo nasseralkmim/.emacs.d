@@ -21,3 +21,8 @@
 
   ;; make native compilation happens asynchronously
   (setq native-comp-deferred-compilation t))
+
+(set-face-attribute 'default nil :family "Victor Mono")
+(set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
+(set-face-attribute 'fixed-pitch nil :family "Victor Mono")
+(set-face-attribute 'variable-pitch nil :family "Input Sans")

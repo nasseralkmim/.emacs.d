@@ -154,10 +154,10 @@
   ;; to check typefaces: fc-list | grep <typeface>
   ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
   ;; fira code: ligatures
-  (set-face-attribute 'default nil :family "Victor Mono")
-  (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
-  (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
-  (set-face-attribute 'variable-pitch nil :family "Input Sans")
+  ;; (set-face-attribute 'default nil :family "Victor Mono")
+  ;; (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
+  ;; (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
+  ;; (set-face-attribute 'variable-pitch nil :family "Input Sans")
   :custom-face 
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
@@ -2418,10 +2418,10 @@ Only if there is more than one window opened."
 
 ;; add ltex language server to eglot
 ;; need to manually download the language server:
-;; wget https://github.com/valentjn/ltex-ls/releases/download/15.2.0/ltex-ls-15.2.0-linux-x64.tar.gz
-;; need java (open JDK 11 development kit)
+;; cd ~/.opt && https://github.com/valentjn/ltex-ls/releases/download/15.2.0/ltex-ls-15.2.0-linux-x64.tar.gz
+;; tar -xvf ltex-ls-15.2.0-linux-x64.tar.gz
+;; also need java (open JDK 11 development kit)
 (use-package eglot-ltex
-  ;; :disabled ;using flymake with language tool
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-eglot-ltex
@@ -2563,6 +2563,7 @@ Only if there is more than one window opened."
 (use-package eldoc
   :straight nil
   :diminish eldoc-mode
+  :hook (org-mode .eldoc-mode)
   :config
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
