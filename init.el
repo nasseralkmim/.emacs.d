@@ -816,7 +816,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         org-startup-folded t               ; folded in "overview" state
         org-hide-leading-stars t           ; don't show a  bunch of '*'
         org-edit-src-content-indentation 0
-        org-pretty-entities t           ; show entities as UTF8 chars
+        org-pretty-entities nil           ; use latex instead...
         org-ellipsis "…"                ;use single character for elipses
         org-outline-path-complete-in-steps nil
         org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
@@ -1148,7 +1148,11 @@ graphics."
   (setq
    org-download-image-dir "./images"
    org-download-image-html-width 350
-   org-download-image-latex-width ".3\textwidth")) 
+   org-download-image-latex-width 10)
+
+  ;; use different on wayland
+  (when (string= system-name "nasser-t14s")
+    (setq org-download-screenshot-method "flameshot gui --raw > %s")))
 
 ;; wsl specific config
 (use-package org-download
@@ -1202,7 +1206,6 @@ graphics."
 (use-package corfu
   :straight (corfu :type git :host github :repo "minad/corfu"
                    :files (:defaults "extensions/*"))
-  ;; :defer 1
   :general
   (corfu-map "<tab>" 'corfu-next
 	     "<backtab>" 'corfu-previous
@@ -1210,6 +1213,7 @@ graphics."
 	     "C-p" 'corfu-previous)
   ('insert "C-n" nil
 	   "C-p" nil)
+  :defer 1
   :config
   (global-corfu-mode)
   (setq corfu-auto t                    ; enables timer-based completion
@@ -2564,8 +2568,9 @@ Only if there is more than one window opened."
 (use-package eldoc
   :straight nil
   :diminish eldoc-mode
-  :hook (org-mode . eldoc-mode)
+  :defer 1
   :config
+  (global-eldoc-mode)
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
   (setq eldoc-echo-area-use-multiline-p nil))
