@@ -135,6 +135,7 @@
   )
 
 (use-package emacs
+  :disabled
   :if (string-greaterp emacs-version "29") ; need emacs > 29
   :init
    ; text scroll pixel by pixel
@@ -2568,12 +2569,12 @@ Only if there is more than one window opened."
 (use-package eldoc
   :straight nil
   :diminish eldoc-mode
-  :defer 1
+  :hook (org-mode . eldoc-mode)
   :config
-  (global-eldoc-mode)
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
-  (setq eldoc-echo-area-use-multiline-p nil))
+  (setq eldoc-echo-area-use-multiline-p nil
+        eldoc-idle-delay 0.1))
 
 ;; save windows configurations and use regular bookmarks file
 (use-package burly
@@ -2935,5 +2936,11 @@ its results, otherwise display STDERR with
                           (when (string-equal major-mode "python-mode")
                             (setq elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
                             (elpy-enable)))))
+
+;; authentication file  
+(use-package auth-sources
+  :straight nil
+  :init
+  (setq auth-sources '((:source "~/.emacs.d/secrets/.authinfo.gpg"))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
