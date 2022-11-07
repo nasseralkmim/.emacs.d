@@ -2913,6 +2913,7 @@ its results, otherwise display STDERR with
   (setq gdb-locals-value-limit 1000))
 
 ;; irony mode for org-edit-special c++ 
+;; uses libclang
 (use-package irony
   :hook
   (org-src-mode . (lambda ()
