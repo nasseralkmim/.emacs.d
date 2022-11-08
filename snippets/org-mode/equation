@@ -2,7 +2,6 @@
 # name: equation
 # key: <eqn
 # binding: C-c y e
-# condition: (or (= (current-column) 3) (= (current-column) 0))
 # --
 \begin{equation}
 $0

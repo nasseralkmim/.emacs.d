@@ -182,7 +182,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            (size (font-get font :size))
            (amt (or amt 1))
            (new-size (+ size amt))
-           ;; (scale (plist-get org-format-latex-options :scale))
+           (scale (if (boundp 'org-format-latex-options)
+                      (plist-get org-format-latex-options :scale)
+                    1.0))
            (new-scale (* scale 1.1)))
       ;; change size of images on org buffers
       (dolist (buffer (buffer-list))
@@ -190,9 +192,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (when (string-equal major-mode "org-mode")
             (org-zoom-inline-images))))
       (set-frame-font (font-spec :size new-size) t t)
-      ;; latex preview
-      ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale new-scale))
-      ))
+      ;; latex preview in org
+      (if (boundp 'org-format-latex-options)
+          (setq org-format-latex-options (plist-put org-format-latex-options :scale new-scale)))))
 
   (defun zoom-frame-out (&optional amt frame)
     "Call `zoom-frame' with negative argument."
@@ -204,8 +206,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         (when (string-equal major-mode "org-mode")
           (org-zoom-out-inline-images))))
     ;; latex scale to 1.1
-    ;; (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1))
-    ))
+    (if (boundp 'org-format-latex-options)
+        (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)))))
 
 ;; controls the behavior of windows
 (use-package emacs-display-windows

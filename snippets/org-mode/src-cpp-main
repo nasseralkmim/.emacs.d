@@ -2,6 +2,9 @@
 # name: main 
 # key: <m
 # --
-int main () {
+#include <iostream>
+
+int main (int argv, char* arc[])
+{
 $0
 }
