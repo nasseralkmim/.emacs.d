@@ -786,9 +786,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :commands rainbow-mode 
   :diminish rainbow-mode)
 
-(use-package org-contrib)
+(use-package org-contrib :disabled)
 
 (use-package org
+  :straight (:type built-in)
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -906,7 +907,7 @@ graphics."
   :init
   (setq org-export-in-background t))
 
-(use-package ox-extra
+(use-package ox-extra :disabled
     :after org
     :demand
     :config
