@@ -2888,12 +2888,6 @@ its results, otherwise display STDERR with
 (use-package clang-format+
   :hook (c++-mode . clang-format+-mode))
 
-;; debugge
-(use-package gud
-  :config
-  ;; display source code
-  (setq gdb-many-windows t))
-
 (use-package org-footnote
   :straight nil
   :after org
@@ -2914,7 +2908,9 @@ its results, otherwise display STDERR with
 (use-package gdb
   :straight nil
   :config
-  (setq gdb-locals-value-limit 1000))
+  (setq gdb-locals-value-limit 1000
+        ;; use gdb layout and just the info locals
+        gdb-many-windows nil))
 
 ;; irony mode for org-edit-special c++ 
 ;; uses libclang
