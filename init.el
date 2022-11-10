@@ -1766,8 +1766,7 @@ Only if there is more than one window opened."
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :hook
-  ;; guess the style based on guess
-  (c++-mode . (lambda () (c-guess-buffer)))
+  (c++-mode . c-style-setup)
   :general
   (c++-mode-map "C-x c" 'compile)
   :config
@@ -1778,7 +1777,16 @@ Only if there is more than one window opened."
   ;; one first use `eglot-format' (which uses `clangd' server) that can read `.clang-format'
   ;; then `c-guess-buffer-no-install' to set it
   (setq c-default-style "linux"
-        c-basic-offset 2)) 
+        c-basic-offset 2
+        ;; one comment for multiline with `comment-region'
+        comment-style "indent")
+  :init
+  (defun c-style-setup ()
+    "Sets up the documentation and comment style"
+    ;; use the style defined by .clang-format (automatic with eglot)
+    ;; for blocks use `comment-box' after `c-toggle-comment-style'
+    ;; or multiline comment with `M-j'
+    (c-guess-buffer))) 
 
 (use-package cc-mode
   :straight (:type built-in)
