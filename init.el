@@ -1298,6 +1298,9 @@ graphics."
 (use-package hideshow
   :straight nil
   :diminish hs-minor-mode
+  :general
+  ('normal hs-minor-mode-map "z A" 'hs-hide-all)
+  ('normal hs-minor-mode-map "z s" 'hs-show-all)
   :hook
   (prog-mode . hs-minor-mode))
 
