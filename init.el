@@ -780,7 +780,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package rainbow-mode
   :commands rainbow-mode 
   :diminish rainbow-mode)
-(use-package org-contrib :disabled)
+(use-package org-contrib :disabled)     ; bug with inline images 
 
 (use-package org
   :straight (:type built-in)
@@ -900,7 +900,7 @@ graphics."
   :after org
   :init
   (setq org-export-in-background t))
-(use-package ox-extra :disabled
+(use-package ox-extra :disabled         ; bug with inline images
     :after org
     :demand
     :config
@@ -1721,27 +1721,6 @@ Only if there is more than one window opened."
 (use-package htmlize)
 
 ;; `:includes` so straight can recognize dap-python.el and dap-cpptools
-(use-package dap-mode :disabled
-  :after lsp-mode
-  :straight (dap-mode :includes (dap-python dap-cpptools)
-		      :type git
-		      :host github
-		      :repo "emacs-lsp/dap-mode") 
-  :general
-  (lsp-mode-map "<f6>" 'dap-hydra))
-
-(use-package dap-cpptools :disabled
-  :after dap-mode
-  :demand)
-
-(use-package dap-python :disabled
-  :after dap-mode python
-  :demand ; so it loads, "requires", dap-python
-  :init
-  (setq dap-python-debugger 'debugpy))
-
-;; change python virtual envirnment
-;; obs: lsp-restart-workspace if change virtualenv 
 (use-package pyvenv
   :commands pyvenv-activate pyvenv-workon
   :config
@@ -1783,43 +1762,6 @@ Only if there is more than one window opened."
   ;; use `//' for comments
   (c-mode . (lambda () (c-toggle-comment-style -1))))
 
-(use-package lsp-mode :disabled
-  :commands (lsp lsp-deferred)
-  :general
-  (org-mode-map :prefix "C-l" "o" 'lsp-org)
-  (org-mode-map :prefix "C-l" "d" 'lsp-virtual-buffer-disconnect)
-  :init
-  (setq lsp-keymap-prefix "C-l")
-  (setq read-process-output-max (* 1024 1024))
-  :hook
-  (python-mode . lsp-deferred)
-  (c++-mode . lsp-deferred)
-  (lsp-mode . lsp-enable-which-key-integration)
-  :config
-  (setq lsp-idle-delay 0.5
-	lsp-enable-folding nil		;potential to be slow
-	lsp-enable-text-document-color nil ;potential to be slow
-	lsp-keep-workspace-alive nil; terminate server if last workspace buffer is closed
-	lsp-enable-on-type-formatting nil  ;don't format automatically
-	lsp-headerline-breadcrumb-enable nil)  ;disable breadcrumb
-
-  ;; using corfu, not company
-  (setq lsp-completion-provider :none))
-
-;; language server for type checker/completion/doc string
-;; alternative to lsp-python-ms
-(use-package lsp-pyright :disabled
-  :hook (python-mode . (lambda ()
-			 (require 'lsp-pyright)
-			 (lsp-deferred)))
-  :config
-  ;; https://github.com/microsoft/pyright/discussions/1466
-  ;; don't infer types from library source
-  ;; treat all as unknowns when type is nonpresent
-  (setq lsp-pyright-use-library-code-for-types nil)
-  (setq lsp-pyright-python-executable-cmd "python3"))
-
-;; lsp mode on org-edit-special
 (use-package ob-python :disabled
   :after org lsp
   :commands org-babel-execute:python
@@ -1831,12 +1773,6 @@ Only if there is more than one window opened."
 ;; Microsoft python language server
 ;; it seems to be faster than pyls
 ;; does not have formating
-(use-package lsp-python-ms :disabled
-  :init (setq lsp-python-ms-auto-install-server t)
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
-                          (lsp-deferred))))  ; or lsp-deferred
-
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -2329,24 +2265,6 @@ Only if there is more than one window opened."
         avy-all-windows-alt t           ; allow all windows when `C-u`
         avy-all-windows nil))           ; restrict to one window
 
-(use-package lsp-grammarly :disabled
-  :if (eq system-type 'gnu/linux)
-  :commands lsp-grammarly-start
-  :init
-  (defun lsp-grammarly-start ()
-    (interactive)
-    (require 'lsp-grammarly)
-    (lsp-deferred))
-  :config
-  (setq lsp-grammarly-audience "expert"))
-
-(use-package lsp-ltex :disabled
-  :hook (LaTeX-mode . (lambda ()
-                       (require 'lsp-ltex)
-                       (lsp-deferred))))
-
-;; icons for completion candidates
-;; fork adds support for M-x, imenu
 (use-package all-the-icons-completion
   :straight (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
   :when (display-graphic-p)
