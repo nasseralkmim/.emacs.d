@@ -134,8 +134,7 @@
   (setq yank-pop-change-selection t)    ;change selection when using yank pop
   )
 
-(use-package emacs
-  :disabled
+(use-package emacs :disabled
   :if (string-greaterp emacs-version "29") ; need emacs > 29
   :init
    ; text scroll pixel by pixel
@@ -210,8 +209,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)))))
 
 ;; controls the behavior of windows
-(use-package emacs-display-windows
-  :disabled
+(use-package emacs-display-windows :disabled
   :straight nil
   :init
   ;; reuse existing windows including other frames
@@ -552,8 +550,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; flymake just for C++ in org edit special
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Example_002d_002d_002dConfiguring-a-tool-called-directly.html
-(use-package flymake
-  :disabled                             ;not working with org edit special
+(use-package flymake :disabled                             ;not working with org edit special
   :init
   (defun flymake-cc-init ()
     (let* (;; Create temp file which is copy of current file
@@ -665,8 +662,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 	      :around #'evil-org-insert-state-in-edit-buffer))
 
 ;; move around text
-(use-package evil-easymotion
-  :disabled
+(use-package evil-easymotion :disabled
   :defer 1
   :after evil
   :config
@@ -738,8 +734,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config (evil-exchange-install))
 
 ;; jump to matched tags
-(use-package evil-matchit
-  :disabled
+(use-package evil-matchit :disabled
   :after python evil
   :config
   (global-evil-matchit-mode 4))
@@ -785,7 +780,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package rainbow-mode
   :commands rainbow-mode 
   :diminish rainbow-mode)
-
 (use-package org-contrib :disabled)
 
 (use-package org
@@ -906,7 +900,6 @@ graphics."
   :after org
   :init
   (setq org-export-in-background t))
-
 (use-package ox-extra :disabled
     :after org
     :demand
@@ -953,8 +946,7 @@ graphics."
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
 
-(use-package ob-julia
-  :disabled
+(use-package ob-julia :disabled
   :straight nil
   :after org
   :commands org-babel-execute:julia
@@ -1201,8 +1193,7 @@ graphics."
 
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
-(use-package wucuo
-  :disabled ;; using vale
+(use-package wucuo :disabled ;; using vale
   :hook
   (text-mode . wucuo-start)
   (prog-mode . wucuo-start))
@@ -1271,8 +1262,7 @@ graphics."
   (setq dabbrev-case-replace nil))
 
 ;; completion in region
-(use-package company
-  :disabled
+(use-package company :disabled
   :diminish company-mode
   :hook
   (prog-mode . company-mode)
@@ -1287,8 +1277,7 @@ graphics."
 
 ;; Company use prescient.el
 ;; used to sorts and filter list of candidates
-(use-package company-prescient
-  :disabled
+(use-package company-prescient :disabled
   :after company
   :init
   (company-prescient-mode))
@@ -1335,8 +1324,7 @@ graphics."
         ))  
 
 ;; trying to make outline work with python docstring
-(use-package outline-python
-  :disabled
+(use-package outline-python :disabled
   :straight nil
   :after outline
   :init
@@ -1507,8 +1495,7 @@ graphics."
 ;; Creates UNIQUE labels, helps referencing them (not so good)
 ;; AUCTeX defaut: C-c RET -> eqref -> prompts for label (can be with completion)
 ;; RefTeX interface: C-c RET -> eqref -> TAB -> select label with completion
-(use-package reftex
-  :disabled
+(use-package reftex :disabled
   :after latex
   :commands reftex-toc
   :hook
@@ -1588,8 +1575,7 @@ graphics."
 
 ;; improved dired
 ;; problem with tramp
-(use-package dirvish
-  :disabled
+(use-package dirvish :disabled
   :straight (dirvish :type git :host github :repo "alexluigit/dirvish")
   :general
   ('normal dired-mode-map "Y" 'dirvish-copy-file-path)
@@ -1670,8 +1656,7 @@ graphics."
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
-(use-package highlight-current-window 
-  :disabled
+(use-package highlight-current-window :disabled
   :when (display-graphic-p)
   :straight nil
   :init
@@ -1736,8 +1721,7 @@ Only if there is more than one window opened."
 (use-package htmlize)
 
 ;; `:includes` so straight can recognize dap-python.el and dap-cpptools
-(use-package dap-mode
-  :disabled
+(use-package dap-mode :disabled
   :after lsp-mode
   :straight (dap-mode :includes (dap-python dap-cpptools)
 		      :type git
@@ -1746,13 +1730,11 @@ Only if there is more than one window opened."
   :general
   (lsp-mode-map "<f6>" 'dap-hydra))
 
-(use-package dap-cpptools
-  :disabled
+(use-package dap-cpptools :disabled
   :after dap-mode
   :demand)
 
-(use-package dap-python
-  :disabled
+(use-package dap-python :disabled
   :after dap-mode python
   :demand ; so it loads, "requires", dap-python
   :init
@@ -1801,8 +1783,7 @@ Only if there is more than one window opened."
   ;; use `//' for comments
   (c-mode . (lambda () (c-toggle-comment-style -1))))
 
-(use-package lsp-mode
-  :disabled
+(use-package lsp-mode :disabled
   :commands (lsp lsp-deferred)
   :general
   (org-mode-map :prefix "C-l" "o" 'lsp-org)
@@ -1827,8 +1808,7 @@ Only if there is more than one window opened."
 
 ;; language server for type checker/completion/doc string
 ;; alternative to lsp-python-ms
-(use-package lsp-pyright
-  :disabled
+(use-package lsp-pyright :disabled
   :hook (python-mode . (lambda ()
 			 (require 'lsp-pyright)
 			 (lsp-deferred)))
@@ -1840,8 +1820,7 @@ Only if there is more than one window opened."
   (setq lsp-pyright-python-executable-cmd "python3"))
 
 ;; lsp mode on org-edit-special
-(use-package ob-python
-  :disabled
+(use-package ob-python :disabled
   :after org lsp
   :commands org-babel-execute:python
   :init
@@ -1852,8 +1831,7 @@ Only if there is more than one window opened."
 ;; Microsoft python language server
 ;; it seems to be faster than pyls
 ;; does not have formating
-(use-package lsp-python-ms
-  :disabled
+(use-package lsp-python-ms :disabled
   :init (setq lsp-python-ms-auto-install-server t)
   :hook (python-mode . (lambda ()
                           (require 'lsp-python-ms)
@@ -1889,8 +1867,7 @@ Only if there is more than one window opened."
   :after python
   :commands python-black-buffer)
 
-(use-package numpydoc
-  :disabled
+(use-package numpydoc :disabled
   :after python
   :custom
   (numpydoc-insert-examples-block nil)
@@ -1995,8 +1972,7 @@ Only if there is more than one window opened."
   (consult-bibtex-embark-action consult-bibtex-open-pdf-evince bibtex-completion-open-pdf-evince)
   (define-key consult-bibtex-embark-map "p" #'consult-bibtex-open-pdf-evince))
 
-(use-package citar
-  :disabled
+(use-package citar :disabled
   :general
   ("C-c b" 'citar-insert-citation)
   :custom
@@ -2019,8 +1995,7 @@ Only if there is more than one window opened."
 ;; function to open with xournal
 (use-package citar-annotation
   :straight nil
-  :after citar
-  :disabled
+  :after citar :disabled
   :init)
 
 (use-package biblio
@@ -2037,8 +2012,7 @@ Only if there is more than one window opened."
   :after org)
 
 ;; needs to be added manually to .emacs.d/lisp folder
-(use-package wsl-path
-  :disabled
+(use-package wsl-path :disabled
   :if (not (string-match "-[Mm]icrosoft" operating-system-release))
   :straight nil
   :load-path "./lisp"
@@ -2218,8 +2192,7 @@ Only if there is more than one window opened."
   (setq org-cite-global-bibliography '("~/.bibliography.bib")))
 
 ;; highligh indentation
-(use-package highlight-indent-guides
-  :disabled
+(use-package highlight-indent-guides :disabled
   :diminish highlight-indent-guides-mode
   :hook
   (prog-mode . highlight-indent-guides-mode)
@@ -2300,8 +2273,7 @@ Only if there is more than one window opened."
   :after tree-sitter)
 
 ;; use tree sitter as evil text objects
-(use-package evil-textobj-tree-sitter
-  :disabled
+(use-package evil-textobj-tree-sitter :disabled
   :straight (evil-textobj-tree-sitter :type git
                       :host github
                       :repo "meain/evil-textobj-tree-sitter"
@@ -2357,8 +2329,7 @@ Only if there is more than one window opened."
         avy-all-windows-alt t           ; allow all windows when `C-u`
         avy-all-windows nil))           ; restrict to one window
 
-(use-package lsp-grammarly
-  :disabled
+(use-package lsp-grammarly :disabled
   :if (eq system-type 'gnu/linux)
   :commands lsp-grammarly-start
   :init
@@ -2369,8 +2340,7 @@ Only if there is more than one window opened."
   :config
   (setq lsp-grammarly-audience "expert"))
 
-(use-package lsp-ltex
-  :disabled
+(use-package lsp-ltex :disabled
   :hook (LaTeX-mode . (lambda ()
                        (require 'lsp-ltex)
                        (lsp-deferred))))
@@ -2560,12 +2530,10 @@ Only if there is more than one window opened."
 
 ;; insert org link to specified page in pdf
 ;; uses regular org functions `org-insert-link-global'
-(use-package org-pdftools
-  :disabled t                             ;org file apps with regex is enough!
+(use-package org-pdftools :disabled t                             ;org file apps with regex is enough!
   :hook (org-mode . org-pdftools-setup-link))
 
-(use-package doom-themes
-  :disabled
+(use-package doom-themes :disabled
   :init
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -2602,8 +2570,7 @@ Only if there is more than one window opened."
 
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
-(use-package dtache
-  :disabled
+(use-package dtache :disabled
   :straight (dtache :type git :host gitlab :repo "niklaseklund/dtache")
   :general
   ('normal "<f7>" 'dtache-open-session)
@@ -2617,8 +2584,7 @@ Only if there is more than one window opened."
 
 ;; add `:dtache t' option to sh source block
 ;; dtache org setup requires calls to ssh to recover the sessions
-(use-package dtache-org
-  :disabled
+(use-package dtache-org :disabled
   :straight nil
   :commands org-babel-execute:sh        ;load when executing code
   :after org dtache
@@ -2667,16 +2633,14 @@ Only if there is more than one window opened."
 
 ;; highlight scope defined by delimiters
 ;; useful sometimes in tex
-(use-package rainbow-blocks
-  :disabled
+(use-package rainbow-blocks :disabled
   :diminish rainbow-blocks-mode
   :hook (LaTeX-mode . rainbow-blocks-mode)
   :config
   (setq rainbow-blocks-outermost-only-face-count 1))
 
 ;; alternative to flyspell
-(use-package spell-fu
-  :disabled
+(use-package spell-fu :disabled
   :hook (LaTeX-mode . spell-fu-mode))
 
 ;; eye candy for org
@@ -2705,8 +2669,7 @@ Only if there is more than one window opened."
         virtual-comment-default-file "~/.emacs.d/.evc"))
 
 ;; improve org latex support
-(use-package org-auctex
-  :disabled; does not play nicely when there is $ in shell src blocks
+(use-package org-auctex :disabled; does not play nicely when there is $ in shell src blocks
   :after org
   :straight (org-auctex :type git :host github :repo "karthink/org-auctex")
   :hook (org-mode . org-auctex-mode)
@@ -2715,8 +2678,7 @@ Only if there is more than one window opened."
   ('normal org-mode-map "g p c" 'org-auctex-preview-clearout-buffer))
 
 ;; query for org
-(use-package org-ql
-  :disabled
+(use-package org-ql :disabled
   :after org
   :straight (org-ql :host github :repo "alphapapa/org-ql"
             :files (:defaults (:exclude "helm-org-ql.el"))))
@@ -2728,8 +2690,7 @@ Only if there is more than one window opened."
 
 ;; eldoc in childframe
 ;; sometimes it gets in the way
-(use-package eldoc-box
-  :disabled
+(use-package eldoc-box :disabled
   :hook (c++-mode . eldoc-box-hover-mode))
 
 ;; async support for dired
@@ -2841,8 +2802,7 @@ its results, otherwise display STDERR with
   :commands focus-mode)
 
 ;; trying instead of outline-minor-mode for programming
-(use-package origami
-  :disabled                             ; bicycle is better
+(use-package origami :disabled                             ; bicycle is better
   :straight (origami :type git :host github :repo "elp-revive/origami.el")
   :hook (prog-mode . origami-mode)
   :general
