@@ -2128,19 +2128,12 @@ Only if there is more than one window opened."
   (setq org-cite-global-bibliography '("~/.bibliography.bib")))
 
 ;; highligh indentation
-(use-package highlight-indent-guides :disabled
+(use-package highlight-indent-guides
   :diminish highlight-indent-guides-mode
   :hook
   (prog-mode . highlight-indent-guides-mode)
   :config
   (setq highlight-indent-guides-method 'character))
-
-;; highlight based on scope
-(use-package hl-indent-scope
-  :when (display-graphic-p)
-  :straight (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
-  :hook
-  (prog-mode . hl-indent-scope-mode))
 
 ;; suppress error on tui
 (use-package highlight-indent-guides
@@ -2148,6 +2141,14 @@ Only if there is more than one window opened."
   :unless (display-graphic-p)
   :init
   (setq highlight-indent-guides-suppress-auto-error t))
+
+;; highlight based on scope
+(use-package hl-indent-scope :disabled
+  :when (display-graphic-p)
+  :straight (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
+  :hook
+  (prog-mode . hl-indent-scope-mode))
+
 
 ;; emacs built in version control
 (use-package vc-git
