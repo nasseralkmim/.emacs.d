@@ -1649,7 +1649,7 @@ graphics."
   ("<f5>"  'modus-themes-toggle))
 
 ;; modus in terminal
-(use-package modus-themes
+(use-package modus-themes :disabled
   :unless (display-graphic-p)
   :init
   (modus-themes-load-operandi))
