@@ -2304,6 +2304,7 @@ Only if there is more than one window opened."
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
   (c-mode . eglot-ensure)
+  (js-mode . eglot-ensure) ; works if there is only one server available
   :config
   ;; using a hook to 
   ;; (add-to-list 'eglot-stay-out-of 'flymake)     ; using own flymake command (flake8)
