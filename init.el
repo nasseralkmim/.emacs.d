@@ -1560,7 +1560,7 @@ graphics."
   :general
   ("C-x C-j" 'dired-sidebar-jump)
   ('normal dired-sidebar-mode-map
-           "l" 'dired-sidebar-find-file
+           "l" 'dired-sidebar-find-file ; use 'C-u' to select specific window
            "h" 'dired-sidebar-up-directory)
   :hook
   (dired-sidebar-mode . visual-line-mode)
