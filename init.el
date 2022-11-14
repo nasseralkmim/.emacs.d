@@ -780,7 +780,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package rainbow-mode
   :commands rainbow-mode 
   :diminish rainbow-mode)
-(use-package org-contrib :disabled)     ; bug with inline images 
+
+;; has 'org-eldoc' which automatically hooks to 'org-mode'
+;; some file produces a bug with inline images (can not toggle)
+(use-package org-contrib
+  ;; build only `org-eldoc' (copy to `build/' and make an autoload)
+  :straight (org-contrib :files ("lisp/org-eldoc.el"))) 
 
 (use-package org
   :straight (:type built-in)
@@ -2343,6 +2348,7 @@ Only if there is more than one window opened."
   (defun start-eglot-ltex ()
     (interactive)
     (require 'eglot-ltex)
+    (setq eglot-stay-out-of '(eldoc)) ; in org-mode, standard eldoc behavior (for src blocks heading)
     (call-interactively #'eglot))
   :hook
   ;; when in latex don't use multiline minibuffer
