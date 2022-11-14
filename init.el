@@ -1293,8 +1293,9 @@ graphics."
   :straight nil
   :diminish hs-minor-mode
   :general
-  ('normal hs-minor-mode-map "z A" 'hs-hide-all)
-  ('normal hs-minor-mode-map "z s" 'hs-show-all)
+  ('normal hs-minor-mode-map "z H" 'hs-hide-all)
+  ('normal hs-minor-mode-map "z A" 'hs-show-all)
+  ('normal hs-minor-mode-map "z <tab>" 'hs-toggle-hiding)
   :hook
   (prog-mode . hs-minor-mode))
 
@@ -1325,7 +1326,7 @@ graphics."
   ;; evil-collection end up binding last...
   (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
   (setq outline-minor-mode-cycle t
-	;; outline-minor-mode-highlight 'append  ;; bug with C++ source block
+	outline-minor-mode-highlight 'append  ;; (trying again) bug with C++ source block
         ))  
 
 ;; trying to make outline work with python docstring
@@ -2666,7 +2667,10 @@ Only if there is more than one window opened."
   :commands flymake-vale-load)
 
 ;; enhances outline-cycle command
-;; binds tab anywhere, default is smarter (indent-for-tab-command)
+;; 
+;; https://github.com/tarsius/bicycle/issues/8
+;; using hideshow the end delimiter goes to the same line `(...)'
+;; using bicycle it does not `(...'
 (use-package bicycle
   :after outline
   :config
