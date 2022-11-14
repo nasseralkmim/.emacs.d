@@ -1326,7 +1326,7 @@ graphics."
   ;; evil-collection end up binding last...
   (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
   (setq outline-minor-mode-cycle t
-	outline-minor-mode-highlight 'append  ;; (trying again) bug with C++ source block
+	;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
         ))  
 
 ;; trying to make outline work with python docstring
