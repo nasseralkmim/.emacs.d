@@ -2866,4 +2866,27 @@ its results, otherwise display STDERR with
   :init
   (setq auth-sources '((:source "~/.emacs.d/secrets/.authinfo.gpg"))))
 
+;; hide everything except current heading
+;; https://stackoverflow.com/a/28031539/20449842
+(use-package org-show-current-tidyl
+  :straight nil
+  :after org
+  :general
+  ('normal org-mode-map "M-=" 'org-show-current-heading-tidily)
+  :init
+  (defun org-show-current-heading-tidily ()
+    (interactive)  ;Inteactive
+    "Show next entry, keeping other entries closed."
+    (if (save-excursion (end-of-line) (outline-invisible-p))
+        (progn (org-show-entry) (show-children))
+      (outline-back-to-heading)
+      (unless (and (bolp) (org-on-heading-p))
+        (org-up-heading-safe)
+        (hide-subtree)
+        (error "Boundary reached"))
+      (org-overview)
+      (org-reveal t)
+      (org-show-entry)
+      (show-children))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
