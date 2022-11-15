@@ -2048,7 +2048,7 @@ Only if there is more than one window opened."
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
   :general
-  ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
+  ("<f9>" 'vterm-toggle-insert-cd) 	; opens term in current cd including remote
   (vterm-mode-map "s-n" 'vterm-toggle-forward
 		  "s-p" 'vterm-toggle-backward))
 
