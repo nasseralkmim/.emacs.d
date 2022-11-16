@@ -1819,7 +1819,8 @@ Only if there is more than one window opened."
     (setq indent-line-function #'my-python-indent-line))
   (add-hook 'python-mode-hook #'my-python-mode-hook)
 
-  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards
+  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards.
+  ;; using flake9 for support to 'pyproject.toml'.
   (setq python-flymake-command '("flake8" "-")
         python-check-command "/home/nasser/.local/bin/flake8"))
 
@@ -2048,7 +2049,8 @@ Only if there is more than one window opened."
 ;; manage multiple vterm's buffers
 (use-package vterm-toggle
   :general
-  ("<f9>" 'vterm-toggle-insert-cd) 	; opens term in current cd including remote
+  ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
+  ("C-<f9>" 'vterm-toggle-insert-cd)
   (vterm-mode-map "s-n" 'vterm-toggle-forward
 		  "s-p" 'vterm-toggle-backward))
 
@@ -2385,7 +2387,7 @@ Only if there is more than one window opened."
                   pcomplete-completions-at-point
                   cape-file
                   cape-dabbrev
-                  cape-ispell)))))
+                  cape-ispell))))
 
 ;; use language tool with flymake
 ;; download latest version https://languagetool.org/download/
