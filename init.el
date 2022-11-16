@@ -38,7 +38,7 @@
 
 ;; prevent Emacs-provided Org from being loaded
 (straight-register-package 'org)
-(straight-register-package 'org-contrib)
+;; (straight-register-package 'org-contrib)
 
 ;; general for kybinding
 (use-package general
@@ -2355,6 +2355,8 @@ Only if there is more than one window opened."
                    (flymake-mypy-enable))))))
 
 ;; add ltex language server to eglot
+;; uses language tool for grammar, but there is no need to install it
+;; allow configuration on the file: 
 ;; need to manually download the language server:
 ;; cd ~/.opt && https://github.com/valentjn/ltex-ls/releases/download/15.2.0/ltex-ls-15.2.0-linux-x64.tar.gz
 ;; tar -xvf ltex-ls-15.2.0-linux-x64.tar.gz
@@ -2368,13 +2370,22 @@ Only if there is more than one window opened."
   (defun start-eglot-ltex ()
     (interactive)
     (require 'eglot-ltex)
-    (setq eglot-stay-out-of '(eldoc)) ; in org-mode, standard eldoc behavior (for src blocks heading)
-    (call-interactively #'eglot))
-  :hook
-  ;; when in latex don't use multiline minibuffer
-  ;; avoid sily documentation in the minibuffer
-  (eglot-managed-mode . (lambda ()
-                          (setq eldoc-echo-area-use-multiline-p nil))))
+    (setq eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
+    ;; set a dir local to notes directory
+    ;; ltex-ls DOES NOT SUPPORT external files... https://github.com/valentjn/ltex-ls/issues/157#:~:text=External%20files%20are%20not%20supported%20by%20ltex%2Dls
+    ;; just disable spelling with a .dir-locals.el
+    ;; ((nil
+    ;;   (eglot-workspace-configuration
+    ;;    . ((ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))
+    ;; 
+    (call-interactively #'eglot)
+    ;; set custom CAPE functions
+    (setq-local completion-at-point-functions
+                `(eglot-completion-at-point
+                  pcomplete-completions-at-point
+                  cape-file
+                  cape-dabbrev
+                  cape-ispell)))))
 
 ;; use language tool with flymake
 ;; download latest version https://languagetool.org/download/
