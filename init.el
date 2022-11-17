@@ -782,11 +782,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :commands rainbow-mode 
   :diminish rainbow-mode)
 
-;; has 'org-eldoc' which automatically hooks to 'org-mode'
 ;; some file produces a bug with inline images (can not toggle)
 (use-package org-contrib
-  ;; build only `org-eldoc' (copy to `build/' and make an autoload)
-  :straight (org-contrib :files ("lisp/org-eldoc.el"))) 
+  ;; build only selected (copy to `build/' and make an autoload)
+  :straight (org-contrib :files (
+                                 "lisp/org-eldoc.el" ; show src block arguments
+                                 "lisp/ox-bibtex.el" ; export latex properly
+                                 "lisp/ox-extra.el" ; ignore headlines (need to config)
+                                 ))) 
+
+(use-package ox-extra
+  :straight nil
+  :after org
+  :demand                               ; explicit require
+  :config
+  (ox-extras-activate '(ignore-headlines)))
 
 (use-package org
   :straight (:type built-in)
@@ -906,11 +916,6 @@ graphics."
   :after org
   :init
   (setq org-export-in-background t))
-(use-package ox-extra :disabled         ; bug with inline images
-    :after org
-    :demand
-    :config
-    (ox-extras-activate '(ignore-headlines)))
 
 (use-package ox-html
   :straight nil
