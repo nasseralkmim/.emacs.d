@@ -2087,6 +2087,13 @@ Only if there is more than one window opened."
   :init
   (evil-terminal-cursor-changer-activate))
 
+;; don't change background when in terminal
+(use-package terminal-disable-bg
+  :straight nil
+  :unless (display-graphic-p)
+  :init
+  (set-face-background 'default "undefined"))
+
 (use-package repeat
   :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
@@ -2164,7 +2171,6 @@ Only if there is more than one window opened."
   :straight (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
   :hook
   (prog-mode . hl-indent-scope-mode))
-
 
 ;; emacs built in version control
 (use-package vc-git
