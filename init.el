@@ -321,7 +321,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                    #'completion--in-region)
                  args))))
 
-
 ;; allows different completion UI configuration
 (use-package vertico-multiform
   :straight nil
@@ -348,6 +347,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; partial completion for files to allows path expansion
   (setq completion-styles '(orderless)
         completion-category-defaults nil
+        completion-ignore-case t        ; ignore case (useful in c++ for instance)
         read-file-name-completion-ignore-case t
         completion-category-overrides '((file (styles . (partial-completion)))
                                         ;; navigate files with initials
