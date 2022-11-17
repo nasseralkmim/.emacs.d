@@ -2364,23 +2364,26 @@ Only if there is more than one window opened."
 ;; cd ~/.opt && https://github.com/valentjn/ltex-ls/releases/download/15.2.0/ltex-ls-15.2.0-linux-x64.tar.gz
 ;; tar -xvf ltex-ls-15.2.0-linux-x64.tar.gz
 ;; also need java (open JDK 11 development kit)
+;; 
+;; ltex-ls DOES NOT SUPPORT external files...
+;; https://github.com/valentjn/ltex-ls/issues/157#:~:text=External%20files%20are%20not%20supported%20by%20ltex%2Dls
+;; just disable spelling with a .dir-locals.el
+;; ((nil
+;;   (eglot-workspace-configuration
+;;    . ((ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))
+;; 
 (use-package eglot-ltex
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :straight (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-eglot-ltex
   :init
   (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.2.0/")
+
   (defun start-eglot-ltex ()
     (interactive)
     (require 'eglot-ltex)
     (setq eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
-    ;; set a dir local to notes directory
-    ;; ltex-ls DOES NOT SUPPORT external files... https://github.com/valentjn/ltex-ls/issues/157#:~:text=External%20files%20are%20not%20supported%20by%20ltex%2Dls
-    ;; just disable spelling with a .dir-locals.el
-    ;; ((nil
-    ;;   (eglot-workspace-configuration
-    ;;    . ((ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))
-    ;; 
+    ;; automatic set a dir locals to org-mode
     (call-interactively #'eglot)
     ;; set custom CAPE functions
     (setq-local completion-at-point-functions
@@ -2388,7 +2391,14 @@ Only if there is more than one window opened."
                   pcomplete-completions-at-point
                   cape-file
                   cape-dabbrev
-                  cape-ispell))))
+                  cape-ispell)))
+
+  ;; example: https://www.emacswiki.org/emacs/DirectoryVariables#:~:text=non%2Ddotted%20notation.-,Without%20a%20.dir%2Dlocals.el%20file,-You%20can%20also
+  (dir-locals-set-class-variables
+   'ltex-config
+   '((nil                               ; all modes
+      . ((eglot-workspace-configuration
+          . (:ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))))
 
 ;; use language tool with flymake
 ;; download latest version https://languagetool.org/download/
