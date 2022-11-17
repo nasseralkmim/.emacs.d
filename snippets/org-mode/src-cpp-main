@@ -4,7 +4,7 @@
 # --
 #include <iostream>
 
-int main (int argv, char* arc[])
+int main (int argv, char* argc[])
 {
 $0
 }

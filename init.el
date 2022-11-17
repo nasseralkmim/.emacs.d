@@ -2370,7 +2370,7 @@ Only if there is more than one window opened."
   (defun start-eglot-ltex ()
     (interactive)
     (require 'eglot-ltex)
-    (setq eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
+    (setq-local eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
     ;; automatic set a dir locals to org-mode
     (call-interactively #'eglot)
     ;; set custom CAPE functions
