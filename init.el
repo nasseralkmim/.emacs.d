@@ -247,6 +247,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package autorevert
   :if (eq system-type 'gnu/linux)
   :defer 1
+  :hook (dired-mode . (lambda () (setq-local auto-revert-interval 0)))
   :config
   (setq auto-revert-interval 5)
   (setq auto-revert-check-vc-info t)
