@@ -1253,17 +1253,6 @@ graphics."
   ;; https://github.com/minad/corfu/wiki
   (setq completion-category-overrides '((eglot (styles orderless)))))
 
-(use-package cape-org
-  :straight nil
-  :after cape
-  :init
-  (defun my/setup-cape-org ()
-    (setq-local completion-at-point-functions
-                `(pcomplete-completions-at-point
-                  cape-file
-                  cape-dabbrev)))
-  (add-hook 'org-mode-hook #'my/setup-cape-org))
-
 (use-package corfu-doc
   :when (display-graphic-p)
   :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
