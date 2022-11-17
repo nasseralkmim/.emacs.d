@@ -1237,7 +1237,6 @@ graphics."
 ;; `completion at point' extensions for specific candidates in `completion in region'
 (use-package cape
   :straight (cape :type git :host github :repo "minad/cape")
-  :after corfu
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
@@ -1256,14 +1255,14 @@ graphics."
 
 (use-package cape-org
   :straight nil
-  :after cape org
+  :after cape
   :init
- (defun my/setup-cape-org ()
-   (setq-local completion-at-point-functions
-		`(pcomplete-completions-at-point
-		  cape-file
+  (defun my/setup-cape-org ()
+    (setq-local completion-at-point-functions
+                `(pcomplete-completions-at-point
+                  cape-file
                   cape-dabbrev)))
- (add-hook 'org-mode-hook #'my/setup-cape-org))
+  (add-hook 'org-mode-hook #'my/setup-cape-org))
 
 (use-package corfu-doc
   :when (display-graphic-p)
