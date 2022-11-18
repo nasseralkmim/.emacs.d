@@ -1752,10 +1752,10 @@ Only if there is more than one window opened."
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :hook
-  (c++-mode . c-style-setup)
-  (c-mode . c-style-setup)              ; also for c
+  (c-mode-common . c-style-setup)              ; also for c
   :general
   (c++-mode-map "C-x c" 'compile)
+  (c-mode-map "C-x c" 'compile)
   :config
   ;; change style curly braces on their on line without offset
   ;; https://en.wikipedia.org/wiki/Indentation_style#Variant:_Linux_kernel
@@ -1774,15 +1774,6 @@ Only if there is more than one window opened."
     ;; for blocks use `comment-box' after `c-toggle-comment-style'
     ;; or multiline comment with `M-j'
     (c-guess-buffer))) 
-
-(use-package cc-mode
-  :straight (:type built-in)
-  :mode ("\\.c\\'" . c-mode)
-  :general
-  (c-mode-map "C-x c" 'compile)
-  :hook
-  ;; use `//' for comments
-  (c-mode . (lambda () (c-toggle-comment-style -1))))
 
 (use-package ob-python :disabled
   :after org lsp
