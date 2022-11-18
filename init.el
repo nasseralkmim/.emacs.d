@@ -1755,6 +1755,7 @@ Only if there is more than one window opened."
   :mode ("\\.cpp\\'" . c++-mode)
   :hook
   (c++-mode . c-style-setup)
+  (c-mode . c-style-setup)              ; also for c
   :general
   (c++-mode-map "C-x c" 'compile)
   :config
