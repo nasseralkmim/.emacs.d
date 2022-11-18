@@ -1192,8 +1192,6 @@ graphics."
 ;; flyspell uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
 (use-package flyspell-lazy
-  :if (eq system-type 'gnu/linux)
-  :if (string-match "-[Mm]icrosoft" operating-system-release)
   :hook
   (flyspell-mode . flyspell-lazy-mode)
   :config
@@ -1208,7 +1206,7 @@ graphics."
 
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
-(use-package wucuo :disabled ;; using vale
+(use-package wucuo :disabled
   :hook
   (text-mode . wucuo-start)
   (prog-mode . wucuo-start))
