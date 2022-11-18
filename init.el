@@ -22,7 +22,7 @@
   (load bootstrap-file nil 'nomessage))
 
 ;; install `use-package`
-;; `alway-defer` means that for a package to load we need a `:hook` or using a `:general` keybinding 
+;; `always-defer` means that for a package to load we need a `:hook` or using a `:general` keybinding 
 ;; if there is none, we need to explicitly add `:demand` to load the package
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
@@ -40,15 +40,15 @@
 (straight-register-package 'org)
 ;; (straight-register-package 'org-contrib)
 
-;; general for kybinding
+;; general for keybinding
 (use-package general
   :demand)
 
-;; control minor-mode indication in the mode-lie
+;; control minor-mode indication in the mode-line
 (use-package diminish
   :demand)
 
-;; minimizes GC interferecen with user activity
+;; minimizes GC interference with user activity
 (use-package gcmh
   :diminish gcmh-mode
   :init
@@ -60,7 +60,7 @@
 (use-package emacs
   :general
   ('normal "gy" 'revert-buffer-quick)
-  ('insert "C-v" 'yank)                 ; for helping in minibuffer..
+  ('insert "C-v" 'yank)                 ; for helping in minibuffer.
   ("C-<tab>" 'next-window-any-frame)
   ("<backtab>" 'previous-window-any-frame)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
