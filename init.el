@@ -1020,12 +1020,16 @@ graphics."
                   current-prefix-arg))
            (new-size (+ size amt)))
       (setq org-image-actual-width new-size)
-      (org-redisplay-inline-images)))
+      ;; don't redisplay if in tramp
+      (if (not (file-remote-p default-directory))
+        (org-redisplay-inline-images))))
 
   (defun org-zoom-out-inline-images ()
     (interactive)
       (setq org-image-actual-width nil)
-      (org-redisplay-inline-images)))
+      ;; don't redisplay if in tramp
+      (if (not (file-remote-p default-directory))
+        (org-redisplay-inline-images))))
 
 ;; for windows
 (use-package ob-python
