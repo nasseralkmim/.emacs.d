@@ -2380,10 +2380,10 @@ Only if there is more than one window opened."
     (call-interactively #'eglot)
     ;; set custom CAPE functions
     (setq-local completion-at-point-functions
-                `(eglot-completion-at-point
-                  pcomplete-completions-at-point
-                  cape-file
+                `(cape-file
                   cape-dabbrev
+                  eglot-completion-at-point
+                  pcomplete-completions-at-point
                   cape-ispell)))
 
   ;; example: https://www.emacswiki.org/emacs/DirectoryVariables#:~:text=non%2Ddotted%20notation.-,Without%20a%20.dir%2Dlocals.el%20file,-You%20can%20also
