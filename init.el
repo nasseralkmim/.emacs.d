@@ -2874,8 +2874,12 @@ its results, otherwise display STDERR with
   :hook
   (org-src-mode . (lambda ()
                           (when (string-equal major-mode "python-mode")
-                            (setq elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
-                            (elpy-enable)))))
+                            ;; remove company mode
+                            (setq-local elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
+                            (elpy-enable)
+                            ;; add company backend as CAPF for cape
+                            (setq-local completion-at-point-functions
+                                        (cape-company-to-capf 'elpy-company-backend))))))
 
 ;; authentication file  
 (use-package auth-sources
