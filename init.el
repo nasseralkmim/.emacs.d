@@ -2881,16 +2881,28 @@ its results, otherwise display STDERR with
   :hook (org-mode . org-rainbow-tags-mode))
 
 ;; python support for org-edit-special
-(use-package elpy
+(use-package elpy :disabled
   :hook
   (org-src-mode . (lambda ()
                           (when (string-equal major-mode "python-mode")
                             ;; remove company mode
-                            (setq-local elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
+                            (setq elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
                             (elpy-enable)
                             ;; add company backend as CAPF for cape
+                            ;; need some company functions...
+                            (require 'company)
                             (setq-local completion-at-point-functions
                                         (cape-company-to-capf 'elpy-company-backend))))))
+
+;; auto complete with company backend adapter for corfu
+;; there was a problem with numpy, this fixes: https://github.com/davidhalter/jedi/issues/1864#issuecomment-1306543244
+(use-package company-jedi
+  :hook
+  (org-src-mode . (lambda ()
+                    (when (string-equal major-mode "python-mode")
+                      (require 'company-jedi)
+                      (setq-local completion-at-point-functions
+                                  (cape-company-to-capf 'company-jedi))))))
 
 ;; authentication file  
 (use-package auth-sources
