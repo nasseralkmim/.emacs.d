@@ -1062,6 +1062,7 @@ graphics."
   :general
   ('normal org-mode-map "z e" 'org-edit-special)
   ('normal org-src-mode-map "z e" 'org-edit-src-exit)
+  ('normal org-mode-map "z g" 'org-toggle-blocks)
   :after org
   :init
   ;; babel and source blocks
@@ -1071,7 +1072,17 @@ graphics."
 	org-adapt-indentation nil ; no extra space... better use indent mode (virtual)
         org-edit-src-content-indentation 0 ; dont indent source code
 	org-src-tab-acts-natively t	; if t, it is slow!
-	org-confirm-babel-evaluate nil)) ; doesn't ask for confirmation
+	org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
+
+  ;; hide source blocks
+  ;; https://emacs.stackexchange.com/a/7366 
+  (defvar org-blocks-hidden nil)
+  (defun org-toggle-blocks ()
+    (interactive)
+    (if org-blocks-hidden
+        (org-show-block-all)
+      (org-hide-block-all))
+ (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
 (use-package org-agenda
   :straight nil
