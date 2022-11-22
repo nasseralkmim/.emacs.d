@@ -1105,7 +1105,7 @@ graphics."
         org-latex-images-centered t
         org-preview-latex-image-directory "~/.cache/ltximg/")
 
-  ;; minted code pdf export org
+  ;; mint and svg export require '-shell-escape' option
   (setq org-latex-listings 'minted
 	org-latex-pdf-process
 	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
@@ -1115,6 +1115,7 @@ graphics."
 
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
+                                   (nil "svg"  nil)
                                    ("a4paper, margin=20mm" "geometry" nil)))
 
   (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil)))
@@ -1258,10 +1259,10 @@ graphics."
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-ispell)
   (add-to-list 'completion-at-point-functions #'cape-tex)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  (add-to-list 'completion-at-point-functions #'cape-ispell))
+  (add-to-list 'completion-at-point-functions #'cape-keyword))
 
 (use-package cape-eglot
   :straight nil
@@ -1407,7 +1408,8 @@ graphics."
   ;; (add-hook 'find-file-hook 'TeX-fold-buffer t)
   
   ;; specific config
-  (setq LaTeX-command "latex -shell-escape") ;; -shell-escape for minted (syntax highlight)
+  ;; -shell-escape for minted (syntax highlight) and svg export
+  (setq LaTeX-command "latex -shell-escape")
   
   ;; variables for jumping between source and pdf
   (setq TeX-source-correlate-method 'synctex ;; Method for enabling forward and inverse search 
