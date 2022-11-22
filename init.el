@@ -2497,8 +2497,8 @@ Only if there is more than one window opened."
           ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1")))) ; if file has ::<page> opens at this page
 
 ;; convert pdf to svg to display inline org image
-;; only when in the workstation, otherwise too slow
 ;; requires pdf-tools
+;; better to just use svg and use latex svg package
 (use-package org-inline-pdf
   :when (eq system-type 'gnu/linux)
   :hook (org-mode . org-inline-pdf-mode))
