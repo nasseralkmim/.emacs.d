@@ -908,7 +908,7 @@ graphics."
   :straight nil
   :after org
   :init
-  (setq org-display-remote-inline-images 'download))
+  (setq org-display-remote-inline-images 'cache))
 
 ;; org export
 (use-package ox
