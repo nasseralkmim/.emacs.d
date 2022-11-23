@@ -2244,6 +2244,15 @@ Only if there is more than one window opened."
   :demand                               ; require it after loading tree-sitter
   :after tree-sitter)
 
+;; fold based on tree sitter syntax tree
+(use-package ts-fold :disabled
+  :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
+  :hook
+  (c-mode-common . ts-fold-mode)
+  (python-mod . ts-fold-mode)
+  :config
+  (advice-add 'outline-cycle :override #'ts-fold-toggle))
+
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter :disabled
   :straight (evil-textobj-tree-sitter :type git
