@@ -2245,13 +2245,23 @@ Only if there is more than one window opened."
   :after tree-sitter)
 
 ;; fold based on tree sitter syntax tree
-(use-package ts-fold :disabled
+(use-package ts-fold
   :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
+  :after outline
+  :general
+  ('normal outline-mode-map :prefix "z"
+           "h" 'ts-fold-close-all
+           "a" 'ts-fold-open-all)
   :hook
   (c-mode-common . ts-fold-mode)
   (python-mod . ts-fold-mode)
+  (ts-fold-mode . outline-when-ts)
+  :init
+  (defun outline-when-ts ()
+    (advice-add 'outline-cycle :override #'ts-fold-toggle))
   :config
-  (advice-add 'outline-cycle :override #'ts-fold-toggle))
+  ;; don't mess with comments
+  (setq ts-foold-summary-show nil))
 
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter :disabled
@@ -2729,11 +2739,14 @@ Only if there is more than one window opened."
 ;; https://github.com/tarsius/bicycle/issues/8
 ;; using hideshow the end delimiter goes to the same line `(...)'
 ;; using bicycle it does not `(...'
-(use-package bicycle
+(use-package bicycle :disabled
   :after outline
-  :config
+  :hook
+  (emacs-lisp-mode . outline-when-bicycle)
+  :init
   ;; replace outline-cycle
-  (advice-add 'outline-cycle :override #'bicycle-cycle))
+  (defun outline-when-bicycle ()
+    (advice-add 'outline-cycle :override #'bicycle-cycle)))
 
 ;; query synonyms
 (use-package le-thesaurus
