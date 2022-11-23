@@ -9,9 +9,9 @@
                         `(font-latex-sectioning-5-face ((t (:weight normal :slant oblique :underline t :inherit outline-5))))
                         `(font-latex-string-face ((t (:foreground "saddle brown"))))
                         ;; general
-                        `(font-lock-comment-face ((t (:foreground "#aa9e9f" :slant italic :weight medium))))
-                        `(mode-line-active ((t (:background "pale turquoise" :box (:line-width -1 :style released-button)))))
-                        `(mode-line-inactive ((t (:background "gray80" :box (:line-width -1 :style released-button)))))
+                        `(font-lock-comment-face ((t (:foreground "gray65" :slant italic :weight medium))))
+                        `(mode-line-active ((t (:background "gray65" :box (:line-width -1 :style released-button)))))
+                        `(mode-line-inactive ((t (:background "gray95" :box (:line-width -1 :style released-button)))))
                         ;; evil
                         `(evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
                         `(evil-snipe-first-match-face ((t (:inherit 'match))))
@@ -43,6 +43,7 @@
                         ;; https://emacs.stackexchange.com/questions/47002/adding-box-around-text-without-changing-the-text-width
                         ;; `(region ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(iedit-occurrence ((t (:box (:line-width (-1 . -1) :style nil)))))
+                        `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
                         )
 
 (provide-theme 'seralk)
