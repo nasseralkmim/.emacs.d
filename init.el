@@ -2234,12 +2234,12 @@ Only if there is more than one window opened."
 (use-package tree-sitter
   :diminish tree-sitter-mode
   :hook
+  (c-mode-common . tree-sitter-mode)
   (python-mode . tree-sitter-mode)
-  (c++-mode . tree-sitter-mode)
-  (c-mode . tree-sitter-mode)
+  ;; replace regex-based highlighting
   (tree-sitter-after-on . tree-sitter-hl-mode))
 
-;; langage bundle for `tree-sitter`
+;; language bundle for `tree-sitter`
 (use-package tree-sitter-langs
   :demand                               ; require it after loading tree-sitter
   :after tree-sitter)
