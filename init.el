@@ -1084,6 +1084,14 @@ graphics."
       (org-hide-block-all))
  (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
+;; library of babel
+(use-package ob-lob
+  :straight nil
+  :after org
+  :init
+  ;; org script to reuse
+  (org-babel-lob-ingest "lisp/scripts.org"))
+
 (use-package org-agenda
   :straight nil
   :after org
@@ -1460,7 +1468,6 @@ graphics."
   :init
   ;; preview latex config
   (setq preview-default-option-list '("displaymath" "textmath" "showlabels")
-	preview-scale-function 1.1
 	preview-auto-cache-preamble t))
 
 ;; latex function
