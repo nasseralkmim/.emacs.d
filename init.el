@@ -2261,7 +2261,8 @@ Only if there is more than one window opened."
     (advice-add 'outline-cycle :override #'ts-fold-toggle))
   :config
   ;; don't mess with comments
-  (setq ts-foold-summary-show nil))
+  (setq ts-fold-summary-show nil
+        ts-fold-summary-exceeded-string "…"))
 
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter :disabled
