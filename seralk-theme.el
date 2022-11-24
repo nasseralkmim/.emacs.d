@@ -13,8 +13,8 @@
                         `(mode-line-active ((t (:background "gray65" :box (:line-width -1 :style released-button)))))
                         `(mode-line-inactive ((t (:background "gray95" :box (:line-width -1 :style released-button)))))
                         ;; evil
-                        `(evil-snipe-matches-face ((t (:inherit 'tty-menu-enabled-face))))
-                        `(evil-snipe-first-match-face ((t (:inherit 'match))))
+                        `(evil-snipe-matches-face ((t (:inherit 'match :box (:line-width (-1 . -1) :style nil)))))
+                        `(evil-snipe-first-match-face ((t (:inherit 'evil-snipe-matches-face))))
                         ;; org
                         `(org-block ((t (:background "gray97"))))
                         `(org-inline-src-block ((t (:background "gray97"))))
