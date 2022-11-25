@@ -1332,7 +1332,7 @@ graphics."
   ('normal hs-minor-mode-map "z A" 'hs-show-all)
   ('normal hs-minor-mode-map "z <tab>" 'hs-toggle-hiding)
   :hook
-  (prog-mode . hs-minor-mode))
+  (outline-mode . hs-minor-mode))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
@@ -1342,18 +1342,19 @@ graphics."
   :straight (:type built-in)
   ;; :diminish outline-minor-mode
   :hook
-  (prog-mode . outline-minor-mode)
+  ;; (prog-mode . outline-minor-mode) ; using tree sitter
+  (emacs-lisp-mode . outline-minor-mode)
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
-  :general
-  ('normal outline-mode-map "C-j" nil)
-  ('normal outline-mode-map "z j" 'outline-next-visible-heading)
-  ('normal outline-mode-map "z b" 'outline-show-branches)
-  ('normal outline-mode-map "z t" 'outline-show-subtree)
-  ('normal outline-mode-map "z o" 'outline-show-children)
-  ('normal outline-mode-map "z h" 'outline-hide-sublevels)
-  ('normal outline-mode-map "z a" 'outline-show-all)
+  ;; :general
+  ;; ('normal outline-mode-map "C-j" nil)
+  ;; ('normal outline-mode-map "z j" 'outline-next-visible-heading)
+  ;; ('normal outline-mode-map "z b" 'outline-show-branches)
+  ;; ('normal outline-mode-map "z t" 'outline-show-subtree)
+  ;; ('normal outline-mode-map "z o" 'outline-show-children)
+  ;; ('normal outline-mode-map "z h" 'outline-hide-sublevels)
+  ;; ('normal outline-mode-map "z a" 'outline-show-all)
   ;; ('normal outline-mode-map "S-<tab>" 'outline-cycle)
   :config
   ;; need to rebind after loading outline
@@ -2169,8 +2170,8 @@ Only if there is more than one window opened."
   :config
   (setq org-cite-global-bibliography '("~/.bibliography.bib")))
 
-;; highligh indentation
-(use-package highlight-indent-guides
+;; highlight indentation
+(use-package highlight-indent-guides :disabled
   :diminish highlight-indent-guides-mode
   :hook
   (prog-mode . highlight-indent-guides-mode)
@@ -2185,7 +2186,7 @@ Only if there is more than one window opened."
   (setq highlight-indent-guides-suppress-auto-error t))
 
 ;; highlight based on scope
-(use-package hl-indent-scope :disabled
+(use-package hl-indent-scope
   :when (display-graphic-p)
   :straight (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
   :hook
@@ -2254,21 +2255,13 @@ Only if there is more than one window opened."
 ;; fold based on tree sitter syntax tree
 (use-package ts-fold
   :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
-  :after outline
-  :general
-  ('normal outline-mode-map :prefix "z"
-           "h" 'ts-fold-close-all
-           "a" 'ts-fold-open-all)
   :hook
   (c-mode-common . ts-fold-mode)
   (python-mod . ts-fold-mode)
-  (ts-fold-mode . outline-when-ts)
-  :init
-  (defun outline-when-ts ()
-    (advice-add 'outline-cycle :override #'ts-fold-toggle))
   :config
   (setq ts-fold-replacement "…"
-        ts-fold-summary-format " %s…"))
+        ts-fold-summary-exceeded-string "…"
+        ts-fold-summary-format " %s"))
 
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter :disabled
