@@ -43,7 +43,8 @@
                         ;; https://emacs.stackexchange.com/questions/47002/adding-box-around-text-without-changing-the-text-width
                         ;; `(region ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(iedit-occurrence ((t (:box (:line-width (-1 . -1) :style nil)))))
-                        `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
+                        ;; `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
+                        `(ts-fold-replacement-face ((t (:inherit 'font-lock-comment-face))))
                         )
 
 (provide-theme 'seralk)
