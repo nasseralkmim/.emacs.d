@@ -508,7 +508,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; highlight matching parens
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
-(use-package smartparens
+(use-package smartparens :disabled      ;trying puni-mode
   :diminish smartparens-mode
   :straight (:includes smartparens-config)
   :general
@@ -2956,5 +2956,15 @@ its results, otherwise display STDERR with
       (org-reveal t)
       (org-show-entry)
       (show-children))))
+
+(use-package puni
+  :hook
+  (prog-mode . puni-global-mode)
+  (text-mode . puni-global-mode))
+
+(use-package elec-pair
+  :hook
+  (prog-mode . electric-pair-mode)
+  (text-mode . electric-pair-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
