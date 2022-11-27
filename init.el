@@ -508,7 +508,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; highlight matching parens
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
-(use-package smartparens :disabled      ;trying puni-mode
+(use-package smartparens
   :diminish smartparens-mode
   :straight (:includes smartparens-config)
   :general
@@ -2957,12 +2957,12 @@ its results, otherwise display STDERR with
       (org-show-entry)
       (show-children))))
 
-(use-package puni
+(use-package puni :disabled
   :hook
   (prog-mode . puni-global-mode)
   (text-mode . puni-global-mode))
 
-(use-package elec-pair
+(use-package elec-pair :disabled
   :hook
   (prog-mode . electric-pair-mode)
   (text-mode . electric-pair-mode))
