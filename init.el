@@ -1333,10 +1333,7 @@ graphics."
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                        (outline-on-heading-p) 'hs-toggle-hiding))
   :hook
-  (outline-minor-mode . hs-minor-mode)
-  ;; :config
-  ;; (advice-add 'outline-cycle :override #'evil-toggle-fold)
-  )
+  (prog-mode . hs-minor-mode))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
