@@ -2255,6 +2255,8 @@ Only if there is more than one window opened."
 ;; fold based on tree sitter syntax tree
 (use-package ts-fold
   :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
+  :general
+  ('normal :predicate '(outline-on-heading-p) "<tab>" 'evil-toggle-fold)
   :hook
   (c-mode-common . ts-fold-mode)
   (python-mod . ts-fold-mode)
