@@ -1246,6 +1246,7 @@ graphics."
   :defer 1
   :config
   (global-corfu-mode)
+  (corfu-popupinfo-mode)                ; show doc
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.2
 	corfu-auto-prefix 1
@@ -1280,7 +1281,7 @@ graphics."
   ;; https://github.com/minad/corfu/wiki
   (setq completion-category-overrides '((eglot (styles orderless)))))
 
-(use-package corfu-doc
+(use-package corfu-doc :disabled        ; 
   :when (display-graphic-p)
   :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
   :after corfu
@@ -1332,7 +1333,9 @@ graphics."
   ('normal hs-minor-mode-map "z A" 'hs-show-all)
   ('normal hs-minor-mode-map "z <tab>" 'hs-toggle-hiding)
   :hook
-  (outline-mode . hs-minor-mode))
+  (outline-minor-mode . hs-minor-mode)
+  :config
+  (advice-add 'outline-cycle :override #'evil-toggle-fold))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
@@ -1342,7 +1345,7 @@ graphics."
   :straight (:type built-in)
   ;; :diminish outline-minor-mode
   :hook
-  ;; (prog-mode . outline-minor-mode) ; using tree sitter
+  (prog-mode . outline-minor-mode)
   (emacs-lisp-mode . outline-minor-mode)
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
@@ -1360,7 +1363,7 @@ graphics."
   ;; need to rebind after loading outline
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
   ;; evil-collection end up binding last...
-  (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
+  ;; (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
   (setq outline-minor-mode-cycle t
 	;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
         ))  
@@ -2253,7 +2256,7 @@ Only if there is more than one window opened."
   :after tree-sitter)
 
 ;; fold based on tree sitter syntax tree
-(use-package ts-fold
+(use-package ts-fold :disabled
   :straight (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
   :general
   ('normal :predicate '(outline-on-heading-p) "<tab>" 'evil-toggle-fold)
@@ -2736,19 +2739,17 @@ Only if there is more than one window opened."
   :straight (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
   :commands flymake-vale-load)
 
-;; enhances outline-cycle command
+;; enhances outline-cycle command (cycling children as well)
 ;; 
 ;; https://github.com/tarsius/bicycle/issues/8
+;; 
 ;; using hideshow the end delimiter goes to the same line `(...)'
 ;; using bicycle it does not `(...'
 (use-package bicycle :disabled
   :after outline
-  :hook
-  (emacs-lisp-mode . outline-when-bicycle)
   :init
   ;; replace outline-cycle
-  (defun outline-when-bicycle ()
-    (advice-add 'outline-cycle :override #'bicycle-cycle)))
+  (advice-add 'outline-cycle :override #'bicycle-cycle))
 
 ;; query synonyms
 (use-package le-thesaurus
