@@ -1085,12 +1085,10 @@ graphics."
  (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
 ;; library of babel
-(use-package ob-lob
+(use-package ob-lob :disabled           ; does not work
   :straight nil
-  :after org
-  :init
-  ;; org script to reuse
-  (org-babel-lob-ingest "lisp/scripts.org"))
+  :hook
+  (org-load . (lambda () (org-babel-lob-ingest "lisp/scripts.org"))))
 
 (use-package org-agenda
   :straight nil
@@ -1334,8 +1332,9 @@ graphics."
   ('normal hs-minor-mode-map "z <tab>" 'hs-toggle-hiding)
   :hook
   (outline-minor-mode . hs-minor-mode)
-  :config
-  (advice-add 'outline-cycle :override #'evil-toggle-fold))
+  ;; :config
+  ;; (advice-add 'outline-cycle :override #'evil-toggle-fold)
+  )
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
