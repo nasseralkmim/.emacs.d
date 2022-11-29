@@ -799,7 +799,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package org
-  :straight (:type built-in)
+  ;; :straight (:type built-in)
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -1085,10 +1085,11 @@ graphics."
  (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
 ;; library of babel
-(use-package ob-lob :disabled           ; does not work
+(use-package ob-lob
   :straight nil
-  :hook
-  (org-load . (lambda () (org-babel-lob-ingest "lisp/scripts.org"))))
+  :after org
+  :init
+  (org-babel-lob-ingest "~/.emacs.d/lisp/scripts.org"))
 
 (use-package org-agenda
   :straight nil
