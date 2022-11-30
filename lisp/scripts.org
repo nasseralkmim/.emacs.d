@@ -43,7 +43,6 @@ ls "$paperdir/figures"
 : test.pdf
 
 * Python Imports
-
 #+name: imports
 #+begin_src python
 import matplotlib.pyplot as plt
@@ -57,3 +56,129 @@ from scipy.sparse import linalg as spla
 from mpltools import annotation
 #+end_src
 
+* Matplotlib plots for Edelweissfe data
+** Plot displacement
+
+#+name: plot-displ
+#+begin_src python
+<<imports>>
+fig, ax = plt.subplots(figsize=(4 * .6, 3 * .6))
+
+for problem, params in problems.items():
+    rf = np.loadtxt(f'{problem}/RF.csv')[1:, 1]
+    u = - np.loadtxt(f'{problem}/U.csv')[1:, 1]
+    params.update(dict(mew=0.5, markersize=3, mfc='none'))
+    ax.plot(u, rf / 1e3, **params)
+    ax.set(ylabel="Reaction (kN)", xlabel="$u_y$ (mm)",)
+    ax.legend()
+#+end_src
+
+** Plot displacement with zoom
+
+#+name: plot-displ-zoom
+#+begin_src python
+<<imports>>
+fig, ax = plt.subplots(figsize=(4 * .6, 3 * .6))
+# inset axes
+axins = ax.inset_axes(zoomax)
+
+for problem, params in problems.items():
+    params.update(dict(mew=0.5, markersize=3, mfc='none'))
+    rf = np.loadtxt(f'{problem}/RF.csv')[1:, 1]
+    u = - np.loadtxt(f'{problem}/U.csv')[1:, 1]
+    ax.plot(u, rf/1e3, **params)
+    axins.plot(u, rf/1e3, **params)
+    ax.set(ylabel="Reaction (kN)", xlabel="$u_y$ (mm)",)
+    ax.legend()
+axins.set(xlim=zoomx, ylim=zoomy, xticks=[], yticks=[])
+ax.indicate_inset_zoom(axins, edgecolor="black")
+#+end_src
+
+** Plot iterations
+*** Accumulated iterations normalized by newton
+
+#+name: plot-acc-over-newton
+#+begin_src python
+<<imports>>
+fig, ax = plt.subplots(figsize=(4 * .8, 3 * .8))
+
+for problem, params in problems.items():
+
+    linear_iter = np.loadtxt(f'{problem}/numiter-acc.csv')
+    nonlinear_iter = np.loadtxt(f'{problem}/nonlinear-numiter.csv')
+
+    <<time-to-label>>
+    ratio = linear_iter[1:, 1] / nonlinear_iter[1:, 1]
+    # remove ratios that are nan, because of steps with 0 nonlinear iterations
+    # ratio = np.nan_to_num(ratio, nan=0)
+    ax.plot(ratio, **params, mfc="none", ms=3, mew=.5)
+    params.update(dict(label="newton", mfc="none", ms=3, mew=.5))
+    ax.set(xlabel="Time steps", ylabel=r"$\frac{\text{acc. linear iter.}}{\text{nonlinear iter.}}$  p.t.s.")
+ax.legend()
+fig.tight_layout()
+#+end_src
+
+#+RESULTS: plot-acc-over-newton
+** Custom legend
+
+#+name: custom-legend
+#+begin_src python
+from matplotlib.lines import Line2D
+from matplotlib.collections import LineCollection
+from matplotlib.colors import ListedColormap, BoundaryNorm
+from matplotlib.legend_handler import HandlerLineCollection
+
+class HandlerColorLineCollection(HandlerLineCollection):
+    def create_artists(self, legend, artist ,xdescent, ydescent,
+                        width, height, fontsize,trans):
+        x = np.linspace(0,width,self.get_numpoints(legend)+1)
+        y = np.zeros(self.get_numpoints(legend)+1)+height/2.-ydescent
+        points = np.array([x, y]).T.reshape(-1, 1, 2)
+        segments = np.concatenate([points[:-1], points[1:]], axis=1)
+        lc = LineCollection(segments, cmap=artist.cmap,
+                            transform=trans)
+        lc.set_array(x)
+        lc.set_linewidth(artist.get_linewidth())
+        lc.set_linestyle(artist.get_linestyle())
+        lc.set_alpha(artist.get_alpha())
+        return [lc]
+
+custom_lines = []   
+legend_label = []
+for label, options in legend.items():
+    custom_lines.append(LineCollection([[(0, 0), (0, 0)]], cmap=ListedColormap(colors), **options))
+    legend_label.append(label)
+
+# create a new handler for each line with the specified colors
+handler_map = {}
+for cl in custom_lines:
+    handler_map[cl] = HandlerColorLineCollection(numpoints=len(colors))
+    
+legend = plt.legend(handles=custom_lines,
+                    labels=legend_label,
+                    handler_map=handler_map, **legend_options)
+ax.add_artist(legend)
+#+end_src
+
+#+RESULTS: custom-legend
+
+*** Example
+
+#+begin_src python
+<<imports>>
+fig, ax = plt.subplots()
+
+ax.plot([0, 2], label='original')
+ax.plot([0, 1])
+
+legend_options=dict(loc="center right")
+colors= ["C0", "C1", "r"]
+legend = {"plot1": dict(linestyle="--"),
+          "plot2": dict()}
+<<custom-legend>>
+ax.legend(loc="upper right")
+
+plt.show()
+#+end_src
+
+#+RESULTS:

@@ -799,7 +799,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package org
-  ;; :straight (:type built-in)
+  :straight (:type built-in)            ; (org not built in has a bug with inline images)
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -863,8 +863,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight nil
   :after org
   :init
-  ;; (remove-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images)
-  ;; (add-hook 'org-babel-after-execute-hook 'org-redisplay-inline-images 'append)
 
   (require 'subr-x)
   (defun ded:org-babel-inline-display-subtree ()
