@@ -68,7 +68,7 @@
   ("C-x e" 'eval-last-sexp)
   ("C-h j" 'describe-keymap)
   :init
-  (global-hl-line-mode t) ; highlight current line
+  ;; (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 80)	  ; column length
   (column-number-mode t)  ; show column number in the mode line
@@ -2238,6 +2238,8 @@ Only if there is more than one window opened."
   :general
   ("C-x C-b" 'ibuffer))
 
+(use-package treesit :disabled)
+
 ;; better code highlight and fold
 (use-package tree-sitter
   :diminish tree-sitter-mode
@@ -2307,7 +2309,11 @@ Only if there is more than one window opened."
 ;; highlight parensthesis
 (use-package highlight-parentheses
   :diminish highlight-parentheses-mode
-  :hook (prog-mode . highlight-parentheses-mode))
+  :defer 1 
+  :config
+  (setq highlight-parentheses-colors nil
+        highlight-parentheses-attributes '((:box  (:line-width (-1 . -1) :style nil))))
+  (global-highlight-parentheses-mode))
 
 ;; moving cursor around fast and efficiently
 (use-package avy
