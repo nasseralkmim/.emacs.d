@@ -2655,7 +2655,7 @@ Only if there is more than one window opened."
   (setq flymake-grammarly-check-time 0.2)
   :commands load-flymake-with-grammarly)
 
-(use-package virtual-comment
+(use-package virtual-comment :disabled
   :diminish virtual-comment-mode
   :general
   ('normal "C-<return>" 'virtual-comment-make)
@@ -2886,9 +2886,10 @@ its results, otherwise display STDERR with
         ;; use gdb layout and just the info locals
         gdb-many-windows nil))
 
-;; irony mode for org-edit-special c++ 
+;; irony mode for 'org-edit-special' c++ 
 ;; uses libclang
 (use-package irony
+  :after org
   :hook
   (org-src-mode . (lambda ()
                           (when (string-equal major-mode "c++-mode")
@@ -2898,6 +2899,27 @@ its results, otherwise display STDERR with
 (use-package irony-eldoc
   :hook
   (irony-mode . irony-eldoc))
+
+;; flymake for C++ blocks with 'org-edit-special'
+;; https://stackoverflow.com/a/14866268 
+;; does not work, maybe because of the temp file
+(use-package flymake-org-edit-special-c++ :disabled
+  :straight nil
+  :after org
+  :hook
+  (org-src-mode . (lambda ()
+                          (when (string-equal major-mode "c++-mode")
+                            (setq-local flymake-cc-command 'flymake-cc-init)
+                            (flymake-mode))))
+  :init
+  (defun flymake-cc-init ()
+    (let* ((temp-file   (flymake-init-create-temp-buffer-copy
+                         'flymake-create-temp-inplace))
+           (local-file  (file-relative-name
+                         temp-file
+                         (file-name-directory buffer-file-name))))
+      (list "g++" (list "-Wall" "-Wextra" "-fsyntax-only" local-file)))))
+
 
 ;; tags with different colors in org
 (use-package org-rainbow-tags
