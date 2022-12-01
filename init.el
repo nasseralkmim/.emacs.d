@@ -1328,8 +1328,7 @@ graphics."
   :general
   ('normal hs-minor-mode-map "z H" 'hs-hide-all)
   ('normal hs-minor-mode-map "z A" 'hs-show-all)
-  ('normal hs-minor-mode-map "z <tab>" 'hs-toggle-hiding)
-  ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
+  (hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                        (outline-on-heading-p) 'hs-toggle-hiding))
   :hook
   (prog-mode . hs-minor-mode))
