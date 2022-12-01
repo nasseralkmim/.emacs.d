@@ -1060,7 +1060,7 @@ graphics."
   :general
   ('normal org-mode-map "z e" 'org-edit-special)
   ('normal org-src-mode-map "z e" 'org-edit-src-exit)
-  ('normal org-mode-map "z g" 'org-toggle-blocks)
+  ('normal org-mode-map "z g" 'org-toggle-blocks-visibility)
   :after org
   :init
   ;; babel and source blocks
@@ -1075,7 +1075,7 @@ graphics."
   ;; hide source blocks
   ;; https://emacs.stackexchange.com/a/7366 
   (defvar org-blocks-hidden nil)
-  (defun org-toggle-blocks ()
+  (defun org-toggle-blocks-visibility ()
     (interactive)
     (if org-blocks-hidden
         (org-show-block-all)
