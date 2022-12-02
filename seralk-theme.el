@@ -22,7 +22,7 @@
                         `(org-meta-line ((t (:foreground "gray60"))))
                         `(org-drawer ((t (:inherit 'org-meta-line))))
                         `(org-macro ((t (:inherit 'org-meta-line))))
-                        `(org-verbatim ((t (:box t))))
+                        `(org-verbatim ((t (:box (:line-width (-1 . -1))))))
                         ;; rainbow delimiter from modus operandi
                         `(rainbow-delimiters-depth-1-face ((t (:foreground "#000000"))))
                         `(rainbow-delimiters-depth-2-face ((t (:foreground "#a8007f"))))

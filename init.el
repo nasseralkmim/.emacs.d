@@ -87,7 +87,7 @@
 
   ;; other basiscs
   (setq ring-bell-function 'ignore)
-  (setq inhibit-startup-screen t)
+  ;; (setq inhibit-startup-screen t) ;; now I respect the startup screen.
 
   ;; UTF-8 encoding
   (prefer-coding-system 'utf-8)
@@ -1360,12 +1360,12 @@ graphics."
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
   ;; evil-collection end up binding last...
   ;; (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
-  (setq outline-minor-mode-cycle t
+  (setq outline-minor-mode-cycle nil    ; using general predicate dispatch instead
 	;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
         ))  
 
 ;; trying to make outline work with python docstring
-(use-package outline-python :disabled
+(use-package outline-python-regex :disabled
   :straight nil
   :after outline
   :init
@@ -1637,7 +1637,6 @@ graphics."
   ;; (org-meta-line ((t (:height 0.9))))
   ;; (org-drawer ((t (:height 0.9))))
   ;; (org-macro ((t (:height 0.9))))
-  (org-verbatim ((t (:box t))))
   (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
   (font-latex-sectioning-2-face ((t (:weight bold :box t))))
   (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
