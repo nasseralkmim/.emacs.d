@@ -1323,15 +1323,17 @@ graphics."
 ;; allows selectively display portions of program
 ;; bicycle uses it together with outline
 (use-package hideshow
-  :straight nil
+  :straight (:type built-in)
   :diminish hs-minor-mode
   :general
   ('normal hs-minor-mode-map "z H" 'hs-hide-all)
   ('normal hs-minor-mode-map "z A" 'hs-show-all)
-  (hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
+  ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                        (outline-on-heading-p) 'hs-toggle-hiding))
   :hook
-  (prog-mode . hs-minor-mode))
+  (prog-mode . hs-minor-mode)
+  :config
+  (add-to-list 'hs-special-modes-alist '(c++-ts-mode "{" "}" "/[*/]" nil nil)))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
@@ -1346,6 +1348,7 @@ graphics."
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
+  (c++-ts-mode . (lambda () (setq outline-regexp "[^#\n]")))
   ;; :general
   ;; ('normal outline-mode-map "C-j" nil)
   ;; ('normal outline-mode-map "z j" 'outline-next-visible-heading)
@@ -1782,8 +1785,9 @@ Only if there is more than one window opened."
   ;; alternatively: to get style from `.clang-format' file
   ;; one first use `eglot-format' (which uses `clangd' server) that can read `.clang-format'
   ;; then `c-guess-buffer-no-install' to set it
-  (setq c-default-style "linux"
-        c-basic-offset 2
+  (setq
+   ;; c-default-style "linux"
+        ;; c-basic-offset 2
         ;; one comment for multiline with `comment-region'
         comment-style "indent")
   :init
@@ -1792,7 +1796,12 @@ Only if there is more than one window opened."
     ;; use the style defined by .clang-format (automatic with eglot)
     ;; for blocks use `comment-box' after `c-toggle-comment-style'
     ;; or multiline comment with `M-j'
-    (c-guess-buffer))) 
+    (c-guess-buffer)
+    ;; use "/** ... *" for documentation comment font-lock (doxygen standard https://www.doxygen.nl/manual/docblocks.html)
+    (setq c-doc-comment-style 'javadoc)
+    ;; need to call setup to update other variables dependent on this
+    (c-setup-doc-comment-style)
+    )) 
 
 (use-package ob-python :disabled
   :after org lsp
@@ -2156,7 +2165,7 @@ Only if there is more than one window opened."
   :demand                               ; explicitly require org-id
   :init
   ;; automatic generate id for headings
-  (setq org-id-link-to-org-use-id t)
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
   )
 
 ;; citations support in org-mode
@@ -2236,7 +2245,12 @@ Only if there is more than one window opened."
   :general
   ("C-x C-b" 'ibuffer))
 
-(use-package treesit :disabled)
+(use-package treesit :disabled
+  :hook
+  (c++-mode . c++-ts-mode)
+  (c-mode . c-ts-mode)
+  (python-mode . python-ts-mode)
+  )
 
 ;; better code highlight and fold
 (use-package tree-sitter
@@ -2351,6 +2365,7 @@ Only if there is more than one window opened."
 ;; simple LSP client
 ;; alternative to lsp, too many dependencies
 (use-package eglot
+  :straight (:type built-in)
   :hook
   (python-mode . eglot-ensure) ; works if there is only one server available
   (eglot-managed-mode . (lambda ()
@@ -2371,7 +2386,10 @@ Only if there is more than one window opened."
   ;; add watch mode "-w" for performance
   ;; pyright only reanalyze the files that have been modified
   (add-to-list 'eglot-server-programs
-               `(python-mode "pyright-langserver" "--watch" "--stdio"))
+               '(python-mode . ("pyright-langserver" "--stdio" "--watch")))
+  (add-to-list 'eglot-server-programs
+               `(c++-mode . ,(eglot-alternatives
+                                 '(("clangd" "--clang-tidy")))))
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions

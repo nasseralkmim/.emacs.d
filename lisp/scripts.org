@@ -53,7 +53,6 @@ import os
 os.environ["USE_PROPACK"] = "1"
 import scipy.sparse as sp
 from scipy.sparse import linalg as spla
-from mpltools import annotation
 #+end_src
 
 * Matplotlib plots for Edelweissfe data
