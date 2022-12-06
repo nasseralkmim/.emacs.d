@@ -169,7 +169,7 @@
   ;; when using variable pitch in org mode, use monospace for code blocks
   (org-block ((t (:family "Iosevka SS12"))))
   (org-verbatim ((t (:family "Iosevka SS12"))))
-  (tree-sitter-hl-face:comment ((t (:inherit 'font-lock-comment-face)))))
+  (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
 
 ;; change typeface size font
 (use-package emacs-frame-zoom
