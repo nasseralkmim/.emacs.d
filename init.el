@@ -2245,15 +2245,15 @@ Only if there is more than one window opened."
   :general
   ("C-x C-b" 'ibuffer))
 
-(use-package treesit :disabled
+;; need to install the libraries for each language: https://github.com/casouri/tree-sitter-module
+(use-package treesit
   :hook
   (c++-mode . c++-ts-mode)
   (c-mode . c-ts-mode)
-  (python-mode . python-ts-mode)
-  )
+  (python-mode . python-ts-mode))
 
 ;; better code highlight and fold
-(use-package tree-sitter
+(use-package tree-sitter :disabled
   :diminish tree-sitter-mode
   :hook
   (c-mode-common . tree-sitter-mode)
