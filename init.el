@@ -2613,34 +2613,11 @@ Only if there is more than one window opened."
 
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
-(use-package dtache :disabled
-  :straight (dtache :type git :host gitlab :repo "niklaseklund/dtache")
-  :general
-  ('normal "<f7>" 'dtache-open-session)
-  ('normal dired-mode-map "M-&" 'dtache-shell-command)
-  :config
-  (dtache-setup)
-  (with-eval-after-load 'embark
-    ;; add embar actions for 'dtache-open-session'
-    (defvar embark-dtache-map (make-composed-keymap dtache-action-map embark-general-map))
-    (add-to-list 'embark-keymap-alist '(dtache . embark-dtache-map))))
-
-;; add `:dtache t' option to sh source block
-;; dtache org setup requires calls to ssh to recover the sessions
-(use-package dtache-org :disabled
-  :straight nil
-  :commands org-babel-execute:sh        ;load when executing code
-  :after org dtache
-  :init
-  (dtache-org-setup))
-
-;; requires dtach `yay dtach'
-;; run shell commands detached from emacs
 (use-package detached
   :straight (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
-  ('normal "<f7>" 'detached-consult-session)
-  ('normal dired-mode-map "M-&" 'detached-shell-command)
+  ('normal "<f7>" 'detached-open-session)
+  (dired-mode-map [remap dired-do-async-shell-command] 'detached-shell-command)
   :custom ((detached-show-output-on-attach t))
   :init
   (detached-init))
