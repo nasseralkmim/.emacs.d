@@ -53,7 +53,7 @@
   :diminish gcmh-mode
   :init
   (setq gcmh-idle-delay 0.5
-	gcmh-high-cons-threshold (* 16 1024 1024)) 
+        gcmh-high-cons-threshold (* 16 1024 1024)) 
   (gcmh-mode 1))
 
 ;; basics and better default
@@ -118,7 +118,7 @@
 
   ;; do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
-	'(read-only t cursor-intangible t face minibuffer-prompt))
+        '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
   ;; don't need to confirm to revert buffer
@@ -137,7 +137,7 @@
 (use-package emacs :disabled
   :if (string-greaterp emacs-version "29") ; need emacs > 29
   :init
-   ; text scroll pixel by pixel
+                                        ; text scroll pixel by pixel
   (pixel-scroll-precision-mode t))
 
 ;; custom emacs theme
@@ -151,17 +151,25 @@
 (use-package custom-typefaces
   :straight nil
   :init
+  (set-face-attribute 'default nil :family "Iosevka SS12")
+  ;; use etoile in comments (better than aile, sometimes)
+  (set-face-attribute 'font-lock-comment-face nil :family "Iosevka aile"  :weight 'semi-light :width 'ultra-condensed)
+  ;; variable pitch mode use etoile
+  (set-face-attribute 'variable-pitch nil :family "Iosevka etoile" :weight 'light)
   ;; to check typefaces: fc-list | grep <typeface>
   ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
-  ;; fira code: ligatures
   ;; (set-face-attribute 'default nil :family "Victor Mono")
   ;; (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
   ;; (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
   ;; (set-face-attribute 'variable-pitch nil :family "Input Sans")
   :custom-face 
   ;; outline 4 inherits from comment face... make it oblique instead of italic
-  (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
-  (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique)))))
+  ;; (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
+  ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
+  ;; when using variable pitch in org mode, use monospace for code blocks
+  (org-block ((t (:family "Iosevka SS12"))))
+  (org-verbatim ((t (:family "Iosevka SS12"))))
+  (tree-sitter-hl-face:comment ((t (:inherit 'font-lock-comment-face)))))
 
 ;; change typeface size font
 (use-package emacs-frame-zoom
@@ -242,7 +250,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (recentf-mode 1)
   (setq recentf-max-saved-items 25
-	recentf-auto-cleanup 'mode))
+        recentf-auto-cleanup 'mode))
 
 (use-package autorevert
   :if (eq system-type 'gnu/linux)
@@ -295,8 +303,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after vertico
   :general
   (vertico-map "RET" 'vertico-directory-enter
-	       "DEL" 'vertico-directory-delete-char
-	       "M-DEL" 'vertico-directory-delete-word)
+               "DEL" 'vertico-directory-delete-char
+               "M-DEL" 'vertico-directory-delete-word)
   ;; tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
@@ -529,7 +537,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq sp-show-pair-delay 0.125
         sp-max-prefix-length 25         ; reduces work
         sp-max-pair-length 4            ; reduces work
-	sp-show-pair-from-inside t))
+        sp-show-pair-from-inside t))
 
 (use-package smartparens-config
   :straight nil
@@ -649,18 +657,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
     "Bind `evil-default-state' to `insert' before calling FUN with ARGS."
     (let ((evil-default-state 'insert)
-	  ;; Force insert state
-	  evil-emacs-state-modes
-	  evil-normal-state-modes
-	  evil-motion-state-modes
-	  evil-visual-state-modes
-	  evil-operator-state-modes
-	  evil-replace-state-modes)
+          ;; Force insert state
+          evil-emacs-state-modes
+          evil-normal-state-modes
+          evil-motion-state-modes
+          evil-visual-state-modes
+          evil-operator-state-modes
+          evil-replace-state-modes)
       (apply fun args)
       (evil-refresh-cursor)))
 
   (advice-add 'org-babel-do-key-sequence-in-edit-buffer
-	      :around #'evil-org-insert-state-in-edit-buffer))
+              :around #'evil-org-insert-state-in-edit-buffer))
 
 ;; move around text
 (use-package evil-easymotion :disabled
@@ -703,7 +711,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after evil
   :init
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
-	evil-collection-company-use-tng nil) ; makes company works betters I think
+        evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
 
 ;; navigation: gh, gj, gk, gl
@@ -808,8 +816,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode-map "C-c ," 'org-insert-structure-template)
   ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
   ('normal org-mode-map :prefix "z"
-	   "s j" 'org-babel-next-src-block
-	   "s k" 'org-babel-previous-src-block
+           "s j" 'org-babel-next-src-block
+           "s k" 'org-babel-previous-src-block
            "n" 'org-toggle-narrow-to-subtree
            "k" 'org-previous-visible-heading
            "j" 'org-next-visible-heading)
@@ -825,6 +833,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('(normal visual) "M-o" 'org-open-at-point-global)
   :hook
   (org-mode . visual-line-mode)
+  (org-mode . variable-pitch-mode)
   (org-mode . org-indent-mode)          ; align with heading
   :config
   (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
@@ -870,20 +879,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 graphics."
 
     (org-babel-when-in-src-block
-      (let (beg end
-                (default-directory (if-let ((fname (buffer-file-name)))
-                                       (file-name-directory fname)
-                                     default-directory)))
-        (save-mark-and-excursion
-          (org-mark-subtree)
-          (setq beg (point))
-          (setq end (mark)))
-        (when-let ((info (org-babel-get-src-block-info t))
-                   (params (org-babel-process-params (nth 2 info)))
-                   (result-params (cdr (assq :result-params params)))
-                   ((member "file" result-params)))
-          ;; (org-display-inline-images nil nil beg end)
-          (org-redisplay-inline-images)))))
+     (let (beg end
+               (default-directory (if-let ((fname (buffer-file-name)))
+                                      (file-name-directory fname)
+                                    default-directory)))
+       (save-mark-and-excursion
+         (org-mark-subtree)
+         (setq beg (point))
+         (setq end (mark)))
+       (when-let ((info (org-babel-get-src-block-info t))
+                  (params (org-babel-process-params (nth 2 info)))
+                  (result-params (cdr (assq :result-params params)))
+                  ((member "file" result-params)))
+         ;; (org-display-inline-images nil nil beg end)
+         (org-redisplay-inline-images)))))
 
   (add-hook 'org-babel-after-execute-hook 
             #'ded:org-babel-inline-display-subtree))
@@ -1020,13 +1029,13 @@ graphics."
       (setq org-image-actual-width new-size)
       ;; don't redisplay if in tramp
       (if (not (file-remote-p default-directory))
-        (org-redisplay-inline-images))))
+          (org-redisplay-inline-images))))
 
   (defun org-zoom-out-inline-images ()
     (interactive)
-      (setq org-image-actual-width nil)
-      ;; don't redisplay if in tramp
-      (if (not (file-remote-p default-directory))
+    (setq org-image-actual-width nil)
+    ;; don't redisplay if in tramp
+    (if (not (file-remote-p default-directory))
         (org-redisplay-inline-images))))
 
 ;; for windows
@@ -1044,16 +1053,16 @@ graphics."
   ('normal org-mode-map :prefix "z x"
            "i" 'org-clock-in
            "o" 'org-clock-out
-	   "x" 'org-clock-in-last)
+           "x" 'org-clock-in-last)
   :after org
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
   (setq org-clock-persistence-insinuate t
-	org-clock-persist t
-	org-clock-in-resume t
-	org-clock-out-remove-zero-time-clocks t
-	org-clock-mode-line-total 'current
-	org-duration-format (quote h:mm)))
+        org-clock-persist t
+        org-clock-in-resume t
+        org-clock-out-remove-zero-time-clocks t
+        org-clock-mode-line-total 'current
+        org-duration-format (quote h:mm)))
 
 (use-package org-src
   :straight nil
@@ -1065,12 +1074,12 @@ graphics."
   :init
   ;; babel and source blocks
   (setq org-src-fontify-natively t
-	org-src-window-setup 'current-window ; don't move my windows around!
-	org-src-preserve-indentation t  ; preserve indentation in code
-	org-adapt-indentation nil ; no extra space... better use indent mode (virtual)
+        org-src-window-setup 'current-window ; don't move my windows around!
+        org-src-preserve-indentation t  ; preserve indentation in code
+        org-adapt-indentation nil ; no extra space... better use indent mode (virtual)
         org-edit-src-content-indentation 0 ; dont indent source code
-	org-src-tab-acts-natively t	; if t, it is slow!
-	org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
+        org-src-tab-acts-natively t	; if t, it is slow!
+        org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
 
   ;; hide source blocks
   ;; https://emacs.stackexchange.com/a/7366 
@@ -1080,7 +1089,7 @@ graphics."
     (if org-blocks-hidden
         (org-show-block-all)
       (org-hide-block-all))
- (setq-local org-blocks-hidden (not org-blocks-hidden))))
+    (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
 ;; library of babel
 (use-package ob-lob
@@ -1094,9 +1103,9 @@ graphics."
   :after org
   :init
   (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
-				 "~/OneDrive/Org/notes.org"
-				 "~/OneDrive/Org/journal.org"
-				 "~/OneDrive/Org/gcal.org"))))
+                                 "~/OneDrive/Org/notes.org"
+                                 "~/OneDrive/Org/journal.org"
+                                 "~/OneDrive/Org/gcal.org"))))
 
 (use-package ox-latex
   :straight nil
@@ -1105,18 +1114,18 @@ graphics."
   :init
   ;; change scale of latex preview in org-mode
   (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
-	;; org-startup-with-latex-preview t
+        ;; org-startup-with-latex-preview t
         org-latex-image-default-width nil ; don't scale my images!
         org-latex-images-centered t
         org-preview-latex-image-directory "~/.cache/ltximg/")
 
   ;; mint and svg export require '-shell-escape' option
   (setq org-latex-listings 'minted
-	org-latex-pdf-process
-	'("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "bibtex %b"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-	  "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+        org-latex-pdf-process
+        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "bibtex %b"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
 
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
@@ -1141,7 +1150,7 @@ graphics."
   :demand
   :config
   (setq org-babel-default-header-args:sh
-	'((:results . "output")
+        '((:results . "output")
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:noweb . "no-export")
           ;; 
@@ -1204,7 +1213,7 @@ graphics."
   ;; (ispell-set-spellchecker-params) ; makes initial load slow...
 
   (setq flyspell-issue-message-flag nil ; don't emit messages
-	ispell-personal-dictionary "~/.dotfiles/hunspell/.personal"))
+        ispell-personal-dictionary "~/.dotfiles/hunspell/.personal"))
 
 ;; flyspell uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
@@ -1235,19 +1244,19 @@ graphics."
                    :files (:defaults "extensions/*"))
   :general
   (corfu-map "<tab>" 'corfu-next
-	     "<backtab>" 'corfu-previous
-	     "C-n" 'corfu-next
-	     "C-p" 'corfu-previous)
+             "<backtab>" 'corfu-previous
+             "C-n" 'corfu-next
+             "C-p" 'corfu-previous)
   ('insert "C-n" nil
-	   "C-p" nil)
+           "C-p" nil)
   :defer 1
   :config
   (global-corfu-mode)
   (corfu-popupinfo-mode)                ; show doc
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.2
-	corfu-auto-prefix 1
-	corfu-quit-no-match 'separator))
+        corfu-auto-prefix 1
+        corfu-quit-no-match 'separator))
 
 ;; corfu extension
 (use-package corfu-history
@@ -1308,10 +1317,10 @@ graphics."
   (org-mode . company-mode)
   :config
   (setq company-idle-delay .2
-	company-tooltip-align-annotations t
-	company-dabbrev-downcase nil	; don't replace case
-	company-format-margin-function #'company-vscode-dark-icons-margin
-	company-minimum-prefix-length 1))
+        company-tooltip-align-annotations t
+        company-dabbrev-downcase nil	; don't replace case
+        company-format-margin-function #'company-vscode-dark-icons-margin
+        company-minimum-prefix-length 1))
 
 ;; Company use prescient.el
 ;; used to sorts and filter list of candidates
@@ -1351,7 +1360,7 @@ graphics."
   (c++-ts-mode . (lambda () (setq outline-regexp "[^#\n]")))
   :general
   ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (outline-on-heading-p) 'outline-cycle))
+                                            (outline-on-heading-p) 'outline-cycle))
   ;; ('normal outline-mode-map "C-j" nil)
   ;; ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ;; ('normal outline-mode-map "z b" 'outline-show-branches)
@@ -1366,7 +1375,7 @@ graphics."
   ;; evil-collection end up binding last...
   ;; (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
   (setq outline-minor-mode-cycle nil    ; using general predicate dispatch instead
-	;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
+        ;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
         ))  
 
 ;; trying to make outline work with python docstring
@@ -1389,9 +1398,9 @@ graphics."
   :mode ("\\.tex\\'" . LaTeX-mode)
   :general
   ('normal outline-mode-map
-    "g j" nil
-    "g k" nil
-    "C-j" nil)
+           "g j" nil
+           "g k" nil
+           "C-j" nil)
   ('normal LaTeX-mode-map "g f" '(:keymap TeX-fold-keymap))
   (TeX-fold-keymap
    "b" 'TeX-fold-buffer
@@ -1431,7 +1440,7 @@ graphics."
 
   ;; update PDF buffers after successful LaTeX runs
   (add-hook 'TeX-after-compilation-finished-functions  
-	    'TeX-revert-document-buffer) 
+            'TeX-revert-document-buffer) 
 
   ;; TODO: currently does not work
   ;; remove intermediate files
@@ -1442,22 +1451,22 @@ graphics."
         (with-current-buffer buf
           (setq TeX-clean-confirm nil)          ; don't ask to confirm
           (TeX-clean t)))))
-    ;; (add-hook 'TeX-after-compilation-finished-functions #'TeX-clean-intermediate) 
+  ;; (add-hook 'TeX-after-compilation-finished-functions #'TeX-clean-intermediate) 
 
   ;; nomenclature compilation option for latex
   (eval-after-load "tex"
     '(add-to-list 'TeX-command-list 
-		  '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
-		    (lambda (name command file)
-		      (TeX-run-compile name command file)
-		      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
-		    nil t :help "Create nomenclature file")))
+                  '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
+                    (lambda (name command file)
+                      (TeX-run-compile name command file)
+                      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
+                    nil t :help "Create nomenclature file")))
 
   ;; using "Zathura" or "PDF Tools" on WSL
   ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
   ;; PDF Toll is good when I'm with just one screen
   (add-to-list 'TeX-view-program-selection
-	       '(output-pdf "Okular")))
+               '(output-pdf "Okular")))
 
 ;; preview in latex
 (use-package preview
@@ -1473,7 +1482,7 @@ graphics."
   :init
   ;; preview latex config
   (setq preview-default-option-list '("displaymath" "textmath" "showlabels")
-	preview-auto-cache-preamble t))
+        preview-auto-cache-preamble t))
 
 ;; latex function
 (use-package latex-clipboard
@@ -1486,25 +1495,25 @@ graphics."
   (defun my-tex-insert-clipboard ()
     (interactive)
     (setq folder-path (concat default-directory "images/"));make the img directory
-					;create the directory if it doesn't exist
+                                        ;create the directory if it doesn't exist
     (if (not (file-exists-p folder-path))
-	(mkdir folder-path))
+        (mkdir folder-path))
     ;; correct path to use convert.exe inside wsl and create file
     (if (string-match "-[Mm]icrosoft" operating-system-release)
-      (setq wsl-folder-path (replace-regexp-in-string "\n\\'" ""
-                                                      (shell-command-to-string (concat "wslpath -w "
-                                                                                       folder-path))))
+        (setq wsl-folder-path (replace-regexp-in-string "\n\\'" ""
+                                                        (shell-command-to-string (concat "wslpath -w "
+                                                                                         folder-path))))
       (setq wsl-folder-path folder-path)) 
     (setq image-path (concat wsl-folder-path
                              ;; wsl adjustment :/
-			     (if (string-match "-[Mm]icrosoft" operating-system-release)
+                             (if (string-match "-[Mm]icrosoft" operating-system-release)
                                  "\\img_"
                                "\img_")
-			     (format-time-string "%Y%m%d_%H%M%S_.png")))
+                             (format-time-string "%Y%m%d_%H%M%S_.png")))
     (let* ((image-file (concat 
-			"images/img_"
-			(format-time-string "%Y%m%d_%H%M%S_.png")))
-	   (exit-status
+                        "images/img_"
+                        (format-time-string "%Y%m%d_%H%M%S_.png")))
+           (exit-status
             ;; for wsl to use windows imagemagick :/
             (if (string-match "-[Mm]icrosoft" operating-system-release)
                 (call-process "convert.exe" nil nil nil
@@ -1548,11 +1557,11 @@ graphics."
   (LaTeX-mode . (lambda () (turn-on-reftex))) ; reftex-mode
   :general
   ('normal reftex-mode-map :prefix "g r"
-	   "t" 'reftex-toc
-	   "v" 'reftex-view-crossref
-	   "g" 'reftex-goto-label
-	   "r" 'reftex-reference
-	   "c" 'reftex-citation)
+           "t" 'reftex-toc
+           "v" 'reftex-view-crossref
+           "g" 'reftex-goto-label
+           "r" 'reftex-reference
+           "c" 'reftex-citation)
   :init
   (setq reftex-cite-prompt-optional-args t ; Prompt for empty optional arguments in cite
         ;; https://www.gnu.org/software/emacs/manual/html_mono/reftex.html
@@ -1585,12 +1594,12 @@ graphics."
   (dired-jump-map "j" nil)             ; remove repeat with "j"
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
-	dired-auto-revert-buffer t
-	dired-listing-switches "-AGhlv --group-directories-first --time-style=long-iso"	; human readable format when in detail
-	dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
+        dired-auto-revert-buffer t
+        dired-listing-switches "-AGhlv --group-directories-first --time-style=long-iso"	; human readable format when in detail
+        dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
         dired-recursive-copies 'always
         dired-recursive-deletes 'always
-	delete-by-moving-to-trash nil)	; move to trash (problem with naming)
+        delete-by-moving-to-trash nil)	; move to trash (problem with naming)
 
   ;; kill the dired buffer and enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil))
@@ -1649,18 +1658,18 @@ graphics."
   (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
   :config
   (setq modus-themes-org-blocks 'gray-background
-	modus-themes-prompts '(intense italic)
-	modus-themes-hl-line '(accented intense)
-	modus-themes-diffs 'desaturated
-	modus-themes-paren-match '(bold underline)
-	modus-themes-no-mixed-fonts t
-	modus-themes-variable-pitch-ui nil
-	modus-themes-syntax '(alt-syntax)
-	modus-themes-italic-constructs t
-	modus-themes-bold-constructs nil
-	modus-themes-fringes 'subtle
+        modus-themes-prompts '(intense italic)
+        modus-themes-hl-line '(accented intense)
+        modus-themes-diffs 'desaturated
+        modus-themes-paren-match '(bold underline)
+        modus-themes-no-mixed-fonts t
+        modus-themes-variable-pitch-ui nil
+        modus-themes-syntax '(alt-syntax)
+        modus-themes-italic-constructs t
+        modus-themes-bold-constructs nil
+        modus-themes-fringes 'subtle
         modus-themes-headings '((t . (rainbow)))
-	modus-themes-mode-line '(borderless accented moody))
+        modus-themes-mode-line '(borderless accented moody))
 
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (add-hook 'modus-themes-after-load-theme-hook
@@ -1789,9 +1798,9 @@ Only if there is more than one window opened."
   ;; then `c-guess-buffer-no-install' to set it
   (setq
    ;; c-default-style "linux"
-        ;; c-basic-offset 2
-        ;; one comment for multiline with `comment-region'
-        comment-style "indent")
+   ;; c-basic-offset 2
+   ;; one comment for multiline with `comment-region'
+   comment-style "indent")
   :init
   (defun c-style-setup ()
     "Sets up the documentation and comment style"
@@ -1822,7 +1831,7 @@ Only if there is more than one window opened."
   :general
   (python-mode-map "<backtab>" nil)
   :hook ((python-mode . toggle-truncate-lines)
-	 (python-mode . display-fill-column-indicator-mode))
+         (python-mode . display-fill-column-indicator-mode))
   :config
   ;; dont guess the indent offset
   (setq python-indent-guess-indent-offset nil)
@@ -1830,7 +1839,7 @@ Only if there is more than one window opened."
   ;; make indentation aware of docstring
   (defun my-python-indent-line ()
     (if (eq (car (python-indent-context)) :inside-docstring)
-	'noindent
+        'noindent
       (python-indent-line)))
   ;; change default function to identify docstring
   (defun my-python-mode-hook ()
@@ -1884,8 +1893,8 @@ Only if there is more than one window opened."
     "Change text from TODO to DONE"
     (interactive)
     (if (string= (thing-at-point 'word 'no-properties) "TODO")
-	(let ((bound (bounds-of-thing-at-point 'word)))
-	  (replace-string "TODO" "DONE" 1 (car bound) (cdr bound))))))
+        (let ((bound (bounds-of-thing-at-point 'word)))
+          (replace-string "TODO" "DONE" 1 (car bound) (cdr bound))))))
 
 (use-package csv-mode
   :mode ("\\.csv\\'" . csv-mode))
@@ -1971,7 +1980,7 @@ Only if there is more than one window opened."
 
   ;; refresh cache after bib changes
   (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
- 
+
 ;; function to open with xournal
 (use-package citar-annotation
   :straight nil
@@ -1997,7 +2006,7 @@ Only if there is more than one window opened."
   :straight nil
   :load-path "./lisp"
   :commands (wsl-path-activate
-	     wsl-path-convert-file-name)
+             wsl-path-convert-file-name)
   :init
   (wsl-path-activate))
 
@@ -2030,12 +2039,12 @@ Only if there is more than one window opened."
   :hook (eww-mode-hook . (lambda () (eww-readable)))
   :config
   (setq shr-use-fonts  nil                          ; No special fonts
-	shr-use-colors t                          ;  colours
-	shr-inhibit-images nil			  ; inhibit images
-	shr-indentation 2                           ; Left-side margin
-	shr-color-visible-luminance-min 80
-	eww-search-prefix "https://www.google.com/search?q="
-	shr-width 70))                                ; Fold text to 70 columns
+        shr-use-colors t                          ;  colours
+        shr-inhibit-images nil			  ; inhibit images
+        shr-indentation 2                           ; Left-side margin
+        shr-color-visible-luminance-min 80
+        eww-search-prefix "https://www.google.com/search?q="
+        shr-width 70))                                ; Fold text to 70 columns
 
 (use-package pdf-tools
   :if (eq system-type 'windows-nt)
@@ -2070,7 +2079,7 @@ Only if there is more than one window opened."
   ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
   ("C-<f9>" 'vterm-toggle-insert-cd)
   (vterm-mode-map "s-n" 'vterm-toggle-forward
-		  "s-p" 'vterm-toggle-backward))
+                  "s-p" 'vterm-toggle-backward))
 
 ;; multiple terminals
 (use-package multi-vterm
@@ -2103,12 +2112,12 @@ Only if there is more than one window opened."
 (use-package time-stamp
   :after org :demand				; load after org
   :hook (org-mode . (lambda ()
-		      (add-hook 'before-save-hook 'time-stamp)))
+                      (add-hook 'before-save-hook 'time-stamp)))
   :config
   (setq time-stamp-active t
-	time-stamp-format "%Y-%m-%d %H:%M:%S"
-	time-stamp-end "$"		; regex for end of line
-	time-stamp-start "#\\+lastmod:[ \t]*"))
+        time-stamp-format "%Y-%m-%d %H:%M:%S"
+        time-stamp-end "$"		; regex for end of line
+        time-stamp-start "#\\+lastmod:[ \t]*"))
 
 ;; terminal emacs with evil cursor indication
 (use-package evil-terminal-cursor-changer
@@ -2149,8 +2158,8 @@ Only if there is more than one window opened."
   ;; :after org  ; can use outside of org-mode, so use the keybindings to load
   :general
   (:prefix "C-c s"
-                "l" 'org-super-links-store-link
-                "p" 'org-super-links-insert-link)
+           "l" 'org-super-links-store-link
+           "p" 'org-super-links-insert-link)
   (org-mode-map :prefix "C-c s"
                 "s" 'org-super-links-link
                 "l" 'org-super-links-store-link
@@ -2224,7 +2233,7 @@ Only if there is more than one window opened."
   :config
   ;; scp is faster than ssh for copying files
   (setq tramp-default-method "scp"
-	tramp-verbose 4)
+        tramp-verbose 4)
   ;; apparently makes it faster
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
   (setq remote-file-name-inhibit-cache nil)
@@ -2286,9 +2295,9 @@ Only if there is more than one window opened."
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter :disabled
   :straight (evil-textobj-tree-sitter :type git
-                      :host github
-                      :repo "meain/evil-textobj-tree-sitter"
-                      :files (:defaults "queries"))
+                                      :host github
+                                      :repo "meain/evil-textobj-tree-sitter"
+                                      :files (:defaults "queries"))
   :after tree-sitter
   :config
   (define-key evil-outer-text-objects-map "s" (evil-textobj-tree-sitter-get-textobj "statement.outer"))
@@ -2336,8 +2345,8 @@ Only if there is more than one window opened."
   :general
   ('normal "s" 'avy-goto-char-timer)
   ('(normal visual) :prefix "SPC"
-           "j" 'avy-goto-line-below
-           "k" 'avy-goto-line-above)
+   "j" 'avy-goto-line-below
+   "k" 'avy-goto-line-above)
   :demand
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
@@ -2393,7 +2402,7 @@ Only if there is more than one window opened."
                '(python-mode . ("pyright-langserver" "--stdio" "--watch")))
   (add-to-list 'eglot-server-programs
                `(c++-mode . ,(eglot-alternatives
-                                 '(("clangd" "--clang-tidy")))))
+                              '(("clangd" "--clang-tidy")))))
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
@@ -2407,8 +2416,8 @@ Only if there is more than one window opened."
   :straight (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
   :demand
   :hook ((eglot-managed-mode . (lambda ()
-                 (when (derived-mode-p 'python-mode)
-                   (flymake-mypy-enable))))))
+                                 (when (derived-mode-p 'python-mode)
+                                   (flymake-mypy-enable))))))
 
 ;; add ltex language server to eglot
 ;; uses language tool for grammar, but there is no need to install it
@@ -2646,19 +2655,19 @@ Only if there is more than one window opened."
   :init
   ;; treat those as popups
   (setq popper-reference-buffers
-      '("\\*Messages\\*"
-        "Output\\*$" 
-        "output\\*$"           ;for preview latex error
-        ".log$"              ;for dtache log
-        "^\\*Detached Shell.*"
-        help-mode
-        "Command\\*$"                   ;for shell command
-        ("^\\*Async.*" . hide)                   ; async commands
-        "\\*xref\\*"
-        "\\*eldoc\\*"                   ; eldoc buffer
-        "Help\\*$"
-        "\\*Python\\*"
-        compilation-mode))
+        '("\\*Messages\\*"
+          "Output\\*$" 
+          "output\\*$"           ;for preview latex error
+          ".log$"              ;for dtache log
+          "^\\*Detached Shell.*"
+          help-mode
+          "Command\\*$"                   ;for shell command
+          ("^\\*Async.*" . hide)                   ; async commands
+          "\\*xref\\*"
+          "\\*eldoc\\*"                   ; eldoc buffer
+          "Help\\*$"
+          "\\*Python\\*"
+          compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
 
@@ -2715,7 +2724,7 @@ Only if there is more than one window opened."
 (use-package org-ql :disabled
   :after org
   :straight (org-ql :host github :repo "alphapapa/org-ql"
-            :files (:defaults (:exclude "helm-org-ql.el"))))
+                    :files (:defaults (:exclude "helm-org-ql.el"))))
 
 ;; allows inline animations in org
 (use-package org-inline-anim
@@ -2928,8 +2937,8 @@ its results, otherwise display STDERR with
   :after org
   :hook
   (org-src-mode . (lambda ()
-                          (when (string-equal major-mode "c++-mode")
-                            (irony-mode)))))
+                    (when (string-equal major-mode "c++-mode")
+                      (irony-mode)))))
 
 ;; eldoc support for irony
 (use-package irony-eldoc
@@ -2944,9 +2953,9 @@ its results, otherwise display STDERR with
   :after org
   :hook
   (org-src-mode . (lambda ()
-                          (when (string-equal major-mode "c++-mode")
-                            (setq-local flymake-cc-command 'flymake-cc-init)
-                            (flymake-mode))))
+                    (when (string-equal major-mode "c++-mode")
+                      (setq-local flymake-cc-command 'flymake-cc-init)
+                      (flymake-mode))))
   :init
   (defun flymake-cc-init ()
     (let* ((temp-file   (flymake-init-create-temp-buffer-copy
@@ -2966,15 +2975,15 @@ its results, otherwise display STDERR with
 (use-package elpy :disabled
   :hook
   (org-src-mode . (lambda ()
-                          (when (string-equal major-mode "python-mode")
-                            ;; remove company mode
-                            (setq elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
-                            (elpy-enable)
-                            ;; add company backend as CAPF for cape
-                            ;; need some company functions...
-                            (require 'company)
-                            (setq-local completion-at-point-functions
-                                        (cape-company-to-capf 'elpy-company-backend))))))
+                    (when (string-equal major-mode "python-mode")
+                      ;; remove company mode
+                      (setq elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
+                      (elpy-enable)
+                      ;; add company backend as CAPF for cape
+                      ;; need some company functions...
+                      (require 'company)
+                      (setq-local completion-at-point-functions
+                                  (cape-company-to-capf 'elpy-company-backend))))))
 
 ;; auto complete with company backend adapter for corfu
 ;; there was a problem with numpy, this fixes: https://github.com/davidhalter/jedi/issues/1864#issuecomment-1306543244
