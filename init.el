@@ -1349,7 +1349,9 @@ graphics."
   (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
   (c++-ts-mode . (lambda () (setq outline-regexp "[^#\n]")))
-  ;; :general
+  :general
+  ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
+                                       (outline-on-heading-p) 'outline-cycle))
   ;; ('normal outline-mode-map "C-j" nil)
   ;; ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ;; ('normal outline-mode-map "z b" 'outline-show-branches)
@@ -2245,15 +2247,17 @@ Only if there is more than one window opened."
   :general
   ("C-x C-b" 'ibuffer))
 
-;; need to install the libraries for each language: https://github.com/casouri/tree-sitter-module
-(use-package treesit
+;; need to install language specific modules:
+;; https://github.com/casouri/tree-sitter-module
+;; and put in ./emacs.d/tree-sitter
+(use-package treesit :disabled
   :hook
   (c++-mode . c++-ts-mode)
   (c-mode . c-ts-mode)
   (python-mode . python-ts-mode))
 
 ;; better code highlight and fold
-(use-package tree-sitter :disabled
+(use-package tree-sitter
   :diminish tree-sitter-mode
   :hook
   (c-mode-common . tree-sitter-mode)
@@ -2448,6 +2452,16 @@ Only if there is more than one window opened."
    '((nil                               ; all modes
       . ((eglot-workspace-configuration
           . (:ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))))
+
+;; need to install grammarly-languageserver
+(use-package eglot-grammarly
+  :straight (:host github :repo "emacs-grammarly/eglot-grammarly")
+  :commands start-eglot-grammarly 
+  :init
+  (defun start-eglot-grammarly ()
+    (interactive)
+    (require 'eglot-grammarly)
+    (call-interactively #'eglot)))
 
 ;; use language tool with flymake
 ;; download latest version https://languagetool.org/download/
