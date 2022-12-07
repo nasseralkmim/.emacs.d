@@ -3014,4 +3014,10 @@ its results, otherwise display STDERR with
   (prog-mode . electric-pair-mode)
   (text-mode . electric-pair-mode))
 
+(use-package markdown-mode
+  :hook
+  (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
+  (markdown-mode . visual-line-mode) ; use variable pitch fonts
+  )
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
