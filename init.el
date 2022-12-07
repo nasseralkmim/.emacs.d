@@ -163,11 +163,14 @@
   ;; (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
   ;; (set-face-attribute 'variable-pitch nil :family "Input Sans")
   :custom-face 
+  ;; config for victor mono (different oblique and italic)
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   ;; (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
   ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
+
   ;; when using variable pitch in org mode, use monospace for code blocks
   (org-block ((t (:family "Iosevka SS12"))))
+  (org-meta-line ((t (:family "Iosevka SS12"))))
   (org-verbatim ((t (:family "Iosevka SS12"))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
 
