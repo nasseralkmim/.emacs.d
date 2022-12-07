@@ -36,7 +36,7 @@
                         `(dired-subtree-depth-3-face ((t (:foreground "#000000"))))
                         `(dired-subtree-depth-4-face ((t (:foreground "#000000"))))
                         ;; smartparens
-                        `(sp-show-pair-match-content-face ((t (:inherit 'highlight))))
+                        ;; `(sp-show-pair-match-content-face ((t (:inherit 'highlight))))
                         `(sp-show-pair-match-face ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(show-paren-match ((t (:syle nil)))) ; smart parens is enough
                         ;; region without style, work with 'evil-multiedit'

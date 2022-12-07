@@ -7,13 +7,15 @@ print("hi")
 
 #+name: pdf-plot
 #+begin_src python
-if "paper" in _tag_.split(":"):
-    plt.savefig(f"{paperdir}/figures/{figure}.pdf", bbox_inches="tight")
-if "analysis" in _tag_.split(":"):
-    plt.savefig(f"{figure}.pdf", bbox_inches="tight")
+# only if tag is not empty
+if _tag_:
+    if "paper" in _tag_.split(":"):
+        plt.savefig(f"{paperdir}/figures/{figure}.pdf", bbox_inches="tight")
+    if "analysis" in _tag_.split(":"):
+        plt.savefig(f"{figure}.pdf", bbox_inches="tight")
 #+end_src
 
-** Example :paper:
+** Example :paper:tag2:
 :PROPERTIES:
 :header-args: :var paperdir="~/tmp/scripts"
 :header-args+: :var figure="test"
@@ -29,11 +31,13 @@ mkdir -p "$paperdir/figures"
 #+begin_src python
 import matplotlib.pyplot as plt
 plt.plot([1, 2])
-plt.show()
+print(type(_tag_))
 <<pdf-plot>>
+plt.show()
 #+end_src
 
 #+RESULTS:
+: <class 'str'>
 
 #+begin_src sh
 ls "$paperdir/figures"

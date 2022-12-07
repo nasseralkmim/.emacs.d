@@ -1476,6 +1476,7 @@ graphics."
   :straight nil
   :after latex
   :general
+  (LaTeX-mode-map "C-c C-x C-l" 'preview-buffer) ; same as in org
   ('normal LaTeX-mode-map "g p" '(:keymap preview-map))
   (preview-map
    "b" 'preview-buffer
