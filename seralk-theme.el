@@ -10,8 +10,8 @@
                         `(font-latex-string-face ((t (:foreground "saddle brown"))))
                         ;; general
                         `(font-lock-comment-face ((t (:foreground "gray65" :slant italic :weight medium))))
-                        `(mode-line-active ((t (:background "gray65" :box (:line-width -1 :style released-button)))))
-                        `(mode-line-inactive ((t (:background "gray95" :box (:line-width -1 :style released-button)))))
+                        `(mode-line-active ((t (:background "gray75" :box (:line-width (-1 . -1) :style released-button)))))
+                        ;; `(mode-line-inactive ((t (:box (:line-width (-1 . -1))))))
                         ;; evil
                         `(evil-snipe-matches-face ((t (:inherit 'match :box (:line-width (-1 . -1) :style nil)))))
                         `(evil-snipe-first-match-face ((t (:inherit 'evil-snipe-matches-face))))
