@@ -2017,8 +2017,9 @@ Only if there is more than one window opened."
 (use-package yasnippet
   :diminish yas-minor-mode
   :hook
-  (LaTeX-mode . yas-global-mode)
-  (org-mode . yas-global-mode)
+  (LaTeX-mode . yas-minor-mode)
+  (org-mode . yas-minor-mode)
+  (prog-mode . yas-minor-mode)
   :commands yas-insert-snippet
   :config
   (yas-reload-all)
@@ -2886,7 +2887,7 @@ its results, otherwise display STDERR with
 
 ;; format code when saving based on `.clang-format' file
 (use-package clang-format+
-  :hook (c++-mode . clang-format+-mode))
+  :hook (c-mode-common . clang-format+-mode))
 
 (use-package org-footnote
   :straight nil
@@ -3018,7 +3019,6 @@ its results, otherwise display STDERR with
 (use-package markdown-mode
   :hook
   (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
-  (markdown-mode . visual-line-mode) ; use variable pitch fonts
-  )
+  (markdown-mode . visual-line-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
