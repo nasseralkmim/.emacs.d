@@ -854,6 +854,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         org-catch-invisible-edits 'show-and-error ;make visible then abort
         org-tags-column 0                        ; tag right after text
         org-html-htmlize-output-type 'inline-css   ; nil to export as plain text
+        org-startup-with-inline-images t           ; show images
         org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
   (transient-mark-mode -1)
 
@@ -875,7 +876,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :straight nil
   :after org
   :init
-
   (require 'subr-x)
   (defun ded:org-babel-inline-display-subtree ()
     "Redisplay inline images in subtree if cursor in source block with :result 
@@ -899,6 +899,20 @@ graphics."
 
   (add-hook 'org-babel-after-execute-hook 
             #'ded:org-babel-inline-display-subtree))
+
+;; To refresh the image after it changed in disk
+;; problem with cache image when included as link
+;; need to clear cache
+(use-package org-refresh-inline-image-linked
+  :straight nil
+  :after org
+  :hook (org-babel-after-execute . org-refresh-inline-images)
+  :init
+  (defun org-refresh-inline-images ()
+    (interactive)
+    (clear-image-cache))
+  ;; clear cache before redisplay, maybe slow with a lot of images
+  (advice-add 'org-redisplay-inline-images :before #'clear-image-cache))
 
 ;; problem with babel execute subtree and showing images outside the subtree
 (use-package org-display-inline-image-after-execute-subtreee
@@ -1138,13 +1152,18 @@ graphics."
   (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil)))
 
 ;; adds keyword `async' to source blocks
-(use-package ob-async
+(use-package ob-async :disabled         ; error in process sentinel: async-when-done: Invalid read syntax: "#"
   :after org
-  :demand
-  :init (org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))
-  :config   ; first load with demand, require `ob-async', then configure the variable
+  ;; :init (org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))
+  :init
   ;; ob-python defines its own `async' keyword (which needs a session)
-  (setq ob-async-no-async-languages-alist '("python")))
+  (setq ob-async-no-async-languages-alist '("python"))
+
+  ;; problem with sh async (does not work)
+  ;; https://github.com/astahlman/ob-async/issues/75
+  (defun no-hide-overlays (orig-fun &rest args)
+    (setq org-babel-hide-result-overlays nil))
+  (advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays))
 
 (use-package ob-shell
   :straight nil
@@ -1651,15 +1670,15 @@ graphics."
 ;; load modus in terminal
 (use-package modus-themes
   ;; :when (display-graphic-p)
-  :custom-face
+  ;; :custom-face
   ;; (org-meta-line ((t (:height 0.9))))
   ;; (org-drawer ((t (:height 0.9))))
   ;; (org-macro ((t (:height 0.9))))
-  (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
-  (font-latex-sectioning-2-face ((t (:weight bold :box t))))
-  (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
-  (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
-  (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
+  ;; (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
+  ;; (font-latex-sectioning-2-face ((t (:weight bold :box t))))
+  ;; (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
+  ;; (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
+  ;; (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
   :config
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
