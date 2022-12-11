@@ -143,9 +143,14 @@
 ;; custom emacs theme
 (use-package seralk-theme
   :straight nil
+  :general
+  ("<f5>" 'toggle-dark-theme)
   :when (display-graphic-p)
   :init
-  (load-theme 'seralk t))
+  (load-theme 'seralk t)
+  (defun toggle-dark-theme ()
+    (interactive)
+    (invert-face 'default)))
 
 ;; typeface
 (use-package custom-typefaces
@@ -1669,16 +1674,6 @@ graphics."
 
 ;; load modus in terminal
 (use-package modus-themes
-  ;; :when (display-graphic-p)
-  ;; :custom-face
-  ;; (org-meta-line ((t (:height 0.9))))
-  ;; (org-drawer ((t (:height 0.9))))
-  ;; (org-macro ((t (:height 0.9))))
-  ;; (font-latex-sectioning-1-face ((t (:weight bold :slant italic :box t))))
-  ;; (font-latex-sectioning-2-face ((t (:weight bold :box t))))
-  ;; (font-latex-sectioning-3-face ((t (:weight bold :underline t))))
-  ;; (font-latex-sectioning-4-face ((t (:weight bold :slant normal))))
-  ;; (font-latex-sectioning-5-face ((t (:weight normal :slant italic :underline t))))
   :config
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
@@ -1722,8 +1717,7 @@ graphics."
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
                                        :background (modus-themes-color 'bg-paren-expression))))))
-  :general
-  ("<f5>"  'modus-themes-toggle))
+  :commands modus-themes-toggle)
 
 ;; modus in terminal
 (use-package modus-themes :disabled
@@ -2075,6 +2069,7 @@ Only if there is more than one window opened."
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :general
   (pdf-view-mode-map "M-h" 'pdf-history-backward)
+  (pdf-view-mode-map "C" 'pdf-view-center-in-window)
   :init
   (pdf-loader-install)
   :config
