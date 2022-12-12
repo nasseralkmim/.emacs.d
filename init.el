@@ -1388,8 +1388,10 @@ graphics."
   :general
   ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                             (outline-on-heading-p) 'outline-cycle))
+  ('normal outline-mode-map :prefix "z"
+           "j" 'outline-next-visible-heading
+           "k" 'outline-previous-visible-heading)
   ;; ('normal outline-mode-map "C-j" nil)
-  ;; ('normal outline-mode-map "z j" 'outline-next-visible-heading)
   ;; ('normal outline-mode-map "z b" 'outline-show-branches)
   ;; ('normal outline-mode-map "z t" 'outline-show-subtree)
   ;; ('normal outline-mode-map "z o" 'outline-show-children)
@@ -1491,9 +1493,10 @@ graphics."
 
   ;; using "Zathura" or "PDF Tools" on WSL
   ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
+  (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
   ;; PDF Toll is good when I'm with just one screen
-  (add-to-list 'TeX-view-program-selection
-               '(output-pdf "Okular")))
+  ;; (add-to-list 'TeX-view-program-selection '(output-pdf "Okular"))
+  )
 
 ;; preview in latex
 (use-package preview
@@ -2566,9 +2569,8 @@ Only if there is more than one window opened."
 
 ;; open with external program
 (use-package openwith
-  :defer 1
+  :commands openwith-mode
   :config
-  (openwith-mode)
   (setq openwith-associations '(("\\.pdf\\'" "okular" (file))
                                 ("\\.xopp\\'" "xournalpp" (file)))))
 
