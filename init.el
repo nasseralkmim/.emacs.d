@@ -2068,18 +2068,20 @@ Only if there is more than one window opened."
   :if (eq system-type 'windows-nt)
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :general
-  (pdf-view-mode-map "M-h" 'pdf-history-backward)
-  (pdf-view-mode-map "C" 'pdf-view-center-in-window)
+  ('normal pdf-view-mode-map "M-h" 'pdf-history-backward)
+  ('normal pdf-view-mode-map "C" 'pdf-view-center-in-window)
   :init
   (pdf-loader-install)
   :config
+  (setq pdf-view-midnight-colors '("white" . "black"))
+  
   ;; sync pdf in different frame
   (setq pdf-sync-forward-display-action
         '(display-buffer-reuse-window (reusable-frames . t)))
   (setq pdf-sync-backward-display-action
         '(display-buffer-reuse-window (reusable-frames . t))))
 
-(use-package hydra)
+(use-package hydra :disabled)
 
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
