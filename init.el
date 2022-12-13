@@ -1936,7 +1936,7 @@ Only if there is more than one window opened."
   ;; dont prompt for anything, just insert the citation please.
   (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
 
-;; using okular to at leat view the documents...
+;; using okular to at least view the documents...
 (use-package bibtex-completion-wsl
   :straight nil
   :when (string-match "-[Mm]icrosoft" operating-system-release)
@@ -1980,6 +1980,17 @@ Only if there is more than one window opened."
       (bibtex-completion-open-pdf keys fallback-action)))
   (consult-bibtex-embark-action consult-bibtex-open-pdf-evince bibtex-completion-open-pdf-evince)
   (define-key consult-bibtex-embark-map "p" #'consult-bibtex-open-pdf-evince))
+
+;; option for open with pdf-tools (default with find-file when `openwith-mode' is disabled) 
+(use-package consult-bibtex-pdftools
+  :straight nil
+  :after consult-bibtex
+  :init
+  (defun bibtex-completion-open-pdf-tools (keys &optional fallback-action)
+    (let ((bibtex-completion-pdf-open-function 'find-file))
+      (bibtex-completion-open-pdf keys fallback-action)))
+  (consult-bibtex-embark-action consult-bibtex-open-pdf-tools bibtex-completion-open-pdf-tools)
+  (define-key consult-bibtex-embark-map "t" #'consult-bibtex-open-pdf-tools))
 
 (use-package citar :disabled
   :general
