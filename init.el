@@ -652,7 +652,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "C-S-o" 'evil-jump-forward)
   :config
   (setq
-   lazy-highlight-cleanup nil
+   lazy-highlight-cleanup nil           ; persist highlight
    lazy-highlight-max-at-a-time nil
    evil-kill-on-visual-paste nil        ; don't add replaced test onto kill ring
    lazy-highlight-initial-delay 0)
@@ -1443,6 +1443,7 @@ graphics."
                   (reftex-isearch-minor-mode)
                   (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
+                  (variable-pitch-mode)      ; use variable pitch font (not monospace)
                   (yas-minor-mode)
                   (turn-off-auto-fill)))
   :config
@@ -1755,6 +1756,7 @@ Only if there is more than one window opened."
 ;; dimm other buffers
 (use-package dimmer
   :commands dimmer-mode
+  :init (dimmer-mode)
   :config
   (setq dimmer-fraction 0.3)
   (dimmer-configure-magit)
@@ -2079,11 +2081,13 @@ Only if there is more than one window opened."
         shr-width 70))                                ; Fold text to 70 columns
 
 (use-package pdf-tools
-  :if (eq system-type 'windows-nt)
+  ;; :if (eq system-type 'windows-nt)
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :general
   ('normal pdf-view-mode-map "M-h" 'pdf-history-backward)
   ('normal pdf-view-mode-map "C" 'pdf-view-center-in-window)
+  ;; use 'isearch' and before quitting use 'consult-isearch-forward'
+  ('normal pdf-view-mode-map "/" 'isearch-forward-regexp)
   :init
   (pdf-loader-install)
   :config
