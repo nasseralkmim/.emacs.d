@@ -1215,10 +1215,8 @@ graphics."
    org-download-image-dir "./images"
    org-download-image-html-width 350
    org-download-image-latex-width 10)
-
-  ;; use different on wayland
-  (when (string= system-name "nasser-t14s")
-    (setq org-download-screenshot-method "flameshot gui --raw > %s")))
+  ;; can resize screen shot
+  (setq org-download-screenshot-method "flameshot gui --raw > %s"))
 
 ;; wsl specific config
 (use-package org-download
@@ -1384,13 +1382,16 @@ graphics."
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
-  (c++-ts-mode . (lambda () (setq outline-regexp "[^#\n]")))
+  ;; (c++-ts-mode . (lambda () (setq outline-regexp "[^#\n]")))
   :general
   ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                             (outline-on-heading-p) 'outline-cycle))
   ('normal outline-mode-map :prefix "z"
            "j" 'outline-next-visible-heading
-           "k" 'outline-previous-visible-heading)
+           "k" 'outline-previous-visible-heading
+           "A" 'outline-show-all)
+  ('normal outline-mode-map "<tab>" (general-predicate-dispatch nil
+                                       (outline-on-heading-p) 'outline-cycle))
   ;; ('normal outline-mode-map "C-j" nil)
   ;; ('normal outline-mode-map "z b" 'outline-show-branches)
   ;; ('normal outline-mode-map "z t" 'outline-show-subtree)
@@ -2804,9 +2805,9 @@ Only if there is more than one window opened."
 ;; using bicycle it does not `(...'
 (use-package bicycle :disabled
   :after outline
-  :init
-  ;; replace outline-cycle
-  (advice-add 'outline-cycle :override #'bicycle-cycle))
+  :general
+  ('normal outline-mode-map "<tab>" (general-predicate-dispatch nil
+                                      (outline-on-heading-p) 'bicycle-cycle)))
 
 ;; query synonyms
 (use-package le-thesaurus
