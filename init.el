@@ -815,7 +815,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (ox-extras-activate '(ignore-headlines)))
 
 (use-package org
-  :straight (:type built-in)            ; (org not built in has a bug with inline images)
+  ;; :straight (:type built-in)
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :general
@@ -908,7 +908,8 @@ graphics."
 ;; To refresh the image after it changed in disk
 ;; problem with cache image when included as link
 ;; need to clear cache
-(use-package org-refresh-inline-image-linked
+;; https://list.orgmode.org/alpine.DEB.2.22.394.2212112203210.121316@shell3.miskatonic.org/T/#t
+(use-package org-refresh-inline-image-linked-hack :disabled
   :straight nil
   :after org
   :hook (org-babel-after-execute . org-refresh-inline-images)
