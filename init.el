@@ -1363,7 +1363,8 @@ graphics."
   ('normal hs-minor-mode-map "z H" 'hs-hide-all)
   ('normal hs-minor-mode-map "z A" 'hs-show-all)
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (outline-on-heading-p) 'hs-toggle-hiding))
+                                       (and (outline-on-heading-p)
+                                            (derived-mode-p 'c-mode)) 'hs-toggle-hiding))
   :hook
   (prog-mode . hs-minor-mode)
   :config
@@ -1390,8 +1391,6 @@ graphics."
            "j" 'outline-next-visible-heading
            "k" 'outline-previous-visible-heading
            "A" 'outline-show-all)
-  ('normal outline-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (outline-on-heading-p) 'outline-cycle))
   ;; ('normal outline-mode-map "C-j" nil)
   ;; ('normal outline-mode-map "z b" 'outline-show-branches)
   ;; ('normal outline-mode-map "z t" 'outline-show-subtree)
@@ -2803,11 +2802,12 @@ Only if there is more than one window opened."
 ;; 
 ;; using hideshow the end delimiter goes to the same line `(...)'
 ;; using bicycle it does not `(...'
-(use-package bicycle :disabled
+(use-package bicycle
   :after outline
   :general
   ('normal outline-mode-map "<tab>" (general-predicate-dispatch nil
-                                      (outline-on-heading-p) 'bicycle-cycle)))
+                                      (and (outline-on-heading-p)
+                                           (derived-mode-p 'python-mode)) 'bicycle-cycle)))
 
 ;; query synonyms
 (use-package le-thesaurus
