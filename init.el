@@ -1356,7 +1356,7 @@ graphics."
 
 ;; allows selectively display portions of program
 ;; bicycle uses it together with outline
-(use-package hideshow
+(use-package hideshow :disabled
   :straight (:type built-in)
   :diminish hs-minor-mode
   :general
@@ -1364,7 +1364,7 @@ graphics."
   ('normal hs-minor-mode-map "z A" 'hs-show-all)
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                        (and (outline-on-heading-p)
-                                            (derived-mode-p 'c-mode)) 'hs-toggle-hiding))
+                                            (derived-mode-p 'cc-mode)) 'hs-toggle-hiding))
   :hook
   (prog-mode . hs-minor-mode)
   :config
@@ -2795,19 +2795,6 @@ Only if there is more than one window opened."
 (use-package flymake-vale
   :straight (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
   :commands flymake-vale-load)
-
-;; enhances outline-cycle command (cycling children as well)
-;; 
-;; https://github.com/tarsius/bicycle/issues/8
-;; 
-;; using hideshow the end delimiter goes to the same line `(...)'
-;; using bicycle it does not `(...'
-(use-package bicycle
-  :after outline
-  :general
-  ('normal outline-mode-map "<tab>" (general-predicate-dispatch nil
-                                      (and (outline-on-heading-p)
-                                           (derived-mode-p 'python-mode)) 'bicycle-cycle)))
 
 ;; query synonyms
 (use-package le-thesaurus
