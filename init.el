@@ -80,10 +80,12 @@
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
   ;; scroll
-  (setq auto-window-vscroll nil) 		;avoid next-line to trigger line-move-partial
-  (setq mouse-wheel-scroll-amount '(3 ((shift) . 1) ((control) . nil)))
-  (setq mouse-wheel-follow-mouse 't)
-  (setq scroll-step 1)
+  (setq auto-window-vscroll nil 		;avoid next-line to trigger line-move-partial
+        ;; mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil))
+        mouse-wheel-follow-mouse 't
+        ;; scroll-conservatively 0
+        ;; scroll-step 0
+       )
 
   ;; other basiscs
   (setq ring-bell-function 'ignore)
@@ -1276,6 +1278,8 @@ graphics."
   ('insert "C-n" nil
            "C-p" nil)
   :defer 1
+  :hook
+  (text-mode . (lambda () (setq corfu-auto-prefix 3))) ; increase prefix for text
   :config
   (global-corfu-mode)
   (corfu-popupinfo-mode)                ; show doc
@@ -1355,8 +1359,7 @@ graphics."
   :init
   (company-prescient-mode))
 
-;; allows selectively display portions of program
-;; bicycle uses it together with outline
+;; Allows selectively display portions of program
 (use-package hideshow
   :straight (:type built-in)
   :diminish hs-minor-mode
