@@ -1369,56 +1369,12 @@ graphics."
   :diminish hs-minor-mode
   :general
   ('normal hs-minor-mode-map "z H" 'hs-hide-all)
-  ('normal hs-minor-mode-map "z A" 'hs-show-all)
-  ;; ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
-  ;;                                      (and (outline-on-heading-p)
-  ;;                                           (derived-mode-p 'cc-mode)) 'hs-toggle-hiding))
+  ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
+                                       (outline-on-heading-p) 'evil-toggle-fold))
   :hook
   (prog-mode . hs-minor-mode)
   :config
   (add-to-list 'hs-special-modes-alist '(c++-ts-mode "{" "}" "/[*/]" nil nil)))
-
-;; implement cycling like 'outline-cycle' but for hide show
-;; https://karthinks.com/software/simple-folding-with-hideshow/
-(use-package hideshow-cycle
-  :straight nil
-  :general
-  ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (outline-on-heading-p) 'hs-cycle))
-  :init
-  (defun hs-cycle (&optional level)
-    (interactive "p")
-    (let (message-log-max
-          (inhibit-message t))
-      (if (= level 1)
-          (pcase last-command
-            ('hs-cycle
-             (hs-hide-level 1)
-             (setq this-command 'hs-cycle-children))
-            ('hs-cycle-children
-             ;; TODO: Fix this case. `hs-show-block' needs to be
-             ;; called twice to open all folds of the parent
-             ;; block.
-             (save-excursion (hs-show-block))
-             (hs-show-block)
-             (setq this-command 'hs-cycle-subtree))
-            ('hs-cycle-subtree
-             (hs-hide-block))
-            (_
-             (if (not (hs-already-hidden-p))
-                 (hs-hide-block)
-               (hs-hide-level 1)
-               (setq this-command 'hs-cycle-children))))
-        (hs-hide-level level)
-        (setq this-command 'hs-hide-level))))
-
-  (defun hs-global-cycle ()
-    (interactive)
-    (pcase last-command
-      ('hs-global-cycle
-       (save-excursion (hs-show-all))
-       (setq this-command 'hs-global-show))
-      (_ (hs-hide-all)))))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
