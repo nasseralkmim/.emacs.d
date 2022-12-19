@@ -24,7 +24,7 @@
                         `(org-macro ((t (:inherit 'org-meta-line))))
                         `(org-verbatim ((t (:box (:line-width (-1 . -1))))))
                         ;; smartparens
-                        `(sp-show-pair-match-content-face ((t (:inherit 'highlight))))
+                        `(sp-show-pair-match-content-face ((t (:style nil))))
                         `(sp-show-pair-match-face ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(show-paren-match ((t (:syle nil)))) ; smart parens is enough
                         ;; region without style, work with 'evil-multiedit'
