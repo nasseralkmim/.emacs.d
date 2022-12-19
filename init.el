@@ -80,8 +80,11 @@
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
   ;; scroll
-  (setq auto-window-vscroll nil 		;avoid next-line to trigger line-move-partial
-        ;; mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil))
+  (setq auto-window-vscroll nil 		; avoid next-line to trigger line-move-partial
+        mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)) ; 1 line at a time
+        mouse-wheel-progressive-speed nil                              ; proportional to scroll speed
+        fast-but-imprecise-scrolling t
+        jit-lock-defer-time 0
         mouse-wheel-follow-mouse 't
         ;; scroll-conservatively 0
         ;; scroll-step 0
@@ -136,10 +139,11 @@
   (setq yank-pop-change-selection t)    ;change selection when using yank pop
   )
 
-(use-package emacs :disabled
+(use-package pixel-scroll
+  :straight (:type built-in)
   :if (string-greaterp emacs-version "29") ; need emacs > 29
   :init
-                                        ; text scroll pixel by pixel
+  ;; text scroll pixel by pixel
   (pixel-scroll-precision-mode t))
 
 ;; custom emacs theme
@@ -1435,7 +1439,7 @@ graphics."
                                             (outline-on-heading-p) 'outline-cycle))
   ('normal outline-mode-map :prefix "z"
            "j" 'outline-next-visible-heading
-           "k" 'outline-previous-visible-heading
+           "o" 'outline-show-children   ; show first level
            "A" 'outline-show-all)
   ;; ('normal outline-mode-map "C-j" nil)
   ;; ('normal outline-mode-map "z b" 'outline-show-branches)
@@ -1448,7 +1452,7 @@ graphics."
   ;; need to rebind after loading outline
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
   ;; evil-collection end up binding last...
-  ;; (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
+  (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
   (setq outline-minor-mode-cycle nil    ; using general predicate dispatch instead
         ;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
         ))  
