@@ -853,14 +853,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
         org-startup-indented nil		; start collapsed
         org-startup-folded t               ; folded in "overview" state
-        org-hide-leading-stars t           ; don't show a  bunch of '*'
+        org-hide-leading-stars nil           ; don't show a  bunch of '*' (maybe is more performant if shows)
         org-edit-src-content-indentation 0
         org-pretty-entities nil           ; use latex instead...
         org-ellipsis "…"                ;use single character for elipses
         org-outline-path-complete-in-steps nil
         org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
         org-cycle-separator-lines 0  ; no empty lines between headings
-        org-fontify-quote-and-verse-blocks t ; yes syntax highlighting
+        org-fontify-quote-and-verse-blocks nil ; no special fontification for thos blocks 
         org-insert-heading-respect-content nil ; nil: heading after current line/ t: after current subtree
         org-catch-invisible-edits 'show-and-error ;make visible then abort
         org-tags-column 0                        ; tag right after text
