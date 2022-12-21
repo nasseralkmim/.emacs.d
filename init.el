@@ -3012,6 +3012,7 @@ its results, otherwise display STDERR with
 
 ;; hide everything except current heading
 ;; https://stackoverflow.com/a/28031539/20449842
+;; https://stackoverflow.com/a/28031539
 (use-package org-show-current-tidyl
   :straight nil
   :after org
