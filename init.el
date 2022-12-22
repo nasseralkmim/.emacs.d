@@ -2611,7 +2611,7 @@ Only if there is more than one window opened."
 ;; convert pdf to svg to display inline org image
 ;; requires pdf-tools
 ;; better to just use svg and use latex svg package
-(use-package org-inline-pdf
+(use-package org-inline-pdf :disabled   ; just using svg
   :when (eq system-type 'gnu/linux)
   :hook (org-mode . org-inline-pdf-mode))
 
