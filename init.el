@@ -1121,7 +1121,7 @@ graphics."
     (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
 ;; library of babel
-(use-package ob-lob
+(use-package ob-lob :disabled
   :straight nil
   :after org
   :init
