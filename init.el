@@ -151,7 +151,7 @@
   :straight nil
   :general
   ("<f5>" 'toggle-dark-theme)
-  :when (display-graphic-p)
+  ;; :when (display-graphic-p)
   :init
   (load-theme 'seralk t)
   (defun toggle-dark-theme ()
@@ -330,7 +330,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-r" 'vertico-repeat))
 
 ;; use vertico to complete in region with orderless in terminal
-(use-package vertico
+(use-package vertico :disabled          ;using corfu terminal
   :straight nil
   :unless (display-graphic-p)
   :config
@@ -1332,6 +1332,13 @@ graphics."
   (corfu-echo-documentation nil)
   :hook
   (prog-mode . corfu-doc-mode)) 
+
+;; use corfu on terminal
+(use-package corfu-terminal
+  :straight (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
+  :unless (display-graphic-p)
+  :after corfu
+  :init (corfu-terminal-mode))
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
