@@ -2178,7 +2178,7 @@ Only if there is more than one window opened."
   (evil-terminal-cursor-changer-activate))
 
 ;; don't change background when in terminal
-(use-package terminal-disable-bg
+(use-package terminal-disable-bg :disabled
   :straight nil
   :unless (display-graphic-p)
   :init
@@ -2249,7 +2249,7 @@ Only if there is more than one window opened."
   (setq highlight-indent-guides-method 'character))
 
 ;; suppress error on tui
-(use-package highlight-indent-guides
+(use-package highlight-indent-guides :disabled
   :after highlight-indent-guides
   :unless (display-graphic-p)
   :init

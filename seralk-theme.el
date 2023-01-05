@@ -33,6 +33,7 @@
                         `(iedit-occurrence ((t (:box (:line-width (-1 . -1) :style nil)))))
                         ;; `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(ts-fold-replacement-face ((t (:inherit 'font-lock-comment-face))))
+                        `(default ((t (:inherit 'default))))
                         )
 
 (provide-theme 'seralk)
