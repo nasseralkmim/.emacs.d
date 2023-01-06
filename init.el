@@ -1405,6 +1405,7 @@ graphics."
            "o" 'outline-show-children   ; show first level
            "A" 'outline-show-all)
   ;; ('normal outline-mode-map "C-j" nil)
+  ('normal outline-mode-map "M-j" nil)  ; conflicts with c multiline comment
   ;; ('normal outline-mode-map "z b" 'outline-show-branches)
   ;; ('normal outline-mode-map "z t" 'outline-show-subtree)
   ;; ('normal outline-mode-map "z o" 'outline-show-children)
@@ -2312,6 +2313,7 @@ Only if there is more than one window opened."
 ;; https://github.com/casouri/tree-sitter-module
 ;; and put in ./emacs.d/tree-sitter
 (use-package treesit :disabled
+  :straight (:type built-in)
   :hook
   (c++-mode . c++-ts-mode)
   (c-mode . c-ts-mode)
