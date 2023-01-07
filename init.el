@@ -161,12 +161,11 @@
 ;; typeface
 (use-package custom-typefaces
   :straight nil
-  :init
-  (set-face-attribute 'default nil :family "Iosevka SS12")
+  ;; :init
+  ;; (set-face-attribute 'default nil :family "Iosevka SS12")
   ;; use etoile in comments (better than aile, sometimes)
-  (set-face-attribute 'font-lock-comment-face nil :family "Iosevka aile"  :weight 'semi-light :width 'ultra-condensed)
   ;; variable pitch mode use etoile
-  (set-face-attribute 'variable-pitch nil :family "Iosevka etoile" :weight 'light)
+  ;; (set-face-attribute 'variable-pitch nil :family "Iosevka etoile" :weight 'light)
   ;; to check typefaces: fc-list | grep <typeface>
   ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
   ;; (set-face-attribute 'default nil :family "Victor Mono")
@@ -178,9 +177,12 @@
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   ;; (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
   ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
-
+  (default  ((t (:family "Iosevka SS12"))))
+  (font-lock-comment-face  ((t (:family "Iosevka aile" :weight semi-light :width ultra-condensed))))
+  (variable-pitch ((t (:family "Iosevka etoile" :weight light))))
   ;; when using variable pitch in org mode, use monospace for code blocks
   (org-block ((t (:family "Iosevka SS12"))))
+  (org-table ((t (:family "Iosevka SS12"))))
   (org-meta-line ((t (:family "Iosevka SS12"))))
   (org-verbatim ((t (:family "Iosevka SS12"))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
@@ -1184,7 +1186,7 @@ graphics."
   :demand
   :config
   (setq org-babel-default-header-args:sh
-        '((:results . "output")
+        '((:results . "output code")
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:noweb . "no-export")
           ;; 
