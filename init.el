@@ -3060,4 +3060,13 @@ its results, otherwise display STDERR with
   (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
   (markdown-mode . visual-line-mode))
 
+;; for reading email lists
+(use-package gnus
+  :config
+  (setq user-mail-address "nasser.alkmim@gmail.com"
+        gnus-secondary-select-method '(nntp "news.gmane.io")
+        gnus-select-method '(nnimap "imap.gmail.com")
+        message-send-mail-function 'smptmail-send-it
+        gnus-message-archive-group "~/gmail/sent"))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
