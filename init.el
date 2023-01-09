@@ -2468,9 +2468,9 @@ Only if there is more than one window opened."
 ;; use mypy check for type in python
 (use-package flymake-mypy
   :straight (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
-  :demand
   :hook ((eglot-managed-mode . (lambda ()
                                  (when (derived-mode-p 'python-mode)
+                                   (require 'flymake-mypy)
                                    (flymake-mypy-enable))))))
 
 ;; add ltex language server to eglot
