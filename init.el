@@ -3062,11 +3062,27 @@ its results, otherwise display STDERR with
 
 ;; for reading email lists
 (use-package gnus
+  :general
+  ('normal "C-c C-m" 'gnus) 
+  ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
-        gnus-secondary-select-method '(nntp "news.gmane.io")
+        gnus-secondary-select-methods '((nntp "news.gmane.io"))
         gnus-select-method '(nnimap "imap.gmail.com")
-        message-send-mail-function 'smptmail-send-it
-        gnus-message-archive-group "~/gmail/sent"))
+        message-send-mail-function 'smtpmail-send-it
+        gnus-auto-select-first 'best   ; auto select when entering a group
+        gnus-use-full-window nil       ; don't use entire window!
+        )
+  )
+
+(use-package sendmail
+  :config
+  (setq send-mail-function 'smtpmail-send-it))
+
+(use-package smtpmail
+  :config
+  (setq smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-stream-type 'starttls
+        smtpmail-smtp-service 587))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
