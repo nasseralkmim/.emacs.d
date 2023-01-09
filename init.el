@@ -3062,12 +3062,8 @@ its results, otherwise display STDERR with
 
 ;; for reading email lists
 (use-package gnus
-  :hook
-  (gnus-group-mode . gnus-topic-mode)
   :general
   ('normal "C-c C-m" 'gnus) 
-  ('normal gnus-group-mode-map "<tab>" (general-predicate-dispatch 'gnus-topic-show-topic
-                     (gnus-topic-visible-p) 'gnus-topic-hide-topic))
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
@@ -3078,6 +3074,14 @@ its results, otherwise display STDERR with
         gnus-auto-select-first 'best   ; auto select when entering a group
         gnus-use-full-window nil       ; don't use entire window!
         ))
+
+(use-package gnus-topic
+  :straight (:type built-in)
+  :hook
+  (gnus-group-mode . gnus-topic-mode)
+  :general
+  ('normal gnus-group-mode-map "<tab>" (general-predicate-dispatch 'gnus-topic-show-topic
+                     (gnus-topic-visible-p) 'gnus-topic-hide-topic)))
 
 (use-package sendmail
   :config
