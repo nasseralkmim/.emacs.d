@@ -1918,12 +1918,9 @@ Only if there is more than one window opened."
 
 ;; highligh TODO keyword everywhere
 (use-package hl-todo
-  :demand
   :hook
-  (python-mode . hl-todo-mode)
   (prog-mode . hl-todo-mode)
-  (LaTeX-mode . hl-todo-mode)
-  (org-mode . hl-todo-mode)
+  (text-mode . hl-todo-mode)
   :general
   ('normal hl-todo-mode-map "g t" 'hl-todo-done)
   :config
