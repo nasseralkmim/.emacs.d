@@ -142,7 +142,8 @@
 (use-package pixel-scroll
   :straight (:type built-in)
   :if (string-greaterp emacs-version "29") ; need emacs > 29
-  :init
+  :defer 1 
+  :config
   ;; text scroll pixel by pixel
   (pixel-scroll-precision-mode t))
 
