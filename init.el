@@ -3064,6 +3064,7 @@ its results, otherwise display STDERR with
 (use-package gnus
   :general
   ('normal "C-c C-m" 'gnus) 
+  ('normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+imap.gmail.com:[Gmail]/All Mail")))
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
@@ -3071,7 +3072,6 @@ its results, otherwise display STDERR with
         gnus-secondary-select-methods '((nntp "news.gmane.io")
                                         (nnimap "imap.gmail.com"))
         message-send-mail-function 'smtpmail-send-it
-        gnus-auto-select-first 'best   ; auto select when entering a group
         gnus-use-full-window nil       ; don't use entire window!
         ))
 
