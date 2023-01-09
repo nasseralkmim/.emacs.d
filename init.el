@@ -1186,7 +1186,7 @@ graphics."
   :demand
   :config
   (setq org-babel-default-header-args:sh
-        '((:results . "output code")
+        '((:results . "output")
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:noweb . "no-export")
           ;; 
