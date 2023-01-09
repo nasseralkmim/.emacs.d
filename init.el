@@ -26,9 +26,9 @@
 ;; if there is none, we need to explicitly add `:demand` to load the package
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
-(setq use-package-verbose t		; don't print anything
+(setq use-package-verbose nil		; don't print anything
       use-package-compute-statistics nil; compute statistics about package initialization
-      use-package-minimum-reported-time 0.001
+      use-package-minimum-reported-time 0.0001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
@@ -407,7 +407,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; save the search history
 (use-package savehist
-  :init
+  :defer 1
+  :config
   (savehist-mode))
 
 ;; minibuffer annotations details
@@ -3071,8 +3072,7 @@ its results, otherwise display STDERR with
         message-send-mail-function 'smtpmail-send-it
         gnus-auto-select-first 'best   ; auto select when entering a group
         gnus-use-full-window nil       ; don't use entire window!
-        )
-  )
+        ))
 
 (use-package sendmail
   :config
