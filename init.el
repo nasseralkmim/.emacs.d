@@ -3062,13 +3062,18 @@ its results, otherwise display STDERR with
 
 ;; for reading email lists
 (use-package gnus
+  :hook
+  (gnus-group-mode . gnus-topic-mode)
   :general
   ('normal "C-c C-m" 'gnus) 
+  ('normal gnus-group-mode-map "<tab>" (general-predicate-dispatch 'gnus-topic-show-topic
+                     (gnus-topic-visible-p) 'gnus-topic-hide-topic))
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
-        gnus-secondary-select-methods '((nntp "news.gmane.io"))
-        gnus-select-method '(nnimap "imap.gmail.com")
+        gnus-select-method '(nnnil)
+        gnus-secondary-select-methods '((nntp "news.gmane.io")
+                                        (nnimap "imap.gmail.com"))
         message-send-mail-function 'smtpmail-send-it
         gnus-auto-select-first 'best   ; auto select when entering a group
         gnus-use-full-window nil       ; don't use entire window!
