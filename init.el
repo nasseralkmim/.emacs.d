@@ -1772,8 +1772,9 @@ Only if there is more than one window opened."
 ;; dimm other buffers
 (use-package dimmer
   :commands dimmer-mode
-  :init (dimmer-mode)
+  :defer 1 
   :config
+  (dimmer-mode)
   (setq dimmer-fraction 0.3)
   (dimmer-configure-magit)
   (dimmer-configure-posframe)
