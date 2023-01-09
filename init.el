@@ -2039,7 +2039,7 @@ Only if there is more than one window opened."
 
 (use-package server
   :straight (:type built-in)
-  :demand
+  :defer 1
   :config
   (or (server-running-p)
       (server-start)))
