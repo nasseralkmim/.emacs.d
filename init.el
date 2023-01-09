@@ -1914,7 +1914,7 @@ Only if there is more than one window opened."
 (use-package which-key
   :defer 1
   :diminish which-key-mode
-  :init
+  :config
   (which-key-mode t))
 
 ;; highligh TODO keyword everywhere
