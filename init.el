@@ -1380,6 +1380,10 @@ graphics."
   :diminish hs-minor-mode
   :general
   ('normal hs-minor-mode-map "z H" 'hs-hide-all)
+  ('normal hs-minor-mode-map "z l" '(lambda ()
+                                      (interactive)
+                                      (evil-toggle-fold)
+                                      (hs-hide-level 1)))
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                        (outline-on-heading-p) 'evil-toggle-fold))
   :hook
@@ -1421,6 +1425,7 @@ graphics."
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
   ;; evil-collection end up binding last...
   (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
+  (general-def 'normal outline-mode-map "z l" nil)
   (setq outline-minor-mode-cycle nil    ; using general predicate dispatch instead
         ;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
         ))  
@@ -3075,7 +3080,7 @@ its results, otherwise display STDERR with
         gnus-use-full-window nil       ; don't use entire window!
         ))
 
-(use-package gnus-topic
+(use-package gnus-topic :disabled       ; not working with different computers
   :straight (:type built-in)
   :hook
   (gnus-group-mode . gnus-topic-mode)
