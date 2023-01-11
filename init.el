@@ -1162,7 +1162,7 @@ graphics."
 
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
-                                   (nil "svg"  nil)
+                                   ("" "svg"  nil)
                                    ("a4paper, margin=20mm" "geometry" nil)))
 
   (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil)))
@@ -1287,7 +1287,7 @@ graphics."
            "C-p" nil)
   :defer 1
   :hook
-  (text-mode . (lambda () (setq corfu-auto-prefix 3))) ; increase prefix for text
+  (text-mode . (lambda () (setq-local corfu-auto-prefix 3))) ; increase prefix for text
   :config
   (global-corfu-mode)
   (corfu-popupinfo-mode)                ; show doc
