@@ -2475,7 +2475,8 @@ Only if there is more than one window opened."
 ;; use mypy check for type in python
 (use-package flymake-mypy
   :straight (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
-  :hook ((eglot-managed-mode . (lambda ()
+  :hook
+  ((eglot-managed-mode . (lambda ()
                                  (when (derived-mode-p 'python-mode)
                                    (require 'flymake-mypy)
                                    (flymake-mypy-enable))))))
@@ -2531,6 +2532,13 @@ Only if there is more than one window opened."
   (defun start-eglot-grammarly ()
     (interactive)
     (require 'eglot-grammarly)
+    (if (derived-mode-p 'org-mode)
+        (progn
+          (setq-local eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
+         (setq-local eldoc-documentation-functions '(org-eldoc-documentation-function
+                                                    eglot-signature-eldoc-function
+                                                    eglot-hover-eldoc-function
+                                                    flymake-eldoc-function))))
     (call-interactively #'eglot)))
 
 ;; use language tool with flymake
