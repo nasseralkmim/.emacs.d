@@ -2535,10 +2535,10 @@ Only if there is more than one window opened."
     (if (derived-mode-p 'org-mode)
         (progn
           (setq-local eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
-         (setq-local eldoc-documentation-functions '(org-eldoc-documentation-function
-                                                    eglot-signature-eldoc-function
-                                                    eglot-hover-eldoc-function
-                                                    flymake-eldoc-function))))
+          (setq-local eldoc-documentation-functions '(org-eldoc-documentation-function
+                                                      flymake-eldoc-function
+                                                      eglot-signature-eldoc-function
+                                                      eglot-hover-eldoc-function))))
     (call-interactively #'eglot)))
 
 ;; use language tool with flymake
