@@ -162,17 +162,6 @@
 ;; typeface
 (use-package custom-typefaces
   :straight nil
-  ;; :init
-  ;; (set-face-attribute 'default nil :family "Iosevka SS12")
-  ;; use etoile in comments (better than aile, sometimes)
-  ;; variable pitch mode use etoile
-  ;; (set-face-attribute 'variable-pitch nil :family "Iosevka etoile" :weight 'light)
-  ;; to check typefaces: fc-list | grep <typeface>
-  ;; victor mono: thin, condensed, italics is informal, oblique (is slanted)
-  ;; (set-face-attribute 'default nil :family "Victor Mono")
-  ;; (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
-  ;; (set-face-attribute 'fixed-pitch nil :family "Victor Mono")
-  ;; (set-face-attribute 'variable-pitch nil :family "Input Sans")
   :custom-face 
   ;; config for victor mono (different oblique and italic)
   ;; outline 4 inherits from comment face... make it oblique instead of italic
@@ -3079,6 +3068,8 @@ its results, otherwise display STDERR with
   ('normal "C-c C-m" 'gnus) 
   ('normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+imap.gmail.com:[Gmail]/All Mail")))
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
+  :hook
+  (gnus . turn-on-gnus-dired-mode )
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
         gnus-select-method '(nnnil)
@@ -3086,6 +3077,8 @@ its results, otherwise display STDERR with
                                         (nnimap "imap.gmail.com"))
         message-send-mail-function 'smtpmail-send-it
         gnus-use-full-window nil       ; don't use entire window!
+        gnus-fetch-old-headers t       ; build from already read mail
+        gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date) ; sort by date
         ))
 
 (use-package gnus-topic :disabled       ; not working with different computers
