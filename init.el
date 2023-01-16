@@ -3078,7 +3078,6 @@ its results, otherwise display STDERR with
         message-send-mail-function 'smtpmail-send-it
         gnus-use-full-window nil       ; don't use entire window!
         gnus-fetch-old-headers t       ; build from already read mail
-        gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date) ; sort by date
         ))
 
 (use-package gnus-topic :disabled       ; not working with different computers
