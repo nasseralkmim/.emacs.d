@@ -2885,7 +2885,7 @@ its results, otherwise display STDERR with
 ;; list imenu entries in a buffer
 ;; better faces than consult-imenu
 (use-package imenu-list
-  :general ("C-c o" 'imenu-list-smart-toggle)
+  :general ('normal "g o" 'imenu-list-smart-toggle)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-auto-update nil      ; I want to keep the list from a file
