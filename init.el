@@ -1819,8 +1819,8 @@ Only if there is more than one window opened."
 (use-package c++-mode
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
-  :hook
-  (c-mode-common . c-style-setup)              ; also for c
+  ;; :hook
+  ;; (c-mode-common . c-style-setup)              ; also for c
   :general
   (c++-mode-map "C-x c" 'compile)
   (c-mode-map "C-x c" 'compile)
@@ -1835,19 +1835,20 @@ Only if there is more than one window opened."
    ;; c-default-style "linux"
    ;; c-basic-offset 2
    ;; one comment for multiline with `comment-region'
-   comment-style "indent")
+   comment-style "indent"
+   ;; fontify docstring and comments differently
+   c-doc-comment-style '(doxygen javadoc))
   :init
   (defun c-style-setup ()
     "Sets up the documentation and comment style"
+    ;; TODO: not ideal for browsing code, takes too long
     ;; use the style defined by .clang-format (automatic with eglot)
     ;; for blocks use `comment-box' after `c-toggle-comment-style'
     ;; or multiline comment with `M-j'
     (c-guess-buffer)
     ;; use "/** ... *" for documentation comment font-lock (doxygen standard https://www.doxygen.nl/manual/docblocks.html)
-    (setq c-doc-comment-style 'javadoc)
     ;; need to call setup to update other variables dependent on this
-    (c-setup-doc-comment-style)
-    )) 
+    (c-setup-doc-comment-style))) 
 
 (use-package ob-python :disabled
   :after org lsp

@@ -9,7 +9,7 @@
                         `(font-latex-sectioning-5-face ((t (:weight normal :slant normal :inherit outline-7))))
                         `(font-latex-string-face ((t (:foreground "saddle brown"))))
                         ;; general
-                        `(font-lock-comment-face ((t (:foreground "gray65" :slant italic :weight medium))))
+                        `(font-lock-comment-face ((t (:foreground "gray50" :slant italic :weight medium)))) ; 
                         `(mode-line-inactive ((t (:box (:line-width (-1 . -1) :style released-button)))))
                         `(mode-line-active ((t (:box (:line-width (-1 . -1))))))
                         ;; evil
