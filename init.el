@@ -2314,7 +2314,12 @@ Only if there is more than one window opened."
   :hook
   (c++-mode . c++-ts-mode)
   (c-mode . c-ts-mode)
-  (python-mode . python-ts-mode))
+  (python-mode . python-ts-mode)
+  :config
+  ;; download and build grammar dynamic library 
+  (setq treesit-language-source-alist
+        '((python "https://github.com/tree-sitter/tree-sitter-python.git")
+          (c++ "https://github.com/tree-sitter/tree-sitter-cpp.git"))))
 
 ;; better code highlight and fold
 (use-package tree-sitter
