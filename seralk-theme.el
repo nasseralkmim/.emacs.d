@@ -22,15 +22,15 @@
                         ;; `(org-meta-line ((t (:foreground "gray60"))))
                         `(org-drawer ((t (:inherit 'org-meta-line))))
                         `(org-macro ((t (:inherit 'org-meta-line))))
-                        `(org-verbatim ((t (:box (:line-width (-1 . -1))))))
+                        `(org-verbatim ((t (:box (:line-width (-1 . -1) :color "gray80")))))
                         ;; smartparens
                         `(sp-show-pair-match-content-face ((t (:style nil))))
-                        `(sp-show-pair-match-face ((t (:box (:line-width (-1 . -1) :style nil)))))
+                        `(sp-show-pair-match-face ((t (:box (:line-width (-1 . -1) :color "gray60" :style nil)))))
                         `(show-paren-match ((t (:syle nil)))) ; smart parens is enough
                         ;; region without style, work with 'evil-multiedit'
                         ;; https://emacs.stackexchange.com/questions/47002/adding-box-around-text-without-changing-the-text-width
                         ;; `(region ((t (:box (:line-width (-1 . -1) :style nil)))))
-                        `(iedit-occurrence ((t (:box (:line-width (-1 . -1) :style nil)))))
+                        `(iedit-occurrence ((t (:box (:line-width (-1 . -1) :color "gray60" :style nil)))))
                         ;; `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(ts-fold-replacement-face ((t (:inherit 'font-lock-comment-face))))
                         `(default ((t (:inherit 'default))))
