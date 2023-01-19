@@ -1374,11 +1374,11 @@ graphics."
                                       (evil-toggle-fold)
                                       (hs-hide-level 1)))
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (outline-on-heading-p) 'evil-toggle-fold))
+                                       (or (hs-looking-at-block-start-p)
+                                           (hs-already-hidden-p)
+                                           (outline-on-heading-p)) 'evil-toggle-fold))
   :hook
-  (prog-mode . hs-minor-mode)
-  :config
-  (add-to-list 'hs-special-modes-alist '(c++-ts-mode "{" "}" "/[*/]" nil nil)))
+  (prog-mode . hs-minor-mode))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
@@ -1403,12 +1403,6 @@ graphics."
            "A" 'outline-show-all)
   ;; ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "M-j" nil)  ; conflicts with c multiline comment
-  ;; ('normal outline-mode-map "z b" 'outline-show-branches)
-  ;; ('normal outline-mode-map "z t" 'outline-show-subtree)
-  ;; ('normal outline-mode-map "z o" 'outline-show-children)
-  ;; ('normal outline-mode-map "z h" 'outline-hide-sublevels)
-  ;; ('normal outline-mode-map "z a" 'outline-show-all)
-  ;; ('normal outline-mode-map "S-<tab>" 'outline-cycle)
   :config
   ;; need to rebind after loading outline
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
@@ -1823,6 +1817,7 @@ Only if there is more than one window opened."
   ;; (c-mode-common . c-style-setup)              ; also for c
   :general
   (c++-mode-map "C-x c" 'compile)
+  (c++-ts-mode-map "C-x c" 'compile)
   (c-mode-map "C-x c" 'compile)
   :config
   ;; change style curly braces on their on line without offset
@@ -2306,20 +2301,21 @@ Only if there is more than one window opened."
 ;; need to install language specific modules:
 ;; https://github.com/casouri/tree-sitter-module
 ;; and put in ./emacs.d/tree-sitter
-(use-package treesit :disabled
+(use-package treesit
   :straight (:type built-in)
-  :hook
-  (c++-mode . c++-ts-mode)
-  (c-mode . c-ts-mode)
-  (python-mode . python-ts-mode)
+  :init
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :config
   ;; download and build grammar dynamic library 
   (setq treesit-language-source-alist
         '((python "https://github.com/tree-sitter/tree-sitter-python.git")
-          (c++ "https://github.com/tree-sitter/tree-sitter-cpp.git"))))
+          (cpp "https://github.com/tree-sitter/tree-sitter-cpp.git")
+          (cmake "https://github.com/uyha/tree-sitter-cmake.git"))))
 
 ;; better code highlight and fold
-(use-package tree-sitter
+(use-package tree-sitter :disabled
   :diminish tree-sitter-mode
   :hook
   (c-mode-common . tree-sitter-mode)
@@ -2328,7 +2324,7 @@ Only if there is more than one window opened."
   (tree-sitter-after-on . tree-sitter-hl-mode))
 
 ;; language bundle for `tree-sitter`
-(use-package tree-sitter-langs
+(use-package tree-sitter-langs :disabled
   :demand                               ; require it after loading tree-sitter
   :after tree-sitter)
 
