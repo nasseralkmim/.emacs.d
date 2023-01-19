@@ -2080,16 +2080,13 @@ Only if there is more than one window opened."
 (use-package eww
   :straight (:type built-in)
   :general
-  ("<f12>" 'eww)
+  ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   :hook (eww-mode-hook . (lambda () (eww-readable)))
   :config
-  (setq shr-use-fonts  nil                          ; No special fonts
+  (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
-        shr-inhibit-images nil			  ; inhibit images
-        shr-indentation 2                           ; Left-side margin
-        shr-color-visible-luminance-min 80
-        eww-search-prefix "https://www.google.com/search?q="
-        shr-width 70))                                ; Fold text to 70 columns
+        shr-inhibit-images t			  ; inhibit junkyimages
+        eww-search-prefix "https://www.google.com/search?q="))
 
 (use-package pdf-tools
   ;; :if (eq system-type 'windows-nt)
