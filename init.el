@@ -175,6 +175,7 @@
   (org-table ((t (:family "Iosevka SS12"))))
   (org-meta-line ((t (:family "Iosevka SS12"))))
   (org-verbatim ((t (:family "Iosevka SS12"))))
+  (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
 
 ;; change typeface size font
