@@ -3079,8 +3079,22 @@ its results, otherwise display STDERR with
         gnus-use-full-window nil       ; don't use entire window!
         gnus-fetch-old-headers t       ; build from already read mail
         gnus-check-new-newsgroups nil  ; make start up faster
-        gnus-show-threads nil
+        gnus-show-threads nil            ; if nil can make faster, threads again with T T
         gnus-use-cross-reference nil))
+
+(use-package gnus-summary-config
+  :straight nil
+  :after gnus
+  :init
+  ;; https://www.emacswiki.org/emacs/GnusFormatting
+  (setq
+   gnus-thread-sort-functions '(gnus-thread-sort-by-date)
+   gnus-sum-thread-tree-false-root ""
+   gnus-sum-thread-tree-indent " "
+   gnus-sum-thread-tree-leaf-with-other "├► "
+   gnus-sum-thread-tree-root ""
+   gnus-sum-thread-tree-single-leaf "╰► "
+   gnus-sum-thread-tree-vertical "│"))
 
 (use-package gnus-topic :disabled       ; not working with different computers
   :straight (:type built-in)
