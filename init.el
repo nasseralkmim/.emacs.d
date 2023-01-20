@@ -1230,8 +1230,8 @@ graphics."
 ;; languages spell checker
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
-  :hook
-  (text-mode . flyspell-mode)
+  ;; :hook
+  ;; (text-mode . flyspell-mode) ; trying wucuo
   ;; (prog-mode . flyspell-prog-mode) 
   :config
   ;; husnpell is alternative to aspell
@@ -1258,7 +1258,8 @@ graphics."
 
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
-(use-package wucuo :disabled
+;; is using 'wucuo', should not use 'flyspell-mode'
+(use-package wucuo
   :hook
   (text-mode . wucuo-start)
   (prog-mode . wucuo-start))
@@ -1828,7 +1829,7 @@ Only if there is more than one window opened."
   ;; one first use `eglot-format' (which uses `clangd' server) that can read `.clang-format'
   ;; then `c-guess-buffer-no-install' to set it
   (setq
-   ;; c-default-style "linux"
+   c-default-style '((java-mode . "java") (awk-mode . "awk") (other . "linux"))
    ;; c-basic-offset 2
    ;; one comment for multiline with `comment-region'
    comment-style "indent"
