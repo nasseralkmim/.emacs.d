@@ -1232,7 +1232,7 @@ graphics."
   :if (eq system-type 'gnu/linux)
   :hook
   (text-mode . flyspell-mode)
-  (prog-mode . flyspell-prog-mode) 
+  ;; (prog-mode . flyspell-prog-mode) 
   :config
   ;; husnpell is alternative to aspell
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
