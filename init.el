@@ -1228,6 +1228,7 @@ graphics."
   (setq org-download-screenshot-method "convert.exe clipboard: %s"))
 
 ;; languages spell checker
+;; apparently, aspell is faster than huspell http://aspell.net/test/cur/
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
   ;; :hook
@@ -1235,11 +1236,12 @@ graphics."
   ;; (prog-mode . flyspell-prog-mode) 
   :config
   ;; husnpell is alternative to aspell
-  (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
+  ;; (setq ispell-program-name "aspell")	; dictionary /usr/share/hunspell
   ;; (ispell-set-spellchecker-params) ; makes initial load slow...
 
   (setq flyspell-issue-message-flag nil ; don't emit messages
-        ispell-personal-dictionary "~/.dotfiles/hunspell/.personal"))
+        ispell-extra-args '("--sug-mode=ultra" "--lang=en_US" "--camel-case")
+        ispell-personal-dictionary "~/.dotfiles/hunspell/.aspell.en.pws"))
 
 ;; flyspell uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
@@ -1258,8 +1260,8 @@ graphics."
 
 ;; attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
-;; is using 'wucuo', should not use 'flyspell-mode'
-(use-package wucuo
+;; if using 'wucuo', should not use 'flyspell-mode'
+(use-package wucuo :disabled
   :hook
   (text-mode . wucuo-start)
   (prog-mode . wucuo-start))
