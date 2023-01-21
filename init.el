@@ -3119,4 +3119,8 @@ its results, otherwise display STDERR with
         smtpmail-stream-type 'starttls
         smtpmail-smtp-service 587))
 
+;; there is no language server for it yet
+(use-package chapel-mode
+  :mode ("\\.chpl\\'" . 'chapel-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
