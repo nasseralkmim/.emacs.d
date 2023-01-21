@@ -169,7 +169,7 @@
   ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
   (default  ((t (:family "Iosevka SS12"))))
   (font-lock-comment-face  ((t (:family "Iosevka aile" :weight semi-light :width ultra-condensed))))
-  (variable-pitch ((t (:family "Iosevka etoile" :weight light))))
+  (variable-pitch ((t (:family "Iosevka etoile" :weight light :height 100))))
   ;; when using variable pitch in org mode, use monospace for code blocks
   (org-block ((t (:family "Iosevka SS12"))))
   (org-table ((t (:family "Iosevka SS12"))))
@@ -2081,6 +2081,8 @@ Only if there is more than one window opened."
   :general
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   :hook (eww-mode-hook . (lambda () (eww-readable)))
+  :custom-face
+  (shr-text ((t (:inherit variable-pitch)))) ; instead of bigger 'variable-pitch-text'
   :config
   (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
