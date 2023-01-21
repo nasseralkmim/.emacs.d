@@ -2081,8 +2081,6 @@ Only if there is more than one window opened."
   :general
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   :hook (eww-mode-hook . (lambda () (eww-readable)))
-  :custom-face
-  (shr-text ((t (:inherit variable-pitch)))) ; instead of bigger 'variable-pitch-text'
   :config
   (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
