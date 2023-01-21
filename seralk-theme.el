@@ -11,7 +11,7 @@
                         ;; general
                         `(font-lock-comment-face ((t (:foreground "gray50" :slant italic :weight medium)))) ; 
                         `(mode-line-inactive ((t (:box (:line-width (-1 . -1) :style released-button)))))
-                        `(mode-line-active ((t (:box (:line-width (-1 . -1))))))
+                        ;; `(mode-line-active ((t (:box (:line-width (-1 . -1))))))
                         ;; evil
                         `(evil-snipe-matches-face ((t (:inherit match :box (:line-width (-1 . -1) :style nil)))))
                         `(evil-snipe-first-match-face ((t (:inherit 'evil-snipe-matches-face))))
