@@ -2085,11 +2085,16 @@ Only if there is more than one window opened."
   :general
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal "C-c y" 'eww-copy-page-url)
-  :hook (eww-mode-hook . (lambda () (eww-readable)))
+  :hook
+  (eww-after-render . eww-readable)
+  (eww-mode . visual-line-mode)
   :config
   (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
         shr-inhibit-images t			  ; inhibit junkyimages
+        shr-buller "• "
+        browse-url-browser-function 'eww-browse-url ; open in eww by default
+        eww-auto-rename-buffer t                    ; each page on its own buffer
         eww-search-prefix "https://www.google.com/search?q="))
 
 (use-package pdf-tools
