@@ -32,9 +32,11 @@
                         ;; `(region ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(iedit-occurrence ((t (:box (:line-width (-1 . -1) :color "gray60" :style nil)))))
                         ;; `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
-                        `(ts-fold-replacement-face ((t (:inherit 'font-lock-comment-face))))
+                        `(ts-fold-replacement-face ((t (:inherit font-lock-comment-face))))
                         `(default ((t (:inherit 'default))))
-                        `(variable-pitch-text ((t (:inherit 'variable-pitch))))
+                        `(variable-pitch-text ((t (:inherit variable-pitch))))
+                        ;; shr for eww
+                        `(shr-code ((t (:box (:line-width (-1 . -1) :color "gray80")))))
                         )
 
 (provide-theme 'seralk)
