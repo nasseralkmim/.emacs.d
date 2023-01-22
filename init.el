@@ -2677,7 +2677,9 @@ Only if there is more than one window opened."
 
 ;; save windows configurations and use regular bookmarks file
 (use-package burly
-  :straight (burly :type git :host github :repo "alphapapa/burly.el"))
+  :straight (burly :type git :host github :repo "alphapapa/burly.el")
+  :general
+  ('normal "<f6>" 'burly-bookmark-windows))
 
 ;; view large files
 (use-package vlf
