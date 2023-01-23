@@ -2526,6 +2526,8 @@ Only if there is more than one window opened."
 (use-package eglot-grammarly
   :straight (:host github :repo "emacs-grammarly/eglot-grammarly")
   :commands start-eglot-grammarly 
+  :hook
+  (message-mode . start-eglot-grammarly)
   :init
   (defun start-eglot-grammarly ()
     (interactive)
