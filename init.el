@@ -1237,9 +1237,9 @@ graphics."
 ;; apparently, aspell is faster than huspell http://aspell.net/test/cur/
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
-  ;; :hook
-  ;; (text-mode . flyspell-mode) ; trying wucuo
-  ;; (prog-mode . flyspell-prog-mode) 
+  :hook
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-prog-mode) 
   :config
   ;; husnpell is alternative to aspell
   ;; (setq ispell-program-name "aspell")	; dictionary /usr/share/hunspell
