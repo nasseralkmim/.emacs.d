@@ -395,6 +395,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                       literal-if-equal
                                       without-if-bang)))
 
+;; default completion 
+(use-package simple
+  :straight (:type built-in)
+  :config
+  (setq completion-auto-select 'second-tab))
+
 ;; save the search history
 (use-package savehist
   :defer 1
