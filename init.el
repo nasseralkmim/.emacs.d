@@ -3088,6 +3088,7 @@ its results, otherwise display STDERR with
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :hook
   (gnus . turn-on-gnus-dired-mode )
+  (gnus-summary-prepared . variable-pitch-mode)
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
         gnus-select-method '(nnnil)
