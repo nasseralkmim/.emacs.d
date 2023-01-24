@@ -1235,6 +1235,7 @@ graphics."
 
 ;; languages spell checker
 ;; apparently, aspell is faster than huspell http://aspell.net/test/cur/
+;; aspell need to install 'yay aspell-us'
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
   :hook
