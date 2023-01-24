@@ -1510,8 +1510,8 @@ graphics."
                       (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
                     nil t :help "Create nomenclature file")))
 
-  ;; using "Zathura" or "PDF Tools" on WSL
-  ;; one advantage of "PDF Tools" is "pdf-view-set-slice-from-bounding-box"
+  ;; using 'Zathura' or PDF Tools on WSL
+  ;; one advantage of PDF Tools is 'pdf-view-set-slice-from-bounding-box'
   (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
   ;; PDF Toll is good when I'm with just one screen
   ;; (add-to-list 'TeX-view-program-selection '(output-pdf "Okular"))
@@ -1576,6 +1576,7 @@ graphics."
 \\end{figure}" image-file)))))
 
 ;; fake headers for latex
+;; https://emacs.stackexchange.com/a/3103
 (use-package latex-fake-header
   :straight nil
   :after latex
@@ -3137,5 +3138,15 @@ its results, otherwise display STDERR with
 ;; there is no language server for it yet
 (use-package chapel-mode
   :mode ("\\.chpl\\'" . 'chapel-mode))
+
+;; interact with zotero with 'zotra-cli'
+;; add bibtex entry from doi
+;; works, but does not download/rename pdf automatic
+(use-package zotra :disabled
+  :straight (zotra :type git :host github :repo "mpedramfar/zotra")
+  :commands (zotra-add-entry-from-search)
+  :config
+  (setq zotra-cli-command "node ~/.local/src/zotra-cli/bin/index.js"))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
