@@ -2929,7 +2929,8 @@ its results, otherwise display STDERR with
     (find-file buffer-file-name)))
 
 ;; format code when saving based on `.clang-format' file
-(use-package clang-format+
+;; use eglot
+(use-package clang-format+ :disabled
   :hook (c-mode-common . clang-format+-mode))
 
 (use-package org-footnote
