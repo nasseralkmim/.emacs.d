@@ -2089,8 +2089,13 @@ Only if there is more than one window opened."
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal "C-c y" 'eww-copy-page-url)
   :hook
-  (eww-after-render . (lambda () (eww-readable)))
+  (eww-after-render . eww-open-readable)
   (eww-mode . visual-line-mode)
+  :init
+  (defun eww-open-readable ()
+    (unwind-protect
+        (eww-readable)
+      (remove-hook 'eww-after-render-hook #'eww-open-readable)))
   :config
   (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
@@ -2456,6 +2461,7 @@ Only if there is more than one window opened."
                                       'python-flymake nil t))))
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
+  (c++-ts-mode . eglot-ensure)
   (c-mode . eglot-ensure)
   (js-mode . eglot-ensure) ; works if there is only one server available
   :config
