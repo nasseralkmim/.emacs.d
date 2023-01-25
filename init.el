@@ -2089,7 +2089,7 @@ Only if there is more than one window opened."
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal "C-c y" 'eww-copy-page-url)
   :hook
-  (eww-after-render . eww-readable)
+  (eww-after-render . (lambda () (eww-readable)))
   (eww-mode . visual-line-mode)
   :config
   (setq shr-use-fonts t
