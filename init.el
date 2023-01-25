@@ -1827,7 +1827,11 @@ Only if there is more than one window opened."
   :general
   (c++-mode-map "C-x c" 'compile)
   (c++-ts-mode-map "C-x c" 'compile)
-  (c-mode-map "C-x c" 'compile)) 
+  (c-mode-map "C-x c" 'compile)
+  :hook
+  ;; set same regex as 'c++-mode' (ts mode does not have yet)
+  (c++-ts-mode . (lambda () (setq-local outline-regexp "[^#\n\^M]"
+                                        outline-level 'c-outline-level)))) 
 
 (use-package ob-python :disabled
   :after org lsp
