@@ -1405,7 +1405,6 @@ graphics."
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
-  ;; (c++-ts-mode . (lambda () (setq outline-regexp "[^#\n]")))
   :general
   ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                             (outline-on-heading-p) 'outline-cycle))
@@ -1831,7 +1830,20 @@ Only if there is more than one window opened."
   :hook
   ;; set same regex as 'c++-mode' (ts mode does not have yet)
   (c++-ts-mode . (lambda () (setq-local outline-regexp "[^#\n\^M]"
-                                        outline-level 'c-outline-level)))) 
+                                        outline-level 'c-outline-level)))
+  (c++-ts-mode . c-style-setup)
+  :init
+  (setq c-default-style "linux")
+  (defun c-style-setup ()
+    "Sets up the documentation and comment style"
+    ;; TODO: not ideal for browsing code, takes too long
+    ;; use the style defined by .clang-format (automatic with eglot)
+    ;; for blocks use `comment-box' after `c-toggle-comment-style'
+    ;; or multiline comment with `M-j'
+    ;; (c-guess-buffer) ; does not work with treesit yet
+    ;; use "/** ... *" for documentation comment font-lock (doxygen standard https://www.doxygen.nl/manual/docblocks.html)
+    ;; need to call setup to update other variables dependent on this
+    (c-setup-doc-comment-style))) 
 
 (use-package ob-python :disabled
   :after org lsp
