@@ -1812,7 +1812,7 @@ Only if there is more than one window opened."
 
 ;; syntax highlight in html export of org-mode source blocks
 ;; does not work well with modus-themes and tree-sitter
-(use-package htmlize)
+(use-package htmlize :disabled)
 
 ;; `:includes` so straight can recognize dap-python.el and dap-cpptools
 (use-package pyvenv
@@ -2066,13 +2066,8 @@ Only if there is more than one window opened."
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal "C-c y" 'eww-copy-page-url)
   :hook
-  (eww-after-render . eww-open-readable)
+  (eww-after-render . (lambda () (eww-readable)))
   (eww-mode . visual-line-mode)
-  :init
-  (defun eww-open-readable ()
-    (unwind-protect
-        (eww-readable)
-      (remove-hook 'eww-after-render-hook #'eww-open-readable)))
   :config
   (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
@@ -2080,7 +2075,7 @@ Only if there is more than one window opened."
         shr-buller "• "
         browse-url-browser-function 'eww-browse-url ; open in eww by default
         eww-auto-rename-buffer t                    ; each page on its own buffer
-        eww-search-prefix "https://www.google.com/search?q="))
+        eww-search-prefix "https://www.google.com/search?hl=en&lr=lang_en&q="))
 
 (use-package pdf-tools
   ;; :if (eq system-type 'windows-nt)
@@ -3131,5 +3126,13 @@ its results, otherwise display STDERR with
   :commands (zotra-add-entry-from-search)
   :config
   (setq zotra-cli-command "node ~/.local/src/zotra-cli/bin/index.js"))
+
+;; org backend export to reveal.js
+;; need to install external 'reveal.js'
+(use-package ox-reveal
+  :after org
+  :demand  ; require after org
+  :config
+  (setq org-reveal-root "~/.local/src/reveal.js/"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
