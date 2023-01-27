@@ -1833,6 +1833,9 @@ Only if there is more than one window opened."
                                         outline-level 'c-outline-level)))
   (c++-ts-mode . c-style-setup)
   :init
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
   (setq c-default-style "linux")
   (defun c-style-setup ()
     "Sets up the documentation and comment style"
@@ -1843,7 +1846,7 @@ Only if there is more than one window opened."
     ;; (c-guess-buffer) ; does not work with treesit yet
     ;; use "/** ... *" for documentation comment font-lock (doxygen standard https://www.doxygen.nl/manual/docblocks.html)
     ;; need to call setup to update other variables dependent on this
-    (c-setup-doc-comment-style))) 
+    (c-ts-mode-comment-setup))) 
 
 (use-package ob-python :disabled
   :after org lsp
