@@ -2381,6 +2381,7 @@ Only if there is more than one window opened."
 
 ;; easily change windows
 (use-package ace-window
+  :commands aw-select                   ; for dired with C-u
   :general
   ('normal "C-w C-w" 'ace-window))
 
