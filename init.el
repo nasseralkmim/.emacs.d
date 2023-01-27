@@ -3097,6 +3097,12 @@ its results, otherwise display STDERR with
   :straight nil
   :after gnus
   :init
+  (setq gnus-thread-sort-functions
+        '(gnus-thread-sort-by-number
+          gnus-thread-sort-by-date
+          gnus-thread-sort-by-total-score))
+  (setq gnus-summary-line-format
+        "%U%R%z %d %I%(%[%-25,25n%]%) %s\n")
   ;; https://www.emacswiki.org/emacs/GnusFormatting
   (setq
    gnus-thread-sort-functions '(gnus-thread-sort-by-date)
@@ -3106,6 +3112,15 @@ its results, otherwise display STDERR with
    gnus-sum-thread-tree-root ""
    gnus-sum-thread-tree-single-leaf "╰► "
    gnus-sum-thread-tree-vertical "│"))
+
+;; emacs interface with w3m (alternative to eww with shr)
+;; better formating but no colors
+(use-package emacs-w3m :disabled
+  :general
+  ('normal "<f12>" 'w3m-search)
+  :config
+  (setq mm-text-html-renderer 'w3m)     ; instead of shr
+  )
 
 (use-package gnus-topic :disabled       ; not working with different computers
   :straight (:type built-in)
