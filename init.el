@@ -1827,6 +1827,11 @@ Only if there is more than one window opened."
   (c++-mode-map "C-x c" 'compile)
   (c++-ts-mode-map "C-x c" 'compile)
   (c-mode-map "C-x c" 'compile)
+  :hook
+  ;; set same regex as 'c++-mode' (ts mode does not have yet)
+  (c++-ts-mode . (lambda () (setq-local outline-regexp "[^#\n\^M]"
+                                        outline-level 'c-outline-level)))
+  (c++-ts-mode . c-style-setup)
   :init
   (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
   (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
