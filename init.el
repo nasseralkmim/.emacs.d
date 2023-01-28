@@ -1824,8 +1824,6 @@ Only if there is more than one window opened."
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :general
-  (c++-mode-map "C-x c" 'compile)
-  (c++-ts-mode-map "C-x c" 'compile)
   (c-mode-map "C-x c" 'compile)
   :config
   ;; Linux style: keeps brackets on their own line and aligned
@@ -1837,7 +1835,9 @@ Only if there is more than one window opened."
   (setq c-default-style "linux"
         c-basic-offset 4)) 
 
-(use-package c++ts-mode
+;; Specific for c++ with treesit
+;; not ready yet
+(use-package c++ts-mode :disabled
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :general
@@ -2321,10 +2321,6 @@ Only if there is more than one window opened."
 ;; and put in ./emacs.d/tree-sitter
 (use-package treesit
   :straight (:type built-in)
-  :init
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :config
   ;; download and build grammar dynamic library 
   (setq treesit-language-source-alist
