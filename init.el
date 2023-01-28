@@ -3091,41 +3091,27 @@ its results, otherwise display STDERR with
   :general
   ('normal "C-c C-m" 'gnus) 
   ('normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+imap.gmail.com:[Gmail]/All Mail")))
+  ('normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))) 
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :hook
   (gnus . turn-on-gnus-dired-mode )
   (gnus-summary-prepared . variable-pitch-mode)
+  :custom-face
+  ;; so summary line aligned
+  (gnus-summary-normal-unread  ((t (:family "Iosevka SS12"))))
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
         gnus-select-method '(nnnil)
         gnus-secondary-select-methods '((nntp "news.gmane.io")
                                         (nnimap "imap.gmail.com"))
         message-send-mail-function 'smtpmail-send-it
+        gnus-summary-line-format "%U%R%z %d %I%(%[%-20,20n%]%) %s\n" ; add date and make it smaller
+        gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
         gnus-use-full-window nil       ; don't use entire window!
         gnus-fetch-old-headers t       ; build from already read mail
         gnus-check-new-newsgroups nil  ; make start up faster
         gnus-show-threads nil            ; if nil can make faster, threads again with T T
         gnus-use-cross-reference nil))
-
-(use-package gnus-summary-config
-  :straight nil
-  :after gnus
-  :init
-  (setq gnus-thread-sort-functions
-        '(gnus-thread-sort-by-number
-          gnus-thread-sort-by-date
-          gnus-thread-sort-by-total-score))
-  (setq gnus-summary-line-format
-        "%U%R%z %d %I%(%[%-25,25n%]%) %s\n")
-  ;; https://www.emacswiki.org/emacs/GnusFormatting
-  (setq
-   gnus-thread-sort-functions '(gnus-thread-sort-by-date)
-   gnus-sum-thread-tree-false-root ""
-   gnus-sum-thread-tree-indent " "
-   gnus-sum-thread-tree-leaf-with-other "├► "
-   gnus-sum-thread-tree-root ""
-   gnus-sum-thread-tree-single-leaf "╰► "
-   gnus-sum-thread-tree-vertical "│"))
 
 (use-package gnus-topic :disabled       ; not working with different computers
   :straight (:type built-in)
