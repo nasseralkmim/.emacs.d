@@ -37,6 +37,8 @@
                         `(variable-pitch-text ((t (:inherit variable-pitch))))
                         ;; shr for eww
                         `(shr-code ((t (:box (:line-width (-1 . -1) :color "gray80")))))
+                        `(shr-h3 ((t (:weight bold))))
+                        `(shr-h4 ((t (:slant italic))))
                         )
 
 (provide-theme 'seralk)
