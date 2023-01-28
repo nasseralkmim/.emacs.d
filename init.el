@@ -1824,6 +1824,7 @@ Only if there is more than one window opened."
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :general
+  (c++-mode-map "C-x c" 'compile)
   (c-mode-map "C-x c" 'compile)
   :config
   ;; Linux style: keeps brackets on their own line and aligned
@@ -1841,7 +1842,6 @@ Only if there is more than one window opened."
   :straight (:type built-in)
   :mode ("\\.cpp\\'" . c++-mode)
   :general
-  (c++-mode-map "C-x c" 'compile)
   (c++-ts-mode-map "C-x c" 'compile)
   :hook
   ;; set same regex as 'c++-mode' (ts mode does not have yet)
@@ -3086,6 +3086,7 @@ its results, otherwise display STDERR with
 (use-package gnus
   :general
   ('normal "C-c C-m" 'gnus) 
+  ('normal gnus-summary-mode-map "=" 'gnus-summary-expand-window) ; close current article been viewed
   ('normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+imap.gmail.com:[Gmail]/All Mail")))
   ('normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))) 
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
