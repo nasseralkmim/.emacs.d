@@ -1827,26 +1827,35 @@ Only if there is more than one window opened."
   (c++-mode-map "C-x c" 'compile)
   (c++-ts-mode-map "C-x c" 'compile)
   (c-mode-map "C-x c" 'compile)
+  :config
+  ;; Linux style: keeps brackets on their own line and aligned
+  ;; and it uses by default 8 spaces (too much, 4 is ok)
+  ;; if(foo)
+  ;; {
+  ;;     bar++;
+  ;; }
+  (setq c-default-style "linux"
+        c-basic-offset 4)) 
+
+(use-package c++ts-mode
+  :straight (:type built-in)
+  :mode ("\\.cpp\\'" . c++-mode)
+  :general
+  (c++-mode-map "C-x c" 'compile)
+  (c++-ts-mode-map "C-x c" 'compile)
   :hook
   ;; set same regex as 'c++-mode' (ts mode does not have yet)
-  (c++-ts-mode . (lambda () (setq-local outline-regexp "[^#\n\^M]"
+  (c++-ts-mode . (lambda () (setq-local outline-regexp c-ts-mode--c-or-c++-regexp
                                         outline-level 'c-outline-level)))
-  (c++-ts-mode . c-style-setup)
-  :init
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c-or-c++-mode . c-or-c++-ts-mode))
-  (setq c-default-style "linux")
-  (defun c-style-setup ()
-    "Sets up the documentation and comment style"
-    ;; TODO: not ideal for browsing code, takes too long
-    ;; use the style defined by .clang-format (automatic with eglot)
-    ;; for blocks use `comment-box' after `c-toggle-comment-style'
-    ;; or multiline comment with `M-j'
-    ;; (c-guess-buffer) ; does not work with treesit yet
-    ;; use "/** ... *" for documentation comment font-lock (doxygen standard https://www.doxygen.nl/manual/docblocks.html)
-    ;; need to call setup to update other variables dependent on this
-    (c-ts-mode-comment-setup))) 
+  :config
+  ;; Linux style: keeps brackets on their own line and aligned
+  ;; and it uses by default 8 spaces (too much, 4 is ok)
+  ;; if(foo)
+  ;; {
+  ;;     bar++;
+  ;; }
+  (setq c-ts-mode-indent-style "linux"
+        c-ts-mode-indent-offset 4)) 
 
 (use-package ob-python :disabled
   :after org lsp
