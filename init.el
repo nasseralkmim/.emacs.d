@@ -434,6 +434,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c r" 'consult-ripgrep)		; search file contents
   ("C-c f" 'consult-find-fd)		; search files in directories
   ;; (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
+  ("M-e" 'consult-isearch-history)
   :hook
   ;; hook for using default completion mode
   (completion-list-mode . consult-preview-at-point-mode)
@@ -945,6 +946,7 @@ graphics."
   :straight nil
   :after org
   :init
+  ;; maybe too slow when there are many images
   (setq org-display-remote-inline-images 'cache))
 
 ;; org export
@@ -2906,8 +2908,9 @@ its results, otherwise display STDERR with
            "j" 'origami-next-fold
            "k" 'origami-previous-fold))
 
-;; list imenu entries in a buffer
-;; better faces than consult-imenu
+;; list 'imenu' entries in a buffer
+;; better faces than 'consult-imenu'
+;; 'imenu' gives the namespace, functions, classes and methods in a tree
 (use-package imenu-list
   :general ('normal "g o" 'imenu-list-smart-toggle)
   :config
