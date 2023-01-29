@@ -3157,4 +3157,10 @@ its results, otherwise display STDERR with
   :config
   (setq org-reveal-root "~/.local/src/reveal.js/"))
 
+(use-package hl-line
+  :straight (:type built-in)
+  :hook
+  (prog-mode . hl-line-mode)
+  (text-mode . hl-line-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
