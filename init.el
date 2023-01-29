@@ -2101,6 +2101,11 @@ Only if there is more than one window opened."
         eww-auto-rename-buffer t                    ; each page on its own buffer
         eww-search-prefix "https://www.google.com/search?hl=en&lr=lang_en&q="))
 
+;; jump to link
+(use-package ace-link
+  :general
+  ('normal eww-mode-map "f" 'ace-link-eww))
+
 (use-package pdf-tools
   ;; :if (eq system-type 'windows-nt)
   :mode ("\\.pdf\\'" . pdf-view-mode)
