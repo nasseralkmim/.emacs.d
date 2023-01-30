@@ -2175,10 +2175,10 @@ Only if there is more than one window opened."
   (when (string= system-name "ryzen-ms7c37")
     (setq terminal-here-terminal-command 'gnome-terminal)))
 
-(use-package keycast
+(use-package keycast :disabled
   :commands keycast-mode keycast-log-mode)
 
-(use-package gif-screencast
+(use-package gif-screencast :disabled
   :commands gif-screencast
   :general
   ("<f8>" 'gif-screencast)
