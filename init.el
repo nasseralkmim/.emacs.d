@@ -2205,7 +2205,9 @@ Only if there is more than one window opened."
   :defer 1
   :config
   ;; built-in command repeater (like hydra)
-  (repeat-mode t))
+  (repeat-mode t)
+  (setq repeat-keep-prefix t)           ; useful to resize windows
+  )
 
 ;; built in windows resize functions
 (use-package window
