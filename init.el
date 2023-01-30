@@ -2118,7 +2118,8 @@ Only if there is more than one window opened."
 ;; jump to link
 (use-package ace-link
   :general
-  ('normal eww-mode-map "f" 'ace-link-eww))
+  ('normal eww-mode-map "f" 'ace-link-eww)
+  ('normal gnus-article-mode-map "f" 'ace-link-gnus))
 
 (use-package pdf-tools
   ;; :if (eq system-type 'windows-nt)
