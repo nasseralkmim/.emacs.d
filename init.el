@@ -300,6 +300,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                      :files (:defaults "extensions/*"))
   :general
   ('insert vertico-map "C-k" 'vertico-exit-input)
+  ('normal vertico-map
+           "C-n" 'vertico-next ; same as in insert mode
+           "C-p" 'vertico-previous) ; same as in insert mode
   :init
   (vertico-mode)
   (setq vertico-resize t))
