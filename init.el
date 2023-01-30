@@ -1828,6 +1828,8 @@ Only if there is more than one window opened."
   :general
   (c++-mode-map "C-x c" 'compile)
   (c-mode-map "C-x c" 'compile)
+  :hook
+  (c++-mode . setup-c++-style)
   :config
   ;; Linux style: keeps brackets on their own line and aligned
   ;; and it uses by default 8 spaces (too much, 4 is ok)
@@ -1836,7 +1838,14 @@ Only if there is more than one window opened."
   ;;     bar++;
   ;; }
   (setq c-default-style "linux"
-        c-basic-offset 4)) 
+        c-basic-offset 4)
+  :init
+  (defun setup-c++-style ()
+    "Function to set documentation comment style."
+    ;; need to set up in a hook
+    (setq c-doc-comment-style '(doxygen autodoc javadoc gtkdoc))
+    (c-setup-doc-comment-style)         ; need to call after changing the style
+    )) 
 
 ;; Specific for c++ with treesit
 ;; not ready yet
