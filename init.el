@@ -2225,7 +2225,7 @@ Only if there is more than one window opened."
 (use-package window
   :straight (:type built-in)
   :general
-  ("C-c w" 'enlarge-window-horizontally)
+  ("C-c w" '(:keymap resize-window-repeat-map))
   ("C-x C-o" 'other-window)
   (resize-window-repeat-map "j" 'shrink-window)
   (resize-window-repeat-map "w" 'shrink-window)
