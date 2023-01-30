@@ -2927,7 +2927,7 @@ its results, otherwise display STDERR with
 ;; better faces than 'consult-imenu'
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
 (use-package imenu-list
-  :general ('normal "g o" 'imenu-list-smart-toggle)
+  :general ('normal "g o" 'imenu-list)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-auto-update nil      ; I want to keep the list from a file
