@@ -3161,6 +3161,9 @@ its results, otherwise display STDERR with
   :straight (:type built-in)
   :hook
   (prog-mode . hl-line-mode)
-  (text-mode . hl-line-mode))
+  (text-mode . hl-line-mode)
+  :config
+  (setq hl-line-sticky-flag nil)        ; only active window
+  )
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
