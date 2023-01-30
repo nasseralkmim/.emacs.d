@@ -30,7 +30,7 @@
                         ;; region without style, work with 'evil-multiedit'
                         ;; https://emacs.stackexchange.com/questions/47002/adding-box-around-text-without-changing-the-text-width
                         ;; `(region ((t (:box (:line-width (-1 . -1) :style nil)))))
-                        `(iedit-occurrence ((t (:box (:line-width (-1 . -1) :color "gray60" :style nil)))))
+                        `(iedit-occurrence ((t (:box (:line-width (-1 . -1))))))
                         ;; `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
                         `(ts-fold-replacement-face ((t (:inherit font-lock-comment-face))))
                         `(default ((t (:inherit 'default))))
@@ -39,6 +39,8 @@
                         `(shr-code ((t (:box (:line-width (-1 . -1) :color "gray80")))))
                         `(shr-h3 ((t (:weight bold))))
                         `(shr-h4 ((t (:slant italic))))
+                        ;; eglot
+                        `(eglot-highlight-symbol-face ((t (:underline t :weight bold))))
                         )
 
 (provide-theme 'seralk)
