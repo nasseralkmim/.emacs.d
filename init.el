@@ -1862,14 +1862,14 @@ Only if there is more than one window opened."
   (c++-ts-mode . (lambda () (setq-local outline-regexp c-ts-mode--c-or-c++-regexp
                                         outline-level 'c-outline-level)))
   :config
-  ;; Linux style: keeps brackets on their own line and aligned
-  ;; and it uses by default 8 spaces (too much, 4 is ok)
-  ;; if(foo)
-  ;; {
-  ;;     bar++;
-  ;; }
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
+
+(use-package highlight-doxygen
+  :custom-face
+  (highlight-doxygen-comment  ((t (:background nil :italic nil))))
+  :hook
+  (c++-mode . highlight-doxygen-mode))
 
 (use-package ob-python :disabled
   :after org lsp
