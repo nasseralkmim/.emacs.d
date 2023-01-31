@@ -3131,7 +3131,10 @@ its results, otherwise display STDERR with
         gnus-fetch-old-headers t       ; build from already read mail
         gnus-check-new-newsgroups nil  ; make start up faster
         gnus-show-threads nil            ; if nil can make faster, threads again with T T
-        gnus-use-cross-reference nil))
+        gnus-use-cross-reference nil
+        ;; for sync different machines
+        gnus-home-directory "~/.emacs.d"
+        ))
 
 (use-package gnus-topic :disabled       ; not working with different computers
   :straight (:type built-in)
