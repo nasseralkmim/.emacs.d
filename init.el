@@ -10,7 +10,7 @@
 ;; straight generates autoloads 
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "repos/straight.el/bootstrap.el" user-emacs-directory))
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
@@ -2104,7 +2104,7 @@ Only if there is more than one window opened."
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal "C-c y" 'eww-copy-page-url)
   :hook
-  ;; (eww-after-render . (lambda () (eww-readable)))  ; slow sometimes
+  (eww-after-render . (lambda () (eww-readable))) 
   (eww-mode . visual-line-mode)
   :config
   (setq shr-use-fonts t
@@ -2625,7 +2625,7 @@ Only if there is more than one window opened."
   :hook (prog-mode . topsy-mode))
 
 ;; work git servers (forges)
-(use-package forge
+(use-package forge :disabled
   :after magit)
 
 ;; mass copy-paste or copy-move (analogous to cut-paste) for dired
@@ -3153,7 +3153,7 @@ its results, otherwise display STDERR with
         smtpmail-smtp-service 587))
 
 ;; there is no language server for it yet
-(use-package chapel-mode
+(use-package chapel-mode :disabled
   :mode ("\\.chpl\\'" . 'chapel-mode))
 
 ;; interact with zotero with 'zotra-cli'
@@ -3167,7 +3167,7 @@ its results, otherwise display STDERR with
 
 ;; org backend export to reveal.js
 ;; need to install external 'reveal.js'
-(use-package ox-reveal
+(use-package ox-reveal :disabled
   :after org
   :demand  ; require after org
   :config
@@ -3187,5 +3187,92 @@ its results, otherwise display STDERR with
   :general
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward))
+
+;; used for syntax highlight in eww
+(use-package language-detection
+  :defer t)
+
+;; highlight code in eww
+(use-package eww-syntax-highlight
+  :straight nil
+  :after eww
+  :init
+  (require 'cl-lib)
+
+  (defun eww-tag-pre (dom)
+    (let ((shr-folding-mode 'none)
+          (shr-current-font 'default))
+      (shr-ensure-newline)
+      (insert (eww-fontify-pre dom))
+      (shr-ensure-newline)))
+
+  (defun eww-fontify-pre (dom)
+    (with-temp-buffer
+      (shr-generic dom)
+      (let ((mode (eww-buffer-auto-detect-mode)))
+        (when mode
+          (eww-fontify-buffer mode)))
+      (buffer-string)))
+
+  (defun eww-fontify-buffer (mode)
+    (delay-mode-hooks (funcall mode))
+    (font-lock-default-function mode)
+    (font-lock-default-fontify-region (point-min)
+                                      (point-max)
+                                      nil))
+
+  (defun eww-buffer-auto-detect-mode ()
+    (let* ((map '((ada ada-mode)
+                  (awk awk-mode)
+                  (c c-mode)
+                  (cpp c++-mode)
+                  (clojure clojure-mode lisp-mode)
+                  (csharp csharp-mode java-mode)
+                  (css css-mode)
+                  (dart dart-mode)
+                  (delphi delphi-mode)
+                  (emacslisp emacs-lisp-mode)
+                  (erlang erlang-mode)
+                  (fortran fortran-mode)
+                  (fsharp fsharp-mode)
+                  (go go-mode)
+                  (groovy groovy-mode)
+                  (haskell haskell-mode)
+                  (html html-mode)
+                  (java java-mode)
+                  (javascript javascript-mode)
+                  (json json-mode javascript-mode)
+                  (latex latex-mode)
+                  (lisp lisp-mode)
+                  (lua lua-mode)
+                  (matlab matlab-mode octave-mode)
+                  (objc objc-mode c-mode)
+                  (perl perl-mode)
+                  (php php-mode)
+                  (prolog prolog-mode)
+                  (python python-mode)
+                  (r r-mode)
+                  (ruby ruby-mode)
+                  (rust rust-mode)
+                  (scala scala-mode)
+                  (shell shell-script-mode)
+                  (smalltalk smalltalk-mode)
+                  (sql sql-mode)
+                  (swift swift-mode)
+                  (visualbasic visual-basic-mode)
+                  (xml sgml-mode)))
+           (language (language-detection-string
+                      (buffer-substring-no-properties (point-min) (point-max))))
+           (modes (cdr (assoc language map)))
+           (mode (cl-loop for mode in modes
+                          when (fboundp mode)
+                          return mode)))
+      (message (format "%s" language))
+      (when (fboundp mode)
+        mode)))
+
+  (setq shr-external-rendering-functions
+        '((pre . eww-tag-pre)))
+  )
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
