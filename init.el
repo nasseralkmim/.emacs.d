@@ -2931,6 +2931,7 @@ its results, otherwise display STDERR with
   (setq imenu-list-auto-resize t
         imenu-list-auto-update nil      ; I want to keep the list from a file
         imenu-list-position 'left
+        imenu-list-size 0.1
         imenu-list-focus-after-activation t))
 
 ;; deal with ANSI escape sequences for coloring
