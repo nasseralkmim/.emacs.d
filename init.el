@@ -3107,9 +3107,6 @@ its results, otherwise display STDERR with
 (use-package gnus
   :general
   ('normal "C-c C-m" 'gnus) 
-  ('normal gnus-summary-mode-map "=" 'gnus-summary-expand-window) ; close current article been viewed
-  ('normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+imap.gmail.com:[Gmail]/All Mail")))
-  ('normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))) 
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :hook
   (gnus . turn-on-gnus-dired-mode )
@@ -3133,6 +3130,15 @@ its results, otherwise display STDERR with
         ;; for sync different machines
         gnus-home-directory "~/.emacs.d"
         ))
+
+;; for setting keybindings after evil-collection
+(use-package gnus-sum
+  :straight (:type built-in)
+  :config
+  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
+  (general-def 'normal gnus-summary-mode-map "=" 'gnus-summary-expand-window) ; close current article been viewed
+  (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+imap.gmail.com:[Gmail]/All Mail")))
+  (general-def 'normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))))
 
 (use-package gnus-topic :disabled       ; not working with different computers
   :straight (:type built-in)
