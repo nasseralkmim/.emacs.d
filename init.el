@@ -1867,7 +1867,7 @@ Only if there is more than one window opened."
 
 (use-package highlight-doxygen
   :custom-face
-  (highlight-doxygen-comment  ((t (:background nil :italic nil))))
+  (highlight-doxygen-comment  ((t (:background unspecified :italic nil))))
   :hook
   (c++-mode . highlight-doxygen-mode))
 
@@ -2215,12 +2215,11 @@ Only if there is more than one window opened."
 (use-package repeat
   :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
-  :defer 1
   :config
   ;; built-in command repeater (like hydra)
   (repeat-mode t)
-  (setq repeat-keep-prefix t)           ; useful to resize windows
-  )
+  ;; useful to resize windows
+  (setq repeat-keep-prefix t))
 
 ;; built in windows resize functions
 (use-package window
