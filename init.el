@@ -168,7 +168,7 @@
   ;; (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
   ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
   (default  ((t (:family "Iosevka SS12"))))
-  (font-lock-comment-face  ((t (:family "Iosevka aile" :weight semi-light :width ultra-condensed))))
+  (font-lock-comment-face  ((t (:family "Iosevka" :weight light))))
   (variable-pitch ((t (:family "Iosevka etoile"))))
   ;; when using variable pitch in org mode, use monospace for code blocks
   (org-block ((t (:family "Iosevka SS12"))))
