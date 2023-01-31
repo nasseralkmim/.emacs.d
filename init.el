@@ -10,7 +10,7 @@
 ;; straight generates autoloads 
 (defvar bootstrap-version)
 (let ((bootstrap-file
-       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+       (expand-file-name "repos/straight.el/bootstrap.el" user-emacs-directory))
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
@@ -3180,7 +3180,13 @@ its results, otherwise display STDERR with
   (prog-mode . hl-line-mode)
   (text-mode . hl-line-mode)
   :config
-  (setq hl-line-sticky-flag nil)        ; only active window
-  )
+  ;; only active window
+  (setq hl-line-sticky-flag nil))
+
+(use-package isearch
+  :straight (:type built-in)
+  :general
+  (isearch-mode-map "C-n" 'isearch-repeat-forward)
+  (isearch-mode-map "C-p" 'isearch-repeat-backward))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
