@@ -2215,7 +2215,7 @@ Only if there is more than one window opened."
 (use-package repeat
   :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
-  :config
+  :init
   ;; built-in command repeater (like hydra)
   (repeat-mode t)
   ;; useful to resize windows
@@ -3110,7 +3110,8 @@ its results, otherwise display STDERR with
   ('normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
   :hook
   (gnus . turn-on-gnus-dired-mode )
-  (gnus-summary-prepared . variable-pitch-mode)
+  ;; (gnus-summary-prepared . variable-pitch-mode)
+  (gnus-article-mode . variable-pitch-mode)
   :custom-face
   ;; so summary line aligned
   (gnus-summary-normal-unread  ((t (:family "Iosevka SS12"))))
