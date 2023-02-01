@@ -3204,7 +3204,8 @@ its results, otherwise display STDERR with
 ;; highlight code in eww
 (use-package shr-tag-pre-highlight
   :after shr
-  :init
+  :demand
+  :config
   (add-to-list 'shr-external-rendering-functions
                '(pre . shr-tag-pre-highlight)))
 
