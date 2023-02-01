@@ -3285,7 +3285,9 @@ its results, otherwise display STDERR with
         mode)))
 
   (setq shr-external-rendering-functions
-        '((pre . eww-tag-pre)))
-  )
+        '((pre . eww-tag-pre))))
+
+(use-package speedbar 
+  :straight (:type built-in))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
