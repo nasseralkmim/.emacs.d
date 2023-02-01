@@ -2620,9 +2620,15 @@ Only if there is more than one window opened."
         org-sticky-header-outline-path-separator " > "))
 
 ;; sticky header for progamming modes
-(use-package topsy
+(use-package topsy :disabled            ;does not work well with multiline templated functions
   :straight (topsy :type git :host github :repo "alphapapa/topsy.el")
   :hook (prog-mode . topsy-mode))
+
+;; shows which function in the modeline
+(use-package which-func
+  :straight (:type built-in)
+  :hook
+  (prog-mode . which-function-mode))
 
 ;; work git servers (forges)
 (use-package forge :disabled
