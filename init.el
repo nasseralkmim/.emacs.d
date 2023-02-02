@@ -2103,7 +2103,9 @@ Only if there is more than one window opened."
   :config
   (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
-        shr-inhibit-images t			  ; inhibit junkyimages
+        shr-inhibit-images nil			  ; inhibit junkyimages
+        shr-max-image-proportion .5
+        shr-discard-aria-hidden t       ; don't render tegs with aria-hidden=true
         shr-buller "• "
         browse-url-browser-function 'eww-browse-url ; open in eww by default
         eww-auto-rename-buffer t                    ; each page on its own buffer
