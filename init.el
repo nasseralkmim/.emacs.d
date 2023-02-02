@@ -107,12 +107,6 @@
   ;; answering just 'y' or 'n' will do
   (defalias 'yes-or-no-p 'y-or-n-p)
 
-  (if (display-graphic-p)
-      (blink-cursor-mode 1)
-    (progn
-      (blink-cursor-mode -1)
-      (setq visible-cursor nil)))
-  
   (setq-default
    completion-cycle-threshold nil    ; show all candidates
    completions-detailed t	    ; add details in completions as prefix/sufix
@@ -2102,7 +2096,8 @@ Only if there is more than one window opened."
   :straight (:type built-in)
   :general
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
-  ('normal "C-c y" 'eww-copy-page-url)
+  ('normal eww-mode-map "C-c y" 'eww-copy-page-url)
+  ('normal eww-mode-map "<SPC>" nil)               ; use for other things
   :hook
   (eww-after-render . (lambda () (eww-readable))) 
   (eww-mode . visual-line-mode)
@@ -2118,8 +2113,8 @@ Only if there is more than one window opened."
 ;; jump to link
 (use-package ace-link
   :general
-  ('normal eww-mode-map "f" 'ace-link-eww)
-  ('normal gnus-article-mode-map "f" 'ace-link-gnus))
+  ('normal eww-mode-map "C-f" 'ace-link-eww)
+  ('normal gnus-article-mode-map "C-f" 'ace-link-gnus))
 
 (use-package pdf-tools
   ;; :if (eq system-type 'windows-nt)
