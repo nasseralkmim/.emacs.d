@@ -3264,6 +3264,9 @@ its results, otherwise display STDERR with
 (use-package speedbar 
   :straight (:type built-in))
 
-(use-package debbugs)
+;; translation package
+(use-package go-translate
+  :config
+  (setq gts-translate-list '(("en" "de") ("de" "pt") ("de" "en") ("pt" "de"))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
