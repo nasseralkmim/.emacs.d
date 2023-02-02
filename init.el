@@ -157,9 +157,8 @@
 (use-package custom-typefaces
   :straight nil
   :custom-face 
-  ;; config for victor mono (different oblique and italic)
   ;; outline 4 inherits from comment face... make it oblique instead of italic
-  ;; (outline-4 ((t (:inherit font-lock-comment-face :slant oblique))))
+  (outline-4 ((t (:inherit font-lock-doc-face))))
   ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
   (default  ((t (:family "Iosevka SS12"))))
   (font-lock-comment-face  ((t (:family "Iosevka" :weight light))))
