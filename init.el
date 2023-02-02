@@ -161,7 +161,7 @@
   (outline-4 ((t (:inherit font-lock-doc-face))))
   ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
   (default  ((t (:family "Iosevka SS12"))))
-  (font-lock-comment-face  ((t (:family "Iosevka" :weight light))))
+  (font-lock-comment-face  ((t (:family "Iosevka" :weight light :inherit t :slant italic))))
   (variable-pitch ((t (:family "Iosevka etoile"))))
   ;; when using variable pitch in org mode, use monospace for code blocks
   (org-block ((t (:family "Iosevka SS12"))))
@@ -3263,5 +3263,7 @@ its results, otherwise display STDERR with
 
 (use-package speedbar 
   :straight (:type built-in))
+
+(use-package debbugs)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))

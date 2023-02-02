@@ -9,19 +9,18 @@
                         `(font-latex-sectioning-5-face ((t (:weight normal :slant normal :inherit outline-7))))
                         `(font-latex-string-face ((t (:foreground "saddle brown"))))
                         ;; general
-                        `(font-lock-comment-face ((t (:foreground "gray50" :slant italic :weight medium)))) ; 
                         `(mode-line-inactive ((t (:box (:line-width (-1 . -1) :style released-button)))))
                         ;; `(mode-line-active ((t (:box (:line-width (-1 . -1))))))
                         ;; evil
                         `(evil-snipe-matches-face ((t (:inherit match :box (:line-width (-1 . -1) :style nil)))))
-                        `(evil-snipe-first-match-face ((t (:inherit 'evil-snipe-matches-face))))
+                        `(evil-snipe-first-match-face ((t (:inherit evil-snipe-matches-face))))
                         ;; org
                         `(org-block ((t (:inherit org-agenda-restriction-lock))))
                         `(org-inline-src-block ((t (:inherit org-agenda-restriction-lock))))
                         `(org-ellipsis ((t (:ellipsis nil))))
                         ;; `(org-meta-line ((t (:foreground "gray60"))))
-                        `(org-drawer ((t (:inherit 'org-meta-line))))
-                        `(org-macro ((t (:inherit 'org-meta-line))))
+                        `(org-drawer ((t (:inherit org-meta-line))))
+                        `(org-macro ((t (:inherit org-meta-line))))
                         `(org-verbatim ((t (:box (:line-width (-1 . -1) :color "gray80")))))
                         ;; smartparens
                         `(sp-show-pair-match-content-face ((t (:style nil))))
