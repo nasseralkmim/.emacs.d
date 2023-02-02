@@ -280,7 +280,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq helpful-switch-buffer-function 'pop-or-switch-to-buffer))
 
 ;; completion UI (vertical list in minibuffer)
-(use-package vertico
+(use-package vertico :disabled
   :straight (vertico :type git :host github :repo "minad/vertico"
                      :includes (vertico-buffer
                                 vertico-directory
@@ -3202,6 +3202,51 @@ its results, otherwise display STDERR with
   :config
   (add-to-list 'shr-external-rendering-functions
                '(pre . shr-tag-pre-highlight)))
+
+;; https://panadestein.github.io/emacsd/#org602eb51
+(use-package shr-tag-pre-highlight
+  :init
+  (defun shrface-shr-tag-pre-highlight (pre)
+    "Highlighting code in PRE."
+    (let* ((shr-folding-mode 'none)
+           (shr-current-font 'default)
+           (code (with-temp-buffer
+                   (shr-generic pre)
+                   (buffer-string)))
+           (lang (or (shr-tag-pre-highlight-guess-language-attr pre)
+                     (let ((sym (language-detection-string code)))
+                       (and sym (symbol-name sym)))))
+           (mode (and lang
+                      (shr-tag-pre-highlight--get-lang-mode lang))))
+      (shr-ensure-newline)
+      (shr-ensure-newline)
+      (setq start (point))
+      (insert
+       (propertize (concat "#+BEGIN_SRC " lang "\n") 'face 'org-block-begin-line)
+       (or (and (fboundp mode)
+                (with-demoted-errors "Error while fontifying: %S"
+                  (shr-tag-pre-highlight-fontify code mode)))
+           code)
+       (propertize "#+END_SRC" 'face 'org-block-end-line ))
+      (shr-ensure-newline)
+      (setq end (point))
+      (add-face-text-property start end '(:background "#1f2329" :extend t))
+      (shr-ensure-newline)
+      (insert "\n")))
+  :config
+  (add-to-list 'shr-external-rendering-functions
+               '(pre . shrface-shr-tag-pre-highlight)))
+
+;; extend eww/shr with org features
+(use-package shrface
+  :hook
+  (eww-after-render . shrface-mode)
+  :config
+  (shrface-basic)
+  (shrface-trial)
+  (shrface-default-keybindings)
+  (setq shrface-href-versatile t
+        shrface-bullets-bullet-list '("\*")))
 
 (use-package speedbar 
   :straight (:type built-in))
