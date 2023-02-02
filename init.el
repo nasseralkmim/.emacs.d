@@ -280,7 +280,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq helpful-switch-buffer-function 'pop-or-switch-to-buffer))
 
 ;; completion UI (vertical list in minibuffer)
-(use-package vertico :disabled
+(use-package vertico
   :straight (vertico :type git :host github :repo "minad/vertico"
                      :includes (vertico-buffer
                                 vertico-directory
@@ -391,11 +391,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                       literal-if-equal
                                       without-if-bang)))
 
-;; default completion 
+;; default completion framework
 (use-package simple
   :straight (:type built-in)
   :config
-  (setq completion-auto-select 'second-tab))
+  ;; first TAB shows candidates
+  ;; second TAB switches to the candidates buffer
+  (setq completion-auto-select 'second-tab
+        ;; Just one column is better.
+        completion-format 'one-column))
 
 ;; save the search history
 (use-package savehist
@@ -2115,6 +2119,7 @@ Only if there is more than one window opened."
 (use-package ace-link
   :general
   ('normal eww-mode-map "C-f" 'ace-link-eww)
+  ('normal helpful-mode-map "C-f" 'ace-link-help)
   ('normal gnus-article-mode-map "C-f" 'ace-link-gnus))
 
 (use-package pdf-tools
