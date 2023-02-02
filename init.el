@@ -392,14 +392,19 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                       without-if-bang)))
 
 ;; default completion framework
-(use-package simple
+(use-package simple :disabled
   :straight (:type built-in)
+  :general
+  (minibuffer-mode-map "C-n" 'minibuffer-next-completion)
+  (minibuffer-mode-map "C-p" 'minibuffer-previous-completion)
   :config
   ;; first TAB shows candidates
   ;; second TAB switches to the candidates buffer
   (setq completion-auto-select 'second-tab
         ;; Just one column is better.
-        completion-format 'one-column))
+        completions-format 'one-column
+        completions-max-height 20
+        completions-header-format nil))
 
 ;; save the search history
 (use-package savehist
