@@ -631,6 +631,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; autoload keymap, will trigger the loading of `evil-mc` library
   ;; use prefix for `cursors-map` from evil collection
   ('(normal visual) "g ." '(:keymap evil-mc-cursors-map))
+  (evil-mc-key-map "g r" nil)
   :config
   (global-evil-mc-mode 1)
   ;; extra commands for multiple cursts
