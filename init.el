@@ -151,8 +151,7 @@
   (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
-    (invert-face 'default)
-    ))
+    (invert-face 'default)))
 
 ;; typeface
 (use-package custom-typefaces
@@ -557,7 +556,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq sp-show-pair-delay 0.125
         sp-max-prefix-length 25         ; reduces work
         sp-max-pair-length 4            ; reduces work
-        sp-show-pair-from-inside t))
+        ))
 
 (use-package smartparens-config
   :straight nil
