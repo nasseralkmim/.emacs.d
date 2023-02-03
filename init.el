@@ -3123,6 +3123,7 @@ its results, otherwise display STDERR with
   (gnus . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
   (gnus-article-mode . variable-pitch-mode)
+  (gnus-article-mode . visual-line-mode)
   :custom-face
   ;; so summary line aligned
   (gnus-summary-normal-unread  ((t (:family "Iosevka SS12"))))
