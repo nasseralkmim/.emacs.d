@@ -566,7 +566,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
 (use-package flymake
-  :hook (python-mode . flymake-mode)
+  :hook
+  (prog-mode . flymake-mode)
   :general
   (flymake-mode-map "M-n" 'flymake-goto-next-error) 
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
