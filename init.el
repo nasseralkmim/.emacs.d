@@ -151,7 +151,8 @@
   (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
-    (invert-face 'default)))
+    (invert-face 'default)
+    ))
 
 ;; typeface
 (use-package custom-typefaces
@@ -159,9 +160,7 @@
   :custom-face 
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
-  ;; (tree-sitter-hl-face:property ((t (:inherit font-lock-comment-face :slant oblique))))
   (default  ((t (:family "Iosevka SS12"))))
-  (font-lock-comment-face  ((t (:family "Iosevka" :weight light :inherit t :slant italic))))
   (variable-pitch ((t (:family "Iosevka etoile"))))
   ;; when using variable pitch in org mode, use monospace for code blocks
   (org-block ((t (:family "Iosevka SS12"))))
@@ -3252,6 +3251,8 @@ its results, otherwise display STDERR with
 
 ;; extend eww/shr with org features
 (use-package shrface
+  :general
+  ('normal shrface-mode-map "TAB" 'shrface-outline-cycle)
   :hook
   (eww-after-render . shrface-mode)
   :config
@@ -3259,7 +3260,11 @@ its results, otherwise display STDERR with
   (shrface-trial)
   (shrface-default-keybindings)
   (setq shrface-href-versatile t
-        shrface-bullets-bullet-list '("\*")))
+        shrface-bullets-bullet-list '("\*"))
+  ;; after loading
+  (general-def shrface-mode-map "TAB" nil) ; use to jump links
+  (general-def shrface-mode-map "<backtab>" nil) ; dont need outline-buffer
+  )
 
 (use-package speedbar 
   :straight (:type built-in))
