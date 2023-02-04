@@ -2219,6 +2219,7 @@ Only if there is more than one window opened."
 (use-package repeat
   ;; :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
+  :demand
   :init
   ;; built-in command repeater (like hydra)
   (repeat-mode t)
@@ -3274,19 +3275,51 @@ its results, otherwise display STDERR with
   :config
   (setq gts-translate-list '(("en" "de") ("de" "pt") ("de" "en") ("pt" "de"))))
 
-
 ;; custom function to connect to vpn
 (use-package connect-vpn
   :straight nil
-  :commands connect-vpn
+  :commands connect-uibk
   :init
   (defun connect-vpn ()
-    "Connect via vpn"
-    (interactive)
+    "Connect via VPN."
     (let*
         ((psw (funcall (plist-get (nth 0 (auth-source-search :user "c8441205" :port "sudo")) :secret)))
          (command (format "echo %s | openconnect vpn.uibk.ac.at -u c8441205 -b --passwd-on-stdin" psw))
          (default-directory "/sudo::"))
+      (shell-command command)))
+
+  (defun insert-credentials ()
+    "Insert firewall access credential."
+    (interactive)
+    (unwind-protect
+       (progn
+         (shr-next-link)
+         (insert "c8441205")
+         (shr-next-link)
+         (insert (funcall (plist-get (nth 0 (auth-source-search :user "c8441205" :port "sudo")) :secret)))
+         (shr-next-link)
+         (eww-submit))
+     ;; remove the hook after finish the inputs
+     (remove-hook 'eww-after-render-hook 'insert-credentials)))
+
+  (defun get-firewall-access ()
+    (interactive)
+    "Insert credentials after page renders."
+    (add-hook 'eww-after-render-hook 'insert-credentials)
+    (eww "https://fwauth-tech.uibk.ac.at/"))
+
+  (defun connect-uibk ()
+    "Connect through VPN and get firewall authorization."
+    (interactive)
+    (connect-vpn)
+    (get-firewall-access))
+
+  (defun disconnect-uibk ()
+    "Disconnect VPN."
+    (interactive)
+    (let* ((psw (funcall (plist-get (nth 0 (auth-source-search :user "c8441205" :port "sudo")) :secret)))
+           (command "killall openconnect")
+           (default-directory "/sudo::"))
       (shell-command command))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
