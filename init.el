@@ -157,6 +157,8 @@
 (use-package custom-typefaces
   :straight nil
   :custom-face 
+  ;; victor mono sometimes is nice for comments
+  (font-lock-comment-face ((t (:family "Victor Mono" :height .95))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
   (default  ((t (:family "Iosevka SS12"))))
@@ -2103,7 +2105,7 @@ Only if there is more than one window opened."
   ('normal eww-mode-map "C-c y" 'eww-copy-page-url)
   ('normal eww-mode-map "<SPC>" nil)               ; use for other things
   :hook
-  (eww-after-render . (lambda () (eww-readable))) 
+  ;; (eww-after-render . (lambda () (eww-readable)))  ; does not work for all
   (eww-mode . visual-line-mode)
   :config
   (setq shr-use-fonts t

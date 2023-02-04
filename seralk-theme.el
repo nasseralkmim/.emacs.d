@@ -4,8 +4,8 @@
 ;; apparently there is no way to do this directly on the existing face
 ;; https://emacs.stackexchange.com/a/9604
 (defface my-font-lock-comment-face
-  '((((background dark)) (:foreground  "#dfaf7a" :height 90 :weight medium :slant italic :family "Victor Mono"))
-    (((background light)) (:foreground "#7b5000" :height 90 :weight medium :slant italic :family "Victor Mono")))
+  '((((background dark)) (:foreground  "#dfaf7a" :weight medium :slant italic))
+    (((background light)) (:foreground "#7b5000" :weight medium :slant italic)))
   "Face for comments in light and dark background.")
 
 (custom-theme-set-faces
@@ -49,6 +49,10 @@
  ;; eglot
  `(eglot-highlight-symbol-face ((t (:underline t :weight bold))))
  `(font-lock-comment-face ((t (:inherit my-font-lock-comment-face))))
+ ;; rainbow delimite
+ `(rainbow-delimiters-depth-1-face ((t (:inherit default))))
+ `(rainbow-delimiters-depth-2-face ((t (:inherit outline-2))))
+ `(rainbow-delimiters-depth-3-face ((t (:inherit outline-3))))
  )
 
 (provide-theme 'seralk)
