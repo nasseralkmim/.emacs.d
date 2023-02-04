@@ -2722,7 +2722,7 @@ Only if there is more than one window opened."
   :straight (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ('normal "<f7>" 'detached-open-session)
-  (dired-mode-map [remap dired-do-async-shell-command] 'detached-shell-command)
+  ([remap async-shell-command] 'detached-shell-mode)
   :custom ((detached-show-output-on-attach t))
   :init
   (detached-init))
@@ -3069,8 +3069,9 @@ its results, otherwise display STDERR with
                                   (cape-company-to-capf 'company-jedi))))))
 
 ;; authentication file  
-(use-package auth-sources
-  :straight nil
+(use-package auth-source
+  :straight (:type built-in)
+  :commands auth-source-search
   :init
   (setq auth-sources '((:source "~/.emacs.d/secrets/.authinfo.gpg"))))
 
@@ -3272,5 +3273,20 @@ its results, otherwise display STDERR with
 (use-package go-translate
   :config
   (setq gts-translate-list '(("en" "de") ("de" "pt") ("de" "en") ("pt" "de"))))
+
+
+;; custom function to connect to vpn
+(use-package connect-vpn
+  :straight nil
+  :commands connect-vpn
+  :init
+  (defun connect-vpn ()
+    "Connect via vpn"
+    (interactive)
+    (let*
+        ((psw (funcall (plist-get (nth 0 (auth-source-search :user "c8441205" :port "sudo")) :secret)))
+         (command (format "echo %s | openconnect vpn.uibk.ac.at -u c8441205 -b --passwd-on-stdin" psw))
+         (default-directory "/sudo::"))
+      (shell-command command))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
