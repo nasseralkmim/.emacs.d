@@ -341,11 +341,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq vertico-multiform-commands
         '((consult-outline unobtrusive)
           (consult-line unobtrusive)
-          (consult-buffer unobtrusive)
-          ;; (dtache-open-session buffer   ; open dtache sessions in a buffer
-          ;;                      (vertico-buffer-display-action . (display-buffer-at-bottom
-          ;;                                                        (window-height . 13))))
-          )))
+          (consult-buffer unobtrusive))))
 
 ;; `completion STYLE` with flexible candidate filtering
 ;; filter with space-separated components and match components in any order
@@ -2219,7 +2215,7 @@ Only if there is more than one window opened."
   (set-face-background 'default "undefined"))
 
 (use-package repeat
-  :if (string-greaterp emacs-version "28") ; need emacs > 28
+  ;; :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
   :init
   ;; built-in command repeater (like hydra)
