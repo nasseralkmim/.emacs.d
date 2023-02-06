@@ -2618,7 +2618,7 @@ Only if there is more than one window opened."
   (setq image-animate-loop t))
 
 ;; show the breadcrumb on top of org buffer
-(use-package org-sticky-header
+(use-package org-sticky-header :disabled ; using built-in which func
   :hook (org-mode . org-sticky-header-mode)
   :config
   (setq org-sticky-header-full-path 'full
@@ -3155,7 +3155,7 @@ its results, otherwise display STDERR with
   :config
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
   (general-def 'normal gnus-summary-mode-map "=" 'gnus-summary-expand-window) ; close current article been viewed
-  (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+imap.gmail.com:[Gmail]/All Mail")))
+  (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+personal:[Gmail]/All Mail")))
   (general-def 'normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))))
 
 (use-package gnus-topic :disabled       ; not working with different computers
@@ -3169,9 +3169,15 @@ its results, otherwise display STDERR with
 (use-package gnus-msg
   :straight (:type built-in)
   :config
+  ;; https://www.bounga.org/tips/2020/05/03/multiple-smtp-accounts-in-gnus-without-external-tools/
+  ;; https://www.gnu.org/software/emacs/manual/html_node/message/Mail-Variables.html
   (setq gnus-posting-styles
-        '((".*" (address "Nasser Alkmim <nasser.alkmim@gmail.com>"))
-          ("work" (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")))))
+        '((".*" ; matches all groups of messages
+           (address "Nasser Alkmim <nasser.alkmim@gmail.com>")
+           ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 nasser.alkmim@gmail.com"))
+          ("nnimap+work" ; matches only 'work' group
+           (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
+           ("X-Message-SMTP-Method" "smtp smtp.uibk.com 587 nasser.alkmim@uibk.ac.at")))))
 
 (use-package sendmail
   :config
