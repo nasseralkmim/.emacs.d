@@ -3132,8 +3132,12 @@ its results, otherwise display STDERR with
 
   (setq user-mail-address "nasser.alkmim@gmail.com"
         gnus-select-method '(nnnil)
-        gnus-secondary-select-methods '((nntp "news.gmane.io")
-                                        (nnimap "imap.gmail.com"))
+        gnus-secondary-select-methods '((nntp "news"
+                                              (nntp-address "news.gmane.io"))
+                                        (nnimap "personal"
+                                                (nnimap-address "imap.gmail.com"))
+                                        (nnimap "work"
+                                                (nnimap-address "exchange.uibk.ac.at")))
         message-send-mail-function 'smtpmail-send-it
         gnus-summary-line-format "%U%R%z %d %I%(%[%-20,20n%]%) %s\n" ; add date and make it smaller
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
@@ -3161,6 +3165,13 @@ its results, otherwise display STDERR with
   :general
   ('normal gnus-group-mode-map "<tab>" (general-predicate-dispatch 'gnus-topic-show-topic
                      (gnus-topic-visible-p) 'gnus-topic-hide-topic)))
+
+(use-package gnus-msg
+  :straight (:type built-in)
+  :config
+  (setq gnus-posting-styles
+        '((".*" (address "Nasser Alkmim <nasser.alkmim@gmail.com>"))
+          ("work" (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")))))
 
 (use-package sendmail
   :config
@@ -3272,8 +3283,19 @@ its results, otherwise display STDERR with
 
 ;; translation package
 (use-package go-translate
+  :commands translate/de->en
   :config
-  (setq gts-translate-list '(("en" "de") ("de" "pt") ("de" "en") ("pt" "de"))))
+  (setq gts-translate-list '(("de" "en") ("de" "pt") ("de" "en") ("pt" "de")))
+  (defun translate/de->en ()
+    "Translate from German to English."
+    (interactive)
+    (let ((gts-translate-list '(("de" "en")))
+          (gts-default-translator
+           (gts-translator
+            :picker (gts-prompt-picker :single t)
+            :engines (list (gts-google-engine))
+            :render (gts-buffer-render))))
+      (gts-translate gts-default-translator))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
