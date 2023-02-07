@@ -3149,8 +3149,9 @@ its results, otherwise display STDERR with
         gnus-check-new-newsgroups nil  ; make start up faster
         gnus-show-threads nil            ; if nil can make faster, threads again with T T
         gnus-use-cross-reference nil
-        ;; for sync different machines
-        gnus-home-directory "~/.emacs.d"))
+        gnus-home-directory "~/.emacs.d" ; for sync different machines
+        gnus-permanently-visible-groups "INBOX" ; alweys show inbox group
+        ))
 
 ;; for setting keybindings after evil-collection
 (use-package gnus-sum
