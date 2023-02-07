@@ -8,7 +8,8 @@
     (((background light)) (:foreground "#7b5000" :weight medium :slant italic)))
   "Face for comments in light and dark background.")
 
-;; almost black and almost white
+;; almost black (#222222) and almost white (#f2f2f2)
+;; https://anthonyhobday.com/sideprojects/saferules/
 (defface my-default-face
   '((((background dark)) (:foreground  "#f2f2f2" :background "#222222" ))
     (((background light)) (:foreground "#222222" :backgrond "#f2f2f2")))
