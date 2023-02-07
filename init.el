@@ -3306,7 +3306,19 @@ its results, otherwise display STDERR with
             :picker (gts-prompt-picker :single t)
             :engines (list (gts-google-engine))
             :render (gts-buffer-render))))
-      (gts-translate gts-default-translator))))
+      (gts-translate gts-default-translator)))
+  (defun translate/en->de ()
+    "Translate from English to German."
+    (interactive)
+    (let ((gts-translate-list '(("en" "de")))
+          (gts-default-translator
+           (gts-translator
+            :picker (gts-prompt-picker :single t)
+            :engines (list (gts-google-engine))
+            :render (gts-buffer-render))))
+      (gts-translate gts-default-translator)))
+
+  )
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
