@@ -2221,11 +2221,11 @@ Only if there is more than one window opened."
   ;; :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
   :demand
-  :init
-  ;; built-in command repeater (like hydra)
-  (repeat-mode t)
+  :config
   ;; useful to resize windows
-  (setq repeat-keep-prefix t))
+  (setq repeat-keep-prefix t)
+  ;; built-in command repeater (like hydra)
+  (repeat-mode t))
 
 ;; built in windows resize functions
 (use-package window
