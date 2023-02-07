@@ -8,8 +8,15 @@
     (((background light)) (:foreground "#7b5000" :weight medium :slant italic)))
   "Face for comments in light and dark background.")
 
+;; almost black and almost white
+(defface my-default-face
+  '((((background dark)) (:foreground  "#f2f2f2" :background "#222222" ))
+    (((background light)) (:foreground "#222222" :backgrond "#f2f2f2")))
+  "Face for default text in light and dark background.")
+
 (custom-theme-set-faces
  `seralk
+ `(default ((t (:inherit my-default-face))))
  ;; latex
  `(font-latex-sectioning-1-face ((t (:weight bold :slant oblique :box t :inherit outline-1))))
  `(font-latex-sectioning-2-face ((t (:weight bold underline t :inherit outline-2))))
