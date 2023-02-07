@@ -1247,6 +1247,7 @@ graphics."
   :hook
   (text-mode . flyspell-mode)
   (prog-mode . flyspell-prog-mode) 
+  (message-send . flyspell-mode)
   :config
   ;; husnpell is alternative to aspell
   ;; (setq ispell-program-name "aspell")	; dictionary /usr/share/hunspell
@@ -2778,6 +2779,7 @@ Only if there is more than one window opened."
   ;; don't add fringe, does not play nicely with org indent
   (org-modern-block-fringe nil))
 
+;; usefull for email composing
 (use-package flymake-grammarly
   :config
   (setq flymake-grammarly-check-time 0.2)
@@ -3166,6 +3168,7 @@ its results, otherwise display STDERR with
   ('normal gnus-group-mode-map "<tab>" (general-predicate-dispatch 'gnus-topic-show-topic
                      (gnus-topic-visible-p) 'gnus-topic-hide-topic)))
 
+;; use email (and smpt server) according to group
 (use-package gnus-msg
   :straight (:type built-in)
   :config
@@ -3174,10 +3177,12 @@ its results, otherwise display STDERR with
   (setq gnus-posting-styles
         '((".*" ; matches all groups of messages
            (address "Nasser Alkmim <nasser.alkmim@gmail.com>")
+           (signature "Nasser Alkmim \n +43 677 6408 9171")
            ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 nasser.alkmim@gmail.com"))
-          ("nnimap+work" ; matches only 'work' group
+          ("work" ; matches only 'work' group
            (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
-           ("X-Message-SMTP-Method" "smtp smtp.uibk.com 587 nasser.alkmim@uibk.ac.at")))))
+           (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
+           ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))))
 
 (use-package sendmail
   :config
