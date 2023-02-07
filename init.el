@@ -2750,6 +2750,7 @@ Only if there is more than one window opened."
           "\\*xref\\*"
           "\\*eldoc\\*"                   ; eldoc buffer
           "Help\\*$"
+          "Translate\\*$"               ; gts translate
           "\\*Python\\*"
           compilation-mode))
   (popper-mode +1)
