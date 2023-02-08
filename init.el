@@ -978,6 +978,7 @@ graphics."
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
+          (:flags . "-Wall -Werror")    ; avoid all warnings
           (:exports . "results")))
   ;; same for C
   (setq org-babel-default-header-args:C
