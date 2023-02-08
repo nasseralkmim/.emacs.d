@@ -383,16 +383,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; match components based on regex
   ;; components separated by space
   (setq orderless-matching-styles '(orderless-regexp)
-        orderless-style-dispatchers '(flex-if-twiddle
+        orderless-style-dispatchers '(
+                                      flex-if-twiddle
                                       literal-if-equal
                                       without-if-bang)))
 
 ;; default completion framework
-(use-package simple :disabled
+(use-package simple
   :straight (:type built-in)
-  :general
-  (minibuffer-mode-map "C-n" 'minibuffer-next-completion)
-  (minibuffer-mode-map "C-p" 'minibuffer-previous-completion)
+  ;; :general
+  ;; (minibuffer-mode-map "C-n" 'minibuffer-next-completion)
+  ;; (minibuffer-mode-map "C-p" 'minibuffer-previous-completion)
   :config
   ;; first TAB shows candidates
   ;; second TAB switches to the candidates buffer
@@ -3003,7 +3004,7 @@ its results, otherwise display STDERR with
   )
 
 (use-package gdb
-  :straight nil
+  :straight (:type built-in)
   :config
   (setq gdb-locals-value-limit 1000
         ;; use gdb layout and just the info locals
