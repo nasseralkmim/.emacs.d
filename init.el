@@ -2113,10 +2113,8 @@ Only if there is more than one window opened."
   :config
   (setq shr-use-fonts t
         shr-use-colors t                          ;  colours
-        shr-inhibit-images nil			  ; inhibit junkyimages
         shr-max-image-proportion .5
-        shr-discard-aria-hidden t       ; don't render tegs with aria-hidden=true
-        shr-buller "• "
+        shr-bullet "• "
         browse-url-browser-function 'eww-browse-url ; open in eww by default
         eww-auto-rename-buffer t                    ; each page on its own buffer
         eww-search-prefix "https://www.google.com/search?hl=en&lr=lang_en&q="))
@@ -3268,7 +3266,7 @@ its results, otherwise display STDERR with
 ;; https://panadestein.github.io/emacsd/#org602eb51
 ;; add indentation, background color https://github.com/chenyanming/shrface#hacking-the-shr-tag-pre-highlightel
 (use-package shr-tag-pre-highlight
-  :after shr
+  :after shrface
   :init
   (defun shrface-shr-tag-pre-highlight (pre)
     "Highlighting code in PRE."
@@ -3301,15 +3299,12 @@ its results, otherwise display STDERR with
                '(pre . shrface-shr-tag-pre-highlight)))
 
 ;; extend eww/shr with org features
-(use-package shrface
+(use-package shrface :disabled
   :general
   ('normal shrface-mode-map "<tab>" (general-predicate-dispatch nil
                                             (outline-on-heading-p) 'outline-cycle))
   :hook
   (eww-after-render . shrface-mode)
-  (eww-after-render . outline-minor-mode)
-  :custom-face
-  (shrface-h3-face ((t (:inherit org-link :extend t))))
   :config
   (shrface-basic)
   (shrface-trial)
