@@ -3266,7 +3266,9 @@ its results, otherwise display STDERR with
                '(pre . shr-tag-pre-highlight)))
 
 ;; https://panadestein.github.io/emacsd/#org602eb51
+;; add indentation, background color https://github.com/chenyanming/shrface#hacking-the-shr-tag-pre-highlightel
 (use-package shr-tag-pre-highlight
+  :after shr
   :init
   (defun shrface-shr-tag-pre-highlight (pre)
     "Highlighting code in PRE."
@@ -3295,26 +3297,27 @@ its results, otherwise display STDERR with
       (add-face-text-property start end '(:background "#1f2329" :extend t))
       (shr-ensure-newline)
       (insert "\n")))
-  :config
   (add-to-list 'shr-external-rendering-functions
                '(pre . shrface-shr-tag-pre-highlight)))
 
 ;; extend eww/shr with org features
 (use-package shrface
   :general
-  ('normal shrface-mode-map "TAB" 'shrface-outline-cycle)
+  ('normal shrface-mode-map "<tab>" (general-predicate-dispatch nil
+                                            (outline-on-heading-p) 'outline-cycle))
   :hook
   (eww-after-render . shrface-mode)
+  (eww-after-render . outline-minor-mode)
+  :custom-face
+  (shrface-h3-face ((t (:inherit org-link :extend t))))
   :config
   (shrface-basic)
   (shrface-trial)
-  (shrface-default-keybindings)
-  (setq shrface-href-versatile t
-        shrface-bullets-bullet-list '("\*"))
-  ;; after loading
-  (general-def shrface-mode-map "TAB" nil) ; use to jump links
-  (general-def shrface-mode-map "<backtab>" nil) ; dont need outline-buffer
-  )
+  (setq
+   ;; versatile is messing with links (adding a '_' on a new line)
+   shrface-href-versatile nil        ; different face for different kinds of links (http, file, ...)
+   shrface-toggle-bullets t        ; disable bullets (annoyingly breaking link line)
+   shrface-bullets-bullet-list '("\*")))
 
 (use-package speedbar 
   :straight (:type built-in))
