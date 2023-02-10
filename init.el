@@ -3121,7 +3121,7 @@ its results, otherwise display STDERR with
 ;; for reading email lists
 (use-package gnus
   :general
-  ('normal "C-c C-m" 'gnus) 
+  ('normal "C-x C-m" 'gnus) 
   :hook
   (gnus . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
@@ -3131,8 +3131,6 @@ its results, otherwise display STDERR with
   ;; so summary line aligned
   (gnus-summary-normal-unread  ((t (:family "Iosevka SS12"))))
   :config
-  (general-def 'normal gnus-group-mode-map "RET" '(lambda () (interactive) (gnus-group-select-group 30))) ; select last 30
-
   (setq user-mail-address "nasser.alkmim@gmail.com"
         gnus-select-method '(nnnil)
         gnus-secondary-select-methods '((nntp "news"
