@@ -654,12 +654,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('(normal visual) :prefix "SPC" "l" 'evil-last-non-blank)
   ('(normal visual) :prefix "SPC" "h" 'evil-first-non-blank)
   ('normal :prefix "SPC" "a" 'evil-append-line)
-  ('normal :prefix "SPC" "x s" 'save-buffer)
   ('(normal visual) "[ ]" 'evil-next-close-paren)
   ('(normal visual) "] [" 'evil-previous-open-paren)
   ('normal "j" 'evil-next-visual-line)
   ('normal "k" 'evil-previous-visual-line)
-  ('normal "z q" 'evil-scroll-line-to-top)
   ('normal "C-c r" nil)
   ('normal "C-S-o" 'evil-jump-forward)
   :config
@@ -1169,6 +1167,7 @@ graphics."
                                    ("" "svg"  nil)
                                    ("" "mathrsfs" nil) ; for command mathscr (Calligraphic letters)
                                    ("" "bm, upgreek")
+                                   ("" "algorithm, algpseudocode")
                                    ("a4paper, margin=20mm" "geometry" nil)))
 
   (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil)))
