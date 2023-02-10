@@ -2234,9 +2234,8 @@ Only if there is more than one window opened."
   :general
   ("C-c w" '(:keymap resize-window-repeat-map))
   ("C-x C-o" 'other-window)
-  (resize-window-repeat-map "j" 'shrink-window)
-  (resize-window-repeat-map "w" 'shrink-window)
-  (resize-window-repeat-map "k" 'enlarge-window)
+  (resize-window-repeat-map "j" 'enlarge-window)
+  (resize-window-repeat-map "k" 'shrink-window)
   (resize-window-repeat-map "h" 'shrink-window-horizontally)
   (resize-window-repeat-map "l" 'enlarge-window-horizontally))
 
