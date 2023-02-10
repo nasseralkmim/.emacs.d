@@ -1167,6 +1167,8 @@ graphics."
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
                                    ("" "svg"  nil)
+                                   ("" "mathrsfs" nil) ; for command mathscr (Calligraphic letters)
+                                   ("" "bm, upgreek")
                                    ("a4paper, margin=20mm" "geometry" nil)))
 
   (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil)))
