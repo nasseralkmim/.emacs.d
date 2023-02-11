@@ -2637,7 +2637,10 @@ Only if there is more than one window opened."
   (prog-mode . which-function-mode))
 
 ;; work git servers (forges)
-(use-package forge :disabled
+;; uses 'Ghub' to access github/gitlab
+;; need to set 'git config --global github.user <>'
+(use-package forge
+  :demand
   :after magit)
 
 ;; mass copy-paste or copy-move (analogous to cut-paste) for dired
