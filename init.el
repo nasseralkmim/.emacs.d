@@ -131,6 +131,8 @@
    window-combination-resize t) ; resize windows proportionaly
 
   (setq yank-pop-change-selection t)    ;change selection when using yank pop
+
+  (blink-cursor-mode -1)                ; don't blink the cursor.
   )
 
 (use-package pixel-scroll
@@ -192,7 +194,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            (scale (if (boundp 'org-format-latex-options)
                       (plist-get org-format-latex-options :scale)
                     1.0))
-           (new-scale (* scale 1.1)))
+           (new-scale (* scale 1.15)))
       ;; change size of images on org buffers
       (dolist (buffer (buffer-list))
         (with-current-buffer buffer
@@ -3122,6 +3124,7 @@ its results, otherwise display STDERR with
   (markdown-mode . visual-line-mode))
 
 ;; for reading email lists
+;; summary marks: [[info:gnus#Read Articles][gnus#Read Articles]]
 (use-package gnus
   :general
   ('normal "C-x C-m" 'gnus) 
@@ -3392,5 +3395,13 @@ its results, otherwise display STDERR with
            (command "killall openconnect")
            (default-directory "/sudo::"))
       (shell-command command))))
+
+;; Shortcut to open notes directory
+(use-package notes
+  :straight nil
+  :general
+  ("<f8>" (lambda ()
+            (interactive)
+            (find-file "/home/nasser/SeaDrive/My Libraries/notes"))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
