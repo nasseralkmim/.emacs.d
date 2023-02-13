@@ -1324,7 +1324,9 @@ graphics."
   :init
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
+  (add-to-list 'completion-at-point-functions #'cape-symbol)
   (add-to-list 'completion-at-point-functions #'cape-ispell)
+  (add-to-list 'completion-at-point-functions #'cape-history)
   (add-to-list 'completion-at-point-functions #'cape-tex)
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
@@ -3154,6 +3156,7 @@ its results, otherwise display STDERR with
         gnus-show-threads nil            ; if nil can make faster, threads again with T T
         gnus-use-cross-reference nil
         gnus-home-directory "~/.emacs.d" ; for sync different machines
+        gnus-asynchronous t
         ))
 
 ;; highlight different groups
