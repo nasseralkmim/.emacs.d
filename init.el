@@ -160,7 +160,9 @@
   :straight nil
   :custom-face 
   ;; victor mono sometimes is nice for comments
+  ;; 'constant'
   (font-lock-comment-face ((t (:family "Victor Mono" :height .95))))
+  (font-lock-constant-face ((t (:height 1.05 :family "Iosevka SS12"))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
   (default  ((t (:family "Iosevka SS12"))))
@@ -1259,6 +1261,7 @@ graphics."
   ;; (ispell-set-spellchecker-params) ; makes initial load slow...
 
   (setq flyspell-issue-message-flag nil ; don't emit messages
+        ;; '--camel-case' 
         ispell-extra-args '("--sug-mode=ultra" "--lang=en_US" "--camel-case")
         ispell-personal-dictionary "~/.dotfiles/hunspell/.aspell.en.pws"))
 
