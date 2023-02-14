@@ -1,3 +1,6 @@
+;;; Seralk-theme --- Summary
+;;; Commentary:
+;;; Code:
 (deftheme seralk)
 
 ;; custom face for comments
@@ -26,9 +29,11 @@
  `(font-latex-sectioning-5-face ((t (:slant normal :inherit outline-7))))
  `(font-latex-string-face ((t (:foreground "saddle brown"))))
  ;; general
- `(mode-line-inactive ((t (:box (:line-width (-1 . -1) :style released-button)))))
+ `(mode-line-inacztive ((t (:box (:line-width (-1 . -1) :style released-button)))))
+ `(lazy-highlight ((t (inherit match :box (:line-width (-1 . -1) :style nil)))))
+ `(isearch ((t (:inherit match))))
  ;; evil
- `(evil-snipe-matches-face ((t (:inherit match :box (:line-width (-1 . -1) :style nil)))))
+ `(evil-snipe-matches-face ((t (:inherit lazy-highlight))))
  `(evil-snipe-first-match-face ((t (:inherit evil-snipe-matches-face))))
  ;; org
  `(org-meta-line ((t (:inherit font-lock-builtin-face :weight light :slant italic))))
@@ -64,3 +69,4 @@
  )
 
 (provide-theme 'seralk)
+;;; seralk-theme.el ends here.

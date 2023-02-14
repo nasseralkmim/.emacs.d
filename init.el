@@ -3228,6 +3228,14 @@ its results, otherwise display STDERR with
         smtpmail-stream-type 'starttls
         smtpmail-smtp-service 587))
 
+;; database for email completion
+(use-package bbdb
+  :after gnus
+  :demand
+  :config
+  (bbdb-initialize 'gnus 'message)
+  (setq bbdb-complete-mail-allow-cycling t))
+
 ;; there is no language server for it yet
 (use-package chapel-mode :disabled
   :mode ("\\.chpl\\'" . 'chapel-mode))
