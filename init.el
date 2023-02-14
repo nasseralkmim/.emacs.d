@@ -703,8 +703,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil-snipe
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
   :general
-  ('normal "f" 'evil-snipe-f
-           "t" 'evil-snipe-s)
+  ('normal evil-snipe-override-mode-map "f" 'evil-snipe-f)
   :after evil
   :config
   (evil-snipe-override-mode 1)
@@ -713,8 +712,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; "f [" goes to parenthesis or bracket
   (push '(?\[ "[[{(]") evil-snipe-aliases)
   (push '(?\] "[]})]") evil-snipe-aliases)
-  ;; (evil-snipe-def 2 inclusive "t" "T")  ;define t to be like s
-  )
+  ;; define t to be like s 
+  (evil-snipe-def 2 inclusive "t" "T"))
 
 ;; visualize evil commands
 (use-package evil-goggles
@@ -2188,7 +2187,7 @@ Only if there is more than one window opened."
   (when (string= system-name "ryzen-ms7c37")
     (setq terminal-here-terminal-command 'gnome-terminal)))
 
-(use-package keycast :disabled
+(use-package keycast
   :commands keycast-mode keycast-log-mode)
 
 (use-package gif-screencast :disabled
@@ -3329,31 +3328,10 @@ its results, otherwise display STDERR with
 
 ;; translation package
 (use-package go-translate
-  :commands translate/de->en
+  :general
+  ("C-h t" 'gts-do-translate)     ; overrides the tutorial, but ok...
   :config
-  (setq gts-translate-list '(("de" "en") ("de" "pt") ("de" "en") ("pt" "de")))
-  (defun translate/de->en ()
-    "Translate from German to English."
-    (interactive)
-    (let ((gts-translate-list '(("de" "en")))
-          (gts-default-translator
-           (gts-translator
-            :picker (gts-prompt-picker :single t)
-            :engines (list (gts-google-engine))
-            :render (gts-buffer-render))))
-      (gts-translate gts-default-translator)))
-  (defun translate/en->de ()
-    "Translate from English to German."
-    (interactive)
-    (let ((gts-translate-list '(("en" "de")))
-          (gts-default-translator
-           (gts-translator
-            :picker (gts-prompt-picker :single t)
-            :engines (list (gts-google-engine))
-            :render (gts-buffer-render))))
-      (gts-translate gts-default-translator)))
-
-  )
+  (setq gts-translate-list '(("de" "en") ("de" "pt") ("pt" "en"))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
