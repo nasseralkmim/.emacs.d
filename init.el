@@ -3231,10 +3231,13 @@ its results, otherwise display STDERR with
 ;; database for email completion
 (use-package bbdb
   :after gnus
-  :demand
-  :config
-  (bbdb-initialize 'gnus 'message)
-  (setq bbdb-complete-mail-allow-cycling t))
+  :hook
+  (gnus-startup . bbdb-insinuate-gnus)
+  (mail-setup . bbdb-insinuate-sendmail))
+
+(use-package dianyou
+  :general
+  ('normal gnus-summary-mode-map "&" 'dianyou-email-view-in-web-ui))
 
 ;; there is no language server for it yet
 (use-package chapel-mode :disabled
