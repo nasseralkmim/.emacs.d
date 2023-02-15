@@ -514,7 +514,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-to-list 'display-buffer-alist
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
-                 (window-parameters (mode-line-format . none)))))
+                 (window-parameters (mode-line-format . none))))
+  ;; change 'describe-symbol' to 'helpful-symbol'
+  (add-to-list 'embark-default-action-overrides '(describe-symbol . helpful-symbol)))
 
 ;; allows consult previews as you move around an auto-updating embark collect
 ;; buffer
