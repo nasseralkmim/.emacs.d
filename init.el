@@ -2761,6 +2761,7 @@ Only if there is more than one window opened."
           "Help\\*$"
           "Translate\\*$"               ; gts translate
           "\\*Python\\*"
+          ("\\*BBDB\\*" . hide)         ; for contact database
           compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
@@ -3158,8 +3159,7 @@ its results, otherwise display STDERR with
         gnus-show-threads nil            ; if nil can make faster, threads again with T T
         gnus-use-cross-reference nil
         gnus-home-directory "~/.emacs.d" ; for sync different machines
-        gnus-asynchronous t
-        ))
+        gnus-asynchronous t))
 
 ;; highlight different groups
 (use-package gnus :disabled
@@ -3230,10 +3230,21 @@ its results, otherwise display STDERR with
 
 ;; database for email completion
 (use-package bbdb
-  :after gnus
+  :after (:any gnus message)
   :hook
   (gnus-startup . bbdb-insinuate-gnus)
-  (mail-setup . bbdb-insinuate-sendmail))
+  (mail-setup . bbdb-insinuate-sendmail)
+  (message-mode-hook . (lambda ()
+                         (add-to-list 'completion-at-point-functions #'bbdb-complete-mail)))
+  :init
+  (bbdb-initialize 'gnus 'message)
+  ;; auto update database
+  (bbdb-mua-auto-update-init 'gnus 'message)
+  :config
+  (setq bbdb-mua-auto-update-p 'create   ; create contact if it does not exist
+        ;; not actually working... using popper instead
+        bbdb-mua-pop-up nil             ; don't pop up contact list
+        ))
 
 (use-package dianyou
   :general
