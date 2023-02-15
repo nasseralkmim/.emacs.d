@@ -1141,10 +1141,7 @@ graphics."
   :straight nil
   :after org
   :init
-  (setq org-agenda-files (quote ("~/OneDrive/Org/gtd.org"
-                                 "~/OneDrive/Org/notes.org"
-                                 "~/OneDrive/Org/journal.org"
-                                 "~/OneDrive/Org/gcal.org"))))
+  (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/log.org")))
 
 (use-package ox-latex
   :straight nil
