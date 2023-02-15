@@ -2745,6 +2745,8 @@ Only if there is more than one window opened."
   (popper-mode-map "C-`" 'popper-toggle-latest)
   (popper-mode-map "C-@" 'popper-toggle-latest) ; for term
   (popper-mode-map "C-M-`" 'popper-cycle)
+  ('normal popper-mode-map "q" (general-predicate-dispatch nil
+                                 (popper-popup-p (current-buffer)) 'popper-kill-latest-popup))
   :init
   ;; treat those as popups
   (setq popper-reference-buffers
