@@ -1247,8 +1247,9 @@ graphics."
   (setq org-download-screenshot-method "convert.exe clipboard: %s"))
 
 ;; languages spell checker
-;; apparently, aspell is faster than huspell http://aspell.net/test/cur/
-;; aspell need to install 'yay aspell-us'
+;; apparently, Aspell is faster than Hunspell http://aspell.net/test/cur/
+;; aspell need to install dictionaries with 'yay aspell-us' ('pt' and 'de')
+;; available dicts: 'aspell dump dicts'
 (use-package flyspell
   :if (eq system-type 'gnu/linux)
   :hook
@@ -1261,9 +1262,14 @@ graphics."
   ;; (ispell-set-spellchecker-params) ; makes initial load slow...
 
   (setq flyspell-issue-message-flag nil ; don't emit messages
-        ;; '--camel-case' 
-        ispell-extra-args '("--sug-mode=ultra" "--lang=en_US" "--camel-case")
-        ispell-personal-dictionary "~/.dotfiles/hunspell/.aspell.en.pws"))
+        ;; '--camel-case' check camel case variables... maybe useful
+        ;; '--sug-mode' suggestion mode 'ultra' is more accurate
+        ;; '--ignore-case' when checking
+        ;; '--extra-dicts' use extra dictionaries
+        ;; the user dictionary files must be defaults in '~/'
+        ispell-extra-args '("--sug-mode=ultra" "--camel-case" "--ignore-case=true")
+        ;; use this mixed language as default dictionary
+        ispell-local-dictionary-alist '((nil "[A-Za-z]" "[^A-Za-z]" "[']" nil ("--lang=en_US,pt_BR,de_DE") nil utf-8))))
 
 ;; flyspell uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
