@@ -746,7 +746,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after evil org
   :general
   ('normal org-mode-map "x" 'evil-delete-char)
-  ('normal org-mode-map "z b" 'evil-scroll-line-to-bottom)
   :hook (org-mode . evil-org-mode)
   :config
   (require 'evil-org-agenda)
@@ -3163,6 +3162,7 @@ its results, otherwise display STDERR with
         gnus-show-threads nil            ; if nil can make faster, threads again with T T
         gnus-use-cross-reference nil
         gnus-home-directory "~/.emacs.d" ; for sync different machines
+        gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         gnus-asynchronous t))
 
 ;; highlight different groups
