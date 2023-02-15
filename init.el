@@ -3251,6 +3251,7 @@ its results, otherwise display STDERR with
         ))
 
 (use-package dianyou
+  :after gnus
   :general
   ('normal gnus-summary-mode-map "&" 'dianyou-email-view-in-web-ui))
 
