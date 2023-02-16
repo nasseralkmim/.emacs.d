@@ -1264,7 +1264,7 @@ graphics."
         ;; '--ignore-case' when checking
         ;; '--extra-dicts' use extra dictionaries
         ;; the user dictionary files must be defaults in '~/'
-        ispell-extra-args '("--sug-mode=ultra" "--camel-case" "--ignore-case=true")
+        ispell-extra-args '("--sug-mode=ultra" "--camel-case=true" "--ignore-case=true")
         ;; use this mixed language as default dictionary
         ispell-local-dictionary-alist '((nil "[A-Za-z]" "[^A-Za-z]" "[']" nil ("--lang=en_US,pt_BR,de_DE") nil utf-8))))
 
