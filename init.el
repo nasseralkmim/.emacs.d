@@ -1334,6 +1334,7 @@ graphics."
   (add-to-list 'completion-at-point-functions #'cape-ispell)
   (add-to-list 'completion-at-point-functions #'cape-history)
   (add-to-list 'completion-at-point-functions #'cape-tex)
+  ;; cape does not support 'case-replace' yet: https://github.com/minad/cape/issues/51
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
 
@@ -1368,10 +1369,7 @@ graphics."
 (use-package dabbrev
   :general
   ("M-/" 'dabbrev-completion)           ; this can be completed with corfu
-  ("C-M-/" 'dabbrev-expand)
-  :config
-  ;; don't change case
-  (setq dabbrev-case-replace nil))
+  ("C-M-/" 'dabbrev-expand))
 
 ;; completion in region
 (use-package company :disabled
