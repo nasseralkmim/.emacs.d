@@ -3418,4 +3418,13 @@ its results, otherwise display STDERR with
             (interactive)
             (find-file "/home/nasser/SeaDrive/My Libraries/notes"))))
 
+;; AI code completion 
+;; need to downlaod proprietary language server binary 'codeium-install'
+(use-package codeium
+  :straight (codeium :type git :host github :repo "Exafunction/codeium.el")
+  :after corfu
+  :init
+  (setq codeium/metadata/api_key "ff39817e-5353-4193-9369-91f33c9cb8c4")
+  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
