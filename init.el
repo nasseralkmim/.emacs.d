@@ -3241,8 +3241,6 @@ its results, otherwise display STDERR with
   :hook
   (gnus-startup . bbdb-insinuate-gnus)
   (mail-setup . bbdb-insinuate-sendmail)
-  (message-mode-hook . (lambda ()
-                         (add-to-list 'completion-at-point-functions #'bbdb-complete-mail)))
   :init
   (bbdb-initialize 'gnus 'message)
   ;; auto update database
