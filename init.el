@@ -3158,12 +3158,13 @@ its results, otherwise display STDERR with
         gnus-summary-line-format "%U%R%z %d %I%(%[%-20,20n%]%) %s\n" ; add date and make it smaller
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
         gnus-use-full-window nil       ; don't use entire window!
-        gnus-fetch-old-headers t       ; build from already read mail
+        gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
         gnus-check-new-newsgroups nil  ; make start up faster
         gnus-show-threads nil            ; if nil can make faster, threads again with T T
         gnus-use-cross-reference nil
         gnus-home-directory "~/.emacs.d" ; for sync different machines
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
+        gnus-read-active-file nil        ; only read '.newsrc', speeds up
         gnus-asynchronous t))
 
 ;; highlight different groups
@@ -3189,6 +3190,18 @@ its results, otherwise display STDERR with
           ((< level 3) . my-group-face-3)
           ((zerop unread) . my-group-face-4)
           (t . my-group-face-5))))
+
+;; indicate threads more clear when in gui
+(use-package gnus
+  :when (display-graphic-p)
+  :config
+  (setq gnus-sum-thread-tree-root ""
+   gnus-sum-thread-tree-false-root ""
+   gnus-sum-thread-tree-single-indent ""
+   gnus-sum-thread-tree-indent "    "
+   gnus-sum-thread-tree-vertical "│   "
+   gnus-sum-thread-tree-leaf-with-other "├───"
+   gnus-sum-thread-tree-single-leaf "└───"))
 
 ;; for setting keybindings after evil-collection
 (use-package gnus-sum
