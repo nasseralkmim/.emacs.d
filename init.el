@@ -1243,24 +1243,20 @@ graphics."
   ;; add .exe to work within wsl2
   (setq org-download-screenshot-method "convert.exe clipboard: %s"))
 
-;; languages spell checker
+;; Languages spell checker
 ;; apparently, Aspell is faster than Hunspell http://aspell.net/test/cur/
 ;; aspell need to install dictionaries with 'yay aspell-us' ('pt' and 'de')
 ;; available dicts: 'aspell dump dicts'
-(use-package flyspell
+(use-package flyspell :disabled
   :if (eq system-type 'gnu/linux)
   :hook
   (text-mode . flyspell-mode)
   (prog-mode . flyspell-prog-mode) 
   (message-send . flyspell-mode)
   :config
-  ;; husnpell is alternative to aspell
-  ;; (setq ispell-program-name "aspell")	; dictionary /usr/share/hunspell
-  ;; (ispell-set-spellchecker-params) ; makes initial load slow...
-
   (setq flyspell-issue-message-flag nil ; don't emit messages
         ;; '--camel-case' check camel case variables... maybe useful
-        ;; '--sug-mode' suggestion mode 'ultra' is more accurate
+        ;; '--sug-mode' suggestion mode 'ultra' is the fastest
         ;; '--ignore-case' when checking
         ;; '--extra-dicts' use extra dictionaries
         ;; the user dictionary files must be defaults in '~/'
@@ -1268,7 +1264,26 @@ graphics."
         ;; use this mixed language as default dictionary
         ispell-local-dictionary-alist '((nil "[A-Za-z]" "[^A-Za-z]" "[']" nil ("--lang=en_US,pt_BR,de_DE") nil utf-8))))
 
-;; flyspell uses `hooks` and `sit-for` to delay
+;; Attempt to use multiple dictionaries with 'aspell'
+(use-package ispell-multi :disabled)
+
+;; 'husnpell' is alternative to 'aspell' that accepts multiple simultaneous dictionaries
+;; download 'hunspell' and the dictionaries 'yay hunspell hunspell-en (de, pt)
+;; run 'hunspell -D' to check where dictionaries are
+;; https://emacs.stackexchange.com/a/21379
+(use-package flyspell
+  :hook
+  (text-mode . flyspell-mode)
+  (prog-mode . flyspell-prog-mode) 
+  (message-send . flyspell-mode)
+  :config
+  (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
+  (setq ispell-dictionary "en_US,de_DE,pt_BR")
+  (ispell-set-spellchecker-params)
+  (ispell-hunspell-add-multi-dic "en_US,de_DE,pt_BR")
+  (setq ispell-personal-dictionary "~/.personal"))
+
+;; 'flyspell' uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
 (use-package flyspell-lazy
   :hook
@@ -1276,14 +1291,14 @@ graphics."
   :config
   (setq flyspell-lazy-idle-seconds 1))
 
-;; convenient functions for correcting
+;; Convenient functions for correcting with 'flyspell'.
 (use-package flyspell-correct
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
   ('normal flyspell-mode-map "[ ," 'flyspell-correct-wrapper)
   :after flyspell)
 
-;; attempt to make flyspell faster by restricting to region, instead of buffer
+;; Attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
 ;; if using 'wucuo', should not use 'flyspell-mode'
 (use-package wucuo :disabled
@@ -3155,7 +3170,14 @@ its results, otherwise display STDERR with
                                         (nnimap "work"
                                                 (nnimap-address "exchange.uibk.ac.at")))
         message-send-mail-function 'smtpmail-send-it
-        gnus-summary-line-format "%U%R%z %d %I%(%[%-20,20n%]%) %s\n" ; add date and make it smaller
+        gnus-summary-line-format (concat
+                                  "%U"  ; read status
+                                  "%R"  ; reply status
+                                  "%z "  ; score
+                                  "%d "  ; date
+                                  "%* %(%[%-20,20n%]%) " ; name
+                                  "%B"
+                                  "%I%s\n") 
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
         gnus-use-full-window nil       ; don't use entire window!
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
@@ -3191,7 +3213,7 @@ its results, otherwise display STDERR with
           ((zerop unread) . my-group-face-4)
           (t . my-group-face-5))))
 
-;; indicate threads more clear when in gui
+;; indicate threads more clear when in gui (need the %B int line format)
 (use-package gnus
   :when (display-graphic-p)
   :config
