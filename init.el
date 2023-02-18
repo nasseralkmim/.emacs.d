@@ -1140,8 +1140,9 @@ graphics."
 (use-package org-agenda
   :straight nil
   :after org
+  :general ("C-c a" 'org-agenda)
   :init
-  (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/log.org")))
+  (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")))
 
 (use-package ox-latex
   :straight nil
@@ -3457,5 +3458,20 @@ its results, otherwise display STDERR with
   :init
   (setq codeium/metadata/api_key "ff39817e-5353-4193-9369-91f33c9cb8c4")
   (add-to-list 'completion-at-point-functions #'codeium-completion-at-point))
+
+;; Sync between google calendar and org mode.
+;; It is a bit tricky to set up
+;; create a project here https://console.developers.google.com/project
+;; setup consent in the API & Services -> Credentials, then get the id/secrect
+;; in API & Services -> Library: enable Calendar API
+(use-package org-gcal
+  :after org
+  :demand ;need to require after setting the variables
+  :init 
+  (setq org-gcal-client-id "***REMOVED***"
+        org-gcal-client-secret "***REMOVED***"
+        org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")))
+  ;; stores OAuth token
+  (setq plstore-cache-passphrase-for-symmetric-encryption t))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
