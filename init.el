@@ -3174,9 +3174,9 @@ its results, otherwise display STDERR with
                                   "%U"  ; read status
                                   "%R"  ; reply status
                                   "%z "  ; score
-                                  "%d "  ; date
-                                  "%* %(%[%-20,20n%]%) " ; name
-                                  "%B"
+                                  "%d %*"  ; date
+                                  "%B"     ; thread tree stirng 
+                                  "%(%[%-20,20n%]%) " ; name
                                   "%I%s\n") 
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
         gnus-use-full-window nil       ; don't use entire window!
