@@ -1137,12 +1137,22 @@ graphics."
   :init
   (org-babel-lob-ingest "~/.emacs.d/lisp/scripts.org"))
 
+;; Agenda
+;; 'org-agenda-view-mode-dispatch' to view month/week 
+;; 'org-agenda-todo' change todo state
 (use-package org-agenda
   :straight nil
   :after org
-  :general ("C-c a" 'org-agenda)
+  :general
+  ("C-c a" 'org-agenda)
+  ('motion org-agenda-mode-map "gt" 'org-todo-list)
   :init
-  (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")))
+  (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")
+        org-agenda-window-setup 'current-window ; don't change my windows
+        ;; for capturing in agenda view 'org-agenda-capture'
+        org-default-notes-file "~/SeaDrive/My Libraries/notes/log-notes/notes.org"
+        )
+  )
 
 (use-package ox-latex
   :straight nil
