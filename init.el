@@ -27,7 +27,7 @@
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil; compute statistics about package initialization
+      use-package-compute-statistics t; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
@@ -1140,6 +1140,7 @@ graphics."
 ;; Agenda
 ;; 'org-agenda-view-mode-dispatch' to view month/week 
 ;; 'org-agenda-todo' change todo state
+;; 'org-todo-list' go to todo view (not scheduled)
 (use-package org-agenda
   :straight nil
   :after org
@@ -1688,7 +1689,7 @@ graphics."
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
         dired-auto-revert-buffer t
-        dired-listing-switches "-AGhlv --group-directories-first --time-style=long-iso"	; human readable format when in detail
+        dired-listing-switches "-AGhlv -lt --group-directories-first --time-style=long-iso"	; human readable format when in detail
         dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
         dired-recursive-copies 'always
         dired-recursive-deletes 'always
@@ -2255,6 +2256,7 @@ Only if there is more than one window opened."
 (use-package repeat
   ;; :if (string-greaterp emacs-version "28") ; need emacs > 28
   :straight (:type built-in)
+  :defer 1
   :demand
   :config
   ;; useful to resize windows

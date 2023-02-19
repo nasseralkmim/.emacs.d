@@ -2,6 +2,7 @@
 ;;; file-format: 9
 ["Michael" "Albinus" nil nil nil nil nil ("michael.albinus@gmx.de") nil "f95b5d10-159e-4f30-a63d-96ff404abe00" "2023-02-17 10:39:54 +0000" "2023-02-17 10:39:54 +0000" nil]
 ["Nasser" "Alkmim" nil nil nil nil nil ("nasser.alkmim@gmail.com") nil "98b7b1cf-c20f-49ce-ba69-dc599990b6fe" "2023-02-14 17:08:04 +0000" "2023-02-15 13:32:33 +0000" nil]
+["Arsen" "Arsenović" nil nil nil nil nil ("arsen@aarsen.me") nil "ac44824a-7d9b-4466-a182-309d3657e828" "2023-02-19 11:00:11 +0000" "2023-02-19 11:00:11 +0000" nil]
 ["Spencer" "Baugh" nil nil nil nil nil ("sbaugh@janestreet.com") nil "2c95f144-4681-47d5-9dcb-bd4b4dc77649" "2023-02-17 17:09:41 +0000" "2023-02-17 17:09:41 +0000" nil]
 ["Emanuel" "Berg" nil nil nil nil nil ("incal@dataswamp.org") nil "368a09f4-edc7-42c7-84af-084cce59fc3c" "2023-02-16 08:06:01 +0000" "2023-02-16 08:06:01 +0000" nil]
 ["Karthik" "Chikmagalur" nil nil nil nil nil ("karthikchikmagalur@gmail.com") nil "badffb01-3378-435e-918c-e9bde2825648" "2023-02-15 13:22:08 +0000" "2023-02-15 13:22:08 +0000" nil]
@@ -18,6 +19,7 @@
 ["Google" "Flights" nil nil nil nil nil ("noreply-travel@google.com") nil "8b52af17-5213-4682-8dbf-34abb369d036" "2023-02-16 13:58:06 +0000" "2023-02-16 13:58:06 +0000" nil]
 ["Eric" "Fraga" nil nil nil nil nil ("e.fraga@ucl.ac.uk") nil "df7d75f0-2bc3-48c0-b12a-f836be7ad03c" "2023-02-17 10:40:41 +0000" "2023-02-17 10:40:41 +0000" nil]
 ["Yuan" "Fu" nil nil nil nil nil ("casouri@gmail.com") nil "f4ee02c8-79fd-49cc-a49c-2e2452aa425c" "2023-02-17 10:35:06 +0000" "2023-02-17 10:35:06 +0000" nil]
+["Angelo" "Graziosi" nil nil nil nil nil ("angelo.g0@libero.it") nil "3be2e671-7555-46cd-bb2d-74576cd25ffa" "2023-02-19 11:00:17 +0000" "2023-02-19 11:00:17 +0000" nil]
 ["Pedro Andres Aranda" "Gutierrez" nil nil nil nil nil ("paaguti@gmail.com") nil "c03b6dc5-655e-4720-ad19-e1dec262d7b2" "2023-02-18 10:17:09 +0000" "2023-02-18 10:17:09 +0000" nil]
 ["Dmitry" "Gutov" nil nil nil nil nil ("dgutov@yandex.ru") nil "24a98d33-883b-4911-a912-235d1e5a06cd" "2023-02-15 13:21:51 +0000" "2023-02-15 13:21:51 +0000" nil]
 ["Gregory" "Heytings" nil nil nil nil nil ("gregory@heytings.org") nil "af49247c-f586-4271-9d6b-0ce9ca755d28" "2023-02-17 15:24:39 +0000" "2023-02-17 15:24:39 +0000" nil]
@@ -43,6 +45,7 @@
 [nil "reza" nil nil nil nil nil ("reza@housseini.me") nil "11ee9e4e-b3ad-48b6-92fa-d64bbf42dd29" "2023-02-17 10:40:49 +0000" "2023-02-17 10:40:49 +0000" nil]
 [nil "ri" nil nil nil nil nil ("ri@vincifii.com") nil "90b4ae7f-b126-40a2-8d33-c724f2c03801" "2023-02-17 07:31:17 +0000" "2023-02-17 07:31:17 +0000" nil]
 [nil "rueckgabe" nil nil nil nil nil ("rueckgabe@amazon.de") nil "a043d68a-e8db-40e6-9449-ebc09304af20" "2023-02-18 08:32:31 +0000" "2023-02-18 08:32:31 +0000" nil]
+["wifi" "service" nil nil nil nil nil ("wifi.service@wktirol.at") nil "04465b46-5d45-41e5-9cda-b1e523b412fe" "2023-02-19 18:53:25 +0000" "2023-02-19 18:53:25 +0000" nil]
 ["Richard" "Stallman" nil nil nil nil nil ("rms@gnu.org") nil "31d4cb7e-4fd5-40cd-910a-cfd205d81df4" "2023-02-19 07:57:41 +0000" "2023-02-19 07:57:41 +0000" nil]
 [nil "support" nil nil nil nil nil ("support@doveproofreading.com") nil "2a2afe6f-0595-4929-a508-a533861599f8" "2023-02-19 07:54:23 +0000" "2023-02-19 07:54:23 +0000" nil]
 ["Theodor" "Thornhill" nil nil nil nil nil ("theo@thornhill.no") nil "959c2ae7-b312-49dd-a94b-23ec205240a4" "2023-02-16 08:06:31 +0000" "2023-02-16 08:06:31 +0000" nil]
