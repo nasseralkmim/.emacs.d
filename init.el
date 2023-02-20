@@ -1145,7 +1145,9 @@ graphics."
   :straight nil
   :general
   ("C-c a" 'org-agenda)
-  ('motion org-agenda-mode-map "gt" 'org-todo-list)
+  ('motion org-agenda-mode-map
+           "gt" 'org-todo-list
+           "gd" 'org-agenda-view-mode-dispatch)
   :config
   (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")
         org-agenda-window-setup 'current-window ; don't change my windows
@@ -1977,8 +1979,6 @@ Only if there is more than one window opened."
   :hook
   (prog-mode . hl-todo-mode)
   (text-mode . hl-todo-mode)
-  :general
-  ('normal hl-todo-mode-map "g t" 'hl-todo-done)
   :config
   (defun hl-todo-done ()
     "Change text from TODO to DONE"
@@ -3482,6 +3482,8 @@ its results, otherwise display STDERR with
           org-gcal-client-secret psw
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
   ;; stores OAuth token
-  (setq plstore-cache-passphrase-for-symmetric-encryption t))
+  (setq
+   oauth2-auto-plstore "~/.emacs.d/secrets"
+   plstore-cache-passphrase-for-symmetric-encryption t))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
