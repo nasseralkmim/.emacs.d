@@ -743,13 +743,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil-org
   :straight (:includes evil-org-agenda)
   :diminish evil-org-mode
-  :after evil org
+  :after org
   :general
   ('normal org-mode-map "x" 'evil-delete-char)
-  :hook (org-mode . evil-org-mode)
+  :hook (org-mode . evil-org-mode))
+
+(use-package evil-org-agenda
+  :commands org-agenda
+  :demand
   :config
-  (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+  ;; change to my preferred after set keys
+  (general-def 'motion org-agenda-mode-map
+           "gt" 'org-todo-list
+           "gd" 'org-agenda-view-mode-dispatch))
 
 (use-package evil-surround
   :after evil
@@ -1145,9 +1152,6 @@ graphics."
   :straight nil
   :general
   ("C-c a" 'org-agenda)
-  ('motion org-agenda-mode-map
-           "gt" 'org-todo-list
-           "gd" 'org-agenda-view-mode-dispatch)
   :config
   (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")
         org-agenda-window-setup 'current-window ; don't change my windows
@@ -3476,14 +3480,23 @@ its results, otherwise display STDERR with
   :after org
   :demand ;need to require after setting the variables
   :init 
-  (let ((login (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
-        (psw (plist-get (nth 0 (auth-source-search :host "gcal")) :secret)))
-    (setq org-gcal-client-id login
-          org-gcal-client-secret psw
+  (let ((id (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
+        (secret (plist-get (nth 0 (auth-source-search :host "gcal")) :secret)))
+    (setq org-gcal-client-id id
+          org-gcal-client-secret secret
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
   ;; stores OAuth token
   (setq
-   oauth2-auto-plstore "~/.emacs.d/secrets"
+   oauth2-auto-plstore "~/.emacs.d/secrets/oauth2-auto.plist"
    plstore-cache-passphrase-for-symmetric-encryption t))
+
+;; Setup template for capture gcal 
+(use-package org-capture-template
+  :straight nil
+  :after org
+  :init
+  (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
+                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
+  )
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
