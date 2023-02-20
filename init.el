@@ -27,7 +27,7 @@
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics t; compute statistics about package initialization
+      use-package-compute-statistics nil; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
@@ -1483,6 +1483,7 @@ graphics."
 (use-package latex
   :straight auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
+  :commands TeX-command-sentinel
   :general
   ('normal outline-mode-map
            "g j" nil
@@ -2148,7 +2149,7 @@ Only if there is more than one window opened."
         shr-use-colors t                          ;  colours
         shr-max-image-proportion .5
         shr-bullet "• "
-        browse-url-browser-function 'eww-browse-url ; open in eww by default
+        browse-url-browser-function 'browse-url-default-browser ; open in eww by default
         eww-auto-rename-buffer t                    ; each page on its own buffer
         eww-search-prefix "https://www.google.com/search?hl=en&lr=lang_en&q="))
 
@@ -2836,14 +2837,12 @@ Only if there is more than one window opened."
   (setq virtual-comment-face 'lazy-highlight
         virtual-comment-default-file "~/.emacs.d/.evc"))
 
-;; improve org latex support
-(use-package org-auctex :disabled; does not play nicely when there is $ in shell src blocks
+;; Improve org latex support to use Auctex (faster and async)
+;; I don't know why it fails on the first preview call
+(use-package org-auctex ; :disabled; does not play nicely when there is $ in shell src blocks
   :after org
   :straight (org-auctex :type git :host github :repo "karthink/org-auctex")
-  :hook (org-mode . org-auctex-mode)
-  :general
-  ('normal org-mode-map "g p b" 'org-auctex-preview-buffer)
-  ('normal org-mode-map "g p c" 'org-auctex-preview-clearout-buffer))
+  :hook (org-mode . org-auctex-mode))
 
 ;; query for org
 (use-package org-ql :disabled
@@ -3477,9 +3476,11 @@ its results, otherwise display STDERR with
   :after org
   :demand ;need to require after setting the variables
   :init 
-  (setq org-gcal-client-id "***REMOVED***"
-        org-gcal-client-secret "***REMOVED***"
-        org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")))
+  (let ((login (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
+        (psw (plist-get (nth 0 (auth-source-search :host "gcal")) :secret)))
+    (setq org-gcal-client-id login
+          org-gcal-client-secret psw
+          org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
   ;; stores OAuth token
   (setq plstore-cache-passphrase-for-symmetric-encryption t))
 
