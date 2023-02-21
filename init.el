@@ -27,7 +27,7 @@
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil; compute statistics about package initialization
+      use-package-compute-statistics t; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
@@ -648,6 +648,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region))) evil-mc-known-commands))
 
 (use-package evil
+  :defer 0.5
   :diminish evil-mode
   :init
   (setq evil-want-keybinding nil ; preference for evil-collection
@@ -730,9 +731,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; unimpaired is a collection of commands with '[' or ']'
 (use-package evil-collection
+  :defer 1
   :diminish evil-collection-unimpaired-mode
   :after evil
-  :init
+  :config
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
         evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
@@ -748,9 +750,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal org-mode-map "x" 'evil-delete-char)
   :hook (org-mode . evil-org-mode))
 
+;; 'org-agenda' evil keybindings
 (use-package evil-org-agenda
   :commands org-agenda
-  :demand
   :config
   (evil-org-agenda-set-keys)
   ;; change to my preferred after set keys
@@ -1022,12 +1024,12 @@ graphics."
           ;; add tag variable to all python blocks... maybe not ideal, but usefull
           (:exports . "results"))))
 
-(use-package julia-mode
+(use-package julia-mode :disabled
   :mode ("\\.jl\\'" . julia-mode))
 
-(use-package julia-vterm)
+(use-package julia-vterm :disabled)
 
-(use-package ob-julia-vterm
+(use-package ob-julia-vterm :disabled
   :after org
   :commands org-babel-execute:julia-vterm
   :init
@@ -1287,11 +1289,11 @@ graphics."
 ;; run 'hunspell -D' to check where dictionaries are
 ;; https://emacs.stackexchange.com/a/21379
 (use-package flyspell
-  :hook
-  (text-mode . flyspell-mode)
-  (prog-mode . flyspell-prog-mode) 
-  (message-send . flyspell-mode)
+  :defer 1 ; add hook for 'text-mode' after 1s
   :config
+  (add-hook 'text-mode-hook 'flyspell-mode)
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode) 
+  (add-hook 'message-send-hook 'flyspell-mode)
   (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
   (setq ispell-dictionary "en_US,de_DE,pt_BR")
   (ispell-set-spellchecker-params)
@@ -1301,6 +1303,7 @@ graphics."
 ;; 'flyspell' uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
 (use-package flyspell-lazy
+  :after flyspell
   :hook
   (flyspell-mode . flyspell-lazy-mode)
   :config
@@ -1308,10 +1311,10 @@ graphics."
 
 ;; Convenient functions for correcting with 'flyspell'.
 (use-package flyspell-correct
+  :after flyspell
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
-  ('normal flyspell-mode-map "[ ," 'flyspell-correct-wrapper)
-  :after flyspell)
+  ('normal flyspell-mode-map "[ ," 'flyspell-correct-wrapper))
 
 ;; Attempt to make flyspell faster by restricting to region, instead of buffer
 ;; note: makes it slow when saving the buffer
@@ -3478,7 +3481,8 @@ its results, otherwise display STDERR with
 ;; in API & Services -> Library: enable Calendar API
 (use-package org-gcal
   :after org
-  :demand ;need to require after setting the variables
+  :commands org-gcal-sync
+  :demand
   :init 
   (let ((id (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
         (secret (funcall (plist-get (nth 0 (auth-source-search :host "gcal")) :secret))))
@@ -3495,6 +3499,14 @@ its results, otherwise display STDERR with
   :straight nil
   :after org
   :init
+  ;; Don't delete other windown when calling 'org-capture'
+  ;; https://stackoverflow.com/a/54251825
+  (defun my-org-capture-place-template-dont-delete-windows (oldfun &rest args)
+    (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
+      (apply oldfun args)))
+  (with-eval-after-load "org-capture"
+    (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
+
   (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
                                  (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")))))
 
