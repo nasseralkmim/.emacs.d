@@ -752,7 +752,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; 'org-agenda' evil keybindings
 (use-package evil-org-agenda
-  :commands org-agenda
+  :after org-agenda
+  :demand
   :config
   (evil-org-agenda-set-keys)
   ;; change to my preferred after set keys
