@@ -3481,7 +3481,7 @@ its results, otherwise display STDERR with
   :demand ;need to require after setting the variables
   :init 
   (let ((id (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
-        (secret (plist-get (nth 0 (auth-source-search :host "gcal")) :secret)))
+        (secret (funcall (plist-get (nth 0 (auth-source-search :host "gcal")) :secret))))
     (setq org-gcal-client-id id
           org-gcal-client-secret secret
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
@@ -3496,7 +3496,6 @@ its results, otherwise display STDERR with
   :after org
   :init
   (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
-                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
-  )
+                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
