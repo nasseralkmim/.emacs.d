@@ -3514,4 +3514,15 @@ its results, otherwise display STDERR with
   (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
                                  (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")))))
 
+;; Function to automatically search of stack overflow
+(use-package eww-stackoverflow
+  :straight nil
+  :general
+  ("M-<f12>" 'eww-stackexchange)
+  :init
+  (defun eww-stackexchange (search)
+    "Search of stackoverflow"
+    (interactive "sSearch terms: ")
+    (eww-browse-url (format "http://stackexchange.com/search?q=%s" (url-encode-url search) ))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
