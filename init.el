@@ -2153,8 +2153,8 @@ Only if there is more than one window opened."
   ;; (eww-after-render . (lambda () (eww-readable)))  ; does not work for all
   (eww-mode . visual-line-mode)
   :config
-  (setq shr-use-fonts t
-        shr-use-colors t                          ;  colours
+  (setq shr-use-fonts t                 ; change heading size
+        shr-use-colors t
         shr-max-image-proportion .5
         shr-bullet "• "
         browse-url-browser-function 'browse-url-default-browser ; open in eww by default

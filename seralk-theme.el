@@ -53,12 +53,13 @@
  `(iedit-occurrence ((t (:box (:line-width (-1 . -1))))))
  ;; `(ts-fold-replacement-face ((t (:box (:line-width (-1 . -1) :style nil)))))
  `(ts-fold-replacement-face ((t (:inherit font-lock-comment-face))))
- `(default ((t (:inherit 'default))))
+ `(default ((t (:inherit default))))
  `(variable-pitch-text ((t (:inherit variable-pitch))))
  ;; shr for eww
  `(shr-code ((t (:box (:line-width (-1 . -1) :color "gray80")))))
- `(shr-h3 ((t (:weight bold))))
+ `(shr-h3 ((t (:inherit default  :weight bold))))
  `(shr-h4 ((t (:slant italic))))
+ `(shr-link ((t (:inherit link :underline nil))))
  ;; eglot
  `(eglot-highlight-symbol-face ((t (:underline t :weight bold))))
  `(font-lock-comment-face ((t (:inherit my-font-lock-comment-face))))
