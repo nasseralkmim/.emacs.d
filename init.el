@@ -27,7 +27,7 @@
 ;; can also load with `:defer time`
 (straight-use-package 'use-package)
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics t; compute statistics about package initialization
+      use-package-compute-statistics nil; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
@@ -2798,6 +2798,7 @@ Only if there is more than one window opened."
           "Help\\*$"
           "Translate\\*$"               ; gts translate
           "\\*Python\\*"
+          "CAPTURE-.*"
           ("\\*BBDB\\*" . hide)         ; for contact database
           compilation-mode))
   (popper-mode +1)
@@ -3497,6 +3498,8 @@ its results, otherwise display STDERR with
 ;; Setup template for capture gcal 
 (use-package org-capture-template
   :straight nil
+  :general
+  ("C-c c" 'org-capture)
   :after org
   :init
   ;; Don't delete other windown when calling 'org-capture'
