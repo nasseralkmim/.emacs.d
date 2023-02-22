@@ -3501,7 +3501,6 @@ its results, otherwise display STDERR with
   :straight nil
   :general
   ("C-c c" 'org-capture)
-  :after org
   :init
   ;; Don't delete other windown when calling 'org-capture'
   ;; https://stackoverflow.com/a/54251825
