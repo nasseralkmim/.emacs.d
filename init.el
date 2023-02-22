@@ -1158,8 +1158,7 @@ graphics."
   :config
   (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")
         org-agenda-window-setup 'current-window ; don't change my windows
-        ;; for capturing in agenda view 'org-agenda-capture'
-        org-default-notes-file "~/SeaDrive/My Libraries/notes/log-notes/notes.org"))
+        ))
 
 (use-package ox-latex
   :straight nil
@@ -3510,8 +3509,15 @@ its results, otherwise display STDERR with
   (with-eval-after-load "org-capture"
     (advice-add 'org-capture-place-template :around 'my-org-capture-place-template-dont-delete-windows))
 
+  ;; For capturing in agenda view 'org-agenda-capture' with default file.
+  ;; This is for quick TODOS, which don't need a schedule
+  ;; In Agenda, they can be viewed: 'org-todo-list'
+  (setq org-default-notes-file "~/SeaDrive/My Libraries/notes/log-notes/tasks.org")
+
   (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
-                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")))))
+                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))
+                                ("t" "Task" entry (file+datetree "")
+                                 "* TODO %?\n  %u\n  %a"))))
 
 ;; Function to automatically search of stack overflow
 (use-package eww-stackoverflow
