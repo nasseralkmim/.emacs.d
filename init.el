@@ -3139,6 +3139,7 @@ its results, otherwise display STDERR with
 (use-package gnus
   :general
   ('normal "C-x C-m" 'gnus) 
+  ('normal gnus-article-mode-map "SPC" nil)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
