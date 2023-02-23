@@ -2641,7 +2641,7 @@ Only if there is more than one window opened."
   :after corfu 
   :custom
   (kind-icon-default-face 'corfu-default)
-  :config
+  :init
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package image-mode
@@ -3283,7 +3283,8 @@ its results, otherwise display STDERR with
 (use-package dianyou
   :after gnus
   :general
-  ('normal gnus-summary-mode-map "&" 'dianyou-email-view-in-web-ui))
+  ('normal gnus-summary-mode-map "&" 'dianyou-email-view-in-web-ui)
+  ('normal gnus-article-mode-map "&" 'dianyou-email-view-in-web-ui))
 
 ;; there is no language server for it yet
 (use-package chapel-mode :disabled
