@@ -3185,30 +3185,6 @@ its results, otherwise display STDERR with
         gnus-read-active-file nil        ; only read '.newsrc', speeds up
         gnus-asynchronous t))
 
-;; highlight different groups
-(use-package gnus :disabled
-  :config
-  (cond (window-system
-         (setq custom-background-mode 'light)
-         (defface my-group-face-1
-           '((t (:foreground "Red" :bold t))) "First group face")
-         (defface my-group-face-2
-           '((t (:foreground "DarkSeaGreen4" :bold t)))
-           "Second group face")
-         (defface my-group-face-3
-           '((t (:foreground "Green4" :bold t))) "Third group face")
-         (defface my-group-face-4
-           '((t (:foreground "SteelBlue" :bold t))) "Fourth group face")
-         (defface my-group-face-5
-           '((t (:foreground "Blue" :bold t))) "Fifth group face")))
-
-  (setq gnus-group-highlight
-        '(((> unread 200) . my-group-face-1)
-          ((and (< level 3) (zerop unread)) . my-group-face-2)
-          ((< level 3) . my-group-face-3)
-          ((zerop unread) . my-group-face-4)
-          (t . my-group-face-5))))
-
 ;; indicate threads more clear when in gui (need the %B int line format)
 (use-package gnus
   :when (display-graphic-p)
@@ -3253,6 +3229,11 @@ its results, otherwise display STDERR with
            (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
            (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
            ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))))
+
+;; Add support for gnus messages in dired, for attaching things.
+(use-package dired-gnus
+  :straight nil
+  :hook (dired-mode . turn-on-gnus-dired-mode))
 
 (use-package sendmail
   :config
