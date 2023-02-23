@@ -3247,7 +3247,8 @@ its results, otherwise display STDERR with
         bbdb-mua-pop-up nil)
 
   ;; use capf to provide completion
-  (setq bbdb-complete-mail nil))
+  (setq bbdb-complete-mail nil
+        bbdb-completion-list nil))
 
 (use-package dianyou
   :after gnus
