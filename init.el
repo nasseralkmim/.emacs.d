@@ -1359,7 +1359,9 @@ graphics."
 ;; `completion at point' extensions for specific candidates in `completion in region'
 (use-package cape
   :straight (cape :type git :host github :repo "minad/cape")
-  :init
+  :demand
+  :after corfu
+  :config
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-symbol)
@@ -1370,6 +1372,8 @@ graphics."
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-keyword))
 
+;; TODO: maybe not needed anymore 
+;; see [[orgit-log:~/.local/src/emacs/::("master")][~/.local/src/emacs/ (magit-log "master")]]
 (use-package cape-eglot
   :straight nil
   :after orderless eglot
@@ -1377,18 +1381,6 @@ graphics."
   ;; use orderless style for completion (default is flex)
   ;; https://github.com/minad/corfu/wiki
   (setq completion-category-overrides '((eglot (styles orderless)))))
-
-(use-package corfu-doc :disabled        ; 
-  :when (display-graphic-p)
-  :straight (corfu-doc :type git :host github :repo "galeo/corfu-doc")
-  :after corfu
-  :custom
-  (corfu-doc-delay 0.5)
-  (corfu-doc-max-width 70)
-  (corfu-doc-max-height 20)
-  (corfu-echo-documentation nil)
-  :hook
-  (prog-mode . corfu-doc-mode)) 
 
 ;; use corfu on terminal
 (use-package corfu-terminal
@@ -3244,23 +3236,72 @@ its results, otherwise display STDERR with
 
 ;; Database for email completion
 (use-package bbdb
-  :hook
-  (gnus-startup . bbdb-insinuate-gnus)
-  (messasge-mode . bbdb-insinuate-sendmail)
-  :init
-  (bbdb-initialize 'gnus 'message)
+  :after (:any gnus message)
   :config
+  (bbdb-initialize 'gnus 'message)
   ;; auto update database based on messages I read
   (bbdb-mua-auto-update-init 'gnus 'message)
   (setq bbdb-mua-auto-update-p 'create   ; create contact if it does not exist
         ;; suppress pop up contact list when new contact is created
-        bbdb-mua-pop-up nil))
+        bbdb-mua-pop-up nil)
+
+  ;; use capf to provide completion
+  (setq bbdb-complete-mail nil))
 
 (use-package dianyou
   :after gnus
   :general
   ('normal gnus-summary-mode-map "&" 'dianyou-email-view-in-web-ui)
   ('normal gnus-article-mode-map "&" 'dianyou-email-view-in-web-ui))
+
+;; Implements a complete at point function for BBDB database
+;; https://github.com/minad/cape/pull/50/commits
+(use-package cape-bbdb
+  :straight nil
+  :hook
+  (message-mode . bbdb-setup-cape)
+  :init
+  (require 'cape)
+  (declare-function bbdb-records "bbdb")
+  (declare-function bbdb-record-field "bbdb")
+
+  (defvar cape--bbdb-properties
+    (list :annotation-function (lambda (_) " BBDB")
+          :company-kind (lambda (_) 'text)
+          :exclusive 'no)
+    "Completion extra properties for `cape-bbdb'.")
+
+  (defvar cape--bbdb-records nil)
+  (defun cape--bbdb-records ()
+    "BBDB records formated like FIRSTNAME LASTNAME <email@example.com>."
+    (or cape--bbdb-records
+        (setq cape--bbdb-records
+              (mapcar #'cape--bbdb-record-format (bbdb-records)))))
+
+  (defun cape--bbdb-record-format (record)
+    "Formats a BBDB record into a string like FIRSTNAME LASTNAME <email@example.com>."
+    (format "%s %s"
+            (bbdb-record-field record 'name)
+            (apply #'concat
+                   (mapcar (lambda (e) (concat "<" e ">"))
+                           (bbdb-record-field record 'mail)))))
+
+  (defun cape-bbdb (&optional interactive)
+    "Complete name from BBDB and insert with email.
+If INTERACTIVE is nil the function acts like a Capf."
+    (interactive (list t))
+    (if interactive
+        (cape-interactive #'cape-bbdb)
+      (let ((bounds (cape--bounds 'word)))
+        `(,(car bounds) ,(cdr bounds)
+          ,(cape--table-with-properties (cape--bbdb-records) :category 'cape-bbdb)
+          ,@cape--bbdb-properties))))
+
+  ;; add to top of `capf` list only in mail buffer with a hook with this function
+  (defun bbdb-setup-cape ()
+    (setq-local completion-at-point-functions
+              (cons #'cape-bbdb
+                    completion-at-point-functions))))
 
 ;; there is no language server for it yet
 (use-package chapel-mode :disabled
@@ -3507,5 +3548,10 @@ its results, otherwise display STDERR with
 
 (use-package tempel-collection
   :after tempel)
+
+;; Link to org commits
+(use-package orgit
+  :after org)
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
