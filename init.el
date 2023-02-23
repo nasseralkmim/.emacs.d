@@ -2507,12 +2507,12 @@ Only if there is more than one window opened."
   :init
   (setq all-the-icons-dired-monochrome nil))
 
-;; simple LSP client
-;; alternative to lsp, too many dependencies
+;; Built in language server.
 (use-package eglot
   :straight (:type built-in)
   :hook
   (python-mode . eglot-ensure) ; works if there is only one server available
+  (add-hook 'eglot-managed-mode-hook #'eglot-inlay-hints-mode)
   (eglot-managed-mode . (lambda ()
                           ;; https://old.reddit.com/r/emacs/comments/xq6rpa/weekly_tips_tricks_c_thread/
                           ;; re-enable flymake checkers because eglot clobbers
