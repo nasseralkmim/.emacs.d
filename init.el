@@ -3253,9 +3253,8 @@ its results, otherwise display STDERR with
   ;; auto update database based on messages I read
   (bbdb-mua-auto-update-init 'gnus 'message)
   (setq bbdb-mua-auto-update-p 'create   ; create contact if it does not exist
-        ;; suppress pop up contact list
-        ;; not actually working... using popper instead
-        bbdb-mua-pop-up t))
+        ;; suppress pop up contact list when new contact is created
+        bbdb-mua-pop-up nil))
 
 (use-package dianyou
   :after gnus
@@ -3456,7 +3455,7 @@ its results, otherwise display STDERR with
 (use-package org-capture-template
   :straight nil
   :general
-  ("C-c c" 'org-capture)
+  ("C-c C-c" 'org-capture)
   :init
   ;; Don't delete other windown when calling 'org-capture'
   ;; https://stackoverflow.com/a/54251825
