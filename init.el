@@ -731,10 +731,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; unimpaired is a collection of commands with '[' or ']'
 (use-package evil-collection
-  :defer 1
   :diminish evil-collection-unimpaired-mode
   :after evil
-  :config
+  :init
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
         evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
@@ -2778,7 +2777,7 @@ Only if there is more than one window opened."
           "Translate\\*$"               ; gts translate
           "\\*Python\\*"
           "CAPTURE-.*"
-          ("\\*BBDB\\*" . hide)         ; for contact database
+          ("\\*BBDB\\*" . hide)         ; when the database add an etry
           compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
@@ -3149,7 +3148,7 @@ its results, otherwise display STDERR with
   :general
   ('normal "C-x C-m" 'gnus) 
   :hook
-  (gnus . turn-on-gnus-dired-mode )
+  (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
   (gnus-article-mode . variable-pitch-mode)
   (gnus-article-mode . visual-line-mode)
@@ -3183,7 +3182,10 @@ its results, otherwise display STDERR with
         gnus-home-directory "~/.emacs.d" ; for sync different machines
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         gnus-read-active-file nil        ; only read '.newsrc', speeds up
-        gnus-asynchronous t))
+        gnus-asynchronous t
+        ;; show my replies (for imap email) as part of the thread
+        gnus-parameters '(("^nnimap:"
+                           (gcc-self . t)))))
 
 ;; indicate threads more clear when in gui (need the %B int line format)
 (use-package gnus
@@ -3230,11 +3232,6 @@ its results, otherwise display STDERR with
            (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
            ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))))
 
-;; Add support for gnus messages in dired, for attaching things.
-(use-package dired-gnus
-  :straight nil
-  :hook (dired-mode . turn-on-gnus-dired-mode))
-
 (use-package sendmail
   :config
   (setq send-mail-function 'smtpmail-send-it))
@@ -3245,21 +3242,20 @@ its results, otherwise display STDERR with
         smtpmail-stream-type 'starttls
         smtpmail-smtp-service 587))
 
-;; database for email completion
+;; Database for email completion
 (use-package bbdb
-  :after (:any gnus message)
   :hook
   (gnus-startup . bbdb-insinuate-gnus)
-  (mail-setup . bbdb-insinuate-sendmail)
+  (messasge-mode . bbdb-insinuate-sendmail)
   :init
   (bbdb-initialize 'gnus 'message)
-  ;; auto update database
-  (bbdb-mua-auto-update-init 'gnus 'message)
   :config
+  ;; auto update database based on messages I read
+  (bbdb-mua-auto-update-init 'gnus 'message)
   (setq bbdb-mua-auto-update-p 'create   ; create contact if it does not exist
+        ;; suppress pop up contact list
         ;; not actually working... using popper instead
-        bbdb-mua-pop-up nil             ; don't pop up contact list
-        ))
+        bbdb-mua-pop-up t))
 
 (use-package dianyou
   :after gnus
