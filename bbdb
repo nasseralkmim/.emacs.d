@@ -22,7 +22,7 @@
 [nil "Felix" nil nil nil nil nil ("felix.dick@web.de") nil "961eeeea-d200-4eee-b1ed-6ed00b33be6c" "2023-02-17 10:14:30 +0000" "2023-02-17 10:14:30 +0000" nil]
 ["Daniel" "Fleischer" nil nil nil nil nil ("danflscr@gmail.com") nil "bdab92ee-9f1c-4277-aaab-6cbc036ae3e0" "2023-02-22 15:15:35 +0000" "2023-02-22 15:15:35 +0000" nil]
 ["Google" "Flights" nil nil nil nil nil ("noreply-travel@google.com") nil "8b52af17-5213-4682-8dbf-34abb369d036" "2023-02-16 13:58:06 +0000" "2023-02-16 13:58:06 +0000" nil]
-[nil "forschung" nil nil nil nil nil ("forschung@uibk.ac.at") nil "43a22973-e0df-4a8b-8186-1abdcc0aff80" "2023-02-22 15:32:20 +0000" "2023-02-22 15:32:20 +0000" nil]
+["VR für" "Forschung" nil ("forschung") nil nil nil ("forschung@uibk.ac.at") nil "43a22973-e0df-4a8b-8186-1abdcc0aff80" "2023-02-22 15:32:20 +0000" "2023-02-23 15:20:43 +0000" nil]
 ["Eric" "Fraga" nil nil nil nil nil ("e.fraga@ucl.ac.uk") nil "df7d75f0-2bc3-48c0-b12a-f836be7ad03c" "2023-02-17 10:40:41 +0000" "2023-02-17 10:40:41 +0000" nil]
 ["Yuan" "Fu" nil nil nil nil nil ("casouri@gmail.com") nil "f4ee02c8-79fd-49cc-a49c-2e2452aa425c" "2023-02-17 10:35:06 +0000" "2023-02-17 10:35:06 +0000" nil]
 ["Alexis" "Gallagher" nil nil nil nil nil ("alexisgallagher@gmail.com") nil "8c5fa1e2-32aa-4d71-861b-c2b0efda995a" "2023-02-22 15:15:42 +0000" "2023-02-22 15:15:42 +0000" nil]
