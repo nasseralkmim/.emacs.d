@@ -2543,8 +2543,7 @@ Only if there is more than one window opened."
            "f" 'eglot-format-buffer
            "r" 'eglot-rename))
 
-;; trying
-;; use mypy check for type in python
+;; Use mypy check for type in python
 (use-package flymake-mypy
   :straight (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
   :hook
@@ -2613,11 +2612,11 @@ Only if there is more than one window opened."
                                                       eglot-hover-eldoc-function))))
     (call-interactively #'eglot)))
 
-;; use language tool with flymake
+;; Use language tool with flymake
 ;; download latest version https://languagetool.org/download/
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
-(use-package flymake-languagetool
+(use-package flymake-languagetool :disabled
   :commands flymake-languagetool-maybe-load
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
@@ -2636,55 +2635,34 @@ Only if there is more than one window opened."
 (use-package svg-lib
   :straight (svg-lib :type git :host github :repo "rougier/svg-lib"))
 
-;; icons for completion in region
-;; still in development
+;; Icons for completion in region.
 (use-package kind-icon
   :straight (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
   :after corfu 
   :custom
   (kind-icon-default-face 'corfu-default)
-  :defer 1
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-;; change font on windows wsl gui
-(use-package emacs
-  :when (and (string-match "-[Mm]icrosoft" operating-system-release)
-             (display-graphic-p))
-  :config
-  (set-face-attribute 'default nil :height 98))
 
 (use-package image-mode
   :straight (:type built-in)
   :config
   (setq image-animate-loop t))
 
-;; show the breadcrumb on top of org buffer
-(use-package org-sticky-header :disabled ; using built-in which func
-  :hook (org-mode . org-sticky-header-mode)
-  :config
-  (setq org-sticky-header-full-path 'full
-        org-sticky-header-outline-path-separator " > "))
-
-;; sticky header for progamming modes
-(use-package topsy :disabled            ;does not work well with multiline templated functions
-  :straight (topsy :type git :host github :repo "alphapapa/topsy.el")
-  :hook (prog-mode . topsy-mode))
-
-;; shows which function in the modeline
+;; Shows which function in the mode line.
 (use-package which-func
   :straight (:type built-in)
   :hook
   (prog-mode . which-function-mode))
 
-;; work git servers (forges)
+;; Work git servers (forges)
 ;; uses 'Ghub' to access github/gitlab
 ;; need to set 'git config --global github.user <>'
-(use-package forge
+(use-package forge :disabled
   :demand
   :after magit)
 
-;; mass copy-paste or copy-move (analogous to cut-paste) for dired
+;; Mass copy-paste or copy-move (analogous to cut-paste) for dired.
 (use-package dired-ranger
   :after dired
   :general
@@ -2693,7 +2671,7 @@ Only if there is more than one window opened."
            "v" 'dired-ranger-paste
            "x" 'dired-ranger-move))
 
-;; open with external program
+;; Open with external program.
 (use-package openwith
   :commands openwith-mode
   :config
@@ -2711,7 +2689,8 @@ Only if there is more than one window opened."
           ("\\.x?html?\\'" . default)
           ("\\.pdf\\'" . default)
           ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1")
-          ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1")))) ; if file has ::<page> opens at this page
+          ;; if file has ::<page> opens at this page
+          ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1"))))
 
 ;; convert pdf to svg to display inline org image
 ;; requires pdf-tools
