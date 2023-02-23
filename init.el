@@ -3496,7 +3496,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package org-capture-template
   :straight nil
   :general
-  ("C-c C-c" 'org-capture)
+  ("C-c c" 'org-capture)
   :init
   ;; Don't delete other windown when calling 'org-capture'
   ;; https://stackoverflow.com/a/54251825
