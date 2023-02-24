@@ -1157,7 +1157,9 @@ graphics."
   :config
   (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")
         org-agenda-window-setup 'current-window ; don't change my windows
-        ))
+        org-agenda-skip-scheduled-if-done t     ; after I mark done, I don't want to see anymore
+        ;; when timestamp is in the same line as the todo entry
+        org-agenda-skip-timestamp-if-done t))
 
 (use-package ox-latex
   :straight nil
@@ -3482,6 +3484,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package org-gcal
   :after org
   :commands org-gcal-sync
+  :hook
+  (org-agenda-mode-hook . (lambda () (org-gcal-sync)))
   :demand
   :init 
   (let ((id (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
@@ -3490,9 +3494,12 @@ If INTERACTIVE is nil the function acts like a Capf."
           org-gcal-client-secret secret
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
   ;; stores OAuth token
-  (setq
+  (setq-default
    oauth2-auto-plstore "~/.emacs.d/secrets/oauth2-auto.plist"
-   plstore-cache-passphrase-for-symmetric-encryption t))
+   ;; It is asking for password every time.
+   ;; https://github.com/kidd/org-gcal.el/issues/217
+   plstore-cache-passphrase-for-symmetric-encryption t)
+  )
 
 ;; Setup template for capture gcal 
 (use-package org-capture-template
