@@ -1163,7 +1163,17 @@ graphics."
         ;; show my regular tasks in default agenda view, no need for 'TODO' list
         ;; inactive time stamp that are capture for general tasks
         ;; when 'DONE' they disappear.
-        org-agenda-include-inactive-timestamps t))
+        org-agenda-include-inactive-timestamps t)
+
+  ;; configs from 'org-modern' recomendation
+  (setq  org-agenda-tags-column 0
+         org-agenda-block-separator ?─
+         org-agenda-time-grid
+         '((daily today require-timed)
+           (800 1000 1200 1400 1600 1800 2000)
+           " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
+         org-agenda-current-time-string
+         "⭠ now ─────────────────────────────────────────────────"))
 
 (use-package ox-latex
   :straight nil
@@ -2798,7 +2808,9 @@ Only if there is more than one window opened."
 ;; eye candy for org
 (use-package org-modern
   ;; :when (display-graphic-p)             ;only when gui
-  :hook (org-mode . org-modern-mode)
+  :hook
+  (org-mode . org-modern-mode)
+  (org-agenda-finalize . org-modern-agenda)
   :custom
   (org-modern-star nil)
   ;; don't add fringe, does not play nicely with org indent
@@ -3495,7 +3507,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :after org
   :commands org-gcal-sync
   :hook
-  (org-agenda-mode-hook . (lambda () (org-gcal-sync)))
+  (org-agenda-finalize . (lambda () (org-gcal-sync)))
   :demand
   :init 
   (let ((id (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
