@@ -1159,7 +1159,11 @@ graphics."
         org-agenda-window-setup 'current-window ; don't change my windows
         org-agenda-skip-scheduled-if-done t     ; after I mark done, I don't want to see anymore
         ;; when timestamp is in the same line as the todo entry
-        org-agenda-skip-timestamp-if-done t))
+        org-agenda-skip-timestamp-if-done t
+        ;; show my regular tasks in default agenda view, no need for 'TODO' list
+        ;; inactive time stamp that are capture for general tasks
+        ;; when 'DONE' they disappear.
+        org-agenda-include-inactive-timestamps t))
 
 (use-package ox-latex
   :straight nil
@@ -2956,7 +2960,8 @@ its results, otherwise display STDERR with
 ;; better faces than 'consult-imenu'
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
 (use-package imenu-list
-  :general ('normal "g o" 'imenu-list)
+  :general
+  ('normal "g o" 'imenu-list)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-auto-update nil      ; I want to keep the list from a file
@@ -3140,7 +3145,7 @@ its results, otherwise display STDERR with
 ;; summary marks: [[info:gnus#Read Articles][gnus#Read Articles]]
 (use-package gnus
   :general
-  ('normal "C-x C-m" 'gnus) 
+  ("C-x C-m" 'gnus) 
   ('normal gnus-article-mode-map "SPC" nil)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
