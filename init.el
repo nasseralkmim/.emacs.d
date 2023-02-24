@@ -3410,7 +3410,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-h t" 'gts-do-translate)     ; overrides the tutorial, but ok...
   :config
-  (setq gts-translate-list '(("de" "en") ("de" "pt") ("pt" "en"))))
+  (setq gts-translate-list '(("de" "en") ("de" "pt") ("pt" "en"))
+        gts-default-translator (gts-translator :picker gts-noprompt-picker
+                                               :engines (list (gts-google-engine :parser (gts-google-summary-parser))
+                                                              (gts-google-rpc-engine))
+                                                :render (gts-buffer-render)
+                                                :splitter nil)))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
