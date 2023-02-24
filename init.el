@@ -2660,9 +2660,9 @@ Only if there is more than one window opened."
   :after dired
   :general
   ('normal dired-mode-map :prefix "C-c"
-           "c" 'dired-ranger-copy
-           "v" 'dired-ranger-paste
-           "x" 'dired-ranger-move))
+           "C-c" 'dired-ranger-copy
+           "C-v" 'dired-ranger-paste
+           "C-x" 'dired-ranger-move))
 
 ;; Open with external program.
 (use-package openwith
