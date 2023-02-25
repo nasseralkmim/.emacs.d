@@ -3551,7 +3551,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                                  "* TODO %?\n  %u\n  %a"))))
 
 ;; Function to automatically search of stack overflow
-(use-package eww-stackexchange
+(use-package eww-stackexchange :disabled ; using sx
   :straight nil
   :general
   ("M-<f12>" 'eww-stackexchange)
@@ -3587,5 +3587,15 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package orgit
   :after org)
 
+;; Stackexchange mode for emacs
+(use-package sx
+  :general
+  ("M-<f12>" 'sx-search)
+  :hook
+  (sx-question-mode . variable-pitch-mode)
+  :config
+  (evil-set-initial-state 'sx-question-list-mode 'emacs)
+  ;; use the same 'question list' buffer to show the question
+  (setq sx-question-mode-display-buffer-function 'switch-to-buffer))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
