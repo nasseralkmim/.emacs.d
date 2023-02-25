@@ -1358,8 +1358,8 @@ graphics."
   (global-corfu-mode)
   (corfu-popupinfo-mode)                ; show doc
   (setq corfu-auto t                    ; enables timer-based completion
-        corfu-auto-delay 0.2
-        corfu-auto-prefix 1
+        corfu-auto-delay 0.3
+        corfu-auto-prefix 2
         corfu-quit-no-match 'separator))
 
 ;; corfu extension
