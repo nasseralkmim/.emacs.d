@@ -3533,6 +3533,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   :straight nil
   :general
   ("C-c c" 'org-capture)
+  :hook
+  (org-capture-mode . evil-insert-state)
   :init
   ;; Don't delete other windown when calling 'org-capture'
   ;; https://stackoverflow.com/a/54251825
