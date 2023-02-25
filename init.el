@@ -3491,7 +3491,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; AI code completion 
 ;; need to downlaod proprietary language server binary 'codeium-install'
-(use-package codeium
+;; too slow and not very useful...
+(use-package codeium :disabled
   :straight (codeium :type git :host github :repo "Exafunction/codeium.el")
   :after corfu
   :init
