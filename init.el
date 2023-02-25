@@ -3121,7 +3121,7 @@ its results, otherwise display STDERR with
   :straight nil
   :after org
   :general
-  ('normal org-mode-map "M-=" 'org-show-current-heading-tidily)
+  ('normal org-mode-map "z =" 'org-show-current-heading-tidily)
   :init
   (defun org-show-current-heading-tidily ()
     (interactive)  ;Inteactive
@@ -3517,13 +3517,14 @@ If INTERACTIVE is nil the function acts like a Capf."
           org-gcal-client-secret secret
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
   ;; stores OAuth token
-  (setq
+  (setq-default
    oauth2-auto-plstore "~/.emacs.d/secrets/oauth2-auto.plist"
    ;; It is asking for password every time.
    ;; https://github.com/kidd/org-gcal.el/issues/217 related: password has not
    ;; been stored in 'plstore-passphrase-alist'
    plstore-cache-passphrase-for-symmetric-encryption t
-   ;; This solves the issue apparently
+   ;; This solves the issue apparently, but you need to type the password and
+   ;; not rely on the system saving in password manager.
    epg-pinentry-mode 'loopback))
 
 
