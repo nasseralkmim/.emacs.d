@@ -3551,13 +3551,13 @@ If INTERACTIVE is nil the function acts like a Capf."
                                  "* TODO %?\n  %u\n  %a"))))
 
 ;; Function to automatically search of stack overflow
-(use-package eww-stackoverflow
+(use-package eww-stackexchange
   :straight nil
   :general
   ("M-<f12>" 'eww-stackexchange)
   :init
   (defun eww-stackexchange (search)
-    "Search of stackoverflow"
+    "Search of stackexchange"
     (interactive "sSearch terms: ")
     (eww-browse-url (format "http://stackexchange.com/search?q=%s" (url-encode-url search) ))))
 
