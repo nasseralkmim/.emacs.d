@@ -3595,6 +3595,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package sx
   :general
   ("M-<f12>" 'sx-search)
+  :custom-face
+  (sx-question-mode-content-face ((t (:background unspecified))))
   :hook
   (sx-question-mode . variable-pitch-mode)
   :config
