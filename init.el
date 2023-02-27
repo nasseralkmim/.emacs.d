@@ -895,8 +895,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           org-optimize-window-after-visibility-change))
 
   ;; add extra todo keywords
-  (setq org-todo-keywords '((sequence "TODO" "PROG" "DONE"))
-        org-todo-keyword-faces '(("PROG" . (:foregroud "blue")))))
+  ;; (setq org-todo-keywords '((sequence "TODO" "PROG" "DONE"))
+  ;;       org-todo-keyword-faces '(("PROG" . (:foregroud "blue"))))
+  )
 
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
