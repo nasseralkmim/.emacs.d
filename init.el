@@ -1173,7 +1173,7 @@ graphics."
            (800 1000 1200 1400 1600 1800 2000)
            " ┄┄┄┄┄ " "┄┄┄┄┄┄┄┄┄┄┄┄┄┄┄")
          org-agenda-current-time-string
-         "⭠ now ─────────────────────────────────────────────────"))
+         "⭠ now"))
 
 (use-package ox-latex
   :straight nil
