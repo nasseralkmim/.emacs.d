@@ -1149,7 +1149,7 @@ graphics."
 ;; Agenda
 ;; 'org-agenda-view-mode-dispatch' to view month/week 
 ;; 'org-agenda-todo' change todo state
-;; 'org-todo-list' go to todo view (not scheduled)
+;; 'org-todo-list' go to todo view (not scheduled), org just use the agenda view that include both ('C-c a n')
 (use-package org-agenda
   :straight nil
   :general
@@ -1159,11 +1159,7 @@ graphics."
         org-agenda-window-setup 'current-window ; don't change my windows
         org-agenda-skip-scheduled-if-done t     ; after I mark done, I don't want to see anymore
         ;; when timestamp is in the same line as the todo entry
-        org-agenda-skip-timestamp-if-done t
-        ;; show my regular tasks in default agenda view, no need for 'TODO' list
-        ;; inactive time stamp that are capture for general tasks
-        ;; when 'DONE' they disappear.
-        org-agenda-include-inactive-timestamps t)
+        org-agenda-skip-timestamp-if-done t)
 
   ;; configs from 'org-modern' recomendation
   (setq  org-agenda-tags-column 0
@@ -3603,5 +3599,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   (evil-set-initial-state 'sx-question-list-mode 'emacs)
   ;; use the same 'question list' buffer to show the question
   (setq sx-question-mode-display-buffer-function 'switch-to-buffer))
+
+;; Display CPU/memory info on mode line when idle
+ (use-package lemon
+    :straight (lemon :type git :repo "https://codeberg.org/emacs-weirdware/lemon.git")
+    :defer 3
+    :config
+    (lemon-mode 1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
