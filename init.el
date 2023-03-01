@@ -2325,11 +2325,10 @@ Only if there is more than one window opened."
 (use-package org-id
   :elpaca nil
   :after org
-  :demand                               ; explicitly require org-id
-  :init
+  :demand                               ; explicitly require 'org-id'
+  :config
   ;; automatic generate id for headings
-  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id)
-  )
+  (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
 
 ;; citations support in org-mode
 (use-package oc
