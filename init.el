@@ -1470,7 +1470,7 @@ graphics."
   :diminish outline-minor-mode
   :mode ("\\.inp\\'" . outline-minor-mode)
   :elpaca nil
-  ;; :diminish outline-minor-mode
+  :diminish outline-minor-mode
   :hook
   (prog-mode . outline-minor-mode)
   (emacs-lisp-mode . outline-minor-mode)
