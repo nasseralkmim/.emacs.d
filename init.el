@@ -3575,7 +3575,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq org-default-notes-file "~/SeaDrive/My Libraries/notes/log-notes/tasks.org")
 
   (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
-                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))
+                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
+                                 "* TODO %?\n %a")
                                 ("t" "Task" entry (file+datetree "")
                                  "* TODO %?\n  %u\n  %a"))))
 
@@ -3635,5 +3636,13 @@ If INTERACTIVE is nil the function acts like a Capf."
     :defer 3
     :config
     (lemon-mode 1))
+
+;; Drawing link support in 'org-mode'
+(use-package el-easydraw
+  :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
+  :after org
+  :init
+  (require 'edraw-org)
+  (edraw-org-setup-default))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
