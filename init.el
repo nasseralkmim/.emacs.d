@@ -1479,6 +1479,13 @@ graphics."
   (markdown-mode . outline-minor-mode)
   (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
+  (evil-collection-setup . (lambda (&rest a)
+                             ;; need to rebind after loading outline because 'general' uses
+                             ;; `after-load-functions' and 'evil-collection' uses `eval-after-load'
+                             ;; 'evil-collection' end up binding last...
+                             ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
+                             (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
+                             (general-def 'normal outline-mode-map "z l" nil)))
   :general
   ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                             (outline-on-heading-p) 'outline-cycle))
@@ -1489,11 +1496,6 @@ graphics."
   ;; ('normal outline-mode-map "C-j" nil)
   ('normal outline-mode-map "M-j" nil)  ; conflicts with c multiline comment
   :config
-  ;; need to rebind after loading outline
-  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
-  ;; evil-collection end up binding last...
-  (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
-  (general-def 'normal outline-mode-map "z l" nil)
   (setq outline-minor-mode-cycle nil    ; using general predicate dispatch instead
         ;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
         ))  
