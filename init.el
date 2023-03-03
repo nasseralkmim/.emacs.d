@@ -3645,4 +3645,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   (require 'edraw-org)
   (edraw-org-setup-default))
 
+;; Git annotations
+(use-package blamer
+  :hook
+  (prog-mode . blamer-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
