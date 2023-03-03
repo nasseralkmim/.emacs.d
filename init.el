@@ -762,7 +762,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after org
   :general
   ('normal org-mode-map "x" 'evil-delete-char)
-  :hook (org-mode . evil-org-mode))
+  :hook
+  (org-mode . evil-org-mode)
+  :config
+  (evil-org-set-key-theme '(textobjects insert  additional shift todo)))
 
 ;; 'org-agenda' evil keybindings
 (use-package evil-org-agenda
@@ -3579,7 +3582,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq org-default-notes-file "~/SeaDrive/My Libraries/notes/log-notes/tasks.org")
 
   (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
-                                 (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
+                                 (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
                                  "* TODO %?\n%a")
                                 ("t" "Task" entry (file+datetree "")
                                  "* TODO %?\n  %u\n%a"))))
