@@ -3576,9 +3576,9 @@ If INTERACTIVE is nil the function acts like a Capf."
 
   (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
                                  (file "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
-                                 "* TODO %?\n %a")
+                                 "* TODO %?\n%a")
                                 ("t" "Task" entry (file+datetree "")
-                                 "* TODO %?\n  %u\n  %a"))))
+                                 "* TODO %?\n  %u\n%a"))))
 
 ;; Function to automatically search of stack overflow
 (use-package eww-stackexchange :disabled ; using sx
