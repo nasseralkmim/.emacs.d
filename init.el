@@ -837,18 +837,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :commands rainbow-mode 
   :diminish rainbow-mode)
 
-;; some file produces a bug with inline images (can not toggle)
+;; Add-ons to Org https://git.sr.ht/~bzg/org-contrib
+;; some file produces a bug with inline images (can not toggle) so it is better
+;; to use just what is needed
 (use-package org-contrib
-  ;; build only selected (copy to `build/' and make an autoload)
-  :elpaca (org-contrib :files (
-                                 "lisp/org-eldoc.el" ; show src block arguments
-                                 "lisp/ox-bibtex.el" ; export latex properly
-                                 "lisp/ox-extra.el" ; ignore headlines (need to config)
-                                 ))) 
+  ;; build only selected (symlink to `build/' and make an pre-compiled '.elc')
+  :elpaca (org-contrib :files ("lisp/org-eldoc.el" ; show src block arguments
+                                "lisp/ox-bibtex.el" ; export latex properly
+                                "lisp/ox-extra.el" ; ignore headlines (need to config)
+                                ))
+  :after org) 
 
 (use-package ox-extra
   :elpaca nil
-  :after org
+  :after org-contrib
   :demand                               ; explicit require
   :config
   (ox-extras-activate '(ignore-headlines)))
