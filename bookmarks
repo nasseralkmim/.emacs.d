@@ -24,12 +24,6 @@
  (last-modified 25460 35463 729479 664000)
  (location . "http://68k.news/")
  (handler . eww-bookmark-jump))
-("oneplus6"
- (filename . "/ssh:u0_a517@192.168.53.128#8022:~/")
- (front-context-string . "  /ssh:u0_a517@1")
- (rear-context-string)
- (position . 1)
- (last-modified 25455 48675 119252 264000))
 ("lcc2"
  (filename . "/ssh:cb761044@lcc2.uibk.ac.at:~/")
  (front-context-string . "  /ssh:cb761044@")

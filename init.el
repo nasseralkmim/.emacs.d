@@ -3648,6 +3648,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Git annotations
 (use-package blamer
   :hook
-  (prog-mode . blamer-mode))
+  (prog-mode . blamer-mode)
+  :config
+  (setq blamer-commit-formatter ": %s"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
