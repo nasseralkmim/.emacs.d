@@ -3662,6 +3662,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :hook
   (prog-mode . blamer-mode)
   :config
-  (setq blamer-commit-formatter ": %s"))
+  (setq blamer-commit-formatter ": %s"
+        blamer-idle-time 2))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
