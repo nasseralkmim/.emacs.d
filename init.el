@@ -692,6 +692,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-set-undo-system 'undo-redo)	; use native redo function
 
   (add-to-list 'evil-insert-state-modes 'log-edit-mode)
+  (add-to-list 'evil-insert-state-modes 'message-mode)
   
   ;; fix tab behavior in org-mode source block
   (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
