@@ -1173,6 +1173,14 @@ graphics."
 ;; 'org-agenda-view-mode-dispatch' to view month/week 
 ;; 'org-agenda-todo' change todo state
 ;; 'org-todo-list' go to todo view (not scheduled), org just use the agenda view that include both ('C-c a n')
+;; Some concepts:
+;; 1. 'task': some todo item.
+;; 2. 'event': something taking place at a time and optionaly at a place.
+;; An event has a plain time stamp. If you missed, it just stays in the past. If
+;; marked as 'done' it disappear from the agenda (default behavior).
+;; A task can be:
+;; 1. 'scheduled': start the 'task' on a given date. It is shown until marked as 'done'.
+;; 2. 'deadline': finish a 'task' by this date. It can have warnings before the deadline.
 (use-package org-agenda
   :elpaca nil
   :general
@@ -3587,11 +3595,15 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; In Agenda, they can be viewed: 'org-todo-list'
   (setq org-default-notes-file "~/SeaDrive/My Libraries/notes/log-notes/tasks.org")
 
-  (setq org-capture-templates '(("g" "Gcal" entry ; type entry creates a headline
+  (setq org-capture-templates '(;; 'Event' is something that happens in a time, it takes a timestamp.
+                                ("e" "Event" entry ; type entry creates a headline
                                  (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
-                                 "* TODO %?\n%a")
-                                ("t" "Task" entry (file+datetree "")
-                                 "* TODO %?\n  %u\n%a"))))
+                                 "* %?\n%a")
+                                ;; 'Task' is a 'todo' entry and is scheduled, it
+                                ;; is shown continuously until marked as done.
+                                ("t" "Task" entry
+                                 (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
+                                 "* TODO %?\n%^{SCHEDULED}p\n%a"))))
 
 ;; Function to automatically search of stack overflow
 (use-package eww-stackexchange :disabled ; using sx
