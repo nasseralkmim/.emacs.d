@@ -2400,6 +2400,8 @@ Only if there is more than one window opened."
   :config
   ;; scp is faster than ssh for copying files
   (setq tramp-default-method "scp"
+        tramp-shell-prompt-pattern "[\\[\\e[32m\\]\\u\\[\\e[m\\]@\\[\\e[36m\\]\\h\\[\\e[m\\]:\\W]$ "
+        tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
         tramp-verbose 4)
   ;; apparently makes it faster
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
@@ -3677,5 +3679,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq blamer-commit-formatter ": %s"
         blamer-idle-time 2))
+
+(use-package cmake
+  :elpaca nil
+  :mode ("\\CMakeLists.txt\\'" . cmake-ts-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
