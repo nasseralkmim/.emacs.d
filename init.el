@@ -3471,16 +3471,18 @@ If INTERACTIVE is nil the function acts like a Capf."
   ("C-h t" 'gts-do-translate)     ; overrides the tutorial, but ok...
   :config
   (setq gts-translate-list '(("de" "en") ("de" "pt") ("pt" "en"))
-        gts-default-translator (gts-translator :picker gts-noprompt-picker
-                                               :engines (list
-                                                         ;; (gts-google-engine :parser (gts-google-summary-parser))
-                                                         (gts-deepl-engine :auth-key
-                                                                           (funcall
-                                                                            (plist-get (car (auth-source-search :host "api-free.deepl.com"))
-                                                                                       :secret)))
-                                                                           (gts-google-rpc-engine))
-                                                         :render (gts-buffer-render)
-                                                         :splitter nil)))
+        gts-default-translator (gts-translator
+                                ;; pick directly
+                                :picker (gts-noprompt-picker)
+                                :engines (list
+                                          ;; (gts-google-engine :parser (gts-google-summary-parser))
+                                          (gts-deepl-engine :auth-key
+                                                            (funcall
+                                                             (plist-get (car (auth-source-search :host "api-free.deepl.com"))
+                                                                        :secret)))
+                                          (gts-google-rpc-engine))
+                                :render (gts-buffer-render)
+                                :splitter (gts-paragraph-splitter))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
@@ -3648,6 +3650,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package sx
   :general
   ("M-<f12>" 'sx-search)
+  (sx-question-list-mode-map "j" 'sx-question-list-next)
+  (sx-question-list-mode-map "k" 'sx-question-list-previous)
   :custom-face
   (sx-question-mode-content-face ((t (:background unspecified))))
   :hook
