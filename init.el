@@ -2235,6 +2235,7 @@ Only if there is more than one window opened."
                   "C-w" nil
                   "<backtab>" nil)
   :config
+  (general-def '(normal insert) vterm-mode-map "C-s" nil)
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0))
 
