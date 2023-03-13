@@ -523,6 +523,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; `which-key` changes this variable as well, so we need to change it after `which-key`
   (which-key-mode . (lambda ()
                       (setq prefix-help-command #'embark-prefix-help-command)))
+  ;; don't wrap lines in 'embark-export'
+  (embark-after-export . (lambda () (toggle-truncate-lines)))
   :config
   ;; hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
