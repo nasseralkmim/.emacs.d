@@ -3593,6 +3593,7 @@ If INTERACTIVE is nil the function acts like a Capf."
    plstore-cache-passphrase-for-symmetric-encryption t
    ;; This solves the issue apparently, but you need to type the password and
    ;; not rely on the system saving in password manager.
+   ;; https://github.com/kidd/org-gcal.el/issues/227 describes better the problem
    epg-pinentry-mode 'loopback))
 
 
@@ -3700,6 +3701,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (prog-mode . blamer-mode)
   :config
   (setq blamer-commit-formatter ": %s"
+        blamer-force-truncate-long-line t ; don't wrap lines
         blamer-idle-time 2))
 
 (use-package cmake
