@@ -2560,6 +2560,7 @@ Only if there is more than one window opened."
   :hook
   (python-mode . eglot-ensure) ; works if there is only one server available
   (eglot-managed-mode . eglot-inlay-hints-mode)
+  ;; python flymake tweak
   (eglot-managed-mode . (lambda ()
                           ;; https://old.reddit.com/r/emacs/comments/xq6rpa/weekly_tips_tricks_c_thread/
                           ;; re-enable flymake checkers because eglot clobbers
@@ -2567,6 +2568,14 @@ Only if there is more than one window opened."
                           (when (derived-mode-p 'python-mode)
                             (add-hook 'flymake-diagnostic-functions 
                                       'python-flymake nil t))))
+  ;; eldoc tweak
+  ;; https://github.com/joaotavora/eglot/discussions/993
+  ;; Show all of the available eldoc information when we want it. This way Flymake errors
+  ;; don't just get clobbered by docstrings.   
+  (eglot-managed-mode . (lambda ()
+                          "Make sure Eldoc will show us all of the feedback at point."
+                          (setq-local eldoc-documentation-strategy
+                                      #'eldoc-documentation-compose)))
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
   (c++-ts-mode . eglot-ensure)
@@ -2583,6 +2592,12 @@ Only if there is more than one window opened."
   (add-to-list 'eglot-server-programs
                `(c++-mode . ,(eglot-alternatives
                               '(("clangd" "--clang-tidy")))))
+
+  ;; Maybe improve performance
+  ;; No event buffers, disable providers cause a lot of hover traffic. Shutdown unused servers.
+  ;; https://github.com/joaotavora/eglot/discussions/993
+  (setq eglot-events-buffer-size 0
+        eglot-autoshutdown t)
   :general
   ('normal eglot-mode-map :prefix "gl"
            "l" 'eglot-code-actions
@@ -2776,7 +2791,7 @@ Only if there is more than one window opened."
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
   (setq eldoc-echo-area-use-multiline-p nil
-        eldoc-idle-delay 0.1))
+        eldoc-idle-delay 1))
 
 ;; save windows configurations and use regular bookmarks file
 (use-package burly
