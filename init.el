@@ -3414,7 +3414,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca nil
   :general
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
-  (isearch-mode-map "C-p" 'isearch-repeat-backward))
+  (isearch-mode-map "C-p" 'isearch-repeat-backward)
+  :config
+  (setq isearch-lazy-count t))
 
 ;; highlight code in eww
 (use-package shr-tag-pre-highlight
