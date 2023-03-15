@@ -2570,14 +2570,6 @@ Only if there is more than one window opened."
                           (when (derived-mode-p 'python-mode)
                             (add-hook 'flymake-diagnostic-functions 
                                       'python-flymake nil t))))
-  ;; eldoc tweak
-  ;; https://github.com/joaotavora/eglot/discussions/993
-  ;; Show all of the available eldoc information when we want it. This way Flymake errors
-  ;; don't just get clobbered by docstrings.   
-  (eglot-managed-mode . (lambda ()
-                          "Make sure Eldoc will show us all of the feedback at point."
-                          (setq-local eldoc-documentation-strategy
-                                      #'eldoc-documentation-compose)))
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
   (c++-ts-mode . eglot-ensure)
