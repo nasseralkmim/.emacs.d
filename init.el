@@ -2605,7 +2605,9 @@ Only if there is more than one window opened."
            "l" 'eglot-code-actions
            "h" 'eldoc
            "f" 'eglot-format-buffer
-           "r" 'eglot-rename))
+           "r" 'eglot-rename)
+  ;; When in visual mode, format just the region
+  ('visual eglot-mode-map "glf" 'eglot-format))
 
 ;; Use mypy check for type in python
 (use-package flymake-mypy
