@@ -571,6 +571,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
+  (nxml-mode . smartparens-mode)
   ;; (org-mode . smartparens-mode) ; messing with org-mode
   ;; (smartparens-mode . smartparens-strict-mode) ; enforce pairs to be balanced
   (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
@@ -1478,7 +1479,8 @@ graphics."
                                            (hs-already-hidden-p)
                                            (outline-on-heading-p)) 'evil-toggle-fold))
   :hook
-  (prog-mode . hs-minor-mode))
+  (prog-mode . hs-minor-mode)
+  (nxml-mode . hs-minor-mode))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
