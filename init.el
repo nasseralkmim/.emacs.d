@@ -99,9 +99,9 @@
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
   ;; scroll
-  (setq auto-window-vscroll nil 		; avoid next-line to trigger line-move-partial
+  (setq auto-window-vscroll nil  ; avoid next-line to trigger line-move-partial
         mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)) ; 1 line at a time
-        mouse-wheel-progressive-speed nil                              ; proportional to scroll speed
+        mouse-wheel-progressive-speed nil  ; proportional to scroll speed
         fast-but-imprecise-scrolling t
         jit-lock-defer-time 0
         mouse-wheel-follow-mouse 't
@@ -2226,7 +2226,11 @@ Only if there is more than one window opened."
   ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
   ("C-<f9>" 'vterm-toggle-insert-cd)
   (vterm-mode-map "s-n" 'vterm-toggle-forward
-                  "s-p" 'vterm-toggle-backward))
+                  "s-p" 'vterm-toggle-backward)
+  :config
+  ;; toggle terminal bellow the selected window (avoid messing with other windows)
+  ;; https://github.com/jixiuf/vterm-toggle/issues/33#issuecomment-1100027238
+  (add-to-list 'display-buffer-alist `(,vterm-buffer-name display-buffer-below-selected)))
 
 ;; multiple terminals
 (use-package multi-vterm
@@ -3583,6 +3587,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                                 ;; value, useless as well.
                                 ;; Seen here: https://emacs.stackexchange.com/a/53586
                                 ;; Would be nice to just have the date with calendar prompt.
+                                ;; This is a solution: https://emacs.stackexchange.com/a/72326
                                 ("t" "Task" entry
                                  (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
                                  "* TODO %?\n%^{SCHEDULED}p\n%a"))))
