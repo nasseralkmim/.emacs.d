@@ -1443,27 +1443,6 @@ graphics."
   ("M-/" 'dabbrev-completion)           ; this can be completed with corfu
   ("C-M-/" 'dabbrev-expand))
 
-;; completion in region
-(use-package company :disabled
-  :diminish company-mode
-  :hook
-  (prog-mode . company-mode)
-  (LaTeX-mode . company-mode)
-  (org-mode . company-mode)
-  :config
-  (setq company-idle-delay .2
-        company-tooltip-align-annotations t
-        company-dabbrev-downcase nil	; don't replace case
-        company-format-margin-function #'company-vscode-dark-icons-margin
-        company-minimum-prefix-length 1))
-
-;; Company use prescient.el
-;; used to sorts and filter list of candidates
-(use-package company-prescient :disabled
-  :after company
-  :init
-  (company-prescient-mode))
-
 ;; Allows selectively display portions of program
 (use-package hideshow
   :elpaca nil
@@ -2228,8 +2207,6 @@ Only if there is more than one window opened."
         '(display-buffer-reuse-window (reusable-frames . t)))
   (setq pdf-sync-backward-display-action
         '(display-buffer-reuse-window (reusable-frames . t))))
-
-(use-package hydra :disabled)
 
 ;; terminal emulator based on libvterm (in C)
 (use-package vterm
@@ -3007,18 +2984,6 @@ its results, otherwise display STDERR with
 (use-package focus
   :commands focus-mode)
 
-;; trying instead of outline-minor-mode for programming
-(use-package origami :disabled                             ; bicycle is better
-  :elpaca (origami :type git :host github :repo "elp-revive/origami.el")
-  :hook (prog-mode . origami-mode)
-  :general
-  ('normal origami-mode-map :prefix "Z"
-           "o" 'origami-show-only-node
-           "a" 'origami-recursively-toggle-node
-           "h" 'origami-toggle-all-nodes
-           "j" 'origami-next-fold
-           "k" 'origami-previous-fold))
-
 ;; list 'imenu' entries in a buffer
 ;; better faces than 'consult-imenu'
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
@@ -3555,16 +3520,6 @@ If INTERACTIVE is nil the function acts like a Capf."
             (interactive)
             (find-file "/home/nasser/SeaDrive/My Libraries/notes"))))
 
-;; AI code completion 
-;; need to downlaod proprietary language server binary 'codeium-install'
-;; too slow and not very useful...
-(use-package codeium :disabled
-  :elpaca (codeium :type git :host github :repo "Exafunction/codeium.el")
-  :after corfu
-  :init
-  (setq codeium/metadata/api_key "ff39817e-5353-4193-9369-91f33c9cb8c4")
-  (add-to-list 'completion-at-point-functions #'codeium-completion-at-point))
-
 ;; Sync between google calendar and org mode.
 ;; It is a bit tricky to set up
 ;; create a project here https://console.developers.google.com/project
@@ -3593,7 +3548,6 @@ If INTERACTIVE is nil the function acts like a Capf."
    ;; not rely on the system saving in password manager.
    ;; https://github.com/kidd/org-gcal.el/issues/227 describes better the problem
    epg-pinentry-mode 'loopback))
-
 
 ;; Setup template for capture gcal 
 (use-package org-capture-template
@@ -3632,17 +3586,6 @@ If INTERACTIVE is nil the function acts like a Capf."
                                 ("t" "Task" entry
                                  (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
                                  "* TODO %?\n%^{SCHEDULED}p\n%a"))))
-
-;; Function to automatically search of stack overflow
-(use-package eww-stackexchange :disabled ; using sx
-  :elpaca nil
-  :general
-  ("M-<f12>" 'eww-stackexchange)
-  :init
-  (defun eww-stackexchange (search)
-    "Search of stackexchange"
-    (interactive "sSearch terms: ")
-    (eww-browse-url (format "http://stackexchange.com/search?q=%s" (url-encode-url search) ))))
 
 ;; Templates that can be used as 'capf'
 (use-package tempel
@@ -3684,13 +3627,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   (evil-set-initial-state 'sx-question-list-mode 'emacs)
   ;; use the same 'question list' buffer to show the question
   (setq sx-question-mode-display-buffer-function 'switch-to-buffer))
-
-;; Display CPU/memory info on mode line when idle
- (use-package lemon :disabled
-    :elpaca (lemon :type git :repo "https://codeberg.org/emacs-weirdware/lemon.git")
-    :defer 3
-    :config
-    (lemon-mode 1))
 
 ;; Drawing link support in 'org-mode'
 (use-package el-easydraw
