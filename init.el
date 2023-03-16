@@ -3603,7 +3603,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :hook
   (org-capture-mode . evil-insert-state)
   :init
-  ;; Don't delete other windown when calling 'org-capture'
+  ;; Don't delete other window when calling 'org-capture'
   ;; https://stackoverflow.com/a/54251825
   (defun my-org-capture-place-template-dont-delete-windows (oldfun &rest args)
     (cl-letf (((symbol-function 'delete-other-windows) 'ignore))
@@ -3620,8 +3620,15 @@ If INTERACTIVE is nil the function acts like a Capf."
                                 ("e" "Event" entry ; type entry creates a headline
                                  (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
                                  "* %?\n%a")
-                                ;; 'Task' is a 'todo' entry and is scheduled, it
-                                ;; is shown continuously until marked as done.
+                                ;; 'Task' is a 'TODO' entry and is scheduled,
+                                ;; therefore it is shown continuously until
+                                ;; marked as done.
+                                ;; The '%^{SCHEDULED}p' prompts for (1) a
+                                ;; scheduled value, useless, (2) the date, with
+                                ;; the calendar, which is nice, and (3) another
+                                ;; value, useless as well.
+                                ;; Seen here: https://emacs.stackexchange.com/a/53586
+                                ;; Would be nice to just have the date with calendar prompt.
                                 ("t" "Task" entry
                                  (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
                                  "* TODO %?\n%^{SCHEDULED}p\n%a"))))
