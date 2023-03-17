@@ -2210,7 +2210,10 @@ Only if there is more than one window opened."
   (setq pdf-sync-backward-display-action
         '(display-buffer-reuse-window (reusable-frames . t))))
 
-;; terminal emulator based on libvterm (in C)
+;; Terminal emulator based on libvterm (in C)
+;; For some reason when opening vterm in a tramp visited buffer, it does not use
+;; the proper prompt defined in '.bashrc' This describes the problem:
+;; https://github.com/akermu/emacs-libvterm/issues/655
 (use-package vterm
   :general
   ;; ("<f9>" 'vterm-other-window)
@@ -2222,7 +2225,7 @@ Only if there is more than one window opened."
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0))
 
-;; manage multiple vterm's buffers
+;; Quickly switch to 'vterm' buffer.
 (use-package vterm-toggle
   :general
   ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
@@ -2388,8 +2391,8 @@ Only if there is more than one window opened."
   :config
   ;; scp is faster than ssh for copying files
   (setq tramp-default-method "scp"
-        tramp-shell-prompt-pattern "[\\[\\e[32m\\]\\u\\[\\e[m\\]@\\[\\e[36m\\]\\h\\[\\e[m\\]:\\W]$ "
         tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
+        tramp-histfile-override nil
         tramp-verbose 4)
   ;; apparently makes it faster
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
@@ -3484,7 +3487,7 @@ If INTERACTIVE is nil the function acts like a Capf."
          (default-directory "/sudo::"))
       (shell-command command)))
 
-  (defun insert-credentials ()
+  (defun insert-credentials-firewall-uibk ()
     "Insert firewall access credential."
     (interactive)
     (unwind-protect
@@ -3496,19 +3499,19 @@ If INTERACTIVE is nil the function acts like a Capf."
          (shr-next-link)
          (eww-submit))
      ;; remove the hook after finish the inputs
-     (remove-hook 'eww-after-render-hook 'insert-credentials)))
+     (remove-hook 'eww-after-render-hook 'insert-credentials-firewall-uibk)))
 
-  (defun get-firewall-access ()
+  (defun get-access-firewall-uibk ()
     (interactive)
     "Insert credentials after page renders."
-    (add-hook 'eww-after-render-hook 'insert-credentials)
+    (add-hook 'eww-after-render-hook 'insert-credentials-firewall-uibk)
     (eww "https://fwauth-tech.uibk.ac.at/"))
 
   (defun connect-uibk ()
     "Connect through VPN and get firewall authorization."
     (interactive)
     (connect-vpn)
-    (get-firewall-access))
+    (get-access-firewall-uibk))
 
   (defun disconnect-uibk ()
     "Disconnect VPN."
