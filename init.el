@@ -867,6 +867,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
   (org-mode-map "C-c C-l" 'org-insert-link)
+  (org-mode-map "C-," nil)              ; using that for flyspell
   (org-mode-map "C-c ," 'org-insert-structure-template)
   ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
   ('normal org-mode-map :prefix "z"
@@ -3134,7 +3135,7 @@ its results, otherwise display STDERR with
   :elpaca nil
   :commands auth-source-search
   :init
-  (setq auth-sources '((:source "~/.emacs.d/secrets/.authinfo.gpg"))))
+  (setq auth-sources '((:source "/home/nasser/SeaDrive/My Libraries/secrets/.authinfo.gpg"))))
 
 ;; hide everything except current heading
 ;; https://stackoverflow.com/a/28031539/20449842
@@ -3544,7 +3545,7 @@ If INTERACTIVE is nil the function acts like a Capf."
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
   ;; stores OAuth token
   (setq-default
-   oauth2-auto-plstore "~/.emacs.d/secrets/oauth2-auto.plist"
+   oauth2-auto-plstore "/home/nasser/SeaDrive/My Libraries/secrets/oauth2-auto.plist"
    ;; It is asking for password every time.
    ;; https://github.com/kidd/org-gcal.el/issues/217 related: password has not
    ;; been stored in 'plstore-passphrase-alist'
