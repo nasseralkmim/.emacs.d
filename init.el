@@ -3656,4 +3656,15 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca nil
   :mode ("\\CMakeLists.txt\\'" . cmake-ts-mode))
 
+(use-package gptel
+  :elpaca (gptel :type git :host github :repo "karthink/gptel")
+  :commands gptel
+  :general
+  ('visual "C-c g" gptel-send-menu)
+  :config
+  (setq gptel-api-key (funcall
+                       (plist-get (car (auth-source-search :host "api.openai.com"))
+                                  :secret)))
+  (setq gptel-default-mode 'org-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
