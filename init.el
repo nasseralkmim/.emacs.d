@@ -3664,7 +3664,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
-                                  :secret)))
-  (setq gptel-default-mode 'org-mode))
+                                  :secret))))
+
+(use-package message
+  :elpaca nil
+  :hook
+  ;; disable autofill mode on emails
+  (message-mode . (lambda () (auto-fill-mode -1))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
