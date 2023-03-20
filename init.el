@@ -2,7 +2,7 @@
   "Time when Emacs was started")
 
 ;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.2)
+(defvar elpaca-installer-version 0.3)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -3660,7 +3660,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca (gptel :type git :host github :repo "karthink/gptel")
   :commands gptel
   :general
-  ('visual "C-c g" gptel-send-menu)
+  ('visual "C-c g" 'gptel-send-menu)
   :config
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
