@@ -3667,9 +3667,4 @@ If INTERACTIVE is nil the function acts like a Capf."
                                   :secret)))
   (setq gptel-default-mode 'org-mode))
 
-;; Highlight code
-(use-package prism
-  :elpaca (prism :host github :repo "alphapapa/prism.el")
-  :hook (prog-mode . prism-mode))
-
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
