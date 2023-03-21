@@ -2493,7 +2493,22 @@ Only if there is more than one window opened."
 (use-package ace-window
   :commands aw-select                   ; for dired with C-u
   :general
-  ('normal "C-w C-w" 'ace-window))
+  ('normal "C-w C-w" 'ace-window)
+  ('normal dired-mode-map "l" 'dired-find-alternate-file-ace)
+  :init
+  ;; Adapted from: https://stackoverflow.com/a/47624310
+  (defun dired-find-alternate-file-ace ()
+    "With prefix argument use ace window to select a window for
+opening a file from dired. Otherwise just regular dired."
+    (interactive)
+    (if (eq current-prefix-arg nil)
+        (dired-find-alternate-file)
+      (let ((file (dired-get-file-for-visit)))
+        (if (> (length (aw-window-list)) 1)
+            (aw-select "" (lambda (window)
+                            (aw-switch-to-window window)
+                            (find-file file)))
+          (find-file-other-window file))))))
 
 ;; highlight parensthesis
 (use-package highlight-parentheses
@@ -3059,12 +3074,15 @@ its results, otherwise display STDERR with
   ;;   (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree))
   )
 
+;; Emcas 'gdb' interface
 (use-package gdb
   :elpaca nil
   :config
   (setq gdb-locals-value-limit 1000
         ;; use gdb layout and just the info locals
-        gdb-many-windows nil))
+        ;; 'gdb-display-locals-buffer' shows local variables
+        gdb-many-windows nil
+        gdb-show-main t))
 
 ;; irony mode for 'org-edit-special' c++ 
 ;; uses libclang
