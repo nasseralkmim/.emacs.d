@@ -3667,7 +3667,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (edraw-org-setup-default))
 
 ;; Git annotations
-(use-package blamer
+(use-package blamer :disabled           ; problem with it in 'org-mode'
   :hook
   (prog-mode . blamer-mode)
   :config
