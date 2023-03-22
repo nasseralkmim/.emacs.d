@@ -3078,11 +3078,14 @@ its results, otherwise display STDERR with
 (use-package gdb
   :elpaca nil
   :config
-  (setq gdb-locals-value-limit 1000
-        ;; use gdb layout and just the info locals
-        ;; 'gdb-display-locals-buffer' shows local variables
-        gdb-many-windows nil
-        gdb-show-main t))
+  (setq-default gdb-locals-value-limit 1000
+                ;; use gdb layout and just the info locals
+                ;; 'gdb-display-locals-buffer' shows local variables
+                gdb-many-windows nil
+                ;; show main function file, good to follow execution of code.
+                gdb-show-main t
+                ;; don't pop up 'io' buffer, if I want it, I open it
+                gdb-display-io-nopopup t))
 
 ;; irony mode for 'org-edit-special' c++ 
 ;; uses libclang
