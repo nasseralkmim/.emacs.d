@@ -2491,7 +2491,7 @@ Only if there is more than one window opened."
 
 ;; easily change windows
 (use-package ace-window
-  :commands aw-select                   ; for dired with C-u
+  :commands aw-select aw-window-list                   ; for dired with C-u
   :general
   ('normal "C-w C-w" 'ace-window)
   ('normal dired-mode-map "l" 'dired-find-alternate-file-ace)
@@ -3077,6 +3077,8 @@ its results, otherwise display STDERR with
 ;; Emcas 'gdb' interface
 (use-package gdb
   :elpaca nil
+  :general
+  (gud-global-map "C-a" 'gud-run)
   :config
   (setq-default gdb-locals-value-limit 1000
                 ;; use gdb layout and just the info locals
