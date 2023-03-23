@@ -3075,19 +3075,38 @@ its results, otherwise display STDERR with
   )
 
 ;; Emcas 'gdb' interface
-(use-package gdb
+;; 'gdb-mi.el' is the file where the variables are defined so statements in
+;; ':config' would be evaluated after this file is loaded.
+(use-package gdb-mi
   :elpaca nil
   :general
   (gud-global-map "C-a" 'gud-run)
   :config
-  (setq-default gdb-locals-value-limit 1000
-                ;; use gdb layout and just the info locals
-                ;; 'gdb-display-locals-buffer' shows local variables
-                gdb-many-windows nil
-                ;; show main function file, good to follow execution of code.
-                gdb-show-main t
-                ;; don't pop up 'io' buffer, if I want it, I open it
-                gdb-display-io-nopopup t))
+  (setq gdb-locals-value-limit 1000
+        ;; use gdb layout and just the info locals
+        ;; 'gdb-display-locals-buffer' shows local variables
+        gdb-many-windows nil
+        ;; show main function file, good to follow execution of code.
+        gdb-show-main t
+        ;; don't pop up 'io' buffer, if I want it, I open it
+        gdb-display-io-nopopup t)
+
+  ;; https://www.emacswiki.org/emacs/GDB-MI
+  ;; 'gdb-mi' sets all windows as "dedicated", if we try to switch to one of its
+  ;; buffers, if will appear in a different window. Instead of the selected
+  ;; window where the command was called.
+  ;; 
+  ;; Force gdb-mi to not dedicate any windows
+  (advice-add 'gdb-display-buffer
+              :around (lambda (orig-fun &rest r)
+                        (let ((window (apply orig-fun r)))
+                          (set-window-dedicated-p window nil)
+                          window)))
+
+  (advice-add 'gdb-set-window-buffer
+              :around (lambda (orig-fun name &optional ignore-dedicated window)
+                        (funcall orig-fun name ignore-dedicated window)
+                        (set-window-dedicated-p window nil))))
 
 ;; irony mode for 'org-edit-special' c++ 
 ;; uses libclang
@@ -3667,7 +3686,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (edraw-org-setup-default))
 
 ;; Git annotations
-(use-package blamer :disabled           ; problem with it in 'org-mode'
+(use-package blamer ; :disabled           ; problem with it in 'org-mode'
   :hook
   (prog-mode . blamer-mode)
   :config
