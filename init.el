@@ -3708,6 +3708,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                        (plist-get (car (auth-source-search :host "api.openai.com"))
                                   :secret))))
 
+;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
   :elpaca nil
   :hook
