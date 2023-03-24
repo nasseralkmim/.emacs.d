@@ -2424,7 +2424,9 @@ Only if there is more than one window opened."
   (setq treesit-language-source-alist
         '((python "https://github.com/tree-sitter/tree-sitter-python.git")
           (cpp "https://github.com/tree-sitter/tree-sitter-cpp.git")
-          (cmake "https://github.com/uyha/tree-sitter-cmake.git"))))
+          (cmake "https://github.com/uyha/tree-sitter-cmake.git")))
+  ;; maximum fontification
+  (setq treesit-font-lock-level 4))
 
 ;; better code highlight and fold
 (use-package tree-sitter :disabled
@@ -3714,5 +3716,20 @@ If INTERACTIVE is nil the function acts like a Capf."
   :hook
   ;; disable autofill mode on emails
   (message-mode . (lambda () (auto-fill-mode -1))))
+
+;; fold for xml with 'hide-show'
+;; https://emacs.stackexchange.com/questions/2884/the-old-how-to-fold-xml-question
+(use-package xml-hs-fold
+  :elpaca nil
+  :after (hideshow nxml-mode)
+  :init
+  (add-to-list 'hs-special-modes-alist
+             '(nxml-mode
+               "<!--\\|<[^/>]*[^/]>"
+               "-->\\|</[^/>]*[^/]>"
+
+               "<!--"
+               sgml-skip-tag-forward
+               nil)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
