@@ -1332,7 +1332,7 @@ graphics."
 ;; download 'hunspell' and the dictionaries 'yay hunspell hunspell-en (de, pt)
 ;; run 'hunspell -D' to check where dictionaries are
 ;; https://emacs.stackexchange.com/a/21379
-(use-package flyspell
+(use-package flyspell :disabled
   :elpaca nil
   :defer 1 ; add hook for 'text-mode' after 1s
   :config
@@ -1347,7 +1347,7 @@ graphics."
 
 ;; 'flyspell' uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
-(use-package flyspell-lazy
+(use-package flyspell-lazy :disabled
   :after flyspell
   :hook
   (flyspell-mode . flyspell-lazy-mode)
@@ -1355,7 +1355,7 @@ graphics."
   (setq flyspell-lazy-idle-seconds 1))
 
 ;; Convenient functions for correcting with 'flyspell'.
-(use-package flyspell-correct
+(use-package flyspell-correct :disabled
   :after flyspell
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
@@ -3731,5 +3731,15 @@ If INTERACTIVE is nil the function acts like a Capf."
                "<!--"
                sgml-skip-tag-forward
                nil)))
+
+;; Improved spell checker with 'libenchant'
+(use-package jinx
+  :elpaca (jinx :host github :repo "minad/jinx"
+                :files (:defaults "*.c"))
+  :hook
+  (prog-mode . jinx-mode)
+  (text-mode . jinx-mode)
+  :general
+  ("C-," 'jinx-correct))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
