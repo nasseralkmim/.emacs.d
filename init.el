@@ -3717,7 +3717,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; disable autofill mode on emails
   (message-mode . (lambda () (auto-fill-mode -1))))
 
-;; fold for xml with 'hide-show'
+;; fold for '.xml' with 'hide-show'
 ;; https://emacs.stackexchange.com/questions/2884/the-old-how-to-fold-xml-question
 (use-package xml-hs-fold
   :elpaca nil
@@ -3733,6 +3733,8 @@ If INTERACTIVE is nil the function acts like a Capf."
                nil)))
 
 ;; Improved spell checker with 'libenchant'
+;; lazy check, only to visible (includes folding), support multiple languages
+;; looks for words in '~/.config/enchant~
 (use-package jinx
   :elpaca (jinx :host github :repo "minad/jinx"
                 :files (:defaults "*.c"))
@@ -3740,6 +3742,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   (prog-mode . jinx-mode)
   (text-mode . jinx-mode)
   :general
-  ("C-," 'jinx-correct))
+  ("C-," 'jinx-correct)
+  :config
+  (setq ispell-personal-dictionary "~/.personal"
+        jinx-languages '("en" "de" "pt_BR")))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
