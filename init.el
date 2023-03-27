@@ -698,6 +698,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (add-to-list 'evil-insert-state-modes 'log-edit-mode)
   (add-to-list 'evil-insert-state-modes 'message-mode)
+  (evil-set-initial-state 'gdb-parent-mode 'normal)
   
   ;; fix tab behavior in org-mode source block
   (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
@@ -1347,7 +1348,7 @@ graphics."
 
 ;; 'flyspell' uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
-(use-package flyspell-lazy :disabled
+(use-package flyspell-lazy
   :after flyspell
   :hook
   (flyspell-mode . flyspell-lazy-mode)
@@ -1355,7 +1356,7 @@ graphics."
   (setq flyspell-lazy-idle-seconds 1))
 
 ;; Convenient functions for correcting with 'flyspell'.
-(use-package flyspell-correct :disabled
+(use-package flyspell-correct
   :after flyspell
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
@@ -3734,7 +3735,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Improved spell checker with 'libenchant'
 ;; lazy check, only to visible (includes folding), support multiple languages
-;; looks for words in '~/.config/enchant~
+;; looks for words in '~/.config/enchant'
 (use-package jinx
   :elpaca (jinx :host github :repo "minad/jinx"
                 :files (:defaults "*.c"))
@@ -3744,7 +3745,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-," 'jinx-correct)
   :config
-  (setq ispell-personal-dictionary "~/.personal"
-        jinx-languages '("en" "de" "pt_BR")))
+  (setq jinx-languages '("en" "de" "pt_BR")))
+
+;; Change default compile command
+(use-package compile
+  :elpaca nil
+  :init
+  (setq compile-command "make -k -C ../build"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
