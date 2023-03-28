@@ -1333,7 +1333,7 @@ graphics."
 ;; download 'hunspell' and the dictionaries 'yay hunspell hunspell-en (de, pt)
 ;; run 'hunspell -D' to check where dictionaries are
 ;; https://emacs.stackexchange.com/a/21379
-(use-package flyspell :disabled
+(use-package flyspell
   :elpaca nil
   :defer 1 ; add hook for 'text-mode' after 1s
   :config
@@ -3736,7 +3736,9 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Improved spell checker with 'libenchant'
 ;; lazy check, only to visible (includes folding), support multiple languages
 ;; looks for words in '~/.config/enchant'
-(use-package jinx
+;; problems with:
+;; does not ignore code blocks in 'org-mode'
+(use-package jinx :disabled
   :elpaca (jinx :host github :repo "minad/jinx"
                 :files (:defaults "*.c"))
   :hook
