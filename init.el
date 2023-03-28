@@ -3755,4 +3755,10 @@ If INTERACTIVE is nil the function acts like a Capf."
   :init
   (setq compile-command "make -k -C ../build"))
 
+(use-package cape-yasnippet
+  :elpaca (cape-yasnippet :host github :repo "elken/cape-yasnippet")
+  :after yasnippet corfu
+  :init
+  (add-to-list 'completion-at-point-functions #'cape-yasnippet))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
