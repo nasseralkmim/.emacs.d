@@ -3734,9 +3734,13 @@ If INTERACTIVE is nil the function acts like a Capf."
                nil)))
 
 ;; Improved spell checker with 'libenchant'
-;; lazy check, only to visible (includes folding), support multiple languages
-;; looks for words in '~/.config/enchant'
-;; problems with:
+;; It lazily checks, only to visible (includes folding), support multiple languages
+;; 
+;; It looks for words in '~/.config/enchant' in specific 'en' dictionary (for english).
+;; One can create a symlink from the main list of words file to this 'en' file.
+;; Remember to disable 'flyspell'.
+;; 
+;; Current problems with:
 ;; does not ignore code blocks in 'org-mode'
 (use-package jinx :disabled
   :elpaca (jinx :host github :repo "minad/jinx"
