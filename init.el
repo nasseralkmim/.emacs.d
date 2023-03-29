@@ -3761,4 +3761,20 @@ If INTERACTIVE is nil the function acts like a Capf."
   :init
   (add-to-list 'completion-at-point-functions #'cape-yasnippet))
 
+(use-package ediff
+  :elpaca nil
+  :config
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+
+  ;; Use both A and B into C when solving conflicts
+  ;; https://stackoverflow.com/a/29757750
+  (defun ediff-copy-both-to-C ()
+    (interactive)
+    (ediff-copy-diff ediff-current-difference nil 'C nil
+                     (concat
+                      (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
+                      (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
+  (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "c" 'ediff-copy-both-to-C))
+  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
