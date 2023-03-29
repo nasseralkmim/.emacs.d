@@ -3689,7 +3689,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (edraw-org-setup-default))
 
 ;; Git annotations
-(use-package blamer ; :disabled           ; problem with it in 'org-mode'
+(use-package blamer :disabled           ; problem with it showing in 'org-mode', when I don't enabled 'blamer-mode' in it.
   :hook
   (prog-mode . blamer-mode)
   :config
