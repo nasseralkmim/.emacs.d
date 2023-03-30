@@ -1454,9 +1454,40 @@ graphics."
                                       (evil-toggle-fold)
                                       (hs-hide-level 1)))
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (or (hs-looking-at-block-start-p)
-                                           (hs-already-hidden-p)
-                                           (outline-on-heading-p)) 'evil-toggle-fold))
+                                       (my-header-p)
+                                       'my-toggle-fold))
+  :init
+  (defun my-header-p ()
+    "Return non-nil if the cursor is on a header line."
+    (save-excursion
+      (back-to-indentation)
+      (or (hs-looking-at-block-start-p)
+          (hs-already-hidden-p))))
+  (defun my-toggle-fold ()
+    "Cycle visibility: show all, then first level, then collapse."
+    (interactive)
+    (save-excursion
+      (back-to-indentation)
+      (pcase last-command
+        ;; After showing first level, hide all
+        ('my-cycle-visibility-show-all
+         (hs-hide-block)
+         (message "Hide all")
+         (setq this-command 'my-cycle-visibility-hide-all))
+        ;; 
+        ('my-cycle-visibility-show-first
+         (hs-hide-level 1)
+         (message "Show first level")
+         (setq this-command 'my-cycle-visibility-show-all))
+        (_
+         ;; If it is not hidden, hide. If it is hidden, then show and trigger
+         ;; the cycling sequence.
+         (if (not (hs-already-hidden-p))
+             (hs-hide-block)
+           (progn
+             (hs-show-block)
+             (setq this-command 'my-cycle-visibility-show-first)))
+         (message "Toggle")))))
   :hook
   (prog-mode . hs-minor-mode)
   (nxml-mode . hs-minor-mode))
@@ -1469,10 +1500,10 @@ graphics."
   :elpaca nil
   :diminish outline-minor-mode
   :hook
-  (prog-mode . outline-minor-mode)
-  (emacs-lisp-mode . outline-minor-mode)
-  (markdown-mode . outline-minor-mode)
-  (conf-mode . outline-minor-mode)
+  ;;(prog-mode . outline-minor-mode) ; using the hideshow package
+  ;; (emacs-lisp-mode . outline-minor-mode)
+  ;; (markdown-mode . outline-minor-mode)
+  ;; (conf-mode . outline-minor-mode)
   (LaTeX-mode . outline-minor-mode)
   (evil-collection-setup . (lambda (&rest a)
                              ;; need to rebind after loading outline because 'general' uses
