@@ -2471,7 +2471,7 @@ Only if there is more than one window opened."
   (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
   (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner")))
 
-(use-package hide-comnt
+(use-package hide-comnt :disabled
   :elpaca nil
   :general ('normal "g h c" 'hide/show-comments-toggle)
   :commands hide/show-comments-toggle)
