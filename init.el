@@ -1333,7 +1333,7 @@ graphics."
 ;; download 'hunspell' and the dictionaries 'yay hunspell hunspell-en (de, pt)
 ;; run 'hunspell -D' to check where dictionaries are
 ;; https://emacs.stackexchange.com/a/21379
-(use-package flyspell
+(use-package flyspell :disabled
   :elpaca nil
   :defer 1 ; add hook for 'text-mode' after 1s
   :config
@@ -3739,10 +3739,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; It looks for words in '~/.config/enchant' in specific 'en' dictionary (for english).
 ;; One can create a symlink from the main list of words file to this 'en' file.
 ;; Remember to disable 'flyspell'.
-;; 
-;; Current problems with:
-;; does not ignore code blocks in 'org-mode'
-(use-package jinx :disabled
+(use-package jinx
   :elpaca (jinx :host github :repo "minad/jinx"
                 :files (:defaults "*.c"))
   :hook
