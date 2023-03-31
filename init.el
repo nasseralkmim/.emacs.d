@@ -3294,14 +3294,16 @@ its results, otherwise display STDERR with
         gnus-use-full-window nil       ; don't use entire window!
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
         gnus-check-new-newsgroups nil  ; make start up faster
-        gnus-show-threads nil            ; if nil can make faster, threads again with T T
+        gnus-show-threads nil            ; if nil can make faster, threads again with T t
         gnus-use-cross-reference nil
         gnus-home-directory "~/.emacs.d" ; for sync different machines
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         gnus-read-active-file nil        ; only read '.newsrc', speeds up
         gnus-asynchronous t
-        ;; show my replies (for imap email) as part of the thread
-        gnus-parameters '(("^nnimap:"
+        ;; show my replies sent from gnus in the thread view
+        ;; this addresses the reply to myself
+        ;; (info "(gnus) Group Parameters")
+        gnus-parameters '(("*"
                            (gcc-self . t)))))
 
 ;; indicate threads more clear when in gui (need the %B int line format)
