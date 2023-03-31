@@ -1462,7 +1462,10 @@ graphics."
     (save-excursion
       (back-to-indentation)
       (or (hs-looking-at-block-start-p)
-          (hs-already-hidden-p))))
+          (hs-already-hidden-p)
+          ;; outline identifies headers with a regex per mode works better than
+          ;; 'hs-looking-at-block-start-p' if the regex is available
+          (outline-on-heading-p))))
   (defun my-toggle-fold ()
     "Cycle visibility: show all, then first level, then collapse."
     (interactive)
