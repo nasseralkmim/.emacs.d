@@ -3274,6 +3274,8 @@ its results, otherwise display STDERR with
   (setq user-mail-address "nasser.alkmim@gmail.com"
         gnus-select-method '(nnnil)
         gnus-secondary-select-methods '((nntp "news"
+                                              ;; substituted old '.org'
+                                              ;; https://lars.ingebrigtsen.no/2020/01/15/news-gmane-org-is-now-news-gmane-io/
                                               (nntp-address "news.gmane.io"))
                                         (nnimap "personal"
                                                 (nnimap-address "imap.gmail.com"))
@@ -3770,8 +3772,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Improved spell checker with 'libenchant'
 ;; It lazily checks, only to visible (includes folding), support multiple languages
 ;; 
-;; It looks for words in '~/.config/enchant' in specific 'en' dictionary (for english).
-;; One can create a symlink from the main list of words file to this 'en' file.
+;; It looks for words in '~/.config/enchant' in specific 'en.dic' dictionary (for english).
+;; One can create a symlink ('dired-do-symlink') from the main list of words file to this 'en.dic' file.
 ;; Remember to disable 'flyspell'.
 (use-package jinx
   :elpaca (jinx :host github :repo "minad/jinx"
