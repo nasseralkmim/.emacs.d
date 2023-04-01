@@ -3739,6 +3739,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca nil
   :mode ("\\CMakeLists.txt\\'" . cmake-ts-mode))
 
+;; Chat gpt client
 (use-package gptel
   :elpaca (gptel :type git :host github :repo "karthink/gptel")
   :commands gptel
