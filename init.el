@@ -3826,4 +3826,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-h y" 'dictionary-lookup-definition))
 
+(use-package ledger-mode
+  :mode ("\\.ledger\\'" . ledger-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
