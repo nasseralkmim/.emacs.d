@@ -3820,4 +3820,10 @@ If INTERACTIVE is nil the function acts like a Capf."
   (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "c" 'ediff-copy-both-to-C))
   (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map))
 
+;; Built in dictionary look up
+(use-package dictionary
+  :elpaca nil
+  :general
+  ("C-h y" 'dictionary-lookup-definition))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
