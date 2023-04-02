@@ -890,7 +890,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
-  (org-mode . org-indent-mode)          ; align with heading
+  ;; (org-mode . org-indent-mode)          ; align with heading
   :config
   (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
         org-startup-indented nil		; start collapsed
@@ -2835,7 +2835,10 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; view large files
 (use-package vlf
-  :defer 1)
+  :defer 1
+  :config
+  ;; to have 'vlf' as an option
+  (require 'vlf-setup))
 
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
