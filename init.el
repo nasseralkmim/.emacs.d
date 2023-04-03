@@ -497,8 +497,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; `which-key` changes this variable as well, so we need to change it after `which-key`
   (which-key-mode . (lambda ()
                       (setq prefix-help-command #'embark-prefix-help-command)))
-  ;; don't wrap lines in 'embark-export'
-  (embark-after-export . (lambda () (toggle-truncate-lines)))
   :config
   ;; hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
@@ -3613,6 +3611,7 @@ If INTERACTIVE is nil the function acts like a Capf."
    plstore-cache-passphrase-for-symmetric-encryption t
    ;; This solves the issue apparently, but you need to type the password and
    ;; not rely on the system saving in password manager.
+   ;; After a while you have to allow on the browser again, so it is not a final solution.
    ;; https://github.com/kidd/org-gcal.el/issues/227 describes better the problem
    epg-pinentry-mode 'loopback))
 
