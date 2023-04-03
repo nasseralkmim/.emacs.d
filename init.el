@@ -377,35 +377,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         read-file-name-completion-ignore-case t
         completion-category-overrides '((file (styles . (partial-completion)))
                                         ;; navigate files with initials
-                                        (minibuffer (initials))))
-
-  ;; components ending in "~"  match in flex style
-  ;; flex style: keep order, but not necessarily consecutive
-  (defun flex-if-twiddle (pattern _index _total)
-    (when (string-suffix-p "~" pattern)
-      `(orderless-flex . ,(substring pattern 0 -1))))
-
-  (defun literal-if-equal (pattern _index _total)
-    (when (string-prefix-p "=" pattern)
-      `(orderless-literal . ,(substring pattern 1))))
-
-  ;; component start with "!" filter by string not in the candidate
-  ;; useful to:
-  ;; 1. exclude pattern from `consult-focus`
-  (defun without-if-bang (pattern _index _total)
-    (cond
-     ((equal "!" pattern)
-      '(orderless-literal . ""))
-     ((string-prefix-p "!" pattern)
-      `(orderless-without-literal . ,(substring pattern 1)))))
-
-  ;; match components based on regex
-  ;; components separated by space
-  (setq orderless-matching-styles '(orderless-regexp)
-        orderless-style-dispatchers '(
-                                      flex-if-twiddle
-                                      literal-if-equal
-                                      without-if-bang)))
+                                        (minibuffer (initials)))))
 
 ;; default completion framework
 (use-package simple
