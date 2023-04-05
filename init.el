@@ -2848,6 +2848,7 @@ opening a file from dired. Otherwise just regular dired."
           "Translate\\*$"               ; gts translate
           "\\*Python\\*"
           "CAPTURE-.*"
+          "^\\*Dicti.*"
           ("\\*BBDB\\*" . hide)         ; when the database add an etry
           compilation-mode))
   (popper-mode +1)
@@ -3801,7 +3802,10 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package dictionary
   :elpaca nil
   :general
-  ("C-h y" 'dictionary-lookup-definition))
+  ("C-h y" 'dictionary-lookup-definition) ; search for word at a point
+  :config
+  ;; use just one buffer, please.
+  (setq dictionary-use-single-buffer t))
 
 (use-package ledger-mode
   :mode ("\\.ledger\\'" . ledger-mode)
