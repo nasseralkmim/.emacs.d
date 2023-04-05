@@ -2599,6 +2599,7 @@ opening a file from dired. Otherwise just regular dired."
   ;; No event buffers, disable providers cause a lot of hover traffic. Shutdown unused servers.
   ;; https://github.com/joaotavora/eglot/discussions/993
   (setq eglot-events-buffer-size 0
+        eglot-sync-connect 0            ; don't block LSP connection attempts
         eglot-autoshutdown t)
   :general
   ('normal eglot-mode-map :prefix "gl"
@@ -3801,6 +3802,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   ("C-h y" 'dictionary-lookup-definition))
 
 (use-package ledger-mode
-  :mode ("\\.ledger\\'" . ledger-mode))
+  :mode ("\\.ledger\\'" . ledger-mode)
+  :config
+  (add-to-list 'ledger-reports '("balance" "%(binary) -f %(ledger-file) --exchange R$ bal")))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
