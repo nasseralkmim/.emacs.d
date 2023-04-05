@@ -2966,6 +2966,8 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; query synonyms
 (use-package le-thesaurus
+  :general
+  ("C-c u" 'le-thesaurus-get-synonyms)
   :commands le-thesaurus-get-synonyms)
 
 ;; org-mode toc heading
