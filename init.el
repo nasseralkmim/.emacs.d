@@ -3721,7 +3721,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :mode ("\\CMakeLists.txt\\'" . cmake-ts-mode))
 
 ;; Chat gpt client
-(use-package gptel
+(use-package gptel :disabled
   :elpaca (gptel :type git :host github :repo "karthink/gptel")
   :commands gptel
   :general
@@ -3811,7 +3811,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :mode ("\\.ledger\\'" . ledger-mode))
 
 ;; Display information on side of the buffer
-(use-package sideline
+(use-package sideline :disabled
   :hook
   (prog-mode . sideline-mode)
   :config
@@ -3823,12 +3823,28 @@ If INTERACTIVE is nil the function acts like a Capf."
         sideline-priority 100                  ; overlays' priority
         sideline-display-backend-name t))      ; display the backend name
 
-(use-package sideline-eldoc
+(use-package sideline-eldoc :disabled
   :elpaca (sideline-eldoc :host github :repo "ginqi7/sideline-eldoc")
   :after sideline
   :diminish sideline-mode
   :demand
   :config
   (setq sideline-backends-right '(sideline-eldoc)))
+
+;; ChatGTP client that integrates with 'org-mode'
+(use-package chatgpt-shell
+  :elpaca (chatgpt-shell :host github :repo "xenodium/chatgpt-shell")
+  :config
+  ;; Maybe use a lambda to prevent password prompt
+  (setq chatgpt-shell-openai-key (auth-source-pick-first-password :host "api.openai.com"))
+  :after org
+  :init
+  (require 'ob-chatgpt-shell)
+  (ob-chatgpt-shell-setup)
+  ;; change header arguments, remove "raw"
+  (defvar org-babel-default-header-args:chatgpt-shell '((:version . nil)
+                                                        (:preface . nil)))
+  (require 'ob-dall-e-shell)
+  (ob-dall-e-shell-setup))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
