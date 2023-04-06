@@ -3808,8 +3808,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq dictionary-use-single-buffer t))
 
 (use-package ledger-mode
-  :mode ("\\.ledger\\'" . ledger-mode)
-  :config
-  (add-to-list 'ledger-reports '("balance" "%(binary) -f %(ledger-file) --exchange R$ bal")))
+  :mode ("\\.ledger\\'" . ledger-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
