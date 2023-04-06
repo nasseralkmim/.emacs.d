@@ -3810,4 +3810,25 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package ledger-mode
   :mode ("\\.ledger\\'" . ledger-mode))
 
+;; Display information on side of the buffer
+(use-package sideline
+  :hook
+  (prog-mode . sideline-mode)
+  :config
+  (setq sideline-backends-skip-current-line t  ; don't display on current line
+        sideline-order-left 'down              ; or 'up
+        sideline-order-right 'up               ; or 'down
+        sideline-format-left "%s   "           ; format for left aligment
+        sideline-format-right "   %s"          ; format for right aligment
+        sideline-priority 100                  ; overlays' priority
+        sideline-display-backend-name t))      ; display the backend name
+
+(use-package sideline-eldoc
+  :elpaca (sideline-eldoc :host github :repo "ginqi7/sideline-eldoc")
+  :after sideline
+  :diminish sideline-mode
+  :demand
+  :config
+  (setq sideline-backends-right '(sideline-eldoc)))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
