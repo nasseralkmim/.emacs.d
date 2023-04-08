@@ -860,7 +860,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
-  ;; (org-mode . org-indent-mode)          ; align with heading
+  (org-mode . org-indent-mode)          ; align with heading
   :config
   (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
         org-startup-indented nil		; start collapsed
@@ -1751,11 +1751,7 @@ graphics."
     (interactive)
     (dired-sidebar-show-sidebar)        ;show the side bar
     (dired-sidebar-toggle-with-current-directory) ; hide it and re opening with current dir
-    (dired-sidebar-toggle-with-current-directory)
-    ;; call dired again so it uses dirvish
-    ;; not using dirvish now (problems with tram)
-    ;; (dired "./")
-    ))
+    (dired-sidebar-toggle-with-current-directory)))
 
 ;; improved dired
 ;; problem with tramp
@@ -3842,7 +3838,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (require 'ob-chatgpt-shell)
   (ob-chatgpt-shell-setup)
   ;; change header arguments, remove "raw"
-  (defvar org-babel-default-header-args:chatgpt-shell '((:version . nil)
+  (setq org-babel-default-header-args:chatgpt-shell '((:version . nil)
                                                         (:preface . nil)))
   (require 'ob-dall-e-shell)
   (ob-dall-e-shell-setup))
