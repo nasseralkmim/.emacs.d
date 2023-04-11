@@ -3764,7 +3764,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-," 'jinx-correct)
   :config
-  (setq jinx-languages '("en" "de" "pt_BR")))
+  (setq jinx-languages "en_US de pt_BR"))
 
 ;; Change default compile command
 (use-package compile
