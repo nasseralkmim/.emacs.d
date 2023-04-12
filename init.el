@@ -531,13 +531,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
   :diminish smartparens-mode
-  :elpaca (:includes smartparens-config)
+  ;; :elpaca (:includes smartparens-config)
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
   ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
   ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
   ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
-  ('normal smartparens-mode-map "C-M-l" 'sp-forward-sexp)
+  ('(normal visual) smartparens-mode-map "] ]" 'sp-forward-sexp) ; go to balancing closing pair
+  ('(normal visual) smartparens-mode-map "[ [" 'sp-beginning-of-sexp) ; go back to matching opening pair
   ;; binding all modes for Latex
   ('insert '(prog-mode-map LaTeX-mode-map org-mode-map) "C-<tab>" 'sp-forward-sexp)
   :hook
@@ -3764,7 +3765,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-," 'jinx-correct)
   :config
-  (setq jinx-languages "en_US de pt_BR"))
+  (setq jinx-languages "en de pt_BR"))
 
 ;; Change default compile command
 (use-package compile
