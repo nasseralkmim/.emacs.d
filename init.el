@@ -3799,10 +3799,12 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package dictionary
   :elpaca nil
   :general
-  ("C-h y" 'dictionary-lookup-definition) ; search for word at a point
+  ("C-h l" 'dictionary-lookup-definition) ; search for word at a point
   :config
+  (setq
+   dictionary-server "dict.org"         ; instead of a server, use this as default 
   ;; use just one buffer, please.
-  (setq dictionary-use-single-buffer t))
+   dictionary-use-single-buffer t))
 
 (use-package ledger-mode
   :mode ("\\.ledger\\'" . ledger-mode))
