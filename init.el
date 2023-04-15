@@ -3807,7 +3807,13 @@ If INTERACTIVE is nil the function acts like a Capf."
    dictionary-use-single-buffer t))
 
 (use-package ledger-mode
-  :mode ("\\.ledger\\'" . ledger-mode))
+  :mode ("\\.ledger\\'" . ledger-mode)
+  :config
+  (setq ledger-binary-path "hledger")
+  ;; avoid extra flags from 'ledger'
+  (setq ledger-report-auto-width nil
+        ledger-report-use-native-highlighting nil)
+  (add-to-list 'ledger-reports '("bse" "%(binary) -f %(ledger-file) bse --alias '/^(revenue|income|expenses)\b/=equity'-2 --tree -B")))
 
 ;; Display information on side of the buffer
 (use-package sideline :disabled
