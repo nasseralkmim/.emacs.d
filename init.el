@@ -282,9 +282,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca nil
   :if (eq system-type 'gnu/linux)
   :defer 1
-  :hook (dired-mode . (lambda () (setq-local auto-revert-interval 0)))
   :config
-  (setq auto-revert-interval 5)
+  (setq auto-revert-interval 1)
   (setq auto-revert-check-vc-info t)
   (setq global-auto-revert-non-file-buffers t)
   (setq auto-revert-verbose nil)
@@ -3812,8 +3811,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq ledger-binary-path "hledger")
   ;; avoid extra flags from 'ledger'
   (setq ledger-report-auto-width nil
+        ledger-report-native-highlighting-arguments '("--color=always")
         ledger-report-use-native-highlighting nil)
-  (add-to-list 'ledger-reports '("bse" "%(binary) -f %(ledger-file) bse --alias '/^(revenue|income|expenses)\b/=equity'-2 --tree -B")))
+  (add-to-list 'ledger-reports '("bse" "%(binary) -f %(ledger-file) bse --alias '/^(revenue|income|expenses)/=equity' -2 --tree -B")))
 
 ;; Display information on side of the buffer
 (use-package sideline :disabled
