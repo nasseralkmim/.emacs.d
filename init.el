@@ -3515,6 +3515,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package go-translate
   :general
   ("C-h t" 'gts-do-translate)     ; overrides the tutorial, but ok...
+  ('(normal visual) "SPC t" 'gts-do-translate)     ; overrides the tutorial, but ok...
   :config
   (setq gts-translate-list '(("de" "en") ("de" "pt") ("pt" "en"))
         gts-default-translator (gts-translator
@@ -3811,8 +3812,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq ledger-binary-path "hledger")
   ;; avoid extra flags from 'ledger'
   (setq ledger-report-auto-width nil
-        ledger-report-native-highlighting-arguments '("--color=always")
-        ledger-report-use-native-highlighting nil)
+        ledger-report--extra-args-marker " " ; don't use 'ledger' flags in 'hledger'
+        ;; avoid error with --date-format
+        ;; https://github.com/simonmichael/hledger/issues/367#issuecomment-927024529
+        ledger-mode-should-check-version nil
+        ;; https://github.com/simonmichael/hledger/issues/367#issuecomment-753455796
+        ledger-report-native-highlighting-arguments nil)
   (add-to-list 'ledger-reports '("bse" "%(binary) -f %(ledger-file) bse --alias '/^(revenue|income|expenses)/=equity' -2 --tree -B")))
 
 ;; Display information on side of the buffer
