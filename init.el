@@ -1895,7 +1895,7 @@ Only if there is more than one window opened."
   (setenv "WORK_HOME" "~/.virtualenvs"))
 
 ;; mode for C++
-(use-package c++-mode
+(use-package c++-mode :disabled
   :elpaca nil
   :mode ("\\.cpp\\'" . c++-mode)
   :general
@@ -1922,15 +1922,15 @@ Only if there is more than one window opened."
 
 ;; Specific for c++ with treesit
 ;; not ready yet
-(use-package c++ts-mode :disabled
+(use-package c++ts-mode
   :elpaca nil
-  :mode ("\\.cpp\\'" . c++-mode)
+  :mode ("\\.cpp\\'" . c++-ts-mode)
   :general
   (c++-ts-mode-map "C-x c" 'compile)
-  :hook
+  ;; :hook
   ;; set same regex as 'c++-mode' (ts mode does not have yet)
-  (c++-ts-mode . (lambda () (setq-local outline-regexp c-ts-mode--c-or-c++-regexp
-                                        outline-level 'c-outline-level)))
+  ;; (c++-ts-mode . (lambda () (setq-local outline-regexp c-ts-mode--c-or-c++-regexp
+  ;;                                       outline-level 'c-outline-level)))
   :config
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
