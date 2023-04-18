@@ -1927,10 +1927,6 @@ Only if there is more than one window opened."
   :mode ("\\.cpp\\'" . c++-ts-mode)
   :general
   (c++-ts-mode-map "C-x c" 'compile)
-  ;; :hook
-  ;; set same regex as 'c++-mode' (ts mode does not have yet)
-  ;; (c++-ts-mode . (lambda () (setq-local outline-regexp c-ts-mode--c-or-c++-regexp
-  ;;                                       outline-level 'c-outline-level)))
   :config
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
@@ -1939,7 +1935,8 @@ Only if there is more than one window opened."
   :custom-face
   (highlight-doxygen-comment  ((t (:background unspecified :italic nil))))
   :hook
-  (c++-mode . highlight-doxygen-mode))
+  (c++-mode . highlight-doxygen-mode)
+  (c++-ts-mode . highlight-doxygen-mode))
 
 (use-package ob-python :disabled
   :after org lsp
