@@ -2871,7 +2871,10 @@ opening a file from dired. Otherwise just regular dired."
   :custom
   (org-modern-star nil)
   ;; don't add fringe, does not play nicely with org indent
-  (org-modern-block-fringe nil))
+  (org-modern-block-fringe nil)
+  :config
+  ;; don't prettify table
+  (setq org-modern-table nil))
 
 ;; usefull for email composing
 (use-package flymake-grammarly
