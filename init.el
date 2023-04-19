@@ -1588,12 +1588,16 @@ graphics."
                       (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
                     nil t :help "Create nomenclature file")))
 
-  ;; using 'Zathura' or PDF Tools on WSL
-  ;; one advantage of PDF Tools is 'pdf-view-set-slice-from-bounding-box'
-  (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-  ;; PDF Toll is good when I'm with just one screen
-  ;; (add-to-list 'TeX-view-program-selection '(output-pdf "Okular"))
-  )
+  ;; PDF Toll is ok when I'm with just one screen
+  ;; one advantage of PDF Tools is 'pdf-view-set-slice-from-bounding-box', good for small screens
+  ;; actually, Okular can trim margins as well...
+  ;; Okular has better: continuous scrolling, zoom, more responsive
+  ;; In the 'Editor Options', in Okular, need to add the 'Emacs client' option
+  ;; for jumping to source functionality
+  ;; To jump to source, from Okular, one needs to use the 'Browser tool'
+  ;; (Ctrl-1) and click on the text with shift key pressed on.
+  ;; (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
+  (add-to-list 'TeX-view-program-selection '(output-pdf "Okular")))
 
 ;; preview in latex
 (use-package preview
