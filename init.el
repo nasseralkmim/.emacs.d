@@ -497,11 +497,15 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (which-key-mode . (lambda ()
                       (setq prefix-help-command #'embark-prefix-help-command)))
   :config
-  ;; hide the mode line of the Embark live/completions buffers
   (add-to-list 'display-buffer-alist
+               ;; hide the mode line of the Embark live/completions buffers
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
                  (window-parameters (mode-line-format . none))))
+  (add-to-list 'display-buffer-alist
+               ;; show export in the side
+               '("\\*Embark Export: .*"
+                 (display-buffer-in-side-window)))
   ;; change 'describe-symbol' to 'helpful-symbol'
   (add-to-list 'embark-default-action-overrides '(describe-symbol . helpful-symbol)))
 
