@@ -1928,9 +1928,15 @@ Only if there is more than one window opened."
 ;; not ready yet
 (use-package c++ts-mode
   :elpaca nil
-  :mode ("\\.cpp\\'" . c++-ts-mode)
   :general
   (c++-ts-mode-map "C-x c" 'compile)
+  :init
+  ;; From the documentation, substitute to 'tree-sitter' based modes
+  ;; [[help:c-ts-mode][help:c-ts-mode]] 
+  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  (add-to-list 'major-mode-remap-alist
+               '(c-or-c++-mode . c-or-c++-ts-mode))
   :config
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
