@@ -3871,4 +3871,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   (require 'ob-dall-e-shell)
   (ob-dall-e-shell-setup))
 
+;; Experimental breadcrumb mode based on imenu
+(use-package breadcrum
+  :elpaca nil
+  :load-path "./lisp"
+  :hook
+  (prog-mode . breadcrumb-mode)
+  (org-mode . breadcrumb-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
