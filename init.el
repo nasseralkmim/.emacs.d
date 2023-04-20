@@ -3264,8 +3264,11 @@ its results, otherwise display STDERR with
   (setq user-mail-address "nasser.alkmim@gmail.com"
         gnus-select-method '(nnnil)
         gnus-secondary-select-methods '((nntp "news"
-                                              ;; substituted old '.org'
-                                              ;; https://lars.ingebrigtsen.no/2020/01/15/news-gmane-org-is-now-news-gmane-io/
+                                              ;; substituted old '.org' [0].
+                                              ;; there is no search engine [1].
+                                              ;; 
+                                              ;; [0]https://lars.ingebrigtsen.no/2020/01/15/news-gmane-org-is-now-news-gmane-io/
+                                              ;; [1] https://stackoverflow.com/a/48214757
                                               (nntp-address "news.gmane.io"))
                                         (nnimap "personal"
                                                 (nnimap-address "imap.gmail.com"))
