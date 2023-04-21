@@ -3902,7 +3902,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq sideline-backends-right '(sideline-eldoc)))
 
 ;; ChatGTP client that integrates with 'org-mode'
-(use-package chatgpt-shell
+(use-package chatgpt-shell :disabled
   :elpaca (chatgpt-shell :host github :repo "xenodium/chatgpt-shell")
   :config
   ;; Maybe use a lambda to prevent password prompt
