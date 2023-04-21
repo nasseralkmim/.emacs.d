@@ -3925,7 +3925,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (ob-dall-e-shell-setup))
 
 ;; Experimental breadcrumb mode based on imenu
-(use-package breadcrum
+(use-package breadcrumb
   :elpaca nil
   :load-path "./lisp"
   :hook
