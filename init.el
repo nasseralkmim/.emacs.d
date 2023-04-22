@@ -524,13 +524,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand)
 
 ;; utility for using icons fonts
-(use-package all-the-icons
+(use-package all-the-icons :disabled
   :custom
   (all-the-icons-scale-factor 1))
 
-(use-package nerd-fonts :disabled
-  :elpaca (nerd-fonts :host github :repo "twlz0ne/nerd-fonts.el")
+(use-package nerd-icons
+  :elpaca (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el"
+                      :files (:defaults "data"))
+  :defer 1
+  :demand ;require
+  :custom
+  ;; need to install the nerd-font
+  ;; For kitty terminal need to add family to kitty config (C-S-<f2>)
+  (nerd-icons-font-family "Iosevka Nerd Font")
   :config
+  ;; to use with corfu and kind-icon
   (setq kind-icon-use-icons nil)
   (setq kind-icon-mapping
         `(
@@ -570,6 +578,20 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (value ,(nerd-icons-codicon "nf-cod-symbol_field") :face font-lock-builtin-face)
           (variable ,(nerd-icons-codicon "nf-cod-symbol_variable") :face font-lock-variable-name-face)
           (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face))))
+
+(use-package nerd-icons-dired
+  :elpaca (nerd-icons-dired :type git :host github :repo "rainstormstudio/nerd-icons-dired")
+  :after nerd-icons
+  :demand ; require
+  :hook
+  (dired-mode . nerd-icons-dired-mode))
+
+(use-package nerd-icons-completion
+  :elpaca (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
+  :after nerd-icons
+  :demand  ; to require
+  :config
+  (nerd-icons-completion-mode))
 
 ;; automatic insert matching pairs and navigation
 ;; highlight matching parens
@@ -2594,16 +2616,17 @@ opening a file from dired. Otherwise just regular dired."
 
 (use-package all-the-icons-completion
   :elpaca (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
-  ;; :when (display-graphic-p)
-  :after marginalia
+  :when (display-graphic-p)
+  :after marginalia all-the-icons
   :defer 1
   :config
   (all-the-icons-completion-mode)
   (add-hook 'marginalia-mode-hook #'all-the-icons-completion-marginalia-setup))
 
 ;; icons for dired
-(use-package all-the-icons-dired
-  ;; :when (display-graphic-p)
+(use-package all-the-icons-dired :disabled
+  :after all-the-icons
+  :when (display-graphic-p)
   :hook
   (dired-mode . (lambda ()
                   ;; don't enable in dired-sidebar
