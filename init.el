@@ -2501,8 +2501,10 @@ Only if there is more than one window opened."
   :elpaca nil
   :config
   ;; download and build grammar dynamic library 
+  ;; need to call: 'treesit-install-language-grammar' to install
   (setq treesit-language-source-alist
         '((python "https://github.com/tree-sitter/tree-sitter-python.git")
+          (c "https://github.com/tree-sitter/tree-sitter-c.git")
           (cpp "https://github.com/tree-sitter/tree-sitter-cpp.git")
           (cmake "https://github.com/uyha/tree-sitter-cmake.git")))
   ;; maximum fontification
