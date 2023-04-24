@@ -2814,8 +2814,9 @@ opening a file from dired. Otherwise just regular dired."
            "C-x" 'dired-ranger-move))
 
 ;; Open with external program.
-(use-package openwith
-  :commands openwith-mode
+(use-package openwith :disabled
+  :defer 1
+  :hook (after-init . openwith-mode)
   :config
   (setq openwith-associations '(("\\.pdf\\'" "okular" (file))
                                 ("\\.xopp\\'" "xournalpp" (file)))))
