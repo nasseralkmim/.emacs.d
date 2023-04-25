@@ -3815,9 +3815,25 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package el-easydraw
   :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
   :after org
-  :init
-  (require 'edraw-org)
-  (edraw-org-setup-default))
+  :commands org-open-at-point          ; when opening a [[edraw:]] link to start drawing
+  :demand
+  :config
+  (edraw-org-setup-default)
+  (setq edraw-editor-default-grid-visible nil
+        edraw-editor-default-tool 'freehand
+        ;; make toolbar small
+        ;; f - free hand 
+        ;; z - undo
+        ;; s - select
+        ;; dc - display crop
+        ;; + - zoom 
+        ;; spc - move and then q to quit
+        edraw-editor-toolbar-button-h 18
+        edraw-editor-toolbar-button-w 16)
+  (add-to-list 'edraw-default-shape-properties '(path
+                                                  (stroke . "#000")
+                                                  (stroke-width . 1)
+                                                  (fill . "none"))))
 
 ;; Git annotations
 (use-package blamer :disabled           ; problem with it showing in 'org-mode', when I don't enabled 'blamer-mode' in it.
@@ -3936,7 +3952,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (add-to-list 'ledger-reports '("bse" "%(binary) -f %(ledger-file) bse --alias '/^(revenue|income|expenses)/=equity' -2 --tree -B")))
 
 ;; Display information on side of the buffer
-(use-package sideline :disabled
+(use-package sideline
   :hook
   (prog-mode . sideline-mode)
   :config
@@ -3948,13 +3964,21 @@ If INTERACTIVE is nil the function acts like a Capf."
         sideline-priority 100                  ; overlays' priority
         sideline-display-backend-name t))      ; display the backend name
 
-(use-package sideline-eldoc :disabled
+(use-package sideline-eldoc
   :elpaca (sideline-eldoc :host github :repo "ginqi7/sideline-eldoc")
   :after sideline
   :diminish sideline-mode
   :demand
   :config
-  (setq sideline-backends-right '(sideline-eldoc)))
+  (add-to-list 'sideline-backends-right '(sideline-eldoc . up)))
+
+(use-package sideline-blame
+  :elpaca (sideline-eldoc :host github :repo "emacs-sideline/sideline-blame")
+  :after sideline
+  :diminish sideline-mode
+  :demand
+  :config
+  (add-to-list 'sideline-backends-right '(sideline-eldoc . down)))
 
 ;; ChatGTP client that integrates with 'org-mode'
 (use-package chatgpt-shell :disabled
