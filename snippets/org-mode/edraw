@@ -3,4 +3,4 @@
 # key: <d
 # binding: C-c y d
 # --
-[[edraw:file=images/`(concat (make-temp-file "edraw") ".svg")`]]`(save-excursion (backward-sexp) (org-open-at-point))`
+[[edraw:file=images/`(format-time-string "edraw-%Y-%m-%d--%H-%M-%S.svg")`]]
