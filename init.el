@@ -2054,6 +2054,33 @@ Only if there is more than one window opened."
   (setq python-flymake-command '("flake8" "-")
         python-check-command "/home/nasser/.local/bin/flake8"))
 
+(use-package python-ts
+  :elpaca nil
+  :init
+  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
+  :general
+  (python-mode-map "<backtab>" nil)
+  :hook ((python-mode . toggle-truncate-lines)
+         (python-mode . display-fill-column-indicator-mode))
+  :config
+  ;; dont guess the indent offset
+  (setq python-indent-guess-indent-offset nil)
+
+  ;; make indentation aware of docstring
+  (defun my-python-indent-line ()
+    (if (eq (car (python-indent-context)) :inside-docstring)
+        'noindent
+      (python-indent-line)))
+  ;; change default function to identify docstring
+  (defun my-python-mode-hook ()
+    (setq indent-line-function #'my-python-indent-line))
+  (add-hook 'python-mode-hook #'my-python-mode-hook)
+
+  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards.
+  ;; using flake9 for support to 'pyproject.toml'.
+  (setq python-flymake-command '("flake8" "-")
+        python-check-command "/home/nasser/.local/bin/flake8"))
+
 ;; formatting python code
 (use-package python-black
   :after python
@@ -2531,7 +2558,7 @@ Only if there is more than one window opened."
   ('normal :predicate '(outline-on-heading-p) "<tab>" 'evil-toggle-fold)
   :hook
   (c-mode-common . ts-fold-mode)
-  (python-mod . ts-fold-mode)
+  (python-mode . ts-fold-mode)
   :config
   (setq ts-fold-replacement "…"
         ts-fold-summary-exceeded-string "…"
@@ -2643,8 +2670,9 @@ opening a file from dired. Otherwise just regular dired."
 (use-package eglot
   :elpaca nil
   :hook
-  (python-mode . eglot-ensure) ; works if there is only one server available
   (eglot-managed-mode . eglot-inlay-hints-mode)
+  (python-mode . eglot-ensure) ; works if there is only one server available
+  (python-ts-mode . eglot-ensure)
   ;; python flymake tweak
   (eglot-managed-mode . (lambda ()
                           ;; https://old.reddit.com/r/emacs/comments/xq6rpa/weekly_tips_tricks_c_thread/
