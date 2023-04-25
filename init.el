@@ -3812,12 +3812,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq sx-question-mode-display-buffer-function 'switch-to-buffer))
 
 ;; Drawing link support in 'org-mode'
+;; It is not working to export to latex
 (use-package el-easydraw
   :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
   :after org
-  :commands org-open-at-point          ; when opening a [[edraw:]] link to start drawing
-  :demand
-  :config
+  :init
+  (require 'edraw-org)
   (edraw-org-setup-default)
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
@@ -3952,7 +3952,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (add-to-list 'ledger-reports '("bse" "%(binary) -f %(ledger-file) bse --alias '/^(revenue|income|expenses)/=equity' -2 --tree -B")))
 
 ;; Display information on side of the buffer
-(use-package sideline
+(use-package sideline :disabled         ; too much noise, not useful information
   :hook
   (prog-mode . sideline-mode)
   :config
@@ -3964,7 +3964,7 @@ If INTERACTIVE is nil the function acts like a Capf."
         sideline-priority 100                  ; overlays' priority
         sideline-display-backend-name t))      ; display the backend name
 
-(use-package sideline-eldoc
+(use-package sideline-eldoc :disabled
   :elpaca (sideline-eldoc :host github :repo "ginqi7/sideline-eldoc")
   :after sideline
   :diminish sideline-mode
@@ -3972,13 +3972,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (add-to-list 'sideline-backends-right '(sideline-eldoc . up)))
 
-(use-package sideline-blame
-  :elpaca (sideline-eldoc :host github :repo "emacs-sideline/sideline-blame")
+(use-package sideline-blame :disabled
+  :elpaca (sideline-blame :host github :repo "emacs-sideline/sideline-blame")
   :after sideline
-  :diminish sideline-mode
   :demand
   :config
-  (add-to-list 'sideline-backends-right '(sideline-eldoc . down)))
+  (add-to-list 'sideline-backends-right '(sideline-blame . down)))
 
 ;; ChatGTP client that integrates with 'org-mode'
 (use-package chatgpt-shell :disabled
