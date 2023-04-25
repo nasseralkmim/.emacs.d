@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: equation
-# key: <e
+# key: <eq
 # binding: C-c y e
 # --
 \begin{equation}
