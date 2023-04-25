@@ -64,7 +64,7 @@
  `(eglot-highlight-symbol-face ((t (:underline t :weight bold))))
  `(font-lock-comment-face ((t (:inherit my-font-lock-comment-face))))
  ;; rainbow delimite
- `(rainbow-delimiters-depth-1-face ((t (:inherit default))))
+ `(rainbow-delimiters-depth-1-face ((t (:inherit outline-1))))
  `(rainbow-delimiters-depth-2-face ((t (:inherit outline-2))))
  `(rainbow-delimiters-depth-3-face ((t (:inherit outline-3))))
  )
