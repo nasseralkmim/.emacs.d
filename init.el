@@ -638,10 +638,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; delay check, check only on save
   (setq flymake-no-changes-timeout 1)
-  ;; avoid warning in the flymake log
+  ;; avoid warning in the 'flymake' log
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
-;; flymake just for C++ in org edit special
+;; 'flymake' just for C++ in org edit special
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Example_002d_002d_002dConfiguring-a-tool-called-directly.html
 (use-package flymake :disabled                             ;not working with org edit special
   :init
@@ -1843,9 +1843,12 @@ graphics."
   ;; kill buffer after entry file, avoid accumulate buffers
   (put 'dired-find-alternate-file 'disabled nil))  
 
-;; load modus in terminal
+;; Load modus in terminal, it is very clever to figure out the colors there
 (use-package modus-themes
+  ;; :if (not (display-graphic-p))
+  :defer 1
   :config
+  (load-theme 'modus-vivendi-tinted t)
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-hl-line '(accented intense)
@@ -1889,12 +1892,6 @@ graphics."
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
                                        :background (modus-themes-color 'bg-paren-expression))))))
   :commands modus-themes-toggle)
-
-;; modus in terminal
-(use-package modus-themes :disabled
-  :unless (display-graphic-p)
-  :init
-  (modus-themes-load-operandi))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
@@ -2674,14 +2671,17 @@ opening a file from dired. Otherwise just regular dired."
   (eglot-managed-mode . eglot-inlay-hints-mode)
   (python-mode . eglot-ensure) ; works if there is only one server available
   (python-ts-mode . eglot-ensure)
-  ;; python flymake tweak
+  ;; python 'flymake' tweak
   (eglot-managed-mode . (lambda ()
                           ;; https://old.reddit.com/r/emacs/comments/xq6rpa/weekly_tips_tricks_c_thread/
-                          ;; re-enable flymake checkers because eglot clobbers
+                          ;; re-enable 'flymake' checkers because 'eglot' clobbers
                           ;; them when starting
-                          (when (derived-mode-p 'python-mode)
+                          (when (or (derived-mode-p 'python-mode)
+                                    (derived-mode-p 'python-ts-mode))
                             (add-hook 'flymake-diagnostic-functions 
-                                      'python-flymake nil t))))
+                                      'python-flymake nil t)
+                            ;; for some reason I need to "start" 'flymake' again
+                            (flymake-start))))
   ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
   (c++-ts-mode . eglot-ensure)
@@ -2714,14 +2714,21 @@ opening a file from dired. Otherwise just regular dired."
   ;; When in visual mode, format just the region
   ('visual eglot-mode-map "glf" 'eglot-format))
 
-;; Use mypy check for type in python
-(use-package flymake-mypy
+;; Use 'mypy' check for type in python
+;; need to install 'pip install mypy'
+;; for examples: https://mypy-lang.org/examples.html
+(use-package flymake-mypy :disabled     ; for some reason not working, I'm
+                                        ; relying on the language server for
+                                        ; type check now
   :elpaca (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
   :hook
-  ((eglot-managed-mode . (lambda ()
-                                 (when (derived-mode-p 'python-mode)
-                                   (require 'flymake-mypy)
-                                   (flymake-mypy-enable))))))
+  (eglot-managed-mode . (lambda ()
+                           (when (or (derived-mode-p 'python-mode)
+                                     (derived-mode-p 'python-ts-mode))
+                             ;; re-enable the default python.el checker
+                             (add-hook 'flymake-diagnostic-functions 'python-flymake nil t)
+                             (require 'flymake-mypy) ; load the package 
+                             (flymake-mypy-enable)))))
 
 ;; add ltex language server to eglot
 ;; uses language tool for grammar, but there is no need to install it
