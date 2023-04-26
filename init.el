@@ -167,11 +167,12 @@
 ;; custom emacs theme
 (use-package seralk-theme
   :elpaca nil
-  :general
-  ("<f5>" 'toggle-dark-theme)
-  ;; :when (display-graphic-p)
+  ;; :general
+  ;; ("<f5>" 'toggle-dark-theme)
+  :hook 
+  (modus-themes-after-load-theme . (lambda ()
+                                     (load-theme 'seralk t)))
   :init
-  (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
     (invert-face 'default)))
@@ -1845,10 +1846,12 @@ graphics."
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
 (use-package modus-themes
-  ;; :if (not (display-graphic-p))
   :defer 1
+  :general
+  ("<f5>" 'modus-themes-toggle)
   :config
-  (load-theme 'modus-vivendi-tinted t)
+  (modus-themes-load-theme 'modus-vivendi-tinted)
+  (setq modus-themes-to-toggle '(modus-operandi modus-vivendi modus-vivendi-tinted modus-operandi-tinted))
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-hl-line '(accented intense)
@@ -1887,10 +1890,10 @@ graphics."
                                          :family "Victor Mono" :slant 'italic :weight 'semibold)))
                 (eval-after-load 'auto-dim-other-buffers
                   '(set-face-attribute 'auto-dim-other-buffers-face nil
-                                       :foreground (modus-themes-color 'fg-dim)))
+                                       :foreground (modus-themes-get-color-value 'fg-dim)))
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
-                                       :background (modus-themes-color 'bg-paren-expression))))))
+                                       :background (modus-themes-get-color-value 'bg-paren-expression))))))
   :commands modus-themes-toggle)
 
 ;; change backgroud of other windows
