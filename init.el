@@ -856,7 +856,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq beacon-blink-when-window-scrolls nil)
   (beacon-mode 1))
 
-(use-package undo-propose
+(use-package undo-propose :disabled     ; using regular undo in region
   :after evil
   :general
   ('normal 'global "C-c u" 'undo-propose)
@@ -3083,11 +3083,16 @@ opening a file from dired. Otherwise just regular dired."
   :elpaca (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
   :commands flymake-vale-load)
 
-;; query synonyms
-(use-package le-thesaurus
+;; Query synonyms
+(use-package le-thesaurus :disabled
   :general
   ("C-c u" 'le-thesaurus-get-synonyms)
   :commands le-thesaurus-get-synonyms)
+
+;; Anther package to find synonyms
+(use-package powerthesaurus
+  :general
+  ("C-c u" 'powerthesaurus-lookup-dwim))
 
 ;; org-mode toc heading
 (use-package org-make-toc
