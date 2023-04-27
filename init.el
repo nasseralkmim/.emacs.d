@@ -484,7 +484,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
-  ("M-a" 'embark-act)
+  ("C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   (embark-function-map "h" 'helpful-symbol)
@@ -1861,7 +1861,7 @@ graphics."
         modus-themes-variable-pitch-ui nil
         modus-themes-syntax '(alt-syntax)
         modus-themes-italic-constructs t
-        modus-themes-bold-constructs nil
+        modus-themes-bold-constructs t
         modus-themes-fringes 'subtle
         modus-themes-headings '((t . (rainbow)))
         modus-themes-mode-line '(borderless accented moody))
