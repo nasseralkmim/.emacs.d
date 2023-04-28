@@ -484,7 +484,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
-  ("C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
+  ('normal 'global "C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   (embark-function-map "h" 'helpful-symbol)
@@ -2839,9 +2839,12 @@ opening a file from dired. Otherwise just regular dired."
 ;; Work git servers (forges)
 ;; uses 'Ghub' to access github/gitlab
 ;; need to set 'git config --global github.user <>'
-(use-package forge :disabled
+(use-package forge
   :demand
-  :after magit)
+  :after magit
+  :init
+  ;; use evil collection keybindings
+  (setq forge-add-default-bindings nil))
 
 ;; Mass copy-paste or copy-move (analogous to cut-paste) for dired.
 (use-package dired-ranger
@@ -4011,7 +4014,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   (ob-dall-e-shell-setup))
 
 ;; Experimental breadcrumb mode based on imenu
-(use-package breadcrumb
+;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
+(use-package breadcrumb :disabled
   :elpaca nil
   :load-path "./lisp"
   :hook
