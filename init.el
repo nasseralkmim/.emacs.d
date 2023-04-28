@@ -2064,7 +2064,7 @@ Only if there is more than one window opened."
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :general
-  (python-mode-map "<backtab>" nil)
+  (python-ts-mode-map "<backtab>" nil)
   :hook ((python-mode . toggle-truncate-lines)
          (python-mode . display-fill-column-indicator-mode))
   :config
