@@ -131,3 +131,4 @@
 ["Ruijie" "Yu" nil nil nil nil nil ("ruijie@netyu.xyz") nil "9183ba49-a0af-44c3-9946-98c49a2303be" "2023-03-27 17:44:23 +0000" "2023-03-27 17:44:23 +0000" nil]
 [nil "Zalando" nil nil nil nil nil ("noreply@zalando.at") nil "f0464d7f-75bd-4999-b00f-57873d957ecb" "2023-02-23 12:12:16 +0000" "2023-02-23 12:12:16 +0000" nil]
 ["Eli" "Zaretskii" nil nil nil nil nil ("eliz@gnu.org") nil "ac917f37-9394-4639-82cb-2b385bd3569b" "2023-02-15 09:24:15 +0000" "2023-02-15 09:24:15 +0000" nil]
+[nil "zid-cluster-admin" nil nil nil nil nil ("zid-cluster-admin@uibk.ac.at") nil "e86a7c39-075a-4fd4-9c90-03d050faa52c" "2023-04-28 13:26:07 +0000" "2023-04-28 13:26:07 +0000" nil]
