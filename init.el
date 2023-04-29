@@ -2531,6 +2531,9 @@ Only if there is more than one window opened."
 ;; and put in ./emacs.d/tree-sitter
 (use-package treesit
   :elpaca nil
+  :general
+  ('normal "zj" 'treesit-end-of-defun)
+  ('normal "zk" 'treesit-beginning-of-defun)
   :config
   ;; download and build grammar dynamic library 
   ;; need to call: 'treesit-install-language-grammar' to install
