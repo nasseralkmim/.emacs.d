@@ -488,7 +488,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
-  ('(insert normal global) "C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
+  ('(visual insert normal) "C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   (embark-function-map "h" 'helpful-symbol)
@@ -1854,7 +1854,7 @@ graphics."
   :general
   ("<f5>" 'modus-themes-toggle)
   :config
-  (modus-themes-load-theme 'modus-vivendi-tinted)
+  ;; (modus-themes-load-theme 'modus-vivendi-tinted)
   (setq modus-themes-to-toggle '(modus-operandi modus-vivendi modus-vivendi-tinted modus-operandi-tinted))
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
@@ -2971,7 +2971,7 @@ opening a file from dired. Otherwise just regular dired."
           "\\*eldoc\\*"                   ; eldoc buffer
           "Help\\*$"
           "Translate\\*$"               ; gts translate
-          "\\*Python\\*"
+          ;; "\\*Python\\*"
           "CAPTURE-.*"
           "^\\*Dicti.*"
           ("\\*BBDB\\*" . hide)         ; when the database add an etry
@@ -4028,5 +4028,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   :hook
   (prog-mode . breadcrumb-mode)
   (org-mode . breadcrumb-mode))
+
+(use-package circadian
+  :defer 1
+  :config
+  (setq circadian-themes '(("8:00" . modus-operandi-tinted)
+                           ("19:30" . modus-vivendi-tinted)))
+  (circadian-setup))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
