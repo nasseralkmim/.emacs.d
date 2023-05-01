@@ -424,7 +424,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
   ("C-s" 'consult-line)			; search lines with preview
-  ("C-S-s" 'consult-focus-lines)	; show only matching results
+  ("C-c C-f" 'consult-focus-lines)	; show only matching results
   ("C-c m" 'consult-mark)
   ;; two parts: search  and filter
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
@@ -703,6 +703,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (global-evil-mc-mode 1)
   ;; extra commands for multiple cursts
+  (push '(eval-last-sexp . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
   (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete))) evil-mc-known-commands)
   (push '(org-yank . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
   (push '(evil-paste-before . ((:default . evil-mc-execute-default-evil-paste))) evil-mc-known-commands)
@@ -4035,5 +4036,15 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq circadian-themes '(("8:00" . modus-operandi-tinted)
                            ("19:30" . modus-vivendi-tinted)))
   (circadian-setup))
+
+;; Codex-Completion Package
+(use-package codex-completion
+  :elpaca (codex-completion :type git :host github :repo "debanjum/codex-completion")
+  :general
+  ("C-c ." 'codex-completion)
+  :config
+  (setq codex-completion-openai-api-token
+        (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))))
+        
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
