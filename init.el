@@ -3437,7 +3437,7 @@ its results, otherwise display STDERR with
   :elpaca nil
   :config
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
-  (general-def 'normal gnus-summary-mode-map "=" 'gnus-summary-expand-window) ; close current article been viewed
+  (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
   (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+personal:[Gmail]/All Mail")))
   (general-def 'normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))))
 
