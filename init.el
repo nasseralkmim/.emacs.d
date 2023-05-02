@@ -488,7 +488,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
-  ('(insert normal) "C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
+  ('(insert normal global) "C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   (embark-function-map "h" 'helpful-symbol)
@@ -4019,7 +4019,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
-(use-package breadcrumb :disabled
+(use-package breadcrumb
   :elpaca nil
   :load-path "./lisp"
   :hook
