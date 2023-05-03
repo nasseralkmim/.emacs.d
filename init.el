@@ -169,10 +169,8 @@
   :elpaca nil
   ;; :general
   ;; ("<f5>" 'toggle-dark-theme)
-  :hook 
-  (modus-themes-after-load-theme . (lambda ()
-                                     (load-theme 'seralk t)))
   :init
+  (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
     (invert-face 'default)))
@@ -488,7 +486,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
-  ('(visual insert normal global) "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
+  ('(insert visual normal) "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
+  ('(insert motion) minibuffer-local-map "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   (embark-function-map "h" 'helpful-symbol)
@@ -4027,7 +4026,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
-(use-package breadcrumb
+(use-package breadcrumb :disabled
   :elpaca nil
   :load-path "./lisp"
   :hook
