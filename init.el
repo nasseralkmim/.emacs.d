@@ -164,7 +164,7 @@
   ;; text scroll pixel by pixel
   (pixel-scroll-precision-mode t))
 
-;; custom emacs theme
+;; My custom emacs theme
 (use-package seralk-theme
   :elpaca nil
   ;; :general
@@ -1430,6 +1430,10 @@ graphics."
   :defer 1
   :hook
   (text-mode . (lambda () (setq-local corfu-auto-prefix 3))) ; increase prefix for text
+  (prog-mode . (lambda ()
+                 ;; decrease prefix for text
+                 (setq-local corfu-auto-prefix 2
+                             corfu-auto-delay 0.05)))
   :config
   (global-corfu-mode)
   (corfu-popupinfo-mode)                ; show doc
@@ -1898,8 +1902,7 @@ graphics."
                                        :foreground (modus-themes-get-color-value 'fg-dim)))
                 (eval-after-load 'smartparens
                   '(set-face-attribute 'sp-show-pair-match-content-face nil
-                                       :background (modus-themes-get-color-value 'bg-paren-expression))))))
-  :commands modus-themes-toggle)
+                                       :background (modus-themes-get-color-value 'bg-paren-expression)))))))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
