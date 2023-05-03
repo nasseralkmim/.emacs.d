@@ -488,7 +488,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
-  ('(visual insert normal) "C-z" 'embark-act)                   ; use "\" for "evil-execute-in-emacs-state"
+  ('(visual insert normal global) "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
   ("C-S-z" 'embark-dwim)
   ("C-h B" 'embark-bindings)
   (embark-function-map "h" 'helpful-symbol)
