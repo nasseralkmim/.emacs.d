@@ -1,6 +1,5 @@
 ;; -*- mode: Emacs-Lisp; coding: utf-8; -*-
 ;;; file-format: 9
-[nil nil nil nil nil nil nil ("Hofstetter") nil "c5e76675-2590-4585-91bc-55cd5c31b6f4" "2023-04-23 08:05:09 +0000" "2023-04-23 08:05:09 +0000" nil]
 ["Russell" "Adams" nil nil nil nil nil ("RLAdams@adamsinfoserv.com") nil "f10ec00f-1da4-40ef-9dd4-24da25cca638" "2023-04-19 07:46:11 +0000" "2023-04-19 07:46:11 +0000" nil]
 ["Michael" "Albinus" nil nil nil nil nil ("michael.albinus@gmx.de") nil "f95b5d10-159e-4f30-a63d-96ff404abe00" "2023-02-17 10:39:54 +0000" "2023-02-17 10:39:54 +0000" nil]
 ["Kendl" "Alexander" nil nil nil nil nil ("Alexander.Kendl@uibk.ac.at") nil "2aa0d90b-1a3e-44e3-8ea5-3eaf64a1e3ba" "2023-02-28 16:31:49 +0000" "2023-02-28 16:31:49 +0000" nil]
@@ -43,6 +42,7 @@
 ["Alexis" "Gallagher" nil nil nil nil nil ("alexisgallagher@gmail.com") nil "8c5fa1e2-32aa-4d71-861b-c2b0efda995a" "2023-02-22 15:15:42 +0000" "2023-02-22 15:15:42 +0000" nil]
 ["Peter" "Gamnitzer" nil nil nil nil nil ("Peter.Gamnitzer@uibk.ac.at") nil "73666710-3994-4fe5-950a-75e3fd2c8f0e" "2023-02-22 15:13:42 +0000" "2023-02-22 15:13:42 +0000" nil]
 [nil "GentleGiants" nil nil nil nil nil ("tom15mitterer@gmail.com") nil "1fc55ec5-26c5-4e35-bf41-86e8d2c48e93" "2023-03-22 15:35:56 +0000" "2023-03-22 15:35:56 +0000" nil]
+["International Journal for Numerical and Analytical Methods in" "Geomechanics" nil nil nil nil nil ("no-reply@atyponrex.com") nil "69ede52a-a9f1-49f2-bd07-183ed7a60d5b" "2023-05-03 14:27:16 +0000" "2023-05-03 14:27:16 +0000" nil]
 ["Manuel" "Giraud" nil nil nil nil nil ("manuel@ledu-giraud.fr") nil "79b2af96-d50b-49d2-9b87-9e33dbbafb9a" "2023-03-31 08:40:37 +0000" "2023-03-31 08:40:37 +0000" nil]
 ["Angelo" "Graziosi" nil nil nil nil nil ("angelo.g0@libero.it") nil "3be2e671-7555-46cd-bb2d-74576cd25ffa" "2023-02-19 11:00:17 +0000" "2023-02-19 11:00:17 +0000" nil]
 ["Pedro Andres Aranda" "Gutierrez" nil nil nil nil nil ("paaguti@gmail.com") nil "c03b6dc5-655e-4720-ad19-e1dec262d7b2" "2023-02-18 10:17:09 +0000" "2023-02-18 10:17:09 +0000" nil]
@@ -79,6 +79,7 @@
 ["Charalampos" "Mitrodimas" nil nil nil nil nil ("charmitro@gmail.com") nil "00503293-e42e-4389-a233-087539e4acfb" "2023-03-30 09:47:47 +0000" "2023-03-30 09:47:47 +0000" nil]
 ["Stefan" "Monnier" nil nil nil nil nil ("monnier@iro.umontreal.ca") nil "115292c5-0003-483b-9b1b-e490903363fb" "2023-02-16 08:10:17 +0000" "2023-02-16 08:10:17 +0000" nil]
 [nil "nasseralkmim" nil nil nil nil nil ("nasseralkmim.github.io@noreply.github.com") nil "d3b608c7-bfb6-470e-a95d-0d1dcdb8c8e5" "2023-02-16 06:38:38 +0000" "2023-02-16 06:38:38 +0000" nil]
+["Matthias" "Neuner" nil nil nil nil nil ("matthias.neuner@uibk.ac.at") nil "af2182a7-a377-4417-b342-b389aaff4f4c" "2023-05-03 14:23:44 +0000" "2023-05-03 14:23:44 +0000" nil]
 [nil "newsletter" nil nil nil nil nil ("newsletter@immowelt.at") nil "c1bde8ca-9cd5-4e37-8767-b3c3b7914ffd" "2023-03-01 11:36:55 +0000" "2023-03-01 11:36:55 +0000" nil]
 [nil "no-reply" nil nil nil nil nil ("no-reply@sender.skyscanner.com") nil "05f3d0b9-1e6e-41ed-9207-d75a34eb7092" "2023-02-16 05:54:40 +0000" "2023-02-16 05:54:40 +0000" nil]
 [nil "noreply" nil nil nil nil nil ("noreply@codeium.com") nil "c330ca1d-6bc5-452c-8158-fd03df54a3e6" "2023-02-17 10:12:22 +0000" "2023-02-17 10:12:22 +0000" nil]
