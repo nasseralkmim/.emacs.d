@@ -4038,14 +4038,4 @@ If INTERACTIVE is nil the function acts like a Capf."
                            ("19:30" . modus-vivendi-tinted)))
   (circadian-setup))
 
-;; Codex-Completion Package
-(use-package codex-completion
-  :elpaca (codex-completion :type git :host github :repo "debanjum/codex-completion")
-  :general
-  ("C-c ." 'codex-completion)
-  :config
-  (setq codex-completion-openai-api-token
-        (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))))
-        
-
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
