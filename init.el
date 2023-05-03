@@ -3966,7 +3966,6 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package ledger-mode
   :mode ("\\.ledger\\'" . ledger-mode)
   :config
-  (setq ledger-binary-path "hledger")
   ;; avoid extra flags from 'ledger'
   (setq ledger-report-auto-width nil
         ledger-report--extra-args-marker " " ; don't use 'ledger' flags in 'hledger'
@@ -3974,8 +3973,7 @@ If INTERACTIVE is nil the function acts like a Capf."
         ;; https://github.com/simonmichael/hledger/issues/367#issuecomment-927024529
         ledger-mode-should-check-version nil
         ;; https://github.com/simonmichael/hledger/issues/367#issuecomment-753455796
-        ledger-report-native-highlighting-arguments nil)
-  (add-to-list 'ledger-reports '("bse" "%(binary) -f %(ledger-file) bse --alias '/^(revenue|income|expenses)/=equity' -2 --tree -B")))
+        ledger-report-native-highlighting-arguments nil))
 
 ;; Display information on side of the buffer
 (use-package sideline :disabled         ; too much noise, not useful information
