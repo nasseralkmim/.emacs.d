@@ -2882,7 +2882,7 @@ opening a file from dired. Otherwise just regular dired."
           (directory . emacs)
           ("\\.mm\\'" . default)
           ("\\.x?html?\\'" . default)
-          ("\\.pdf\\'" . default)
+          ("\\.pdf\\'" . "okular %s")
           ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1")
           ;; if file has ::<page> opens at this page
           ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1"))))
