@@ -1035,7 +1035,7 @@ graphics."
   (setq org-display-remote-inline-images 'cache))
 
 ;; org export
-(use-package ox
+(use-package ox :disabled
   :elpaca nil
   :after org
   :init
