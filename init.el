@@ -1259,7 +1259,9 @@ graphics."
         ;; org-startup-with-latex-preview t
         org-latex-image-default-width nil ; don't scale my images!
         org-latex-images-centered t
-        org-preview-latex-image-directory "~/.cache/ltximg/")
+        org-preview-latex-image-directory "~/.cache/ltximg/"
+        ;; use svg images for latex preview
+        org-preview-latex-default-process 'dvisvgm)
 
   ;; mint and svg export require '-shell-escape' option
   (setq org-latex-listings 'minted
@@ -3848,6 +3850,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
   :after org
   :init
+  ;; load the org setup after 'ox', which works when exporting in the bg
   (require 'edraw-org)
   (edraw-org-setup-default)
   (setq edraw-editor-default-grid-visible nil
