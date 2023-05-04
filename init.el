@@ -4038,6 +4038,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq circadian-themes '(("8:00" . modus-operandi-tinted)
                            ("19:30" . modus-vivendi-tinted)))
-  (circadian-setup))
+  (circadian-setup)
+  (load-theme 'seralk t))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
