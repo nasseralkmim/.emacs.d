@@ -2,7 +2,7 @@
   "Time when Emacs was started")
 
 ;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.3)
+(defvar elpaca-installer-version 0.4)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -52,7 +52,7 @@
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
 ;; Block until current queue processed.
-(elpaca-wait)
+(elpaca-process-queues)
 
 ;; general for keybinding
 (use-package general
@@ -64,7 +64,7 @@
 
 ;; ':general' and ':diminish' add keywords to 'use-package'
 ;; need to process before continue
-(elpaca-wait)
+(elpaca-process-queues)
 
 ;; minimizes GC interference with user activity
 (use-package gcmh
