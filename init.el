@@ -1394,7 +1394,7 @@ graphics."
 
 ;; 'flyspell' uses `hooks` and `sit-for` to delay
 ;; this uses `idle-timers`
-(use-package flyspell-lazy
+(use-package flyspell-lazy :disabled
   :after flyspell
   :hook
   (flyspell-mode . flyspell-lazy-mode)
@@ -1402,7 +1402,7 @@ graphics."
   (setq flyspell-lazy-idle-seconds 1))
 
 ;; Convenient functions for correcting with 'flyspell'.
-(use-package flyspell-correct
+(use-package flyspell-correct :disabled
   :after flyspell
   :general
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
@@ -1437,7 +1437,7 @@ graphics."
                              corfu-auto-delay 0.05)))
   :config
   (global-corfu-mode)
-  (corfu-popupinfo-mode)                ; show doc
+  ;; (corfu-popupinfo-mode)                ; show doc -> using eldoc box, sometimes they overlap
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.3
         corfu-auto-prefix 2
@@ -3050,8 +3050,15 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; eldoc in childframe
 ;; sometimes it gets in the way
-(use-package eldoc-box :disabled
-  :hook (c++-mode . eldoc-box-hover-mode))
+(use-package eldoc-box
+  :diminish eldoc-box-hover-mode
+  :general
+  ('normal :keymaps 'override "K" 'eldoc-box-help-at-point)
+  :hook
+  (prog-mode . eldoc-box-hover-mode)
+  :config
+  (setq eldoc-box-only-multi-line t
+        eldoc-box-lighter t))
 
 ;; async support for dired
 (use-package dired-async
