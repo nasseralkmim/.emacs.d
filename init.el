@@ -4060,4 +4060,10 @@ If INTERACTIVE is nil the function acts like a Capf."
   (circadian-setup)
   (load-theme 'seralk t))
 
+(use-package pueue
+  :elpaca (pueue :host github :repo "xFA25E/pueue")
+  :commands pueue
+  :general 
+  ('normal pueue-mode-map "?" 'pueue-help))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
