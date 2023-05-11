@@ -1484,7 +1484,11 @@ graphics."
   :elpaca (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :unless (display-graphic-p)
   :after corfu
-  :init (corfu-terminal-mode))
+  :init
+  (corfu-terminal-mode)
+  ;; does not play nicely with 'org-indent-mode'
+  (with-eval-after-load 'org
+    (remove-hook 'org-mode-hook 'org-indent-mode))) 
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
