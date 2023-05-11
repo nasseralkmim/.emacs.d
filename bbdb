@@ -1,5 +1,6 @@
 ;; -*- mode: Emacs-Lisp; coding: utf-8; -*-
 ;;; file-format: 9
+["Eric" "Abrahamsen" nil nil nil nil nil ("eric@ericabrahamsen.net") nil "910481b1-77fa-4323-8516-4342d05ee070" "2023-05-06 08:17:45 +0000" "2023-05-06 08:17:45 +0000" nil]
 ["Russell" "Adams" nil nil nil nil nil ("RLAdams@adamsinfoserv.com") nil "f10ec00f-1da4-40ef-9dd4-24da25cca638" "2023-04-19 07:46:11 +0000" "2023-04-19 07:46:11 +0000" nil]
 ["Michael" "Albinus" nil nil nil nil nil ("michael.albinus@gmx.de") nil "f95b5d10-159e-4f30-a63d-96ff404abe00" "2023-02-17 10:39:54 +0000" "2023-02-17 10:39:54 +0000" nil]
 ["Kendl" "Alexander" nil nil nil nil nil ("Alexander.Kendl@uibk.ac.at") nil "2aa0d90b-1a3e-44e3-8ea5-3eaf64a1e3ba" "2023-02-28 16:31:49 +0000" "2023-02-28 16:31:49 +0000" nil]
@@ -105,6 +106,7 @@
 ["Bergfreunde" "Preisgrounder" nil nil nil nil nil ("newsletter@reply.bergfreunde.de") nil "8d229e8e-e5b8-4d85-ac5d-dd5c0a243901" "2023-02-16 05:51:37 +0000" "2023-02-16 05:51:37 +0000" nil]
 [nil "ProduceShop" nil nil nil nil nil ("noreply@produceshop.it") nil "a972dd79-0427-4e58-94a3-abc9a7b658a4" "2023-04-24 13:49:47 +0000" "2023-04-24 13:49:47 +0000" nil]
 ["Ihor" "Radchenko" nil nil nil nil nil ("yantar92@posteo.net") nil "261995c8-71e9-4119-9d3d-946f6287dd7c" "2023-02-19 07:57:52 +0000" "2023-02-19 07:57:52 +0000" nil]
+["T. V." "Raman" nil nil nil nil nil ("raman@google.com") nil "ddf3d845-ce5e-44b2-8133-19a37638e232" "2023-05-06 08:17:34 +0000" "2023-05-06 08:17:34 +0000" nil]
 ["Robert Franz" "Rebitsch" nil nil nil nil nil ("Robert.Rebitsch@uibk.ac.at") nil "756676d0-223d-4170-b85c-a606e1953683" "2023-02-23 07:27:35 +0000" "2023-02-23 07:27:35 +0000" nil]
 ["Eduard" "Reiter" nil nil nil nil nil ("Eduard.Reiter@uibk.ac.at") nil "874a1de3-16df-4210-b7c7-8fb6fe53b933" "2023-02-22 15:11:00 +0000" "2023-02-22 15:11:00 +0000" nil]
 [nil "RektorInnenteam" nil nil nil nil nil ("rektorenteam@uibk.ac.at") nil "404e9102-6106-49b0-90eb-5a148d85bb37" "2023-05-04 07:37:23 +0000" "2023-05-04 07:37:23 +0000" nil]
@@ -121,6 +123,7 @@
 ["Andrea" "Rumpold" nil nil nil nil nil ("Andrea.Rumpold@uibk.ac.at") nil "2ba9d513-30ae-40f1-af6b-d72448ec82f9" "2023-04-20 12:23:35 +0000" "2023-04-20 12:23:35 +0000" nil]
 ["Andreas" "Schwab" nil nil nil nil nil ("schwab@suse.de") nil "cab5a26d-c0a1-4692-a552-87794210895b" "2023-03-28 12:43:19 +0000" "2023-03-28 12:43:19 +0000" nil]
 ["wifi" "service" nil nil nil nil nil ("wifi.service@wktirol.at") nil "04465b46-5d45-41e5-9cda-b1e523b412fe" "2023-02-19 18:53:25 +0000" "2023-02-19 18:53:25 +0000" nil]
+["Ashish" "SHUKLA" nil nil nil nil nil ("ashish.is@lostca.se") nil "9a33ffc8-7651-477b-9a34-4f820b0078f0" "2023-05-06 08:18:02 +0000" "2023-05-06 08:18:02 +0000" nil]
 ["Abin" "Simon" nil nil nil nil nil ("mail@meain.io") nil "77369389-59ec-41ab-935d-be2b8121950d" "2023-03-13 12:45:12 +0000" "2023-03-13 12:45:12 +0000" nil]
 ["Richard" "Stallman" nil nil nil nil nil ("rms@gnu.org") nil "31d4cb7e-4fd5-40cd-910a-cfd205d81df4" "2023-02-19 07:57:41 +0000" "2023-02-19 07:57:41 +0000" nil]
 ["Augusto" "Stoffel" nil nil nil nil nil ("arstoffel@gmail.com") nil "abbbca58-e7e9-4cc8-817e-7be627e7017d" "2023-02-21 15:24:49 +0000" "2023-02-21 15:24:49 +0000" nil]

@@ -2868,7 +2868,7 @@ opening a file from dired. Otherwise just regular dired."
            "C-x" 'dired-ranger-move))
 
 ;; Open with external program.
-(use-package openwith :disabled
+(use-package openwith
   :defer 1
   :hook (after-init . openwith-mode)
   :config
@@ -3397,6 +3397,8 @@ its results, otherwise display STDERR with
   (gnus-summary-normal-unread  ((t (:family "Iosevka SS12"))))
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
+        ;; 'select method' means the 'backend': how gnus stores the messages 
+        ;; imap backend also fetchs the mail (that's why it takes a while)
         gnus-select-method '(nnnil)
         gnus-secondary-select-methods '((nntp "news"
                                               ;; news server with mailing lists gatewayed to the NNTP server [2].
@@ -3936,6 +3938,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (text-mode . jinx-mode)
   :general
   ("C-," 'jinx-correct)
+  ("M-," 'jinx-correct)
   :config
   (setq jinx-languages "en de pt_BR"))
 
@@ -4046,8 +4049,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package circadian
   :defer 1
   :config
-  (setq circadian-themes '(("8:00" . modus-operandi-tinted)
-                           ("19:30" . modus-vivendi-tinted)))
+  (setq circadian-themes '(("7:00" . modus-operandi-tinted)
+                           ("20:00" . modus-vivendi-tinted)))
   (circadian-setup)
   (load-theme 'seralk t))
 
