@@ -455,7 +455,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; added --no-ignore-vcs to avoid skipping files in gitignore
   (setq consult-project-root-function nil
         consult-ripgrep-args 
-        "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs .")
+        "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs ."
+        )
 
   ;; previous consult line 
   (defvar my-consult-line-map
@@ -2849,7 +2850,7 @@ opening a file from dired. Otherwise just regular dired."
   (setq image-animate-loop t))
 
 ;; Shows which function in the mode line.
-(use-package which-func
+(use-package which-func :disabled ; using breadbrum
   :elpaca nil
   :hook
   (prog-mode . which-function-mode))
@@ -4045,9 +4046,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
-(use-package breadcrumb :disabled
-  :elpaca nil
-  :load-path "./lisp"
+(use-package breadcrumb
+  :elpaca (breadcrumn :host github :repo "joaotavora/breadcrumb")
   :hook
   (prog-mode . breadcrumb-mode)
   (org-mode . breadcrumb-mode))
