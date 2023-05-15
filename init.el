@@ -3756,6 +3756,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; setup consent in the API & Services -> Credentials, then get the id/secrect
 ;; in API & Services -> Library: enable Calendar API
 (use-package org-gcal
+  :if (display-graphic-p)
   :after org
   :commands org-gcal-sync
   :hook
@@ -3863,6 +3864,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Drawing link support in 'org-mode'
 ;; It is not working to export to latex
 (use-package el-easydraw
+  :if (display-graphic-p)
   :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
   :after org
   :init
