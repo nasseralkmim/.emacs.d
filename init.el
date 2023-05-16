@@ -336,7 +336,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-r" 'vertico-repeat))
 
 ;; use vertico to complete in region with orderless in terminal
-(use-package vertico :disabled          ;using corfu terminal
+(use-package vertico-terminal :disabled          ;using corfu terminal
   :elpaca nil
   :unless (display-graphic-p)
   :config
@@ -2953,7 +2953,7 @@ opening a file from dired. Otherwise just regular dired."
 (use-package detached
   :elpaca (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
-  ('normal "<f7>" 'detached-open-session)
+  ;; ('normal "<f7>" 'detached-open-session)
   ([remap async-shell-command] 'detached-shell-mode)
   :custom ((detached-show-output-on-attach t))
   :init
@@ -4067,6 +4067,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca (pueue :host github :repo "xFA25E/pueue")
   :commands pueue
   :general 
+  ('normal "<f7>" 'pueue)
   ('normal pueue-mode-map "?" 'pueue-help))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
