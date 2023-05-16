@@ -3058,6 +3058,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; eldoc in childframe
 ;; sometimes it gets in the way
 (use-package eldoc-box
+  :if (display-graphic-p)
   :diminish eldoc-box-hover-mode
   :general
   ('normal :keymaps 'override "K" 'eldoc-box-help-at-point)
