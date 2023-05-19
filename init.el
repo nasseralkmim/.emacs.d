@@ -3613,12 +3613,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   :config
-  (setq isearch-lazy-count t)
-  ;; improve command
-  ;; use wildcard (.*) to match anything in between when there is a space
-  ;; https://www.reddit.com/r/emacs/comments/db8eu4/trying_to_collect_some_isearch_tips_and_tricks/
-  (setq search-whitespace-regexp ".*"
-        isearch-lax-whitespace t))
+  (setq isearch-lazy-count t))
 
 ;; highlight code in eww
 (use-package shr-tag-pre-highlight
