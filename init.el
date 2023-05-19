@@ -3617,7 +3617,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; improve command
   ;; use wildcard (.*) to match anything in between when there is a space
   ;; https://www.reddit.com/r/emacs/comments/db8eu4/trying_to_collect_some_isearch_tips_and_tricks/
-  (setq search-whitespace-regexp ".*?"
+  (setq search-whitespace-regexp ".*"
         isearch-lax-whitespace t))
 
 ;; highlight code in eww
