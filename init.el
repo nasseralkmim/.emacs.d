@@ -2986,6 +2986,7 @@ opening a file from dired. Otherwise just regular dired."
           ;; "\\*Python\\*"
           "CAPTURE-.*"
           "^\\*Dicti.*"
+          "\\*Pueue Log\\*"
           ("\\*BBDB\\*" . hide)         ; when the database add an etry
           compilation-mode))
   (popper-mode +1)
@@ -4069,5 +4070,13 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general 
   ('normal "<f7>" 'pueue)
   ('normal pueue-mode-map "?" 'pueue-help))
+
+;; Matchs the cursor color when running emacs in terminal
+;; makes it much more visible, but it does not change the foreground when over the text as in the GUI
+(use-package term-cursos-color
+  :elpaca (term-cursos-color :host github :repo "CyberShadow/term-cursor-color")
+  :if (not (display-graphic-p))
+  :init
+  (term-cursor-color-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
