@@ -4085,4 +4085,30 @@ If INTERACTIVE is nil the function acts like a Capf."
   :init
   (term-cursor-color-mode))
 
+(use-package starhugger
+  :elpaca (starhugger :url "https://gitlab.com/daanturo/starhugger.el")
+  :general
+  ("M-/" 'starhugger-trigger-suggestion)
+  :config
+  (setq starhugger-api-token (funcall
+                              (plist-get (car (auth-source-search :host "api.huggingface.com"))
+                                         :secret)))
+
+  ;; `starhugger-inline-menu-item' makes a conditional binding that is only active at the inline suggestion start
+  (keymap-set starhugger-inlining-mode-map "TAB" (starhugger-inline-menu-item #'starhugger-accept-suggestion))
+  (keymap-set starhugger-inlining-mode-map "M-[" (starhugger-inline-menu-item #'starhugger-show-prev-suggestion))
+  (keymap-set starhugger-inlining-mode-map "M-]" (starhugger-inline-menu-item #'starhugger-show-next-suggestion))
+  (keymap-set starhugger-inlining-mode-map "M-f" (starhugger-inline-menu-item #'starhugger-accept-suggestion-by-word))
+
+   ;; for evil users, dismiss after pressing ESC twice
+  (defvar my-evil-force-normal-state-hook '())
+  (defun my-evil-run-force-normal-state-hook-after-a (&rest _)
+    (run-hooks 'my-evil-force-normal-state-hook))
+
+  (defun my-starhugger-inline-mode-h ()
+    (add-hook 'my-evil-force-normal-state-hook
+              (lambda () (starhugger-dismiss-suggestion t))
+              nil t))
+  (add-hook 'starhugger-inlining-mode-hook #'my-starhugger-inline-mode-h))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
