@@ -2546,6 +2546,7 @@ Only if there is more than one window opened."
   :general
   ('normal "zj" 'treesit-end-of-defun)
   ('normal "zk" 'treesit-beginning-of-defun)
+  ('normal "C-M-f" 'treesit-forward-sexp)
   :config
   ;; download and build grammar dynamic library 
   ;; need to call: 'treesit-install-language-grammar' to install
