@@ -4108,6 +4108,13 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 (use-package combobulate
   :elpaca (combobulate :url "https://github.com/mickeynp/combobulate")
+  :general
+  ('normal combobulate-key-map :prefix "z"
+           "k" 'combobulate-navigate-beginning-of-defun
+           "j" 'combobulate-navigate-end-of-defun)
+  ('normal combobulate-key-map
+           "M-k" 'combobulate-navigate-logical-previous
+           "M-j" 'combobulate-navigate-logical-next)
   :hook
   (python-ts-mode . combobulate-mode)
   (c++-ts-mode . combobulate-mode)
