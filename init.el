@@ -4106,4 +4106,11 @@ If INTERACTIVE is nil the function acts like a Capf."
               nil t))
   (add-hook 'starhugger-inlining-mode-hook #'my-starhugger-inline-mode-h))
 
+(use-package combobulate
+  :elpaca (combobulate :url "https://github.com/mickeynp/combobulate")
+  :hook
+  (python-ts-mode . combobulate-mode)
+  (c++-ts-mode . combobulate-mode)
+  (yaml-ts-mode . combobulate-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
