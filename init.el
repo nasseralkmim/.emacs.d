@@ -4120,4 +4120,16 @@ If INTERACTIVE is nil the function acts like a Capf."
   (c++-ts-mode . combobulate-mode)
   (yaml-ts-mode . combobulate-mode))
 
+(use-package better-window-divider-terminal
+  :elpaca nil
+  :if (not (display-graphic-p))
+  :init
+  ;; https://www.reddit.com/r/emacs/comments/3u0d0u/how_do_i_make_the_vertical_window_divider_more/cxb78ul/
+  (defun my-change-window-divider ()
+    (let ((display-table (or buffer-display-table standard-display-table)))
+      (set-display-table-slot display-table 5 ?│)
+      (set-window-display-table (selected-window) display-table)))
+
+  (add-hook 'window-configuration-change-hook 'my-change-window-divider))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
