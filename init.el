@@ -676,6 +676,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package evil-multiedit
   :after evil
+  :custom-face
+  (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil :style nil))))
   :general
   ('visual "R" 'evil-multiedit-match-all)
   ("M-d" 'evil-multiedit-match-and-next)
