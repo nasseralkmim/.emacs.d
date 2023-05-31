@@ -177,21 +177,22 @@
 
 ;; typeface
 (use-package custom-typefaces
+  
   :elpaca nil
   :custom-face 
   ;; victor mono sometimes is nice for comments
   ;; 'constant'
   (font-lock-comment-face ((t (:family "Victor Mono" :height .95))))
-  (font-lock-constant-face ((t (:height 1.05 :family "Iosevka SS12"))))
+  (font-lock-constant-face ((t (:family "JetBrainsMono Nerd Font"))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
-  (default  ((t (:family "Iosevka Nerd Font"))))
+  (default  ((t (:family "JetBrainsMono Nerd Font"))))
   (variable-pitch ((t (:family "Iosevka etoile"))))
   ;; when using variable pitch in org mode, use monospace for code blocks
-  (org-block ((t (:family "Iosevka SS12"))))
-  (org-table ((t (:family "Iosevka SS12"))))
-  (org-meta-line ((t (:family "Iosevka SS12"))))
-  (org-verbatim ((t (:family "Iosevka SS12"))))
+  (org-block ((t (:family "JetBrainsMono Nerd Font"))))
+  (org-table ((t (:family "JetBrainsMono Nerd Font"))))
+  (org-meta-line ((t (:family "JetBrainsMono Nerd Font"))))
+  (org-verbatim ((t (:family "JetBrainsMono Nerd Font"))))
   (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
 
