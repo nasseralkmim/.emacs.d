@@ -177,7 +177,6 @@
 
 ;; typeface
 (use-package custom-typefaces
-  
   :elpaca nil
   :custom-face 
   ;; victor mono sometimes is nice for comments
@@ -3613,6 +3612,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package isearch
   :elpaca nil
   :general
+  ('normal "/" 'isearch-forward)
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   :config
