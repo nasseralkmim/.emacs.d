@@ -3616,7 +3616,11 @@ If INTERACTIVE is nil the function acts like a Capf."
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   :config
-  (setq isearch-lazy-count t))
+  ;; show the matching count
+  (setq isearch-lazy-count t
+        ;; make a whitespace work as regex ".*" which represents "anyting in between"
+        ;; behavior similar to orderless
+        search-whitespace-regexp ".*"))
 
 ;; highlight code in eww
 (use-package shr-tag-pre-highlight
