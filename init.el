@@ -3964,6 +3964,11 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Change default compile command
 (use-package compile
   :elpaca nil
+  :general
+  ([remap compile] '(lambda ()
+                       (interactive)
+                       (let ((current-prefix-arg '(4)))
+                         (call-interactively 'compile))))
   :init
   (setq compile-command "make -k -C ../build"))
 
