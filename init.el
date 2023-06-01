@@ -182,16 +182,18 @@
   ;; victor mono sometimes is nice for comments
   ;; 'constant'
   (font-lock-comment-face ((t (:family "Victor Mono" :height .95))))
-  (font-lock-constant-face ((t (:family "JetBrainsMono Nerd Font"))))
+  (font-lock-constant-face ((t (:family "JetBrains Mono NF"))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
-  (default  ((t (:family "JetBrainsMono Nerd Font"))))
-  (variable-pitch ((t (:family "Iosevka etoile"))))
+  (default  ((t (:family "JetBrains Mono NF"))))
+  (variable-pitch ((t (:family "Iosevka Etoile"))))
+  ;; so summary line aligned
+  (gnus-summary-normal-unread  ((t (:family "JetBrains Mono NF"))))
   ;; when using variable pitch in org mode, use monospace for code blocks
-  (org-block ((t (:family "JetBrainsMono Nerd Font"))))
-  (org-table ((t (:family "JetBrainsMono Nerd Font"))))
-  (org-meta-line ((t (:family "JetBrainsMono Nerd Font"))))
-  (org-verbatim ((t (:family "JetBrainsMono Nerd Font"))))
+  (org-block ((t (:family "JetBrains Mono NF"))))
+  (org-table ((t (:family "JetBrains Mono NF"))))
+  (org-meta-line ((t (:family "JetBrains Mono NF"))))
+  (org-verbatim ((t (:family "JetBrains Mono NF"))))
   (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
 
@@ -541,7 +543,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom
   ;; need to install the nerd-font
   ;; For kitty terminal need to add family to kitty config (C-S-<f2>)
-  (nerd-icons-font-family "Iosevka Nerd Font")
+  (nerd-icons-font-family "JetBrains Mono NF")
   :config
   ;; to use with corfu and kind-icon
   (setq kind-icon-use-icons nil)
@@ -3404,9 +3406,6 @@ its results, otherwise display STDERR with
   ;; (gnus-summary-prepared . variable-pitch-mode)
   (gnus-article-mode . variable-pitch-mode)
   (gnus-article-mode . visual-line-mode)
-  :custom-face
-  ;; so summary line aligned
-  (gnus-summary-normal-unread  ((t (:family "Iosevka SS12"))))
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
         ;; 'select method' means the 'backend': how gnus stores the messages 
