@@ -2993,6 +2993,7 @@ opening a file from dired. Otherwise just regular dired."
           "^\\*Dicti.*"
           "\\*Pueue Log\\*"
           ("\\*BBDB\\*" . hide)         ; when the database add an etry
+          "\\*compilation\\*"
           compilation-mode))
   (popper-mode +1)
   (popper-echo-mode +1))
