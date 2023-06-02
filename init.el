@@ -596,8 +596,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package nerd-icons-completion
   :elpaca (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
   :after nerd-icons
-  :demand  ; to require
-  :config
+  :init
   (nerd-icons-completion-mode))
 
 ;; automatic insert matching pairs and navigation
