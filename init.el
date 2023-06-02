@@ -4084,8 +4084,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq circadian-themes '(("7:00" . modus-operandi-tinted)
                            ("20:00" . modus-vivendi-tinted)))
-  (circadian-setup)
-  (load-theme 'seralk t))
+  (circadian-setup))
 
 (use-package pueue
   :elpaca (pueue :host github :repo "xFA25E/pueue")
