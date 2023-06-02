@@ -2900,6 +2900,15 @@ opening a file from dired. Otherwise just regular dired."
           ;; if file has ::<page> opens at this page
           ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1"))))
 
+;; Specific for terminal emacs to open images
+(use-package org-file-apps-terminal
+  :elpaca nil
+  :if (not (display-graphic-p))
+  :after org
+  :init
+  (add-to-list 'org-file-apps '("\\.svg\\'" . "inkview %s"))
+  (add-to-list 'org-file-apps '("\\.png\\'" . "feh %s")))
+
 ;; convert pdf to svg to display inline org image
 ;; requires pdf-tools
 ;; better to just use svg and use latex svg package
