@@ -593,8 +593,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package nerd-icons-completion
   :elpaca (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
-  :defer 1
-  :config
+  ;; need to load after marginalia 
+  ;; https://github.com/rainstormstudio/nerd-icons-completion/issues/4
+  :after (nerd-icons marginalia)
+  :init
   (nerd-icons-completion-mode))
 
 ;; automatic insert matching pairs and navigation
