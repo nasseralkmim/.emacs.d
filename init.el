@@ -588,15 +588,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package nerd-icons-dired
   :elpaca (nerd-icons-dired :type git :host github :repo "rainstormstudio/nerd-icons-dired")
-  :after nerd-icons
-  :demand ; require
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-completion
   :elpaca (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
-  :after nerd-icons
-  :init
+  :defer 1
+  :config
   (nerd-icons-completion-mode))
 
 ;; automatic insert matching pairs and navigation
@@ -4131,7 +4129,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (c++-ts-mode . combobulate-mode)
   (yaml-ts-mode . combobulate-mode))
 
-(use-package better-window-divider-terminal
+(use-package better-window-divider-terminal :disabled
   :elpaca nil
   :if (not (display-graphic-p))
   :init
