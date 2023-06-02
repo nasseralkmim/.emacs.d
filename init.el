@@ -1866,54 +1866,37 @@ graphics."
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
 (use-package modus-themes
-  :defer 1
+  :defer 0.5
   :general
   ("<f5>" 'modus-themes-toggle)
   :config
-  ;; (modus-themes-load-theme 'modus-vivendi-tinted)
-  (setq modus-themes-to-toggle '(modus-operandi modus-vivendi modus-vivendi-tinted modus-operandi-tinted))
+  (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
-        modus-themes-hl-line '(accented intense)
         modus-themes-diffs 'desaturated
-        modus-themes-paren-match '(bold underline)
         modus-themes-no-mixed-fonts t
         modus-themes-variable-pitch-ui nil
-        modus-themes-syntax '(alt-syntax)
         modus-themes-italic-constructs t
         modus-themes-bold-constructs t
-        modus-themes-fringes 'subtle
-        modus-themes-headings '((t . (rainbow)))
-        modus-themes-mode-line '(borderless accented moody))
-
+        modus-themes-headings '((t . (rainbow))))
   ;; hook to enforce change when theme is toggled (which loads the theme)
-  (add-hook 'modus-themes-after-load-theme-hook
-            (lambda ()
-              (progn 
-                ;; adjust org modern if GUI
-                (eval-after-load 'org-modern
-                  '(global-org-modern-mode))
-                ;; reset icons cache to match theme
-                (eval-after-load 'kind-icon
-                  '(kind-icon-reset-cache))
-                ;; recompute face for indentation guide
-                (eval-after-load 'hl-indent-scope
-                  '(hl-indent-scope--auto-color-calc))
-                ;; use oblique version of Victor for italic
-                (set-face-attribute 'italic nil :family "Victor Mono" :slant 'oblique :weight 'medium)
-                ;; change for specific modes
-                ;; and use the italic (informal) for comments
-                ;; tree sitter does not work in terminal, apparently
-                (when (display-graphic-p)
-                  (eval-after-load 'tree-sitter-hl
-                    '(set-face-attribute 'tree-sitter-hl-face:comment nil
-                                         :family "Victor Mono" :slant 'italic :weight 'semibold)))
-                (eval-after-load 'auto-dim-other-buffers
-                  '(set-face-attribute 'auto-dim-other-buffers-face nil
-                                       :foreground (modus-themes-get-color-value 'fg-dim)))
-                (eval-after-load 'smartparens
-                  '(set-face-attribute 'sp-show-pair-match-content-face nil
-                                       :background (modus-themes-get-color-value 'bg-paren-expression)))))))
+  (defun my-modus-tweaks ()
+    (progn 
+      ;; adjust org modern if GUI
+      (eval-after-load 'org-modern
+        '(global-org-modern-mode))
+      ;; reset icons cache to match theme
+      (eval-after-load 'kind-icon
+        '(kind-icon-reset-cache))
+      ;; recompute face for indentation guide
+      (eval-after-load 'hl-indent-scope
+        '(hl-indent-scope--auto-color-calc))
+      ;; make inside of parenthesis different background
+      (set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
+  (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
+
+  ;; load the theme and disable others automatically
+  (modus-themes-load-theme 'modus-operandi-tinted))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
@@ -4079,7 +4062,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (prog-mode . breadcrumb-mode)
   (org-mode . breadcrumb-mode))
 
-(use-package circadian
+(use-package circadian :disabled
   :defer 1
   :config
   (setq circadian-themes '(("7:00" . modus-operandi-tinted)
