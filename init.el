@@ -4140,5 +4140,11 @@ If INTERACTIVE is nil the function acts like a Capf."
   (c++-ts-mode . combobulate-mode)
   (yaml-ts-mode . combobulate-mode))
 
+;; use same frame for speedbar
+(use-package sr-speedbar
+  :elpaca (sr-speedbar url "https://www.emacswiki.org/emacs/sr-speedbar.el")
+  :demand
+  :general
+  ('normal "g s" 'sr-speedbar-toggle))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
