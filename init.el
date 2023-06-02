@@ -746,7 +746,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (add-to-list 'evil-insert-state-modes 'log-edit-mode)
   (add-to-list 'evil-insert-state-modes 'message-mode)
-  (evil-set-initial-state 'gdb-parent-mode 'normal)
+
+  ;; initialize locals buffer in normal state instead of emacs state
+  (add-hook 'gdb-locals-mode-hook 'evil-normal-state)
   
   ;; fix tab behavior in org-mode source block
   (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
