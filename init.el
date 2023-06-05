@@ -2615,6 +2615,7 @@ Only if there is more than one window opened."
   :general
   ('normal "C-w C-w" 'ace-window)
   ('normal dired-mode-map "l" 'dired-find-alternate-file-ace)
+  ('normal dired-mode-map "C-c l" 'dired-find-alternate-file-ace-rem)
   :init
   ;; Adapted from: https://stackoverflow.com/a/47624310
   (defun dired-find-alternate-file-ace ()
@@ -2628,7 +2629,27 @@ opening a file from dired. Otherwise just regular dired."
             (aw-select "" (lambda (window)
                             (aw-switch-to-window window)
                             (find-file file)))
-          (find-file-other-window file))))))
+          (find-file-other-window file)))))
+
+  (defun find-file-or-switch-to-buffer (filename)
+    "Open the file FILENAME or switch to the buffer if the file is already open."
+    (let ((buffer (find-buffer-visiting filename)))
+      (if buffer
+          (switch-to-buffer buffer)
+        (find-file filename))))
+
+  (defun dired-find-alternate-file-ace-rem ()
+    "With prefix argument use ace window to select a window for
+opening a file from dired. Otherwise just regular dired."
+    (interactive)
+    (if (eq current-prefix-arg nil)
+        (find-file-or-switch-to-buffer (dired-get-file-for-visit))
+      (let ((file (dired-get-file-for-visit)))
+        (if (> (length (aw-window-list)) 1)
+            (aw-select "" (lambda (window)
+                            (aw-switch-to-window window)
+                            (find-file-or-switch-to-buffer file)))
+          (find-file-or-switch-to-buffer file))))))
 
 ;; highlight parensthesis
 (use-package highlight-parentheses
