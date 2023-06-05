@@ -86,6 +86,11 @@
   ("C-x C-e" 'eval-defun)
   ("C-x e" 'eval-last-sexp)
   ("C-h j" 'describe-keymap)
+  ;; some sexp moving commads (treesit changes some)
+  ('normal :prefix "z"
+           "u" 'backward-up-list
+           "b" 'backward-sexp
+           "f" 'forward-sexp)
   :init
   ;; (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
@@ -2532,9 +2537,8 @@ Only if there is more than one window opened."
 (use-package treesit
   :elpaca nil
   :general
-  ('normal "zj" 'treesit-end-of-defun)
-  ('normal "zk" 'treesit-beginning-of-defun)
-  ('normal "C-M-f" 'treesit-forward-sexp)
+  ('normal c++-ts-mode-map "zj" 'treesit-end-of-defun)
+  ('normal c++-ts-mode-map "zk" 'treesit-beginning-of-defun)
   :config
   ;; download and build grammar dynamic library 
   ;; need to call: 'treesit-install-language-grammar' to install
