@@ -4167,8 +4167,4 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ('normal "g s" 'sr-speedbar-toggle))
 
-;; Dim text surrounding the context
-(use-package focus
-  :commands focus-mode)
-
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
