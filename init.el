@@ -3198,7 +3198,9 @@ its results, otherwise display STDERR with
 
 ;; dim text color from surroundings
 (use-package focus
-  :commands focus-mode)
+  :commands focus-mode
+  :config
+  (add-to-list 'focus-mode-to-thing '(prog-mode . sexp)))
 
 ;; list 'imenu' entries in a buffer
 ;; better faces than 'consult-imenu'
@@ -4155,5 +4157,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :demand
   :general
   ('normal "g s" 'sr-speedbar-toggle))
+
+;; Dim text surrounding the context
+(use-package focus
+  :commands focus-mode)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
