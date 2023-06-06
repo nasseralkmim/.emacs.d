@@ -683,6 +683,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil-multiedit
   :after evil
   :custom-face
+  ;; works in gui only
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil :style nil))))
   :general
   ('visual "R" 'evil-multiedit-match-all)
@@ -699,6 +700,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (apply fn args)))
 
   (advice-add #'evil-multiedit-match-and-next :around #'make-evil-multiedit-case-sensitive))
+
+;; Change the face for terminal
+(use-package evil-multiedit-term-face
+  :elpaca nil
+  :after evil-multiedit
+  :if (not (display-graphic-p))
+  :custom-face
+  (iedit-occurrence ((t (:inherit isearch)))))
 
 (use-package evil-mc
   :after evil
@@ -4153,7 +4162,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; use same frame for speedbar
 (use-package sr-speedbar
-  :elpaca (sr-speedbar url "https://www.emacswiki.org/emacs/sr-speedbar.el")
+  :elpaca (sr-speedbar :url "https://www.emacswiki.org/emacs/sr-speedbar.el")
   :demand
   :general
   ('normal "g s" 'sr-speedbar-toggle))
