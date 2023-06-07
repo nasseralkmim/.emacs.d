@@ -4119,7 +4119,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   :commands pueue
   :general 
   ('normal "<f7>" 'pueue)
-  ('normal pueue-mode-map "?" 'pueue-help))
+  ('normal pueue-mode-map "?" 'pueue-help)
+  ('normal pueue-mode-map "m" 'pueue-mark))
 
 ;; Matchs the cursor color when running emacs in terminal
 ;; makes it much more visible, but it does not change the foreground when over the text as in the GUI
