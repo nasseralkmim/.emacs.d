@@ -155,6 +155,8 @@
    window-combination-resize t) ; resize windows proportionaly
 
   (setq yank-pop-change-selection t)    ;change selection when using yank pop
+  ;; overwrite over active region, useful when pasting to substitute text
+  (delete-selection-mode 1)
 
   (blink-cursor-mode -1)                ; don't blink the cursor.
 
