@@ -3258,6 +3258,8 @@ its results, otherwise display STDERR with
   :elpaca nil
   :after org
   :commands org-babel-detangle-bg
+  :general
+  ("C-c C-t C-t" 'org-babel-detangle-bg)
   :init
   (defun org-babel-detangle-bg ()
     "Use `org-babel-detangle' but maintain focus on source code"
