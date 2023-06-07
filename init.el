@@ -1825,7 +1825,6 @@ graphics."
   (dired-mode-map "M-o" 'dired-omit-mode)
   ('normal dired-mode-map "l" 'dired-find-alternate-file)
   ('normal dired-mode-map "C-<return>" 'dired-find-file-other-window)
-  ('normal dired-mode-map "SPC" nil)
   ("C-x C-j" 'dired-jump-other-window)
   ("C-x j" 'dired-jump)
   (dired-jump-map "j" nil)             ; remove repeat with "j"
@@ -1840,7 +1839,11 @@ graphics."
         delete-by-moving-to-trash nil)	; move to trash (problem with naming)
 
   ;; kill the dired buffer and enters the current line file or directory
-  (put 'dired-find-alternate-file 'disabled nil))
+  (put 'dired-find-alternate-file 'disabled nil)
+
+  ;; after 'evil-collection'
+  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
+  (general-def 'normal dired-mode-map "SPC" nil))
 
 ;; open dired as a sidebar
 (use-package dired-sidebar
