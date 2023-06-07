@@ -186,9 +186,11 @@
 (use-package custom-typefaces
   :elpaca nil
   :custom-face 
-  ;; victor mono sometimes is nice for comments
+  ;; "Victor Mono" sometimes is nice for comments or "iMWritingMono Nerd Font"
+  ;; monospace favorites are "JetBrains Mono NF" and "Iosevka NF"
+  ;; variable pitch favorites "Iosevka Etoile" or "iMWritingDuo Nerd Font Propo"
   ;; 'constant'
-  (font-lock-comment-face ((t (:family "Victor Mono" :height .95))))
+  (font-lock-comment-face ((t (:family "Victor Mono"))))
   (font-lock-constant-face ((t (:family "JetBrains Mono NF"))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
