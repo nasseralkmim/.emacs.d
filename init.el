@@ -177,7 +177,7 @@
   ;; :general
   ;; ("<f5>" 'toggle-dark-theme)
   :init
-  (load-theme 'seralk t)
+  ;; (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
     (invert-face 'default)))
@@ -703,15 +703,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (let ((case-fold-search (not iedit-case-sensitive)))
       (apply fn args)))
 
-  (advice-add #'evil-multiedit-match-and-next :around #'make-evil-multiedit-case-sensitive))
+  (advice-add #'evil-multiedit-match-and-next :around #'make-evil-multiedit-case-sensitive)
 
-;; Change the face for terminal
-(use-package evil-multiedit-term-face
-  :elpaca nil
-  :after evil-multiedit
-  :if (not (display-graphic-p))
-  :custom-face
-  (iedit-occurrence ((t (:inherit isearch)))))
+  ;; Change the face for terminal
+  (when (not (display-graphic-p))
+    (set-face-attribute 'iedit-occurrence nil :inherit 'isearch)))
 
 (use-package evil-mc
   :after evil
@@ -1887,7 +1883,7 @@ graphics."
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
 (use-package modus-themes
-  :defer 0.5
+  :defer 1
   :general
   ("<f5>" 'modus-themes-toggle)
   :config
@@ -1917,7 +1913,7 @@ graphics."
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme and disable others automatically
-  (modus-themes-load-theme 'modus-operandi-tinted))
+  (modus-themes-load-theme 'modus-vivendi-tinted))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
@@ -2127,7 +2123,7 @@ Only if there is more than one window opened."
 
 ;; key chord hint
 (use-package which-key
-  :defer 1
+  :defer t
   :diminish which-key-mode
   :config
   (which-key-mode t))
@@ -2908,9 +2904,9 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; Open with external program.
 (use-package openwith
-  :defer 1
-  :hook (after-init . openwith-mode)
+  :defer 1 
   :config
+  (openwith-mode)
   (setq openwith-associations '(("\\.pdf\\'" "okular" (file))
                                 ("\\.xopp\\'" "xournalpp" (file)))))
 
@@ -4183,7 +4179,13 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package clipetty
   :if (not (display-graphic-p))
   :general
-  ('(normal visual) "y" 'clipetty-kill-ring-save))
+  ('(normal visual) "Y" 'clipetty-kill-ring-save))
+
+(use-package vertical-divider-term
+  :elpaca nil
+  :if (not (display-graphic-p))
+  :init
+  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│)))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
