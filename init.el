@@ -2369,7 +2369,9 @@ Only if there is more than one window opened."
 (use-package multi-vterm
   :general
   ("S-<f9>" 'multi-vterm)
-  :commands multi-vterm)
+  :commands multi-vterm
+  :config
+  (add-to-list 'display-buffer-alist `("^\\*vterminal.*" display-buffer-below-selected)))
 
 (use-package terminal-here
   :general
@@ -4176,5 +4178,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   :demand
   :general
   ('normal "g s" 'sr-speedbar-toggle))
+
+;; copy from emacs terminal
+(use-package clipetty
+  :if (not (display-graphic-p))
+  :general
+  ('(normal visual) "y" 'clipetty-kill-ring-save))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
