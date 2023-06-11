@@ -76,6 +76,7 @@
 
 ;; basics and better default
 (use-package emacs
+  :defer 0.5
   :elpaca nil
   :general
   ('normal "gy" 'revert-buffer-quick)
@@ -91,7 +92,7 @@
            "u" 'backward-up-list
            "b" 'backward-sexp
            "f" 'forward-sexp)
-  :init
+  :config
   ;; (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
@@ -186,9 +187,9 @@
 (use-package custom-typefaces
   :elpaca nil
   :custom-face 
-  ;; "Victor Mono" sometimes is nice for comments or "iMWritingMono Nerd Font"
-  ;; monospace favorites are "JetBrains Mono NF" and "Iosevka NF"
-  ;; variable pitch favorites "Iosevka Etoile" or "iMWritingDuo Nerd Font Propo"
+  ;; "Victor Mono" sometimes is nice for comments.
+  ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF".
+  ;; Variable pitch favorites "Iosevka Etoile".
   ;; 'constant'
   (font-lock-comment-face ((t (:family "Victor Mono" :height .95))))
   (font-lock-constant-face ((t (:family "JetBrains Mono NF"))))
@@ -820,7 +821,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil-collection
   :diminish evil-collection-unimpaired-mode
   :after evil
-  :init
+  :defer 1
+  :config
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
         evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
@@ -1467,7 +1469,6 @@ graphics."
 (use-package corfu-history
   :elpaca nil
   :after corfu
-  :demand
   :config
   (corfu-history-mode 1)
   (savehist-mode 1)
@@ -1504,7 +1505,8 @@ graphics."
   :elpaca (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :unless (display-graphic-p)
   :after corfu
-  :init
+  :defer 1
+  :config
   (corfu-terminal-mode)
   ;; does not play nicely with 'org-indent-mode'
   (with-eval-after-load 'org
