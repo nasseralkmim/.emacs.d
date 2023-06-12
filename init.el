@@ -93,7 +93,6 @@
            "b" 'backward-sexp
            "f" 'forward-sexp)
   :config
-  ;; (global-hl-line-mode t) ; highlight current line
   (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
   (column-number-mode t)  ; show column number in the mode line
@@ -3643,6 +3642,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :hook
   (prog-mode . hl-line-mode)
   (text-mode . hl-line-mode)
+  (dired-mode . hl-line-mode)
   :config
   ;; only active window
   (setq hl-line-sticky-flag nil))
