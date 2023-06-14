@@ -177,7 +177,7 @@
   ;; :general
   ;; ("<f5>" 'toggle-dark-theme)
   :init
-  ;; (load-theme 'seralk t)
+  (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
     (invert-face 'default)))
@@ -1882,7 +1882,7 @@ graphics."
   (put 'dired-find-alternate-file 'disabled nil))  
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
-(use-package modus-themes
+(use-package modus-themes :disabled
   :defer 1
   :general
   ("<f5>" 'modus-themes-toggle)
@@ -4188,5 +4188,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :init
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│)))
 
+;; Add syntax highlight to Magit diffs
+;; need to install 'yay git-delta'  
+(use-package magit-delta
+  :hook (magit-mode . magit-delta-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
