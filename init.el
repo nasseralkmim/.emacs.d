@@ -1882,7 +1882,7 @@ graphics."
   (put 'dired-find-alternate-file 'disabled nil))  
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
-(use-package modus-themes :disabled
+(use-package modus-themes
   :defer 1
   :general
   ("<f5>" 'modus-themes-toggle)
@@ -1913,7 +1913,8 @@ graphics."
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme and disable others automatically
-  (modus-themes-load-theme 'modus-vivendi-tinted))
+  ;; (modus-themes-load-theme 'modus-vivendi-tinted)
+  )
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
@@ -2903,7 +2904,7 @@ opening a file from dired. Otherwise just regular dired."
            "C-x" 'dired-ranger-move))
 
 ;; Open with external program.
-(use-package openwith
+(use-package openwith :disabled         ; problem with gnus send email with attachment pdf (it opens the pdf)
   :defer 1 
   :config
   (openwith-mode)
