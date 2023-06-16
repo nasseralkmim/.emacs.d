@@ -1909,7 +1909,8 @@ graphics."
       (eval-after-load 'hl-indent-scope
         '(hl-indent-scope--auto-color-calc))
       ;; make inside of parenthesis different background
-      (set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
+      (eval-after-load 'smartparens
+        (set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression)))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme and disable others automatically
