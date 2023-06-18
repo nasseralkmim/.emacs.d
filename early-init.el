@@ -21,3 +21,8 @@
 
   ;; make native compilation happens asynchronously
   (setq native-comp-deferred-compilation t))
+
+;; for proper terminal colors
+(if (not (display-graphic-p))
+    (setq frame-background-mode 'dark))
+
