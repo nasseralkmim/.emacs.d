@@ -180,6 +180,9 @@
   (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
+    (if (eq frame-background-mode 'dark)
+        (setq frame-background-mode 'light)
+      (setq frame-background-mode 'dark))
     (invert-face 'default)))
 
 ;; typeface
@@ -1914,8 +1917,8 @@ graphics."
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme and disable others automatically
-  ;; (modus-themes-load-theme 'modus-vivendi-tinted)
-  )
+  (if (not (display-graphic-p))
+      (modus-themes-load-theme 'modus-vivendi-tinted)))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
