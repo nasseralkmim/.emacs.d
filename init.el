@@ -172,10 +172,10 @@
   (pixel-scroll-precision-mode t))
 
 ;; My custom emacs theme
-(use-package seralk-theme
+(use-package seralk-theme :disabled
   :elpaca nil
-  ;; :general
-  ;; ("<f5>" 'toggle-dark-theme)
+  :general
+  ("<f5>"'toggle-dark-theme)
   :init
   (load-theme 'seralk t)
   (defun toggle-dark-theme ()
@@ -1916,7 +1916,7 @@ graphics."
         (set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression)))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
-  ;; load the theme and disable others automatically
+  ;; load the theme automatically in the terminal and disable others automatically
   (if (not (display-graphic-p))
       (modus-themes-load-theme 'modus-vivendi-tinted)))
 
