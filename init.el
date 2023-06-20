@@ -740,6 +740,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-mode 1)
   :general
   (evil-motion-state-map "C-i" nil)     ; avoid conflicting with tab in terminal
+  ("C-c \\" 'evil-emacs-state)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
   ('(normal visual) :prefix "SPC" "l" 'evil-last-non-blank)
