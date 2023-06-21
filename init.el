@@ -2355,11 +2355,13 @@ Only if there is more than one window opened."
   ;; ("<f9>" 'vterm-other-window)
   (vterm-mode-map "<f9>" nil
                   "C-w" nil
-                  "<backtab>" nil)
+                 "<backtab>" nil)
   :config
   (general-def '(normal insert) vterm-mode-map "C-s" nil)
   (setq vterm-max-scrollback 20000
-        vterm-timer-delay 0))
+        vterm-timer-delay 0)
+  (add-to-list 'vterm-tramp-shells '("ssh" "/bin/bash"))
+  (add-to-list 'vterm-tramp-shells '("scp" "/bin/bash")))
 
 ;; Quickly switch to 'vterm' buffer.
 (use-package vterm-toggle
