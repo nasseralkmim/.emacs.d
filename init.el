@@ -1840,7 +1840,8 @@ graphics."
         dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
         dired-recursive-copies 'always
         dired-recursive-deletes 'always
-        delete-by-moving-to-trash nil)	; move to trash (problem with naming)
+        ;; manjaro: ~/.local/share/Trash/
+        delete-by-moving-to-trash t)	; move to trash (problem with naming)
 
   ;; kill the dired buffer and enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil)
