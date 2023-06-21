@@ -1629,6 +1629,12 @@ graphics."
   :elpaca auctex
   :mode ("\\.tex\\'" . LaTeX-mode)
   :commands TeX-command-sentinel
+  :custom-face
+  (font-latex-sectioning-1-face ((t (:slant oblique :box t :height 1.0))))
+  (font-latex-sectioning-2-face ((t (underline t :inherit outline-1 :height 1.0))))
+  (font-latex-sectioning-3-face ((t (:slant italic :height 1.0))))
+  (font-latex-sectioning-4-face ((t (:slant oblique :underline t :height 1.0))))
+  (font-latex-sectioning-5-face ((t (:slant normal :height 1.0))))
   :general
   ('normal outline-mode-map
            "g j" nil
@@ -1896,7 +1902,6 @@ graphics."
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
-        modus-themes-no-mixed-fonts t
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
         modus-themes-bold-constructs t
