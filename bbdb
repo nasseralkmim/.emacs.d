@@ -1,5 +1,6 @@
 ;; -*- mode: Emacs-Lisp; coding: utf-8; -*-
 ;;; file-format: 9
+[nil nil nil nil nil nil nil ("Hofstetter") nil "bcda813c-03fa-421d-bcbf-a74e81610187" "2023-06-22 09:48:30 +0000" "2023-06-22 09:48:30 +0000" nil]
 ["Eric" "Abrahamsen" nil nil nil nil nil ("eric@ericabrahamsen.net") nil "910481b1-77fa-4323-8516-4342d05ee070" "2023-05-06 08:17:45 +0000" "2023-05-06 08:17:45 +0000" nil]
 ["Russell" "Adams" nil nil nil nil nil ("RLAdams@adamsinfoserv.com") nil "f10ec00f-1da4-40ef-9dd4-24da25cca638" "2023-04-19 07:46:11 +0000" "2023-04-19 07:46:11 +0000" nil]
 ["Michael" "Albinus" nil nil nil nil nil ("michael.albinus@gmx.de") nil "f95b5d10-159e-4f30-a63d-96ff404abe00" "2023-02-17 10:39:54 +0000" "2023-02-17 10:39:54 +0000" nil]
