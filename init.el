@@ -1842,6 +1842,7 @@ graphics."
   ("C-x C-j" 'dired-jump-other-window)
   ("C-x j" 'dired-jump)
   (dired-jump-map "j" nil)             ; remove repeat with "j"
+  (dired-mode-map "SPC" nil)             ; use for easymotion
   ('normal image-dired-thumbnail-mode-map "+" 'image-increase-size)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
