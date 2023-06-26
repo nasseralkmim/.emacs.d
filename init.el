@@ -79,9 +79,9 @@
   (gcmh-mode 1))
 
 ;; basics and better default
-(use-package emacs
-  :defer 0.5
+(use-package emacs-defaults
   :elpaca nil
+  :defer 0.5
   :general
   ('normal "gy" 'revert-buffer-quick)
   ('insert "C-v" 'yank)                 ; for helping in minibuffer.
@@ -165,7 +165,10 @@
   (blink-cursor-mode -1)                ; don't blink the cursor.
 
   ;; each line on its own, otherwise use 'visual-line-mode'
-  (setq-default truncate-lines t))
+  (setq-default truncate-lines t)
+
+  ;; visit file from where you left
+  (save-place-mode))
 
 (use-package pixel-scroll
   :elpaca nil
@@ -2630,7 +2633,7 @@ Only if there is more than one window opened."
 (use-package wgrep)
 
 ;; config for windows
-(use-package emacs
+(use-package emacs-windows-config
   :elpaca nil
   :if (eq system-type 'windows-nt)
   :init
