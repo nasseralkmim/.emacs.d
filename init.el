@@ -2759,11 +2759,11 @@ opening a file from dired. Otherwise just regular dired."
 
   ;; add watch mode "-w" for performance
   ;; pyright only reanalyze the files that have been modified
-  (add-to-list 'eglot-server-programs
-               '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio" "--watch")))
-  (add-to-list 'eglot-server-programs
-               `((c++-mode c++-ts-mode) . ,(eglot-alternatives
-                              '(("clangd" "--clang-tidy")))))
+  ;; (add-to-list 'eglot-server-programs
+  ;;              '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio" "--watch")))
+  ;; (add-to-list 'eglot-server-programs
+  ;;              `((c++-mode c++-ts-mode) . ,(eglot-alternatives
+  ;;                                           '(("clangd" "--clang-tidy")))))
 
   ;; Maybe improve performance
   ;; No event buffers, disable providers cause a lot of hover traffic. Shutdown unused servers.
