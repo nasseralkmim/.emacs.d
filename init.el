@@ -79,7 +79,7 @@
   (gcmh-mode 1))
 
 ;; basics and better default
-(use-package emacs-defaults
+(use-package emacs
   :elpaca nil
   :defer 0.5
   :general
@@ -2366,7 +2366,8 @@ Only if there is more than one window opened."
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0)
   (add-to-list 'vterm-tramp-shells '("ssh" "/bin/bash"))
-  (add-to-list 'vterm-tramp-shells '("scp" "/bin/bash")))
+  (add-to-list 'vterm-tramp-shells '("scp" "/bin/bash"))
+  (add-to-list 'vterm-tramp-shells '("docker" "/bin/bash")))
 
 ;; Quickly switch to 'vterm' buffer.
 (use-package vterm-toggle
@@ -2524,7 +2525,7 @@ Only if there is more than one window opened."
   (diff-mode . outline-minor-mode)
   (vc-git-region-history-mode . outline-minor-mode))
 
-;; manage remote files access and manipulations
+;; Manage remote files access and manipulations
 ;; to use without password, first create and copy the key to the remote
 ;; `ssh-keygen -b 4096'
 ;; `ssh-copy-id <remote-address>'
@@ -2533,6 +2534,12 @@ Only if there is more than one window opened."
 ;;    HostName ip  
 ;;    IdentityFile path-to-ssh-key  
 ;;    User root
+;; 
+;; To use with docker containers created with sudo, one can use hops syntax:
+;;
+;; `sudo:|docker:containerID:/'
+;; 
+;; The container ID can be found with `sudo docker ps'
 (use-package tramp
   :elpaca nil
   :config
