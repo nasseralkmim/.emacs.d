@@ -2552,10 +2552,15 @@ Only if there is more than one window opened."
   ;; apparently makes it faster
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
   (setq remote-file-name-inhibit-cache nil)
+
   (setq vc-ignore-dir-regexp
         (format "%s\\|%s"
                 vc-ignore-dir-regexp
-                tramp-file-name-regexp)))
+                tramp-file-name-regexp))
+
+  ;; make TRAMP use the remotes' PATH environment variable
+  ;; https://github.com/emacs-pe/docker-tramp.el/blob/master/README.md#tramp-does-not-respect-remote-path
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
 
 ;; shows git information on fringe
 (use-package diff-hl
