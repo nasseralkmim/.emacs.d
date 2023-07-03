@@ -200,7 +200,7 @@
   ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF".
   ;; Variable pitch favorites "Iosevka Etoile".
   ;; 'constant'
-  (font-lock-comment-face ((t (:family "Victor Mono" :height .95))))
+  (font-lock-comment-face ((t (:family "Victor Mono" :height .95 :slant italic :weight medium))))
   (font-lock-constant-face ((t (:family "JetBrains Mono NF"))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
@@ -2424,6 +2424,7 @@ Only if there is more than one window opened."
         time-stamp-start "#\\+lastmod:[ \t]*"))
 
 ;; terminal emacs with evil cursor indication
+;; does not work with mosh: https://github.com/mobile-shell/mosh/issues/352 
 (use-package evil-terminal-cursor-changer
   :unless (display-graphic-p)
   :init
@@ -2544,8 +2545,9 @@ Only if there is more than one window opened."
 (use-package tramp
   :elpaca nil
   :config
-  ;; scp is faster than ssh for copying files
-  (setq tramp-default-method "scp"
+  ;; scp is faster than ssh for copying files, but scp is apparently deprecated
+  ;; https://www.reddit.com/r/emacs/comments/xul3qm/how_to_make_tramp_faster/
+  (setq tramp-default-method "ssh"
         tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
         tramp-histfile-override nil
         tramp-verbose 4)
