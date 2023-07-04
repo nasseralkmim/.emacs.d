@@ -2,7 +2,7 @@
   "Time when Emacs was started")
 
 ;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.4)
+(defvar elpaca-installer-version 0.5)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -29,7 +29,7 @@
                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
                  ((require 'elpaca))
                  ((elpaca-generate-autoloads "elpaca" repo)))
-            (kill-buffer buffer)
+            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
           (error "%s" (with-current-buffer buffer (buffer-string))))
       ((error) (warn "%s" err) (delete-directory repo 'recursive))))
   (unless (require 'elpaca-autoloads nil t)
@@ -940,6 +940,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; :elpaca nil
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
+  :custom-face
+  (org-block ((t (:inherit org-agenda-restriction-lock))))
   :general
   ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
   (org-mode-map "C-c C-l" 'org-insert-link)
@@ -1639,7 +1641,7 @@ graphics."
   :commands TeX-command-sentinel
   :custom-face
   (font-latex-sectioning-1-face ((t (:slant oblique :box t :height 1.0))))
-  (font-latex-sectioning-2-face ((t (underline t :inherit outline-1 :height 1.0))))
+  (font-latex-sectioning-2-face ((t (:underline t :inherit outline-1 :height 1.0))))
   (font-latex-sectioning-3-face ((t (:slant italic :height 1.0))))
   (font-latex-sectioning-4-face ((t (:slant oblique :underline t :height 1.0))))
   (font-latex-sectioning-5-face ((t (:slant normal :height 1.0))))
@@ -1856,7 +1858,9 @@ graphics."
         dired-recursive-copies 'always
         dired-recursive-deletes 'always
         ;; manjaro: ~/.local/share/Trash/
-        delete-by-moving-to-trash t)	; move to trash (problem with naming)
+        delete-by-moving-to-trash t	; move to trash (problem with naming and tramp)
+        remote-file-name-inhibit-delete-by-moving-to-trash t ; when in remote, just delete
+        )
 
   ;; kill the dired buffer and enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil)
@@ -2547,14 +2551,17 @@ Only if there is more than one window opened."
   :config
   ;; scp is faster than ssh for copying files, but scp is apparently deprecated
   ;; https://www.reddit.com/r/emacs/comments/xul3qm/how_to_make_tramp_faster/
-  (setq tramp-default-method "ssh"
+  (setq tramp-default-method "scp"
         tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
         tramp-histfile-override nil
-        tramp-verbose 4)
+        tramp-verbose 6)
+
   ;; apparently makes it faster
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
   (setq remote-file-name-inhibit-cache nil)
 
+  ;; ignore version control 
+  ;; https://www.reddit.com/r/emacs/comments/gxhomh/help_tramp_connections_make_emacs_unresponsive_on/
   (setq vc-ignore-dir-regexp
         (format "%s\\|%s"
                 vc-ignore-dir-regexp
