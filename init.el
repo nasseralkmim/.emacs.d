@@ -195,24 +195,29 @@
 ;; typeface
 (use-package custom-typefaces
   :elpaca nil
+  :preface
+  (setq default-monospace '("Recursive Mono Linear Static"))
+  (setq default-variable '("Recursive Sans Casual Static"))
+  (setq default-comments '("Recursive Mono Casual Static"))
   :custom-face 
-  ;; "Victor Mono" sometimes is nice for comments.
-  ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF".
-  ;; Variable pitch favorites "Iosevka Etoile".
+  ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
+  ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF", or "Recursive Mono Linear Static".
+  ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (font-lock-comment-face ((t (:family "Victor Mono" :height .95 :slant italic :weight medium))))
-  (font-lock-constant-face ((t (:family "JetBrains Mono NF"))))
+  (default  ((t (:family ,(car default-monospace)))))
+  (variable-pitch ((t (:family ,(car default-variable)))))
+  ;; comment
+  (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
+  (font-lock-constant-face ((t (:family ,(car default-monospace)))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
-  (default  ((t (:family "JetBrains Mono NF"))))
-  (variable-pitch ((t (:family "Iosevka Etoile"))))
   ;; so summary line aligned
-  (gnus-summary-normal-unread  ((t (:family "JetBrains Mono NF"))))
+  (gnus-summary-normal-unread  ((t (:family ,(car default-monospace)))))
   ;; when using variable pitch in org mode, use monospace for code blocks
-  (org-block ((t (:family "JetBrains Mono NF"))))
-  (org-table ((t (:family "JetBrains Mono NF"))))
-  (org-meta-line ((t (:family "JetBrains Mono NF"))))
-  (org-verbatim ((t (:family "JetBrains Mono NF"))))
+  (org-block ((t (:family ,(car default-monospace)))))
+  (org-table ((t (:family ,(car default-monospace)))))
+  (org-meta-line ((t (:family ,(car default-monospace)))))
+  (org-verbatim ((t (:family ,(car default-monospace)))))
   (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
 
