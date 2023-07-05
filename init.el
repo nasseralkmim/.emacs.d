@@ -477,10 +477,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; set project root from vc.el
   ;; available when a project file is visited (project-switch-project)
+  (setq consult-project-root-function nil)
+
   ;; #'vc-root-dir ; using current folder as default
   ;; added --no-ignore-vcs to avoid skipping files in gitignore
-  (setq consult-project-root-function nil
-        consult-ripgrep-args 
+  (setq consult-ripgrep-args 
         "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs --with-filename")
 
   ;; previous consult line 
@@ -493,7 +494,76 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (let ((map (make-sparse-keymap)))
       (define-key map "\M-s" #'previous-history-element)
       map))
-  (consult-customize consult-outline :keymap my-consult-outline-map))
+  (consult-customize consult-outline :keymap my-consult-outline-map)
+
+  ;; narrow to org buffers
+  (defvar org-source
+    (list :name     "Org Buffer"
+          :category 'buffer
+          :narrow   ?o
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create name)
+              (insert "#+title: " name "\n\n")
+              (org-mode)
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (eq (buffer-local-value 'major-mode x) 'org-mode))
+                     (buffer-list))))))
+  (add-to-list 'consult-buffer-sources 'org-source 'append)
+
+  ;; narrow to tramp buffers
+  (defvar  tramp-source
+    (list :name     "Tramp Buffer"
+          :category 'buffer
+          :narrow   ?t
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create name)
+              ;;(insert "#+title: " name "\n\n")
+              (tramp-mode)
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (file-remote-p (buffer-local-value 'default-directory x)))
+                     (buffer-list))))))
+  (add-to-list 'consult-buffer-sources 'tramp-source 'append)
+
+  ;; narrow to dired buffers
+  (defvar  dired-source
+    (list :name     "Dired"
+          :category 'buffer
+          :narrow   ?d
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create name)
+              ;;(insert "#+title: " name "\n\n")
+              (tramp-mode)
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (eq (buffer-local-value 'major-mode x) 'dired-mode))
+                     (buffer-list))))))
+  (add-to-list 'consult-buffer-sources 'dired-source 'append))
 
 ;; insert recent openend directories in prompt
 (use-package consult-dir
