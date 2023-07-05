@@ -197,7 +197,7 @@
   :elpaca nil
   :preface
   (setq default-monospace '("Recursive Mono Linear Static"))
-  (setq default-variable '("Recursive Sans Casual Static"))
+  (setq default-proportional '("Recursive Sans Line Static"))
   (setq default-comments '("Recursive Mono Casual Static"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
@@ -205,9 +205,9 @@
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
   (default  ((t (:family ,(car default-monospace)))))
-  (variable-pitch ((t (:family ,(car default-variable)))))
+  (variable-pitch ((t (:family ,(car default-proportional)))))
   ;; comment
-  (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
+  (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic :height .9))))
   (font-lock-constant-face ((t (:family ,(car default-monospace)))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
