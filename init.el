@@ -1992,7 +1992,7 @@ graphics."
         modus-themes-diffs 'desaturated
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
-        modus-themes-bold-constructs t
+        modus-themes-bold-constructs nil
         modus-themes-headings '((t . (rainbow))))
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (defun my-modus-tweaks ()
@@ -4246,11 +4246,16 @@ If INTERACTIVE is nil the function acts like a Capf."
   :init
   (term-cursor-color-mode))
 
-(use-package starhugger
+;; AI code completion based on "huggin face" api
+(use-package starhugger :disabled
   :elpaca (starhugger :url "https://gitlab.com/daanturo/starhugger.el")
   :general
   ("M-/" 'starhugger-trigger-suggestion)
   :config
+  ;; Use https://huggingface.co/bigcode/starcoderplus instead
+  (setq starhugger-model-api-endpoint-url
+        "https://api-inference.huggingface.co/models/bigcode/starcoderplus")
+
   (setq starhugger-api-token (funcall
                               (plist-get (car (auth-source-search :host "api.huggingface.com"))
                                          :secret)))
