@@ -521,9 +521,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; narrow to tramp buffers
   (defvar  tramp-source
-    (list :name     "Tramp Buffer"
+    (list :name     "Remote"
           :category 'buffer
-          :narrow   ?t
+          :narrow   ?r
           :face     'consult-buffer
           :history  'buffer-name-history
           :state    #'consult--buffer-state
@@ -541,6 +541,29 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                        (file-remote-p (buffer-local-value 'default-directory x)))
                      (buffer-list))))))
   (add-to-list 'consult-buffer-sources 'tramp-source 'append)
+
+  ;; narrow to local buffers only
+  (defvar  host-source
+    (list :name     "Host"
+          :category 'buffer
+          :narrow   ?h
+          :face     'consult-buffer
+          :history  'buffer-name-history
+          :state    #'consult--buffer-state
+          :new
+          (lambda (name)
+            (with-current-buffer (get-buffer-create name)
+              ;;(insert "#+title: " name "\n\n")
+              (tramp-mode)
+              (consult--buffer-action (current-buffer))))
+          :items
+          (lambda ()
+            (mapcar #'buffer-name
+                    (seq-filter
+                     (lambda (x)
+                       (not (file-remote-p (buffer-local-value 'default-directory x))))
+                     (buffer-list))))))
+  (add-to-list 'consult-buffer-sources 'host-source 'append)
 
   ;; narrow to dired buffers
   (defvar  dired-source
