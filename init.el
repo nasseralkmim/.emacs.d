@@ -3624,7 +3624,16 @@ its results, otherwise display STDERR with
         ;; this addresses the reply to myself
         ;; (info "(gnus) Group Parameters")
         gnus-parameters '(("*"
-                           (gcc-self . t)))))
+                           (gcc-self . t))))
+
+
+  ;; Sync sent messages for work server so it can find parent messages and reconstruct threads.
+  ;; gmail does that automatically.
+  ;; https://lists.gnu.org/archive/html/info-gnus-english/2016-03/msg00004.html
+  (defun my-archiver-figure-outer (group)
+    (cond ((string-match-p "nnimap\\+work\\|INBOX" group)
+           "nnimap+work:Sent Items")))
+  (setq gnus-message-archive-group #'my-archiver-figure-outer))
 
 ;; indicate threads more clear when in gui (need the %B int line format)
 (use-package gnus
