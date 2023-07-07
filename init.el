@@ -1341,6 +1341,26 @@ graphics."
       (org-hide-block-all))
     (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
+;; Use unicode for delimiter of noweb syntax
+;; this avoids problems with sntax highlight inside the block
+;; https://emacs.stackexchange.com/a/73720
+(use-package org-source-noweb-delimiter
+  :elpaca nil
+  :after org-hl
+  :init
+  (defun org-babel-noweb-wrap (&optional regexp)
+    "Return regexp matching a Noweb reference.
+
+Match any reference, or only those matching REGEXP, if non-nil.
+
+When matching, reference is stored in match group 1."
+    (rx-to-string
+     `(and (or "<<" "«")
+           (group
+            (not (or " " "\t" "\n"))
+            (? (*? any) (not (or " " "\t" "\n"))))
+           (or ">>" "»")))))
+
 ;; library of babel
 (use-package ob-lob :disabled
   :elpaca nil
