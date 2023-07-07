@@ -498,7 +498,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; narrow to org buffers
   (defvar org-source
-    (list :name     "Org Buffer"
+    (list :name     "Org"
           :category 'buffer
           :narrow   ?o
           :face     'consult-buffer
