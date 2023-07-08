@@ -197,6 +197,7 @@
   :elpaca nil
   :preface
   (setq default-monospace '("Recursive Mono Linear Static"))
+  (setq default-unicode '("JetBrains Mono NF"))
   (setq default-proportional '("Recursive Sans Line Static"))
   (setq default-comments '("Recursive Mono Casual Static"))
   :custom-face 
@@ -219,7 +220,9 @@
   (org-meta-line ((t (:family ,(car default-monospace)))))
   (org-verbatim ((t (:family ,(car default-monospace)))))
   (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
-  (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face)))))
+  (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face))))
+  :config
+  (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend))
 
 ;; change typeface size font
 (use-package emacs-frame-zoom
