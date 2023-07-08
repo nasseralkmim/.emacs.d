@@ -221,7 +221,7 @@
   (org-verbatim ((t (:family ,(car default-monospace)))))
   (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face))))
-  :config
+  :init
   (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend))
 
 ;; change typeface size font
@@ -450,7 +450,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-s" 'consult-outline)		; navigation by headings
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
-  ("C-s" 'consult-line)			; search lines with preview
+  ('normal "/" 'consult-line)			; search lines with preview
   ("C-c C-f" 'consult-focus-lines)	; show only matching results
   ("C-c m" 'consult-mark)
   ;; two parts: search  and filter
@@ -3821,7 +3821,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package isearch
   :elpaca nil
   :general
-  ('normal "/" 'isearch-forward)
+  ('normal "C-s" 'isearch-forward)
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   :config
