@@ -2843,7 +2843,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :general
-  ('normal "s" 'avy-goto-char-timer)
+  ('normal "C-s" 'avy-goto-char-timer)
   ('(normal visual) :prefix "SPC"
    "j" 'avy-goto-line-below
    "k" 'avy-goto-line-above)
@@ -3821,7 +3821,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package isearch
   :elpaca nil
   :general
-  ('normal "C-s" 'isearch-forward)
+  ('normal "s" 'isearch-forward)
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   :config
@@ -4367,7 +4367,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Add syntax highlight to Magit diffs
 ;; need to install 'yay git-delta'  
-(use-package magit-delta
+;; maybe too slow
+(use-package magit-delta :disabled
   :hook (magit-mode . magit-delta-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
