@@ -3825,10 +3825,11 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package isearch
   :elpaca nil
   :general
-  ('normal "s" 'isearch-forward)
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
-  :config
+  :init
+  (with-eval-after-load 'evil
+   (general-def 'normal "s" 'isearch-forward))
   ;; show the matching count
   (setq isearch-lazy-count t
         ;; make a whitespace work as regex ".*" which represents "anyting in between"
