@@ -745,7 +745,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq sp-show-pair-delay 0.125
         sp-max-prefix-length 25         ; reduces work
         sp-max-pair-length 4            ; reduces work
-        ))
+        )
+  ;; show context (echo area) when closing delimiter is off screen
+  (setq show-paren-context-when-offscreen 'overlay))
 
 (use-package smartparens-config
   :elpaca nil
@@ -762,7 +764,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; delay check, check only on save
-  (setq flymake-no-changes-timeout 1)
+  (setq flymake-no-changes-timeout 1
+        flymake-show-diagnostics-at-end-of-line t
+        flymake-mode-line-lighter "Fly")
   ;; avoid warning in the 'flymake' log
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
 
