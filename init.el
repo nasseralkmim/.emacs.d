@@ -1353,7 +1353,7 @@ graphics."
 ;; https://emacs.stackexchange.com/a/73720
 (use-package org-source-noweb-delimiter
   :elpaca nil
-  :after org-hl
+  :after org
   :init
   (defun org-babel-noweb-wrap (&optional regexp)
     "Return regexp matching a Noweb reference.
