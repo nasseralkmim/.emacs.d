@@ -4292,6 +4292,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 (use-package pueue
   :elpaca (pueue :host github :repo "xFA25E/pueue")
+  :hook (pueue-mode . auto-revert-mode)
   :commands pueue
   :general 
   ('normal "<f7>" 'pueue)
