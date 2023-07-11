@@ -1183,9 +1183,22 @@ graphics."
 (use-package ox-html
   :elpaca nil
   :after org
-  :config
+  :init
   ;; don't scale svg images
   (setq org-html-head "<style> .org-svg {width: auto} </style>"))
+
+;; Deals with "<>" delimiters in org mode source blocks
+;; https://emacs.stackexchange.com/a/68321
+(use-package org-<>-delimiter-hack
+  :elpaca nil
+  :after org
+  :init
+  (defun org-syntax-table-modify ()
+    "Modify `org-mode-syntax-table' for the current org buffer."
+    (modify-syntax-entry ?< "." org-mode-syntax-table)
+    (modify-syntax-entry ?> "." org-mode-syntax-table))
+
+  (add-hook 'org-mode-hook #'org-syntax-table-modify))
 
 ;; load ob-C when executing C++ source block
 (use-package ob-C
