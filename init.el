@@ -313,16 +313,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq recentf-max-saved-items 25
         recentf-auto-cleanup 'mode))
 
-(use-package autorevert :disabled ;; makes it slow sometims
+;; Enable autorevert on specific modes
+(use-package autorevert
   :elpaca nil
   :if (eq system-type 'gnu/linux)
-  :defer 1
+  :hook
+  (fundamental-mode . auto-revert-mode)
+  (text-mode . auto-revert-mode)
+  (dired-mode . auto-revert-mode)
   :config
   (setq auto-revert-interval 1)
-  (setq auto-revert-check-vc-info t)
-  (setq global-auto-revert-non-file-buffers t)
-  (setq auto-revert-verbose nil)
-  (global-auto-revert-mode +1))
+  (setq auto-revert-check-vc-info nil)    ; maybe slow
+  )
 
 (use-package helpful
   :general
