@@ -459,7 +459,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-s" 'consult-outline)		; navigation by headings
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
-  ('normal "/" 'consult-line)			; search lines with preview
+  ('normal "C-s" 'consult-line)			; search lines with preview
   ("C-c C-f" 'consult-focus-lines)	; show only matching results
   ("C-c m" 'consult-mark)
   ;; two parts: search  and filter
@@ -2869,7 +2869,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :general
-  ('normal "C-s" 'avy-goto-char-timer)
+  ('normal "/" 'avy-goto-char-timer)
   ('(normal visual) :prefix "SPC"
    "j" 'avy-goto-line-below
    "k" 'avy-goto-line-above)
