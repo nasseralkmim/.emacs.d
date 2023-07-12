@@ -4189,7 +4189,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   ("C-," 'jinx-correct)
   ("M-," 'jinx-correct)
   :config
-  (setq jinx-languages "en de pt_BR"))
+  (setq jinx-languages "en de pt_BR"
+        jinx-delay 1))
 
 ;; Change default compile command
 (use-package compile
