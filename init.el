@@ -765,7 +765,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; delay check, check only on save
   (setq flymake-no-changes-timeout 1
-        flymake-show-diagnostics-at-end-of-line t
+        flymake-show-diagnostics-at-end-of-line nil ; just use "M-n"
         flymake-mode-line-lighter "Fly")
   ;; avoid warning in the 'flymake' log
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
