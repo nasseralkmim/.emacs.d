@@ -306,7 +306,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq recentf-max-saved-items 25
         recentf-auto-cleanup 'mode))
 
-(use-package autorevert
+(use-package autorevert :disabled ;; makes it slow sometims
   :elpaca nil
   :if (eq system-type 'gnu/linux)
   :defer 1
@@ -3719,7 +3719,10 @@ its results, otherwise display STDERR with
           ("work" ; matches only 'work' group
            (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
            (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
-           ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))))
+           ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")
+           ;; sent my sent messages to the the server
+           ;; https://stackoverflow.com/a/57203796
+           (gcc "nnimap+work:Sent Items")))))
 
 (use-package sendmail
   :elpaca nil
