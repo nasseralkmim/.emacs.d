@@ -50,7 +50,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil ; compute statistics about package initialization
+      use-package-compute-statistics t ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
@@ -97,13 +97,9 @@
            "b" 'backward-sexp
            "f" 'forward-sexp)
   :config
-  (winner-mode t)	  ; move between windows configuration
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
   (column-number-mode t)  ; show column number in the mode line
   (setq-default indicate-empty-lines nil) ; cleaner
-
-  ;; name on top of window
-  (setq-default frame-title-format '("%b [%m]"))
 
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
@@ -165,10 +161,7 @@
   (blink-cursor-mode -1)                ; don't blink the cursor.
 
   ;; each line on its own, otherwise use 'visual-line-mode'
-  (setq-default truncate-lines t)
-
-  ;; visit file from where you left
-  (save-place-mode))
+  (setq-default truncate-lines t))
 
 (use-package pixel-scroll
   :elpaca nil
@@ -191,6 +184,20 @@
         (setq frame-background-mode 'light)
       (setq frame-background-mode 'dark))
     (invert-face 'default)))
+
+;; Move between windows configuration
+(use-package winner
+  :elpaca nil
+  :defer 1
+  :config
+  (winner-mode))
+
+;; Visit file from where you left
+(use-package saveplace
+  :elpaca nil
+  :defer 1
+  :config
+  (save-place-mode))
 
 ;; typeface
 (use-package custom-typefaces
