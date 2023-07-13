@@ -321,10 +321,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (text-mode . auto-revert-mode)
   (dired-mode . auto-revert-mode)
   :config
-  (setq auto-revert-interval 1)
-  (setq auto-revert-check-vc-info nil)    ; maybe slow
-  (setq auto-revert-remote-files t)       ; maybe slow, but useful
-  )
+  (setq auto-revert-interval 1
+        auto-revert-verbose nil
+        ;; maybe slow
+        auto-revert-check-vc-info nil
+        ;; maybe slow, but useful
+        auto-revert-remote-files t))
 
 (use-package helpful
   :general
