@@ -318,12 +318,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :elpaca nil
   :if (eq system-type 'gnu/linux)
   :hook
-  (fundamental-mode . auto-revert-mode)
   (text-mode . auto-revert-mode)
   (dired-mode . auto-revert-mode)
   :config
   (setq auto-revert-interval 1)
   (setq auto-revert-check-vc-info nil)    ; maybe slow
+  (setq auto-revert-remote-files t)       ; maybe slow, but useful
   )
 
 (use-package helpful
@@ -4408,5 +4408,15 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; maybe too slow
 (use-package magit-delta :disabled
   :hook (magit-mode . magit-delta-mode))
+
+;; Add text-mode to files without format extension
+(use-package custom-files-auto-mode
+  :elpaca nil
+  :init
+  ;; files that end with ".out"
+  ;; "\'" matches end of a string
+  ;; "$" matches emptry string before a newline
+  ;; "\." matches a period (escaped)
+  (add-to-list 'auto-mode-alist '("\\.out\\'" . text-mode)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
