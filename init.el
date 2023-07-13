@@ -50,7 +50,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics t ; compute statistics about package initialization
+      use-package-compute-statistics nil ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
@@ -1353,7 +1353,7 @@ graphics."
   :init
   ;; babel and source blocks
   (setq org-src-fontify-natively t
-        org-src-window-setup 'current-window ; don't move my windows around!
+        org-src-window-setup 'split-window-below ; don't move my windows around!
         org-src-preserve-indentation t  ; preserve indentation in code
         org-adapt-indentation nil ; no extra space... better use indent mode (virtual)
         org-edit-src-content-indentation 0 ; dont indent source code
