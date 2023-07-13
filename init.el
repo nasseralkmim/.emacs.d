@@ -3634,7 +3634,7 @@ its results, otherwise display STDERR with
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
         ;; 'select method' means the 'backend': how gnus stores the messages 
-        ;; imap backend also fetchs the mail (that's why it takes a while)
+        ;; IMAP backend also fetches the mail (that's why it takes a while)
         gnus-select-method '(nnnil)
         gnus-secondary-select-methods '((nntp "news"
                                               ;; news server with mailing lists gatewayed to the NNTP server [2].
@@ -3669,6 +3669,9 @@ its results, otherwise display STDERR with
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         gnus-read-active-file nil        ; only read '.newsrc', speeds up
         gnus-asynchronous t
+        ;; search with generalized query syntax:
+        ;; from:fulano body:"multi word" attachment:pdf
+        gnus-search-use-parsed-queries t
         ;; show my replies sent from gnus in the thread view
         ;; this addresses the reply to myself
         ;; (info "(gnus) Group Parameters")
