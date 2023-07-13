@@ -81,7 +81,7 @@
 ;; basics and better default
 (use-package emacs
   :elpaca nil
-  :defer 0.5
+  :defer 1
   :general
   ('normal "gy" 'revert-buffer-quick)
   ('insert "C-v" 'yank)                 ; for helping in minibuffer.
@@ -745,6 +745,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('(normal visual) smartparens-mode-map "[ [" 'sp-beginning-of-sexp) ; go back to matching opening pair
   ;; binding all modes for Latex
   ('insert '(prog-mode-map LaTeX-mode-map org-mode-map) "C-<tab>" 'sp-forward-sexp)
+  :custom-face
+  (sp-show-pair-match-content-face ((t (:inherit lazy-highlight))))
   :hook
   (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
@@ -858,9 +860,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :defer 0.5
   :diminish evil-mode
   :init
+  ;; Set before loading evil or evil collection
   (setq evil-want-keybinding nil ; preference for evil-collection
         evil-want-minibuffer t); evil in minibuffer
-  (evil-mode 1)
   :general
   (evil-motion-state-map "C-i" nil)     ; avoid conflicting with tab in terminal
   ("C-c \\" 'evil-emacs-state)
@@ -876,6 +878,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "C-c r" nil)
   ('normal "C-S-o" 'evil-jump-forward)
   :config
+  (evil-mode 1)
   (setq
    lazy-highlight-cleanup nil           ; persist highlight
    lazy-highlight-max-at-a-time nil
@@ -946,8 +949,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package evil-collection
   :diminish evil-collection-unimpaired-mode
   :after evil
-  :defer 1
-  :config
+  :init
   (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
         evil-collection-company-use-tng nil) ; makes company works betters I think
   (evil-collection-init))
@@ -4229,7 +4231,9 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package ediff
   :elpaca nil
   :config
-  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq
+   ;; control panel on the same buffer
+   ediff-window-setup-function 'ediff-setup-windows-plain)
 
   ;; Use both A and B into C when solving conflicts
   ;; https://stackoverflow.com/a/29757750
