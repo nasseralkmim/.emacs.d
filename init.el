@@ -3668,7 +3668,10 @@ its results, otherwise display STDERR with
         gnus-home-directory "~/.emacs.d" ; for sync different machines
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         gnus-read-active-file nil        ; only read '.newsrc', speeds up
+        ;; Maybe improve https://gluer.org/blog/2023/trying-gnus-as-an-email-client/
         gnus-asynchronous t
+        gnus-use-cache t
+        gnus-use-header-prefetch t
         ;; search with generalized query syntax:
         ;; from:fulano body:"multi word" attachment:pdf
         gnus-search-use-parsed-queries t
