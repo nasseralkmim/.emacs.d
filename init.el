@@ -4238,7 +4238,20 @@ If INTERACTIVE is nil the function acts like a Capf."
                       (ediff-get-region-contents ediff-current-difference 'A ediff-control-buffer)
                       (ediff-get-region-contents ediff-current-difference 'B ediff-control-buffer))))
   (defun add-d-to-ediff-mode-map () (define-key ediff-mode-map "c" 'ediff-copy-both-to-C))
-  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map))
+  (add-hook 'ediff-keymap-setup-hook 'add-d-to-ediff-mode-map)
+
+  ;; Restore window configuration after ediff
+  ;; https://emacs.stackexchange.com/a/17089
+  (defvar my-ediff-last-windows nil)
+
+  (defun my-store-pre-ediff-winconfig ()
+    (setq my-ediff-last-windows (current-window-configuration)))
+
+  (defun my-restore-pre-ediff-winconfig ()
+    (set-window-configuration my-ediff-last-windows))
+
+  (add-hook 'ediff-before-setup-hook #'my-store-pre-ediff-winconfig)
+  (add-hook 'ediff-quit-hook #'my-restore-pre-ediff-winconfig))
 
 ;; Built in dictionary look up
 (use-package dictionary
