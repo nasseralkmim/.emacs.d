@@ -2286,7 +2286,7 @@ Only if there is more than one window opened."
   :general
   (python-mode-map "C-c C-n" 'numpydoc-generate))
 
-(use-package goto-last-change
+(use-package goto-last-change :disabled ; use the evil one "g ;" and "g ,"
   :general ('normal "g b" 'goto-last-change))
 
 ;; easy select region
@@ -3642,7 +3642,7 @@ its results, otherwise display STDERR with
                                               ;; substituted old '.org' [0].
                                               ;; there is no search engine [1].
                                               ;; 
-                                              ;; [0]https://lars.ingebrigtsen.no/2020/01/15/news-gmane-org-is-now-news-gmane-io/
+                                              ;; [0] https://lars.ingebrigtsen.no/2020/01/15/news-gmane-org-is-now-news-gmane-io/
                                               ;; [1] https://stackoverflow.com/a/48214757
                                               ;; [2] [[info:gnus#Mail and Post][gnus#Mail and Post]]
                                               (nntp-address "news.gmane.io"))
