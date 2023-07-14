@@ -950,8 +950,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :diminish evil-collection-unimpaired-mode
   :after evil
   :init
-  (setq evil-collection-setup-minibuffer nil ; does not play nice with vertico
-        evil-collection-company-use-tng nil) ; makes company works betters I think
+  (setq evil-collection-setup-minibuffer t) ; makes company works betters I think
   (evil-collection-init))
 
 ;; navigation: gh, gj, gk, gl
