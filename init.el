@@ -4232,7 +4232,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq
    ;; control panel on the same buffer
-   ediff-window-setup-function 'ediff-setup-windows-plain)
+   ediff-window-setup-function 'ediff-setup-windows-plain
+   ;; split windws horizontally (side-by-side)
+   ediff-split-window-function 'split-window-horizontally)
 
   ;; Use both A and B into C when solving conflicts
   ;; https://stackoverflow.com/a/29757750
