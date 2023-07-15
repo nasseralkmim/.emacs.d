@@ -1645,7 +1645,8 @@ When matching, reference is stored in match group 1."
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
   (add-to-list 'completion-at-point-functions #'cape-symbol)
-  (add-to-list 'completion-at-point-functions #'cape-ispell)
+  (add-to-list 'completion-at-point-functions #'cape-dict)
+  ;; (add-to-list 'completion-at-point-functions #'cape-line)
   (add-to-list 'completion-at-point-functions #'cape-history)
   (add-to-list 'completion-at-point-functions #'cape-tex)
   ;; cape does not support 'case-replace' yet: https://github.com/minad/cape/issues/51
@@ -3209,7 +3210,6 @@ opening a file from dired. Otherwise just regular dired."
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
           "\\*eldoc\\*"                   ; eldoc buffer
-          "Help\\*$"
           "Translate\\*$"               ; gts translate
           ;; "\\*Python\\*"
           "CAPTURE-.*"
