@@ -4439,4 +4439,11 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; "\." matches a period (escaped)
   (add-to-list 'auto-mode-alist '("\\.out\\'" . text-mode)))
 
+(use-package tab-bar
+  :elpaca nil
+  :defer 1
+  :config
+  (tab-bar-mode))
+
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
