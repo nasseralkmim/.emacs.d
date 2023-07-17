@@ -326,7 +326,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         ;; maybe slow
         auto-revert-check-vc-info nil
         ;; maybe slow, but useful
-        auto-revert-remote-files t))
+        auto-revert-remote-files nil))
 
 (use-package helpful
   :general
