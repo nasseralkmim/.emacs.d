@@ -3629,6 +3629,7 @@ its results, otherwise display STDERR with
   :general
   ("C-x C-m" 'gnus) 
   ('normal gnus-article-mode-map "SPC" nil)
+  ('normal gnus-article-mode-map "s" nil) ; use for isearch
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)

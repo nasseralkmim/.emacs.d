@@ -1,6 +1,7 @@
 ;; -*- mode: Emacs-Lisp; coding: utf-8; -*-
 ;;; file-format: 9
 [nil nil nil nil nil nil nil ("Hofstetter") nil "bcda813c-03fa-421d-bcbf-a74e81610187" "2023-06-22 09:48:30 +0000" "2023-06-22 09:48:30 +0000" nil]
+[nil "aalinovi" nil nil nil nil nil ("aalinovi@riseup.net") nil "4874ea6a-5d3c-4037-a4ed-c673a9a86780" "2023-07-17 06:15:37 +0000" "2023-07-17 06:15:37 +0000" nil]
 ["Eric" "Abrahamsen" nil nil nil nil nil ("eric@ericabrahamsen.net") nil "910481b1-77fa-4323-8516-4342d05ee070" "2023-05-06 08:17:45 +0000" "2023-05-06 08:17:45 +0000" nil]
 ["Russell" "Adams" nil nil nil nil nil ("RLAdams@adamsinfoserv.com") nil "f10ec00f-1da4-40ef-9dd4-24da25cca638" "2023-04-19 07:46:11 +0000" "2023-04-19 07:46:11 +0000" nil]
 ["Michael" "Albinus" nil nil nil nil nil ("michael.albinus@gmx.de") nil "f95b5d10-159e-4f30-a63d-96ff404abe00" "2023-02-17 10:39:54 +0000" "2023-02-17 10:39:54 +0000" nil]
@@ -94,6 +95,7 @@
 ["Daniela" "Kollmitzer" nil nil nil nil nil ("Daniela.Kollmitzer@uibk.ac.at") nil "0ed6b72a-4e57-4b3e-90d2-1d5968cb15db" "2023-05-04 07:41:28 +0000" "2023-05-04 07:41:28 +0000" nil]
 ["AKIYAMA" "Kouhei" nil nil nil nil nil ("notifications@github.com") nil "b479739a-f23f-4311-85db-915fe9af4125" "2023-05-04 07:54:00 +0000" "2023-05-04 07:54:00 +0000" nil]
 [nil "kundenservice" nil nil nil nil nil ("kundenservice@ikb.at") nil "70207134-d15a-48f5-9ad7-e03234f52f34" "2023-02-23 13:14:35 +0000" "2023-02-23 13:14:35 +0000" nil]
+["Sarah" "Lam" nil nil nil nil nil ("lam.sarahj@gmail.com") nil "899a2b28-4c36-447b-a645-0af3f1b05adb" "2023-07-17 06:14:31 +0000" "2023-07-17 06:14:31 +0000" nil]
 ["Vinicius" "Latorre" nil nil nil nil nil ("viniciusjl.gnu@gmail.com") nil "e1ee9a1d-a732-4a90-9c86-5bd4cf7a5fb0" "2023-03-16 15:37:26 +0000" "2023-03-16 15:37:26 +0000" nil]
 ["Stephen" "Leake" nil nil nil nil nil ("stephen_leake@stephe-leake.org") nil "5417680b-76bd-49b5-81d3-ada9657be8ac" "2023-02-23 08:35:54 +0000" "2023-02-23 08:35:54 +0000" nil]
 [nil "ledger-cli" nil nil nil nil nil ("ledger-cli-/JYPxA39Uh5TLH3MbocFFw@public.gmane.org") nil "35f9dbca-2a91-473f-8cc6-736a2f5531b5" "2023-05-03 12:59:11 +0000" "2023-05-03 12:59:11 +0000" nil]
@@ -107,6 +109,7 @@
 ["Po" "Lu" nil nil nil nil nil ("luangruo@yahoo.com") nil "bb790fd5-9e23-4c72-b87f-dae1ec90b132" "2023-02-17 15:25:59 +0000" "2023-02-17 15:25:59 +0000" nil]
 ["Alan" "Mackenzie" nil nil nil nil nil ("acm@muc.de") nil "321a4cf3-0753-4c52-81ca-b3cbfb97eed2" "2023-02-15 09:22:17 +0000" "2023-02-15 09:22:17 +0000" nil]
 [nil "matt" nil nil nil nil nil ("matt@excalamus.com") nil "a8152246-e0ac-4b9b-8f3d-8fb54ab25d43" "2023-03-28 12:44:39 +0000" "2023-03-28 12:44:39 +0000" nil]
+["Igor Sosa" "Mayor" nil nil nil nil nil ("joseleopoldo1792@gmail.com") nil "91df64b6-ac02-4b02-ae52-8d913808ce80" "2023-07-17 05:24:30 +0000" "2023-07-17 05:24:30 +0000" nil]
 [nil "Microsoft" nil nil nil nil nil ("reply-febc13747d640d7a-25_HTML-1695205868-7231722-9@mail.onedrive.com") nil "1536b087-6459-4baa-8d1a-984147f151ce" "2023-02-19 08:01:15 +0000" "2023-02-19 08:01:15 +0000" nil]
 ["Arthur" "Miller" nil nil nil nil nil ("arthur.miller@live.com") nil "7b66743a-eb20-48ce-9970-524d21dcb204" "2023-05-30 14:31:24 +0000" "2023-05-30 14:31:24 +0000" nil]
 ["sebastien" "miquel" nil nil nil nil nil ("sebastien.miquel@posteo.eu") nil "6777b4dd-9753-4ef2-a8a1-469338c8cd24" "2023-06-21 09:12:51 +0000" "2023-06-21 09:12:51 +0000" nil]
@@ -205,4 +208,5 @@
 ["Ruijie" "Yu" nil nil nil nil nil ("ruijie@netyu.xyz") nil "9183ba49-a0af-44c3-9946-98c49a2303be" "2023-03-27 17:44:23 +0000" "2023-03-27 17:44:23 +0000" nil]
 [nil "Zalando" nil nil nil nil nil ("noreply@zalando.at") nil "f0464d7f-75bd-4999-b00f-57873d957ecb" "2023-02-23 12:12:16 +0000" "2023-02-23 12:12:16 +0000" nil]
 ["Eli" "Zaretskii" nil nil nil nil nil ("eliz@gnu.org") nil "ac917f37-9394-4639-82cb-2b385bd3569b" "2023-02-15 09:24:15 +0000" "2023-02-15 09:24:15 +0000" nil]
+["Hongyi" "Zhao" nil nil nil nil nil ("hongyi.zhao@gmail.com") nil "14baeb25-8e03-4004-9d5c-29737880fe1c" "2023-07-17 06:15:19 +0000" "2023-07-17 06:15:19 +0000" nil]
 [nil "zid-cluster-admin" nil nil nil nil nil ("zid-cluster-admin@uibk.ac.at") nil "e86a7c39-075a-4fd4-9c90-03d050faa52c" "2023-04-28 13:26:07 +0000" "2023-04-28 13:26:07 +0000" nil]
