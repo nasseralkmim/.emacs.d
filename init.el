@@ -3699,28 +3699,17 @@ its results, otherwise display STDERR with
         gnus-use-cross-reference nil
         gnus-home-directory "~/.emacs.d" ; for sync different machines
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
+        ;; (info "(gnus)Startup Files")
         gnus-read-active-file nil        ; only read '.newsrc', speeds up
+        gnus-save-newsrc-file nil        ; I will not use anything other than gnus
+        gnus-read-newsrc-file nil        ; speed up start
         ;; Maybe improve https://gluer.org/blog/2023/trying-gnus-as-an-email-client/
         gnus-asynchronous t
         gnus-use-cache t
         gnus-use-header-prefetch t
         ;; search with generalized query syntax:
         ;; from:fulano body:"multi word" attachment:pdf
-        gnus-search-use-parsed-queries t
-        ;; show my replies sent from gnus in the thread view
-        ;; this addresses the reply to myself
-        ;; (info "(gnus) Group Parameters")
-        gnus-parameters '(("*"
-                           (gcc-self . t))))
-
-
-  ;; Sync sent messages for work server so it can find parent messages and reconstruct threads.
-  ;; gmail does that automatically.
-  ;; https://lists.gnu.org/archive/html/info-gnus-english/2016-03/msg00004.html
-  (defun my-archiver-figure-outer (group)
-    (cond ((string-match-p "nnimap\\+work\\|INBOX" group)
-           "nnimap+work:Sent Items")))
-  (setq gnus-message-archive-group #'my-archiver-figure-outer))
+        gnus-search-use-parsed-queries t))
 
 ;; indicate threads more clear when in gui (need the %B int line format)
 (use-package gnus
@@ -3753,23 +3742,29 @@ its results, otherwise display STDERR with
                      (gnus-topic-visible-p) 'gnus-topic-hide-topic)))
 
 ;; use email (and smpt server) according to group
-(use-package gnus-msg
+(use-package gnus-group-parameters
   :elpaca nil
-  :config
-  ;; https://www.bounga.org/tips/2020/05/03/multiple-smtp-accounts-in-gnus-without-external-tools/
-  ;; https://www.gnu.org/software/emacs/manual/html_node/message/Mail-Variables.html
-  (setq gnus-posting-styles
-        '((".*" ; matches all groups of messages
-           (address "Nasser Alkmim <nasser.alkmim@gmail.com>")
-           (signature "Nasser Alkmim \n +43 677 6408 9171")
-           ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 nasser.alkmim@gmail.com"))
-          ("work" ; matches only 'work' group
-           (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
-           (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
-           ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")
-           ;; sent my sent messages to the the server
-           ;; https://stackoverflow.com/a/57203796
-           (gcc "nnimap+work:Sent Items")))))
+  :after gnus
+  :init
+  ;; (info "(gnus) Group Parameters")
+  ;; Modify group parameters, most affect when sending messages (emails)
+  ;; one can check, e.g., GCC, X-Message-SMTP-Method, signature, etc
+  (setq gnus-parameters '((".*"          ; all groups, including personal gmail
+                           ;; Messages (emails) are GCC to the current group
+                           ;; This means that my sent emails will be also available to reconstruct conversation threads
+                           (gcc-self . t)
+                           ;; https://www.bounga.org/tips/2020/05/03/multiple-smtp-accounts-in-gnus-without-external-tools/
+                           ;; https://www.gnu.org/software/emacs/manual/html_node/message/Mail-Variables.html
+                           (posting-style
+                            (address "Nasser Alkmim <nasser.alkmim@gmail.com>")
+                            (signature "Nasser Alkmim \n +43 677 6408 9171")
+                            ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 nasser.alkmim@gmail.com")))
+                          ("work"
+                           (gcc-self "nnimap+work:Sent Items" t)
+                           (posting-style
+                            (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
+                            (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
+                            ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205"))))))
 
 (use-package sendmail
   :elpaca nil
@@ -3889,7 +3884,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca nil
   :general
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
+  ('normal Info-mode-map "s" nil)               ; use isearch in info-mode
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
+  (isearch-mode-map "C-<SPC>" 'isearch-toggle-invisible)
   :init
   (with-eval-after-load 'evil
    (general-def 'normal "s" 'isearch-forward))
