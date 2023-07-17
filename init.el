@@ -2735,7 +2735,35 @@ Only if there is more than one window opened."
 (use-package ibuffer
   :elpaca nil
   :general
-  ("C-x C-b" 'ibuffer))
+  ("C-x C-b" 'ibuffer)
+  :config
+  ;; Grouping
+  ;; https://www.emacswiki.org/emacs/IbufferMode#h5o-6
+  (setq ibuffer-saved-filter-groups
+        (quote (("default"
+                 ("emacs" (or
+                           (name . "^\\*scratch\\*$")
+                           (name . "^\\*Messages\\*$")))
+                 ("outputs" (or
+                             (name . "\\.out$")))
+                 ("gnus" (or
+                          (mode . message-mode)
+                          (mode . bbdb-mode)
+                          (mode . mail-mode)
+                          (mode . gnus-group-mode)
+                          (mode . gnus-summary-mode)
+                          (mode . gnus-article-mode)
+                          (name . "^\\.bbdb$")
+                          (name . "^\\.newsrc-dribble")))))))
+  :hook (ibuffer . (lambda ()
+                     (ibuffer-switch-to-saved-filter-groups "default")
+                     (ibuffer-do-sort-by-alphabetic))))
+
+;; group by Remote in ibuffer
+(use-package ibuffer-tramp
+  :general
+  ('normal ibuffer-mode-map "s t" 'ibuffer-tramp-set-filter-groups-by-tramp-connection)
+  ('normal ibuffer-mode-map "s r" 'ibuffer-switch-to-saved-filter-groups))
 
 ;; need to install language specific modules:
 ;; https://github.com/casouri/tree-sitter-module
