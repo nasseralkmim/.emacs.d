@@ -2705,11 +2705,14 @@ Only if there is more than one window opened."
   (setq tramp-default-method "scp"
         tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
         tramp-histfile-override nil
-        tramp-verbose 6)
+        tramp-verbose 3)                ; increase to 6 to debug
 
   ;; apparently makes it faster
+  ;; https://www.gnu.org/software/tramp/#Frequently-Asked-Questions
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
   (setq remote-file-name-inhibit-cache nil)
+  ;; Ok, if different emacs sessions are not editing the same file
+  (setq remote-file-name-inhibit-locks t)
 
   ;; ignore version control 
   ;; https://www.reddit.com/r/emacs/comments/gxhomh/help_tramp_connections_make_emacs_unresponsive_on/
