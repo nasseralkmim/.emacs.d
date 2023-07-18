@@ -3616,8 +3616,7 @@ its results, otherwise display STDERR with
 
 ;; hide everything except current heading
 ;; https://stackoverflow.com/a/28031539/20449842
-;; https://stackoverflow.com/a/28031539
-(use-package org-show-current-tidyl
+(use-package org-show-current-tidyly
   :elpaca nil
   :after org
   :general
@@ -3634,7 +3633,7 @@ its results, otherwise display STDERR with
         (hide-subtree)
         (error "Boundary reached"))
       (org-overview)
-      (org-reveal t)
+      (let ((current-prefix-arg '(4))) (call-interactively 'org-reveal))
       (org-show-entry)
       (show-children))))
 
