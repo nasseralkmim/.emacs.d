@@ -2902,6 +2902,7 @@ opening a file from dired. Otherwise just regular dired."
 (use-package avy
   :general
   ('normal "/" 'avy-goto-char-timer)
+  (isearch-mode-map "C-'" 'avy-isearch)
   ('(normal visual) :prefix "SPC"
    "j" 'avy-goto-line-below
    "k" 'avy-goto-line-above)
