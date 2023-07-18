@@ -2938,6 +2938,8 @@ opening a file from dired. Otherwise just regular dired."
 ;; Built in language server.
 (use-package eglot
   :elpaca nil
+  :custom-face
+ (eglot-highlight-symbol-face ((t (:underline t :weight bold))))
   :hook
   (eglot-managed-mode . eglot-inlay-hints-mode)
   (python-mode . eglot-ensure) ; works if there is only one server available
