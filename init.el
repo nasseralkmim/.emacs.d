@@ -1025,8 +1025,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-x g" 'magit-status)
   ("C-x C-g" 'magit-file-dispatch)
   :config
+  ;; after evil collection
   (general-def magit-section-mode-map "C-<tab>" nil)
   (general-def 'normal magit-section-mode-map "C-<tab>" nil)
+  (general-def 'normal magit-section-mode-map "g t" nil) ; using for switching tabs
   (setq magit-diff-hide-trailing-cr-characters t
         magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
   ;; open commit in insert mode
