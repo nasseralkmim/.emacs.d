@@ -3723,10 +3723,34 @@ its results, otherwise display STDERR with
         gnus-use-header-prefetch t
         ;; search with generalized query syntax:
         ;; from:fulano body:"multi word" attachment:pdf
-        gnus-search-use-parsed-queries t))
+        gnus-search-use-parsed-queries t)
 
-;; indicate threads more clear when in gui (need the %B int line format)
-(use-package gnus
+  ;; Setting keybindings after evil-collection
+  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
+  (general-def 'normal gnus-article-mode-map "SPC" nil)
+  (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
+  (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
+  (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
+  (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+personal:[Gmail]/All Mail")))
+  (general-def 'normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))))
+
+;; Setup gnus registy
+;; (info "(gnus) The Gnus Registry")
+;; Allow find parent mail in another group
+;; For instance receive at "nnimap+personal:[Gmail]/All Mail" and parent is "nnimap+personal:[Gmail]/Sent Mail"
+(use-package gnus-registry :disabled    ; not working, using gcc-self 
+  :elpaca nil
+  :after gnus
+  :init
+  (setq gnus-registry-split-strategy 'majority
+        gnus-registry-max-entries 500000)
+  (gnus-registry-initialize)
+  (setq gnus-refer-article-method
+        '(current
+          (nnregistry))))
+  
+;; Indicate threads more clear when in gui (need the %B int line format)
+(use-package gnus-thread-tree-style
   :elpaca nil
   :when (display-graphic-p)
   :config
@@ -3738,25 +3762,7 @@ its results, otherwise display STDERR with
    gnus-sum-thread-tree-leaf-with-other "├───"
    gnus-sum-thread-tree-single-leaf "└───"))
 
-;; Setting keybindings after evil-collection
-(use-package gnus-sum
-  :elpaca nil
-  :config
-  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
-  (general-def 'normal gnus-article-mode-map "SPC" nil)
-  (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
-  (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
-  (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+personal:[Gmail]/All Mail")))
-  (general-def 'normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))))
-
-(use-package gnus-topic :disabled       ; not working with different computers
-  :elpaca nil
-  :hook
-  (gnus-group-mode . gnus-topic-mode)
-  :general
-  ('normal gnus-group-mode-map "<tab>" (general-predicate-dispatch 'gnus-topic-show-topic
-                     (gnus-topic-visible-p) 'gnus-topic-hide-topic)))
-
+;; Set parameter for each group
 ;; use email (and smpt server) according to group
 (use-package gnus-group-parameters
   :elpaca nil
@@ -3768,7 +3774,9 @@ its results, otherwise display STDERR with
   (setq gnus-parameters '((".*"          ; all groups, including personal gmail
                            ;; Messages (emails) are GCC to the current group
                            ;; This means that my sent emails will be also available to reconstruct conversation threads
-                           (gcc-self . t)
+                           ;; Gmail can send to the right group "nnimap+personal:[Gmail]/All Mail" automatically
+                           ;; Then I can use registry to find the parent
+                           (gcc-self . none)
                            ;; https://www.bounga.org/tips/2020/05/03/multiple-smtp-accounts-in-gnus-without-external-tools/
                            ;; https://www.gnu.org/software/emacs/manual/html_node/message/Mail-Variables.html
                            (posting-style
@@ -3780,7 +3788,10 @@ its results, otherwise display STDERR with
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
                             (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
-                            ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205"))))))
+                            ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))))
+
+  ;; So my own messages are not considered new
+  (setq gnus-gcc-mark-as-read t))
 
 (use-package sendmail
   :elpaca nil
@@ -3900,12 +3911,14 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca nil
   :general
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
-  ('normal Info-mode-map "s" nil)               ; use isearch in info-mode
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   (isearch-mode-map "C-<SPC>" 'isearch-toggle-invisible)
-  :init
+  :config
+  ;; after evil collection
   (with-eval-after-load 'evil
    (general-def 'normal "s" 'isearch-forward))
+  (general-def 'normal Info-mode-map "s" nil)               ; use isearch in info-mode
+  :init
   ;; show the matching count
   (setq isearch-lazy-count t
         ;; make a whitespace work as regex ".*" which represents "anyting in between"
