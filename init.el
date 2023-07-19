@@ -1621,7 +1621,7 @@ When matching, reference is stored in match group 1."
                              corfu-auto-delay 0.05)))
   :config
   (global-corfu-mode)
-  ;; (corfu-popupinfo-mode)                ; show doc -> using eldoc box, sometimes they overlap
+  (corfu-popupinfo-mode)                ; show doc -> using eldoc box, sometimes they overlap
   (setq corfu-auto t                    ; enables timer-based completion
         corfu-auto-delay 0.3
         corfu-auto-prefix 2
@@ -1675,12 +1675,7 @@ When matching, reference is stored in match group 1."
   (with-eval-after-load 'org
     (remove-hook 'org-mode-hook 'org-indent-mode))) 
 
-(use-package corfu-doc
-  :after corfu
-  :defer 1
-  :hook (corfu-mode . corfu-doc-mode))
-
-(use-package corfu-doc-terminal
+(use-package corfu-doc-terminal :disabled
   :elpaca (corfu-doc-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-doc-terminal.git")
   :unless (display-graphic-p)
   :defer 1
