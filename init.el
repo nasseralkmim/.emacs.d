@@ -2100,8 +2100,9 @@ When matching, reference is stored in match group 1."
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
-  (if (not (display-graphic-p))
-      (modus-themes-load-theme 'modus-vivendi-tinted)))
+  ;; (if (not (display-graphic-p))
+  ;;     (modus-themes-load-theme 'modus-vivendi-tinted))
+  )
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
