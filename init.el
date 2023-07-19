@@ -4461,7 +4461,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ('(normal visual) "Y" 'clipetty-kill-ring-save))
 
-(use-package vertical-divider-term
+(use-package vertical-divider-term :disabled ; not reliable
   :elpaca nil
   :if (not (display-graphic-p))
   :init
