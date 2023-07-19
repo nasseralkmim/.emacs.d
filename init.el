@@ -1675,6 +1675,18 @@ When matching, reference is stored in match group 1."
   (with-eval-after-load 'org
     (remove-hook 'org-mode-hook 'org-indent-mode))) 
 
+(use-package corfu-doc
+  :after corfu
+  :defer 1
+  :hook (corfu-mode . corfu-doc-mode))
+
+(use-package corfu-doc-terminal
+  :elpaca (corfu-doc-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-doc-terminal.git")
+  :unless (display-graphic-p)
+  :defer 1
+  :config
+  (corfu-doc-terminal-mode))
+
 ;; completion any text based on buffer contents
 (use-package dabbrev
   :elpaca nil
