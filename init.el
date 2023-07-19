@@ -877,6 +877,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "k" 'evil-previous-visual-line)
   ('normal "C-c r" nil)
   ('normal "C-S-o" 'evil-jump-forward)
+  ('normal "TAB" nil)
   :config
   (evil-mode 1)
   (setq
