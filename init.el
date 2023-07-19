@@ -3208,7 +3208,7 @@ opening a file from dired. Otherwise just regular dired."
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
   (setq eldoc-echo-area-use-multiline-p nil
-        eldoc-idle-delay 2))
+        eldoc-idle-delay 1))
 
 ;; save windows configurations and use regular bookmarks file
 (use-package burly
