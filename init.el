@@ -376,7 +376,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-r" 'vertico-repeat))
 
 ;; use vertico to complete in region with orderless in terminal
-(use-package vertico-terminal :disabled          ;using corfu terminal
+(use-package vertico-terminal
   :elpaca nil
   :unless (display-graphic-p)
   :config
@@ -1667,7 +1667,7 @@ When matching, reference is stored in match group 1."
   (setq completion-category-overrides '((eglot (styles orderless)))))
 
 ;; use corfu on terminal
-(use-package corfu-terminal
+(use-package corfu-terminal :disabled
   :elpaca (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :unless (display-graphic-p)
   :after corfu
