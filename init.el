@@ -877,9 +877,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "k" 'evil-previous-visual-line)
   ('normal "C-c r" nil)
   ('normal "C-S-o" 'evil-jump-forward)
-  ('normal "TAB" nil)
   :config
   (evil-mode 1)
+  (general-def '(normal motion) "TAB" nil)
   (setq
    lazy-highlight-cleanup nil           ; persist highlight
    lazy-highlight-max-at-a-time nil
@@ -1677,13 +1677,6 @@ When matching, reference is stored in match group 1."
   ;; does not play nicely with 'org-indent-mode'
   (with-eval-after-load 'org
     (remove-hook 'org-mode-hook 'org-indent-mode))) 
-
-(use-package corfu-doc-terminal :disabled
-  :elpaca (corfu-doc-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-doc-terminal.git")
-  :unless (display-graphic-p)
-  :defer 1
-  :config
-  (corfu-doc-terminal-mode))
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
@@ -3912,7 +3905,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
-  (isearch-mode-map "C-<SPC>" 'isearch-toggle-invisible)
+  (isearch-mode-map "C-s" 'isearch-toggle-invisible)
   :config
   ;; after evil collection
   (with-eval-after-load 'evil
@@ -4499,6 +4492,5 @@ If INTERACTIVE is nil the function acts like a Capf."
   :defer 1
   :config
   (tab-bar-mode))
-
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
