@@ -376,7 +376,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-r" 'vertico-repeat))
 
 ;; use vertico to complete in region with orderless in terminal
-(use-package vertico-terminal
+(use-package vertico-terminal :disabled
   :elpaca nil
   :unless (display-graphic-p)
   :init
@@ -1668,7 +1668,7 @@ When matching, reference is stored in match group 1."
   (setq completion-category-overrides '((eglot (styles orderless)))))
 
 ;; use corfu on terminal
-(use-package corfu-terminal :disabled
+(use-package corfu-terminal
   :elpaca (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :unless (display-graphic-p)
   :after corfu
@@ -2953,7 +2953,7 @@ opening a file from dired. Otherwise just regular dired."
 (use-package eglot
   :elpaca nil
   :custom-face
- (eglot-highlight-symbol-face ((t (:underline t :weight bold))))
+  (eglot-highlight-symbol-face ((t (:underline t :weight bold))))
   :hook
   (eglot-managed-mode . eglot-inlay-hints-mode)
   (python-mode . eglot-ensure) ; works if there is only one server available
@@ -3259,7 +3259,6 @@ opening a file from dired. Otherwise just regular dired."
           "Command\\*$"                   ;for shell command
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
-          "\\*eldoc\\*"                   ; eldoc buffer
           "Translate\\*$"               ; gts translate
           ;; "\\*Python\\*"
           "CAPTURE-.*"
