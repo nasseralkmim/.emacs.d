@@ -4074,7 +4074,6 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; setup consent in the API & Services -> Credentials, then get the id/secrect
 ;; in API & Services -> Library: enable Calendar API
 (use-package org-gcal
-  :if (display-graphic-p)
   :after org
   :commands org-gcal-sync
   :hook
