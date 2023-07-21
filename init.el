@@ -2991,15 +2991,7 @@ opening a file from dired. Otherwise just regular dired."
   ;; https://github.com/joaotavora/eglot/discussions/993
   (setq eglot-events-buffer-size 0
         eglot-sync-connect 0            ; don't block LSP connection attempts
-        eglot-autoshutdown t)
-  :general
-  ('normal eglot-mode-map :prefix "gl"
-           "l" 'eglot-code-actions
-           "h" 'eldoc
-           "f" 'eglot-format-buffer
-           "r" 'eglot-rename)
-  ;; When in visual mode, format just the region
-  ('visual eglot-mode-map "glf" 'eglot-format))
+        eglot-autoshutdown t))
 
 ;; Use 'mypy' check for type in python
 ;; need to install 'pip install mypy'
