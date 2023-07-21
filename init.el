@@ -3126,7 +3126,7 @@ opening a file from dired. Otherwise just regular dired."
            "C-x" 'dired-ranger-move))
 
 ;; Open with external program.
-(use-package openwith
+(use-package openwith :disabled         ; too many problems
   :defer 1 
   :config
   (openwith-mode)
@@ -3136,7 +3136,19 @@ opening a file from dired. Otherwise just regular dired."
                                 ("\\.png\\'" "feh --auto-reload" (file))))
   ;; Problem with gnus send email with attachment pdf (it opens the pdf)
   ;; https://github.com/djcb/mu/issues/510
-  (add-to-list 'mm-inhibit-file-name-handlers 'openwith-file-handler))
+  (add-to-list 'mm-inhibit-file-name-handlers 'openwith-file-handler)
+
+  ;; problem with org-mode inline images, argh!
+  ;; https://emacs.stackexchange.com/a/3181
+  (defadvice org-display-inline-images
+      (around handle-openwith
+              (&optional include-linked refresh beg end) activate compile)
+    (if openwith-mode
+        (progn
+          (openwith-mode -1)
+          ad-do-it
+          (openwith-mode 1))
+      ad-do-it)))
 
 (use-package org-file-apps
   :elpaca nil
