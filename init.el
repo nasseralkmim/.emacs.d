@@ -3139,12 +3139,17 @@ opening a file from dired. Otherwise just regular dired."
            "C-x" 'dired-ranger-move))
 
 ;; Open with external program.
-(use-package openwith :disabled         ; problem with gnus send email with attachment pdf (it opens the pdf)
+(use-package openwith
   :defer 1 
   :config
   (openwith-mode)
   (setq openwith-associations '(("\\.pdf\\'" "okular" (file))
-                                ("\\.xopp\\'" "xournalpp" (file)))))
+                                ("\\.xopp\\'" "xournalpp" (file))
+                                ("\\.svg\\'" "feh --auto-reload" (file))
+                                ("\\.png\\'" "feh --auto-reload" (file))))
+  ;; Problem with gnus send email with attachment pdf (it opens the pdf)
+  ;; https://github.com/djcb/mu/issues/510
+  (add-to-list 'mm-inhibit-file-name-handlers 'openwith-file-handler))
 
 (use-package org-file-apps
   :elpaca nil
