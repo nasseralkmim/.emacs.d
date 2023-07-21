@@ -746,7 +746,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; binding all modes for Latex
   ('insert '(prog-mode-map LaTeX-mode-map org-mode-map) "C-<tab>" 'sp-forward-sexp)
   :custom-face
-  (sp-show-pair-match-content-face ((t (:inherit lazy-highlight))))
+  (sp-show-pair-match-content-face ((t (:inherit region))))
   :hook
   (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
