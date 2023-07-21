@@ -627,12 +627,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (embark-variable-map "h" 'helpful-symbol)
   ('normal grep-mode-map "g r" 'embark-rerun-collect-or-export) ; back to completion after 'embark-export' to grep buffer
   :commands embark-prefix-help-command
-  :hook
-  ;; use embark to help find command after prefix (C-h after a prefix key)
-  ;; if this is used before `embark-act`, load the package (because of `:commands`)
-  ;; `which-key` changes this variable as well, so we need to change it after `which-key`
-  (which-key-mode . (lambda ()
-                      (setq prefix-help-command #'embark-prefix-help-command)))
   :config
   (add-to-list 'display-buffer-alist
                ;; hide the mode line of the Embark live/completions buffers
