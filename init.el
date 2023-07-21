@@ -1025,6 +1025,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ("C-x g" 'magit-status)
   ("C-x C-g" 'magit-file-dispatch)
+  (magit-diff-section-map "M-RET" 'magit-diff-visit-worktree-file)
   :config
   ;; after evil collection
   (general-def magit-section-mode-map "C-<tab>" nil)
