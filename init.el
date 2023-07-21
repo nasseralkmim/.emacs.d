@@ -379,7 +379,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico-terminal
   :elpaca nil
   :unless (display-graphic-p)
-  :config
+  :init
   ;; Use `consult-completion-in-regionegion' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
   (setq completion-in-region-function
@@ -2021,7 +2021,13 @@ When matching, reference is stored in match group 1."
 
   ;; after 'evil-collection'
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
-  (general-def 'normal dired-mode-map "SPC" nil))
+  (general-def 'normal dired-mode-map "SPC" nil)
+
+  ;; Open pdf in dired with `!` and the default application 
+  (setq dired-guess-shell-alist-user
+        '(("\\.pdf\\'" "okular")
+          ("\\.png\\'" "feh --auto-reload")
+          ("\\.svg\\'" "feh --auto-reload"))))
 
 ;; open dired as a sidebar
 (use-package dired-sidebar
@@ -3242,7 +3248,7 @@ opening a file from dired. Otherwise just regular dired."
           "Output\\*$" 
           "output\\*$"           ;for preview latex error
           ".log$"              ;for dtache log
-          "^\\*Detached Shell.*"
+          ("^\\*Detached Shell.*" . hide)
           help-mode
           "Command\\*$"                   ;for shell command
           ("^\\*Async.*" . hide)                   ; async commands
