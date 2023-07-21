@@ -4166,7 +4166,6 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Drawing link support in 'org-mode'
 ;; It is not working to export to latex
 (use-package el-easydraw
-  :if (display-graphic-p)
   :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
   :after org
   :init
