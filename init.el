@@ -2496,7 +2496,7 @@ Only if there is more than one window opened."
   ('normal helpful-mode-map "C-f" 'ace-link-help)
   ('normal gnus-article-mode-map "C-f" 'ace-link-gnus))
 
-(use-package pdf-tools
+(use-package pdf-tools :disabled
   ;; :if (eq system-type 'windows-nt)
   :mode ("\\.pdf\\'" . pdf-view-mode)
   :general
@@ -3227,7 +3227,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
-(use-package detached
+(use-package detached :disabled
   :elpaca (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ;; ('normal "<f7>" 'detached-open-session)
