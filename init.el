@@ -3698,13 +3698,16 @@ its results, otherwise display STDERR with
                                                 (nnimap-address "imap.gmail.com"))
                                         (nnimap "work"
                                                 (nnimap-address "exchange.uibk.ac.at")))
+        ;; (info "(message)Mail Variables")
+        ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
+        send-mail-function 'smtpmail-send-it
         gnus-summary-line-format (concat
                                   "%U"  ; read status
                                   "%R"  ; reply status
                                   "%z "  ; score
                                   "%d %*"  ; date
-                                  "%B"     ; thread tree stirng 
+                                  "%B"     ; thread tree string 
                                   "%(%[%-20,20n%]%) " ; name
                                   "%I%s\n") 
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
@@ -3736,34 +3739,6 @@ its results, otherwise display STDERR with
   (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+personal:[Gmail]/All Mail")))
   (general-def 'normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))))
 
-;; Setup gnus registy
-;; (info "(gnus) The Gnus Registry")
-;; Allow find parent mail in another group
-;; For instance receive at "nnimap+personal:[Gmail]/All Mail" and parent is "nnimap+personal:[Gmail]/Sent Mail"
-(use-package gnus-registry :disabled    ; not working, using gcc-self 
-  :elpaca nil
-  :after gnus
-  :init
-  (setq gnus-registry-split-strategy 'majority
-        gnus-registry-max-entries 500000)
-  (gnus-registry-initialize)
-  (setq gnus-refer-article-method
-        '(current
-          (nnregistry))))
-  
-;; Indicate threads more clear when in gui (need the %B int line format)
-(use-package gnus-thread-tree-style
-  :elpaca nil
-  :when (display-graphic-p)
-  :config
-  (setq gnus-sum-thread-tree-root ""
-   gnus-sum-thread-tree-false-root ""
-   gnus-sum-thread-tree-single-indent ""
-   gnus-sum-thread-tree-indent "    "
-   gnus-sum-thread-tree-vertical "│   "
-   gnus-sum-thread-tree-leaf-with-other "├───"
-   gnus-sum-thread-tree-single-leaf "└───"))
-
 ;; Set parameter for each group
 ;; use email (and smpt server) according to group
 (use-package gnus-group-parameters
@@ -3794,18 +3769,6 @@ its results, otherwise display STDERR with
 
   ;; So my own messages are not considered new
   (setq gnus-gcc-mark-as-read t))
-
-(use-package sendmail
-  :elpaca nil
-  :config
-  (setq send-mail-function 'smtpmail-send-it))
-
-(use-package smtpmail
-  :elpaca nil
-  :config
-  (setq smtpmail-smtp-server "smtp.gmail.com"
-        smtpmail-stream-type 'starttls
-        smtpmail-smtp-service 587))
 
 ;; Database for email completion
 (use-package bbdb
