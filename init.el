@@ -203,7 +203,7 @@
 (use-package custom-typefaces
   :elpaca nil
   :preface
-  (setq default-monospace '("Recursive Mono Linear Static"))
+  (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
   (setq default-unicode '("JetBrains Mono NF"))
   (setq default-proportional '("Recursive Sans Line Static"))
   (setq default-comments '("Recursive Mono Casual Static"))
@@ -2911,6 +2911,7 @@ opening a file from dired. Otherwise just regular dired."
   :general
   ('normal "/" 'avy-goto-char-timer)
   (isearch-mode-map "C-'" 'avy-isearch)
+  (isearch-mode-map "M-'" 'avy-isearch) ; to work in tty as well
   ('(normal visual) :prefix "SPC"
    "j" 'avy-goto-line-below
    "k" 'avy-goto-line-above)
@@ -3285,7 +3286,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; eye candy for org
 (use-package org-modern
-  ;; :when (display-graphic-p)             ;only when gui
+  :when (display-graphic-p)             ;only when gui, there is a problem with tty
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
