@@ -215,7 +215,7 @@
   (default  ((t (:family ,(car default-monospace)))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
   ;; comment
-  (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic :height .9))))
+  (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
   (font-lock-constant-face ((t (:family ,(car default-monospace)))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
@@ -3772,6 +3772,7 @@ its results, otherwise display STDERR with
   (setq gnus-gcc-mark-as-read t))
 
 ;; Database for email completion
+;; sometimes does not add automatically: use `bbdb-mua-display-sender'
 (use-package bbdb
   :after (:any gnus message)
   :config
@@ -3780,7 +3781,9 @@ its results, otherwise display STDERR with
   (bbdb-mua-auto-update-init 'gnus 'message)
   (setq bbdb-mua-auto-update-p 'create   ; create contact if it does not exist
         ;; suppress pop up contact list when new contact is created
-        bbdb-mua-pop-up nil)
+        bbdb-mua-pop-up nil
+        bbdb-message-try-all-headers t  ; try all headers from a message to extract an email
+        )
 
   ;; use capf to provide completion
   (setq bbdb-complete-mail nil
