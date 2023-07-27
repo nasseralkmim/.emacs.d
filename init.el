@@ -992,17 +992,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (global-evil-matchit-mode 4))
 
-(use-package beacon :disabled
-  :defer 1
-  :diminish beacon-mode
-  :config
-  (setq beacon-blink-delay 0)
-  (setq beacon-size 40)
-  (setq beacon-blink-when-focused t)
-  (setq beacon-blink-duration .8)
-  (setq beacon-blink-when-window-scrolls nil)
-  (beacon-mode 1))
-
 (use-package undo-propose :disabled     ; using regular undo in region
   :after evil
   :general
