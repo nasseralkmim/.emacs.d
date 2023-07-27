@@ -4467,4 +4467,11 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (tab-bar-mode))
 
+(use-package xref
+  :elpaca nil
+  :config
+  ;; Need to set both
+  (setq xref-show-definitions-function 'xref-show-definitions-completing-read)
+  (setq xref-show-xrefs-function 'xref-show-definitions-completing-read))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
