@@ -2293,7 +2293,7 @@ Only if there is more than one window opened."
 
 ;; key chord hint
 (use-package which-key
-  :defer t
+  :defer 1
   :diminish which-key-mode
   :config
   (which-key-mode t))
