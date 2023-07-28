@@ -212,7 +212,7 @@
   ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (default  ((t (:family ,(car default-monospace)))))
+  (default  ((t (:family ,(car default-monospace) :height 90))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
   ;; comment
   (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
