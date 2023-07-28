@@ -3692,6 +3692,7 @@ its results, otherwise display STDERR with
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
         send-mail-function 'smtpmail-send-it
+        ;; This is just aesthetic
         gnus-summary-line-format (concat
                                   "%U"  ; read status
                                   "%R"  ; reply status
@@ -3702,11 +3703,12 @@ its results, otherwise display STDERR with
                                   "%I%s\n") 
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
         gnus-use-full-window nil       ; don't use entire window!
+        gnus-home-directory "~/.emacs.d" ; easier to sync different machines with git
+        ;; Attempts to make it faster
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
         gnus-check-new-newsgroups nil  ; make start up faster
         gnus-show-threads nil            ; if nil can make faster, threads again with T t
         gnus-use-cross-reference nil
-        gnus-home-directory "~/.emacs.d" ; for sync different machines
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         ;; (info "(gnus)Startup Files")
         gnus-read-active-file nil        ; only read '.newsrc', speeds up
