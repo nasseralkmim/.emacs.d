@@ -1188,6 +1188,11 @@ graphics."
   ;; don't scale svg images
   (setq org-html-head "<style> .org-svg {width: auto} </style>"))
 
+;; export to markdown
+(use-package ox-md
+  :elpaca nil
+  :after org)
+
 ;; Deals with "<>" delimiters in org mode source blocks
 ;; https://emacs.stackexchange.com/a/68321
 (use-package org-<>-delimiter-hack
