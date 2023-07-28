@@ -1189,8 +1189,16 @@ graphics."
   (setq org-html-head "<style> .org-svg {width: auto} </style>"))
 
 ;; export to markdown
-(use-package ox-md
+(use-package ox-md :disabled
   :elpaca nil
+  :demand                               ; demand after some time after org is loaded
+  :defer 1
+  :after org)
+
+;; better support for code blocks
+(use-package ox-gfm
+  :demand                               ; demand after some time after org is loaded
+  :defer 1
   :after org)
 
 ;; Deals with "<>" delimiters in org mode source blocks
