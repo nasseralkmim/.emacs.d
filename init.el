@@ -3101,6 +3101,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; Work git servers (forges)
 ;; uses 'Ghub' to access github/gitlab
 ;; need to set 'git config --global github.user <>'
+;; resolved issues are dimmed, to view them one need 'forge-visit-topic' or 'forge-visit-issue' with prefix-argument
 (use-package forge
   :demand
   :after magit
@@ -4118,6 +4119,9 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Link to org commits
 (use-package orgit
+  :after org)
+
+(use-package orgit-forge
   :after org)
 
 ;; Stackexchange mode for emacs
