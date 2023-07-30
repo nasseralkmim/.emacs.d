@@ -2785,6 +2785,9 @@ Only if there is more than one window opened."
   :general
   ('normal c++-ts-mode-map "zj" 'treesit-end-of-defun)
   ('normal c++-ts-mode-map "zk" 'treesit-beginning-of-defun)
+  :custom-face
+  (font-lock-function-call-face ((t :inherit outline-7)))
+  (font-lock-function-name-face ((t :inherit t :weight semi-bold)))
   :config
   ;; download and build grammar dynamic library 
   ;; need to call: 'treesit-install-language-grammar' to install
