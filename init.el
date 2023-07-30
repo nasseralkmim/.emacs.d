@@ -3736,7 +3736,11 @@ its results, otherwise display STDERR with
         gnus-use-header-prefetch t
         ;; search with generalized query syntax:
         ;; from:fulano body:"multi word" attachment:pdf
-        gnus-search-use-parsed-queries t)
+        gnus-search-use-parsed-queries t
+        ;; search all groups in a server when constructing thread
+        ;; Sent mails are in another group, this allows to find my sent messages when creating threads.
+        ;; And, no need to GCC my sent messages to the inbox.
+        gnus-refer-thread-use-search t)
 
   ;; Setting keybindings after evil-collection
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
@@ -3744,8 +3748,7 @@ its results, otherwise display STDERR with
   (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
   (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
   (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
-  (general-def 'normal gnus-summary-mode-map "A" '(lambda () (interactive) (gnus-summary-move-article 1 "nnimap+personal:[Gmail]/All Mail")))
-  (general-def 'normal gnus-summary-mode-map "L" '(lambda () (interactive) (gnus-summary-insert-old-articles 20))))
+  (general-def 'normal gnus-summary-mode-map "TA" 'gnus-summary-refer-thread))
 
 ;; Set parameter for each group
 ;; use email (and smpt server) according to group
@@ -3757,11 +3760,6 @@ its results, otherwise display STDERR with
   ;; Modify group parameters, most affect when sending messages (emails)
   ;; one can check, e.g., GCC, X-Message-SMTP-Method, signature, etc
   (setq gnus-parameters '((".*"          ; all groups, including personal gmail
-                           ;; Messages (emails) are GCC to the current group
-                           ;; This means that my sent emails will be also available to reconstruct conversation threads
-                           ;; Gmail can send to the right group "nnimap+personal:[Gmail]/All Mail" automatically
-                           ;; Then I can use registry to find the parent
-                           (gcc-self . none)
                            ;; https://www.bounga.org/tips/2020/05/03/multiple-smtp-accounts-in-gnus-without-external-tools/
                            ;; https://www.gnu.org/software/emacs/manual/html_node/message/Mail-Variables.html
                            (posting-style
@@ -3769,7 +3767,9 @@ its results, otherwise display STDERR with
                             (signature "Nasser Alkmim \n +43 677 6408 9171")
                             ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 nasser.alkmim@gmail.com")))
                           ("work"
-                           (gcc-self "nnimap+work:Sent Items" t)
+                           ;; Messages (emails) are GCC to the this group so it collects my sent mails on the server
+                           ;; Gmail does not need this, for some reason.
+                           (gcc-self "nnimap+work:Sent Items")
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
                             (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
