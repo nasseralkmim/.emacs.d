@@ -4492,7 +4492,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq indent-bars-pattern "."
         indent-bars-width-frac 0.1
-        indent-bars-highlight-current-depth '(:width 0.25))
-  )
+        indent-bars-highlight-current-depth '(:width 0.25)))
+
+(use-package docview
+  :elpaca nil
+  :general
+  ('normal doc-view-mode-map "j" 'doc-view-scroll-up-or-next-page)
+  ('normal doc-view-mode-map "k" 'doc-view-scroll-down-or-previous-page))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
