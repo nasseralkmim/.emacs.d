@@ -4484,4 +4484,15 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq xref-show-definitions-function 'xref-show-definitions-completing-read)
   (setq xref-show-xrefs-function 'xref-show-definitions-completing-read))
 
+;; Show guides on indentation level
+(use-package indent-bars
+  :if (display-graphic-p)
+  :elpaca (indent-bars :url "https://github.com/jdtsmith/indent-bars")
+  :hook (prog-mode . indent-bars-mode)
+  :config
+  (setq indent-bars-pattern "."
+        indent-bars-width-frac 0.1
+        indent-bars-highlight-current-depth '(:width 0.25))
+  )
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
