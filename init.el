@@ -469,6 +469,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
   ;; command line can be specified after "--", example: #<search string> -- -C 10 for context!! WHAT!
   ("C-c r" 'consult-ripgrep)		; search file contents
+  ("C-c C-r" (general-simulate-key "C-u C-c r"))
   ("C-c f" 'consult-find-fd)		; search files in directories
   ;; (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
   ("M-e" 'consult-isearch-history)
@@ -3361,7 +3362,7 @@ opening a file from dired. Otherwise just regular dired."
   :hook (dired-mode . dired-async-mode))
 
 ;; try later as alternative to dired-async
-(use-package dired-rsync
+(use-package dired-rsync :disabled
   :after dired
   :general
   (dired-mode-map "C-c C-r" 'dired-rsync))
