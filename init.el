@@ -214,6 +214,7 @@
   ;; 'constant'
   (default  ((t (:family ,(car default-monospace) :height 90))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
+  (variable-pitch-text ((t (:inherit variable-pitch :height unspecified))))
   ;; comment
   (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
   (font-lock-constant-face ((t (:family ,(car default-monospace)))))
