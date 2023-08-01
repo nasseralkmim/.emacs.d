@@ -114,9 +114,8 @@
         ;; scroll-step 0
        )
 
-  ;; other basiscs
   (setq ring-bell-function 'ignore)
-  ;; (setq inhibit-startup-screen t) ;; now I respect the startup screen.
+  (setq inhibit-startup-screen t)       ; start at scratch buffer
 
   ;; UTF-8 encoding
   (prefer-coding-system 'utf-8)
