@@ -3111,7 +3111,7 @@ opening a file from dired. Otherwise just regular dired."
   (setq image-animate-loop t))
 
 ;; Shows which function in the mode line.
-(use-package which-func :disabled ; using breadbrum
+(use-package which-func :disabled ; using breadcrumb
   :elpaca nil
   :hook
   (prog-mode . which-function-mode))
@@ -3572,7 +3572,7 @@ its results, otherwise display STDERR with
 
 ;; irony mode for 'org-edit-special' c++ 
 ;; uses libclang
-(use-package irony
+(use-package irony :disabled            ; using experimental eglot function
   :after org
   :hook
   (org-src-mode . (lambda ()
@@ -3580,7 +3580,7 @@ its results, otherwise display STDERR with
                       (irony-mode)))))
 
 ;; eldoc support for irony
-(use-package irony-eldoc
+(use-package irony-eldoc :disabled
   :hook
   (irony-mode . irony-eldoc))
 
@@ -3626,7 +3626,7 @@ its results, otherwise display STDERR with
 
 ;; auto complete with company backend adapter for corfu
 ;; there was a problem with numpy, this fixes: https://github.com/davidhalter/jedi/issues/1864#issuecomment-1306543244
-(use-package company-jedi
+(use-package company-jedi :disabled     ; using experimental eglot function
   :hook
   (org-src-mode . (lambda ()
                     (when (string-equal major-mode "python-mode")
@@ -4503,5 +4503,35 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ('normal doc-view-mode-map "j" 'doc-view-scroll-up-or-next-page)
   ('normal doc-view-mode-map "k" 'doc-view-scroll-down-or-previous-page))
+
+;; Use eglot when in org-edit-special (hack, experimental)
+;; https://github.com/joaotavora/eglot/issues/216
+(use-package org-edit-special-with-eglot-hack
+  :elpaca nil
+  :after org 
+  :init
+  (defun mb/org-babel-edit ()
+    "Edit python src block with lsp support by tangling the block and
+then setting the org-edit-special buffer-file-name to the
+absolute path. Finally load eglot."
+    (interactive)
+
+    ;; org-babel-get-src-block-info returns lang, code_src, and header
+    ;; params; Use nth 2 to get the params and then retrieve the :tangle
+    ;; to get the filename
+    (setq mb/tangled-file-name (expand-file-name (assoc-default :tangle (nth 2 (org-babel-get-src-block-info)))))
+
+    ;; tangle the src block at point 
+    (org-babel-tangle '(4))
+    (org-edit-special)
+
+    ;; Now we should be in the special edit buffer with python-mode. Set
+    ;; the buffer-file-name to the tangled file so that pylsp and
+    ;; plugins can see an actual file.
+    (setq-local buffer-file-name mb/tangled-file-name)
+    ;; disable breadcrumb
+    (eglot-ensure)
+    (breadcrumb-mode -1)))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
