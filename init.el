@@ -201,6 +201,7 @@
 
 ;; typeface
 (use-package custom-typefaces
+  :defer 1
   :elpaca nil
   :preface
   (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
@@ -4478,9 +4479,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 (use-package tab-bar
   :elpaca nil
-  :defer 1
-  :config
-  (tab-bar-mode))
+  :general
+  ("C-x t 2" 'tab-new))
 
 (use-package xref
   :elpaca nil
