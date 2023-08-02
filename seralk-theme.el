@@ -7,8 +7,8 @@
 ;; apparently there is no way to do this directly on the existing face
 ;; https://emacs.stackexchange.com/a/9604
 (defface my-font-lock-comment-face
-  '((((background dark)) (:foreground  "#dfaf7a" :weight medium :slant italic))
-    (((background light)) (:foreground "#7b5000" :weight medium :slant italic)))
+  '((((background dark)) (:foreground  "#dfaf7a" :weight regular :slant italic))
+    (((background light)) (:foreground "#7b5000" :weight regular :slant italic)))
   "Face for comments in light and dark background.")
 
 ;; almost black (#222222) and almost white (#f2f2f2)
