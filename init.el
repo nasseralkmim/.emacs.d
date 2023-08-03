@@ -60,7 +60,10 @@
 
 ;; general for keybinding
 (use-package general
-  :demand)
+  :demand
+  :config
+  ;; keybinding on 'override' keymap are not overridden by a minor-mode. 
+  (general-override-mode))
 
 ;; control minor-mode indication in the mode-line
 (use-package diminish
@@ -864,8 +867,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c \\" 'evil-emacs-state)
   ('normal ";" 'evil-search-forward)
   ('normal "M-p" 'evil-paste-from-register)
-  ('(normal visual) :prefix "SPC" "l" 'evil-last-non-blank)
-  ('(normal visual) :prefix "SPC" "h" 'evil-first-non-blank)
+  ('(normal visual) 'override :prefix "SPC" "l" 'evil-last-non-blank)
+  ('(normal visual) 'override :prefix "SPC" "h" 'evil-first-non-blank)
   ('normal :prefix "SPC" "a" 'evil-append-line)
   ('(normal visual) "[ ]" 'evil-next-close-paren)
   ('(normal visual) "] [" 'evil-previous-open-paren)
@@ -3749,7 +3752,7 @@ its results, otherwise display STDERR with
 
   ;; Setting keybindings after evil-collection
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
-  (general-def 'normal gnus-article-mode-map "SPC" nil)
+  (general-def 'normal gnus-article-mode-map "SPC" nil) 
   (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
   (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
   (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
