@@ -28,8 +28,9 @@
  (handler . burly-bookmark-handler))
 ("org-capture-last-stored"
  (filename . "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
- (front-context-string . "**** Trilinos co") (rear-context-string . "5-18 Donnerstag\n")
- (position . 8543) (last-modified 25701 60342 51133 293000))
+ (front-context-string . "**** test\n\n* Exa")
+ (rear-context-string . "25-08:30>\n:END:\n") (position . 1444)
+ (last-modified 25805 61945 291964 46000))
 ("news" (front-context-string . "  68k.news: Head") (rear-context-string) (position . 1)
  (last-modified 25460 35463 729479 664000) (location . "http://68k.news/")
  (handler . eww-bookmark-jump))
