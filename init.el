@@ -4533,5 +4533,9 @@ absolute path. Finally load eglot."
     (eglot-ensure)
     (breadcrumb-mode -1)))
 
+(use-package standard-themes
+  :init
+  (if (not (display-graphic-p))
+      (standard-themes-load-light)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
