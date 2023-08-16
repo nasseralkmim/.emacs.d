@@ -927,9 +927,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         evil-snipe-smart-case t)
   ;; "f [" goes to parenthesis or bracket
   (push '(?\[ "[[{(]") evil-snipe-aliases)
-  (push '(?\] "[]})]") evil-snipe-aliases)
-  ;; define t to be like s 
-  (evil-snipe-def 2 inclusive "t" "T"))
+  (push '(?\] "[]})]") evil-snipe-aliases))
 
 ;; visualize evil commands
 (use-package evil-goggles
