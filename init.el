@@ -4176,7 +4176,7 @@ If INTERACTIVE is nil the function acts like a Capf."
         edraw-editor-toolbar-button-h 18
         edraw-editor-toolbar-button-w 16)
   (add-to-list 'edraw-default-shape-properties '(path
-                                                  (stroke . "#000")
+                                                  (stroke . "#707070")
                                                   (stroke-width . 1)
                                                   (fill . "none"))))
 
