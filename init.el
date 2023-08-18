@@ -971,6 +971,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (evil-org-agenda-set-keys)
   ;; change to my preferred after set keys
+  ;; the prefix argument can be used to set specific week, e.g. 34 gdw goes to week 34.
   (general-def 'motion org-agenda-mode-map
            "gt" 'org-todo-list
            "gd" 'org-agenda-view-mode-dispatch))
