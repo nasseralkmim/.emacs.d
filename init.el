@@ -4257,11 +4257,11 @@ If INTERACTIVE is nil the function acts like a Capf."
   :init
   (setq compile-command "make -k -C ../build"))
 
-(use-package cape-yasnippet
+(use-package cape-yasnippet :disabled
   :elpaca (cape-yasnippet :host github :repo "elken/cape-yasnippet")
   :after yasnippet corfu
   :init
-  (add-to-list 'completion-at-point-functions #'cape-yasnippet))
+  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (use-package ediff
   :elpaca nil
