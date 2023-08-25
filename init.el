@@ -3688,6 +3688,7 @@ its results, otherwise display STDERR with
   :elpaca nil
   :general
   ("C-x C-m" 'gnus) 
+  ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
@@ -3748,7 +3749,9 @@ its results, otherwise display STDERR with
         ;; search all groups in a server when constructing thread
         ;; Sent mails are in another group, this allows to find my sent messages when creating threads.
         ;; And, no need to GCC my sent messages to the inbox.
-        gnus-refer-thread-use-search t)
+        gnus-refer-thread-use-search t
+        ;; show images in gnus, except adds
+        gnus-blocked-images "ads")
 
   ;; Setting keybindings after evil-collection
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
