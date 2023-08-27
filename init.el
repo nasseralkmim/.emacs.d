@@ -3884,7 +3884,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq org-reveal-root "~/.local/src/reveal.js/"))
 
 ;; Highlight current line
-(use-package hl-line :disabled          ; makes a bit slow
+(use-package hl-line
   :elpaca nil
   :hook
   (prog-mode . hl-line-mode)
