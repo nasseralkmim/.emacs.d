@@ -4544,4 +4544,15 @@ absolute path. Finally load eglot."
   (if (not (display-graphic-p))
       (standard-themes-load-light)))
 
+(use-package org-treesit-src-blocks
+  :elpaca nil
+  :after org
+  :config
+  ;; https://old.reddit.com/r/emacs/comments/15yxdz3/weekly_tips_tricks_c_thread/jy03758/
+  (advice-add 'org-src-get-lang-mode :filter-return
+            (lambda (mode)
+              (pcase (assoc mode major-mode-remap-alist)
+                (`(,mode . ,ts-mode) ts-mode)
+                (_ mode)))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
