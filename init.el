@@ -3230,7 +3230,10 @@ opening a file from dired. Otherwise just regular dired."
 (use-package burly
   :elpaca (burly :type git :host github :repo "alphapapa/burly.el")
   :general
-  ('normal "<f6>" 'burly-bookmark-windows))
+  ('normal "<f6>" 'burly-bookmark-windows)
+  :config
+  ;; integrate with tab-bar-mode, open windows in a new tab
+  (burly-tabs-mode))
 
 ;; view large files
 (use-package vlf
@@ -3689,6 +3692,7 @@ its results, otherwise display STDERR with
   :general
   ("C-x C-m" 'gnus) 
   ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
+  ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
@@ -4174,6 +4178,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   (edraw-org-setup-default)
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
+        edraw-default-document-properties '((width . 800)
+                                            (height . 600)
+                                            (background . "#fff"))
         ;; make toolbar small
         ;; f - free hand 
         ;; z - undo
