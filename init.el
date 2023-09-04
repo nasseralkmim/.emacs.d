@@ -4178,6 +4178,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (edraw-org-setup-default)
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
+        edraw-editor-tool-freehand-smoothing-method nil ; no smoothing
         edraw-default-document-properties '((width . 800)
                                             (height . 600)
                                             (background . "#fff"))
