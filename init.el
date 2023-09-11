@@ -4563,4 +4563,12 @@ absolute path. Finally load eglot."
                 (`(,mode . ,ts-mode) ts-mode)
                 (_ mode)))))
 
+(use-package immersive-translate :disabled
+  :elpaca (immersive-translate :url "https://github.com/Elilif/emacs-immersive-translate.git")
+  :config
+  (immersive-translate-setup)
+  (setq immersive-translate-backend 'trans
+        immersive-translate-trans-source-language "de"
+        immersive-translate-trans-target-language "en"))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
