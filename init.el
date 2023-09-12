@@ -1647,6 +1647,8 @@ When matching, reference is stored in match group 1."
   :elpaca (cape :type git :host github :repo "minad/cape")
   :demand
   :after corfu
+  :general
+  ('normal "M-/" 'cape-dabbrev)
   :config
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
