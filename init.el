@@ -465,7 +465,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-s" 'consult-outline)		; navigation by headings
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
-  ('normal "C-M-s" 'consult-line)	; search lines with preview
+  ("C-M-s" 'consult-line)	; search lines with preview
   ("C-c C-f" 'consult-focus-lines)	; show only matching results
   ("C-c m" 'consult-mark)
   ;; two parts: search  and filter
