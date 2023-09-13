@@ -2646,7 +2646,10 @@ Only if there is more than one window opened."
                 "p" 'org-super-links-insert-link
                 "d" 'org-super-links-quick-insert-drawer-link
                 "i" 'org-super-links-quick-insert-inline-link
-                "C-d" 'org-super-links-delete-link))
+                "C-d" 'org-super-links-delete-link)
+  :config
+  ;; just use plain link with no description, easy to edit
+  (setq org-super-links-default-description-formatter ""))
 
 ;; loads the org-id library from org repository
 ;; for creating org-ids for more robust linking, avoid referencing issues
