@@ -4174,13 +4174,17 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Drawing link support in 'org-mode'
 ;; It is not working to export to latex
-(use-package el-easydraw
+(use-package edraw
   :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
   :after org
   :init
-  ;; load the org setup after 'ox', which works when exporting in the bg
-  (require 'edraw-org)
-  (edraw-org-setup-default)
+  (with-eval-after-load 'org
+    (progn
+      ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
+      ;; this is ok, the bnefit is lazy loading until we open an org file
+      (require 'edraw-org)
+      (edraw-org-setup-default)))
+  :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
         edraw-editor-tool-freehand-smoothing-method nil ; no smoothing
@@ -4461,7 +4465,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (yaml-ts-mode . combobulate-mode))
 
 ;; use same frame for speedbar
-(use-package sr-speedbar
+(use-package sr-speedbar :disabled      ; not working
   :elpaca (sr-speedbar :url "https://www.emacswiki.org/emacs/sr-speedbar.el")
   :demand
   :general
