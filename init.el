@@ -3909,6 +3909,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   (isearch-mode-map "C-s" 'isearch-toggle-invisible)
+  ;; delete char directly when pressing 'backspace' instead of seaching backwards,
+  ;; alternatively one could use 'M-e' to edit the search string.
+  (isearch-mode-map "<backspace>" 'isearch-del-char)
   :config
   ;; after evil collection
   (with-eval-after-load 'evil
