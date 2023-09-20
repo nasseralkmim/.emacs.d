@@ -1,6 +1,5 @@
 ;; -*- mode: Emacs-Lisp; coding: utf-8; -*-
 ;;; file-format: 9
-[nil nil nil nil nil nil nil ("Hofstetter") nil "bcda813c-03fa-421d-bcbf-a74e81610187" "2023-06-22 09:48:30 +0000" "2023-06-22 09:48:30 +0000" nil]
 [nil "aalinovi" nil nil nil nil nil ("aalinovi@riseup.net") nil "4874ea6a-5d3c-4037-a4ed-c673a9a86780" "2023-07-17 06:15:37 +0000" "2023-07-17 06:15:37 +0000" nil]
 ["Eric" "Abrahamsen" nil nil nil nil nil ("eric@ericabrahamsen.net") nil "910481b1-77fa-4323-8516-4342d05ee070" "2023-05-06 08:17:45 +0000" "2023-05-06 08:17:45 +0000" nil]
 ["Russell" "Adams" nil nil nil nil nil ("RLAdams@adamsinfoserv.com") nil "f10ec00f-1da4-40ef-9dd4-24da25cca638" "2023-04-19 07:46:11 +0000" "2023-04-19 07:46:11 +0000" nil]
@@ -82,6 +81,7 @@
 ["Gĳs" "Hillenius" nil nil nil nil nil ("gijs@hillenius.net") nil "cda1f468-e94f-4479-89d4-874426a68adb" "2023-08-16 08:28:26 +0000" "2023-08-16 08:28:26 +0000" nil]
 ["Petteri" "Hintsanen" nil nil nil nil nil ("petterih@iki.fi") nil "b429b4c9-7097-4cc2-89f7-9449da9bda0a" "2023-02-27 16:15:02 +0000" "2023-02-27 16:15:02 +0000" nil]
 ["Natasha" "Hirschfeldt" nil nil nil nil nil ("natashaboh97@gmail.com") nil "fea96dac-133c-47e8-ab78-884f5b84661a" "2023-05-30 11:29:25 +0000" "2023-05-30 11:29:25 +0000" nil]
+["Günter" "Hofstetter" nil nil nil nil nil ("Guenter.Hofstetter@uibk.ac.at") nil "f5fac1c0-5804-473e-8f9d-2ab45c20c8bb" "2023-09-18 15:16:48 +0000" "2023-09-18 15:19:19 +0000" nil]
 ["Phil" "Humpherys" nil nil nil nil nil ("phumpherys@utah-inter.net") nil "2f8f566d-5b9e-48fc-87b0-41ae090c8a90" "2023-07-16 17:09:46 +0000" "2023-07-16 17:09:46 +0000" nil]
 ["Ag" "Ibragimov" nil nil nil nil nil ("agzam.ibragimov@gmail.com") nil "51ad2b2f-ea1c-4714-823c-c26cf1833424" "2023-07-06 07:39:45 +0000" "2023-07-06 07:39:45 +0000" nil]
 [nil "immo" nil nil nil nil nil ("immo@tt.com") nil "b3e42703-8ddf-4092-8c88-f44ca5b4a9d1" "2023-02-16 05:54:07 +0000" "2023-02-16 05:54:07 +0000" nil]
