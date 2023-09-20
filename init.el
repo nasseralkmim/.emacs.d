@@ -163,7 +163,10 @@
   (blink-cursor-mode -1)                ; don't blink the cursor.
 
   ;; each line on its own, otherwise use 'visual-line-mode'
-  (setq-default truncate-lines t))
+  (setq-default truncate-lines t)
+
+  ;; narrow to region 'C-x n n' and widen with 'C-x n w'
+  (put 'narrow-to-region 'disabled nil))
 
 (use-package pixel-scroll
   :elpaca nil
