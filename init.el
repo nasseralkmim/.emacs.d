@@ -89,6 +89,7 @@
   ('normal "gy" 'revert-buffer-quick)
   ('insert "C-v" 'yank)                 ; for helping in minibuffer.
   ("C-<tab>" 'next-window-any-frame)
+  ("C-M-o" 'up-list)
   ("<backtab>" 'previous-window-any-frame)
   ("C-x C-M-e" 'pp-macroexpand-last-sexp)
   ("C-x C-e" 'eval-defun)
