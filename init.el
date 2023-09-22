@@ -781,7 +781,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; delay check, check only on save
   (setq flymake-no-changes-timeout 1
-        flymake-show-diagnostics-at-end-of-line nil ; just use "M-n"
+        flymake-show-diagnostics-at-end-of-line 'short ; just use "M-n"
         flymake-mode-line-lighter "Fly")
   ;; avoid warning in the 'flymake' log
   (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
@@ -2970,6 +2970,8 @@ opening a file from dired. Otherwise just regular dired."
   :elpaca nil
   :custom-face
   (eglot-highlight-symbol-face ((t (:underline t :weight bold))))
+  :general
+  (eglot-mode-map "C-c SPC" 'eglot-code-actions)
   :hook
   (eglot-managed-mode . eglot-inlay-hints-mode)
   (python-mode . eglot-ensure) ; works if there is only one server available
