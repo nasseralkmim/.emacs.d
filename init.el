@@ -1248,8 +1248,7 @@ graphics."
   :elpaca nil
   :after org
   :commands org-babel-execute:python
-  :init
-  (setq org-babel-python-command "python3") ; python3 please!
+  :config
   (setq org-babel-default-header-args:python
         '((:results . "output")
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
