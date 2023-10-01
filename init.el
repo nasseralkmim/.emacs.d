@@ -3009,7 +3009,11 @@ opening a file from dired. Otherwise just regular dired."
   ;; https://github.com/joaotavora/eglot/discussions/993
   (setq eglot-events-buffer-size 0
         eglot-sync-connect 0            ; don't block LSP connection attempts
-        eglot-autoshutdown t))
+        eglot-autoshutdown t)
+
+  ;; Maybe improve performance
+  ;; https://old.reddit.com/r/emacs/comments/16vixg6/how_to_make_lsp_and_eglot_way_faster_like_neovim/
+  (fset #'jsonrpc--log-event #'ignore))
 
 ;; Use 'mypy' check for type in python
 ;; need to install 'pip install mypy'
