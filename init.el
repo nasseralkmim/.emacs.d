@@ -3347,7 +3347,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; Improve org latex support to use Auctex (faster and async)
 ;; I don't know why it fails on the first preview call
-(use-package org-auctex ; :disabled; does not play nicely when there is $ in shell src blocks
+(use-package org-auctex :disabled; does not play nicely when there is $ in shell src blocks
   :after org
   :elpaca (org-auctex :type git :host github :repo "karthink/org-auctex")
   :hook (org-mode . org-auctex-mode))
