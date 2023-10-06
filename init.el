@@ -4007,12 +4007,13 @@ If INTERACTIVE is nil the function acts like a Capf."
                                 ;; pick directly
                                 :picker (gts-noprompt-picker)
                                 :engines (list
-                                          ;; (gts-google-engine :parser (gts-google-summary-parser))
                                           (gts-deepl-engine :auth-key
                                                             (funcall
                                                              (plist-get (car (auth-source-search :host "api-free.deepl.com"))
                                                                         :secret)))
-                                          (gts-google-rpc-engine))
+                                          (gts-google-engine :parser (gts-google-summary-parser))
+                                          ;; (gts-google-rpc-engine)
+                                          )
                                 :render (gts-buffer-render)
                                 :splitter (gts-paragraph-splitter))))
 
