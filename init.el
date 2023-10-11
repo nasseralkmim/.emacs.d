@@ -1162,7 +1162,7 @@ graphics."
   (advice-add 'org-redisplay-inline-images :before #'clear-image-cache))
 
 ;; problem with babel execute subtree and showing images outside the subtree
-(use-package org-display-inline-image-after-execute-subtreee
+(use-package org-display-inline-image-after-execute-subtreee-hack
   :elpaca nil
   :after org
   :general
@@ -1172,6 +1172,7 @@ graphics."
     "Redisplay images after execute subtree"
     (interactive)
     (org-babel-execute-subtree)
+    (org-redisplay-inline-images)
     (org-redisplay-inline-images)))
 
 ;; org image remote
