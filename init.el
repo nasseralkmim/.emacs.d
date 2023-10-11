@@ -1142,7 +1142,7 @@ graphics."
                   (result-params (cdr (assq :result-params params)))
                   ((member "file" result-params)))
          ;; (org-display-inline-images nil nil beg end)
-         (org-redisplay-inline-images)))))
+         (org-display-inline-images)))))
 
   (add-hook 'org-babel-after-execute-hook 
             #'ded:org-babel-inline-display-subtree))
@@ -1173,8 +1173,7 @@ graphics."
     "Redisplay images after execute subtree"
     (interactive)
     (org-babel-execute-subtree)
-    (org-redisplay-inline-images)
-    (org-redisplay-inline-images)))
+    (org-display-inline-images)))
 
 ;; org image remote
 (use-package org-display-inline-image-remote
