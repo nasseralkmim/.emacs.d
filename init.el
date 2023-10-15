@@ -4130,6 +4130,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                                 ;; 'Task' is a 'TODO' entry and is scheduled,
                                 ;; therefore it is shown continuously until
                                 ;; marked as done.
+                                ;; A 'Task' can be done before the schedule date.
                                 ;; The '%^{SCHEDULED}p' prompts for (1) a
                                 ;; scheduled value, useless, (2) the date, with
                                 ;; the calendar, which is nice, and (3) another
