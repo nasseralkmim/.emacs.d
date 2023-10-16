@@ -1905,7 +1905,7 @@ When matching, reference is stored in match group 1."
         preview-auto-cache-preamble t))
 
 ;; latex function
-(use-package latex-clipboard
+(use-package latex-insert-figure-from-clipboard-hack
   :elpaca nil
   :after latex
   :general
@@ -1914,7 +1914,7 @@ When matching, reference is stored in match group 1."
   ;; function definition, not the best...
   (defun my-tex-insert-clipboard ()
     (interactive)
-    (setq folder-path (concat default-directory "images/"));make the img directory
+    (setq folder-path (concat default-directory "figures/"));make the img directory
                                         ;create the directory if it doesn't exist
     (if (not (file-exists-p folder-path))
         (mkdir folder-path))
@@ -1931,7 +1931,7 @@ When matching, reference is stored in match group 1."
                                "\img_")
                              (format-time-string "%Y%m%d_%H%M%S_.png")))
     (let* ((image-file (concat 
-                        "images/img_"
+                        "figures/img_"
                         (format-time-string "%Y%m%d_%H%M%S_.png")))
            (exit-status
             ;; for wsl to use windows imagemagick :/
