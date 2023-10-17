@@ -207,7 +207,7 @@
 
 ;; typeface
 (use-package custom-typefaces
-  :defer 1
+  ;; :defer 1
   :elpaca nil
   :preface
   (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
@@ -2672,7 +2672,10 @@ Only if there is more than one window opened."
   :general
   (org-mode-map "C-c C-b" 'org-cite-insert)
   :config
-  (setq org-cite-global-bibliography '("~/.bibliography.bib")))
+  (setq org-cite-global-bibliography '("~/.bibliography.bib"))
+  (with-eval-after-load "ox"
+    (require 'oc)
+    (setq org-cite-global-bibliography '("~/.bibliography.bib"))))
 
 ;; highlight indentation
 (use-package highlight-indent-guides :disabled
@@ -4191,14 +4194,19 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; It is not working to export to latex
 (use-package edraw
   :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
-  :after org
   :init
   (with-eval-after-load 'org
-    (progn
-      ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
-      ;; this is ok, the bnefit is lazy loading until we open an org file
-      (require 'edraw-org)
-      (edraw-org-setup-default)))
+    ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
+    ;; this is ok, the benefit is lazy loading until we open an org file
+    (require 'edraw-org)
+    (edraw-org-setup-default))
+  ;; for async export
+  ;; TODO: not working.
+  ;; editing the function ix 'ox.el' works.
+  (with-eval-after-load 'ox
+     (add-to-list 'load-path "/home/nasser/.emacs.d/elpaca/repos/el-easydraw/")
+     (require 'edraw-org)
+     (edraw-org-setup-exporter))
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
