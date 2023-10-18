@@ -4633,4 +4633,39 @@ absolute path. Finally load eglot."
                                      (dired-get-filename))) t))))
            (t (error "mark no more than 2 files"))))))
 
+(use-package dape
+  ;; Currently only on github
+  :elpaca (dape :type git :host github :repo "svaante/dape")
+  :config
+  ;; Add inline variable hints, this feature is highly experimental
+  (setq dape-inline-variables t)
+  ;; To remove info buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
+
+  ;; To remove repl buffer on startup
+  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
+
+  ;; Use n for next etc. in REPL
+  ;; (setq dape-repl-use-shorthand t)
+
+  ;; Kill compile buffer on build success
+  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
+
+  ;; download cpptools https://github.com/microsoft/vscode-cpptools/releases
+  ;; Replace ms-vscode.cpptools with the vsix directory you just extracted
+  (setq dape-cppdbg-command "~/.opt/ms-vscode.cpptools/extension/debugAdapters/bin/OpenDebugAD7")
+  (add-to-list 'dape-configs
+               `(cppdbg
+                 modes (c-mode c-ts-mode c++-mode c++-ts-mode)
+                 command-cwd ,(file-name-directory
+                               dape-cppdbg-command)
+                 command dape-cppdbg-command
+                 :type "cppdbg"
+                 :request "launch"
+                 :cwd dape-cwd-fn
+                 :program dape-find-file
+                 :MIMode ,(cond
+                           ((executable-find "gdb") "gdb")
+                           ((executable-find "lldb") "lldb")))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
