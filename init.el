@@ -1515,7 +1515,10 @@ When matching, reference is stored in match group 1."
   :elpaca nil
   :commands org-babel-execute:plantuml
   :config
-  (setq org-plantuml-exec-mode 'plantuml))
+  (setq org-plantuml-exec-mode 'plantuml)
+  (setq org-babel-default-header-args:plantuml
+        '((:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
+          (:noweb . "no-export"))))
 
 ;; insert web links with better description
 (use-package org-cliplink
