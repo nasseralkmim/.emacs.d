@@ -1625,15 +1625,11 @@ When matching, reference is stored in match group 1."
   :defer 1
   :hook
   (text-mode . (lambda () (setq-local corfu-auto-prefix 3))) ; increase prefix for text
-  (prog-mode . (lambda ()
-                 ;; decrease prefix for text
-                 (setq-local corfu-auto-prefix 2
-                             corfu-auto-delay 0.05)))
   :config
   (global-corfu-mode)
   (corfu-popupinfo-mode)                ; show doc -> using eldoc box, sometimes they overlap
   (setq corfu-auto t                    ; enables timer-based completion
-        corfu-auto-delay 0.3
+        corfu-auto-delay 0.5
         corfu-auto-prefix 2
         corfu-quit-no-match 'separator))
 
