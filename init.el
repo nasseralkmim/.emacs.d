@@ -3887,15 +3887,6 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package chapel-mode :disabled
   :mode ("\\.chpl\\'" . 'chapel-mode))
 
-;; interact with zotero with 'zotra-cli'
-;; add bibtex entry from doi
-;; works, but does not download/rename pdf automatic
-(use-package zotra :disabled
-  :elpaca (zotra :type git :host github :repo "mpedramfar/zotra")
-  :commands (zotra-add-entry-from-search)
-  :config
-  (setq zotra-cli-command "node ~/.local/src/zotra-cli/bin/index.js"))
-
 ;; org backend export to reveal.js
 ;; need to install external 'reveal.js'
 (use-package ox-reveal
