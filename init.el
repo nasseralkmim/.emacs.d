@@ -780,7 +780,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; delay check, check only on save
-  (setq flymake-no-changes-timeout 1
+  (setq flymake-no-changes-timeout nil                 ;only when saved
         flymake-show-diagnostics-at-end-of-line 'short ; just use "M-n"
         flymake-mode-line-lighter "Fly")
   ;; avoid warning in the 'flymake' log
@@ -4660,6 +4660,18 @@ absolute path. Finally load eglot."
                  :program dape-find-file
                  :MIMode ,(cond
                            ((executable-find "gdb") "gdb")
-                           ((executable-find "lldb") "lldb")))))
+                           ((executable-find "lldb") "lldb"))))
+
+  ;; for Python
+  ;; need to install 'debugpy', for system-wide python 'yay debugpy'
+  (add-to-list 'dape-configs
+               `(debugpy
+                 modes (python-ts-mode python-mode)
+                 command "python3"
+                 command-args ("-m" "debugpy.adapter")
+                 :type "executable"
+                 :request "launch"
+                 :cwd dape-cwd-fn
+                 :program dape-find-file-buffer-default)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
