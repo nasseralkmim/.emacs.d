@@ -780,7 +780,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (flymake-mode-map "M-N" 'flymake-goto-prev-error)
   :config
   ;; delay check, check only on save
-  (setq flymake-no-changes-timeout nil                 ;only when saved
+  (setq flymake-no-changes-timeout 1                 ;only when saved
         flymake-show-diagnostics-at-end-of-line 'short ; just use "M-n"
         flymake-mode-line-lighter "Fly")
   ;; avoid warning in the 'flymake' log
