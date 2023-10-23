@@ -3810,6 +3810,14 @@ its results, otherwise display STDERR with
   ;; So my own messages are not considered new
   (setq gnus-gcc-mark-as-read t))
 
+;; Enable topic mode to make it more organized
+(use-package gnus-topic
+  :elpaca nil
+  :after gnus
+  :demand
+  :hook
+  (gnus-group-mode . gnus-topic-mode))
+
 ;; Database for email completion
 ;; sometimes does not add automatically: use `bbdb-mua-display-sender'
 (use-package bbdb
