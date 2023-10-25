@@ -4640,7 +4640,7 @@ absolute path. Finally load eglot."
   :elpaca (dape :type git :host github :repo "svaante/dape")
   :config
   ;; Add inline variable hints, this feature is highly experimental
-  (setq dape-inline-variables t)
+  (setq dape-inline-variables nil)
   ;; To remove info buffer on startup
   ;; (remove-hook 'dape-on-start-hooks 'dape-info)
 
