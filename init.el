@@ -3775,7 +3775,8 @@ its results, otherwise display STDERR with
         ;; And, no need to GCC my sent messages to the inbox.
         gnus-refer-thread-use-search t
         ;; show images in gnus, except adds
-        gnus-blocked-images "ads")
+        gnus-blocked-images "ads"
+        nnrss-directory "~/SeaDrive/My Libraries/news/rss")
 
   ;; Setting keybindings after evil-collection
   ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
