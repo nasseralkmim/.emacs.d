@@ -121,6 +121,9 @@
   (setq ring-bell-function 'ignore)
   (setq inhibit-startup-screen t)       ; start at scratch buffer
 
+  (setq custom-file "~/.emacs.d/emacs-custom.el")
+  (load custom-file)
+
   ;; UTF-8 encoding
   (prefer-coding-system 'utf-8)
   (set-default-coding-systems 'utf-8)
