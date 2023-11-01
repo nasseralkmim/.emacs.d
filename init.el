@@ -4243,16 +4243,23 @@ If INTERACTIVE is nil the function acts like a Capf."
   :elpaca nil
   :mode ("\\CMakeLists.txt\\'" . cmake-ts-mode))
 
-;; Chat gpt client
-(use-package gptel :disabled
+;; LLM interface for emacs
+;; For Ollama, need to download and execute "ollama"
+;; Also need to run a model to pull manifest "ollama run mistral"
+(use-package gptel
   :elpaca (gptel :type git :host github :repo "karthink/gptel")
-  :commands gptel
   :general
-  ('visual "C-c g" 'gptel-send-menu)
+  ('visual "C-c g" 'gptel-send)
   :config
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
-                                  :secret))))
+                                  :secret)))
+  (gptel-make-ollama
+   "Ollama"                               ;Any name of your choosing
+   :host "localhost:11434"                ;Where it's running
+   :models '("mistral:latest")            ;Installed models
+   :stream t)                             ;Stream responses
+  )
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
