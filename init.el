@@ -4254,12 +4254,13 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
                                   :secret)))
-  (gptel-make-ollama
-   "Ollama"                               ;Any name of your choosing
-   :host "localhost:11434"                ;Where it's running
-   :models '("mistral:latest")            ;Installed models
-   :stream t)                             ;Stream responses
-  )
+  ;; make ollama the default
+  (setq gptel-model "mistral:latest"
+        gptel-backend (gptel-make-ollama
+                       "Ollama"                               ;Any name of your choosing
+                       :host "localhost:11434"                ;Where it's running
+                       :models '("mistral:latest")            ;Installed models
+                       :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
