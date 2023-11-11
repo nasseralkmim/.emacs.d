@@ -213,16 +213,16 @@
   ;; :defer 1
   :elpaca nil
   :preface
-  (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
-  (setq default-unicode '("JetBrains Mono NF"))
-  (setq default-proportional '("Recursive Sans Line Static"))
-  (setq default-comments '("Recursive Mono Casual Static"))
+  (setq default-monospace '("Monaspace Neon")) ;; "Recursive Mono Linear Static"
+  (setq default-unicode '("Monaspace Neon"))
+  (setq default-proportional '("Monaspace Argon"))
+  (setq default-comments '("Monaspace Radon"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
   ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (default  ((t (:family ,(car default-monospace) :height 90))))
+  (default  ((t (:family ,(car default-monospace) :height 100))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
   (variable-pitch-text ((t (:inherit variable-pitch :height unspecified))))
   ;; comment
@@ -3886,7 +3886,7 @@ If INTERACTIVE is nil the function acts like a Capf."
         (cape-interactive #'cape-bbdb)
       (let ((bounds (cape--bounds 'word)))
         `(,(car bounds) ,(cdr bounds)
-          ,(cape--table-with-properties (cape--bbdb-records) :category 'cape-bbdb)
+          ,(cape--properties-table (cape--bbdb-records) :category 'cape-bbdb)
           ,@cape--bbdb-properties))))
 
   ;; add to top of `capf` list only in mail buffer with a hook with this function
