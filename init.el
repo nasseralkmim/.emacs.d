@@ -4249,18 +4249,18 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package gptel
   :elpaca (gptel :type git :host github :repo "karthink/gptel")
   :general
-  ('visual "C-c g" 'gptel-send)
+  ("C-h g" 'gptel-send)
   :config
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
                                   :secret)))
-  ;; make ollama the default
-  (setq gptel-model "mistral:latest"
-        gptel-backend (gptel-make-ollama
-                       "Ollama"                               ;Any name of your choosing
-                       :host "localhost:11434"                ;Where it's running
-                       :models '("mistral:latest")            ;Installed models
-                       :stream t)))
+  ;; make Ollama the default
+  (setq-default gptel-model "mistral:latest"
+                gptel-backend (gptel-make-ollama
+                               "Ollama"                               ;Any name of your choosing
+                               :host "localhost:11434"                ;Where it's running
+                               :models '("mistral:latest")            ;Installed models
+                               :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
