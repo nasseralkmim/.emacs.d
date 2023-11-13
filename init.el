@@ -830,6 +830,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
   ('visual "C-S-d" 'evil-multiedit-restore)
   ('insert evil-multiedit-mode-map "<RET>" nil) ; avoid toggling when completing with corfu
+  ('normal "M-p" nil)                           ; use to change dictionaries in 'go-translate' package
   :config
   (setq evil-multiedit-follow-matches t)
   (defun make-evil-multiedit-case-sensitive (fn &rest args)
