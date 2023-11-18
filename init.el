@@ -213,16 +213,16 @@
   ;; :defer 1
   :elpaca nil
   :preface
-  (setq default-monospace '("Monaspace Neon")) ;; "Recursive Mono Linear Static"
-  (setq default-unicode '("Monaspace Neon"))
-  (setq default-proportional '("Monaspace Argon"))
-  (setq default-comments '("Monaspace Radon"))
+  (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
+  (setq default-unicode '("JetBrains Mono NF"))
+  (setq default-proportional '("Recursive Sans Line Static"))
+  (setq default-comments '("Recursive Mono Casual Static"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
   ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (default  ((t (:family ,(car default-monospace) :height 100))))
+  (default  ((t (:family ,(car default-monospace) :height 90))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
   (variable-pitch-text ((t (:inherit variable-pitch :height unspecified))))
   ;; comment
