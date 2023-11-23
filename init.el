@@ -214,7 +214,7 @@
   :elpaca nil
   :preface
   (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
-  (setq default-unicode '("JetBrains Mono NF"))
+  (setq default-unicode '("Noto Color Emoji"))
   (setq default-proportional '("Recursive Sans Line Static"))
   (setq default-comments '("Recursive Mono Casual Static"))
   :custom-face 
@@ -4262,17 +4262,17 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package gptel
   :elpaca (gptel :type git :host github :repo "karthink/gptel")
   :general
-  ("C-h g" 'gptel-send)
+  ("C-h C-g" 'gptel-menu)
   :config
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
                                   :secret)))
   ;; make Ollama the default
-  (setq-default gptel-model "mistral:latest"
+  (setq-default gptel-model "llama2:latest"
                 gptel-backend (gptel-make-ollama
                                "Ollama"                               ;Any name of your choosing
                                :host "localhost:11434"                ;Where it's running
-                               :models '("mistral:latest")            ;Installed models
+                               :models '("llama2:13b" "llama2:lastest" "mistral:latest")            ;Installed models
                                :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
