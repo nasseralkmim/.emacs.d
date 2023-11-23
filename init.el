@@ -4707,4 +4707,11 @@ absolute path. Finally load eglot."
                  :cwd dape-cwd-fn
                  :program dape-find-file-buffer-default)))
 
+(use-package zotra
+  :elpaca (zotra :type git :host github :repo "mpedramfar/zotra")
+  :commands zotra-add-entry
+  :config
+  (setq zotra-backend 'zotra-server)
+  (setq zotra-local-server-directory "~/.opt/zotra-server/"))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
