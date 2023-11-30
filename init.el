@@ -4707,11 +4707,21 @@ absolute path. Finally load eglot."
                  :cwd dape-cwd-fn
                  :program dape-find-file-buffer-default)))
 
-(use-package zotra
+;; Susbtitute Zotero, but not as flexible as betterbibtex in zotero
+;; Can not:
+;; 1. use specific authorTitleYear bibtex key format
+;; 2. use bibtex key as pdf name
+;; 3. download pdf from other sources
+(use-package zotra :disabled
   :elpaca (zotra :type git :host github :repo "mpedramfar/zotra")
-  :commands zotra-add-entry
+  :commands zotra-add-entry ; add entry from identifier
   :config
   (setq zotra-backend 'zotra-server)
-  (setq zotra-local-server-directory "~/.opt/zotra-server/"))
+  (setq zotra-local-server-directory "~/.opt/zotra-server/")
+
+  ;; where pdfs are saved and default bibliography
+  (setq
+   zotra-default-bibliography "~/.bibliography.bib"
+   zotra-download-attachment-default-directory "~/SeaDrive/My Libraries/bibliography"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
