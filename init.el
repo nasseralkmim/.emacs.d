@@ -1252,7 +1252,7 @@ graphics."
 (use-package ob-python
   :elpaca nil
   :after org
-  :commands org-babel-execute:python
+  :demand
   :config
   (setq org-babel-default-header-args:python
         '((:results . "output")
