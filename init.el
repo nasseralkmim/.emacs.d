@@ -817,12 +817,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   (add-hook 'org-src-mode-hook 'flymake-in-org-edit-special))
 
-(use-package evil-multiedit
+;; For some reason is not working with edits in 'dired'
+(use-package evil-multiedit :disabled
   :after evil
   :custom-face
-  ;; works in gui only
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil :style nil))))
   :general
+  ("C-;" 'iedit-mode)
   ('visual "R" 'evil-multiedit-match-all)
   ("M-d" 'evil-multiedit-match-and-next)
   ("M-C-d" 'evil-multiedit-match-and-prev)
@@ -842,6 +843,21 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; Change the face for terminal
   (when (not (display-graphic-p))
     (set-face-attribute 'iedit-occurrence nil :inherit 'isearch)))
+
+;; Show-hide selected with 'C-\'' after 'iedit-mode'
+;; with prefix "C-u 1", selects just first occurrence, to add more use "M-;" 'iedit-toggle-selection'
+(use-package iedit 
+  :custom-face
+  (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil :style nil))))
+  :general
+  ("C-;" 'iedit-mode)
+  (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
+  ;; when in an 'iedit' occurrence
+  ('normal iedit-mode-keymap "C-n" 'iedit-next-occurrence)
+  ('normal iedit-mode-keymap "C-p" 'iedit-prev-occurrence)
+  :config
+  (setq iedit-search-invisible t)       ; use visual line to narrow candidates
+  )
 
 (use-package evil-mc
   :after evil
