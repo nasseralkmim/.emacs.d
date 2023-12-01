@@ -2100,7 +2100,7 @@ When matching, reference is stored in match group 1."
   :general
   ("<f5>" 'modus-themes-toggle)
   :config
-  (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+  (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
