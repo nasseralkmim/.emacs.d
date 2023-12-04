@@ -1134,7 +1134,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; add extra todo keywords
   ;; (setq org-todo-keywords '((sequence "TODO" "PROG" "DONE"))
   ;;       org-todo-keyword-faces '(("PROG" . (:foregroud "blue"))))
-  )
+
+  ;; improve latex fragment face
+  ;; https://tecosaur.github.io/emacs-config/config.html#latex-fragments 
+  (setq org-highlight-latex-and-related '(native script entities)))
 
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
@@ -1401,7 +1404,12 @@ graphics."
     (if org-blocks-hidden
         (org-show-block-all)
       (org-hide-block-all))
-    (setq-local org-blocks-hidden (not org-blocks-hidden))))
+    (setq-local org-blocks-hidden (not org-blocks-hidden)))
+
+  ;; remove "org-block" face from latex so the preview of latex fragments does not have
+  ;; the same background as src blocks
+  ;; https://tecosaur.github.io/emacs-config/config.html#latex-fragments
+  (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t))))
 
 ;; Use unicode for delimiter of noweb syntax
 ;; this avoids problems with sntax highlight inside the block
@@ -1468,8 +1476,10 @@ When matching, reference is stored in match group 1."
   :if (eq system-type 'gnu/linux)
   :after org
   :init
-  ;; change scale of latex preview in org-mode
-  (setq org-format-latex-options (plist-put org-format-latex-options :scale 1.1)
+  ;; Change scale of latex preview in org-mode and make it transparent
+  (plist-put org-format-latex-options :scale 1.0)
+  (plist-put org-format-latex-options :background "Transparent")
+  (setq 
         ;; org-startup-with-latex-preview t
         org-latex-image-default-width nil ; don't scale my images!
         org-latex-images-centered t
