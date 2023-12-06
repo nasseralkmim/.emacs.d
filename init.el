@@ -845,16 +845,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (set-face-attribute 'iedit-occurrence nil :inherit 'isearch)))
 
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
-;; with prefix "C-u 1", selects just first occurrence, to add more use "M-;" 'iedit-toggle-selection'
+;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
 (use-package iedit 
   :custom-face
-  (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil :style nil))))
+  (iedit-occurrence ((t (:box (:line-width (-1 . -1))))))
   :general
   ("C-;" 'iedit-mode)
+  ("M-d" 'iedit-mode)                   ; for terminal
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
   ;; when in an 'iedit' occurrence
-  ('normal iedit-mode-keymap "C-n" 'iedit-next-occurrence)
-  ('normal iedit-mode-keymap "C-p" 'iedit-prev-occurrence)
+  ('normal iedit-lib-keymap "C-n" 'iedit-next-occurrence)
+  ('normal iedit-lib-keymap "C-p" 'iedit-prev-occurrence)
   :config
   (setq iedit-search-invisible t)       ; use visual line to narrow candidates
   )
@@ -3078,7 +3079,7 @@ opening a file from dired. Otherwise just regular dired."
 ;;   (eglot-workspace-configuration
 ;;    . ((ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))
 ;; 
-(use-package eglot-ltex
+(use-package eglot-ltex :disabled
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :elpaca (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-eglot-ltex
