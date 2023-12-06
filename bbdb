@@ -1,6 +1,8 @@
 ;; -*- mode: Emacs-Lisp; coding: utf-8; -*-
 ;;; file-format: 9
 [nil nil nil nil nil nil nil ("Hofstetter") nil "540aa201-1965-4c89-b512-7ef197eb68b1" "2023-10-16 07:17:25 +0000" "2023-10-16 07:17:25 +0000" nil]
+[nil nil nil nil nil nil nil ("Lifeng Fan") nil "04993ddd-801c-4287-9fe4-82e7ad2419cd" "2023-12-06 10:06:49 +0000" "2023-12-06 10:06:49 +0000" nil]
+[nil nil nil nil nil nil nil ("Rafael Abreu") nil "ceac7857-3e82-474b-b474-1fcfb38d5644" "2023-12-06 10:06:30 +0000" "2023-12-06 10:06:30 +0000" nil]
 [nil nil nil nil nil nil nil ("Ruijie Liu") nil "8d46276a-9570-42ee-b5ca-da1d170f04d0" "2023-11-08 11:04:46 +0000" "2023-11-08 11:04:46 +0000" nil]
 [nil nil nil nil nil nil nil ("Bruna Campos") nil "65b83b0c-94f9-4a74-8f1e-7addb812b7cc" "2023-11-08 11:00:51 +0000" "2023-11-08 11:00:51 +0000" nil]
 [nil "aalinovi" nil nil nil nil nil ("aalinovi@riseup.net") nil "4874ea6a-5d3c-4037-a4ed-c673a9a86780" "2023-07-17 06:15:37 +0000" "2023-07-17 06:15:37 +0000" nil]
