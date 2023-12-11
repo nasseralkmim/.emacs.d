@@ -1603,6 +1603,10 @@ When matching, reference is stored in match group 1."
 ;; Attempt to use multiple dictionaries with 'aspell'
 (use-package ispell-multi :disabled)
 
+(use-package ispell
+  :config
+  (setq ispell-alternate-dictionary "~/.personal"))
+
 ;; 'husnpell' is alternative to 'aspell' that accepts multiple simultaneous dictionaries
 ;; download 'hunspell' and the dictionaries 'yay hunspell hunspell-en (de, pt)
 ;; run 'hunspell -D' to check where dictionaries are
