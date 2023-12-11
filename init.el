@@ -878,7 +878,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (push '(evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
   (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
   (push '(sp-forward-sexp . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
-  (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region))) evil-mc-known-commands))
+  (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region))) evil-mc-known-commands)
+  (push '(wdired--self-insert . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands))
 
 (use-package evil
   :defer 0.5
