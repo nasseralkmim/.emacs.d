@@ -850,13 +850,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom-face
   (iedit-occurrence ((t (:box (:line-width (-1 . -1))))))
   :general
-  ("C-;" 'iedit-mode)
-  ('normal iedit-occurrence-keymap "<escape>" 'iedit--quit)
-  ("M-d" 'iedit-mode)                   ; for terminal
+  ("M-d" 'my-iedit-expand-down-to-occurrence)
+  ('normal iedit-mode-occurrence-keymap  "<escape>" 'iedit--quit)
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
-  ;; when in an 'iedit' occurrence
   ('normal iedit-lib-keymap "C-n" 'iedit-next-occurrence)
   ('normal iedit-lib-keymap "C-p" 'iedit-prev-occurrence)
+  :init
+  (defun my-iedit-expand-down-to-occurrence ()
+  ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
+    (interactive)
+    (if (bound-and-true-p iedit-mode)
+        (iedit-expand-down-to-occurrence)
+      (iedit-mode 1)))
   :config
   (setq iedit-search-invisible t)       ; use visual line to narrow candidates
   )
@@ -902,6 +907,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "j" 'evil-next-visual-line)
   ('normal "k" 'evil-previous-visual-line)
   ('normal "C-c r" nil)
+  ('normal "C-p" nil)                   ; using for iedit and can not shadow from evil
+  ('normal "C-n" nil)
   ('normal "C-S-o" 'evil-jump-forward)
   :config
   (evil-mode 1)
@@ -1606,8 +1613,9 @@ When matching, reference is stored in match group 1."
 (use-package ispell-multi :disabled)
 
 (use-package ispell
+  :elpaca nil
   :config
-  (setq ispell-alternate-dictionary "~/.personal"))
+  (setq ispell-alternate-dictionary "/home/nasser/.personal"))
 
 ;; 'husnpell' is alternative to 'aspell' that accepts multiple simultaneous dictionaries
 ;; download 'hunspell' and the dictionaries 'yay hunspell hunspell-en (de, pt)
