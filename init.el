@@ -851,6 +851,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (iedit-occurrence ((t (:box (:line-width (-1 . -1))))))
   :general
   ("C-;" 'iedit-mode)
+  ('normal iedit-occurrence-keymap "<escape>" 'iedit--quit)
   ("M-d" 'iedit-mode)                   ; for terminal
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
   ;; when in an 'iedit' occurrence
