@@ -4312,7 +4312,19 @@ If INTERACTIVE is nil the function acts like a Capf."
                                "Ollama"                               ;Any name of your choosing
                                :host "localhost:11434"                ;Where it's running
                                :models '("llama2:13b" "llama2:lastest" "mistral:latest")            ;Installed models
-                               :stream t)))
+                               :stream t))
+
+  ;; change face of gptel response
+  ;; https://github.com/karthink/gptel/issues/73
+  (defun gptel--color-response ()
+    (let ((prop))
+      (save-excursion
+        (setq prop (text-property-search-forward 'gptel 'response t))
+        (put-text-property (prop-match-beginning prop)
+                           (prop-match-end prop)
+                           'font-lock-face
+                           'warning))))
+  (add-hook 'gptel-post-response-hook #'gptel--color-response t))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
