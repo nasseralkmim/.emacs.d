@@ -898,7 +898,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-motion-state-map "C-i" nil)     ; avoid conflicting with tab in terminal
   ("C-c \\" 'evil-emacs-state)
   ('normal ";" 'evil-search-forward)
-  ('normal "M-p" 'evil-paste-from-register)
+  ('normal "M-p" 'nil)                  ; problem with 'go-translate'
   ('(normal visual) 'override :prefix "SPC" "l" 'evil-last-non-blank)
   ('(normal visual) 'override :prefix "SPC" "h" 'evil-first-non-blank)
   ('normal :prefix "SPC" "a" 'evil-append-line)
@@ -907,8 +907,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "j" 'evil-next-visual-line)
   ('normal "k" 'evil-previous-visual-line)
   ('normal "C-c r" nil)
-  ('normal "C-p" nil)                   ; using for iedit and can not shadow from evil
-  ('normal "C-n" nil)
   ('normal "C-S-o" 'evil-jump-forward)
   :config
   (evil-mode 1)
