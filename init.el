@@ -853,8 +853,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-d" 'my-iedit-expand-down-to-occurrence)
   ('normal iedit-mode-occurrence-keymap  "<escape>" 'iedit--quit)
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
-  ('normal iedit-lib-keymap "C-n" 'iedit-next-occurrence)
-  ('normal iedit-lib-keymap "C-p" 'iedit-prev-occurrence)
+  (iedit-mode-keymap "C-n" 'iedit-next-occurrence)
+  (iedit-mode-keymap "C-p" 'iedit-prev-occurrence)
   :init
   (defun my-iedit-expand-down-to-occurrence ()
   ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
@@ -910,7 +910,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('normal "C-S-o" 'evil-jump-forward)
   :config
   (evil-mode 1)
+  ;; disable those keybindings 
   (general-def '(normal motion) "TAB" nil)
+  (general-def '(normal) "C-n" nil)
+  (general-def '(normal) "C-p" nil)
+
   (setq
    lazy-highlight-cleanup nil           ; persist highlight
    lazy-highlight-max-at-a-time nil
