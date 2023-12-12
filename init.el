@@ -1415,7 +1415,7 @@ graphics."
         (org-show-block-all)
       (org-hide-block-all))
     (setq-local org-blocks-hidden (not org-blocks-hidden)))
-  :config
+
   ;; remove "org-block" face from latex so the preview of latex fragments does not have
   ;; the same background as src blocks
   ;; https://tecosaur.github.io/emacs-config/config.html#latex-fragments
