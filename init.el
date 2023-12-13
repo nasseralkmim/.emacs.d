@@ -3888,7 +3888,7 @@ its results, otherwise display STDERR with
   (setq bbdb-complete-mail nil
         bbdb-completion-list nil))
 
-(use-package dianyou
+(use-package dianyou :disabled
   :after gnus
   :general
   ('normal gnus-summary-mode-map "&" 'dianyou-email-view-in-web-ui)
