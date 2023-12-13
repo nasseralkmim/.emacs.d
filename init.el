@@ -848,7 +848,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
 (use-package iedit 
   :custom-face
-  (iedit-occurrence ((t (:box (:line-width (-1 . -1))))))
+  (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
   :general
   ("M-d" 'my-iedit-expand-down-to-occurrence)
   ('normal iedit-mode-occurrence-keymap  "<escape>" 'iedit--quit)
