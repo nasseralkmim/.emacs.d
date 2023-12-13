@@ -3757,6 +3757,9 @@ its results, otherwise display STDERR with
   ("C-x C-m" 'gnus) 
   ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
   ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article)
+  ('normal gnus-group-mode-map :prefix "J"
+           "j" 'gnus-agent-toggle-plugged
+           "s" 'gnus-agent-fetch-session)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
@@ -3827,6 +3830,7 @@ its results, otherwise display STDERR with
   (general-def 'normal gnus-article-mode-map "SPC" nil) 
   (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
   (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
+  (general-def 'normal gnus-group-mode-map "J" nil) ; use default agent keybindings
   (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
   (general-def 'normal gnus-summary-mode-map "TA" 'gnus-summary-refer-thread))
 
