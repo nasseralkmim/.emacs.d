@@ -3346,6 +3346,10 @@ opening a file from dired. Otherwise just regular dired."
           ("\\*BBDB\\*" . hide)         ; when the database add an etry
           "\\*compilation\\*"
           compilation-mode))
+
+  ;; only show the pop up and don't focus on its window
+  (setq popper-display-function #'popper-display-popup-at-bottom)
+
   (popper-mode +1)
   (popper-echo-mode +1))
 
@@ -4055,6 +4059,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-h t" 'gts-do-translate)     ; overrides the tutorial, but ok...
   ('(normal visual) "SPC t" 'gts-do-translate)     ; overrides the tutorial, but ok...
+  :hook
+  ;; Add 'visual-line-mode' to the translation buffer
+  (gts-after-buffer-prepared . (lambda () (visual-line-mode 1)))
   :config
   (setq gts-translate-list '(("de" "en") ("de" "pt") ("pt" "en"))
         gts-default-translator (gts-translator
@@ -4069,19 +4076,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                                           ;; (gts-google-rpc-engine)
                                           )
                                 :render (gts-buffer-render)
-                                :splitter (gts-paragraph-splitter)))
-  
-  ;; https://github.com/lorniu/go-translate/pull/64/commits/451efc2144c5b40ebe3ce0710c473ca352355d07
-  ;; Add 'visual-line-mode' to the translation buffer
-  (cl-defmethod gts-pre ((_ gts-buffer-render) translator)
-    ;; init and setup
-    (gts-render-buffer-prepare gts-buffer-name translator)
-    ;; display
-    (let ((split-width-threshold (or gts-split-width-threshold split-width-threshold)))
-      (progn
-        (display-buffer gts-buffer-name gts-buffer-window-config)
-        (with-current-buffer gts-buffer-name
-          (turn-on-visual-line-mode))))))
+                                :splitter (gts-paragraph-splitter))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
