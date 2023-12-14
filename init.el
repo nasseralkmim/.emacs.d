@@ -3761,9 +3761,6 @@ its results, otherwise display STDERR with
   ("C-x C-m" 'gnus) 
   ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
   ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article)
-  ('normal gnus-group-mode-map :prefix "J"
-           "j" 'gnus-agent-toggle-plugged
-           "s" 'gnus-agent-fetch-session)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
@@ -3829,12 +3826,19 @@ its results, otherwise display STDERR with
         gnus-blocked-images "ads"
         nnrss-directory "~/SeaDrive/My Libraries/news/rss")
 
-  ;; Setting keybindings after evil-collection
-  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
+  ;; Setting keybindings after evil-collection (after gnus is loaded)
+  ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
+  ;; because general uses `after-load-functions' and evil-collection uses `with-eval-after-load'
+  ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
   (general-def 'normal gnus-article-mode-map "SPC" nil) 
   (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
   (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
-  (general-def 'normal gnus-group-mode-map "J" nil) ; use default agent keybindings
+  ;; TODO: this is not working
+  ;; first, remove the binding to "J" which was set by evil-collection
+  (general-def 'normal 'gnus-group-mode-map "J" nil)
+  (general-def 'normal gnus-group-mode-map :prefix "J"
+    "j" 'gnus-agent-toggle-plugged
+    "s" 'gnus-agent-fetch-session)
   (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
   (general-def 'normal gnus-summary-mode-map "TA" 'gnus-summary-refer-thread))
 
