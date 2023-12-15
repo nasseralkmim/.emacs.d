@@ -4783,4 +4783,9 @@ absolute path. Finally load eglot."
    zotra-default-bibliography "~/.bibliography.bib"
    zotra-download-attachment-default-directory "~/SeaDrive/My Libraries/bibliography"))
 
+(use-package solaire-mode
+  :defer 3
+  :config
+  (solaire-global-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
