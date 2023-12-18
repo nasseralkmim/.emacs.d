@@ -864,7 +864,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (iedit-mode 1)))
   :config
   (setq iedit-search-invisible t)       ; use visual line to narrow candidates
-  )
+
+  ;; Change the face for terminal
+  (when (not (display-graphic-p))
+    (set-face-attribute 'iedit-occurrence nil :inherit 'isearch)))
 
 (use-package evil-mc
   :after evil
