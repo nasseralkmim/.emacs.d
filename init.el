@@ -4169,7 +4169,13 @@ If INTERACTIVE is nil the function acts like a Capf."
    ;; not rely on the system saving in password manager.
    ;; After a while you have to allow on the browser again, so it is not a final solution.
    ;; https://github.com/kidd/org-gcal.el/issues/227 describes better the problem
-   epg-pinentry-mode 'loopback))
+   epg-pinentry-mode 'loopback
+   ;; apparently new gpg > 2.4.0 does not work properly
+   ;; epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg"
+   )
+  ;; also helps https://github.com/kidd/org-gcal.el/issues/238
+  (fset 'epg-wait-for-status 'ignore)
+  )
 
 ;; Setup template for capture gcal 
 (use-package org-capture-template
