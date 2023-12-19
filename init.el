@@ -4165,15 +4165,17 @@ If INTERACTIVE is nil the function acts like a Capf."
    ;; https://github.com/kidd/org-gcal.el/issues/217 related: password has not
    ;; been stored in 'plstore-passphrase-alist'
    plstore-cache-passphrase-for-symmetric-encryption t
-   ;; This solves the issue apparently, but you need to type the password and
+   ;; This solves the issue apparently, but you need to type the password on the mini buffer and
    ;; not rely on the system saving in password manager.
    ;; After a while you have to allow on the browser again, so it is not a final solution.
    ;; https://github.com/kidd/org-gcal.el/issues/227 describes better the problem
    epg-pinentry-mode 'loopback
-   ;; apparently new gpg > 2.4.0 does not work properly
-   ;; epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg"
+   ;; apparently new GnuPG > 2.4.0 does not work properly
+   ;; gives the error: (epg-error "Decryption failed" "")
+   epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg"
    )
   ;; also helps https://github.com/kidd/org-gcal.el/issues/238
+  ;; otherwise it hangs in: "Contacting host: oauth2.googleapis.com:443"
   (fset 'epg-wait-for-status 'ignore)
   )
 
