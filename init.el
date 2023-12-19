@@ -4158,26 +4158,20 @@ If INTERACTIVE is nil the function acts like a Capf."
     (setq org-gcal-client-id id
           org-gcal-client-secret secret
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
+  ;; Uses asymmetric encryption with gnuPG
+  ;; Need to setup a key and maybe edit '~/.gnupg/gnu-agent.conf' with 'pinentry-program /usr/bin/pinetry' (but maybe this is not necesssary on linux)
   ;; stores OAuth token
-  (setq-default
-   oauth2-auto-plstore "/home/nasser/SeaDrive/My Libraries/secrets/oauth2-auto.plist"
-   ;; It is asking for password every time.
-   ;; https://github.com/kidd/org-gcal.el/issues/217 related: password has not
-   ;; been stored in 'plstore-passphrase-alist'
-   plstore-cache-passphrase-for-symmetric-encryption t
-   ;; This solves the issue apparently, but you need to type the password on the mini buffer and
-   ;; not rely on the system saving in password manager.
-   ;; After a while you have to allow on the browser again, so it is not a final solution.
-   ;; https://github.com/kidd/org-gcal.el/issues/227 describes better the problem
-   epg-pinentry-mode 'loopback
-   ;; apparently new GnuPG > 2.4.0 does not work properly
-   ;; gives the error: (epg-error "Decryption failed" "")
-   epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg"
-   )
-  ;; also helps https://github.com/kidd/org-gcal.el/issues/238
-  ;; otherwise it hangs in: "Contacting host: oauth2.googleapis.com:443"
-  (fset 'epg-wait-for-status 'ignore)
-  )
+  (setq-default oauth2-auto-plstore "/home/nasser/SeaDrive/My Libraries/secrets/oauth2-auto.plist")
+  (require 'plstore)
+  ;; Add key ID
+  ;; 'plstore-encrypt-to' is a list of strings (documentation is wrong)
+  ;; https://github.com/kidd/org-gcal.el/issues/225
+  (add-to-list 'plstore-encrypt-to "E1A69C42211F40FC609E6F9ABA29388ED0079A9D")
+  ;; Apparently new Gnupg does not work
+;; https://github.com/kidd/org-gcal.el/issues/236
+  (setq epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg")
+  ;; this avoids problem with hanging in "Contacting host: oauth2.googleapis.com:443"
+  (fset 'epg-wait-for-status 'ignore))
 
 ;; Setup template for capture gcal 
 (use-package org-capture-template
