@@ -867,7 +867,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
   ;; Change the face for terminal
   (when (not (display-graphic-p))
-    (set-face-attribute 'iedit-occurrence nil :inherit 'isearch)))
+    (set-face-attribute 'iedit-occurrence nil :inherit 'isearch :weight 'bold)))
 
 (use-package evil-mc
   :after evil
@@ -4795,6 +4795,12 @@ absolute path. Finally load eglot."
 
 (use-package catppuccin
   :elpaca (catppuccin :type git :host github :repo "catppuccin/emacs")
+  :custom-face
+  (org-level-1 ((t (:slant oblique :box t :height 1.0))))
+  (org-level-2 ((t (:underline t :inherit outline-1 :height 1.0 :weight bold))))
+  (org-level-3 ((t (:slant italic :underline t  :height 1.0))))
+  (org-level-4 ((t (:slant oblique :height 1.0))))
+  (org-level-5 ((t (:slant normal :height 1.0))))
   :config
   (setq catppuccin-flavor 'mocha
         catppuccin-italic-comments t
