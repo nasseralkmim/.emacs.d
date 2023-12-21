@@ -4796,7 +4796,9 @@ absolute path. Finally load eglot."
 (use-package catppuccin
   :elpaca (catppuccin :type git :host github :repo "catppuccin/emacs")
   :config
-  (setq catppuccin-flavor 'mocha)
+  (setq catppuccin-flavor 'mocha
+        catppuccin-italic-comments t
+        catppuccin-enlarge-headings nil)
   (catppuccin-reload))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
