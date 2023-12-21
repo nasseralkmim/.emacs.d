@@ -4796,7 +4796,6 @@ absolute path. Finally load eglot."
 (use-package catppuccin
   :elpaca (catppuccin :type git :host github :repo "catppuccin/emacs")
   :config
-  (load-theme 'catppuccin :no-confirm)
   (setq catppuccin-flavor 'mocha)
   (catppuccin-reload))
 
