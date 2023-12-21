@@ -855,6 +855,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
   (iedit-mode-keymap "C-n" 'iedit-next-occurrence)
   (iedit-mode-keymap "C-p" 'iedit-prev-occurrence)
+  (iedit-lib-keymap "TAB" nil)
   :init
   (defun my-iedit-expand-down-to-occurrence ()
   ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
