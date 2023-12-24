@@ -1112,7 +1112,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
            "k" 'org-backward-heading-same-level
            "j" 'org-forward-heading-same-level
            "n" 'org-babel-next-src-block
-           "p" 'org-babel-previous-src-block)
+           "p" 'org-babel-previous-src-block
+           "h" 'org-babel-goto-src-block-head
+           )
   ;; global map
   ('(normal visual) "M-o" 'org-open-at-point-global)
   :hook
