@@ -3887,7 +3887,7 @@ its results, otherwise display STDERR with
 
 ;; Database for email completion
 ;; sometimes does not add automatically: use `bbdb-mua-display-sender'
-(use-package bbdb
+(use-package bbdb :disabled             ; trying EBDB
   :after (:any gnus message)
   :config
   (bbdb-initialize 'gnus 'message)
@@ -3911,7 +3911,7 @@ its results, otherwise display STDERR with
 
 ;; Implements a complete at point function for BBDB database
 ;; https://github.com/minad/cape/pull/50/commits
-(use-package cape-bbdb
+(use-package cape-bbdb :disabled
   :after cape
   :elpaca nil
   :hook
@@ -3957,6 +3957,17 @@ If INTERACTIVE is nil the function acts like a Capf."
     (setq-local completion-at-point-functions
               (cons #'cape-bbdb
                     completion-at-point-functions))))
+
+;; Contact manager package
+;; 'ebdb-migrate-from-bbdb' converts from bbdb
+(use-package ebdb
+  :after (:any gnus message)
+  :init
+  ;; load code for GNUs for reading and message for sending 
+  (require 'ebdb-gnus)
+  (require 'ebdb-message)
+  ;; use complete at point interface to select email from contacts
+  (setq ebdb-complete-mail 'capf))
 
 ;; there is no language server for it yet
 (use-package chapel-mode :disabled
