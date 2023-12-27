@@ -3967,7 +3967,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   (require 'ebdb-gnus)
   (require 'ebdb-message)
   ;; use complete at point interface to select email from contacts
-  (setq ebdb-complete-mail 'capf))
+  (setq ebdb-complete-mail 'capf
+        ebdb-mua-pop-up nil             ; don't show any pop ups
+        ;; when reading or sending with the "reader" in GNUS create contact if it does not exist
+        ebdb-gnus-auto-update-p 'create
+        ;; save on exit
+        ebdb-save-on-exit t))
 
 ;; there is no language server for it yet
 (use-package chapel-mode :disabled
