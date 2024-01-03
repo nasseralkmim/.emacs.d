@@ -1954,7 +1954,8 @@ When matching, reference is stored in match group 1."
    "p" 'preview-at-point)
   :init
   ;; preview latex config
-  (setq preview-default-option-list '("displaymath" "textmath" "showlabels")
+  ;; only preview displaymath and not textmath which can be anoying when inside a table or algorithm
+  (setq preview-default-option-list '("displaymath" "showlabels")
         preview-auto-cache-preamble t))
 
 ;; latex function
