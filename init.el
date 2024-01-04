@@ -1368,15 +1368,17 @@ graphics."
            (new-size (+ size amt)))
       (setq org-image-actual-width new-size)
       ;; don't redisplay if in tramp
-      (if (not (file-remote-p default-directory))
-          (org-redisplay-inline-images))))
+      (unless (file-remote-p default-directory)
+          (org-toggle-inline-images)
+          (org-toggle-inline-images))))
 
   (defun org-zoom-out-inline-images ()
     (interactive)
     (setq org-image-actual-width nil)
     ;; don't redisplay if in tramp
-    (if (not (file-remote-p default-directory))
-        (org-redisplay-inline-images))))
+    (unless (file-remote-p default-directory)
+          (org-toggle-inline-images)
+          (org-toggle-inline-images))))
 
 ;; for windows
 (use-package ob-python
@@ -4541,7 +4543,9 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 (use-package pueue
   :elpaca (pueue :host github :repo "xFA25E/pueue")
-  :hook (pueue-mode . auto-revert-mode)
+  :hook (pueue-mode . (lambda ()
+                        (setq auto-revert-interval 0)
+                        (auto-revert-mode)))
   :commands pueue
   :general 
   ('normal "<f7>" 'pueue)
