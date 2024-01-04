@@ -175,8 +175,12 @@
 (use-package pixel-scroll
   :elpaca nil
   :if (string-greaterp emacs-version "29") ; need emacs > 29
-  :defer 1 
-  :config
+  :bind
+  ([remap evil-scroll-down]   . pixel-scroll-interpolate-down)
+  ([remap evil-scroll-page-up] . pixel-scroll-interpolate-up)
+  :custom
+  (pixel-scroll-precision-interpolate-page t)
+  :init
   ;; text scroll pixel by pixel
   (pixel-scroll-precision-mode t))
 
