@@ -3775,6 +3775,7 @@ its results, otherwise display STDERR with
   ("C-x C-m" 'gnus) 
   ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
   ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article)
+  ('visual gnus-summary-mode-map "!" 'gnus-summary-mark-region-as-read)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   ;; (gnus-summary-prepared . variable-pitch-mode)
