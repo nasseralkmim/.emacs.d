@@ -178,6 +178,8 @@
   :bind
   ([remap evil-scroll-down]   . pixel-scroll-interpolate-down)
   ([remap evil-scroll-page-up] . pixel-scroll-interpolate-up)
+  ([remap evil-scroll-line-down]   . pixel-scroll-down)
+  ([remap evil-scroll-line-up] . pixel-scroll-up)
   :custom
   (pixel-scroll-precision-interpolate-page t)
   :init
