@@ -4286,7 +4286,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Drawing link support in 'org-mode'
 ;; It is not working to export to latex
 (use-package edraw
-  :elpaca (el-easydraw :type git :host github :repo "misohena/el-easydraw")
+  :elpaca (edraw :type git :host github :repo "misohena/el-easydraw")
   :init
   (with-eval-after-load 'org
     ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
@@ -4526,7 +4526,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
 (use-package breadcrumb
-  :elpaca (breadcrumn :host github :repo "joaotavora/breadcrumb")
+  :elpaca (breadcrumb :host github :repo "joaotavora/breadcrumb")
   :hook
   (prog-mode . breadcrumb-mode)
   (org-mode . breadcrumb-mode))
