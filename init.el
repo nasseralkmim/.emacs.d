@@ -2154,6 +2154,10 @@ When matching, reference is stored in match group 1."
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (defun my-modus-tweaks ()
     (progn 
+      ;; Adjust some org faces
+      (eval-after-load 'org
+        ;; make org source blocks headers with same main background, so there is no different background when collapsed
+        (set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
       ;; adjust org modern if GUI
       (eval-after-load 'org-modern
         '(global-org-modern-mode))
