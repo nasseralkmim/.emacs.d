@@ -4842,4 +4842,9 @@ absolute path. Finally load eglot."
         catppuccin-enlarge-headings nil)
   (catppuccin-reload))
 
+(use-package eglot-booster
+  :elpaca nil
+  :load-path "./lisp"
+  :demand)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
