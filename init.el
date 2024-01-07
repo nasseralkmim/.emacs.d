@@ -2155,7 +2155,7 @@ When matching, reference is stored in match group 1."
   (defun my-modus-tweaks ()
     (progn 
       ;; Adjust some org faces
-      (eval-after-load 'org
+      (eval-after-load 'org-faces
         ;; make org source blocks headers with same main background, so there is no different background when collapsed
         (set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
       ;; adjust org modern if GUI
