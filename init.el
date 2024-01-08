@@ -2155,9 +2155,9 @@ When matching, reference is stored in match group 1."
   (defun my-modus-tweaks ()
     (progn 
       ;; Adjust some org faces
-      (eval-after-load 'org-faces
+      (eval-after-load 'org
         ;; make org source blocks headers with same main background, so there is no different background when collapsed
-        (set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
+        '(set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
       ;; adjust org modern if GUI
       (eval-after-load 'org-modern
         '(global-org-modern-mode))
@@ -2169,7 +2169,7 @@ When matching, reference is stored in match group 1."
         '(hl-indent-scope--auto-color-calc))
       ;; make inside of parenthesis different background
       (eval-after-load 'smartparens
-        (set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression)))))
+        '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression)))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
