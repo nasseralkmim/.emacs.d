@@ -2014,8 +2014,8 @@ When matching, reference is stored in match group 1."
   :after latex
   :init
   ;; extra outline headers 
-  (setq TeX-outline-extra
-        '(("%paragraph" 5)))
+  ;; (setq TeX-outline-extra
+  ;;       '(("%paragraph" 5)))
 
   ;; add font locking to the headers
   (font-lock-add-keywords
