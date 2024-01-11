@@ -3104,8 +3104,8 @@ opening a file from dired. Otherwise just regular dired."
 ;; uses language tool for grammar, but there is no need to install it
 ;; allow configuration on the file: 
 ;; need to manually download the language server:
-;; cd ~/.opt && https://github.com/valentjn/ltex-ls/releases/download/15.2.0/ltex-ls-15.2.0-linux-x64.tar.gz
-;; tar -xvf ltex-ls-15.2.0-linux-x64.tar.gz
+;; cd ~/.opt && wget https://github.com/valentjn/ltex-ls/releases/download/16.0.0/ltex-ls-16.0.0-linux-x64.tar.gz
+;; tar -xvf ltex-ls-16.0.0-linux-x64.tar.gz
 ;; also need java (open JDK 11 development kit)
 ;; 
 ;; ltex-ls DOES NOT SUPPORT external files...
@@ -3115,11 +3115,13 @@ opening a file from dired. Otherwise just regular dired."
 ;;   (eglot-workspace-configuration
 ;;    . ((ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))
 ;; 
-(use-package eglot-ltex :disabled
+(use-package eglot-ltex
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :elpaca (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-eglot-ltex
   :init
+  ;; apparently the newer version does not work 
+  ;; https://github.com/valentjn/ltex-ls/issues/262
   (setq eglot-languagetool-server-path "~/.opt/ltex-ls-15.2.0/")
 
   (defun start-eglot-ltex ()
@@ -3129,12 +3131,13 @@ opening a file from dired. Otherwise just regular dired."
     ;; automatic set a dir locals to org-mode
     (call-interactively #'eglot)
     ;; set custom CAPE functions
-    (setq-local completion-at-point-functions
-                `(cape-file
-                  cape-dabbrev
-                  eglot-completion-at-point
-                  pcomplete-completions-at-point
-                  cape-ispell)))
+    ;; (setq-local completion-at-point-functions
+    ;;             `(cape-file
+    ;;               cape-dabbrev
+    ;;               eglot-completion-at-point
+    ;;               pcomplete-completions-at-point
+    ;;               cape-ispell))
+    )
 
   ;; example: https://www.emacswiki.org/emacs/DirectoryVariables#:~:text=non%2Ddotted%20notation.-,Without%20a%20.dir%2Dlocals.el%20file,-You%20can%20also
   (dir-locals-set-class-variables
