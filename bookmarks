@@ -28,8 +28,8 @@
  (handler . burly-bookmark-handler))
 ("org-capture-last-stored"
  (filename . "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
- (front-context-string . "**** TODO Get ba") (rear-context-string . "23-12-18 Montag\n")
- (position . 3245) (last-modified 25984 22364 654153 916000))
+ (front-context-string . "**** TODO Pay su") (rear-context-string . "24-01-08 Monday\n")
+ (position . 7411) (last-modified 26012 273 571501 690000))
 ("news" (front-context-string . "  68k.news: Head") (rear-context-string) (position . 1)
  (last-modified 25460 35463 729479 664000) (location . "http://68k.news/")
  (handler . eww-bookmark-jump))
