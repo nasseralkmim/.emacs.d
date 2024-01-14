@@ -4781,8 +4781,8 @@ absolute path. Finally load eglot."
   ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
 
   ;; download cpptools https://github.com/microsoft/vscode-cpptools/releases
-  ;; Replace ms-vscode.cpptools with the vsix directory you just extracted
-  (setq dape-cppdbg-command "~/.opt/ms-vscode.cpptools/extension/debugAdapters/bin/OpenDebugAD7")
+  ;; rename vsix to zip and extract
+  (setq dape-cppdbg-command "~/.opt/ms-vscode.cpptools-1.19.1@linux-x64/extension/debugAdapters/bin/OpenDebugAD7")
   (add-to-list 'dape-configs
                `(cppdbg
                  modes (c-mode c-ts-mode c++-mode c++-ts-mode)
