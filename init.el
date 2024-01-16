@@ -4845,9 +4845,12 @@ absolute path. Finally load eglot."
         catppuccin-enlarge-headings nil)
   (catppuccin-reload))
 
+;; Rust-based wrapper to speed interaction with LSP servers
+;; Need to build and install rust binary "emacs-lsp-booster" which should be on the path
+;; https://github.com/blahgeek/emacs-lsp-booster
 (use-package eglot-booster
-  :elpaca nil
-  :load-path "./lisp"
-  :demand)
+  :elpaca (eglot-booster :type git :host github :repo "eglot-booster")
+  :after eglot
+  :init (eglot-booster-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
