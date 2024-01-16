@@ -4768,20 +4768,10 @@ absolute path. Finally load eglot."
   :config
   ;; Add inline variable hints, this feature is highly experimental
   (setq dape-inline-variables nil)
-  ;; To remove info buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-info)
-
-  ;; To remove repl buffer on startup
-  ;; (remove-hook 'dape-on-start-hooks 'dape-repl)
-
-  ;; Use n for next etc. in REPL
-  ;; (setq dape-repl-use-shorthand t)
-
-  ;; Kill compile buffer on build success
-  ;; (add-hook 'dape-compile-compile-hooks 'kill-buffer)
 
   ;; download cpptools https://github.com/microsoft/vscode-cpptools/releases
-  ;; rename vsix to zip and extract
+  ;; on the marketplace the vsix is available.
+  ;; rename vsix to zip to extract with 'unzip'
   (setq dape-cppdbg-command "~/.opt/ms-vscode.cpptools-1.19.1@linux-x64/extension/debugAdapters/bin/OpenDebugAD7")
   (add-to-list 'dape-configs
                `(cppdbg
