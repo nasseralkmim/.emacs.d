@@ -4763,41 +4763,10 @@ absolute path. Finally load eglot."
            (t (error "mark no more than 2 files"))))))
 
 (use-package dape
-  ;; Currently only on github
   :elpaca (dape :type git :host github :repo "svaante/dape")
   :config
   ;; Add inline variable hints, this feature is highly experimental
-  (setq dape-inline-variables nil)
-
-  ;; download cpptools https://github.com/microsoft/vscode-cpptools/releases
-  ;; on the marketplace the vsix is available.
-  ;; rename vsix to zip to extract with 'unzip'
-  (setq dape-cppdbg-command "~/.opt/ms-vscode.cpptools-1.19.1@linux-x64/extension/debugAdapters/bin/OpenDebugAD7")
-  (add-to-list 'dape-configs
-               `(cppdbg
-                 modes (c-mode c-ts-mode c++-mode c++-ts-mode)
-                 command-cwd ,(file-name-directory
-                               dape-cppdbg-command)
-                 command dape-cppdbg-command
-                 :type "cppdbg"
-                 :request "launch"
-                 :cwd dape-cwd-fn
-                 :program dape-find-file
-                 :MIMode ,(cond
-                           ((executable-find "gdb") "gdb")
-                           ((executable-find "lldb") "lldb"))))
-
-  ;; for Python
-  ;; need to install 'debugpy', for system-wide python 'yay debugpy'
-  (add-to-list 'dape-configs
-               `(debugpy
-                 modes (python-ts-mode python-mode)
-                 command "python3"
-                 command-args ("-m" "debugpy.adapter")
-                 :type "executable"
-                 :request "launch"
-                 :cwd dape-cwd-fn
-                 :program dape-find-file-buffer-default)))
+  (setq dape-inline-variables nil))
 
 ;; Susbtitute Zotero, but not as flexible as betterbibtex in zotero
 ;; Can not:
