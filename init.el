@@ -4561,8 +4561,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Matchs the cursor color when running emacs in terminal
 ;; makes it much more visible, but it does not change the foreground when over the text as in the GUI
-(use-package term-cursos-color
-  :elpaca (term-cursos-color :host github :repo "CyberShadow/term-cursor-color")
+(use-package term-cursor-color
+  :elpaca (term-cursor-color :host github :repo "CyberShadow/term-cursor-color")
   :if (not (display-graphic-p))
   :init
   (term-cursor-color-mode))
@@ -4808,7 +4808,7 @@ absolute path. Finally load eglot."
 ;; Need to build and install rust binary "emacs-lsp-booster" which should be on the path
 ;; https://github.com/blahgeek/emacs-lsp-booster
 (use-package eglot-booster
-  :elpaca (eglot-booster :type git :host github :repo "eglot-booster")
+  :elpaca (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
   :after eglot
   :init (eglot-booster-mode))
 
