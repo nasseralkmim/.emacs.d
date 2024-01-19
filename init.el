@@ -2856,6 +2856,7 @@ Only if there is more than one window opened."
 
 ;; group by Remote in ibuffer
 (use-package ibuffer-tramp
+  :elpaca nil
   :general
   ('normal ibuffer-mode-map "s t" 'ibuffer-tramp-set-filter-groups-by-tramp-connection)
   ('normal ibuffer-mode-map "s r" 'ibuffer-switch-to-saved-filter-groups))
