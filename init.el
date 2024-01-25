@@ -4203,7 +4203,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; Add key ID
   ;; 'plstore-encrypt-to' is a list of strings (documentation is wrong)
   ;; https://github.com/kidd/org-gcal.el/issues/225
-  (add-to-list 'plstore-encrypt-to "E1A69C42211F40FC609E6F9ABA29388ED0079A9D")
+  (add-to-list 'plstore-encrypt-to "C0FDC21258188852FFC70E2C3A3B897B81E89865")
   ;; Apparently new Gnupg does not work
 ;; https://github.com/kidd/org-gcal.el/issues/236
   (setq epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg")
