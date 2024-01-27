@@ -1154,15 +1154,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         '(org-cycle-hide-archived-subtrees
           org-cycle-hide-drawers
           org-cycle-show-empty-lines
-          org-optimize-window-after-visibility-change))
-
-  ;; add extra todo keywords
-  ;; (setq org-todo-keywords '((sequence "TODO" "PROG" "DONE"))
-  ;;       org-todo-keyword-faces '(("PROG" . (:foregroud "blue"))))
-
-  ;; improve latex fragment face
-  ;; https://tecosaur.github.io/emacs-config/config.html#latex-fragments 
-  (setq org-highlight-latex-and-related '(native script entities)))
+          org-optimize-window-after-visibility-change)))
 
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
@@ -1431,12 +1423,7 @@ graphics."
     (if org-blocks-hidden
         (org-show-block-all)
       (org-hide-block-all))
-    (setq-local org-blocks-hidden (not org-blocks-hidden)))
-
-  ;; remove "org-block" face from latex so the preview of latex fragments does not have
-  ;; the same background as src blocks
-  ;; https://tecosaur.github.io/emacs-config/config.html#latex-fragments
-  (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t))))
+    (setq-local org-blocks-hidden (not org-blocks-hidden))))
 
 ;; Use unicode for delimiter of noweb syntax
 ;; this avoids problems with sntax highlight inside the block
