@@ -1854,8 +1854,8 @@ When matching, reference is stored in match group 1."
   :custom-face
   (font-latex-sectioning-1-face ((t (:slant oblique :box t :height 1.0))))
   (font-latex-sectioning-2-face ((t (:underline t :inherit outline-1 :height 1.0))))
-  (font-latex-sectioning-3-face ((t (:slant italic :height 1.0))))
-  (font-latex-sectioning-4-face ((t (:slant oblique :underline t :height 1.0))))
+  (font-latex-sectioning-3-face ((t (:slant italic  :inherit outline-4 :height 1.0))))
+  (font-latex-sectioning-4-face ((t (:slant normal :inherit outline-5 :underline nil :height 1.0))))
   (font-latex-sectioning-5-face ((t (:slant normal :height 1.0))))
   :general
   ('normal outline-mode-map
