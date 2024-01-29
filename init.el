@@ -3718,7 +3718,7 @@ its results, otherwise display STDERR with
                       (setq-local completion-at-point-functions
                                   (cape-company-to-capf 'company-jedi))))))
 
-;; authentication file  
+;; Unified interface for 'secrets' backends
 (use-package auth-source
   :elpaca nil
   :commands auth-source-search
