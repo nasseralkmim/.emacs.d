@@ -1891,7 +1891,7 @@ When matching, reference is stored in match group 1."
 
   ;; start latex buffer folded
   ;; (add-hook 'find-file-hook 'TeX-fold-buffer t)
-  
+
   ;; specific config
   ;; -shell-escape for minted (syntax highlight) and svg export
   (setq LaTeX-command "latex -shell-escape")
@@ -1994,6 +1994,14 @@ When matching, reference is stored in match group 1."
   \\centering
   \\includegraphics[width=.5\\linewidth]{%s}
 \\end{figure}" image-file)))))
+
+(use-package tex-fold
+  :elpaca nil
+  :after latex
+  :config
+  ;; add tables and figure to fold
+  (add-to-list 'TeX-fold-env-spec-list '("[table]" ("table")))  
+  (add-to-list 'TeX-fold-env-spec-list '("[figure]" ("figure"))))
 
 ;; fake headers for latex
 ;; https://emacs.stackexchange.com/a/3103
