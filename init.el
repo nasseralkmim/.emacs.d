@@ -1159,6 +1159,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
 ;; [[gnus:nntp+news:gmane.emacs.orgmode#8735w3kshh.fsf@ddoherty.net][Email from Daniel E. Doherty: Bug: Display Inline Images from Subdirectory [9.4.4 (9.4.4-33-g5450d6-elpaplus @ /home/ded/.emacs.d/elpa/org-plus-contrib-20210322/)]​]]
+;; TODO: does not work if the block is executed with ':async'
 (use-package org-display-inline-image-hack
   :elpaca nil
   :after org
