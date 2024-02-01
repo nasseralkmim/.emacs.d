@@ -4352,7 +4352,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package gptel
   :elpaca (gptel :type git :host github :repo "karthink/gptel")
   :general
-  ("C-h C-g" 'gptel-menu)
+  ("C-h g" 'gptel-menu)
   :config
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
