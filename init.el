@@ -2001,7 +2001,8 @@ When matching, reference is stored in match group 1."
   :config
   ;; add tables and figure to fold
   (add-to-list 'TeX-fold-env-spec-list '("[table]" ("table")))  
-  (add-to-list 'TeX-fold-env-spec-list '("[figure]" ("figure"))))
+  (add-to-list 'TeX-fold-env-spec-list '("[figure]" ("figure")))
+  (add-to-list 'TeX-fold-env-spec-list '("[algorithm]" ("algorithm"))))
 
 ;; fake headers for latex
 ;; https://emacs.stackexchange.com/a/3103
