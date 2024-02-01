@@ -3774,6 +3774,11 @@ its results, otherwise display STDERR with
 
 ;; for reading email lists
 ;; summary marks: [[info:gnus#Read Articles][gnus#Read Articles]]
+;; Usfeful commands:
+;; 'gnus-summary-refer-thread' to recover thread, with prefix-argumetn looks the whole server.
+;; 'gnus-summary-very-wide-reply' reply to author and CC participants in the thread, including the mailing list.
+;; 'gnus-summary-kill-thread' "collapse" a thread by marking it as-read. With prefix-argument do the opposite.
+;; 'gnus-group-catchup-current' mark all messages in a group as-read.
 (use-package gnus
   :elpaca nil
   :general
