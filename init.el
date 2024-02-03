@@ -3997,10 +3997,16 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; use complete at point interface to select email from contacts
   (setq ebdb-complete-mail 'capf
         ebdb-mua-pop-up nil             ; don't show any pop ups
-        ;; when reading or sending with the "reader" in GNUS create contact if it does not exist
-        ebdb-gnus-auto-update-p 'create
         ;; save on exit
-        ebdb-save-on-exit t))
+        ebdb-save-on-exit t)
+
+  ;; when reading or sending with the "reader" in GNUS create contact if it does not exist
+  ;; ;; (info "(ebdb) Auto-Updating Records")
+  (setq ebdb-mua-auto-update-p
+        (lambda ()
+          (unless (ebdb-mua-message-header "Newsgroups")
+            ;; only create when not in a newsgroup, there are too many people in newsgroups
+            'create))))
 
 ;; there is no language server for it yet
 (use-package chapel-mode :disabled
