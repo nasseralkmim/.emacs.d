@@ -3311,13 +3311,22 @@ opening a file from dired. Otherwise just regular dired."
         eldoc-idle-delay 0.5))
 
 ;; save windows configurations and use regular bookmarks file
-(use-package burly
+(use-package burly :disabled
   :elpaca (burly :type git :host github :repo "alphapapa/burly.el")
   :general
   ('normal "<f6>" 'burly-bookmark-windows)
   :config
   ;; integrate with tab-bar-mode, open windows in a new tab
   (burly-tabs-mode))
+
+(use-package activities
+  :elpaca (activities :type git :host github :repo "alphapapa/activities.el")
+  :general
+  ('normal "<f6>" 'activities-new)
+  :demand
+  :config
+  (activities-mode)
+  (activities-tabs-mode))
 
 ;; view large files
 (use-package vlf
