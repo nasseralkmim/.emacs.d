@@ -3341,7 +3341,7 @@ opening a file from dired. Otherwise just regular dired."
 (use-package popper
   :defer 1
   :general
-  (popper-mode-map "C-`" 'popper-toggle-latest)
+  (popper-mode-map "C-`" 'popper-toggle)
   ('(normal insert) popper-mode-map "C-@" 'popper-toggle-latest) ; for term
   (popper-mode-map "C-M-`" 'popper-cycle)
   ('normal popper-mode-map "q" (general-predicate-dispatch nil
