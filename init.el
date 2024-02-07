@@ -3838,7 +3838,8 @@ its results, otherwise display STDERR with
         gnus-home-directory "~/.emacs.d" ; easier to sync different machines with git
         ;; Attempts to make it faster
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
-        gnus-check-new-newsgroups nil  ; make start up faster
+        gnus-check-new-newsgroups nil  ; make start up faster, need to manually 'gnus-find-new-newsgroup' to look for others
+        gnus-activate-level 1          ; only check this level and lower or lower on startup
         gnus-show-threads nil            ; if nil can make faster, threads again with T t
         gnus-use-cross-reference nil
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
@@ -3860,6 +3861,12 @@ its results, otherwise display STDERR with
         ;; show images in gnus, except adds
         gnus-blocked-images "ads"
         nnrss-directory "~/SeaDrive/My Libraries/news/rss")
+
+  ;; Activate groups on idle
+  (defun my-gnus-group-activate-on-idle ()
+  (run-with-idle-timer 3 nil (lambda ()
+                               (gnus-activate-all-groups 6))))
+  (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
 
   ;; Setting keybindings after evil-collection (after gnus is loaded)
   ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
