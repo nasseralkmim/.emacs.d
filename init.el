@@ -3865,7 +3865,8 @@ its results, otherwise display STDERR with
   ;; Activate groups on idle
   (defun my-gnus-group-activate-on-idle ()
     (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 3)))
-    (run-with-idle-timer 5 nil (lambda () (gnus-activate-all-groups 5))))
+    (run-with-idle-timer 5 nil (lambda () (gnus-activate-all-groups 4)))
+    (run-with-idle-timer 7 nil (lambda () (gnus-activate-all-groups 5))))
   (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
 
   ;; Setting keybindings after evil-collection (after gnus is loaded)
