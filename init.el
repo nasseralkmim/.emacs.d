@@ -3323,7 +3323,6 @@ opening a file from dired. Otherwise just regular dired."
   :elpaca (activities :type git :host github :repo "alphapapa/activities.el")
   :general
   ('normal "<f6>" 'activities-new)
-  :demand
   :config
   (activities-mode)
   (activities-tabs-mode))
