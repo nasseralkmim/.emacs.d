@@ -1216,6 +1216,15 @@ graphics."
     (org-babel-execute-subtree)
     (org-display-inline-images)))
 
+;; For some reason I need to redisplay images twice
+(use-package org-toggle-inline-images-hack
+  :elpaca nil
+  :after org
+  :general (org-mode-map "<f10>" '(lambda ()
+                                    (interactive)
+                                    (org-redisplay-inline-images)
+                                    (org-redisplay-inline-images))))
+
 ;; org image remote
 (use-package org-display-inline-image-remote
   :elpaca nil
