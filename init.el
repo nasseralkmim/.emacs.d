@@ -8,7 +8,7 @@
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
 (defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
                               :ref nil
-                              :files (:defaults (:exclude "extensions"))
+                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
                               :build (:not elpaca--activate-package)))
 (let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
        (build (expand-file-name "elpaca/" elpaca-builds-directory))
@@ -42,9 +42,9 @@
 ;; Install 'use-package' support
 (elpaca elpaca-use-package
   ;; Enable :elpaca use-package keyword.
-  (elpaca-use-package-mode)
-  ;; Assume :elpaca t unless otherwise specified.
-  (setq elpaca-use-package-by-default t))
+  (elpaca-use-package-mode))
+;; Block until current queue processed.
+(elpaca-wait)
 
 ;; 'always-defer' means that for a package to load we need a ':hook' or using a ':general' keybinding
 ;; if there is none, we need to explicitly add ':demand' to load the package
@@ -52,6 +52,7 @@
 (setq use-package-verbose nil		; don't print anything
       use-package-compute-statistics nil ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
+      use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
@@ -60,14 +61,19 @@
 
 ;; general for keybinding
 (use-package general
-  :demand
+  :ensure t
+  :demand t
   :config
   ;; keybinding on 'override' keymap are not overridden by a minor-mode. 
   (general-override-mode))
+;; Block until general is installed
+(elpaca-wait)
 
 ;; control minor-mode indication in the mode-line
 (use-package diminish
-  :demand)
+  :ensure t
+  :demand t)
+(elpaca-wait)
 
 ;; ':general' and ':diminish' add keywords to 'use-package'
 ;; need to process before continue
@@ -83,7 +89,7 @@
 
 ;; basics and better default
 (use-package emacs
-  :elpaca nil
+  :ensure nil
   :defer 1
   :general
   ('normal "gy" 'revert-buffer-quick)
@@ -173,7 +179,7 @@
   (put 'narrow-to-region 'disabled nil))
 
 (use-package pixel-scroll
-  :elpaca nil
+  :ensure nil
   :if (string-greaterp emacs-version "29") ; need emacs > 29
   :bind
   ([remap evil-scroll-down]   . pixel-scroll-interpolate-down)
@@ -188,7 +194,7 @@
 
 ;; My custom emacs theme
 (use-package seralk-theme :disabled
-  :elpaca nil
+  :ensure nil
   :general
   ("<f5>"'toggle-dark-theme)
   :init
@@ -202,14 +208,14 @@
 
 ;; Move between windows configuration
 (use-package winner
-  :elpaca nil
+  :ensure nil
   :defer 1
   :config
   (winner-mode))
 
 ;; Visit file from where you left
 (use-package saveplace
-  :elpaca nil
+  :ensure nil
   :defer 1
   :config
   (save-place-mode))
@@ -217,7 +223,7 @@
 ;; typeface
 (use-package custom-typefaces
   ;; :defer 1
-  :elpaca nil
+  :ensure nil
   :preface
   (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
   (setq default-unicode '("Noto Color Emoji"))
@@ -250,7 +256,7 @@
 
 ;; change typeface size font
 (use-package emacs-frame-zoom
-  :elpaca nil
+  :ensure nil
   :general
   ("C-M-=" 'zoom-frame)
   ("C-M--" 'zoom-frame-out)
@@ -295,7 +301,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; controls the behavior of windows
 (use-package emacs-display-windows :disabled
-  :elpaca nil
+  :ensure nil
   :init
   ;; reuse existing windows including other frames
   (customize-set-variable
@@ -312,7 +318,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (customize-set-variable 'even-window-sizes nil))
 
 (use-package abbrev
-  :elpaca nil
+  :ensure nil
   :config
   ;; abbrev for speed and less strain
   (setq-default abbrev-mode t)
@@ -323,7 +329,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; save recent visited files
 (use-package recentf
-  :elpaca nil
+  :ensure nil
   :defer 5
   :config
   (recentf-mode 1)
@@ -332,7 +338,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; Enable autorevert on specific modes
 (use-package autorevert
-  :elpaca nil
+  :ensure nil
   :if (eq system-type 'gnu/linux)
   :hook
   (text-mode . auto-revert-mode)
@@ -363,7 +369,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; completion UI (vertical list in minibuffer)
 (use-package vertico
-  :elpaca (vertico :type git :host github :repo "minad/vertico"
+  :ensure (vertico :type git :host github :repo "minad/vertico"
                      :files (:defaults "extensions/*"))
   :general
   ('insert vertico-map "C-k" 'vertico-exit-input)
@@ -376,7 +382,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
-  :elpaca nil
+  :ensure nil
   :after vertico
   :general
   (vertico-map "RET" 'vertico-directory-enter
@@ -387,14 +393,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; repeat last vertico session
 (use-package vertico-repeat
-  :elpaca nil
+  :ensure nil
   :after vertico
   :general
   ("M-r" 'vertico-repeat))
 
 ;; use vertico to complete in region with orderless in terminal
 (use-package vertico-terminal :disabled
-  :elpaca nil
+  :ensure nil
   :unless (display-graphic-p)
   :init
   ;; Use `consult-completion-in-regionegion' if Vertico is enabled.
@@ -408,7 +414,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; allows different completion UI configuration
 (use-package vertico-multiform
-  :elpaca nil
+  :ensure nil
   :after vertico
   :general
   ('insert vertico-map "C-<tab>" 'vertico-multiform-reverse)
@@ -440,7 +446,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; default completion framework
 (use-package simple
-  :elpaca nil
+  :ensure nil
   ;; :general
   ;; (minibuffer-mode-map "C-n" 'minibuffer-next-completion)
   ;; (minibuffer-mode-map "C-p" 'minibuffer-previous-completion)
@@ -455,7 +461,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; save the search history
 (use-package savehist
-  :elpaca nil
+  :ensure nil
   :defer 1
   :config
   (savehist-mode))
@@ -622,7 +628,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; insert recent openend directories in prompt
 (use-package consult-dir
-  :elpaca (consult-dir :type git :host github :repo "karthink/consult-dir") 
+  :ensure (consult-dir :type git :host github :repo "karthink/consult-dir") 
   :general
   ("C-x C-d" 'consult-dir)
   (vertico-map "C-x C-d" 'consult-dir))
@@ -634,7 +640,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `export` the set of targets are shown in an appropriate major-mode
 ;; embark-mixed-indicator: if no action is selected, buffer will pop up
 (use-package embark
-  :elpaca (embark :files (:defaults "embark-org.el"))
+  :ensure (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :general
   ('(insert visual normal) "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
@@ -668,7 +674,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; targets for org mode
 (use-package embark-org
-  :elpaca nil
+  :ensure nil
   :after embark
   :demand)
 
@@ -678,7 +684,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (all-the-icons-scale-factor 1))
 
 (use-package nerd-icons
-  :elpaca (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el"
+  :ensure (nerd-icons :host github :repo "rainstormstudio/nerd-icons.el"
                       :files (:defaults "data"))
   :defer 1
   :demand ;require
@@ -729,12 +735,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (t ,(nerd-icons-codicon "nf-cod-code") :face font-lock-warning-face))))
 
 (use-package nerd-icons-dired
-  :elpaca (nerd-icons-dired :type git :host github :repo "rainstormstudio/nerd-icons-dired")
+  :ensure (nerd-icons-dired :type git :host github :repo "rainstormstudio/nerd-icons-dired")
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-completion
-  :elpaca (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
+  :ensure (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
   ;; need to load after marginalia 
   ;; https://github.com/rainstormstudio/nerd-icons-completion/issues/4
   :after (nerd-icons marginalia)
@@ -747,7 +753,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens
   :diminish smartparens-mode
-  ;; :elpaca (:includes smartparens-config)
+  ;; :ensure (:includes smartparens-config)
   :general
   ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
   ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
@@ -775,7 +781,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq show-paren-context-when-offscreen 'overlay))
 
 (use-package smartparens-config
-  :elpaca nil
+  :ensure nil
   :demand
   :after smartparens
   :config
@@ -1015,7 +1021,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; 'org-agenda' evil keybindings
 (use-package evil-org-agenda
-  :elpaca nil
+  :ensure nil
   :after org-agenda
   :demand
   :config
@@ -1084,7 +1090,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; to use just what is needed
 (use-package org-contrib
   ;; build only selected (symlink to `build/' and make an pre-compiled '.elc')
-  :elpaca (org-contrib :files ("lisp/org-eldoc.el" ; show src block arguments
+  :ensure (org-contrib :files ("lisp/org-eldoc.el" ; show src block arguments
                                "lisp/ox-bibtex.el" ; export latex properly
                                "lisp/ox-extra.el" ; ignore headlines (need to config)
                                ))
@@ -1094,7 +1100,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (ox-extras-activate '(ignore-headlines))) 
 
 (use-package org
-  ;; :elpaca nil
+  ;; :ensure nil
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :custom-face
@@ -1161,7 +1167,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; [[gnus:nntp+news:gmane.emacs.orgmode#8735w3kshh.fsf@ddoherty.net][Email from Daniel E. Doherty: Bug: Display Inline Images from Subdirectory [9.4.4 (9.4.4-33-g5450d6-elpaplus @ /home/ded/.emacs.d/elpa/org-plus-contrib-20210322/)]​]]
 ;; TODO: does not work if the block is executed with ':async'
 (use-package org-display-inline-image-hack :disabled
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   (require 'subr-x)
@@ -1193,7 +1199,7 @@ graphics."
 ;; need to clear cache
 ;; https://list.orgmode.org/alpine.DEB.2.22.394.2212112203210.121316@shell3.miskatonic.org/T/#t
 (use-package org-refresh-inline-image-linked-hack :disabled
-  :elpaca nil
+  :ensure nil
   :after org
   :hook (org-babel-after-execute . org-refresh-inline-images)
   :init
@@ -1205,7 +1211,7 @@ graphics."
 
 ;; problem with babel execute subtree and showing images outside the subtree
 (use-package org-display-inline-image-after-execute-subtreee-hack :disabled
-  :elpaca nil
+  :ensure nil
   :after org
   :general
   (org-mode-map "C-c C-v C-s" 'org-redisplay-after-execute-subtree )
@@ -1227,7 +1233,7 @@ graphics."
 
 ;; org image remote
 (use-package org-display-inline-image-remote
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   ;; maybe too slow when there are many images
@@ -1235,13 +1241,13 @@ graphics."
 
 ;; org export
 (use-package ox :disabled
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   (setq org-export-in-background t))
 
 (use-package ox-html
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   ;; don't scale svg images
@@ -1249,7 +1255,7 @@ graphics."
 
 ;; export to markdown
 (use-package ox-md :disabled
-  :elpaca nil
+  :ensure nil
   :demand                               ; demand after some time after org is loaded
   :defer 1
   :after org)
@@ -1263,7 +1269,7 @@ graphics."
 ;; Deals with "<>" delimiters in org mode source blocks
 ;; https://emacs.stackexchange.com/a/68321
 (use-package org-<>-delimiter-hack
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   (defun org-syntax-table-modify ()
@@ -1275,7 +1281,7 @@ graphics."
 
 ;; load ob-C when executing C++ source block
 (use-package ob-C
-  :elpaca nil
+  :ensure nil
   :after org
   :commands
   (org-babel-execute:C++
@@ -1296,7 +1302,7 @@ graphics."
 
 ;; load ob-python only when executing python block
 (use-package ob-python
-  :elpaca nil
+  :ensure nil
   :after org
   :demand
   :config
@@ -1307,7 +1313,7 @@ graphics."
           (:exports . "results")))) ; export only plots by default
 
 (use-package ob-julia :disabled
-  :elpaca nil
+  :ensure nil
   :after org
   :commands org-babel-execute:julia
   :init
@@ -1337,7 +1343,7 @@ graphics."
   (defalias 'org-babel-variable-assignments:julia 'org-babel-variable-assignments:julia-vterm))
 
 (use-package ob-core
-  :elpaca nil
+  :ensure nil
   :after org
   :general
   ('normal org-mode-map "g s" (general-simulate-key "C-u C-u C-c C-v C-t"))
@@ -1348,7 +1354,7 @@ graphics."
 
 ;; custom org function
 (use-package org-image-resize-inline
-  :elpaca nil
+  :ensure nil
   :after org
   :general
   ('normal org-mode-map :prefix "SPC"
@@ -1384,7 +1390,7 @@ graphics."
 
 ;; for windows
 (use-package ob-python
-  :elpaca nil
+  :ensure nil
   :after org
   :when (eq system-type 'windows-nt)
   :init
@@ -1392,7 +1398,7 @@ graphics."
   (setq org-babel-python-command "python"))
 
 (use-package org-clock
-  :elpaca nil
+  :ensure nil
   :general
   ('normal org-mode-map :prefix "z x"
            "i" 'org-clock-in
@@ -1409,7 +1415,7 @@ graphics."
         org-duration-format (quote h:mm)))
 
 (use-package org-src
-  :elpaca nil
+  :ensure nil
   :general
   ('normal org-mode-map "z e" 'org-edit-special)
   ('normal org-src-mode-map "z e" 'org-edit-src-exit)
@@ -1439,7 +1445,7 @@ graphics."
 ;; this avoids problems with sntax highlight inside the block
 ;; https://emacs.stackexchange.com/a/73720
 (use-package org-source-noweb-delimiter
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   (defun org-babel-noweb-wrap (&optional regexp)
@@ -1457,7 +1463,7 @@ When matching, reference is stored in match group 1."
 
 ;; library of babel
 (use-package ob-lob :disabled
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   (org-babel-lob-ingest "~/.emacs.d/lisp/scripts.org"))
@@ -1475,7 +1481,7 @@ When matching, reference is stored in match group 1."
 ;; 1. 'scheduled': start the 'task' on a given date. It is shown until marked as 'done'.
 ;; 2. 'deadline': finish a 'task' by this date. It can have warnings before the deadline.
 (use-package org-agenda
-  :elpaca nil
+  :ensure nil
   :general
   ("C-c a" 'org-agenda)
   :config
@@ -1496,7 +1502,7 @@ When matching, reference is stored in match group 1."
          "⭠ now"))
 
 (use-package ox-latex
-  :elpaca nil
+  :ensure nil
   :if (eq system-type 'gnu/linux)
   :after org
   :init
@@ -1544,7 +1550,7 @@ When matching, reference is stored in match group 1."
   (advice-add 'ob-async-org-babel-execute-src-block :before #'no-hide-overlays))
 
 (use-package ob-shell
-  :elpaca nil
+  :ensure nil
   :after org
   :commands org-babel-execute:shell org-babel-execute:sh
   :demand
@@ -1566,7 +1572,7 @@ When matching, reference is stored in match group 1."
 ;; for UML diagrams in org-mode
 ;; need to install `yay plantuml`
 (use-package ob-plantuml
-  :elpaca nil
+  :ensure nil
   :commands org-babel-execute:plantuml
   :config
   (setq org-plantuml-exec-mode 'plantuml)
@@ -1595,7 +1601,7 @@ When matching, reference is stored in match group 1."
   (setq org-download-screenshot-method "flameshot gui --raw > %s"))
 
 ;; wsl specific config
-(use-package org-download
+(use-package org-download-windows :disabled
   :after org-download
   :when (string-match "-[Mm]icrosoft" operating-system-release)
   :init
@@ -1627,7 +1633,7 @@ When matching, reference is stored in match group 1."
 (use-package ispell-multi :disabled)
 
 (use-package ispell
-  :elpaca nil
+  :ensure nil
   :config
   (setq ispell-alternate-dictionary "/home/nasser/.personal"))
 
@@ -1636,7 +1642,7 @@ When matching, reference is stored in match group 1."
 ;; run 'hunspell -D' to check where dictionaries are
 ;; https://emacs.stackexchange.com/a/21379
 (use-package flyspell :disabled
-  :elpaca nil
+  :ensure nil
   :defer 1 ; add hook for 'text-mode' after 1s
   :config
   (add-hook 'text-mode-hook 'flyspell-mode)
@@ -1675,7 +1681,7 @@ When matching, reference is stored in match group 1."
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
 (use-package corfu
-  :elpaca (corfu :type git :host github :repo "minad/corfu"
+  :ensure (corfu :type git :host github :repo "minad/corfu"
                    :files (:defaults "extensions/*"))
   :general
   (corfu-map "<tab>" 'corfu-next
@@ -1697,7 +1703,7 @@ When matching, reference is stored in match group 1."
 
 ;; corfu extension
 (use-package corfu-history
-  :elpaca nil
+  :ensure nil
   :after corfu
   :config
   (corfu-history-mode 1)
@@ -1706,7 +1712,7 @@ When matching, reference is stored in match group 1."
 
 ;; `completion at point' extensions for specific candidates in `completion in region'
 (use-package cape
-  :elpaca (cape :type git :host github :repo "minad/cape")
+  :ensure (cape :type git :host github :repo "minad/cape")
   :demand
   :after corfu
   :general
@@ -1727,7 +1733,7 @@ When matching, reference is stored in match group 1."
 ;; TODO: maybe not needed anymore 
 ;; see [[orgit-log:~/.local/src/emacs/::("master")][~/.local/src/emacs/ (magit-log "master")]]
 (use-package cape-eglot
-  :elpaca nil
+  :ensure nil
   :after orderless eglot
   :init
   ;; use orderless style for completion (default is flex)
@@ -1736,7 +1742,7 @@ When matching, reference is stored in match group 1."
 
 ;; use corfu on terminal
 (use-package corfu-terminal
-  :elpaca (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
+  :ensure (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :unless (display-graphic-p)
   :after corfu
   :defer 1
@@ -1748,7 +1754,7 @@ When matching, reference is stored in match group 1."
 
 ;; completion any text based on buffer contents
 (use-package dabbrev
-  :elpaca nil
+  :ensure nil
   :general
   ("M-/" 'dabbrev-completion)           ; this can be completed with corfu
   ("C-M-/" 'dabbrev-expand)
@@ -1758,7 +1764,7 @@ When matching, reference is stored in match group 1."
 
 ;; Allows selectively display portions of program
 (use-package hideshow
-  :elpaca nil
+  :ensure nil
   :diminish hs-minor-mode
   :general
   ('normal hs-minor-mode-map "z H" 'hs-hide-all)
@@ -1813,7 +1819,7 @@ When matching, reference is stored in match group 1."
 (use-package outline
   :diminish outline-minor-mode
   :mode ("\\.inp\\'" . outline-minor-mode)
-  :elpaca nil
+  :ensure nil
   :diminish outline-minor-mode
   :hook
   ;;(prog-mode . outline-minor-mode) ; using the hideshow package
@@ -1844,7 +1850,7 @@ When matching, reference is stored in match group 1."
 
 ;; trying to make outline work with python docstring
 (use-package outline-python-regex :disabled
-  :elpaca nil
+  :ensure nil
   :after outline
   :init
   (add-hook 'python-mode-hook  '(lambda ()
@@ -1858,7 +1864,16 @@ When matching, reference is stored in match group 1."
                                              eow))))))
 
 (use-package latex
-  :elpaca auctex
+  ;; version for solving problem with evil-tex https://github.com/progfolio/elpaca/issues/217
+  :ensure (auctex :pre-build (("./autogen.sh")
+                    ("./configure"
+                     "--without-texmf-dir"
+                     "--with-packagelispdir=./"
+                     "--with-packagedatadir=./")
+                    ("make"))
+        :build (:not elpaca--compile-info) ;; Make will take care of this step
+        :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
+        :version (lambda (_) (require 'tex-site) AUCTeX-version))
   :mode ("\\.tex\\'" . LaTeX-mode)
   :commands TeX-command-sentinel
   :custom-face
@@ -1947,7 +1962,7 @@ When matching, reference is stored in match group 1."
 
 ;; preview in latex
 (use-package preview
-  :elpaca nil
+  :ensure nil
   :after latex
   :general
   (LaTeX-mode-map "C-c C-x C-l" 'preview-buffer) ; same as in org
@@ -1965,7 +1980,7 @@ When matching, reference is stored in match group 1."
 
 ;; latex function
 (use-package latex-insert-figure-from-clipboard-hack
-  :elpaca nil
+  :ensure nil
   :after latex
   :general
   (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
@@ -2005,7 +2020,7 @@ When matching, reference is stored in match group 1."
 \\end{figure}" image-file)))))
 
 (use-package tex-fold
-  :elpaca nil
+  :ensure nil
   :after latex
   :config
   ;; add tables and figure to fold
@@ -2016,7 +2031,7 @@ When matching, reference is stored in match group 1."
 ;; fake headers for latex
 ;; https://emacs.stackexchange.com/a/3103
 (use-package latex-fake-header
-  :elpaca nil
+  :ensure nil
   :after latex
   :init
   ;; extra outline headers 
@@ -2065,7 +2080,7 @@ When matching, reference is stored in match group 1."
         reftex-label-menu-flags '(nil nil nil nil nil nil nil nil)))
 
 (use-package dired
-  :elpaca nil
+  :ensure nil
   :commands dired
   :hook
   (dired-mode . dired-hide-details-mode)
@@ -2130,7 +2145,7 @@ When matching, reference is stored in match group 1."
 ;; improved dired
 ;; problem with tramp
 (use-package dirvish :disabled
-  :elpaca (dirvish :type git :host github :repo "alexluigit/dirvish")
+  :ensure (dirvish :type git :host github :repo "alexluigit/dirvish")
   :general
   ('normal dired-mode-map "Y" 'dirvish-copy-file-path)
   :init
@@ -2187,7 +2202,7 @@ When matching, reference is stored in match group 1."
 ;; when with custom theme and GUI
 (use-package highlight-current-window :disabled
   :when (display-graphic-p)
-  :elpaca nil
+  :ensure nil
   :init
   (defun highlight-selected-window ()
     "Highlight selected window with a different background color.
@@ -2242,7 +2257,7 @@ Only if there is more than one window opened."
 
 ;; this mode is used to highlight current window
 (use-package face-remap
-  :elpaca nil
+  :ensure nil
   :diminish (buffer-face-mode))
 
 ;; syntax highlight in html export of org-mode source blocks
@@ -2257,7 +2272,7 @@ Only if there is more than one window opened."
 
 ;; mode for C++
 (use-package c++-mode :disabled
-  :elpaca nil
+  :ensure nil
   :mode ("\\.cpp\\'" . c++-mode)
   :general
   (c++-mode-map "C-x c" 'compile)
@@ -2284,7 +2299,7 @@ Only if there is more than one window opened."
 ;; Specific for c++ with treesit
 ;; not ready yet
 (use-package c++ts-mode
-  :elpaca nil
+  :ensure nil
   :general
   (c++-ts-mode-map "C-x c" 'compile)
   :init
@@ -2343,7 +2358,7 @@ Only if there is more than one window opened."
         python-check-command "/home/nasser/.local/bin/flake8"))
 
 (use-package python-ts
-  :elpaca nil
+  :ensure nil
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :general
@@ -2418,7 +2433,7 @@ Only if there is more than one window opened."
 ;; dependency of consult-bibtex
 (use-package bibtex-completion
   :after consult-bibtex
-  :elpaca (bibtex-completion :host github
+  :ensure (bibtex-completion :host github
                                :repo "tmalsburg/helm-bibtex"
                                :files (:defaults (:exclude "helm-bibtex.el" "ivy-bibtex.el")))
   :init
@@ -2431,7 +2446,7 @@ Only if there is more than one window opened."
 
 ;; using okular to at least view the documents...
 (use-package bibtex-completion-wsl
-  :elpaca nil
+  :ensure nil
   :when (string-match "-[Mm]icrosoft" operating-system-release)
   :after consult-bibtex
   :init
@@ -2442,7 +2457,7 @@ Only if there is more than one window opened."
 ;; depends on helm-bibtex
 (use-package consult-bibtex
   :if (eq system-type 'gnu/linux)
-  :elpaca (consult-bibtex :host github
+  :ensure (consult-bibtex :host github
                             :repo "mohkale/consult-bibtex")
   :general
   ("C-c b" 'consult-bibtex)
@@ -2452,7 +2467,7 @@ Only if there is more than one window opened."
 
 ;; bibtex completion add option for pdf view (one for annotation other for viewing)
 (use-package consult-bibtex-annotation
-  :elpaca nil
+  :ensure nil
   :after consult-bibtex
   :init
   (defun bibtex-completion-open-pdf-annotation (keys &optional fallback-action)
@@ -2464,7 +2479,7 @@ Only if there is more than one window opened."
 
 ;; option to open with evince for printing
 (use-package consult-bibtex-evince
-  :elpaca nil
+  :ensure nil
   :after consult-bibtex
   :init
   (defun bibtex-completion-open-pdf-evince (keys &optional fallback-action)
@@ -2476,7 +2491,7 @@ Only if there is more than one window opened."
 
 ;; option for open with pdf-tools (default with find-file when `openwith-mode' is disabled) 
 (use-package consult-bibtex-pdftools
-  :elpaca nil
+  :ensure nil
   :after consult-bibtex
   :init
   (defun bibtex-completion-open-pdf-tools (keys &optional fallback-action)
@@ -2507,7 +2522,7 @@ Only if there is more than one window opened."
 
 ;; function to open with xournal
 (use-package citar-annotation
-  :elpaca nil
+  :ensure nil
   :after citar :disabled
   :init)
 
@@ -2515,20 +2530,20 @@ Only if there is more than one window opened."
   :commands biblio-lookup)
 
 (use-package server
-  :elpaca nil
+  :ensure nil
   :defer 1
   :config
   (or (server-running-p)
       (server-start)))
 
 (use-package table
-  :elpaca nil
+  :ensure nil
   :after org)
 
 ;; needs to be added manually to .emacs.d/lisp folder
 (use-package wsl-path :disabled
   :if (not (string-match "-[Mm]icrosoft" operating-system-release))
-  :elpaca nil
+  :ensure nil
   :load-path "./lisp"
   :commands (wsl-path-activate
              wsl-path-convert-file-name)
@@ -2559,7 +2574,7 @@ Only if there is more than one window opened."
 
 ;; browser the web inside emacs
 (use-package eww
-  :elpaca nil
+  :ensure nil
   :general
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal eww-mode-map "C-c y" 'eww-copy-page-url)
@@ -2660,7 +2675,7 @@ Only if there is more than one window opened."
 
 ;; update time stamp of org files
 (use-package time-stamp
-  :elpaca nil
+  :ensure nil
   :after org :demand				; load after org
   :hook (org-mode . (lambda ()
                       (add-hook 'before-save-hook 'time-stamp)))
@@ -2679,14 +2694,14 @@ Only if there is more than one window opened."
 
 ;; don't change background when in terminal
 (use-package terminal-disable-bg :disabled
-  :elpaca nil
+  :ensure nil
   :unless (display-graphic-p)
   :init
   (set-face-background 'default "undefined"))
 
 (use-package repeat
   ;; :if (string-greaterp emacs-version "28") ; need emacs > 28
-  :elpaca nil
+  :ensure nil
   :defer 1
   :demand
   :config
@@ -2697,7 +2712,7 @@ Only if there is more than one window opened."
 
 ;; built in windows resize functions
 (use-package window
-  :elpaca nil
+  :ensure nil
   :general
   ("C-c w" '(:keymap resize-window-repeat-map))
   ("C-x C-o" 'other-window)
@@ -2710,7 +2725,7 @@ Only if there is more than one window opened."
 
 ;; create backlinks when linking org-mode headings
 (use-package org-super-links
-  :elpaca (org-super-links :type git :host github :repo "toshism/org-super-links")
+  :ensure (org-super-links :type git :host github :repo "toshism/org-super-links")
   ;; :after org  ; can use outside of org-mode, so use the keybindings to load
   :general
   (:prefix "C-c s"
@@ -2730,7 +2745,7 @@ Only if there is more than one window opened."
 ;; loads the org-id library from org repository
 ;; for creating org-ids for more robust linking, avoid referencing issues
 (use-package org-id
-  :elpaca nil
+  :ensure nil
   :after org
   :demand                               ; explicitly require 'org-id'
   :config
@@ -2739,7 +2754,7 @@ Only if there is more than one window opened."
 
 ;; citations support in org-mode
 (use-package oc
-  :elpaca nil
+  :ensure nil
   :after org
   :general
   (org-mode-map "C-c C-b" 'org-cite-insert)
@@ -2767,13 +2782,13 @@ Only if there is more than one window opened."
 ;; highlight based on scope
 (use-package hl-indent-scope :disabled
   :when (display-graphic-p)
-  :elpaca (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
+  :ensure (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
   :hook
   (prog-mode . hl-indent-scope-mode))
 
 ;; emacs built in version control
 (use-package vc-git
-  :elpaca nil
+  :ensure nil
   :general
   ("C-x v p" 'vc-push)
   :hook
@@ -2796,7 +2811,7 @@ Only if there is more than one window opened."
 ;; 
 ;; The container ID can be found with `sudo docker ps'
 (use-package tramp
-  :elpaca nil
+  :ensure nil
   :config
   ;; scp is faster than ssh for copying files, but scp is apparently deprecated
   ;; https://www.reddit.com/r/emacs/comments/xul3qm/how_to_make_tramp_faster/
@@ -2834,7 +2849,7 @@ Only if there is more than one window opened."
 
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
-  :elpaca nil
+  :ensure nil
   :general
   ("C-x C-b" 'ibuffer)
   :config
@@ -2870,7 +2885,7 @@ Only if there is more than one window opened."
 ;; https://github.com/casouri/tree-sitter-module
 ;; and put in ./emacs.d/tree-sitter
 (use-package treesit
-  :elpaca nil
+  :ensure nil
   :general
   ('normal c++-ts-mode-map "zj" 'treesit-end-of-defun)
   ('normal c++-ts-mode-map "zk" 'treesit-beginning-of-defun)
@@ -2904,7 +2919,7 @@ Only if there is more than one window opened."
 
 ;; fold based on tree sitter syntax tree
 (use-package ts-fold :disabled
-  :elpaca (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
+  :ensure (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
   :general
   ('normal :predicate '(outline-on-heading-p) "<tab>" 'evil-toggle-fold)
   :hook
@@ -2917,7 +2932,7 @@ Only if there is more than one window opened."
 
 ;; use tree sitter as evil text objects
 (use-package evil-textobj-tree-sitter :disabled
-  :elpaca (evil-textobj-tree-sitter :type git
+  :ensure (evil-textobj-tree-sitter :type git
                                       :host github
                                       :repo "meain/evil-textobj-tree-sitter"
                                       :files (:defaults "queries"))
@@ -2931,7 +2946,7 @@ Only if there is more than one window opened."
   (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner")))
 
 (use-package hide-comnt :disabled
-  :elpaca nil
+  :ensure nil
   :general ('normal "g h c" 'hide/show-comments-toggle)
   :commands hide/show-comments-toggle)
 
@@ -2939,7 +2954,7 @@ Only if there is more than one window opened."
 
 ;; config for windows
 (use-package emacs-windows-config
-  :elpaca nil
+  :ensure nil
   :if (eq system-type 'windows-nt)
   :init
   (setq w32-get-true-file-attributes nil
@@ -3018,7 +3033,7 @@ opening a file from dired. Otherwise just regular dired."
         avy-all-windows nil))           ; restrict to one window
 
 (use-package all-the-icons-completion
-  :elpaca (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
+  :ensure (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
   :when (display-graphic-p)
   :after marginalia all-the-icons
   :defer 1
@@ -3042,7 +3057,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; Built in language server.
 (use-package eglot
-  :elpaca nil
+  :ensure nil
   :custom-face
   (eglot-highlight-symbol-face ((t (:underline t :weight bold))))
   :general
@@ -3096,7 +3111,7 @@ opening a file from dired. Otherwise just regular dired."
 (use-package flymake-mypy :disabled     ; for some reason not working, I'm
                                         ; relying on the language server for
                                         ; type check now
-  :elpaca (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
+  :ensure (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
   :hook
   (eglot-managed-mode . (lambda ()
                            (when (or (derived-mode-p 'python-mode)
@@ -3123,7 +3138,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; 
 (use-package eglot-ltex
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
-  :elpaca (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
+  :ensure (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-eglot-ltex
   :init
   ;; apparently the newer version does not work 
@@ -3154,7 +3169,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; need to install grammarly-languageserver
 (use-package eglot-grammarly
-  :elpaca (:host github :repo "emacs-grammarly/eglot-grammarly")
+  :ensure (:host github :repo "emacs-grammarly/eglot-grammarly")
   :commands start-eglot-grammarly 
   :init
   (defun start-eglot-grammarly ()
@@ -3190,11 +3205,11 @@ opening a file from dired. Otherwise just regular dired."
   )
 
 (use-package svg-lib
-  :elpaca (svg-lib :type git :host github :repo "rougier/svg-lib"))
+  :ensure (svg-lib :type git :host github :repo "rougier/svg-lib"))
 
 ;; Icons for completion in region.
 (use-package kind-icon
-  :elpaca (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
+  :ensure (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
   :after corfu 
   :custom
   (kind-icon-default-face 'corfu-default)
@@ -3202,13 +3217,13 @@ opening a file from dired. Otherwise just regular dired."
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (use-package image-mode
-  :elpaca nil
+  :ensure nil
   :config
   (setq image-animate-loop t))
 
 ;; Shows which function in the mode line.
 (use-package which-func :disabled ; using breadcrumb
-  :elpaca nil
+  :ensure nil
   :hook
   (prog-mode . which-function-mode))
 
@@ -3258,7 +3273,7 @@ opening a file from dired. Otherwise just regular dired."
       ad-do-it)))
 
 (use-package org-file-apps
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   (setq org-file-apps
@@ -3273,7 +3288,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; Specific for terminal emacs to open images
 (use-package org-file-apps-terminal
-  :elpaca nil
+  :ensure nil
   :if (not (display-graphic-p))
   :after org
   :init
@@ -3310,7 +3325,7 @@ opening a file from dired. Otherwise just regular dired."
   (doom-themes-org-config))
 
 (use-package eldoc
-  :elpaca nil
+  :ensure nil
   :diminish eldoc-mode
   :hook (org-mode . eldoc-mode)
   :config
@@ -3321,7 +3336,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; save windows configurations and use regular bookmarks file
 (use-package burly :disabled
-  :elpaca (burly :type git :host github :repo "alphapapa/burly.el")
+  :ensure (burly :type git :host github :repo "alphapapa/burly.el")
   :general
   ('normal "<f6>" 'burly-bookmark-windows)
   :config
@@ -3329,7 +3344,7 @@ opening a file from dired. Otherwise just regular dired."
   (burly-tabs-mode))
 
 (use-package activities
-  :elpaca (activities :type git :host github :repo "alphapapa/activities.el")
+  :ensure (activities :type git :host github :repo "alphapapa/activities.el")
   :general
   ('normal "<f6>" 'activities-new)
   :config
@@ -3346,7 +3361,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
 (use-package detached :disabled
-  :elpaca (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
+  :ensure (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ;; ('normal "<f7>" 'detached-open-session)
   ([remap async-shell-command] 'detached-shell-mode)
@@ -3440,13 +3455,13 @@ opening a file from dired. Otherwise just regular dired."
 ;; I don't know why it fails on the first preview call
 (use-package org-auctex :disabled; does not play nicely when there is $ in shell src blocks
   :after org
-  :elpaca (org-auctex :type git :host github :repo "karthink/org-auctex")
+  :ensure (org-auctex :type git :host github :repo "karthink/org-auctex")
   :hook (org-mode . org-auctex-mode))
 
 ;; query for org
 (use-package org-ql :disabled
   :after org
-  :elpaca (org-ql :host github :repo "alphapapa/org-ql"
+  :ensure (org-ql :host github :repo "alphapapa/org-ql"
                     :files (:defaults (:exclude "helm-org-ql.el"))))
 
 ;; allows inline animations in org
@@ -3469,7 +3484,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; async support for dired
 (use-package dired-async
-  :elpaca nil
+  :ensure nil
   :hook (dired-mode . dired-async-mode))
 
 ;; try later as alternative to dired-async
@@ -3481,7 +3496,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; function to run local command on remote file
 ;; https://emacs.stackexchange.com/questions/42252/run-local-command-on-remote-file-with-tramp
 (use-package dired-local-command-on-remote
-  :elpaca nil
+  :ensure nil
   :after dired
   :general
   ('normal dired-mode-map "\"" 'dired-do-local-command)
@@ -3509,7 +3524,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; and unzip write-good.zip -d ~/.config/vale/styles/
 ;; add add to the .vale.ini the "StylesPath = /home/nasser/.config/vale/styles"
 (use-package flymake-vale
-  :elpaca (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
+  :ensure (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
   :commands flymake-vale-load)
 
 ;; Query synonyms
@@ -3535,7 +3550,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; show org-babel error or warning when execute block
 ;; just using prologue command is sufficient
 (use-package org-babel-eval-verbose
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   (defvar org-babel-eval-verbose nil
@@ -3591,7 +3606,7 @@ its results, otherwise display STDERR with
 
 ;; deal with ANSI escape sequences for coloring
 (use-package ansi-color
-  :elpaca nil
+  :ensure nil
   :init
   ;; for compile mode
   ;; https://www.reddit.com/r/emacs/comments/kbwkca/compile_buffer_show_weird_symbols/
@@ -3613,7 +3628,7 @@ its results, otherwise display STDERR with
 
 ;; custom detangle function
 (use-package org-babel-detangle
-  :elpaca nil
+  :ensure nil
   :after org
   :commands org-babel-detangle-bg
   :general
@@ -3631,7 +3646,7 @@ its results, otherwise display STDERR with
   :hook (c-mode-common . clang-format+-mode))
 
 (use-package org-footnote
-  :elpaca nil
+  :ensure nil
   :after org
   :init
   ;; put footnotes at the current section
@@ -3651,7 +3666,7 @@ its results, otherwise display STDERR with
 ;; 'gdb-mi.el' is the file where the variables are defined so statements in
 ;; ':config' would be evaluated after this file is loaded.
 (use-package gdb-mi
-  :elpaca nil
+  :ensure nil
   :general
   (gud-global-map "C-a" 'gud-run)
   :config
@@ -3699,7 +3714,7 @@ its results, otherwise display STDERR with
 ;; https://stackoverflow.com/a/14866268 
 ;; does not work, maybe because of the temp file
 (use-package flymake-org-edit-special-c++ :disabled
-  :elpaca nil
+  :ensure nil
   :after org
   :hook
   (org-src-mode . (lambda ()
@@ -3718,7 +3733,7 @@ its results, otherwise display STDERR with
 
 ;; tags with different colors in org
 (use-package org-rainbow-tags
-  :elpaca (:host github :repo "KaratasFurkan/org-rainbow-tags")
+  :ensure (:host github :repo "KaratasFurkan/org-rainbow-tags")
   :hook (org-mode . org-rainbow-tags-mode))
 
 ;; python support for org-edit-special
@@ -3747,7 +3762,7 @@ its results, otherwise display STDERR with
 
 ;; Unified interface for 'secrets' backends
 (use-package auth-source
-  :elpaca nil
+  :ensure nil
   :commands auth-source-search
   :init
   (setq auth-sources '((:source "/home/nasser/SeaDrive/My Libraries/secrets/.authinfo.gpg"))))
@@ -3755,7 +3770,7 @@ its results, otherwise display STDERR with
 ;; hide everything except current heading
 ;; https://stackoverflow.com/a/28031539/20449842
 (use-package org-show-current-tidyly
-  :elpaca nil
+  :ensure nil
   :after org
   :general
   ('normal org-mode-map "z =" 'org-show-current-heading-tidily)
@@ -3798,7 +3813,7 @@ its results, otherwise display STDERR with
 ;; 'gnus-summary-kill-thread' "collapse" a thread by marking it as-read. With prefix-argument do the opposite.
 ;; 'gnus-group-catchup-current' mark all messages in a group as-read.
 (use-package gnus
-  :elpaca nil
+  :ensure nil
   :general
   ("C-x C-m" 'gnus) 
   ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
@@ -3898,7 +3913,7 @@ its results, otherwise display STDERR with
 ;; Set parameter for each group
 ;; use email (and smpt server) according to group
 (use-package gnus-group-parameters
-  :elpaca nil
+  :ensure nil
   :after gnus
   :init
   ;; (info "(gnus) Group Parameters")
@@ -3925,7 +3940,7 @@ its results, otherwise display STDERR with
 
 ;; Enable topic mode to make it more organized
 (use-package gnus-topic
-  :elpaca nil
+  :ensure nil
   :after gnus
   :demand
   :hook
@@ -3959,7 +3974,7 @@ its results, otherwise display STDERR with
 ;; https://github.com/minad/cape/pull/50/commits
 (use-package cape-bbdb :disabled
   :after cape
-  :elpaca nil
+  :ensure nil
   :hook
   (message-mode . bbdb-setup-cape)
   :init
@@ -4040,7 +4055,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Highlight current line
 (use-package hl-line
-  :elpaca nil
+  :ensure nil
   :hook
   (prog-mode . hl-line-mode)
   (text-mode . hl-line-mode)
@@ -4050,7 +4065,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq hl-line-sticky-flag nil))
 
 (use-package isearch
-  :elpaca nil
+  :ensure nil
   :general
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
@@ -4081,7 +4096,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; https://panadestein.github.io/emacsd/#org602eb51
 ;; add indentation, background color https://github.com/chenyanming/shrface#hacking-the-shr-tag-pre-highlightel
 (use-package shr-tag-pre-highlight-hack :disabled
-  :elpaca nil
+  :ensure nil
   :after shrface
   :init
   (defun shrface-shr-tag-pre-highlight (pre)
@@ -4131,7 +4146,7 @@ If INTERACTIVE is nil the function acts like a Capf."
    shrface-bullets-bullet-list '("\*")))
 
 (use-package speedbar 
-  :elpaca nil)
+  :ensure nil)
 
 ;; translation package
 (use-package go-translate
@@ -4159,7 +4174,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
-  :elpaca nil
+  :ensure nil
   :commands connect-uibk
   :init
   (defun connect-vpn ()
@@ -4206,7 +4221,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Shortcut to open notes directory
 (use-package notes
-  :elpaca nil
+  :ensure nil
   :general
   ("<f8>" (lambda ()
             (interactive)
@@ -4246,7 +4261,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Setup template for capture gcal 
 (use-package org-capture-template
-  :elpaca nil
+  :ensure nil
   :general
   ("C-c c" 'org-capture)
   :hook
@@ -4331,7 +4346,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Drawing link support in 'org-mode'
 ;; It is not working to export to latex
 (use-package edraw
-  :elpaca (edraw :type git :host github :repo "misohena/el-easydraw")
+  :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
   :init
   (with-eval-after-load 'org
     ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
@@ -4376,14 +4391,14 @@ If INTERACTIVE is nil the function acts like a Capf."
         blamer-idle-time 2))
 
 (use-package cmake
-  :elpaca nil
+  :ensure nil
   :mode ("\\CMakeLists.txt\\'" . cmake-ts-mode))
 
 ;; LLM interface for emacs
 ;; For Ollama, need to download and execute "ollama"
 ;; Also need to run a model to pull manifest "ollama run mistral"
 (use-package gptel
-  :elpaca (gptel :type git :host github :repo "karthink/gptel")
+  :ensure (gptel :type git :host github :repo "karthink/gptel")
   :general
   ("C-h g" 'gptel-menu)
   :config
@@ -4400,7 +4415,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
-  :elpaca nil
+  :ensure nil
   :hook
   ;; disable autofill mode on emails
   (message-mode . (lambda () (auto-fill-mode -1))))
@@ -4408,7 +4423,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; fold for '.xml' with 'hide-show'
 ;; https://emacs.stackexchange.com/questions/2884/the-old-how-to-fold-xml-question
 (use-package xml-hs-fold
-  :elpaca nil
+  :ensure nil
   :after (hideshow nxml-mode)
   :init
   (add-to-list 'hs-special-modes-alist
@@ -4427,7 +4442,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; One can create a symlink ('dired-do-symlink') from the main list of words file to this 'en.dic' file.
 ;; Remember to disable 'flyspell'.
 (use-package jinx
-  :elpaca (jinx :host github :repo "minad/jinx"
+  :ensure (jinx :host github :repo "minad/jinx"
                 :files (:defaults "*.c"))
   :hook
   (prog-mode . jinx-mode)
@@ -4441,7 +4456,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Change default compile command
 (use-package compile
-  :elpaca nil
+  :ensure nil
   :general
   ([remap compile] '(lambda ()
                        (interactive)
@@ -4451,13 +4466,13 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq compile-command "make -k -C ../build"))
 
 (use-package cape-yasnippet :disabled
-  :elpaca (cape-yasnippet :host github :repo "elken/cape-yasnippet")
+  :ensure (cape-yasnippet :host github :repo "elken/cape-yasnippet")
   :after yasnippet corfu
   :init
   (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (use-package ediff
-  :elpaca nil
+  :ensure nil
   :config
   (setq
    ;; control panel on the same buffer
@@ -4491,7 +4506,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Built in dictionary look up
 (use-package dictionary
-  :elpaca nil
+  :ensure nil
   :general
   ("C-h l" 'dictionary-lookup-definition) ; search for word at a point
   :config
@@ -4526,7 +4541,7 @@ If INTERACTIVE is nil the function acts like a Capf."
         sideline-display-backend-name t))      ; display the backend name
 
 (use-package sideline-eldoc :disabled
-  :elpaca (sideline-eldoc :host github :repo "ginqi7/sideline-eldoc")
+  :ensure (sideline-eldoc :host github :repo "ginqi7/sideline-eldoc")
   :after sideline
   :diminish sideline-mode
   :demand
@@ -4534,7 +4549,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (add-to-list 'sideline-backends-right '(sideline-eldoc . up)))
 
 (use-package sideline-blame :disabled
-  :elpaca (sideline-blame :host github :repo "emacs-sideline/sideline-blame")
+  :ensure (sideline-blame :host github :repo "emacs-sideline/sideline-blame")
   :after sideline
   :demand
   :config
@@ -4542,7 +4557,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; ChatGTP client that integrates with 'org-mode'
 (use-package chatgpt-shell :disabled
-  :elpaca (chatgpt-shell :host github :repo "xenodium/chatgpt-shell")
+  :ensure (chatgpt-shell :host github :repo "xenodium/chatgpt-shell")
   :config
   ;; Maybe use a lambda to prevent password prompt
   (setq chatgpt-shell-openai-key (auth-source-pick-first-password :host "api.openai.com"))
@@ -4559,7 +4574,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
 (use-package breadcrumb
-  :elpaca (breadcrumb :host github :repo "joaotavora/breadcrumb")
+  :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb")
   :hook
   (prog-mode . breadcrumb-mode)
   (org-mode . breadcrumb-mode))
@@ -4572,7 +4587,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (circadian-setup))
 
 (use-package pueue
-  :elpaca (pueue :host github :repo "xFA25E/pueue")
+  :ensure (pueue :host github :repo "xFA25E/pueue")
   :hook (pueue-mode . (lambda ()
                         (setq auto-revert-interval 0)
                         (auto-revert-mode)))
@@ -4585,14 +4600,14 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Matchs the cursor color when running emacs in terminal
 ;; makes it much more visible, but it does not change the foreground when over the text as in the GUI
 (use-package term-cursor-color
-  :elpaca (term-cursor-color :host github :repo "CyberShadow/term-cursor-color")
+  :ensure (term-cursor-color :host github :repo "CyberShadow/term-cursor-color")
   :if (not (display-graphic-p))
   :init
   (term-cursor-color-mode))
 
 ;; AI code completion based on "huggin face" api
 (use-package starhugger :disabled
-  :elpaca (starhugger :url "https://gitlab.com/daanturo/starhugger.el")
+  :ensure (starhugger :url "https://gitlab.com/daanturo/starhugger.el")
   :general
   ("M-/" 'starhugger-trigger-suggestion)
   :config
@@ -4622,7 +4637,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (add-hook 'starhugger-inlining-mode-hook #'my-starhugger-inline-mode-h))
 
 (use-package combobulate
-  :elpaca (combobulate :url "https://github.com/mickeynp/combobulate")
+  :ensure (combobulate :url "https://github.com/mickeynp/combobulate")
   :general
   ('normal combobulate-key-map :prefix "z"
            "k" 'combobulate-navigate-beginning-of-defun
@@ -4637,7 +4652,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; use same frame for speedbar
 (use-package sr-speedbar :disabled      ; not working
-  :elpaca (sr-speedbar :url "https://www.emacswiki.org/emacs/sr-speedbar.el")
+  :ensure (sr-speedbar :url "https://www.emacswiki.org/emacs/sr-speedbar.el")
   :demand
   :general
   ('normal "g s" 'sr-speedbar-toggle))
@@ -4649,7 +4664,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   ('(normal visual) "Y" 'clipetty-kill-ring-save))
 
 (use-package vertical-divider-term :disabled ; not reliable
-  :elpaca nil
+  :ensure nil
   :if (not (display-graphic-p))
   :init
   (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│)))
@@ -4662,7 +4677,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Add text-mode to files without format extension
 (use-package custom-files-auto-mode
-  :elpaca nil
+  :ensure nil
   :init
   ;; files that end with ".out"
   ;; "\'" matches end of a string
@@ -4671,12 +4686,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   (add-to-list 'auto-mode-alist '("\\.out\\'" . text-mode)))
 
 (use-package tab-bar
-  :elpaca nil
+  :ensure nil
   :general
   ("C-x t 2" 'tab-new))
 
 (use-package xref
-  :elpaca nil
+  :ensure nil
   :config
   ;; Need to set both
   (setq xref-show-definitions-function 'xref-show-definitions-completing-read)
@@ -4685,7 +4700,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Show guides on indentation level
 (use-package indent-bars
   :if (display-graphic-p)
-  :elpaca (indent-bars :url "https://github.com/jdtsmith/indent-bars")
+  :ensure (indent-bars :url "https://github.com/jdtsmith/indent-bars")
   :hook (prog-mode . indent-bars-mode)
   :config
   (setq indent-bars-pattern "."
@@ -4693,7 +4708,7 @@ If INTERACTIVE is nil the function acts like a Capf."
         indent-bars-highlight-current-depth '(:width 0.25)))
 
 (use-package docview
-  :elpaca nil
+  :ensure nil
   :general
   ('normal doc-view-mode-map "j" 'doc-view-scroll-up-or-next-page)
   ('normal doc-view-mode-map "k" 'doc-view-scroll-down-or-previous-page))
@@ -4701,7 +4716,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Use eglot when in org-edit-special (hack, experimental)
 ;; https://github.com/joaotavora/eglot/issues/216
 (use-package org-edit-special-with-eglot-hack
-  :elpaca nil
+  :ensure nil
   :after org 
   :init
   (defun mb/org-babel-edit ()
@@ -4733,7 +4748,7 @@ absolute path. Finally load eglot."
       (standard-themes-load-light)))
 
 (use-package org-treesit-src-blocks
-  :elpaca nil
+  :ensure nil
   :after org
   :config
   ;; https://old.reddit.com/r/emacs/comments/15yxdz3/weekly_tips_tricks_c_thread/jy03758/
@@ -4744,7 +4759,7 @@ absolute path. Finally load eglot."
                 (_ mode)))))
 
 (use-package immersive-translate :disabled
-  :elpaca (immersive-translate :url "https://github.com/Elilif/emacs-immersive-translate.git")
+  :ensure (immersive-translate :url "https://github.com/Elilif/emacs-immersive-translate.git")
   :config
   (immersive-translate-setup)
   (setq immersive-translate-backend 'trans
@@ -4754,7 +4769,7 @@ absolute path. Finally load eglot."
 ;; Call 'ediff' on marked dired files on different buffers
 ;; https://stackoverflow.com/a/25944631
 (use-package ediff-dired-marked-files-hack
-  :elpaca nil
+  :ensure nil
   :init
   (defun mkm/ediff-marked-pair ()
    "Run ediff-files on a pair of files marked in dired buffer"
@@ -4786,7 +4801,7 @@ absolute path. Finally load eglot."
            (t (error "mark no more than 2 files"))))))
 
 (use-package dape
-  :elpaca (dape :type git :host github :repo "svaante/dape")
+  :ensure (dape :type git :host github :repo "svaante/dape")
   :config
   ;; Add inline variable hints, this feature is highly experimental
   (setq dape-inline-variables nil))
@@ -4797,7 +4812,7 @@ absolute path. Finally load eglot."
 ;; 2. use bibtex key as pdf name
 ;; 3. download pdf from other sources
 (use-package zotra :disabled
-  :elpaca (zotra :type git :host github :repo "mpedramfar/zotra")
+  :ensure (zotra :type git :host github :repo "mpedramfar/zotra")
   :commands zotra-add-entry ; add entry from identifier
   :config
   (setq zotra-backend 'zotra-server)
@@ -4814,7 +4829,7 @@ absolute path. Finally load eglot."
   (solaire-global-mode))
 
 (use-package catppuccin :disabled
-  :elpaca (catppuccin :type git :host github :repo "catppuccin/emacs")
+  :ensure (catppuccin :type git :host github :repo "catppuccin/emacs")
   :custom-face
   (org-level-1 ((t (:slant oblique :box t :height 1.0))))
   (org-level-2 ((t (:underline t :inherit outline-1 :height 1.0 :weight bold))))
@@ -4831,7 +4846,7 @@ absolute path. Finally load eglot."
 ;; Need to build and install rust binary "emacs-lsp-booster" which should be on the path
 ;; https://github.com/blahgeek/emacs-lsp-booster
 (use-package eglot-booster
-  :elpaca (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
+  :ensure (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
   :after eglot
   :init (eglot-booster-mode))
 
