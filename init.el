@@ -1063,6 +1063,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vundo
   :commands vundo)
 
+;; Need to be explicitly required for magit
+;; https://emacs.stackexchange.com/questions/50592/whats-this-slot-missing-invalid-slot-name-transient-prefix-transient-pref
+(use-package transient
+  :demand t)
+
 (use-package magit
   :general
   ("C-x g" 'magit-status)
@@ -1224,7 +1229,7 @@ graphics."
 
 ;; For some reason I need to redisplay images twice
 (use-package org-toggle-inline-images-hack
-  :elpaca nil
+  :ensure nil
   :after org
   :general (org-mode-map "<f10>" '(lambda ()
                                     (interactive)
