@@ -2460,7 +2460,7 @@ Only if there is more than one window opened."
 
 ;; search bibtex bibliography with consult
 ;; depends on helm-bibtex
-(use-package consult-bibtex
+(use-package consult-bibtex :disabled
   :if (eq system-type 'gnu/linux)
   :ensure (consult-bibtex :host github
                             :repo "mohkale/consult-bibtex")
@@ -2471,7 +2471,7 @@ Only if there is more than one window opened."
     (add-to-list 'embark-keymap-alist '(bibtex-completion . consult-bibtex-embark-map))))
 
 ;; bibtex completion add option for pdf view (one for annotation other for viewing)
-(use-package consult-bibtex-annotation
+(use-package consult-bibtex-annotation :disabled
   :ensure nil
   :after consult-bibtex
   :init
@@ -2483,7 +2483,7 @@ Only if there is more than one window opened."
   (define-key consult-bibtex-embark-map "n" #'consult-bibtex-open-pdf-annotation))
 
 ;; option to open with evince for printing
-(use-package consult-bibtex-evince
+(use-package consult-bibtex-evince :disabled
   :ensure nil
   :after consult-bibtex
   :init
@@ -2495,7 +2495,7 @@ Only if there is more than one window opened."
   (define-key consult-bibtex-embark-map "p" #'consult-bibtex-open-pdf-evince))
 
 ;; option for open with pdf-tools (default with find-file when `openwith-mode' is disabled) 
-(use-package consult-bibtex-pdftools
+(use-package consult-bibtex-pdftools :disabled
   :ensure nil
   :after consult-bibtex
   :init
@@ -2505,31 +2505,25 @@ Only if there is more than one window opened."
   (consult-bibtex-embark-action consult-bibtex-open-pdf-tools bibtex-completion-open-pdf-tools)
   (define-key consult-bibtex-embark-map "t" #'consult-bibtex-open-pdf-tools))
 
-(use-package citar :disabled
+(use-package citar
   :general
-  ("C-c b" 'citar-insert-citation)
+  ("C-c b" 'citar-open)
+  :hook
+  (LaTeX-mode . citar-capf-setup)
+  (org-mode . citar-capf-setup)
   :custom
   (citar-bibliography '("~/.bibliography.bib"))
   :config
   (setq citar-library-paths '("~/SeaDrive/My Libraries/bibliography/"))
-  ;; icons
-  (setq citar-symbols
-        `((file ,(all-the-icons-faicon "file-o" :face 'all-the-icons-green :v-adjust -0.1) . " ")
-          (note ,(all-the-icons-material "speaker_notes" :face 'all-the-icons-blue :v-adjust -0.3) . " ")
-          (link ,(all-the-icons-octicon "link" :face 'all-the-icons-orange :v-adjust 0.01) . " ")))
-  (setq citar-symbol-separator "  ")
+  ;; open xournalpp and pdf externally
+  (add-to-list 'citar-file-open-functions '("xopp" . (lambda (file) (call-process "xournalpp" nil 0 nil file))))
+  (add-to-list 'citar-file-open-functions '("pdf" . citar-file-open-external)))
 
-  ;; don't prompt files, just open
-  (setq citar-file-open-prompt nil)
-
-  ;; refresh cache after bib changes
-  (citar-filenotify-setup '(LaTeX-mode-hook org-mode-hook)))
-
-;; function to open with xournal
-(use-package citar-annotation
-  :ensure nil
-  :after citar :disabled
-  :init)
+(use-package citar-embark
+  :after citar embark
+  :no-require
+  :defer nil
+  :config (citar-embark-mode))
 
 (use-package biblio
   :commands biblio-lookup)
