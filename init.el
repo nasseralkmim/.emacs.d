@@ -1114,6 +1114,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
   (org-mode-map "C-c C-l" 'org-insert-link)
   (org-mode-map "C-," nil)              ; using that for flyspell
+  (org-mode-map "C-'" nil)              ; using that ispell
   (org-mode-map "C-c ," 'org-insert-structure-template)
   ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
   ('normal org-mode-map :prefix "z"
