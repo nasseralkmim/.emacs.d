@@ -3136,7 +3136,7 @@ opening a file from dired. Otherwise just regular dired."
 ;;   (eglot-workspace-configuration
 ;;    . ((ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))
 ;; 
-(use-package eglot-ltex
+(use-package eglot-ltex :disabled
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
   :ensure (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
   :commands start-eglot-ltex
@@ -3148,7 +3148,7 @@ opening a file from dired. Otherwise just regular dired."
   (defun start-eglot-ltex ()
     (interactive)
     (require 'eglot-ltex)
-    (setq-local eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
+    ;; (setq-local eglot-stay-out-of '(eldoc))  ; in org-mode, standard eldoc behavior (for src blocks heading)
     ;; automatic set a dir locals to org-mode
     (call-interactively #'eglot)
     ;; set custom CAPE functions
