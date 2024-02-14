@@ -3896,6 +3896,7 @@ its results, otherwise display STDERR with
   ;; Get news when idle
   ;; https://www.emacswiki.org/emacs/GnusDemon
   (gnus-demon-add-handler 'gnus-demon-scan-news 2 t) ; this does a call to gnus-group-get-new-news
+  (gnus-demon-init)
 
   ;; Setting keybindings after evil-collection (after gnus is loaded)
   ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
