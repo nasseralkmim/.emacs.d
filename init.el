@@ -3343,11 +3343,14 @@ opening a file from dired. Otherwise just regular dired."
   ;; integrate with tab-bar-mode, open windows in a new tab
   (burly-tabs-mode))
 
+;; Instead of burly
+;; restore windows as LAST-SEEN state
 (use-package activities
   :ensure (activities :type git :host github :repo "alphapapa/activities.el")
+  :after consult                        ; access with 'consult-buffer' and 'b <SPC>' for bookmarks
   :general
   ('normal "<f6>" 'activities-new)
-  :config
+  :init
   (activities-mode)
   (activities-tabs-mode))
 
