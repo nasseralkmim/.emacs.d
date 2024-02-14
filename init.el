@@ -3890,13 +3890,22 @@ its results, otherwise display STDERR with
   ;; 'gnus-topic-get-new-news-this-topic'
   ;; https://old.reddit.com/r/emacs/comments/18cbeel/anyone_using_gnus_in_2023/kcceopw/
   (defun my-gnus-group-activate-on-idle ()
-    (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 2))))
+    (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 2)))
+    (run-with-idle-timer 5 nil (lambda () (gnus-activate-all-groups 3)))
+    (run-with-idle-timer 10 nil (lambda () (gnus-activate-all-groups 5))))
   (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
 
   ;; Get news when idle
   ;; https://www.emacswiki.org/emacs/GnusDemon
-  (gnus-demon-add-handler 'gnus-demon-scan-news 2 t) ; this does a call to gnus-group-get-new-news
-  (gnus-demon-init)
+  (defun gnus-demon-scan-news-5 ()
+    (let ((win (current-window-configuration)))
+      (unwind-protect
+          (save-window-excursion
+            (when (gnus-alive-p)
+              (with-current-buffer gnus-group-buffer
+                (gnus-group-get-new-news 5))))
+        (set-window-configuration win))))
+  (gnus-demon-add-handler 'gnus-demon-scan-news-5 1 t) ; this does a call to gnus-group-get-new-news
 
   ;; Setting keybindings after evil-collection (after gnus is loaded)
   ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
