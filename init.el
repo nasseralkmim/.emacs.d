@@ -3879,6 +3879,8 @@ its results, otherwise display STDERR with
         gnus-read-newsrc-file nil        ; speed up start
         ;; Maybe improve https://gluer.org/blog/2023/trying-gnus-as-an-email-client/
         gnus-asynchronous t
+        ;; (info "(gnus) Article Caching")
+        ;; default: "ticked" (indicated with "!") articles go to local cache, they are indicated with "*"
         gnus-use-cache t
         gnus-use-header-prefetch t
         ;; search with generalized query syntax:
@@ -3910,7 +3912,8 @@ its results, otherwise display STDERR with
               (with-current-buffer gnus-group-buffer
                 (gnus-group-get-new-news 5))))
         (set-window-configuration win))))
-  (gnus-demon-add-handler 'gnus-demon-scan-news-5 1 t) ; this does a call to gnus-group-get-new-news
+  (gnus-demon-add-handler 'gnus-demon-scan-news-5 5 t) ; this does a call to gnus-group-get-new-news
+  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init)))
 
   ;; Setting keybindings after evil-collection (after gnus is loaded)
   ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
