@@ -3862,7 +3862,10 @@ its results, otherwise display STDERR with
                                   "%I%s\n") 
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
         gnus-use-full-window nil       ; don't use entire window!
-        gnus-home-directory "~/.emacs.d" ; easier to sync different machines with git
+        ;; Change location of newsrc file.
+        ;; this file has information about the groups that I subscribe and the articles that I
+        ;; have read.
+        gnus-home-directory "~/SeaDrive/My Libraries/news/" ; easier to sync different machines with git
         ;; Attempts to make it faster
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
         gnus-check-new-newsgroups nil  ; make start up faster, need to manually 'gnus-find-new-newsgroup' to look for others
