@@ -2,7 +2,9 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("Activity: mpfem" (activities-name . "mpfem") (handler . activities-bookmark-handler))
+(("Activity: writing" (activities-name . "writing")
+ (handler . activities-bookmark-handler))
+("Activity: mpfem" (activities-name . "mpfem") (handler . activities-bookmark-handler))
 ("Containers" (filename . "~/Containers/mpfem/")
  (front-context-string . "  /home/nasser/C") (rear-context-string) (position . 1)
  (last-modified 25777 2956 372972 571000))
