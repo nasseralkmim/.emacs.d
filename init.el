@@ -176,7 +176,9 @@
   (setq-default truncate-lines t)
 
   ;; narrow to region 'C-x n n' and widen with 'C-x n w'
-  (put 'narrow-to-region 'disabled nil))
+  (put 'narrow-to-region 'disabled nil)
+
+  (setq bookmark-file "~/SeaDrive/My Libraries/news/bookmarks"))
 
 (use-package pixel-scroll
   :ensure nil
@@ -2749,6 +2751,7 @@ Only if there is more than one window opened."
   :after org
   :demand                               ; explicitly require 'org-id'
   :config
+  (setq org-id-locations-file "~/SeaDrive/My Libraries/news/.org-id-locations")
   ;; automatic generate id for headings
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
 
