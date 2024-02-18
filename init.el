@@ -3864,6 +3864,7 @@ its results, otherwise display STDERR with
                                   "%(%[%-20,20n%]%) " ; name
                                   "%I%s\n") 
         gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
+        gnus-thread-sort-functions  '((not gnus-thread-sort-by-number))
         gnus-use-full-window nil       ; don't use entire window!
         ;; Change location of newsrc file.
         ;; this file has information about the groups that I subscribe and the articles that I
