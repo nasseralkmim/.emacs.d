@@ -3825,6 +3825,7 @@ its results, otherwise display STDERR with
   ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
   ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article)
   ('visual gnus-summary-mode-map "!" 'gnus-summary-mark-region-as-read)
+  ('visual gnus-summary-mode-map "?" 'gnus-summary-mark-as-dormant) ; recover all messages in the thread when a new one is posted
   ('normal gnus-summary-mode-map "g c" 'gnus-summary-catchup-and-exit)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
