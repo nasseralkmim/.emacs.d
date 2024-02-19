@@ -3920,6 +3920,14 @@ its results, otherwise display STDERR with
   (gnus-demon-add-handler 'gnus-demon-scan-news-5 5 t) ; this does a call to gnus-group-get-new-news
   (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init)))
 
+  ;; Change how message buffer is shown.
+  ;; default is annoying when I'm reading the email and want to reply, but keep the email buffer around
+  (add-to-list 'gnus-buffer-configuration '(message
+                                            (vertical 1.0
+                                                      (summary 0.1) ; show summary on top
+                                                      (article 0.25) ; then article and finally the message at the end
+                                                      (message 1.0 point))))
+
   ;; Setting keybindings after evil-collection (after gnus is loaded)
   ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
   ;; because general uses `after-load-functions' and evil-collection uses `with-eval-after-load'
