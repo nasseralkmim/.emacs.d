@@ -3670,10 +3670,8 @@ its results, otherwise display STDERR with
   (setq org-tree-slide-cursor-init nil ; start from the cursro
         org-tree-slide-skip-comments t)
   ;; add keybindings after loading
-  ;; (with-eval-after-load "org-tree-slide"
-  ;;   (define-key org-tree-slide-mode-map (kbd "<f9>") 'org-tree-slide-move-previous-tree)
-  ;;   (define-key org-tree-slide-mode-map (kbd "<f10>") 'org-tree-slide-move-next-tree))
-  )
+  (general-def org-tree-slide-mode-map "<f9>" 'org-tree-slide-move-previous-tree)
+  (general-def org-tree-slide-mode-map "<f10>" 'org-tree-slide-move-next-tree))
 
 ;; Emcas 'gdb' interface
 ;; 'gdb-mi.el' is the file where the variables are defined so statements in
