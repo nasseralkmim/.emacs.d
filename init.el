@@ -1589,7 +1589,7 @@ When matching, reference is stored in match group 1."
           (:noweb . "no-export"))))
 
 ;; insert web links with better description
-(use-package org-cliplink
+(use-package org-cliplink :disabled
   :commands org-cliplink
   :general (org-mode-map "C-c l" 'org-cliplink)
   :after org)
