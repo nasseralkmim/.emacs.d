@@ -2725,6 +2725,12 @@ Only if there is more than one window opened."
   (resize-window-repeat-map "h" 'shrink-window-horizontally)
   (resize-window-repeat-map "l" 'enlarge-window-horizontally))
 
+(use-package ol
+  :ensure nil
+  :after org
+  :general
+  (org-mode-map :prefix "C-c s" "s" 'org-store-link))
+
 ;; create backlinks when linking org-mode headings
 (use-package org-super-links
   :ensure (org-super-links :type git :host github :repo "toshism/org-super-links")
@@ -2732,11 +2738,10 @@ Only if there is more than one window opened."
   :general
   (:prefix "C-c s"
            "l" 'org-super-links-store-link
-           "p" 'org-super-links-insert-link)
+           "P" 'org-super-links-insert-link)
   (org-mode-map :prefix "C-c s"
-                "s" 'org-super-links-link
                 "l" 'org-super-links-store-link
-                "p" 'org-super-links-insert-link
+                "P" 'org-super-links-insert-link
                 "d" 'org-super-links-quick-insert-drawer-link
                 "i" 'org-super-links-quick-insert-inline-link
                 "C-d" 'org-super-links-delete-link)
