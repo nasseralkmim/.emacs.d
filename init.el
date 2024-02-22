@@ -3399,7 +3399,7 @@ opening a file from dired. Otherwise just regular dired."
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
           "Translate\\*$"               ; gts translate
-          ;; "\\*Python\\*"
+          "^\\*py.*"
           "CAPTURE-.*"
           "^\\*Dicti.*"
           "\\*Pueue Log\\*"
