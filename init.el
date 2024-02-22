@@ -1538,10 +1538,7 @@ When matching, reference is stored in match group 1."
                                    ("" "svg"  nil)
                                    ("" "mathrsfs" nil) ; for command mathscr (Calligraphic letters)
                                    ("" "bm, upgreek")
-                                   ("" "algorithm, algpseudocode")
-                                   ("a4paper, margin=20mm" "geometry" nil)))
-
-  (add-to-list 'org-latex-default-packages-alist '("colorlinks=true, linkcolor=blue, citecolor=blue, filecolor=magenta, urlcolor=cyan" "hyperref" nil)))
+                                   ("" "algorithm, algpseudocode"))))
 
 ;; adds keyword `async' to source blocks
 (use-package ob-async :disabled         ; error in process sentinel: async-when-done: Invalid read syntax: "#"
