@@ -2769,11 +2769,9 @@ Only if there is more than one window opened."
 ;; citations support in org-mode
 (use-package oc
   :ensure nil
-  :after org
-  :general
-  (org-mode-map "C-c C-b" 'org-cite-insert)
-  :config
-  (setq org-cite-global-bibliography '("~/.bibliography.bib"))
+  :init
+  (with-eval-after-load 'org
+   (setq org-cite-global-bibliography '("~/.bibliography.bib")))
   (with-eval-after-load 'ox
     (require 'oc)
     (setq org-cite-global-bibliography '("~/.bibliography.bib"))))
