@@ -1540,6 +1540,15 @@ When matching, reference is stored in match group 1."
                                    ("" "bm, upgreek")
                                    ("" "algorithm, algpseudocode"))))
 
+(use-package ox-beamer
+  :ensure nil
+  :init
+  ;; allows async export
+  (with-eval-after-load 'ox
+    (require 'org-element)
+    (require 'oc)
+    (require 'ox-beamer)))
+
 ;; adds keyword `async' to source blocks
 (use-package ob-async :disabled         ; error in process sentinel: async-when-done: Invalid read syntax: "#"
   :after org
