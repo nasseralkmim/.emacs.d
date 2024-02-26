@@ -2776,6 +2776,13 @@ Only if there is more than one window opened."
   (with-eval-after-load 'ox
     (require 'ox-icalendar)))
 
+(use-package ox-beamer
+  :ensure nil
+  :init
+  ;; for async export
+  (with-eval-after-load 'ox
+    (require 'ox-beamer)))
+
 ;; highlight indentation
 (use-package highlight-indent-guides :disabled
   :diminish highlight-indent-guides-mode
