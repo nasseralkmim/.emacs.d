@@ -2765,9 +2765,16 @@ Only if there is more than one window opened."
   (org-mode-map "C-c C-b" 'org-cite-insert)
   :config
   (setq org-cite-global-bibliography '("~/.bibliography.bib"))
-  (with-eval-after-load "ox"
+  (with-eval-after-load 'ox
     (require 'oc)
     (setq org-cite-global-bibliography '("~/.bibliography.bib"))))
+
+(use-package ox-icalendar
+  :ensure nil
+  :init
+  ;; for async export
+  (with-eval-after-load 'ox
+    (require 'ox-icalendar)))
 
 ;; highlight indentation
 (use-package highlight-indent-guides :disabled
