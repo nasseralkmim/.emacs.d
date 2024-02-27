@@ -1482,8 +1482,8 @@ When matching, reference is stored in match group 1."
 ;; 'org-todo-list' go to todo view (not scheduled), org just use the agenda view that include both ('C-c a n')
 ;; Some concepts:
 ;; 1. 'task': some todo item.
-;; 2. 'event': something taking place at a time and optionaly at a place.
-;; An event has a plain time stamp. If you missed, it just stays in the past. If
+;; 2. 'event': something taking place at a time and optionally at a place.
+;; An event has a _plain time stamp_. If you missed, it just stays in the past. If
 ;; marked as 'done' it disappear from the agenda (default behavior).
 ;; A task can be:
 ;; 1. 'scheduled': start the 'task' on a given date. It is shown until marked as 'done'.
