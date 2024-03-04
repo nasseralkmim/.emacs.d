@@ -3391,11 +3391,10 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
-(use-package detached :disabled
+(use-package detached
   :ensure (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
-  ;; ('normal "<f7>" 'detached-open-session)
-  ([remap async-shell-command] 'detached-shell-mode)
+  ([remap async-shell-command] 'detached-shell-command)
   :custom ((detached-show-output-on-attach t))
   :init
   (detached-init))
