@@ -2789,6 +2789,7 @@ Only if there is more than one window opened."
   :init
   ;; for async export
   (with-eval-after-load 'ox
+    (require 'oc)
     (require 'ox-beamer)))
 
 ;; highlight indentation
