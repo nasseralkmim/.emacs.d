@@ -3316,10 +3316,10 @@ opening a file from dired. Otherwise just regular dired."
           (directory . emacs)
           ("\\.mm\\'" . default)
           ("\\.x?html?\\'" . default)
-          ("\\.pdf\\'" . "okular %s")
-          ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1")
+          ("\\.pdf\\'" . "okular %s & disown")
+          ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1 & disown")
           ;; if file has ::<page> opens at this page
-          ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1"))))
+          ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1 & disown"))))
 
 ;; Specific for terminal emacs to open images
 (use-package org-file-apps-terminal
