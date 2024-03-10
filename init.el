@@ -1102,10 +1102,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                "lisp/ox-bibtex.el" ; export latex properly
                                "lisp/ox-extra.el" ; ignore headlines (need to config)
                                ))
-  :after org
   :init
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines))) 
+  (with-eval-after-load 'org
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines)))
+  (with-eval-after-load 'ox
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
   ;; :ensure nil
