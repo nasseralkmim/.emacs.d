@@ -1105,7 +1105,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (with-eval-after-load 'org
     (require 'ox-extra)
-    (ox-extras-activate '(ignore-headlines)))
+    (ox-extras-activate '(ignore-headlines))
+    (require 'org-eldoc)
+    (org-eldoc-load))
   (with-eval-after-load 'ox
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines)))) 
