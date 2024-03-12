@@ -4915,4 +4915,6 @@ absolute path. Finally load eglot."
   :after eglot
   :init (eglot-booster-mode))
 
+(use-package ztree)
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
