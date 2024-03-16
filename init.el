@@ -1025,7 +1025,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; 'org-agenda' evil keybindings
 (use-package evil-org-agenda
   :ensure nil
-  :after (evil-org org-agenda)          ; after org-agenda after evil-org
+  :after (:any evil-org org-agenda)          ; after org-agenda after evil-org
   :demand
   :config
   (evil-org-agenda-set-keys)
@@ -4302,9 +4302,6 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; in API & Services -> Library: enable Calendar API
 (use-package org-gcal
   :after org
-  :commands org-gcal-sync
-  :hook
-  (org-agenda-finalize . (lambda () (org-gcal-sync)))
   :demand
   :init 
   (let ((id (plist-get (nth 0 (auth-source-search :host "gcal")) :user))
@@ -4325,7 +4322,11 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; https://github.com/kidd/org-gcal.el/issues/236
   (setq epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg")
   ;; this avoids problem with hanging in "Contacting host: oauth2.googleapis.com:443"
-  (fset 'epg-wait-for-status 'ignore))
+  (fset 'epg-wait-for-status 'ignore)
+
+  (defun sync-gcal-idle ()
+    (run-with-idle-timer 3 nil (lambda () (org-gcal-sync))))
+  (add-hook 'org-agenda-finalize-hook 'sync-gcal-idle))
 
 ;; Setup template for capture gcal 
 (use-package org-capture-template
