@@ -1014,26 +1014,25 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; headings: M-ret
 (use-package evil-org
   :diminish evil-org-mode
-  :after org
   :general
   ('normal org-mode-map "x" 'evil-delete-char)
   :hook
   (org-mode . evil-org-mode)
-  :config
-  (evil-org-set-key-theme '(textobjects insert  additional shift todo)))
+  :init
+  ;; defer loading
+  (with-eval-after-load 'evil-org
+    (evil-org-set-key-theme '(textobjects insert  additional shift todo)))
 
-;; 'org-agenda' evil keybindings
-(use-package evil-org-agenda
-  :ensure nil
-  :after (:any evil-org org-agenda)          ; after org-agenda after evil-org
-  :demand
-  :config
-  (evil-org-agenda-set-keys)
-  ;; change to my preferred after set keys
-  ;; the prefix argument can be used to set specific week, e.g. 34 gdw goes to week 34.
-  (general-def 'motion org-agenda-mode-map
-           "gt" 'org-todo-list
-           "gd" 'org-agenda-view-mode-dispatch))
+  ;; Since we can dispatch 'org-agenda' before loading 'org'
+  (with-eval-after-load 'org-agenda
+    (require 'evil-org-agenda)
+    (evil-org-agenda-set-keys)
+    ;; Change keybindings after 'evil-org-agenda-set-keys'
+    ;; the prefix argument can be used to set specific week, e.g. '34gdw' goes to week 34
+    ;; or '6gdm' to June.
+    (general-def 'motion org-agenda-mode-map
+      "gt" 'org-todo-list
+      "gd" 'org-agenda-view-mode-dispatch)))
 
 (use-package evil-surround
   :after evil
