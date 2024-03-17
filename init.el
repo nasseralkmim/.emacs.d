@@ -4922,4 +4922,24 @@ absolute path. Finally load eglot."
 
 (use-package ztree)
 
+(use-package calfw
+  ;; make sure to "build" 'calfw-org.el' as well.
+  :ensure (calfw :files ("calfw.el"
+                         "calfw-org.el"))
+  :init
+  ;; autoload 'calfw-org' when opening calendar
+  (unless (fboundp 'cfw:open-org-calendar)
+    (autoload #'cfw:open-org-calendar "calfw-org" nil t))
+  (general-def "C-c A" 'cfw:open-org-calendar :package 'calfw)
+  ;; defer config
+  (with-eval-after-load 'calfw-org
+    ;; start in normal mode, not "emacs mode"
+    (add-to-list 'evil-normal-state-modes 'cfw:calendar-mode)
+    (general-def cfw:calendar-mode-map "g" nil)
+    (general-def 'normal cfw:calendar-mode-map :prefix "g d"
+      "d" 'cfw:change-view-day
+      "w" 'cfw:change-view-week
+      "m" 'cfw:change-view-month)
+    (general-def 'normal cfw:calendar-mode-map "q" 'cfw:org-clean-exit)))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
