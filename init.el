@@ -1175,6 +1175,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           org-cycle-show-empty-lines
           org-optimize-window-after-visibility-change)))
 
+;; Since elpaca queue fist before loading, we need to wait here.
+;; So we load the correct version of org instead of built-in when exporting async.
+(elpaca-wait)
+
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
 ;; [[gnus:nntp+news:gmane.emacs.orgmode#8735w3kshh.fsf@ddoherty.net][Email from Daniel E. Doherty: Bug: Display Inline Images from Subdirectory [9.4.4 (9.4.4-33-g5450d6-elpaplus @ /home/ded/.emacs.d/elpa/org-plus-contrib-20210322/)]​]]
@@ -1253,7 +1257,7 @@ graphics."
   (setq org-display-remote-inline-images 'cache))
 
 ;; org export
-(use-package ox :disabled
+(use-package ox
   :ensure nil
   :after org
   :init
@@ -4448,6 +4452,10 @@ If INTERACTIVE is nil the function acts like a Capf."
                                                   (stroke . "#707070")
                                                   (stroke-width . 1)
                                                   (fill . "none"))))
+
+;; Since elpaca queue fist before loading, we need to wait here.
+;; So we set the right configuration when exporting async.
+(elpaca-wait)
 
 ;; Git annotations
 (use-package blamer :disabled           ; problem with it showing in 'org-mode', when I don't enabled 'blamer-mode' in it.
