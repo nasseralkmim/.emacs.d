@@ -4940,6 +4940,10 @@ absolute path. Finally load eglot."
       "d" 'cfw:change-view-day
       "w" 'cfw:change-view-week
       "m" 'cfw:change-view-month)
-    (general-def 'normal cfw:calendar-mode-map "q" 'cfw:org-clean-exit)))
+    (general-def 'normal cfw:calendar-mode-map
+      "C-j" 'cfw:navi-next-month-command
+      "C-k" 'cfw:navi-previous-month-command
+      "RET" 'cfw:org-open-agenda-day
+      "q" 'cfw:org-clean-exit)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
