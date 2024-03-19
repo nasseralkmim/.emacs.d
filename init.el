@@ -4956,4 +4956,29 @@ absolute path. Finally load eglot."
       "RET" 'cfw:org-open-agenda-day
       "q" 'cfw:org-clean-exit)))
 
+(use-package czm-tex-util
+  :ensure (:host github :repo "ultronozm/czm-tex-util.el")
+  :after latex)
+
+;; Extends latex preview
+(use-package czm-preview
+  :ensure (:host github :repo "ultronozm/czm-preview.el")
+  :demand t
+  :after latex
+  :hook
+  (LaTeX-mode . czm-preview-mode-conditionally-enable))
+
+(use-package czm-tex-fold
+  :ensure (:host github :repo "ultronozm/czm-tex-fold.el"
+                 :depth nil)
+  :demand t
+  :bind
+  (:map TeX-fold-mode-map
+        ("C-c C-o C-s" . czm-tex-fold-fold-section)
+        ("C-c C-o s" . czm-tex-fold-clearout-section))
+  :config
+  (czm-tex-fold-set-defaults)
+  (czm-tex-fold-install))
+
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
