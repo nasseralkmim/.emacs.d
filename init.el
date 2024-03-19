@@ -1112,7 +1112,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  ;; :ensure nil
+  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :custom-face
@@ -1544,9 +1544,10 @@ When matching, reference is stored in match group 1."
 
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
-                                   ("" "svg"  nil)
+                                   ("inkscapelatex=false" "svg"  nil)
                                    ("" "mathrsfs" nil) ; for command mathscr (Calligraphic letters)
                                    ("" "bm, upgreek")
+                                   ("" "tikz" nil)
                                    ("" "algorithm, algpseudocode"))))
 
 (use-package ox-beamer
