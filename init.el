@@ -4979,7 +4979,9 @@ absolute path. Finally load eglot."
         ("C-c C-o s" . czm-tex-fold-clearout-section))
   :config
   (czm-tex-fold-set-defaults)
-  (czm-tex-fold-install))
+  (czm-tex-fold-install)
+  (add-to-list 'czm-tex-fold-environment-delimiter-spec-list '(("[document]" "[document]") ("document")))
+  (add-to-list 'TeX-fold-macro-spec-list '("[document class]" ("documentclass"))))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
