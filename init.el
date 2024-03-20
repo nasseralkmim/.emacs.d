@@ -1899,6 +1899,7 @@ When matching, reference is stored in match group 1."
         :build (:not elpaca--compile-info) ;; Make will take care of this step
         :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
         :version (lambda (_) (require 'tex-site) AUCTeX-version))
+  :after tex-mode
   :mode ("\\.tex\\'" . LaTeX-mode)
   :commands TeX-command-sentinel
   :custom-face
