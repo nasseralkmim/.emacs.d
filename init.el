@@ -1,3 +1,5 @@
+; -*- coding: utf-8; lexical-binding: t -*-
+
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
