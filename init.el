@@ -864,6 +864,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom-face
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
   :general
+  ("C-;" 'iedit-mode)
   ("M-d" 'my-iedit-expand-down-to-occurrence)
   ('normal iedit-mode-occurrence-keymap  "<escape>" 'iedit--quit)
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
