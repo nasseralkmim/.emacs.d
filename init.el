@@ -3904,7 +3904,9 @@ its results, otherwise display STDERR with
                                   "%B"     ; thread tree string 
                                   "%(%[%-20,20n%]%) " ; name
                                   "%I%s\n") 
-        gnus-article-sort-functions '((not gnus-article-sort-by-number)) ; newer on top...
+        gnus-article-sort-functions '((not gnus-article-sort-by-number)  ; newer on top...
+                                      (not gnus-article-sort-by-date)
+                                      gnus-article-sort-by-score)
         gnus-thread-sort-functions  '((not gnus-thread-sort-by-number))
         gnus-use-full-window nil       ; don't use entire window!
         ;; Change location of newsrc file.
