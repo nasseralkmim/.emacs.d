@@ -3913,6 +3913,7 @@ its results, otherwise display STDERR with
         ;; this file has information about the groups that I subscribe and the articles that I
         ;; have read.
         gnus-home-directory "~/SeaDrive/My Libraries/news/" ; easier to sync different machines with git
+        gnus-kill-files-directory "~/SeaDrive/My Libraries/news/" ; to store the score
         ;; Attempts to make it faster
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
         gnus-check-new-newsgroups nil  ; make start up faster, need to manually 'gnus-find-new-newsgroup' to look for others
