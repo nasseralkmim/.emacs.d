@@ -1560,7 +1560,9 @@ When matching, reference is stored in match group 1."
   (with-eval-after-load 'ox
     (require 'org-element)
     (require 'oc)
-    (require 'ox-beamer)))
+    (require 'ox-beamer)
+    (add-to-list 'org-beamer-environments-extra '("onlyenv" "O" "\\begin{onlyenv}%a" "\\end{onlyenv}"))
+    (add-to-list 'org-beamer-environments-extra '("overlayarea" "Y" "\\begin{overlayarea}%r%a" "\\end{overlayarea}"))))
 
 ;; adds keyword `async' to source blocks
 (use-package ob-async :disabled         ; error in process sentinel: async-when-done: Invalid read syntax: "#"
