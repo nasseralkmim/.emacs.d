@@ -121,6 +121,7 @@
         mouse-wheel-progressive-speed nil  ; proportional to scroll speed
         fast-but-imprecise-scrolling t
         jit-lock-defer-time 0
+        jit-lock-stealth-time 1.25
         mouse-wheel-follow-mouse 't
         ;; scroll-conservatively 0
         ;; scroll-step 0
@@ -1115,7 +1116,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :custom-face
