@@ -3813,7 +3813,7 @@ its results, otherwise display STDERR with
   :ensure nil
   :commands auth-source-search
   :init
-  (setq auth-sources '((:source "/home/nasser/Sync/secrets/.authinfo.gpg"))))
+  (setq auth-sources '("~/Sync/secrets/.authinfo.gpg")))
 
 ;; hide everything except current heading
 ;; https://stackoverflow.com/a/28031539/20449842
