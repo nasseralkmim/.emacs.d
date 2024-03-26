@@ -180,7 +180,7 @@
   ;; narrow to region 'C-x n n' and widen with 'C-x n w'
   (put 'narrow-to-region 'disabled nil)
 
-  (setq bookmark-file "~/SeaDrive/My Libraries/news/bookmarks"))
+  (setq bookmark-file "~/Sync/news/bookmarks"))
 
 (use-package pixel-scroll
   :ensure nil
@@ -1505,7 +1505,7 @@ When matching, reference is stored in match group 1."
   :general
   ("C-c a" 'org-agenda)
   :config
-  (setq org-agenda-files '("~/SeaDrive/My Libraries/notes/log-notes/")
+  (setq org-agenda-files '("~/Sync/notes/log-notes/")
         org-agenda-window-setup 'current-window ; don't change my windows
         org-agenda-skip-scheduled-if-done t     ; after I mark done, I don't want to see anymore
         ;; when timestamp is in the same line as the todo entry
@@ -2471,7 +2471,7 @@ Only if there is more than one window opened."
                                :files (:defaults (:exclude "helm-bibtex.el" "ivy-bibtex.el")))
   :init
   (setq bibtex-completion-bibliography "~/.bibliography.bib"
-        bibtex-completion-library-path "~/SeaDrive/My Libraries/bibliography/"
+        bibtex-completion-library-path "~/Sync/bibliography/"
         bibtex-completion-pdf-open-function (lambda (fpath)
                                               (call-process "xdg-open" nil 0 nil fpath)))
   ;; dont prompt for anything, just insert the citation please.
@@ -2542,7 +2542,7 @@ Only if there is more than one window opened."
   :custom
   (citar-bibliography '("~/.bibliography.bib"))
   :config
-  (setq citar-library-paths '("~/SeaDrive/My Libraries/bibliography/"))
+  (setq citar-library-paths '("~/Sync/bibliography/"))
   ;; open xournalpp and pdf externally
   (add-to-list 'citar-file-open-functions '("xopp" . (lambda (file) (call-process "xournalpp" nil 0 nil file))))
   (add-to-list 'citar-file-open-functions '("pdf" . citar-file-open-external)))
@@ -2781,7 +2781,7 @@ Only if there is more than one window opened."
   :after org
   :demand                               ; explicitly require 'org-id'
   :config
-  (setq org-id-locations-file "~/SeaDrive/My Libraries/news/.org-id-locations")
+  (setq org-id-locations-file "~/Sync/news/.org-id-locations")
   ;; automatic generate id for headings
   (setq org-id-link-to-org-use-id 'create-if-interactive-and-no-custom-id))
 
@@ -3813,7 +3813,7 @@ its results, otherwise display STDERR with
   :ensure nil
   :commands auth-source-search
   :init
-  (setq auth-sources '((:source "/home/nasser/SeaDrive/My Libraries/secrets/.authinfo.gpg"))))
+  (setq auth-sources '((:source "/home/nasser/Sync/secrets/.authinfo.gpg"))))
 
 ;; hide everything except current heading
 ;; https://stackoverflow.com/a/28031539/20449842
@@ -3914,8 +3914,8 @@ its results, otherwise display STDERR with
         ;; Change location of newsrc file.
         ;; this file has information about the groups that I subscribe and the articles that I
         ;; have read.
-        gnus-home-directory "~/SeaDrive/My Libraries/news/" ; easier to sync different machines with git
-        gnus-kill-files-directory "~/SeaDrive/My Libraries/news/" ; to store the score
+        gnus-home-directory "~/Sync/news/" ; easier to sync different machines with git
+        gnus-kill-files-directory "~/Sync/news/" ; to store the score
         ;; Attempts to make it faster
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
         gnus-check-new-newsgroups nil  ; make start up faster, need to manually 'gnus-find-new-newsgroup' to look for others
@@ -3942,7 +3942,7 @@ its results, otherwise display STDERR with
         gnus-refer-thread-use-search t
         ;; show images in gnus, except adds
         gnus-blocked-images "ads"
-        nnrss-directory "~/SeaDrive/My Libraries/news/rss")
+        nnrss-directory "~/Sync/news/rss")
 
   ;; Activate groups on idle, and not so important stuff get news manually with
   ;; 'gnus-topic-get-new-news-this-topic'
@@ -4011,7 +4011,7 @@ its results, otherwise display STDERR with
                            (gcc-self "nnimap+work:Sent Items")
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
-                            (signature-file "/home/nasser/SeaDrive/My Libraries/documents/signature")
+                            (signature-file "/home/nasser/Sync/documents/signature")
                             ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))))
 
   ;; So my own messages are not considered new
@@ -4304,7 +4304,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("<f8>" (lambda ()
             (interactive)
-            (find-file "/home/nasser/SeaDrive/My Libraries/notes"))))
+            (find-file "/home/nasser/Sync/notes"))))
 
 ;; Sync between google calendar and org mode.
 ;; It is a bit tricky to set up
@@ -4319,11 +4319,11 @@ If INTERACTIVE is nil the function acts like a Capf."
         (secret (funcall (plist-get (nth 0 (auth-source-search :host "gcal")) :secret))))
     (setq org-gcal-client-id id
           org-gcal-client-secret secret
-          org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/SeaDrive/My Libraries/notes/log-notes/gcal.org"))))
+          org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/Sync/notes/log-notes/gcal.org"))))
   ;; Uses asymmetric encryption with gnuPG
   ;; Need to setup a key and maybe edit '~/.gnupg/gnu-agent.conf' with 'pinentry-program /usr/bin/pinetry' (but maybe this is not necesssary on linux)
   ;; stores OAuth token
-  (setq-default oauth2-auto-plstore "/home/nasser/SeaDrive/My Libraries/secrets/oauth2-auto.plist")
+  (setq-default oauth2-auto-plstore "/home/nasser/Sync/secrets/oauth2-auto.plist")
   (require 'plstore)
   ;; Add key ID
   ;; 'plstore-encrypt-to' is a list of strings (documentation is wrong)
@@ -4358,11 +4358,11 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; For capturing in agenda view 'org-agenda-capture' with default file.
   ;; This is for quick TODOS, which don't need a schedule
   ;; In Agenda, they can be viewed: 'org-todo-list'
-  (setq org-default-notes-file "~/SeaDrive/My Libraries/notes/log-notes/tasks.org")
+  (setq org-default-notes-file "~/Sync/notes/log-notes/tasks.org")
 
   (setq org-capture-templates '(;; 'Event' is something that happens in a time, it takes a timestamp.
                                 ("e" "Event" entry ; type entry creates a headline
-                                 (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
+                                 (file+datetree "~/Sync/notes/log-notes/gcal.org")
                                  "* %?\n%a")
                                 ;; 'Task' is a 'TODO' entry and is scheduled,
                                 ;; therefore it is shown continuously until
@@ -4376,7 +4376,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                                 ;; Would be nice to just have the date with calendar prompt.
                                 ;; This is a solution: https://emacs.stackexchange.com/a/72326
                                 ("t" "Task" entry
-                                 (file+datetree "~/SeaDrive/My Libraries/notes/log-notes/gcal.org")
+                                 (file+datetree "~/Sync/notes/log-notes/gcal.org")
                                  "* TODO %?\n%^{SCHEDULED}p\n%a"))))
 
 ;; Templates that can be used as 'capf'
@@ -4908,7 +4908,7 @@ absolute path. Finally load eglot."
   ;; where pdfs are saved and default bibliography
   (setq
    zotra-default-bibliography "~/.bibliography.bib"
-   zotra-download-attachment-default-directory "~/SeaDrive/My Libraries/bibliography"))
+   zotra-download-attachment-default-directory "~/Sync/bibliography"))
 
 (use-package solaire-mode
   :defer 3
