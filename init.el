@@ -4968,7 +4968,7 @@ absolute path. Finally load eglot."
   :after latex)
 
 ;; Extends latex preview
-(use-package czm-preview
+(use-package czm-preview :disabled
   :ensure (:host github :repo "ultronozm/czm-preview.el")
   :demand t
   :after latex
