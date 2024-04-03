@@ -1116,7 +1116,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :custom-face
@@ -1906,6 +1906,7 @@ When matching, reference is stored in match group 1."
         :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
         :version (lambda (_) (require 'tex-site) AUCTeX-version))
   :commands TeX-command-sentinel
+  :demand
   :custom-face
   (font-latex-sectioning-1-face ((t (:slant oblique :box t :height 1.0))))
   (font-latex-sectioning-2-face ((t (:underline t :inherit outline-1 :height 1.0))))
@@ -4983,6 +4984,7 @@ absolute path. Finally load eglot."
   :ensure (:host github :repo "ultronozm/czm-tex-fold.el"
                  :depth nil)
   :demand t
+  :after latex
   :bind
   (:map TeX-fold-mode-map
         ("C-c C-o C-s" . czm-tex-fold-fold-section)
