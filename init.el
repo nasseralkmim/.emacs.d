@@ -1906,6 +1906,8 @@ When matching, reference is stored in match group 1."
         :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
         :version (lambda (_) (require 'tex-site) AUCTeX-version))
   :commands TeX-command-sentinel
+  ;; this require latex at start up, which takes time
+  ;; but it is needed to proper usage of latex-mode from auctex...
   :demand
   :custom-face
   (font-latex-sectioning-1-face ((t (:slant oblique :box t :height 1.0))))
