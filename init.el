@@ -3940,6 +3940,7 @@ its results, otherwise display STDERR with
         ;; default: "ticked" (indicated with "!") articles go to local cache, they are indicated with "*"
         gnus-use-cache t
         gnus-use-header-prefetch t
+        gnus-cache-directory "~/Sync/news/cache"
         ;; search with generalized query syntax:
         ;; from:fulano body:"multi word" attachment:pdf
         gnus-search-use-parsed-queries t
