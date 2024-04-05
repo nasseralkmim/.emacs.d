@@ -1629,7 +1629,9 @@ When matching, reference is stored in match group 1."
    org-download-image-html-width 350
    org-download-image-latex-width 10)
   ;; can resize screen shot
-  (setq org-download-screenshot-method "flameshot gui --raw > %s"))
+  ;; (setq org-download-screenshot-method "flameshot gui --raw > %s")
+  ;; for Wayland (need to install grim slurp and wl-clipboard)
+  (setq org-download-screenshot-method "grim -g \"$(slurp -d)\" %s"))
 
 ;; wsl specific config
 (use-package org-download-windows :disabled
