@@ -1905,10 +1905,12 @@ When matching, reference is stored in match group 1."
         :build (:not elpaca--compile-info) ;; Make will take care of this step
         :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style")
         :version (lambda (_) (require 'tex-site) AUCTeX-version))
+  :init
+  ;; This commit add a remap from LaTeX-mode (which Auctex) uses to latex-mode
+  ;; [[orgit-rev:~/.local/src/emacs/::1ea3b369021c90701c634c512426f75ce1291d77][~/.local/src/emacs/ (magit-rev 1ea3b369021)]]
+  (setq major-mode-remap-defaults nil)
+  :mode ("\\.tex\\'" . LaTeX-mode)
   :commands TeX-command-sentinel
-  ;; this require latex at start up, which takes time
-  ;; but it is needed to proper usage of latex-mode from auctex...
-  :demand
   :custom-face
   (font-latex-sectioning-1-face ((t (:slant oblique :box t :height 1.0))))
   (font-latex-sectioning-2-face ((t (:underline t :inherit outline-1 :height 1.0))))
