@@ -4,6 +4,10 @@
 ;; inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
 
+;; Avoid delay with corfu
+;; https://github.com/minad/corfu/issues/307 
+(setq-default pgtk-wait-for-event-timeout 0)
+
 (setq-default
  default-frame-alist
  '((horizontal-scroll-bars . nil)       ;; No horizontal scroll-bars
