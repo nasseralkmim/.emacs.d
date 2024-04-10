@@ -4456,9 +4456,10 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
         edraw-editor-tool-freehand-smoothing-method nil ; no smoothing
+        edraw-editor-default-transparent-bg-visible nil    ; always see transparent as white
         edraw-default-document-properties '((width . 800)
                                             (height . 600)
-                                            (background . "#fff"))
+                                            (background . "none"))
         ;; make toolbar small
         ;; f - free hand 
         ;; z - undo
