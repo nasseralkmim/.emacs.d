@@ -1536,7 +1536,9 @@ When matching, reference is stored in match group 1."
         org-latex-images-centered t
         org-preview-latex-image-directory "~/.cache/ltximg/"
         ;; use svg images for latex preview
-        org-preview-latex-default-process 'dvisvgm)
+        org-preview-latex-default-process 'dvisvgm
+        ;; precompile not working command
+        org-latex-precompile nil)
 
   ;; mint and svg export require '-shell-escape' option
   (setq org-latex-listings 'minted
