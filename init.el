@@ -2014,7 +2014,8 @@ When matching, reference is stored in match group 1."
   :init
   ;; preview latex config
   ;; only preview displaymath and not textmath which can be anoying when inside a table or algorithm
-  (setq preview-default-option-list '("displaymath" "showlabels")
+  ;; It is ok if we can fold the table or algorithm.
+  (setq preview-default-option-list '("displaymath" "showlabels" "textmath")
         preview-auto-cache-preamble t))
 
 ;; latex function
