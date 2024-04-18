@@ -3957,7 +3957,9 @@ its results, otherwise display STDERR with
         gnus-refer-thread-use-search t
         ;; show images in gnus, except adds
         gnus-blocked-images "ads"
-        nnrss-directory "~/Sync/news/rss")
+        nnrss-directory "~/Sync/news/rss"
+        ;; avoid duplicate messages/articles, specially in rss fields
+        gnus-suppress-duplicates t)
 
   ;; Activate groups on idle, and not so important stuff get news manually with
   ;; 'gnus-topic-get-new-news-this-topic'
