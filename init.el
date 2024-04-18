@@ -1627,7 +1627,6 @@ When matching, reference is stored in match group 1."
   :init
   (setq
    org-download-image-dir "./images"
-   org-download-annotate-function nil
    org-download-image-html-width 350
    org-download-image-latex-width 10)
   ;; can resize screen shot
