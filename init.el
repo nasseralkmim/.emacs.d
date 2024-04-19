@@ -1559,6 +1559,12 @@ When matching, reference is stored in match group 1."
                                    ("" "tikz" nil)
                                    ("" "algorithm, algpseudocode"))))
 
+(use-package org-latex-preview
+  :ensure nil
+  :after org
+  :hook
+  (org-mode . org-latex-preview-auto-mode))
+
 (use-package ox-beamer
   :ensure nil
   :init
