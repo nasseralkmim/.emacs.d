@@ -1149,7 +1149,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
-  (org-mode . turn-on-org-cdlatex)
+  (org-mode . turn-on-org-cdlatex)      ; easy to type greek letters "`a" for \alpha
   ;; (org-mode . org-indent-mode)          ; align with heading, sometimes slow
   :config
   (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
