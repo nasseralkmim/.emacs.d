@@ -1149,6 +1149,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
+  (org-mode . turn-on-org-cdlatex)
   ;; (org-mode . org-indent-mode)          ; align with heading, sometimes slow
   :config
   (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
@@ -1182,6 +1183,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Since elpaca queue fist before loading, we need to wait here.
 ;; So we load the correct version of org instead of built-in when exporting async.
 (elpaca-wait)
+
+(use-package cdlatex)
 
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
@@ -4247,7 +4250,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package go-translate
   :general
   ("C-h t" 'gts-do-translate)     ; overrides the tutorial, but ok...
-  ('(normal visual) "SPC t" 'gts-do-translate)     ; overrides the tutorial, but ok...
+  ('(normal visual) "SPC t" (general-simulate-key "S-V C-h t")) ; whole line
   :hook
   ;; Add 'visual-line-mode' to the translation buffer
   (gts-after-buffer-prepared . (lambda () (visual-line-mode 1)))
@@ -5026,7 +5029,7 @@ absolute path. Finally load eglot."
      ("TM" ("texttrademark"))
      (czm-tex-fold-begin-display ("begin"))
      (czm-tex-fold-end-display ("end"))
-     (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
+     (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
