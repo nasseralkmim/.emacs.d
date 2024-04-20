@@ -1157,7 +1157,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         org-startup-folded t               ; folded in "overview" state
         org-hide-leading-stars nil           ; don't show a  bunch of '*' (maybe is more performant if shows)
         org-edit-src-content-indentation 0
-        org-pretty-entities t           ; show alpha symbol instead \alpha (toggle to edit 'C-c C-x \', or just rewrite it with 'org-cdlatex')
+        org-pretty-entities nil           ; don't show alpha symbol instead \alpha (toggle to edit 'C-c C-x \', or just rewrite it with 'org-cdlatex')
         org-ellipsis "…"                ;use single character for elipses
         org-outline-path-complete-in-steps nil
         org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
