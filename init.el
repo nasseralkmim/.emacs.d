@@ -4622,7 +4622,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   ("C-h l" 'dictionary-lookup-definition) ; search for word at a point
   :config
   (setq
-   dictionary-server "dict.org"         ; instead of a server, use this as default 
+   dictionary-server nil
   ;; use just one buffer, please.
    dictionary-use-single-buffer t))
 
