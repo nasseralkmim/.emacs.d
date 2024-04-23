@@ -4389,7 +4389,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq org-capture-templates '(;; 'Event' is something that happens in a time, it takes a timestamp.
                                 ("e" "Event" entry ; type entry creates a headline
                                  (file+datetree "~/Sync/notes/log-notes/gcal.org")
-                                 "* %?\n%a")
+                                 "* %?\n:org-gcal:\n%^T--%^T\n%a\n:END:")
                                 ;; 'Task' is a 'TODO' entry and is scheduled,
                                 ;; therefore it is shown continuously until
                                 ;; marked as done.
@@ -4403,7 +4403,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                                 ;; This is a solution: https://emacs.stackexchange.com/a/72326
                                 ("t" "Task" entry
                                  (file+datetree "~/Sync/notes/log-notes/gcal.org")
-                                 "* TODO %?\n%^{SCHEDULED}p\n%a"))))
+                                 "* TODO %?\n:org-gcal:\n%a\n:END:\n%^{SCHEDULED}p"))))
 
 ;; Templates that can be used as 'capf'
 (use-package tempel
