@@ -4619,12 +4619,22 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package dictionary
   :ensure nil
   :general
-  ("C-h l" 'dictionary-lookup-definition) ; search for word at a point
+  ("C-h l" 'my/dictionary-lookup-definition) ; search for word at a point
   :config
   (setq
    dictionary-server nil
   ;; use just one buffer, please.
-   dictionary-use-single-buffer t))
+   dictionary-use-single-buffer t)
+
+  (defun my/dictionary-lookup-definition ()
+      "Unconditionally lookup the word at point or selected."
+    (interactive)
+    (let ((word (if (region-active-p)
+                    (buffer-substring-no-properties (region-beginning) (region-end))
+                  (current-word))))
+      (unless word
+        (user-error "No word at point"))
+      (dictionary-new-search (cons word dictionary-default-dictionary)))))
 
 (use-package ledger-mode
   :mode ("\\.ledger\\'" . ledger-mode)
