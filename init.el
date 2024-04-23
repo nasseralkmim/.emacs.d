@@ -4521,7 +4521,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                 gptel-backend (gptel-make-ollama
                                "Ollama"                               ;Any name of your choosing
                                :host "localhost:11434"                ;Where it's running
-                               :models '("llama3" "llama3:70b")            ;Installed models (ollama pull "model")
+                               :models '("llama3" "llama3:70b" "llama3:70b-text")            ;Installed models (ollama pull "model")
                                :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
