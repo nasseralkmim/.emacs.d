@@ -2078,7 +2078,9 @@ When matching, reference is stored in match group 1."
   (add-to-list 'TeX-fold-env-spec-list '("[algorithm]" ("algorithm")))
 
   ;; fold comments as well
-  (add-to-list 'TeX-fold-type-list 'comment))
+  (add-to-list 'TeX-fold-type-list 'comment)
+
+  (setq TeX-fold-ellipsis "…"))
 
 ;; fake headers for latex
 ;; https://emacs.stackexchange.com/a/3103
@@ -3603,7 +3605,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; Anther package to find synonyms
 (use-package powerthesaurus
   :general
-  ("C-c u" 'powerthesaurus-lookup-dwim))
+  ("C-c d s" 'powerthesaurus-lookup-dwim))
 
 ;; org-mode toc heading
 (use-package org-make-toc
@@ -4620,7 +4622,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package dictionary
   :ensure nil
   :general
-  ("C-h l" 'my/dictionary-lookup-definition) ; search for word at a point
+  ("C-c d l" 'my/dictionary-lookup-definition) ; search for word at a point
   :config
   (setq
    dictionary-server nil
