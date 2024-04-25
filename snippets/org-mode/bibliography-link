@@ -1,5 +1,5 @@
 # -*- mode: snippet -*-
 # name: bibliography link
-# key: <b
+# binding: C-c C-b
 # --
-`(save-excursion (backward-sexp) (kill-sexp) (delete-char 1))`[[file:~/Sync/bibliography/`(yank)`.pdf::$1]]
+`(save-excursion (backward-sexp) (kill-sexp))`[[file:~/Sync/bibliography/`(yank)`.pdf::$1]]
