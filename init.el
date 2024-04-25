@@ -3939,6 +3939,7 @@ its results, otherwise display STDERR with
         gnus-home-score-file '(("Science" "~/Sync/news/papers.SCORE")
                                ("Wiley" "~/Sync/news/papers.SCORE")
                                ("arXiv" "~/Sync/news/papers.SCORE")
+                               ("Springer" "~/Sync/news/papers.SCORE")
                                ("rss" "~/Sync/news/rssnews.SCORE"))
         gnus-kill-files-directory "~/Sync/news/" ; to store the score
         ;; Attempts to make it faster
