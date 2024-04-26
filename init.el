@@ -3164,7 +3164,7 @@ opening a file from dired. Otherwise just regular dired."
   ;; Maybe improve performance
   ;; No event buffers, disable providers cause a lot of hover traffic. Shutdown unused servers.
   ;; https://github.com/joaotavora/eglot/discussions/993
-  (setq eglot-events-buffer-size 0
+  (setq eglot-events-buffer-config '(:side 0 :format full)
         eglot-sync-connect 0            ; don't block LSP connection attempts
         eglot-autoshutdown t)
 
