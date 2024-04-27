@@ -1809,10 +1809,10 @@ When matching, reference is stored in match group 1."
                                       (evil-toggle-fold)
                                       (hs-hide-level 1)))
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (my-header-p)
-                                       'my-toggle-fold))
+                                       (my-hs-header-p)
+                                       'my-hs-toggle-fold))
   :init
-  (defun my-header-p ()
+  (defun my-hs-header-p ()
     "Return non-nil if the cursor is on a header line."
     (save-excursion
       (back-to-indentation)
@@ -1821,10 +1821,11 @@ When matching, reference is stored in match group 1."
           ;; outline identifies headers with a regex per mode works better than
           ;; 'hs-looking-at-block-start-p' if the regex is available
           (outline-on-heading-p))))
-  (defun my-toggle-fold ()
+  (defun my-hs-toggle-fold ()
     "Cycle visibility: show all, then first level, then collapse."
     (interactive)
-    (save-excursion
+    (let ((hs-allow-nesting nil))
+     (save-excursion
       (back-to-indentation)
       (pcase last-command
         ;; After showing first level, hide all
@@ -1845,10 +1846,13 @@ When matching, reference is stored in match group 1."
            (progn
              (hs-show-block)
              (setq this-command 'my-cycle-visibility-show-first)))
-         (message "Toggle")))))
+         (message "Toggle"))))))
   :hook
   (prog-mode . hs-minor-mode)
-  (nxml-mode . hs-minor-mode))
+  (nxml-mode . hs-minor-mode)
+  :config
+  ;; remember internal blocks hiding status, e.g. if internal blocks are hidden, keep them hidden
+  (setq hs-allow-nesting t))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
@@ -4010,6 +4014,12 @@ its results, otherwise display STDERR with
     "s" 'gnus-agent-fetch-session)
   (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
   (general-def 'normal gnus-summary-mode-map "TA" 'gnus-summary-refer-thread))
+
+(use-package nrss
+  :ensure nil
+  :after gnus
+  :config
+  (add-to-list 'nnrss-ignore-article-fields 'pubDate))
 
 ;; Set parameter for each group
 ;; use email (and smpt server) according to group
