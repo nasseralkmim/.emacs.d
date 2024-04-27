@@ -45,8 +45,6 @@
 (elpaca elpaca-use-package
   ;; Enable :elpaca use-package keyword.
   (elpaca-use-package-mode))
-;; Block until current queue processed.
-(elpaca-wait)
 
 ;; 'always-defer' means that for a package to load we need a ':hook' or using a ':general' keybinding
 ;; if there is none, we need to explicitly add ':demand' to load the package
@@ -63,19 +61,16 @@
 
 ;; general for keybinding
 (use-package general
-  :ensure t
+  :ensure (:wait t)
   :demand t
   :config
   ;; keybinding on 'override' keymap are not overridden by a minor-mode. 
   (general-override-mode))
-;; Block until general is installed
-(elpaca-wait)
 
 ;; control minor-mode indication in the mode-line
 (use-package diminish
-  :ensure t
+  :ensure (:wait t)
   :demand t)
-(elpaca-wait)
 
 ;; ':general' and ':diminish' add keywords to 'use-package'
 ;; need to process before continue
@@ -1116,7 +1111,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  ;; Since elpaca queue fist before loading, we need to wait here.
+  ;; So we load the correct version of org instead of built-in when exporting async.
+  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git" :wait t)
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :custom-face
@@ -1179,10 +1176,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           org-cycle-hide-drawers
           org-cycle-show-empty-lines
           org-optimize-window-after-visibility-change)))
-
-;; Since elpaca queue fist before loading, we need to wait here.
-;; So we load the correct version of org instead of built-in when exporting async.
-(elpaca-wait)
 
 (use-package cdlatex)
 
@@ -4455,7 +4448,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Drawing link support in 'org-mode'
 ;; It is not working to export to latex
 (use-package edraw
-  :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
+  :ensure (edraw :type git :host github :repo "misohena/el-easydraw" :wait t)
   :init
   (with-eval-after-load 'org
     ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
@@ -4490,10 +4483,6 @@ If INTERACTIVE is nil the function acts like a Capf."
                                                   (stroke . "#707070")
                                                   (stroke-width . 1)
                                                   (fill . "none"))))
-
-;; Since elpaca queue fist before loading, we need to wait here.
-;; So we set the right configuration when exporting async.
-(elpaca-wait)
 
 ;; Git annotations
 (use-package blamer :disabled           ; problem with it showing in 'org-mode', when I don't enabled 'blamer-mode' in it.
