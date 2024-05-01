@@ -5050,5 +5050,8 @@ absolute path. Finally load eglot."
      (czm-tex-fold-end-display ("end"))
      (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
 
+(use-package org-node
+  :ensure (org-node :type git :host github :repo "meedstrom/org-node")
+  :hook (org-mode . org-node-cache-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
