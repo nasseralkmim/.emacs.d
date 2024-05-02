@@ -1119,6 +1119,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
   :general
+  ("C-c s s" 'org-store-link)
   ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
   (org-mode-map "C-c C-l" 'org-insert-link)
   (org-mode-map "C-," nil)              ; using that for flyspell
@@ -3892,6 +3893,25 @@ its results, otherwise display STDERR with
   ;; (gnus-summary-prepared . variable-pitch-mode)
   (gnus-article-mode . variable-pitch-mode)
   (gnus-article-mode . visual-line-mode)
+  (evil-collection-setup . (lambda (&rest a)
+                             ;; Setting keybindings after evil-collection (after gnus is loaded)
+                             ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
+                             ;; because general uses `after-load-functions' and evil-collection uses `with-eval-after-load'
+                             ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
+                             (general-def 'normal gnus-article-mode-map "SPC" nil) 
+                             (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
+                             (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
+                             (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
+                             (general-def 'normal gnus-summary-mode-map "TA" 'gnus-summary-refer-thread)
+                             ;; for agent
+                             (general-def 'normal gnus-group-mode-map "J" nil)
+                             (general-def 'normal gnus-group-mode-map :prefix "J"
+                               "j" 'gnus-agent-toggle-plugged
+                               "s" 'gnus-agent-fetch-session
+                               "u" 'gnus-agent-fetch-group
+                               "c" 'gnus-enter-category-buffer)
+                             (general-def 'normal gnus-summary-mode-map
+                               "@" 'gnus-agent-toggle-mark)))
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
         ;; 'select method' means the 'backend': how gnus stores the messages 
@@ -3916,14 +3936,18 @@ its results, otherwise display STDERR with
         message-send-mail-function 'smtpmail-send-it
         send-mail-function 'smtpmail-send-it
         ;; This is just aesthetic
+        ;; (info "(gnus)Summary Buffer Lines")
         gnus-summary-line-format (concat
-                                  "%U"  ; read status
+                                  "%U"  ; read status 'O' read in previous, 'R' read now 'r' (info "(gnus) Read Articles")
                                   "%R"  ; reply status
-                                  "%z "  ; score
-                                  "%d %*"  ; date
+                                  "%O"   ; download if '-' is not downloaded, to download use 'gnus-agent-toggle-mark', downloaded have '+'
+                                  ;; "%z "  ; score ; don't need it, higher score is bold
+                                  "%-10,10&user-date; %*"  ; date
                                   "%B"     ; thread tree string 
-                                  "%(%[%-20,20n%]%) " ; name
+                                  "%(%[%-20,20a%]%) " ; name
                                   "%I%s\n") 
+        ;; for seeing email attachments
+        gnus-mime-display-multipart-as-mixed t
         gnus-article-sort-functions '((not gnus-article-sort-by-number)  ; newer on top...
                                       (not gnus-article-sort-by-date)
                                       gnus-article-sort-by-score)
@@ -3942,7 +3966,9 @@ its results, otherwise display STDERR with
         ;; Attempts to make it faster
         gnus-fetch-old-headers nil       ; build from already read mail, nil is faster, use '^' to get parent
         gnus-check-new-newsgroups nil  ; make start up faster, need to manually 'gnus-find-new-newsgroup' to look for others
-        gnus-activate-level 1          ; only check this level and lower or lower on startup
+        ;; When [[gnus:nntp+news:gmane.emacs.gnus.general#56aag99k3g.fsf@news.eternal-september.org][Email from Richard Riley: gnus-unplugged and non agent groups]]
+        ;; only check this level and lower or lower on startup
+        gnus-activate-level 1
         gnus-show-threads nil            ; if nil can make faster, threads again with T t
         gnus-use-cross-reference nil
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
@@ -3957,6 +3983,8 @@ its results, otherwise display STDERR with
         gnus-use-cache t
         gnus-use-header-prefetch t
         gnus-cache-directory "~/Sync/news/cache"
+        gnus-agent-directory "~/Sync/news/agent" ; where messages will be stored
+        nndraft-directory "~/Sync/news/drafts" 
         ;; search with generalized query syntax:
         ;; from:fulano body:"multi word" attachment:pdf
         gnus-search-use-parsed-queries t
@@ -3967,8 +3995,21 @@ its results, otherwise display STDERR with
         ;; show images in gnus, except adds
         gnus-blocked-images "ads"
         nnrss-directory "~/Sync/news/rss"
+        nnrss-use-local t
         ;; avoid duplicate messages/articles, specially in rss fields
-        gnus-suppress-duplicates t)
+        gnus-suppress-duplicates t
+        ;; don't show messages with same ID
+        gnus-summary-ignore-duplicates t)
+
+  ;; a: name of the day of the weak abreviated
+  ;; k: hour (blank-padded)
+  ;; M: minutes
+  ;; e: day of the month (blank-padded)
+  ;; b: month name
+  (setq gnus-user-date-format-alist '(((gnus-seconds-today) . "%a %k:%M")
+                                      (604800 . "%a %k:%M")
+                                      ((gnus-seconds-month) . "%e %b")
+                                      (t . "%b %Y")))
 
   ;; Activate groups on idle, and not so important stuff get news manually with
   ;; 'gnus-topic-get-new-news-this-topic'
@@ -3989,31 +4030,7 @@ its results, otherwise display STDERR with
                 (gnus-group-get-new-news 5))))
         (set-window-configuration win))))
   (gnus-demon-add-handler 'gnus-demon-scan-news-5 5 t) ; this does a call to gnus-group-get-new-news
-  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init)))
-
-  ;; Change how message buffer is shown.
-  ;; default is annoying when I'm reading the email and want to reply, but keep the email buffer around
-  (add-to-list 'gnus-buffer-configuration '(message
-                                            (vertical 1.0
-                                                      (summary 0.1) ; show summary on top
-                                                      (article 0.25) ; then article and finally the message at the end
-                                                      (message 1.0 point))))
-
-  ;; Setting keybindings after evil-collection (after gnus is loaded)
-  ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
-  ;; because general uses `after-load-functions' and evil-collection uses `with-eval-after-load'
-  ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
-  (general-def 'normal gnus-article-mode-map "SPC" nil) 
-  (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
-  (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
-  ;; TODO: this is not working
-  ;; first, remove the binding to "J" which was set by evil-collection
-  (general-def 'normal 'gnus-group-mode-map "J" nil)
-  (general-def 'normal gnus-group-mode-map :prefix "J"
-    "j" 'gnus-agent-toggle-plugged
-    "s" 'gnus-agent-fetch-session)
-  (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
-  (general-def 'normal gnus-summary-mode-map "TA" 'gnus-summary-refer-thread))
+  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init))))
 
 (use-package nrss
   :ensure nil
