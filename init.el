@@ -5071,4 +5071,10 @@ absolute path. Finally load eglot."
   :ensure (org-node :type git :host github :repo "meedstrom/org-node")
   :hook (org-mode . org-node-cache-mode))
 
+;; Add xournalpp link to open/view xopp files
+(use-package org-xournalpp :disabled    ; not working
+  :ensure (org-xournalpp :fetcher gitlab :repo "vherrmann/org-xournalpp" :files ("*.el" "resources"))
+  :config
+  (add-hook 'org-mode-hook 'org-xournalpp-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
