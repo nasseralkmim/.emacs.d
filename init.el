@@ -3458,7 +3458,7 @@ opening a file from dired. Otherwise just regular dired."
           "Command\\*$"                   ;for shell command
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
-          "Translate\\*$"               ; gts translate
+          "^\\*gt-result\\*"               ; gt translate
           "^\\*py.*"
           "CAPTURE-.*"
           "^\\*Dicti.*"
