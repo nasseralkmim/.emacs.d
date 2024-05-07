@@ -1629,6 +1629,7 @@ When matching, reference is stored in match group 1."
   (org-mode-map "C-M-S-y" 'org-download-clipboard)
   :init
   (setq
+   ;; apparently I need to manually create the images folder
    org-download-image-dir "./images"
    org-download-image-html-width 350
    org-download-image-latex-width 10)
