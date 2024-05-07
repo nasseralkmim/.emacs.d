@@ -2676,6 +2676,7 @@ Only if there is more than one window opened."
         vterm-timer-delay 0)
   (add-to-list 'vterm-tramp-shells '("ssh" "/bin/bash"))
   (add-to-list 'vterm-tramp-shells '("scp" "/bin/bash"))
+  (add-to-list 'vterm-tramp-shells '("apptainer" "/bin/bash"))
   (add-to-list 'vterm-tramp-shells '("docker" "/bin/bash")))
 
 ;; Quickly switch to 'vterm' buffer.
@@ -5068,7 +5069,9 @@ absolute path. Finally load eglot."
      (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
 
 (use-package org-node
-  :ensure (org-node :type git :host github :repo "meedstrom/org-node")
+  :ensure (org-node :type git :host github
+                    :repo "meedstrom/org-node"
+                    :files (:defaults))
   :hook (org-mode . org-node-cache-mode))
 
 ;; Add xournalpp link to open/view xopp files
