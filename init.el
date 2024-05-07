@@ -3469,7 +3469,9 @@ opening a file from dired. Otherwise just regular dired."
           compilation-mode))
 
   ;; only show the pop up and don't focus on its window
-  (setq popper-display-function #'popper-display-popup-at-bottom)
+  (setq popper-display-function #'popper-display-popup-at-bottom
+        ;; 1/3 of the screen height
+        popper-window-height 0.33)
 
   (popper-mode +1)
   (popper-echo-mode +1))
