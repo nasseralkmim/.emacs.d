@@ -4280,26 +4280,29 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; translation package
 (use-package go-translate
   :general
-  ("C-h t" 'gts-do-translate)     ; overrides the tutorial, but ok...
+  ("C-h t" 'gt-do-translate)     ; overrides the tutorial, but ok...
+  ;; only when there is a gt-result buffer 
+  ('normal "t" (general-predicate-dispatch nil
+                 (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
   ('(normal visual) "SPC t" (general-simulate-key "S-V C-h t")) ; whole line
-  :hook
+  :init
+  (defun my-gt-cycle-translation ()
+    "Got to gt-result buffer and cycle translation."
+    (interactive)
+    (save-excursion
+      (with-current-buffer "*gt-result*"
+        (gt-buffer-render--cycle-next))))
+  ;; :hook
   ;; Add 'visual-line-mode' to the translation buffer
-  (gts-after-buffer-prepared . (lambda () (visual-line-mode 1)))
+  ;; (gt-after-buffer-prepared . (lambda () (visual-line-mode 1)))
   :config
-  (setq gts-translate-list '(("de" "en") ("de" "pt") ("pt" "en"))
-        gts-default-translator (gts-translator
-                                ;; pick directly
-                                :picker (gts-noprompt-picker)
-                                :engines (list
-                                          (gts-deepl-engine :auth-key
-                                                            (funcall
-                                                             (plist-get (car (auth-source-search :host "api-free.deepl.com"))
-                                                                        :secret)))
-                                          (gts-google-engine :parser (gts-google-summary-parser))
-                                          ;; (gts-google-rpc-engine)
-                                          )
-                                :render (gts-buffer-render)
-                                :splitter (gts-paragraph-splitter))))
+  (setq gt-langs '(en de pt)
+        gt-default-translator (gt-translator
+                               :engines (list (gt-deepl-engine)
+                                              (gt-google-engine))
+                               :render (gt-buffer-render)))
+  (setq gt-chatgpt-key (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))
+        gt-chatgpt-model "gpt-3.5"))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
