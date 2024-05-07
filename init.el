@@ -4053,7 +4053,7 @@ its results, otherwise display STDERR with
                            ;; https://www.gnu.org/software/emacs/manual/html_node/message/Mail-Variables.html
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@gmail.com>")
-                            (signature "Nasser Alkmim \n +43 677 6408 9171")
+                            (signature "Nasser Alkmim")
                             ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 nasser.alkmim@gmail.com")))
                           ("work"
                            ;; Messages (emails) are GCC to the this group so it collects my sent mails on the server
