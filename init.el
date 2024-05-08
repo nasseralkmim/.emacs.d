@@ -4285,7 +4285,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-h t" 'gt-do-translate)     ; overrides the tutorial, but ok...
   ;; only when there is a gt-result buffer 
-  ('normal "t" (general-predicate-dispatch nil
+  ('(normal visual) "C-c t" (general-predicate-dispatch nil
                  (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
   ('(normal visual) "SPC t" (general-simulate-key "S-V C-h t")) ; whole line
   :init
@@ -5073,17 +5073,5 @@ absolute path. Finally load eglot."
      (czm-tex-fold-begin-display ("begin"))
      (czm-tex-fold-end-display ("end"))
      (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
-
-(use-package org-node
-  :ensure (org-node :type git :host github
-                    :repo "meedstrom/org-node"
-                    :files (:defaults))
-  :hook (org-mode . org-node-cache-mode))
-
-;; Add xournalpp link to open/view xopp files
-(use-package org-xournalpp :disabled    ; not working
-  :ensure (org-xournalpp :fetcher gitlab :repo "vherrmann/org-xournalpp" :files ("*.el" "resources"))
-  :config
-  (add-hook 'org-mode-hook 'org-xournalpp-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
