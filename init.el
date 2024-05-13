@@ -4285,7 +4285,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :general
   ("C-h t" 'gt-do-translate)     ; overrides the tutorial, but ok...
   ;; only when there is a gt-result buffer 
-  ('(normal visual) "C-c t" (general-predicate-dispatch nil
+  ('(normal visual) "C-t" (general-predicate-dispatch nil
                  (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
   ('(normal visual) "SPC t" (general-simulate-key "S-V C-h t")) ; whole line
   :init
