@@ -2903,7 +2903,10 @@ Only if there is more than one window opened."
 
   ;; make TRAMP use the remotes' PATH environment variable
   ;; https://github.com/emacs-pe/docker-tramp.el/blob/master/README.md#tramp-does-not-respect-remote-path
-  (add-to-list 'tramp-remote-path 'tramp-own-remote-path))
+  (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
+
+  ;; enable apptainer method
+  (tramp-enable-apptainer-method))
 
 ;; shows git information on fringe
 (use-package diff-hl
