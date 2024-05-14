@@ -4643,6 +4643,15 @@ If INTERACTIVE is nil the function acts like a Capf."
   (add-hook 'ediff-quit-hook #'my-restore-pre-ediff-winconfig))
 
 ;; Built in dictionary look up
+;; freedict has dictionaries for multiple languages, to install:
+;; 1. download: https://freedict.org/downloads/#gnu/linux
+;; 2. copy the '.dict.dz' and '.index' to '/usr/share/dictd/' folder
+;; 3. add the database in '/etc/dict/dictd.conf':
+;; 
+;; database eng-por {
+;; 	data /usr/share/dictd/eng-por.dict.dz
+;; 	index /usr/share/dictd/eng-por.index
+;; }
 (use-package dictionary
   :ensure nil
   :general
@@ -5073,5 +5082,10 @@ absolute path. Finally load eglot."
      (czm-tex-fold-begin-display ("begin"))
      (czm-tex-fold-end-display ("end"))
      (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
+
+(use-package macro-slides
+  :ensure (macro-slides :host github
+                        :repo "positron-solutions/macro-slides"))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
