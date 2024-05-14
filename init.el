@@ -1805,6 +1805,8 @@ When matching, reference is stored in match group 1."
   :ensure nil
   :diminish hs-minor-mode
   :general
+  ('normal hs-minor-mode-map "z h" 'hs-hide-level)
+  ('normal hs-minor-mode-map "z c" 'my-hs-hide-only-comments)
   ('normal hs-minor-mode-map "z H" 'hs-hide-all)
   ('normal hs-minor-mode-map "z l" '(lambda ()
                                       (interactive)
@@ -1814,6 +1816,10 @@ When matching, reference is stored in match group 1."
                                        (my-hs-header-p)
                                        'my-hs-toggle-fold))
   :init
+  (defun my-hs-hide-only-comments (arg)
+    (interactive "p")
+    (let ((hs-hide-all-non-comment-function #'ignore))
+      (hs-hide-all)))
   (defun my-hs-header-p ()
     "Return non-nil if the cursor is on a header line."
     (save-excursion
