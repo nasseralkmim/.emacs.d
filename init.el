@@ -2181,6 +2181,17 @@ When matching, reference is stored in match group 1."
           ("\\.png\\'" "feh --auto-reload")
           ("\\.svg\\'" "feh --auto-reload"))))
 
+(use-package dired-image-window-placement-hack
+  :ensure nil
+  :after dired
+  :init
+  (setf (alist-get "^\\*image-dired\\*$"
+                 display-buffer-alist
+                 nil nil #'string=)
+        ;; reuse window, otherwise open bellow
+      '((display-buffer-reuse-window
+        display-buffer-below-selected))))
+
 ;; open dired as a sidebar
 (use-package dired-sidebar
   :general
@@ -3479,6 +3490,7 @@ opening a file from dired. Otherwise just regular dired."
 
   ;; only show the pop up and don't focus on its window
   (setq popper-display-function #'popper-display-popup-at-bottom
+        popper-display-control 'user    ; control only explicitly marked popups
         ;; 1/3 of the screen height
         popper-window-height 0.33)
 
