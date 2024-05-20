@@ -2156,6 +2156,7 @@ When matching, reference is stored in match group 1."
   (dired-jump-map "j" nil)             ; remove repeat with "j"
   (dired-mode-map "SPC" nil)             ; use for easymotion
   ('normal image-dired-thumbnail-mode-map "+" 'image-increase-size)
+  ('normal image-dired-thumbnail-mode-map "g r" 'image-dired-refresh-thumb)
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
         dired-auto-revert-buffer t
