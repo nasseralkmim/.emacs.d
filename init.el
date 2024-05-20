@@ -4329,6 +4329,17 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq gt-chatgpt-key (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))
         gt-chatgpt-model "gpt-3.5"))
 
+(use-package go-translate-window-placement-hack
+  :ensure nil
+  :after go-translate
+  :init
+  (setf (alist-get "^\\*gt-result\\*$"
+                 display-buffer-alist
+                 nil nil #'string=)
+        ;; reuse window, otherwise open bellow
+      '((display-buffer-reuse-window
+        display-buffer-below-selected))))
+
 ;; custom function to connect to vpn
 (use-package connect-vpn
   :ensure nil
