@@ -3281,21 +3281,20 @@ opening a file from dired. Otherwise just regular dired."
 ;; download latest version https://languagetool.org/download/
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
-(use-package flymake-languagetool :disabled
-  :commands flymake-languagetool-maybe-load
+(use-package flymake-languagetool
+  :commands flymake-languagetool-start
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
+  :init
+  (defun flymake-languagetool-start ()
+    (interactive)
+    "Add languagetool as a diagnostic function and enable flymake-mode"
+    (flymake-languagetool-maybe-load)
+    (flymake-mode))
   :config
-  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-5.9/languagetool-server.jar")
-  ;; not working
-  ;; Remote server config with LanguageTool's free API
-  ;; (setq flymake-languagetool-url "https://api.languagetool.org")
-  ;; (setq flymake-languagetool-server-port nil)
-  ;; (setq flymake-languagetool-server-jar nil)
-
+  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-6.4/languagetool-server.jar")
   ;; activate spell checker as well (instead of flyspell)
-  ;; (setq flymake-languagetool-check-spelling t)
-  )
+  (setq flymake-languagetool-check-spelling t))
 
 (use-package svg-lib
   :ensure (svg-lib :type git :host github :repo "rougier/svg-lib"))
