@@ -4520,6 +4520,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; It is not working to export to latex
 (use-package edraw
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw" :wait t)
+  :general
+  ('normal "C-c t" 'my-edraw-toggle-smoothing-method)
   :init
   (with-eval-after-load 'org
     ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
@@ -4533,6 +4535,13 @@ If INTERACTIVE is nil the function acts like a Capf."
      (add-to-list 'load-path "/home/nasser/.emacs.d/elpaca/repos/el-easydraw/")
      (require 'edraw-org)
      (edraw-org-setup-exporter))
+  (defun my-edraw-toggle-smoothing-method ()
+    "Toggle the smoothing method to allow handwritten text (no smoothing) and
+usual shapes (smoothing) to optimize the number of points"
+    (interactive)
+    (if (bound-and-true-p edraw-editor-tool-freehand-smoothing-method)
+        (setq edraw-editor-tool-freehand-smoothing-method nil)
+      (setq edraw-editor-tool-freehand-smoothing-method 'bezier-fitting)))
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
