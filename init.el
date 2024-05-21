@@ -3155,6 +3155,8 @@ opening a file from dired. Otherwise just regular dired."
   (eglot-mode-map "C-c SPC" 'eglot-code-actions)
   :hook
   (eglot-managed-mode . eglot-inlay-hints-mode)
+  ;; python "pyright" language server
+  ;; sudo npm install --global pyright
   (python-mode . eglot-ensure) ; works if there is only one server available
   (python-ts-mode . eglot-ensure)
   ;; python 'flymake' tweak
