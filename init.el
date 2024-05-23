@@ -2085,6 +2085,9 @@ When matching, reference is stored in match group 1."
   ;; fold comments as well
   (add-to-list 'TeX-fold-type-list 'comment)
 
+  ;; fold document class and document macros
+  (add-to-list 'TeX-fold-macro-spec-list '("[class]" ("documentclass")))
+
   (setq TeX-fold-ellipsis "…"))
 
 ;; fake headers for latex
