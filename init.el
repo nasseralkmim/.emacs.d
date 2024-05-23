@@ -5068,19 +5068,11 @@ absolute path. Finally load eglot."
       "RET" 'cfw:org-open-agenda-day
       "q" 'cfw:org-clean-exit)))
 
-(use-package czm-tex-util
+(use-package czm-tex-util :disabled
   :ensure (:host github :repo "ultronozm/czm-tex-util.el")
   :after latex)
 
-;; Extends latex preview
-(use-package czm-preview :disabled
-  :ensure (:host github :repo "ultronozm/czm-preview.el")
-  :demand t
-  :after latex
-  :hook
-  (LaTeX-mode . czm-preview-mode-conditionally-enable))
-
-(use-package czm-tex-fold
+(use-package czm-tex-fold :disabled
   :ensure (:host github :repo "ultronozm/czm-tex-fold.el"
                  :depth nil)
   :demand t
@@ -5116,9 +5108,14 @@ absolute path. Finally load eglot."
      (czm-tex-fold-end-display ("end"))
      (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
 
+(use-package tex-numbers
+  :ensure (:host github :repo "ultronozm/tex-numbers.el")
+  :after latex
+  :config
+  (tex-numbers-mode 1))
+
 (use-package macro-slides
   :ensure (macro-slides :host github
                         :repo "positron-solutions/macro-slides"))
-
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
