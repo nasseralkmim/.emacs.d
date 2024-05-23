@@ -81,7 +81,7 @@
   :diminish gcmh-mode
   :init
   (setq gcmh-idle-delay 0.5
-        gcmh-high-cons-threshold (* 16 1024 1024)) 
+        gcmh-high-cons-threshold (* 64 1024 1024))
   (gcmh-mode 1))
 
 ;; basics and better default
@@ -2088,7 +2088,11 @@ When matching, reference is stored in match group 1."
   ;; fold document class and document macros
   (add-to-list 'TeX-fold-macro-spec-list '("[class]" ("documentclass")))
 
-  (setq TeX-fold-ellipsis "…"))
+  (setq TeX-fold-ellipsis "…")
+
+  ;; make sure evil-mode keybindings auto reveal folded regions
+  (add-to-list 'TeX-fold-auto-reveal-commands 'evil-forward-char)
+  (add-to-list 'TeX-fold-auto-reveal-commands 'evil-backward-char))
 
 ;; fake headers for latex
 ;; https://emacs.stackexchange.com/a/3103
@@ -5121,7 +5125,7 @@ absolute path. Finally load eglot."
      (czm-tex-fold-end-display ("end"))
      (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
 
-(use-package tex-numbers
+(use-package tex-numbers :disabled
   :ensure (:host github :repo "ultronozm/tex-numbers.el")
   :after latex
   :config
@@ -5132,3 +5136,4 @@ absolute path. Finally load eglot."
                   :repo "positron-solutions/dslide"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+
