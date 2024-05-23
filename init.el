@@ -2029,7 +2029,11 @@ When matching, reference is stored in match group 1."
   ;; only preview displaymath and not textmath which can be anoying when inside a table or algorithm
   ;; It is ok if we can fold the table or algorithm.
   (setq preview-default-option-list '("displaymath" "showlabels" "textmath")
-        preview-auto-cache-preamble t))
+        preview-auto-cache-preamble t)
+
+  ;; make sure evil-commands reveal the preview
+  (add-to-list 'preview-auto-reveal-commands 'evil-forward-char)
+  (add-to-list 'preview-auto-reveal-commands 'evil-backward-char))
 
 ;; latex function
 (use-package latex-insert-figure-from-clipboard-hack
