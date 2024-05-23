@@ -5117,8 +5117,8 @@ absolute path. Finally load eglot."
   :config
   (tex-numbers-mode 1))
 
-(use-package macro-slides
-  :ensure (macro-slides :host github
-                        :repo "positron-solutions/macro-slides"))
+(use-package dslide
+  :ensure (dslide :host github
+                  :repo "positron-solutions/dslide"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
