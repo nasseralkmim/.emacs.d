@@ -2030,7 +2030,7 @@ When matching, reference is stored in match group 1."
   ;; It is ok if we can fold the table or algorithm.
   (setq preview-default-option-list '("displaymath" "showlabels" "textmath")
         preview-auto-cache-preamble t)
-
+  :config
   ;; make sure evil-commands reveal the preview
   (add-to-list 'preview-auto-reveal-commands 'evil-forward-char)
   (add-to-list 'preview-auto-reveal-commands 'evil-backward-char))
@@ -4318,6 +4318,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package go-translate
   :general
   ("C-h t" 'gt-do-translate)     ; overrides the tutorial, but ok...
+  ("C-h T" 'gt-do-translate-and-insert)
   ;; only when there is a gt-result buffer 
   ('(normal visual) "C-t" (general-predicate-dispatch nil
                  (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
@@ -4339,7 +4340,16 @@ If INTERACTIVE is nil the function acts like a Capf."
                                               (gt-google-engine))
                                :render (gt-buffer-render)))
   (setq gt-chatgpt-key (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))
-        gt-chatgpt-model "gpt-3.5"))
+        gt-chatgpt-model "gpt-3.5")
+
+  ;; function to translate and insert translation
+  (defun gt-do-translate-and-insert ()
+    (interactive)
+    (interactive)
+    (let ((translator (gt-translator
+                       :engines (list (gt-deepl-engine))
+                       :render (gt-insert-render :type 'after))))
+      (gt-start translator))))
 
 (use-package go-translate-window-placement-hack
   :ensure nil
@@ -4553,7 +4563,7 @@ usual shapes (smoothing) to optimize the number of points"
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
-        edraw-editor-tool-freehand-smoothing-method nil ; no smoothing
+        edraw-editor-tool-freehand-smoothing-method 'bezier-fitting
         edraw-editor-default-transparent-bg-visible nil    ; always see transparent as white
         edraw-default-document-properties '((width . 800)
                                             (height . 600)
