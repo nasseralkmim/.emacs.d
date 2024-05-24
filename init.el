@@ -234,7 +234,7 @@
   ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (default  ((t (:family ,(car default-monospace) :height 90))))
+  (default  ((t (:family ,(car default-monospace)))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
   (variable-pitch-text ((t (:inherit variable-pitch :height unspecified))))
   ;; comment
@@ -3984,8 +3984,6 @@ its results, otherwise display STDERR with
                                   "%B"     ; thread tree string 
                                   "%(%[%-20,20a%]%) " ; name
                                   "%I%s\n") 
-        ;; for seeing email attachments
-        gnus-mime-display-multipart-as-mixed t
         gnus-article-sort-functions '((not gnus-article-sort-by-number)  ; newer on top...
                                       (not gnus-article-sort-by-date)
                                       gnus-article-sort-by-score)
@@ -4068,13 +4066,30 @@ its results, otherwise display STDERR with
                 (gnus-group-get-new-news 5))))
         (set-window-configuration win))))
   (gnus-demon-add-handler 'gnus-demon-scan-news-5 5 t) ; this does a call to gnus-group-get-new-news
-  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init))))
+  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init)))
+  )
 
-(use-package nrss
+(use-package nnrss
   :ensure nil
   :after gnus
   :config
-  (add-to-list 'nnrss-ignore-article-fields 'pubDate))
+  (add-to-list 'nnrss-ignore-article-fields 'pubDate)
+
+  ;; Prefer 'text/plain' in general
+  ;; Set the default value of ‘mm-discouraged-alternatives’.
+  (with-eval-after-load "gnus-sum"
+    (add-to-list 'gnus-newsgroup-variables
+                 '(mm-discouraged-alternatives . '("text/html" "image/.*")))
+    (add-to-list 'gnus-newsgroup-variables
+       '(mm-automatic-display . (remove "text/html" mm-automatic-display))))
+
+  ;; Display ‘text/html’ parts in ‘nnrss’ groups.
+  ;; nnrss generates *always* text/plain and text/html [[info:gnus#RSS]]
+  (add-to-list
+   'gnus-parameters
+   '("\\`nnrss:"
+     (mm-discouraged-alternatives "text/plain")
+     (mm-automatic-display (add-to-list 'mm-automatic-display "text/html")))))
 
 ;; Set parameter for each group
 ;; use email (and smpt server) according to group
@@ -4099,7 +4114,10 @@ its results, otherwise display STDERR with
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
                             (signature-file "/home/nasser/Sync/documents/signature")
-                            ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))))
+                            ("X-Message-SMTP-Method" "smtp smtp.uibk.ac.at 587 c8441205")))
+                          ("\\`nnrss:"
+                           ;; just for rss groups
+                           (mm-discouraged-alternatives nil))))
 
   ;; So my own messages are not considered new
   (setq gnus-gcc-mark-as-read t))
@@ -4318,7 +4336,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package go-translate
   :general
   ("C-h t" 'gt-do-translate)     ; overrides the tutorial, but ok...
-  ("C-h T" 'gt-do-translate-and-insert)
+  (override "C-h C-t" 'gt-do-translate-and-insert)
   ;; only when there is a gt-result buffer 
   ('(normal visual) "C-t" (general-predicate-dispatch nil
                  (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
