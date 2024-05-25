@@ -190,7 +190,9 @@
   (pixel-scroll-precision-interpolate-page t)
   :init
   ;; text scroll pixel by pixel
-  (pixel-scroll-precision-mode t))
+  (pixel-scroll-precision-mode t)
+  ;; never recenter point when scrolling, but keep in view
+  (setq scroll-conservatively 1000))
 
 ;; My custom emacs theme
 (use-package seralk-theme :disabled
@@ -4128,6 +4130,32 @@ its results, otherwise display STDERR with
   :demand
   :hook
   (gnus-group-mode . gnus-topic-mode))
+
+(use-package gnus-summary-pixel-scroll-hack
+  :ensure nil
+  :after gnus
+  :bind
+  ([remap gnus-summary-scroll-up]   . gnus-summary-pixel-scroll-up)
+  ([remap gnus-summary-scroll-down]   . gnus-summary-pixel-scroll-down)
+  :init
+  (defun gnus-summary-pixel-scroll-down (lines)
+    "Scroll down with pixel-mode"
+    (interactive "p" gnus-summary-mode)
+    (gnus-configure-windows 'article)
+    (when (eq (gnus-summary-select-article nil nil 'pseudo) 'old)
+      (gnus-eval-in-buffer-window gnus-article-buffer
+        (pixel-scroll-down lines)))
+    (gnus-summary-recenter)
+    (gnus-summary-position-point))
+  (defun gnus-summary-pixel-scroll-up (lines)
+    "Scroll up with pixel-mode"
+    (interactive "p" gnus-summary-mode)
+    (gnus-configure-windows 'article)
+    (when (eq (gnus-summary-select-article nil nil 'pseudo) 'old)
+      (gnus-eval-in-buffer-window gnus-article-buffer
+        (pixel-scroll-up lines)))
+    (gnus-summary-recenter)
+    (gnus-summary-position-point)))
 
 ;; Database for email completion
 ;; sometimes does not add automatically: use `bbdb-mua-display-sender'
