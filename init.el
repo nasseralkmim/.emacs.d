@@ -4066,8 +4066,7 @@ its results, otherwise display STDERR with
                 (gnus-group-get-new-news 5))))
         (set-window-configuration win))))
   (gnus-demon-add-handler 'gnus-demon-scan-news-5 5 t) ; this does a call to gnus-group-get-new-news
-  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init)))
-  )
+  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init))))
 
 (use-package nnrss
   :ensure nil
