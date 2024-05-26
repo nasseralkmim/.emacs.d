@@ -1862,6 +1862,45 @@ When matching, reference is stored in match group 1."
   ;; remember internal blocks hiding status, e.g. if internal blocks are hidden, keep them hidden
   (setq hs-allow-nesting t))
 
+(use-package latex-hideshow-hack
+  :ensure nil
+  :hook
+  (LaTeX-mode . (lambda ()
+                  (outline-minor-mode -1)
+                  (hs-minor-mode)))
+  :init
+  (with-eval-after-load 'hideshow
+    (add-to-list 'hs-special-modes-alist '(LaTeX-mode
+                                           "\\\\section" ; start
+                                           ""            ; end
+                                           "%"          ; comment-start
+                                           latex-hideshow-forward-sexp-function ; forward-sexp-function
+                                           ))
+    (defun latex-hideshow-forward-sexp-function (_arg)
+      "Go to end of the current block."
+      (interactive)
+      (latex-nav-end-of-block))
+    (defun latex-info-looking-at-beginning-of-block ()
+      "Check if point is at the beginning of block."
+      (save-excursion
+        (beginning-of-line)
+        (looking-at "^\\s-*\\\\section")))
+    (defun latex-nav-beginning-of-block ()
+      "Move to start of the current block."
+      (interactive)
+      (if (latex-info-looking-at-beginning-of-block)
+          t
+        (search-backward "\\section" nil t)))
+    (defun latex-nav-end-of-block ()
+      "Move to end of current block"
+      (interactive)
+      (when (latex-nav-beginning-of-block)
+        (while (and (forward-line 1)
+                    (not (eobp))
+                    (not (latex-info-looking-at-beginning-of-block))))
+        (backward-paragraph)
+        (point-marker)))))
+
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
 (use-package outline
@@ -1874,7 +1913,6 @@ When matching, reference is stored in match group 1."
   ;; (emacs-lisp-mode . outline-minor-mode)
   ;; (markdown-mode . outline-minor-mode)
   ;; (conf-mode . outline-minor-mode)
-  (LaTeX-mode . outline-minor-mode)
   (evil-collection-setup . (lambda (&rest a)
                              ;; need to rebind after loading outline because 'general' uses
                              ;; `after-load-functions' and 'evil-collection' uses `eval-after-load'
@@ -1934,11 +1972,9 @@ When matching, reference is stored in match group 1."
   (font-latex-sectioning-3-face ((t (:slant italic  :inherit outline-4 :height 1.0))))
   (font-latex-sectioning-4-face ((t (:slant normal :inherit outline-5 :underline nil :height 1.0))))
   (font-latex-sectioning-5-face ((t (:slant normal :height 1.0))))
+  :hook
+  (LaTeX-mode . outline-minor-mode)
   :general
-  ('normal outline-mode-map
-           "g j" nil
-           "g k" nil
-           "C-j" nil)
   ('normal LaTeX-mode-map "g f" '(:keymap TeX-fold-keymap))
   (TeX-fold-keymap
    "b" 'TeX-fold-buffer
