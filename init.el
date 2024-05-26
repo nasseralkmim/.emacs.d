@@ -1871,7 +1871,7 @@ When matching, reference is stored in match group 1."
   :init
   (with-eval-after-load 'hideshow
     (add-to-list 'hs-special-modes-alist '(LaTeX-mode
-                                           "\\\\section" ; start
+                                           "\\(?:\\\\\\(?:paragraph\\|s\\(?:\\(?:ubs\\(?:ubs\\)?\\)?ection\\)\\)\\)" ; start
                                            ""            ; end
                                            "%"          ; comment-start
                                            latex-hideshow-forward-sexp-function ; forward-sexp-function
@@ -1884,13 +1884,13 @@ When matching, reference is stored in match group 1."
       "Check if point is at the beginning of block."
       (save-excursion
         (beginning-of-line)
-        (looking-at "^\\s-*\\\\section")))
+        (looking-at "\\(?:\\\\\\(?:paragraph\\|s\\(?:\\(?:ubs\\(?:ubs\\)?\\)?ection\\)\\)\\)")))
     (defun latex-nav-beginning-of-block ()
       "Move to start of the current block."
       (interactive)
       (if (latex-info-looking-at-beginning-of-block)
           t
-        (search-backward "\\section" nil t)))
+        (search-backward  "\\(?:\\\\\\(?:paragraph\\|s\\(?:\\(?:ubs\\(?:ubs\\)?\\)?ection\\)\\)\\)" nil t)))
     (defun latex-nav-end-of-block ()
       "Move to end of current block"
       (interactive)
