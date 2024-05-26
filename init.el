@@ -1862,7 +1862,7 @@ When matching, reference is stored in match group 1."
   ;; remember internal blocks hiding status, e.g. if internal blocks are hidden, keep them hidden
   (setq hs-allow-nesting t))
 
-(use-package latex-hideshow-hack
+(use-package latex-hideshow-hack :disabled
   :ensure nil
   :hook
   (LaTeX-mode . (lambda ()
