@@ -1895,11 +1895,14 @@ When matching, reference is stored in match group 1."
       "Move to end of current block"
       (interactive)
       (when (latex-nav-beginning-of-block)
-        (while (and (forward-line 1)
-                    (not (eobp))
-                    (not (latex-info-looking-at-beginning-of-block))))
-        (backward-paragraph)
-        (point-marker)))))
+        (let ((current-block (current-word)))
+          (forward-line)
+          ;; if can not find another block on the same level, search any other block
+          (unless (re-search-forward (concat "\\\\" current-block) nil t)
+            (unless (re-search-forward "\\(?:\\\\\\(?:paragraph\\|s\\(?:\\(?:ubs\\(?:ubs\\)?\\)?ection\\)\\)\\)" nil t)
+              (re-search-forward "\\\\end{document}")))
+          (forward-line -1)
+          (end-of-line))))))
 
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
