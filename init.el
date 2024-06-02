@@ -1630,7 +1630,7 @@ When matching, reference is stored in match group 1."
   :init
   (setq
    ;; apparently I need to manually create the images folder
-   org-download-image-dir "./images"
+   org-download-image-dir "./figures"
    org-download-image-html-width 350
    org-download-image-latex-width 10)
   ;; can resize screen shot
@@ -2122,6 +2122,7 @@ When matching, reference is stored in match group 1."
   ;; add tables and figure to fold
   (add-to-list 'TeX-fold-env-spec-list '("[table]" ("table")))  
   (add-to-list 'TeX-fold-env-spec-list '("[figure]" ("figure")))
+  (add-to-list 'TeX-fold-env-spec-list '("[frame]" ("frame")))
   (add-to-list 'TeX-fold-env-spec-list '("[minipage]" ("minipage")))
   (add-to-list 'TeX-fold-env-spec-list '("[algorithm]" ("algorithm")))
 
@@ -2144,8 +2145,8 @@ When matching, reference is stored in match group 1."
   :after latex
   :init
   ;; extra outline headers 
-  ;; (setq TeX-outline-extra
-  ;;       '(("%paragraph" 5)))
+  (setq TeX-outline-extra
+        '(("%paragraph" 5)))
 
   ;; add font locking to the headers
   (font-lock-add-keywords
