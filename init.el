@@ -2049,7 +2049,7 @@ When matching, reference is stored in match group 1."
   ;; To jump to source, from Okular, one needs to use the 'Browser tool'
   ;; (Ctrl-1) and click on the text with shift key pressed on.
   ;; (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-  (add-to-list 'TeX-view-program-selection '(output-pdf "Okular")))
+  (add-to-list 'TeX-view-program-selection '(output-pdf "Sioyek")))
 
 ;; preview in latex
 (use-package preview
@@ -2229,7 +2229,7 @@ When matching, reference is stored in match group 1."
 
   ;; Open pdf in dired with `!` and the default application 
   (setq dired-guess-shell-alist-user
-        '(("\\.pdf\\'" "okular")
+        '(("\\.pdf\\'" "sioyek")
           ("\\.png\\'" "feh --auto-reload")
           ("\\.svg\\'" "feh --auto-reload"))))
 
@@ -2567,7 +2567,7 @@ Only if there is more than one window opened."
   (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
 
 ;; using okular to at least view the documents...
-(use-package bibtex-completion-wsl
+(use-package bibtex-completion-wsl :disabled
   :ensure nil
   :when (string-match "-[Mm]icrosoft" operating-system-release)
   :after consult-bibtex
@@ -3392,7 +3392,7 @@ opening a file from dired. Otherwise just regular dired."
   :defer 1 
   :config
   (openwith-mode)
-  (setq openwith-associations '(("\\.pdf\\'" "okular" (file))
+  (setq openwith-associations '(("\\.pdf\\'" "sioyek" (file))
                                 ("\\.xopp\\'" "xournalpp" (file))
                                 ("\\.svg\\'" "feh --auto-reload" (file))
                                 ("\\.png\\'" "feh --auto-reload" (file))))
@@ -3421,7 +3421,7 @@ opening a file from dired. Otherwise just regular dired."
           (directory . emacs)
           ("\\.mm\\'" . default)
           ("\\.x?html?\\'" . default)
-          ("\\.pdf\\'" . "okular %s & disown")
+          ("\\.pdf\\'" . "sioyek %s & disown")
           ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1 & disown")
           ;; if file has ::<page> opens at this page
           ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1 & disown"))))
