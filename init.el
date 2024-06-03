@@ -2007,9 +2007,9 @@ When matching, reference is stored in match group 1."
   ;; start latex buffer folded
   ;; (add-hook 'find-file-hook 'TeX-fold-buffer t)
 
-  ;; specific config
-  ;; -shell-escape for minted (syntax highlight) and svg export
-  (setq LaTeX-command "latex -shell-escape")
+  (setq-default TeX-engine 'default
+                ;; for xetex with shell escape
+                TeX-command-extra-options "-shell-escape")
   
   ;; variables for jumping between source and pdf
   (setq TeX-source-correlate-method 'synctex ;; Method for enabling forward and inverse search 
@@ -2131,6 +2131,7 @@ When matching, reference is stored in match group 1."
 
   ;; fold document class and document macros
   (add-to-list 'TeX-fold-macro-spec-list '("[class]" ("documentclass")))
+  (add-to-list 'TeX-fold-macro-spec-list '("[note]" ("note")))
 
   (setq TeX-fold-ellipsis "…")
 
