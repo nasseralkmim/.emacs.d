@@ -2124,6 +2124,7 @@ When matching, reference is stored in match group 1."
   (add-to-list 'TeX-fold-env-spec-list '("[figure]" ("figure")))
   (add-to-list 'TeX-fold-env-spec-list '("[frame]" ("frame")))
   (add-to-list 'TeX-fold-env-spec-list '("[minipage]" ("minipage")))
+  (add-to-list 'TeX-fold-env-spec-list '("[tikzpicture]" ("tikzpicture")))
   (add-to-list 'TeX-fold-env-spec-list '("[algorithm]" ("algorithm")))
 
   ;; fold comments as well
