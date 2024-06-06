@@ -4094,21 +4094,7 @@ its results, otherwise display STDERR with
   ;; https://old.reddit.com/r/emacs/comments/18cbeel/anyone_using_gnus_in_2023/kcceopw/
   (defun my-gnus-group-activate-on-idle ()
     (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 2))))
-  (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
-
-  ;; Get news when idle
-  ;; https://www.emacswiki.org/emacs/GnusDemon
-  (defun gnus-demon-scan-news-5 ()
-    (interactive)
-    (let ((win (current-window-configuration)))
-      (unwind-protect
-          (save-window-excursion
-            (when (gnus-alive-p)
-              (with-current-buffer gnus-group-buffer
-                (gnus-group-get-new-news 5))))
-        (set-window-configuration win))))
-  (gnus-demon-add-handler 'gnus-demon-scan-news-5 5 t) ; this does a call to gnus-group-get-new-news
-  (add-hook 'gnus-group-mode-hook '(lambda () (interactive) (gnus-demon-init))))
+  (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle))
 
 (use-package nnrss
   :ensure nil
