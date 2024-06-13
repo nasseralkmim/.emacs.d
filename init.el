@@ -5194,5 +5194,11 @@ absolute path. Finally load eglot."
   :ensure (dslide :host github
                   :repo "positron-solutions/dslide"))
 
-(message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
+(use-package solarized-theme :disabled
+  :init
+  (setq solarized-scale-org-headlines nil
+        solarized-scale-outline-headlines nil
+        solarized-high-contrast-mode-line t)
+  (load-theme 'solarized-dark t))
 
+(message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
