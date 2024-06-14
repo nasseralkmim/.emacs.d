@@ -4368,6 +4368,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   ('(normal visual) "C-t" (general-predicate-dispatch nil
                  (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
   ('(normal visual) "SPC t" (general-simulate-key "S-V C-h t")) ; whole line
+  :hook
+  (gt-buffer-render-init . visual-line-mode)
   :init
   (defun my-gt-cycle-translation ()
     "Got to gt-result buffer and cycle translation."
