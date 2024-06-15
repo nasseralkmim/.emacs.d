@@ -4073,7 +4073,7 @@ its results, otherwise display STDERR with
         ;; show images in gnus, except adds
         gnus-blocked-images "ads"
         nnrss-directory "~/Sync/news/rss"
-        nnrss-use-local t
+        nnrss-use-local nil             ; for some reason, not getting new news
         ;; avoid duplicate messages/articles, specially in rss fields
         gnus-suppress-duplicates t
         ;; don't show messages with same ID
