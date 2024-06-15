@@ -4610,6 +4610,7 @@ usual shapes (smoothing) to optimize the number of points"
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
+        edraw-editor-tool-freehand-separate-smoothing-process t ; allows undo smoothing
         edraw-editor-tool-freehand-smoothing-method 'bezier-fitting
         edraw-editor-default-transparent-bg-visible nil    ; always see transparent as white
         edraw-default-document-properties '((width . 800)
