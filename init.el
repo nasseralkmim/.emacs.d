@@ -255,6 +255,7 @@
   (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend))
 
 ;; change typeface size font
+;; note: `global-text-scale-adjust' do that
 (use-package emacs-frame-zoom
   :ensure nil
   :general
@@ -1636,7 +1637,7 @@ When matching, reference is stored in match group 1."
   ;; can resize screen shot
   ;; (setq org-download-screenshot-method "flameshot gui --raw > %s")
   ;; for Wayland (need to install grim slurp and wl-clipboard, and swappy)
-  (setq org-download-screenshot-method "grim -g \"$(slurp -d)\" - | swappy -f - -o %s"))
+  (setq org-download-screenshot-method "grim -g \"$(slurp -w 0 -d)\" - | swappy -f - -o %s"))
 
 ;; wsl specific config
 (use-package org-download-windows :disabled
