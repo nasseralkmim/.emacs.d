@@ -4843,7 +4843,7 @@ usual shapes (smoothing) to optimize the number of points"
 
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
-(use-package breadcrumb
+(use-package breadcrumb :disabled
   :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb")
   :hook
   (prog-mode . breadcrumb-mode)
