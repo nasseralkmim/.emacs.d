@@ -4272,7 +4272,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   :ensure nil
   :hook
   (prog-mode . hl-line-mode)
-  (text-mode . hl-line-mode)
   (dired-mode . hl-line-mode)
   :config
   ;; only active window
