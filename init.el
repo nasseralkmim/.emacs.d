@@ -771,7 +771,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom-face
   (sp-show-pair-match-content-face ((t (:inherit show-paren-match))))
   ;; remove background to avoid anoying color when drawing with edraw in org-mode
-  (show-paren-match ((t (:background nil))))
+  (show-paren-match ((t (:background unspecified))))
   :hook
   (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
