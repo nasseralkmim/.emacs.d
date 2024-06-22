@@ -225,13 +225,10 @@
   ;; :defer 1
   :ensure nil
   :preface
-  ;; (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
-  (setq default-monospace '("Terminess Nerd Font Mono"))
-  ;; (setq default-proportional '("Recursive Sans Line Static"))
-  (setq default-proportional '("Terminess Nerd Font Propo"))
-  ;; (setq default-comments '("Recursive Mono Casual Static"))
-  (setq default-comments '("Terminess Nerd Font Mono"))
+  (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
   (setq default-unicode '("Noto Color Emoji"))
+  (setq default-proportional '("Recursive Sans Line Static"))
+  (setq default-comments '("Recursive Mono Casual Static"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
   ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF", or "Recursive Mono Linear Static".
@@ -255,8 +252,7 @@
   (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face))))
   :init
-  (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend)
-  (set-frame-font  "Terminess Nerd Font Mono 12" nil t))
+  (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend))
 
 ;; change typeface size font
 ;; note: `global-text-scale-adjust' do that
@@ -4080,7 +4076,7 @@ its results, otherwise display STDERR with
         ;; show images in gnus, except adds
         gnus-blocked-images "ads"
         nnrss-directory "~/Sync/news/rss"
-        nnrss-use-local t             ; for some reason, not getting new news
+        nnrss-use-local nil             ; for some reason, not getting new news
         ;; avoid duplicate messages/articles, specially in rss fields
         gnus-suppress-duplicates t
         ;; don't show messages with same ID
