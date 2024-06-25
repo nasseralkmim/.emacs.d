@@ -5209,4 +5209,11 @@ absolute path. Finally load eglot."
 (use-package treesit-fold
   :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold"))
 
+(use-package treesit-auto
+  :custom
+  (treesit-auto-install 'prompt)
+  :config
+  (treesit-auto-add-to-auto-mode-alist 'all)
+  (global-treesit-auto-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
