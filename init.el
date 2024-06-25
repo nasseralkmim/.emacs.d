@@ -5202,9 +5202,10 @@ absolute path. Finally load eglot."
 (use-package treesit-fold
   :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
   :general
-  ([remap evil-toggle-fold] 'treesit-fold-toggle)
-  ([remap evil-open-folds] 'treesit-fold-open-all)
-  ([remap evil-close-folds] 'treesit-fold-close-all))
+  ('normal "z A" 'treesit-fold-open-recursively)
+  :hook 
+  (c++-ts-mode . treesit-fold-mode)
+  (python-ts-mode . treesit-fold-mode))
 
 (use-package treesit-auto
   :custom
