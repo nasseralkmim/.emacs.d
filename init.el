@@ -1804,7 +1804,7 @@ When matching, reference is stored in match group 1."
   (setq dabbrev-case-replace nil))
 
 ;; Allows selectively display portions of program
-(use-package hideshow
+(use-package hideshow :disabled
   :ensure nil
   :diminish hs-minor-mode
   :general
@@ -2432,10 +2432,10 @@ Only if there is more than one window opened."
   :init
   ;; From the documentation, substitute to 'tree-sitter' based modes
   ;; [[help:c-ts-mode][help:c-ts-mode]] 
-  (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  (add-to-list 'major-mode-remap-alist
-               '(c-or-c++-mode . c-or-c++-ts-mode))
+  ;; (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
+  ;; (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
+  ;; (add-to-list 'major-mode-remap-alist
+  ;;              '(c-or-c++-mode . c-or-c++-ts-mode))
   :config
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
@@ -5200,11 +5200,16 @@ absolute path. Finally load eglot."
   (load-theme 'solarized-dark t))
 
 (use-package treesit-fold
-  :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold"))
+  :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
+  :general
+  ([remap evil-toggle-fold] 'treesit-fold-toggle)
+  ([remap evil-open-folds] 'treesit-fold-open-all)
+  ([remap evil-close-folds] 'treesit-fold-close-all))
 
 (use-package treesit-auto
   :custom
   (treesit-auto-install 'prompt)
+  :demand
   :config
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
