@@ -5206,4 +5206,7 @@ absolute path. Finally load eglot."
         solarized-high-contrast-mode-line t)
   (load-theme 'solarized-dark t))
 
+(use-package treesit-fold
+  :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold"))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
