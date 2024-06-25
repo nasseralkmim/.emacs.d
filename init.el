@@ -3037,13 +3037,6 @@ Only if there is more than one window opened."
   (font-lock-function-call-face ((t :inherit outline-7)))
   (font-lock-function-name-face ((t :inherit t :weight bold)))
   :config
-  ;; download and build grammar dynamic library 
-  ;; need to call: 'treesit-install-language-grammar' to install
-  (setq treesit-language-source-alist
-        '((python "https://github.com/tree-sitter/tree-sitter-python.git")
-          (c "https://github.com/tree-sitter/tree-sitter-c.git")
-          (cpp "https://github.com/tree-sitter/tree-sitter-cpp.git")
-          (cmake "https://github.com/uyha/tree-sitter-cmake.git")))
   ;; maximum fontification
   (setq treesit-font-lock-level 4))
 
