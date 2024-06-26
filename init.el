@@ -256,7 +256,7 @@
 
 ;; change typeface size font
 ;; note: `global-text-scale-adjust' do that
-(use-package emacs-frame-zoom
+(use-package emacs-frame-zoom :disabled
   :ensure nil
   :general
   ("C-M-=" 'zoom-frame)
@@ -5204,6 +5204,8 @@ absolute path. Finally load eglot."
   :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
   :general
   ('normal "z A" 'treesit-fold-open-recursively)
+  ('normal "<tab>" (general-predicate-dispatch nil
+                   (treesit-node-p) 'treesit-fold-toggle))
   :hook 
   (c++-ts-mode . treesit-fold-mode)
   (python-ts-mode . treesit-fold-mode))
