@@ -1805,7 +1805,7 @@ When matching, reference is stored in match group 1."
   (setq dabbrev-case-replace nil))
 
 ;; Allows selectively display portions of program
-(use-package hideshow :disabled
+(use-package hideshow
   :ensure nil
   :diminish hs-minor-mode
   :general
@@ -1860,8 +1860,7 @@ When matching, reference is stored in match group 1."
              (setq this-command 'my-cycle-visibility-show-first)))
          (message "Toggle"))))))
   :hook
-  (prog-mode . hs-minor-mode)
-  (nxml-mode . hs-minor-mode)
+  (emacs-lisp-mode . hs-minor-mode)
   :config
   ;; remember internal blocks hiding status, e.g. if internal blocks are hidden, keep them hidden
   (setq hs-allow-nesting t))
