@@ -225,7 +225,7 @@
   ;; :defer 1
   :ensure nil
   :preface
-  (setq default-monospace '("JetBrains Mono NF")) ;; "Recursive Mono Linear Static"
+  (setq default-monospace '("MesloLGS Nerd Font Mono")) ;; "Recursive Mono Linear Static"
   (setq default-unicode '("Noto Color Emoji"))
   (setq default-proportional '("Recursive Sans Line Static"))
   (setq default-comments '("Recursive Mono Casual Static"))
