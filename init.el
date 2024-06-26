@@ -4595,13 +4595,6 @@ If INTERACTIVE is nil the function acts like a Capf."
      (add-to-list 'load-path "/home/nasser/.emacs.d/elpaca/repos/el-easydraw/")
      (require 'edraw-org)
      (edraw-org-setup-exporter))
-  (defun my-edraw-toggle-smoothing-method ()
-    "Toggle the smoothing method to allow handwritten text (no smoothing) and
-usual shapes (smoothing) to optimize the number of points"
-    (interactive)
-    (if (bound-and-true-p edraw-editor-tool-freehand-smoothing-method)
-        (setq edraw-editor-tool-freehand-smoothing-method nil)
-      (setq edraw-editor-tool-freehand-smoothing-method 'bezier-fitting)))
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
