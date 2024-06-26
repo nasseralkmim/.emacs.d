@@ -225,13 +225,13 @@
   ;; :defer 1
   :ensure nil
   :preface
-  (setq default-monospace '("MesloLGS Nerd Font Mono")) ;; "Recursive Mono Linear Static"
+  (setq default-monospace '("MesloLGS Nerd Font Mono"))
   (setq default-unicode '("Noto Color Emoji"))
-  (setq default-proportional '("Recursive Sans Line Static"))
+  (setq default-proportional '("MesloLGS Nerd Font Propo"))
   (setq default-comments '("Recursive Mono Casual Static"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
-  ;; Monospace favorites are "JetBrains Mono NF" and "Iosevka NF", or "Recursive Mono Linear Static".
+  ;; Monospace favorites are "JetBrains Mono NF", "MesloLGS Nerd Font Mono" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
   (default  ((t (:family ,(car default-monospace)))))
