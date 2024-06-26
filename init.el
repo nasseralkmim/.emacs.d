@@ -1604,8 +1604,9 @@ When matching, reference is stored in match group 1."
           ;; 
           ;; print stderr output (like C++ compiling errors)
           ;; https://emacs.stackexchange.com/questions/59875/org-src-block-does-not-return-any-output
-          (:prologue . "exec 2>&1")
-          (:epilogue . ":"))))
+          ;; (:prologue . "exec 2>&1")
+          ;; (:epilogue . ":")
+          )))
 
 ;; for UML diagrams in org-mode
 ;; need to install `yay plantuml`
