@@ -4580,8 +4580,6 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; It is not working to export to latex
 (use-package edraw
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw" :wait t)
-  :general
-  ('normal "C-c t" 'my-edraw-toggle-smoothing-method)
   :init
   (with-eval-after-load 'org
     ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
