@@ -966,7 +966,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (evil-refresh-cursor)))
 
   (advice-add 'org-babel-do-key-sequence-in-edit-buffer
-              :around #'evil-org-insert-state-in-edit-buffer))
+              :around #'evil-org-insert-state-in-edit-buffer)
+
+  ;; change modeline face when in insert mode
+  ;; https://emacs.stackexchange.com/a/34258
+  (setq original-foreground (face-attribute 'mode-line :foreground))
+  (setq insert-foreground (face-attribute 'success :foreground))
+  (add-hook 'evil-insert-state-entry-hook
+            (lambda ()
+              (set-face-attribute 'mode-line nil :foreground insert-foreground)))
+  (add-hook 'evil-insert-state-exit-hook
+            (lambda ()
+              (set-face-attribute 'mode-line nil :foreground original-foreground))))
 
 ;; move around text
 (use-package evil-easymotion :disabled
