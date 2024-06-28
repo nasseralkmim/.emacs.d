@@ -802,7 +802,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         flymake-show-diagnostics-at-end-of-line nil ; just use "M-n"
         flymake-mode-line-lighter "Fly")
   ;; avoid warning in the 'flymake' log
-  (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake))
+  ;; (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
+  )
 
 ;; 'flymake' just for C++ in org edit special
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Example_002d_002d_002dConfiguring-a-tool-called-directly.html
