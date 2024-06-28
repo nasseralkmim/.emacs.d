@@ -50,7 +50,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil ; compute statistics about package initialization
+      use-package-compute-statistics t ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
       use-package-expand-minimally t	; minimal expanded macro
@@ -4588,7 +4588,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq sx-question-mode-display-buffer-function 'switch-to-buffer))
 
 ;; Drawing link support in 'org-mode'
-;; It is not working to export to latex
 (use-package edraw
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw" :wait t)
   :init
@@ -4598,10 +4597,7 @@ If INTERACTIVE is nil the function acts like a Capf."
     (require 'edraw-org)
     (edraw-org-setup-default))
   ;; for async export
-  ;; TODO: not working.
-  ;; editing the function ix 'ox.el' works.
   (with-eval-after-load 'ox
-     (add-to-list 'load-path "/home/nasser/.emacs.d/elpaca/repos/el-easydraw/")
      (require 'edraw-org)
      (edraw-org-setup-exporter))
   :config
