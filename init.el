@@ -4261,6 +4261,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Contact manager package
 ;; 'ebdb-migrate-from-bbdb' converts from bbdb
+;; 'ebdb-mua-update-records' can be used to add contacts
 (use-package ebdb
   :after (:any gnus message)
   :init
@@ -4625,7 +4626,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
-        edraw-editor-tool-freehand-separate-smoothing-process t ; allows undo smoothing
         edraw-editor-tool-freehand-smoothing-method 'bezier-fitting
         edraw-editor-default-transparent-bg-visible nil    ; always see transparent as white
         edraw-default-document-properties '((width . 800)
