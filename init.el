@@ -949,8 +949,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-to-list 'evil-insert-state-modes 'message-mode)
 
   ;; initialize locals buffer in normal state instead of emacs state
-  (add-hook 'gdb-locals-mode-hook 'evil-normal-state)
-  
+  (add-hook 'gdb-locals-mode-hook 'evil-normal-state))
+
+;; Not sure if this still necessary
+(use-package hack-evil-mode-org-mode-babel :disabled
+  :ensure nil
+  :after evil
+  :init
   ;; fix tab behavior in org-mode source block
   (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
     "Bind `evil-default-state' to `insert' before calling FUN with ARGS."
@@ -966,18 +971,35 @@ frame if FRAME is nil, and to 1 if AMT is nil."
       (evil-refresh-cursor)))
 
   (advice-add 'org-babel-do-key-sequence-in-edit-buffer
-              :around #'evil-org-insert-state-in-edit-buffer)
+              :around #'evil-org-insert-state-in-edit-buffer))
 
-  ;; change modeline face when in insert mode
-  ;; https://emacs.stackexchange.com/a/34258
-  (setq original-foreground (face-attribute 'mode-line :foreground))
-  (setq insert-foreground (face-attribute 'success :foreground))
-  (add-hook 'evil-insert-state-entry-hook
-            (lambda ()
-              (set-face-attribute 'mode-line nil :foreground insert-foreground)))
-  (add-hook 'evil-insert-state-exit-hook
-            (lambda ()
-              (set-face-attribute 'mode-line nil :foreground original-foreground))))
+;; Change color of mode line evil mode indicator
+;; https://www.reddit.com/r/emacs/comments/gqc9fm/visual_indication_of_the_mode_of_editing_with_evil/
+(use-package hack-evil-mode-line-indicator
+  :ensure nil
+  :after evil
+  :init
+  ;; Override defun from evil-core.el
+  (defun evil-generate-mode-line-tag (&optional state)
+    "Generate the evil mode-line tag for STATE."
+    (let ((tag (evil-state-property state :tag t)))
+      ;; prepare mode-line: add tooltip
+      (when (functionp tag)
+        (setq tag (funcall tag)))
+      (if (stringp tag)
+          (propertize tag
+	              'face (cond
+		             ((string= "normal" state)
+		              'bold)
+		             ((string= "insert" state)
+		              'success)
+		             ((string= "visual" state)
+		              'font-lock-function-name-face)
+		             ((string= "emacs" state)
+		              'warning))
+	              'help-echo (evil-state-property state :name)
+	              'mouse-face 'mode-line-highlight)
+        tag))))
 
 ;; move around text
 (use-package evil-easymotion :disabled
