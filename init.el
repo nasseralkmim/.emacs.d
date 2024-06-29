@@ -5238,4 +5238,33 @@ absolute path. Finally load eglot."
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
+(use-package hledger-rules-mode
+  :ensure nil
+  :mode ("\\.rules\\'" . hledger-rules-mode)
+  :config
+  (defun hledger-rules-mode-setup ()
+    (font-lock-add-keywords nil 
+                            '(;; Comments
+                              ("^\\s-*#.*" . font-lock-comment-face)
+
+                              ;; Keywords
+                              ("\\<\\(if\\|fields\\|date-format\\|currency\\|account[0-9]+\\|amount[0-9]+\\|skip\\)\\>" . font-lock-keyword-face)
+
+                              ;; Date formats, accounts, etc.
+                              ("\\<\\(%Y-%m-%d\\|\\b[a-zA-Z0-9:_-]+\\b\\)\\>" . font-lock-variable-name-face)
+
+                              ;; Operators
+                              ("\\(=~\\|==\\|!=\\|<=\\|>=\\)" . font-lock-builtin-face)
+
+                              ;; Variables like %description, %amount
+                              ("\\(%[a-zA-Z_]+\\)" . font-lock-variable-name-face)
+
+                              ;; General words
+                              ("\\b\\w+\\b" . font-lock-string-face))))
+
+  (define-minor-mode hledger-rules-mode
+    "Minor mode for editing .rules files in hledger."
+    :lighter " hledger-rules"
+    (hledger-rules-mode-setup)))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
