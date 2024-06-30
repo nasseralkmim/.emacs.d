@@ -950,7 +950,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-to-list 'evil-insert-state-modes 'message-mode)
 
   ;; initialize locals buffer in normal state instead of emacs state
-  (add-hook 'gdb-locals-mode-hook 'evil-normal-state))
+  (add-hook 'gdb-locals-mode-hook 'evil-normal-state)
+  (add-hook 'dslide-start-hook 'evil-insert-state))
 
 ;; Not sure if this still necessary
 (use-package hack-evil-mode-org-mode-babel :disabled
@@ -4676,7 +4677,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                 gptel-backend (gptel-make-ollama
                                "Ollama"                               ;Any name of your choosing
                                :host "localhost:11434"                ;Where it's running
-                               :models '("llama3" "llama3:70b" "llama3:70b-text")            ;Installed models (ollama pull "model")
+                               :models '("llama3" "llama3:70b" "llama3:70b-text" "gemma2")            ;Installed models (ollama pull "model")
                                :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
@@ -5211,7 +5212,15 @@ absolute path. Finally load eglot."
 
 (use-package dslide
   :ensure (dslide :host github
-                  :repo "positron-solutions/dslide"))
+                  :repo "positron-solutions/dslide")
+  :general
+  ('normal "C-<f12>" 'dslide-deck-start)
+  ('normal dslide-mode-map
+           "<right>" 'dslide-deck-forward
+           "<left>" 'dslide-deck-backward
+           "<f12>" 'dslide-deck-stop)
+  :config
+  (setq dslide-animation-duration 0))
 
 (use-package solarized-theme :disabled
   :init
@@ -5266,5 +5275,14 @@ absolute path. Finally load eglot."
     "Minor mode for editing .rules files in hledger."
     :lighter " hledger-rules"
     (hledger-rules-mode-setup)))
+
+;; tools for display during presentations
+(use-package master-of-ceremonies
+  :ensure (master-of-ceremonies 
+           :host github
+           :repo "positron-solutions/master-of-ceremonies"))
+
+(use-package hide-mode-line)
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
