@@ -1594,8 +1594,9 @@ When matching, reference is stored in match group 1."
 (use-package org-latex-preview
   :ensure nil
   :after org
-  :hook
-  (org-mode . org-latex-preview-auto-mode))
+  :init
+  (when (string-greaterp org-version "9.8")
+   (add-hook 'org-mode-hook 'org-latex-preview-auto-mode)))
 
 (use-package ox-beamer
   :ensure nil
