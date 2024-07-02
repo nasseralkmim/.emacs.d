@@ -911,7 +911,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (push '(wdired--self-insert . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands))
 
 (use-package evil
-  :defer 0.5
+  :defer 1
   :diminish evil-mode
   :init
   ;; Set before loading evil or evil collection
@@ -1044,7 +1044,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after evil
   :init
   (setq evil-collection-setup-minibuffer t) ; makes company works betters I think
-  (evil-collection-init))
+  (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
+                                helpful consult)))
 
 ;; navigation: gh, gj, gk, gl
 ;; promoting/demoting headings: M-hjkl
