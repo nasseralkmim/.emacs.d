@@ -1045,7 +1045,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq evil-collection-setup-minibuffer t) ; makes company works betters I think
   (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
-                                helpful consult)))
+                                helpful consult vertico)))
 
 ;; navigation: gh, gj, gk, gl
 ;; promoting/demoting headings: M-hjkl
