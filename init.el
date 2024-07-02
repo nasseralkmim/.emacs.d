@@ -1199,6 +1199,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
         org-cycle-separator-lines 0  ; no empty lines between headings
         org-fontify-quote-and-verse-blocks nil ; no special fortification for those blocks 
+        org-fontify-whole-heading-line nil     ; make faster
         org-insert-heading-respect-content nil ; nil: heading after current line/ t: after current sub-tree
         org-catch-invisible-edits 'show-and-error ; make visible then abort
         org-tags-column 0                        ; tag right after text
