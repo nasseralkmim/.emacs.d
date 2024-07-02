@@ -4613,19 +4613,21 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; use the same 'question list' buffer to show the question
   (setq sx-question-mode-display-buffer-function 'switch-to-buffer))
 
-;; Drawing link support in 'org-mode'
-(use-package edraw
-  :ensure (edraw :type git :host github :repo "misohena/el-easydraw" :wait t)
+(use-package hack-org-edraw-async-export
+  :ensure nil
+  :load-path "./elpaca/builds/edraw/"
   :init
-  (with-eval-after-load 'org
-    ;; need to reload the first org-file to make 'edraw-org-setup-default' to make effect
-    ;; this is ok, the benefit is lazy loading until we open an org file
-    (require 'edraw-org)
-    (edraw-org-setup-default))
-  ;; for async export
   (with-eval-after-load 'ox
      (require 'edraw-org)
-     (edraw-org-setup-exporter))
+     (edraw-org-setup-exporter)))
+
+;; Drawing link support in 'org-mode'
+(use-package edraw
+  :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
+  :hook
+  (org-mode . (lambda ()
+                (require 'edraw-org)
+                (edraw-org-setup-default)))
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
