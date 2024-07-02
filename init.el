@@ -5034,6 +5034,7 @@ absolute path. Finally load eglot."
     (breadcrumb-mode -1)))
 
 (use-package standard-themes
+  :defer 1
   :init
   (if (not (display-graphic-p))
       (standard-themes-load-light)))
