@@ -25,4 +25,3 @@
 
   ;; make native compilation happens asynchronously
   (setq native-comp-deferred-compilation t))
-
