@@ -1152,7 +1152,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package org
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
-  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git" :wait t)
+  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :custom-face
