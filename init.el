@@ -2520,10 +2520,7 @@ Only if there is more than one window opened."
   (add-hook 'python-mode-hook #'my-python-mode-hook)
 
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards.
-  ;; using flake9 for support to 'pyproject.toml'.
-  ;; install: 'yay flake8'
-  (setq python-flymake-command '("flake8" "-")
-        python-check-command "/home/nasser/.local/bin/flake8"))
+  (setq python-flymake-command '("flake8" "--max-line-length" "88" "-")))
 
 (use-package python-ts
   :ensure nil
