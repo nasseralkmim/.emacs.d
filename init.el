@@ -935,8 +935,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (evil-mode 1)
   ;; disable those keybindings 
   (general-def '(normal motion) "TAB" nil)
-  (general-def '(normal) "C-n" nil)
-  (general-def '(normal) "C-p" nil)
+  (general-def 'normal "C-n" nil)
+  (general-def 'normal "C-p" nil)
+  (general-def 'normal "q" nil)
 
   (setq
    lazy-highlight-cleanup nil           ; persist highlight
@@ -4886,7 +4887,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   :commands pueue
   :general 
   ('normal "<f7>" 'pueue)
-  ('normal "q" 'quit-window)
   ('normal pueue-mode-map "?" 'pueue-help)
   ('normal pueue-mode-map "m" 'pueue-mark))
 
