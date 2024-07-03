@@ -4864,7 +4864,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
-(use-package breadcrumb :disabled
+(use-package breadcrumb
   :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb")
   :hook
   (prog-mode . breadcrumb-mode)
