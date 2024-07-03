@@ -1046,7 +1046,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   (setq evil-collection-setup-minibuffer t) ; makes company works betters I think
   (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
-                                helpful consult vertico)))
+                                helpful consult vertico ibuffer vterm)))
 
 ;; navigation: gh, gj, gk, gl
 ;; promoting/demoting headings: M-hjkl
@@ -2521,6 +2521,7 @@ Only if there is more than one window opened."
 
   ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards.
   ;; using flake9 for support to 'pyproject.toml'.
+  ;; install: 'yay flake8'
   (setq python-flymake-command '("flake8" "-")
         python-check-command "/home/nasser/.local/bin/flake8"))
 
