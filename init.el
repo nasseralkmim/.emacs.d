@@ -4885,6 +4885,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :commands pueue
   :general 
   ('normal "<f7>" 'pueue)
+  ('normal "q" 'quit-window)
   ('normal pueue-mode-map "?" 'pueue-help)
   ('normal pueue-mode-map "m" 'pueue-mark))
 
