@@ -1857,6 +1857,9 @@ When matching, reference is stored in match group 1."
   ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
                                        (my-hs-header-p)
                                        'my-hs-toggle-fold))
+  :hook
+  (emacs-lisp-mode . hs-minor-mode)
+  (nxml-mode . hs-minor-mode)
   :init
   (defun my-hs-hide-only-comments (arg)
     (interactive "p")
@@ -1897,8 +1900,6 @@ When matching, reference is stored in match group 1."
              (hs-show-block)
              (setq this-command 'my-cycle-visibility-show-first)))
          (message "Toggle"))))))
-  :hook
-  (emacs-lisp-mode . hs-minor-mode)
   :config
   ;; remember internal blocks hiding status, e.g. if internal blocks are hidden, keep them hidden
   (setq hs-allow-nesting t))
