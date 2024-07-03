@@ -5291,5 +5291,9 @@ absolute path. Finally load eglot."
 
 (use-package hide-mode-line)
 
+(use-package apptainer-mode
+  :ensure (apptainer-mode :type git :host github :repo "jrgant/apptainer-mode")
+  :mode ("\\.def\\'" . apptainer-mode))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
