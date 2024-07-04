@@ -3464,14 +3464,14 @@ opening a file from dired. Otherwise just regular dired."
   :after org
   :init
   (setq org-file-apps
-        '((auto-mode . emacs)
-          (directory . emacs)
-          ("\\.mm\\'" . default)
+        '(("\\.mm\\'" . default)
           ("\\.x?html?\\'" . default)
           ("\\.pdf\\'" . "okular %s & disown")
           ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1 & disown")
           ;; if file has ::<page> opens at this page
-          ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1 & disown"))))
+          ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1 & disown")
+          (auto-mode . emacs)
+          (directory . emacs))))
 
 ;; Specific for terminal emacs to open images
 (use-package org-file-apps-terminal
@@ -3479,8 +3479,8 @@ opening a file from dired. Otherwise just regular dired."
   :if (not (display-graphic-p))
   :after org
   :init
-  (add-to-list 'org-file-apps '("\\.svg\\'" . "inkview %s"))
-  (add-to-list 'org-file-apps '("\\.png\\'" . "feh %s")))
+  (add-to-list 'org-file-apps '("\\.svg\\'" . "feh -B white --auto-reload --auto-zoom %s & disown"))
+  (add-to-list 'org-file-apps '("\\.svg\\'" . "feh -B white --auto-reload --auto-zoom %s & disown")))
 
 ;; convert pdf to svg to display inline org image
 ;; requires pdf-tools
