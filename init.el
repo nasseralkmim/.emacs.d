@@ -5024,6 +5024,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package org-edit-special-with-eglot-hack
   :ensure nil
   :after org 
+  :general
+  ([remap org-edit-special] 'mb/org-babel-edit)
   :init
   (defun mb/org-babel-edit ()
     "Edit python src block with lsp support by tangling the block and
@@ -5058,13 +5060,13 @@ absolute path. Finally load eglot."
 (use-package org-treesit-src-blocks
   :ensure nil
   :after org
-  :config
+  :init
   ;; https://old.reddit.com/r/emacs/comments/15yxdz3/weekly_tips_tricks_c_thread/jy03758/
-  (advice-add 'org-src-get-lang-mode :filter-return
-            (lambda (mode)
-              (pcase (assoc mode major-mode-remap-alist)
-                (`(,mode . ,ts-mode) ts-mode)
-                (_ mode)))))
+  (defun change-mode-to-ts-mode (mode)
+    (pcase (assoc mode major-mode-remap-alist)
+      (`(,mode . ,ts-mode) ts-mode)
+      (_ mode)))
+  (advice-add 'org-src-get-lang-mode :filter-return #'change-mode-to-ts-mode))
 
 (use-package immersive-translate :disabled
   :ensure (immersive-translate :url "https://github.com/Elilif/emacs-immersive-translate.git")
