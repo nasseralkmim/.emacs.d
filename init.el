@@ -1497,7 +1497,7 @@ graphics."
         org-src-preserve-indentation t  ; preserve indentation in code
         org-adapt-indentation nil ; no extra space... better use indent mode (virtual)
         org-edit-src-content-indentation 0 ; dont indent source code
-        org-src-tab-acts-natively t	; if t, it is slow!
+        org-src-tab-acts-natively nil	; if t, it is slow!
         org-confirm-babel-evaluate nil) ; doesn't ask for confirmation
 
   ;; hide source blocks
