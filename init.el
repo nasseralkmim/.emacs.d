@@ -79,7 +79,8 @@
 ;; minimizes GC interference with user activity
 (use-package gcmh
   :diminish gcmh-mode
-  :init
+  :defer 1
+  :config
   (setq gcmh-idle-delay 0.5
         gcmh-high-cons-threshold (* 64 1024 1024))
   (gcmh-mode 1))
@@ -106,7 +107,7 @@
   :config
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
   (column-number-mode t)  ; show column number in the mode line
-  (setq-default indicate-empty-lines nil) ; cleaner
+  ;; (setq-default indicate-empty-lines nil) ; cleaner
 
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
@@ -123,7 +124,7 @@
        )
 
   (setq ring-bell-function 'ignore)
-  (setq inhibit-startup-screen t)       ; start at scratch buffer
+  ;; (setq inhibit-startup-screen t)       ; start at scratch buffer
 
   (setq custom-file "~/.emacs.d/emacs-custom.el")
   (load custom-file)
@@ -144,7 +145,6 @@
   (setq-default
    completion-cycle-threshold nil    ; show all candidates
    completions-detailed t	    ; add details in completions as prefix/sufix
-   idle-update-delay 1.1  ; Slow down the UI being updated to improve performance
    enable-recursive-minibuffers t	; Enable recursive minibuffers
    visible-bell t			; Don't beep at me
    kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
@@ -766,8 +766,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('insert '(prog-mode-map LaTeX-mode-map org-mode-map) "C-<tab>" 'sp-forward-sexp)
   :custom-face
   (sp-show-pair-match-content-face ((t (:inherit show-paren-match))))
-  ;; remove background to avoid anoying color when drawing with edraw in org-mode
-  (show-paren-match ((t (:background unspecified))))
   :hook
   (prog-mode . smartparens-mode)
   (LaTeX-mode . smartparens-mode)
@@ -782,6 +780,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         )
   ;; show context (echo area) when closing delimiter is off screen
   (setq show-paren-context-when-offscreen 'overlay))
+
+(use-package hack-sp-face-in-org
+  :ensure nil
+  :after org
+  :init
+  (defun change-sp-face-when-in-org ()
+    "remove background to avoid annoying color when drawing with edraw in
+org-mode"
+    (face-remap-add-relative 'show-paren-match '(:background 'unspecified)))
+  (add-hook 'org-mode-hook #'change-sp-face-when-in-org))
 
 (use-package smartparens-config
   :ensure nil
@@ -3190,6 +3198,9 @@ opening a file from dired. Otherwise just regular dired."
   :config
   (setq highlight-parentheses-colors nil
         highlight-parentheses-attributes '((:box  (:line-width (-1 . -1) :style nil))))
+  ;; Since tty does not have box, use underline
+  (if (not (display-graphic-p))
+      (setq highlight-parentheses-attributes '((:underline  t :weight bold))))
   (global-highlight-parentheses-mode))
 
 ;; moving cursor around fast and efficiently
@@ -5037,9 +5048,10 @@ absolute path. Finally load eglot."
 
 (use-package standard-themes
   :defer 1
-  :init
-  (if (not (display-graphic-p))
-      (standard-themes-load-light)))
+  :config
+  (if (eq frame-background-mode 'dark)
+      (standard-themes-load-dark)
+    (standard-themes-load-light)))
 
 (use-package org-treesit-src-blocks
   :ensure nil
