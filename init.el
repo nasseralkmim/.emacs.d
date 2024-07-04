@@ -419,6 +419,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :after vertico
   :general
   ('insert vertico-map "C-<tab>" 'vertico-multiform-reverse)
+  ;; for terminal
+  ('insert vertico-map "M-SPC" 'vertico-multiform-reverse)
   :init
   (vertico-multiform-mode)
   (setq vertico-multiform-commands
