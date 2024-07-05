@@ -107,7 +107,7 @@
   :config
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
   (column-number-mode t)  ; show column number in the mode line
-  ;; (setq-default indicate-empty-lines nil) ; cleaner
+  (setq-default indicate-empty-lines nil) ; cleaner
 
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
