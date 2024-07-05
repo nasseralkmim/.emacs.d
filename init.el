@@ -5053,9 +5053,7 @@ absolute path. Finally load eglot."
 (use-package standard-themes
   :defer 1
   :config
-  (if (eq frame-background-mode 'dark)
-      (standard-themes-load-dark)
-    (standard-themes-load-light)))
+  (standard-themes-load-dark))
 
 (use-package org-treesit-src-blocks
   :ensure nil
