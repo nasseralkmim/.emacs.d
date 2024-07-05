@@ -1044,8 +1044,8 @@ org-mode"
   :config
   (evil-goggles-mode)
   (setq
-   evil-goggles-duration 0.8        ; show what I copied
-        evil-goggles-async-duration 0.8  ; affects indenting
+   evil-goggles-duration 1        ; show what I copied
+        evil-goggles-async-duration 1  ; affects indenting
         evil-goggles-blocking-duration 0) ; don't want to wait when deleting
   (evil-goggles-use-diff-faces))
 
