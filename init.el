@@ -3202,7 +3202,7 @@ opening a file from dired. Otherwise just regular dired."
         highlight-parentheses-attributes '((:box  (:line-width (-1 . -1) :style nil))))
   ;; Since tty does not have box, use underline
   (if (not (display-graphic-p))
-      (setq highlight-parentheses-attributes '((:underline  t :weight bold))))
+      (setq highlight-parentheses-attributes '((:underline  t :weight bold :slant italic))))
   (global-highlight-parentheses-mode))
 
 ;; moving cursor around fast and efficiently
