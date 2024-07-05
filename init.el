@@ -5003,11 +5003,9 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Show guides on indentation level
 (use-package indent-bars
-  :if (display-graphic-p)
   :ensure (indent-bars :url "https://github.com/jdtsmith/indent-bars")
   :hook
-  (python-mode . indent-bars-mode)
-  (c++-mode . indent-bars-mode)
+  (prog-mode . indent-bars-mode)
   :config
   (setq indent-bars-pattern "."
         indent-bars-width-frac 0.1
