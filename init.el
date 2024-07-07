@@ -953,7 +953,8 @@ org-mode"
    lazy-highlight-cleanup nil           ; persist highlight
    lazy-highlight-max-at-a-time nil
    evil-kill-on-visual-paste nil        ; don't add replaced test onto kill ring
-   lazy-highlight-initial-delay 0)
+   lazy-highlight-initial-delay 0
+   evil-esc-delay 0)
 
   (evil-set-undo-system 'undo-redo)	; use native redo function
 
