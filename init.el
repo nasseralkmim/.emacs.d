@@ -1331,6 +1331,13 @@ graphics."
   :defer 1
   :after org)
 
+;; async export only loads 'ox', so we require 'ox-md' explicitly after 'ox'
+(use-package hack-ox-md-async-export
+  :ensure nil
+  :after ox
+  :init
+  (require 'ox-md))
+
 ;; better support for code blocks
 (use-package ox-gfm
   :demand                               ; demand after some time after org is loaded
@@ -4633,10 +4640,10 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package hack-org-edraw-async-export
   :ensure nil
   :load-path "./elpaca/builds/edraw/"
+  :after ox
   :init
-  (with-eval-after-load 'ox
-     (require 'edraw-org)
-     (edraw-org-setup-exporter)))
+  (require 'edraw-org)
+  (edraw-org-setup-exporter))
 
 ;; Drawing link support in 'org-mode'
 (use-package edraw
