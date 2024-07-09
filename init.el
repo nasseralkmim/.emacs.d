@@ -1139,6 +1139,7 @@ org-mode"
 
 ;; show colors
 (use-package rainbow-mode
+  :defer 1
   :commands rainbow-mode 
   :diminish rainbow-mode)
 
@@ -2823,7 +2824,7 @@ Only if there is more than one window opened."
   :config
   (add-to-list 'display-buffer-alist `("^\\*vterminal.*" display-buffer-below-selected)))
 
-(use-package terminal-here
+(use-package terminal-here :disabled
   :general
   ('normal "C-<f7>" 'terminal-here-launch)
   :config
@@ -3630,7 +3631,7 @@ opening a file from dired. Otherwise just regular dired."
   (setq org-modern-table nil))
 
 ;; usefull for email composing
-(use-package flymake-grammarly
+(use-package flymake-grammarly :disabled
   :config
   (setq flymake-grammarly-check-time 0.2)
   :commands load-flymake-with-grammarly)
@@ -5157,7 +5158,8 @@ absolute path. Finally load eglot."
   :after eglot
   :init (eglot-booster-mode))
 
-(use-package ztree)
+(use-package ztree
+  :defer t)
 
 (use-package calfw
   ;; make sure to "build" 'calfw-org.el' as well.
