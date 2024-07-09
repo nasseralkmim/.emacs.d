@@ -4892,6 +4892,12 @@ If INTERACTIVE is nil the function acts like a Capf."
   (prog-mode . breadcrumb-mode)
   (org-mode . breadcrumb-mode))
 
+(use-package org-compat
+  :ensure nil
+  :after org
+  :init
+  (setq org-imenu-depth 5))
+
 (use-package circadian :disabled
   :defer 1
   :config
