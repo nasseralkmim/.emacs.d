@@ -3491,7 +3491,7 @@ opening a file from dired. Otherwise just regular dired."
   :after org
   :init
   (add-to-list 'org-file-apps '("\\.svg\\'" . "feh -B white --auto-reload --auto-zoom %s & disown"))
-  (add-to-list 'org-file-apps '("\\.svg\\'" . "feh -B white --auto-reload --auto-zoom %s & disown")))
+  (add-to-list 'org-file-apps '("\\.png\\'" . "feh -B white --auto-reload --auto-zoom %s & disown")))
 
 ;; convert pdf to svg to display inline org image
 ;; requires pdf-tools
