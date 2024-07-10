@@ -4700,11 +4700,11 @@ If INTERACTIVE is nil the function acts like a Capf."
                        (plist-get (car (auth-source-search :host "api.openai.com"))
                                   :secret)))
   ;; make Ollama the default
-  (setq-default gptel-model "llama2:latest"
+  (setq-default gptel-model "gemma2"
                 gptel-backend (gptel-make-ollama
                                "Ollama"                               ;Any name of your choosing
                                :host "localhost:11434"                ;Where it's running
-                               :models '("llama3" "llama3:70b" "llama3:70b-text" "gemma2")            ;Installed models (ollama pull "model")
+                               :models '("gemma2:27b" "gemma2")            ;Installed models (ollama pull "model")
                                :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
