@@ -4299,7 +4299,8 @@ If INTERACTIVE is nil the function acts like a Capf."
   (setq ebdb-complete-mail 'capf
         ebdb-mua-pop-up nil             ; don't show any pop ups
         ;; save on exit
-        ebdb-save-on-exit t)
+        ebdb-save-on-exit t
+        ebdb-sources "~/Sync/secrets/ebdb")
 
   ;; when reading or sending with the "reader" in GNUS create contact if it does not exist
   ;; ;; (info "(ebdb) Auto-Updating Records")
