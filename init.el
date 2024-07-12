@@ -1057,7 +1057,7 @@ org-mode"
   :init
   (setq evil-collection-setup-minibuffer t) ; makes company works betters I think
   (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
-                                helpful consult vertico ibuffer vterm)))
+                                helpful consult vertico ibuffer vterm embark)))
 
 ;; navigation: gh, gj, gk, gl
 ;; promoting/demoting headings: M-hjkl
