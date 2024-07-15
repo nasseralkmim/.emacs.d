@@ -5151,14 +5151,8 @@ absolute path. Finally load eglot."
   :config
   (solaire-global-mode))
 
-(use-package catppuccin :disabled
-  :ensure (catppuccin :type git :host github :repo "catppuccin/emacs")
-  :custom-face
-  (org-level-1 ((t (:slant oblique :box t :height 1.0))))
-  (org-level-2 ((t (:underline t :inherit outline-1 :height 1.0 :weight bold))))
-  (org-level-3 ((t (:slant italic :underline t  :height 1.0))))
-  (org-level-4 ((t (:slant oblique :height 1.0))))
-  (org-level-5 ((t (:slant normal :height 1.0))))
+(use-package catppuccin-theme :disabled
+  :defer 1
   :config
   (setq catppuccin-flavor 'frappe
         catppuccin-italic-comments t
