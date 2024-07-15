@@ -1056,8 +1056,12 @@ org-mode"
   :after evil
   :init
   (setq evil-collection-setup-minibuffer t) ; makes company works betters I think
+  ;; compile: for consult-ripgrep wgrep mode
   (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
-                                helpful consult vertico ibuffer vterm embark)))
+                                helpful consult vertico ibuffer vterm embark
+                                ;; compile: for consult-ripgrep wgrep mode
+                                compile
+                                grep)))
 
 ;; navigation: gh, gj, gk, gl
 ;; promoting/demoting headings: M-hjkl
