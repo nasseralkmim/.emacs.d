@@ -5272,7 +5272,14 @@ absolute path. Finally load eglot."
                    (treesit-node-p) 'treesit-fold-toggle))
   :hook 
   (c++-ts-mode . treesit-fold-mode)
-  (python-ts-mode . treesit-fold-mode))
+  (python-ts-mode . treesit-fold-mode)
+  :config
+
+  ;; add support for "if" statement
+  ;; TODO: would be nice to folde if...else..., and not just if...
+  (push '(if_statement . ((lambda (node offset)
+                            (treesit-fold-range-markers node offset ":")) 0 1))
+        (alist-get 'python-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-auto
   :custom
