@@ -225,7 +225,7 @@
   ;; :defer 1
   :ensure nil
   :preface
-  (setq default-monospace '("MesloLGS Nerd Font Mono"))
+  (setq default-monospace '("Iosevka SS12 Extended"))
   (setq default-unicode '("Noto Color Emoji"))
   (setq default-proportional '("MesloLGS Nerd Font Propo"))
   (setq default-comments '("Recursive Mono Casual Static"))
