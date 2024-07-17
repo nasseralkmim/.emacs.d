@@ -5127,6 +5127,22 @@ absolute path. Finally load eglot."
                             nil (m (if (string= single-file (dired-get-filename))
                                        nil
                                      (dired-get-filename))) t))))
+           (t (error "mark no more than 2 files")))))
+(defun mkm/edirs-marked-pair ()
+   "Run edirs on a pair of files marked in dired buffer"
+   (interactive)
+   (let* ((marked-files (dired-get-marked-files nil nil))
+          (other-win (get-window-with-predicate
+                      (lambda (window)
+                        (with-current-buffer (window-buffer window)
+                          (and (not (eq window (selected-window)))
+                               (eq major-mode 'dired-mode))))))
+          (other-marked-files (and other-win
+                                   (with-current-buffer (window-buffer other-win)
+                                     (dired-get-marked-files nil)))))
+     (cond ((= (length marked-files) 2)
+            (edirs (nth 0 marked-files)
+                         (nth 1 marked-files) nil))
            (t (error "mark no more than 2 files"))))))
 
 (use-package dape
