@@ -892,7 +892,7 @@ org-mode"
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
   :general
   ("C-;" 'iedit-mode)
-  ('normal ":" 'iedit-mode)                   ; for tty, I don't use `evil-ex'
+  ('(normal visual) ":" 'iedit-mode)                   ; for tty, I don't use `evil-ex'
   ("M-d" 'my-iedit-expand-down-to-occurrence)
   ('normal iedit-mode-occurrence-keymap  "<escape>" 'iedit--quit)
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
