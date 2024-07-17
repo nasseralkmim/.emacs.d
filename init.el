@@ -406,12 +406,27 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :init
   ;; Use `consult-completion-in-regionegion' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
-  (setq completion-in-region-function
+  (setq-default completion-in-region-function
         (lambda (&rest args)
           (apply (if vertico-mode
                      #'consult-completion-in-region
                    #'completion--in-region)
                  args))))
+
+(use-package vertico-terminal-completion-window-placement-hack :disabled
+  :ensure nil
+  :unless (display-graphic-p)
+  :after vertico
+  :init
+  (pop vertico-multiform-commands)
+  (add-to-list 'vertico-multiform-commands
+               '(consult-completion-in-region grid (vertico-grid-annotate . 25)))
+  (setf (alist-get "^\\Completions\\$"
+                   display-buffer-alist
+                 nil nil #'string=)
+        ;; reuse window, otherwise open bellow
+      '((display-buffer-reuse-window
+        display-buffer-below-selected))))
 
 ;; allows different completion UI configuration
 (use-package vertico-multiform
