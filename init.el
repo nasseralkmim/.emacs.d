@@ -899,6 +899,7 @@ org-mode"
   (iedit-mode-keymap "C-n" 'iedit-next-occurrence)
   (iedit-mode-keymap "C-p" 'iedit-prev-occurrence)
   (iedit-lib-keymap "TAB" nil)
+  (isearch-mode-map "<backspace>" 'isearch-del-char)
   :init
   (defun my-iedit-expand-down-to-occurrence ()
   ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
