@@ -416,9 +416,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico-terminal-completion-window-placement-hack :disabled
   :ensure nil
   :unless (display-graphic-p)
-  :after vertico
+  :after vertico-multiform
   :init
-  (pop vertico-multiform-commands)
   (add-to-list 'vertico-multiform-commands
                '(consult-completion-in-region grid (vertico-grid-annotate . 25)))
   (setf (alist-get "^\\Completions\\$"
