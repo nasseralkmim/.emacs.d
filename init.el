@@ -516,13 +516,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; hook for using default completion mode
   (completion-list-mode . consult-preview-at-point-mode)
   :config
-  ;; configure preview behavior to `any` key and specific time delay
-  (consult-customize consult-buffer consult-bookmark
-                     :preview-key '(:debounce 5 any))
+  (consult-customize consult-buffer
+                     consult-bookmark
+                     consult-outline
+                     consult-line
+                     :preview-key '(:debounce 1 any))
   ;; use a key for preview from ripgrep and find
   (consult-customize consult-ripgrep consult-find-fd
                      :preview-key '("M-."))
-  (consult-customize consult-line :preview-key 'any)
 
   ;; use 'fd' instead of 'find'
   (defun consult-find-fd (&optional dir initial)
