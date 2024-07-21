@@ -4365,7 +4365,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   (with-eval-after-load 'evil
    (general-def 'normal "s" 'isearch-forward))
   (general-def 'normal Info-mode-map "s" nil)               ; use isearch in info-mode
-  :init
   ;; show the matching count
   (setq isearch-lazy-count t
         ;; make a whitespace work as regex ".*" which represents "anyting in between"
