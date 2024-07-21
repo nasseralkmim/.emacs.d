@@ -214,7 +214,7 @@
   (winner-mode))
 
 ;; Visit file from where you left
-(use-package saveplace
+(use-package saveplace :disabled        ; slow to quit emacs
   :ensure nil
   :defer 1
   :config
