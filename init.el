@@ -116,8 +116,8 @@
         mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)) ; 1 line at a time
         mouse-wheel-progressive-speed nil  ; proportional to scroll speed
         fast-but-imprecise-scrolling t
-        jit-lock-defer-time 0
-        jit-lock-stealth-time 1.25
+        jit-lock-defer-time nil
+        jit-lock-stealth-time nil
         mouse-wheel-follow-mouse 't
         ;; scroll-conservatively 0
         ;; scroll-step 0
