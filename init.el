@@ -3567,8 +3567,6 @@ opening a file from dired. Otherwise just regular dired."
 (use-package activities
   :ensure (activities :type git :host github :repo "alphapapa/activities.el")
   :after consult                        ; access with 'consult-buffer' and 'b <SPC>' for bookmarks
-  :general
-  ('normal "<f6>" 'activities-new)
   :init
   (activities-mode)
   (activities-tabs-mode))
