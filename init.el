@@ -211,6 +211,7 @@
   :ensure nil
   :defer 1
   :config
+  (setq winner-ring-size 10)
   (winner-mode))
 
 ;; Visit file from where you left
