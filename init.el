@@ -3874,16 +3874,6 @@ its results, otherwise display STDERR with
   ;; put footnotes at the current section
   (setq org-footnote-section nil))
 
-(use-package org-tree-slide
-  :after org
-  :commands org-tree-slide-mode
-  :config
-  (setq org-tree-slide-cursor-init nil ; start from the cursro
-        org-tree-slide-skip-comments t)
-  ;; add keybindings after loading
-  (general-def org-tree-slide-mode-map "<f9>" 'org-tree-slide-move-previous-tree)
-  (general-def org-tree-slide-mode-map "<f10>" 'org-tree-slide-move-next-tree))
-
 ;; Emcas 'gdb' interface
 ;; 'gdb-mi.el' is the file where the variables are defined so statements in
 ;; ':config' would be evaluated after this file is loaded.
@@ -3954,7 +3944,7 @@ its results, otherwise display STDERR with
 
 
 ;; tags with different colors in org
-(use-package org-rainbow-tags
+(use-package org-rainbow-tags :disabled
   :ensure (:host github :repo "KaratasFurkan/org-rainbow-tags")
   :hook (org-mode . org-rainbow-tags-mode))
 
