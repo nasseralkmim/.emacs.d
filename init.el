@@ -1642,6 +1642,7 @@ When matching, reference is stored in match group 1."
                                    ("" "algorithm, algpseudocode"))))
 
 (use-package org-latex-preview
+  :when (display-graphic-p)
   :ensure nil
   :after org
   :init
