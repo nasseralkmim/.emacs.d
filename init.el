@@ -5303,6 +5303,7 @@ absolute path. Finally load eglot."
         (alist-get 'python-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-auto
+  :defer 1
   :custom
   (treesit-auto-install 'prompt)
   :demand
