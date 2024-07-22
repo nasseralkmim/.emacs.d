@@ -4435,12 +4435,13 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; translation package
 (use-package go-translate
   :general
-  ("C-h t" 'gt-do-translate)     ; overrides the tutorial, but ok...
-  (override "C-h C-t" 'gt-do-translate-and-insert)
+  ("C-c t t" 'gt-do-translate)     ; overrides the tutorial, but ok...
+  ("C-c t d" 'gt-do-setup)     ; overrides the tutorial, but ok...
+  (override "C-c t i" 'gt-do-translate-and-insert)
   ;; only when there is a gt-result buffer 
   ('(normal visual) override "C-t" (general-predicate-dispatch nil
-                 (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
-  ('(normal visual) "SPC t" (general-simulate-key "S-V C-h t")) ; whole line
+                                     (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
+  ('(normal visual) "SPC t" (general-simulate-key "S-V C-c t t")) ; whole line
   :hook
   (gt-buffer-render-init . visual-line-mode)
   :init
@@ -4454,7 +4455,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   ;; Add 'visual-line-mode' to the translation buffer
   ;; (gt-after-buffer-prepared . (lambda () (visual-line-mode 1)))
   :config
-  (setq gt-langs '(en de pt)
+  (setq gt-langs '(en de pt it)
         gt-default-translator (gt-translator
                                :engines (list (gt-deepl-engine)
                                               (gt-google-engine))
@@ -4469,7 +4470,24 @@ If INTERACTIVE is nil the function acts like a Capf."
     (let ((translator (gt-translator
                        :engines (list (gt-deepl-engine))
                        :render (gt-insert-render :type 'after))))
-      (gt-start translator))))
+      (gt-start translator)))
+
+  (setq gt-preset-translators
+        `((ts-pt-de . ,(gt-translator
+                        :taker (gt-taker :langs '(pt de))
+                        :engines (list (gt-deepl-engine)
+                                       (gt-google-engine))
+                        :render (gt-buffer-render)))
+          (ts-pt-it . ,(gt-translator
+                        :taker (gt-taker :langs '(pt it))
+                        :engines (list (gt-deepl-engine)
+                                       (gt-google-engine))
+                        :render (gt-buffer-render)))
+          (ts-en-de . ,(gt-translator
+                        :taker (gt-taker :langs '(en de))
+                        :engines (list (gt-deepl-engine)
+                                       (gt-google-engine))
+                        :render (gt-buffer-render))))))
 
 (use-package go-translate-window-placement-hack
   :ensure nil
@@ -4762,7 +4780,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   ("C-," 'jinx-correct)
   ("M-," 'jinx-correct)
   :config
-  (setq jinx-languages "en de pt_BR"
+  (setq jinx-languages "en de pt_BR it"
         jinx-delay 1))
 
 ;; Change default compile command
