@@ -174,8 +174,12 @@
   (setq-default truncate-lines t)
 
   ;; narrow to region 'C-x n n' and widen with 'C-x n w'
-  (put 'narrow-to-region 'disabled nil)
+  (put 'narrow-to-region 'disabled nil))
 
+(use-package bookmark
+  :ensure nil
+  :defer 1
+  :config
   (setq bookmark-file "~/Sync/news/bookmarks"))
 
 (use-package pixel-scroll
