@@ -139,8 +139,8 @@
   (setq backup-directory-alist `(("." . "~/.saves")))
   (setq create-lockfiles nil)		; files with # problem with onedrive...
 
-  ;; answering just 'y' or 'n' will do
-  (defalias 'yes-or-no-p 'y-or-n-p)
+  ;; ;; answering just 'y' or 'n' will do
+  (setopt use-short-answers t)
 
   (setq-default
    completion-cycle-threshold nil    ; show all candidates
@@ -183,6 +183,7 @@
   (setq bookmark-file "~/Sync/news/bookmarks"))
 
 (use-package pixel-scroll
+  :defer 1
   :ensure nil
   :if (string-greaterp emacs-version "29") ; need emacs > 29
   :bind
@@ -190,7 +191,7 @@
   ([remap evil-scroll-page-up] . pixel-scroll-interpolate-up)
   :custom
   (pixel-scroll-precision-interpolate-page t)
-  :init
+  :config
   ;; text scroll pixel by pixel
   (pixel-scroll-precision-mode t)
   ;; never recenter point when scrolling, but keep in view
