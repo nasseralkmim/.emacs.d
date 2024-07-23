@@ -905,7 +905,6 @@ org-mode"
   (iedit-mode-keymap "C-n" 'iedit-next-occurrence)
   (iedit-mode-keymap "C-p" 'iedit-prev-occurrence)
   (iedit-lib-keymap "TAB" nil)
-  (isearch-mode-map "<backspace>" 'isearch-del-char)
   :init
   (defun my-iedit-expand-down-to-occurrence ()
   ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
@@ -4355,13 +4354,13 @@ If INTERACTIVE is nil the function acts like a Capf."
   (isearch-mode-map "C-n" 'isearch-repeat-forward)
   (isearch-mode-map "C-p" 'isearch-repeat-backward)
   (isearch-mode-map "C-s" 'isearch-toggle-invisible)
-  ;; delete char directly when pressing 'backspace' instead of seaching backwards,
-  ;; alternatively one could use 'M-e' to edit the search string.
-  (isearch-mode-map "<backspace>" 'isearch-del-char)
   :config
   ;; after evil collection
   (with-eval-after-load 'evil
-   (general-def 'normal "s" 'isearch-forward))
+    (general-def 'normal "s" 'isearch-forward)
+    ;; delete char directly when pressing 'backspace' instead of seaching backwards,
+    ;; alternatively one could use 'M-e' to edit the search string.
+    (general-def isearch-mode-map "DEL" 'isearch-del-char))
   (general-def 'normal Info-mode-map "s" nil)               ; use isearch in info-mode
   ;; show the matching count
   (setq isearch-lazy-count t
