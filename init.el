@@ -1210,7 +1210,8 @@ org-mode"
            "s k" 'org-babel-previous-src-block
            "n" 'org-toggle-narrow-to-subtree
            "k" 'org-previous-visible-heading
-           "j" 'org-next-visible-heading)
+           "j" 'org-next-visible-heading
+           "u" 'outline-up-heading)
   ('normal org-mode-map :prefix "SPC"
            "ves" 'org-babel-execute-subtree
            "vg" 'org-babel-goto-named-src-block) 
@@ -1219,8 +1220,7 @@ org-mode"
            "j" 'org-forward-heading-same-level
            "n" 'org-babel-next-src-block
            "p" 'org-babel-previous-src-block
-           "h" 'org-babel-goto-src-block-head
-           )
+           "h" 'org-babel-goto-src-block-head)
   ;; global map
   ('(normal visual) "M-o" 'org-open-at-point-global)
   :hook
