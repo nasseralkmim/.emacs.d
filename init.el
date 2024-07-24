@@ -982,6 +982,7 @@ org-mode"
 
   (add-to-list 'evil-insert-state-modes 'log-edit-mode)
   (add-to-list 'evil-insert-state-modes 'message-mode)
+  (add-to-list 'evil-normal-state-modes 'biblio-selection-mode)
 
   ;; initialize locals buffer in normal state instead of emacs state
   (add-hook 'gdb-locals-mode-hook 'evil-normal-state)
