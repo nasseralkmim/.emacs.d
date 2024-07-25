@@ -1822,7 +1822,7 @@ When matching, reference is stored in match group 1."
   (global-corfu-mode)
   (corfu-popupinfo-mode)                ; show doc -> using eldoc box, sometimes they overlap
   (setq corfu-auto t                    ; enables timer-based completion
-        corfu-auto-delay 0.5
+        corfu-auto-delay 0.2
         corfu-auto-prefix 2
         corfu-quit-no-match 'separator))
 
