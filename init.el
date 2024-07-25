@@ -1077,7 +1077,7 @@ org-mode"
   ;; compile: for consult-ripgrep wgrep mode
   (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
                                 helpful consult vertico ibuffer vterm embark
-                                eglot ediff
+                                eglot ediff edebug
                                 ;; compile: for consult-ripgrep wgrep mode
                                 compile
                                 grep)))
@@ -1454,7 +1454,7 @@ graphics."
   (add-to-list 'org-babel-default-header-args '(:noweb . "no-export")))
 
 ;; custom org function
-(use-package org-image-resize-inline
+(use-package org-zoom-inline-image
   :ensure nil
   :after org
   :general
@@ -1463,7 +1463,7 @@ graphics."
   ('normal org-mode-map "C-+" 'org-zoom-inline-images)
   ('normal org-mode-map "C-_" 'org-zoom-out-inline-images)
   :init
-  (defun org-zoom-inline-images (&optional amt)
+  (defun org-zoom-inline-images (&optional scale)
     (interactive "p")
     ;; get size specified or start with 300
     (let* ((size (if org-image-actual-width
@@ -1471,10 +1471,10 @@ graphics."
                    300))
            ;; amount can be specified with prefix argument
            ;; or use default value
-           (amt (if (eq current-prefix-arg nil)
-                    50
+           (scale (if (eq current-prefix-arg nil)
+                    1.1
                   current-prefix-arg))
-           (new-size (+ size amt)))
+           (new-size (floor (* size scale))))
       (setq org-image-actual-width new-size)
       ;; don't redisplay if in tramp
       (unless (file-remote-p default-directory)
