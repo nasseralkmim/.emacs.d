@@ -231,7 +231,7 @@
   ;; :defer 1
   :ensure nil
   :preface
-  (setq default-monospace '("Iosevka SS12 Extended"))
+  (setq default-monospace '("MesloLGS Nerd Font Mono"))
   (setq default-unicode '("Noto Color Emoji"))
   (setq default-proportional '("MesloLGS Nerd Font Propo"))
   (setq default-comments '("Recursive Mono Casual Static"))
@@ -240,7 +240,7 @@
   ;; Monospace favorites are "JetBrains Mono NF", "MesloLGS Nerd Font Mono" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (default  ((t (:family ,(car default-monospace)))))
+  (default  ((t (:family ,(car default-monospace) :height 100))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
   (variable-pitch-text ((t (:inherit variable-pitch :height unspecified))))
   ;; comment
