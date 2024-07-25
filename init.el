@@ -443,11 +443,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ('insert vertico-map "M-SPC" 'vertico-multiform-reverse)
   :init
   (vertico-multiform-mode)
-  (setq vertico-multiform-commands
-        '((consult-outline unobtrusive)
-          (consult-line unobtrusive)
-          (consult-buffer unobtrusive)))
-
   ;; for spell checker
   (add-to-list 'vertico-multiform-categories
                '(jinx grid (vertico-grid-annotate . 25))))
