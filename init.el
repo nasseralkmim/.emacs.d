@@ -499,6 +499,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :general
   ;; m/f/b <SPC> for bookmarks/files/buffers narrowing
   ("C-x b" 'consult-buffer)		; enhanced switch to buffer
+  ("C-M-s" 'consult-line)
   ("M-s" 'consult-outline)		; navigation by headings
   ("C-c o" 'consult-imenu)		; navigation by "imenu" items
   ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
