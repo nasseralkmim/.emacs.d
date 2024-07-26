@@ -2340,6 +2340,8 @@ When matching, reference is stored in match group 1."
   ('normal dired-sidebar-mode-map
            "l" 'dired-sidebar-find-file ; use 'C-u' to select specific window
            "h" 'dired-sidebar-up-directory)
+  ;; this package requires 'dired-subtree' from 'dired-hacks'
+  ('normal dired-mode-map "<TAB>" 'dired-subtree-toggle)
   :hook
   (dired-sidebar-mode . visual-line-mode)
   ;; avoid fixing window size
