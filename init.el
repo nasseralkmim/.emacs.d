@@ -2829,8 +2829,10 @@ Only if there is more than one window opened."
   (vterm-mode-map "<f9>" nil
                   "C-w" nil
                  "<backtab>" nil)
+  :hook
+  (vterm-mode . (lambda ()
+                  (general-def 'normal vterm-mode-map "s" 'isearch-forward)))
   :config
-  (general-def '(normal insert) vterm-mode-map "C-s" nil)
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0)
   (add-to-list 'vterm-tramp-shells '("ssh" "/bin/bash"))
