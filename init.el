@@ -2793,9 +2793,14 @@ Only if there is more than one window opened."
         shr-max-image-proportion .5
         shr-folding-mode t
         shr-bullet "• "
-        browse-url-browser-function 'browse-url-default-browser ; open in eww by default
         eww-auto-rename-buffer t                    ; each page on its own buffer
         eww-search-prefix "https://www.google.com/search?hl=en&lr=lang_en&q="))
+
+(use-package browse-url
+  :ensure nil
+  :config
+  ;; open in eww by default
+  (setq browse-url-browser-function 'eww-browse-url))
 
 ;; jump to link
 (use-package ace-link
