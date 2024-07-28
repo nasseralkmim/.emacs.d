@@ -231,16 +231,16 @@
   ;; :defer 1
   :ensure nil
   :preface
-  (setq default-monospace '("MesloLGS Nerd Font Mono"))
+  (setq default-monospace '("CommitMono"))
   (setq default-unicode '("Noto Color Emoji"))
-  (setq default-proportional '("MesloLGS Nerd Font Propo"))
-  (setq default-comments '("Recursive Mono Casual Static"))
+  (setq default-proportional '("Iosevka Etoile"))
+  (setq default-comments '("Monaspace Radon"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
   ;; Monospace favorites are "JetBrains Mono NF", "MesloLGS Nerd Font Mono" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (default  ((t (:family ,(car default-monospace) :height 100))))
+  (default  ((t (:family ,(car default-monospace)))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
   (variable-pitch-text ((t (:inherit variable-pitch :height unspecified))))
   ;; comment
@@ -711,7 +711,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom
   ;; need to install the nerd-font
   ;; For kitty terminal need to add family to kitty config (C-S-<f2>)
-  (nerd-icons-font-family "JetBrains Mono NF")
+  (nerd-icons-font-family "Symbols Nerd Font Mono")
   :config
   ;; to use with corfu and kind-icon
   (setq kind-icon-use-icons nil)
