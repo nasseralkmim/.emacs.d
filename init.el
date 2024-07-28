@@ -1078,7 +1078,7 @@ org-mode"
   ;; compile: for consult-ripgrep wgrep mode
   (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
                                 helpful consult vertico ibuffer vterm embark
-                                eglot ediff edebug
+                                eglot ediff edebug eww
                                 ;; compile: for consult-ripgrep wgrep mode
                                 compile
                                 grep)))
@@ -2783,7 +2783,6 @@ Only if there is more than one window opened."
   :general
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal eww-mode-map "C-c y" 'eww-copy-page-url)
-  ('normal eww-mode-map "R" 'eww-readable)
   ('normal eww-mode-map "<SPC>" nil)               ; use for other things
   :hook
   ;; (eww-after-render . (lambda () (eww-readable)))  ; does not work for all
@@ -3178,7 +3177,7 @@ Only if there is more than one window opened."
 (use-package wgrep)
 
 ;; config for windows
-(use-package emacs-windows-config : disabled
+(use-package emacs-windows-config :disabled
   :ensure nil
   :if (eq system-type 'windows-nt)
   :init
