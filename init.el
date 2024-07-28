@@ -2783,6 +2783,7 @@ Only if there is more than one window opened."
   :general
   ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
   ('normal eww-mode-map "C-c y" 'eww-copy-page-url)
+  ('normal eww-mode-map "R" 'eww-readable)
   ('normal eww-mode-map "<SPC>" nil)               ; use for other things
   :hook
   ;; (eww-after-render . (lambda () (eww-readable)))  ; does not work for all
@@ -2791,6 +2792,7 @@ Only if there is more than one window opened."
   (setq shr-use-fonts t                 ; change heading size
         shr-use-colors t
         shr-max-image-proportion .5
+        shr-folding-mode t
         shr-bullet "• "
         browse-url-browser-function 'browse-url-default-browser ; open in eww by default
         eww-auto-rename-buffer t                    ; each page on its own buffer
@@ -3176,7 +3178,7 @@ Only if there is more than one window opened."
 (use-package wgrep)
 
 ;; config for windows
-(use-package emacs-windows-config
+(use-package emacs-windows-config : disabled
   :ensure nil
   :if (eq system-type 'windows-nt)
   :init
@@ -3184,7 +3186,7 @@ Only if there is more than one window opened."
         recentf-auto-cleanup 'never))
 
 ;; use emacs to edit text within chrome
-(use-package atomic-chrome
+(use-package atomic-chrome :disabled
   :commands atomic-chrome-start-server
   :config
   (setq atomic-chrome-default-major-mode 'LaTeX-mode))
