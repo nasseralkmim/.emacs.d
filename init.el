@@ -895,6 +895,7 @@ org-mode"
   :general
   ("C-;" 'iedit-mode)
   ('(normal visual) ":" 'iedit-mode)                   ; for tty, I don't use `evil-ex'
+  (iedit-mode-keymap "M-'" 'iedit-show/hide-context-lines)                   ; for tty
   ("M-d" 'my-iedit-expand-down-to-occurrence)
   ('normal iedit-mode-occurrence-keymap  "<escape>" 'iedit--quit)
   (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
