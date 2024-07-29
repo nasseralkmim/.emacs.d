@@ -231,7 +231,7 @@
   ;; :defer 1
   :ensure nil
   :preface
-  (setq default-monospace '("CommitMono"))
+  (setq default-monospace '("Monaspace Neon"))
   (setq default-unicode '("Noto Color Emoji"))
   (setq default-proportional '("Iosevka Etoile"))
   (setq default-comments '("Monaspace Radon"))
@@ -4043,8 +4043,6 @@ its results, otherwise display STDERR with
   :ensure nil
   :general
   ("C-x C-m" 'gnus) 
-  ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article)
-  ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article)
   ('visual gnus-summary-mode-map "!" 'gnus-summary-mark-region-as-read)
   ('visual gnus-summary-mode-map "?" 'gnus-summary-mark-as-dormant) ; recover all messages in the thread when a new one is posted
   ('normal gnus-summary-mode-map "g c" 'gnus-summary-catchup-and-exit)
@@ -4236,6 +4234,19 @@ its results, otherwise display STDERR with
   :demand
   :hook
   (gnus-group-mode . gnus-topic-mode))
+
+(use-package gnus-open-external-browser-hack
+  :ensure nil
+  :after gnus
+  :general
+  ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article-external)
+  ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article-external)
+  :init
+  (defun gnus-article-browse-html-article-external (&optional arg)
+    "Open on external browser"
+    (interactive)
+    (let ((browse-url-browser-function 'browse-url-default-browser))
+      (gnus-article-browse-html-article arg))))
 
 ;; Database for email completion
 ;; sometimes does not add automatically: use `bbdb-mua-display-sender'
