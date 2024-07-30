@@ -4112,6 +4112,7 @@ its results, otherwise display STDERR with
         ;; Change location of newsrc file.
         ;; this file has information about the groups that I subscribe and the articles that I
         ;; have read.
+        ;; use 'gnus-summary-increase-score' to increase score based on string
         gnus-home-directory "~/Sync/news/" ; easier to sync different machines with git
         gnus-home-score-file '(("Science" "~/Sync/news/papers.SCORE")
                                ("Wiley" "~/Sync/news/papers.SCORE")
