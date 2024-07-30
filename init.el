@@ -3595,7 +3595,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
-(use-package detached
+(use-package detached :disabled
   :ensure (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ([remap async-shell-command] 'detached-shell-command)
