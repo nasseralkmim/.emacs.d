@@ -1079,7 +1079,7 @@ org-mode"
   ;; compile: for consult-ripgrep wgrep mode
   (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
                                 helpful consult vertico ibuffer vterm embark
-                                eglot ediff edebug eww
+                                eglot ediff edebug eww outline
                                 ;; compile: for consult-ripgrep wgrep mode
                                 compile
                                 grep)))
