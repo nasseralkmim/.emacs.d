@@ -3438,7 +3438,7 @@ opening a file from dired. Otherwise just regular dired."
   ;; (setq flymake-languagetool-url "https://api.languagetool.org")
   (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-6.4/languagetool-server.jar"))
 
-(use-package languagetool
+(use-package languagetool :disabled
   :commands (languagetool-check
              languagetool-clear-suggestions
              languagetool-correct-at-point
