@@ -916,6 +916,10 @@ org-mode"
   (when (not (display-graphic-p))
     (set-face-attribute 'iedit-occurrence nil :inherit 'isearch :weight 'bold)))
 
+;; Tips:
+;; 'evil-mc-make-all-cursors' create a cursor on matching
+;; you can 'evil-mc-pause-cursors' to check if it is right. Useful when cursors are out of the screen.
+;; 'evil-mc-make-cursor-in-visual-selection-end' make cursor on selected lines.
 (use-package evil-mc
   :after evil
   :diminish evil-mc-mode
@@ -926,7 +930,7 @@ org-mode"
   (evil-mc-key-map "g r" nil)
   :config
   (global-evil-mc-mode 1)
-  ;; extra commands for multiple cursts
+  ;; extra commands for multiple cursors
   (push '(eval-last-sexp . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
   (push '(delete-horizontal-space . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
   (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete))) evil-mc-known-commands)
