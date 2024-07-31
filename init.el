@@ -3423,7 +3423,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; download latest version https://languagetool.org/download/
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
-(use-package flymake-languagetool
+(use-package flymake-languagetool :disabled ; not working
   :commands flymake-languagetool-start
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
@@ -3431,12 +3431,26 @@ opening a file from dired. Otherwise just regular dired."
   (defun flymake-languagetool-start ()
     (interactive)
     "Add languagetool as a diagnostic function and enable flymake-mode"
-    (flymake-languagetool-maybe-load)
+    (flymake-languagetool-load)
     (flymake-mode))
   :config
-  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-6.4/languagetool-server.jar")
-  ;; activate spell checker as well (instead of flyspell)
-  (setq flymake-languagetool-check-spelling t))
+  ;; (setq flymake-languagetool-server-jar nil)
+  ;; (setq flymake-languagetool-url "https://api.languagetool.org")
+  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-6.4/languagetool-server.jar"))
+
+(use-package languagetool
+  :commands (languagetool-check
+             languagetool-clear-suggestions
+             languagetool-correct-at-point
+             languagetool-correct-buffer
+             languagetool-set-language
+             languagetool-server-mode
+             languagetool-server-start
+             languagetool-server-stop)
+  :config
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8") ; accept file in UTF-8
+        languagetool-console-command "~/.opt/LanguageTool-6.4/languagetool-commandline.jar"
+        languagetool-server-command "~/.opt/LanguageTool-6.4/languagetool-server.jar"))
 
 (use-package svg-lib
   :ensure (svg-lib :type git :host github :repo "rougier/svg-lib"))
