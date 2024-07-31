@@ -3760,7 +3760,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; for write good, download wget https://github.com/errata-ai/write-good/releases/download/v0.4.0/write-good.zip 
 ;; and unzip write-good.zip -d ~/.config/vale/styles/
 ;; add add to the .vale.ini the "StylesPath = /home/nasser/.config/vale/styles"
-(use-package flymake-vale
+(use-package flymake-vale :disabled
   :ensure (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
   :commands flymake-vale-load)
 
@@ -3771,12 +3771,12 @@ opening a file from dired. Otherwise just regular dired."
   :commands le-thesaurus-get-synonyms)
 
 ;; Anther package to find synonyms
-(use-package powerthesaurus
+(use-package powerthesaurus 
   :general
   ("C-c d s" 'powerthesaurus-lookup-dwim))
 
 ;; org-mode toc heading
-(use-package org-make-toc
+(use-package org-make-toc :disabled
   :after org
   :commands org-make-toc-insert org-make-toc)
 
@@ -3786,7 +3786,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; show org-babel error or warning when execute block
 ;; just using prologue command is sufficient
-(use-package org-babel-eval-verbose
+(use-package org-babel-eval-verbose :disabled
   :ensure nil
   :after org
   :init
