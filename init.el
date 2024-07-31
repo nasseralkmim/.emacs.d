@@ -4961,7 +4961,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb")
   :hook
   (c++-ts-mode . breadcrumb-mode)
-  (python-ts-mode . breadcrumb-mode)
+  ;; (python-ts-mode . breadcrumb-mode)  ;; giving error 
   (org-mode . breadcrumb-mode))
 
 (use-package org-compat
