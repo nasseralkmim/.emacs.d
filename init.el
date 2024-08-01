@@ -4155,7 +4155,7 @@ its results, otherwise display STDERR with
         gnus-asynchronous t
         ;; (info "(gnus) Article Caching")
         ;; default: "ticked" (indicated with "!") articles go to local cache, they are indicated with "*"
-        gnus-use-cache t
+        gnus-use-cache 'passive
         gnus-use-header-prefetch t
         gnus-cache-directory "~/Sync/news/cache"
         gnus-agent-directory "~/Sync/news/agent" ; where messages will be stored
