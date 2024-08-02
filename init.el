@@ -862,8 +862,101 @@ org-mode"
 
   (add-hook 'org-src-mode-hook 'flymake-in-org-edit-special))
 
+(use-package meow
+  :defer 1
+  :demand
+  :config
+  (defun meow-setup ()
+    (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+    (meow-motion-overwrite-define-key
+     '("j" . meow-next)
+     '("k" . meow-prev)
+     '("<escape>" . ignore))
+    (meow-leader-define-key
+     ;; SPC j/k will run the original command in MOTION state.
+     '("j" . "H-j")
+     '("k" . "H-k")
+     ;; Use SPC (0-9) for digit arguments.
+     '("1" . meow-digit-argument)
+     '("2" . meow-digit-argument)
+     '("3" . meow-digit-argument)
+     '("4" . meow-digit-argument)
+     '("5" . meow-digit-argument)
+     '("6" . meow-digit-argument)
+     '("7" . meow-digit-argument)
+     '("8" . meow-digit-argument)
+     '("9" . meow-digit-argument)
+     '("0" . meow-digit-argument)
+     '("/" . meow-keypad-describe-key)
+     '("?" . meow-cheatsheet))
+    (meow-normal-define-key
+     '("0" . meow-expand-0)
+     '("9" . meow-expand-9)
+     '("8" . meow-expand-8)
+     '("7" . meow-expand-7)
+     '("6" . meow-expand-6)
+     '("5" . meow-expand-5)
+     '("4" . meow-expand-4)
+     '("3" . meow-expand-3)
+     '("2" . meow-expand-2)
+     '("1" . meow-expand-1)
+     '("-" . negative-argument)
+     '(";" . meow-reverse)
+     '("," . meow-inner-of-thing)
+     '("." . meow-bounds-of-thing)
+     '("[" . meow-beginning-of-thing)
+     '("]" . meow-end-of-thing)
+     '("a" . meow-append)
+     '("A" . meow-open-below)
+     '("b" . meow-back-word)
+     '("B" . meow-back-symbol)
+     '("c" . meow-change)
+     '("d" . meow-delete)
+     '("D" . meow-backward-delete)
+     '("e" . meow-next-word)
+     '("E" . meow-next-symbol)
+     '("f" . meow-find)
+     '("g" . meow-cancel-selection)
+     '("G" . meow-grab)
+     '("h" . meow-left)
+     '("H" . meow-left-expand)
+     '("i" . meow-insert)
+     '("I" . meow-open-above)
+     '("j" . meow-next)
+     '("J" . meow-next-expand)
+     '("k" . meow-prev)
+     '("K" . meow-prev-expand)
+     '("l" . meow-right)
+     '("L" . meow-right-expand)
+     '("m" . meow-join)
+     '("n" . meow-search)
+     '("o" . meow-block)
+     '("O" . meow-to-block)
+     '("p" . meow-yank)
+     '("q" . meow-quit)
+     '("Q" . meow-goto-line)
+     '("r" . meow-replace)
+     '("R" . meow-swap-grab)
+     '("s" . meow-kill)
+     '("t" . meow-till)
+     '("u" . meow-undo)
+     '("U" . meow-undo-in-selection)
+     '("v" . meow-visit)
+     '("w" . meow-mark-word)
+     '("W" . meow-mark-symbol)
+     '("x" . meow-line)
+     '("X" . meow-goto-line)
+     '("y" . meow-save)
+     '("Y" . meow-sync-grab)
+     '("z" . meow-pop-selection)
+     '("'" . repeat)
+     '("<escape>" . ignore)))
+  (meow-setup)
+  (meow-global-mode)
+  )
+
 ;; For some reason is not working with edits in 'dired'
-(use-package evil-multiedit :disabled
+(use-package evil-multiedit :disabled :disabled
   :after evil
   :custom-face
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil :style nil))))
@@ -922,7 +1015,7 @@ org-mode"
 ;; 'evil-mc-make-all-cursors' create a cursor on matching
 ;; you can 'evil-mc-pause-cursors' to check if it is right. Useful when cursors are out of the screen.
 ;; 'evil-mc-make-cursor-in-visual-selection-end' make cursor on selected lines.
-(use-package evil-mc
+(use-package evil-mc :disabled
   :after evil
   :diminish evil-mc-mode
   :general
@@ -945,7 +1038,7 @@ org-mode"
   (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region))) evil-mc-known-commands)
   (push '(wdired--self-insert . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands))
 
-(use-package evil
+(use-package evil :disabled
   :defer 1
   :diminish evil-mode
   :init
@@ -1042,14 +1135,14 @@ org-mode"
         tag))))
 
 ;; move around text
-(use-package evil-easymotion :disabled
+(use-package evil-easymotion :disabled :disabled
   :defer 1
   :after evil
   :config
   (evilem-default-keybindings "SPC"))
 
 ;; move aronud text
-(use-package evil-snipe
+(use-package evil-snipe :disabled
   :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
   :general
   ('normal evil-snipe-override-mode-map "f" 'evil-snipe-f)
@@ -1064,7 +1157,7 @@ org-mode"
   (push '(?\] "[]})]") evil-snipe-aliases))
 
 ;; visualize evil commands
-(use-package evil-goggles
+(use-package evil-goggles :disabled
   :diminish evil-goggles-mode
   :after evil
   :defer 1
@@ -1077,7 +1170,7 @@ org-mode"
   (evil-goggles-use-diff-faces))
 
 ;; unimpaired is a collection of commands with '[' or ']'
-(use-package evil-collection
+(use-package evil-collection :disabled
   :diminish evil-collection-unimpaired-mode
   :after evil
   :init
@@ -1093,7 +1186,7 @@ org-mode"
 ;; navigation: gh, gj, gk, gl
 ;; promoting/demoting headings: M-hjkl
 ;; headings: M-ret
-(use-package evil-org
+(use-package evil-org :disabled
   :diminish evil-org-mode
   :general
   ('normal org-mode-map "x" 'evil-delete-char)
@@ -1115,7 +1208,7 @@ org-mode"
       "gt" 'org-todo-list
       "gd" 'org-agenda-view-mode-dispatch)))
 
-(use-package evil-surround
+(use-package evil-surround :disabled
   :after evil
   :general
   ('normal "g c" 'evil-surround-change)
@@ -1123,13 +1216,13 @@ org-mode"
   :init
   (global-evil-surround-mode 1))
 
-(use-package evil-exchange
+(use-package evil-exchange :disabled
   :after evil
   :general ('normal "g x" 'evil-exchange)
   :config (evil-exchange-install))
 
 ;; jump to matched tags
-(use-package evil-matchit :disabled
+(use-package evil-matchit :disabled :disabled
   :after python evil
   :config
   (global-evil-matchit-mode 4))
@@ -2252,7 +2345,7 @@ When matching, reference is stored in match group 1."
 
 ;; text objects for latex editing
 ;; math, commands, delimiters are usefull
-(use-package evil-tex
+(use-package evil-tex :disabled
   :general (evil-tex-mode-map "M-n" nil) ; using with flymake
   :after latex
   :hook (LaTeX-mode . evil-tex-mode))
@@ -2908,7 +3001,7 @@ Only if there is more than one window opened."
 
 ;; terminal emacs with evil cursor indication
 ;; does not work with mosh: https://github.com/mobile-shell/mosh/issues/352 
-(use-package evil-terminal-cursor-changer
+(use-package evil-terminal-cursor-changer :disabled
   :unless (display-graphic-p)
   :init
   (evil-terminal-cursor-changer-activate))
@@ -3167,7 +3260,7 @@ Only if there is more than one window opened."
         ts-fold-summary-format " %s"))
 
 ;; use tree sitter as evil text objects
-(use-package evil-textobj-tree-sitter :disabled
+(use-package evil-textobj-tree-sitter :disabled :disabled
   :ensure (evil-textobj-tree-sitter :type git
                                       :host github
                                       :repo "meain/evil-textobj-tree-sitter"
