@@ -834,7 +834,9 @@ org-mode"
 
 ;; 'flymake' just for C++ in org edit special
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Example_002d_002d_002dConfiguring-a-tool-called-directly.html
-(use-package flymake :disabled                             ;not working with org edit special
+(use-package flymake-cpp-hack :disabled                             ;not working with org edit special
+  :ensure nil
+  :after flymake
   :init
   (defun flymake-cc-init ()
     (let* (;; Create temp file which is copy of current file
