@@ -1871,7 +1871,7 @@ When matching, reference is stored in match group 1."
   (setq completion-category-overrides '((eglot (styles orderless)))))
 
 ;; use corfu on terminal
-(use-package corfu-terminal
+(use-package corfu-terminal :disabled
   :ensure (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :unless (display-graphic-p)
   :after corfu
