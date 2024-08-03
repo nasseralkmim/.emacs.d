@@ -3027,15 +3027,12 @@ Only if there is more than one window opened."
 ;; built in windows resize functions
 (use-package window
   :ensure nil
-  :general
-  ("C-c w" '(:keymap resize-window-repeat-map))
-  ("C-x C-o" 'other-window)
-  ('normal "C-w TAB" 'other-window)
-  (other-window-repeat-map "TAB" 'other-window)
-  (resize-window-repeat-map "j" 'enlarge-window)
-  (resize-window-repeat-map "k" 'shrink-window)
-  (resize-window-repeat-map "h" 'shrink-window-horizontally)
-  (resize-window-repeat-map "l" 'enlarge-window-horizontally))
+  :bind-keymap ("C-c w" . resize-window-repeat-map)
+  :bind (:repeat-map resize-window-repeat-map
+                     ("j" . enlarge-window)
+                     ("k" . shrink-window)
+                     ("h" . shrink-window-horizontally)
+                     ("l" . enlarge-window-horizontally)))
 
 (use-package ol
   :ensure nil
