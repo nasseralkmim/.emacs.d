@@ -2118,14 +2118,6 @@ When matching, reference is stored in match group 1."
 (use-package preview
   :ensure nil
   :after latex
-  :general
-  (LaTeX-mode-map "C-c C-x C-l" 'preview-buffer) ; same as in org
-  ('normal LaTeX-mode-map "g p" '(:keymap preview-map))
-  (preview-map
-   "b" 'preview-buffer
-   "c" 'preview-clearout-buffer
-   "s" 'preview-section
-   "p" 'preview-at-point)
   :init
   ;; preview latex config
   ;; only preview displaymath and not textmath which can be anoying when inside a table or algorithm
