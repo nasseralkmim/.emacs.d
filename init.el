@@ -4610,7 +4610,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   :after org)
 
 ;; Stackexchange mode for emacs
-(use-package sx
+(use-package sx :disabled
   :general
   ("M-<f12>" 'sx-search)
   (sx-question-list-mode-map "j" 'sx-question-list-next)
@@ -4679,8 +4679,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Also need to run a model to pull manifest "ollama run mistral"
 (use-package gptel
   :ensure (gptel :type git :host github :repo "karthink/gptel")
-  :general
-  ("C-c C-g" 'gptel-menu)
+  :bind
+  ("C-c C-g" . gptel-menu)
   :config
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
@@ -4727,9 +4727,9 @@ If INTERACTIVE is nil the function acts like a Capf."
   :hook
   (prog-mode . jinx-mode)
   (text-mode . jinx-mode)
-  :general
-  ("C-," 'jinx-correct)
-  ("M-," 'jinx-correct)
+  :bind
+  ("C-," . jinx-correct)
+  ("M-," . jinx-correct)
   :config
   (setq jinx-languages "en de pt_BR it"
         jinx-delay 1))
