@@ -4735,7 +4735,7 @@ If INTERACTIVE is nil the function acts like a Capf."
         jinx-delay 1))
 
 ;; Change default compile command
-(use-package compile
+(use-package compile :disabled
   :ensure nil
   :general
   ([remap compile] '(lambda ()
@@ -4796,8 +4796,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; }
 (use-package dictionary
   :ensure nil
-  :general
-  ("C-c d l" 'my/dictionary-lookup-definition) ; search for word at a point
+  :bind
+  ("C-c d l" . my/dictionary-lookup-definition) ; search for word at a point
   :config
   (setq
    dictionary-server nil
