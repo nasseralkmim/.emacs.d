@@ -3177,6 +3177,7 @@ Only if there is more than one window opened."
 
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
+  :bind ("C-x b" . ibuffer)
   :ensure nil
   :config
   ;; Grouping
