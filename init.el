@@ -2330,8 +2330,8 @@ When matching, reference is stored in match group 1."
 ;; Load modus in terminal, it is very clever to figure out the colors there
 (use-package modus-themes
   :defer 1
-  :general
-  ("<f5>" 'modus-themes-toggle)
+  :bind
+  ("<f5>" . modus-themes-toggle)
   :config
   (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-org-blocks 'gray-background
