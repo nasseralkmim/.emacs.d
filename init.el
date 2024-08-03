@@ -2733,10 +2733,8 @@ Only if there is more than one window opened."
 ;; browser the web inside emacs
 (use-package eww
   :ensure nil
-  :general
-  ("<f12>" 'eww)                        ; with C-u prefix, open new buffer
-  ('normal eww-mode-map "C-c y" 'eww-copy-page-url)
-  ('normal eww-mode-map "<SPC>" nil)               ; use for other things
+  :bind
+  ("<f12>" . eww)                        ; with C-u prefix, open new buffer
   :hook
   ;; (eww-after-render . (lambda () (eww-readable)))  ; does not work for all
   (eww-mode . visual-line-mode)
