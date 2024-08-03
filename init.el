@@ -186,9 +186,6 @@
   :defer 1
   :ensure nil
   :if (string-greaterp emacs-version "29") ; need emacs > 29
-  :bind
-  ([remap evil-scroll-down]   . pixel-scroll-interpolate-down)
-  ([remap evil-scroll-page-up] . pixel-scroll-interpolate-up)
   :custom
   (pixel-scroll-precision-interpolate-page t)
   :config
