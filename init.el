@@ -1229,32 +1229,32 @@ org-mode"
   :mode (("\\.org$" . org-mode))
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
-  :general
-  ("C-c s s" 'org-store-link)
-  ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
-  (org-mode-map "C-c C-l" 'org-insert-link)
-  (org-mode-map "C-," nil)              ; using that for flyspell
-  (org-mode-map "C-'" nil)              ; using that ispell
-  (org-mode-map "C-c ," 'org-insert-structure-template)
-  ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
-  ('normal org-mode-map :prefix "z"
-           "s j" 'org-babel-next-src-block
-           "s k" 'org-babel-previous-src-block
-           "n" 'org-toggle-narrow-to-subtree
-           "k" 'org-previous-visible-heading
-           "j" 'org-next-visible-heading
-           "u" 'outline-up-heading)
-  ('normal org-mode-map :prefix "SPC"
-           "ves" 'org-babel-execute-subtree
-           "vg" 'org-babel-goto-named-src-block) 
-  ('normal org-mode-map :prefix "g"
-           "k" 'org-backward-heading-same-level
-           "j" 'org-forward-heading-same-level
-           "n" 'org-babel-next-src-block
-           "p" 'org-babel-previous-src-block
-           "h" 'org-babel-goto-src-block-head)
-  ;; global map
-  ('(normal visual) "M-o" 'org-open-at-point-global)
+  ;; :general
+  ;; ("C-c s s" 'org-store-link)
+  ;; ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
+  ;; (org-mode-map "C-c C-l" 'org-insert-link)
+  ;; (org-mode-map "C-," nil)              ; using that for flyspell
+  ;; (org-mode-map "C-'" nil)              ; using that ispell
+  ;; (org-mode-map "C-c ," 'org-insert-structure-template)
+  ;; ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
+  ;; ('normal org-mode-map :prefix "z"
+  ;;          "s j" 'org-babel-next-src-block
+  ;;          "s k" 'org-babel-previous-src-block
+  ;;          "n" 'org-toggle-narrow-to-subtree
+  ;;          "k" 'org-previous-visible-heading
+  ;;          "j" 'org-next-visible-heading
+  ;;          "u" 'outline-up-heading)
+  ;; ('normal org-mode-map :prefix "SPC"
+  ;;          "ves" 'org-babel-execute-subtree
+  ;;          "vg" 'org-babel-goto-named-src-block) 
+  ;; ('normal org-mode-map :prefix "g"
+  ;;          "k" 'org-backward-heading-same-level
+  ;;          "j" 'org-forward-heading-same-level
+  ;;          "n" 'org-babel-next-src-block
+  ;;          "p" 'org-babel-previous-src-block
+  ;;          "h" 'org-babel-goto-src-block-head)
+  ;; ;; global map
+  ;; ('(normal visual) "M-o" 'org-open-at-point-global)
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
@@ -1493,11 +1493,10 @@ graphics."
 (use-package org-zoom-inline-image
   :ensure nil
   :after org
-  :general
-  ('normal org-mode-map :prefix "SPC"
-           "xv" 'org-redisplay-inline-images)
-  ('normal org-mode-map "C-+" 'org-zoom-inline-images)
-  ('normal org-mode-map "C-_" 'org-zoom-out-inline-images)
+  :bind
+  (:map org-mode-map  
+        ("C-+" . org-zoom-inline-images)
+        ("C-_" . org-zoom-out-inline-images))
   :init
   (defun org-zoom-inline-images (&optional scale)
     (interactive "p")
@@ -3990,8 +3989,9 @@ its results, otherwise display STDERR with
 (use-package org-show-current-tidyly
   :ensure nil
   :after org
-  :general
-  ('normal org-mode-map "z =" 'org-show-current-heading-tidily)
+  :bind
+  (:map org-mode-map
+        ("z =" . org-show-current-heading-tidily))
   :init
   (defun org-show-current-heading-tidily ()
     (interactive)  ;Inteactive
@@ -4578,8 +4578,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Setup template for capture gcal 
 (use-package org-capture-template
   :ensure nil
-  :general
-  ("C-c c" 'org-capture)
+  :bind
+  ("C-c c" . org-capture)
   :hook
   (org-capture-mode . evil-insert-state)
   :init
