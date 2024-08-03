@@ -947,8 +947,7 @@ org-mode"
      '("'" . repeat)
      '("<escape>" . ignore)))
   (meow-setup)
-  (meow-global-mode)
-  )
+  (meow-global-mode))
 
 ;; For some reason is not working with edits in 'dired'
 (use-package evil-multiedit :disabled :disabled
