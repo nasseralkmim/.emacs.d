@@ -1053,7 +1053,7 @@ org-mode"
 
 ;; Change color of mode line evil mode indicator
 ;; https://www.reddit.com/r/emacs/comments/gqc9fm/visual_indication_of_the_mode_of_editing_with_evil/
-(use-package hack-evil-mode-line-indicator :disables
+(use-package hack-evil-mode-line-indicator :disabled
   :ensure nil
   :after evil
   :init
@@ -1980,27 +1980,27 @@ When matching, reference is stored in match group 1."
   :mode ("\\.inp\\'" . outline-minor-mode)
   :ensure nil
   :diminish outline-minor-mode
-  :hook
+  ;; :hook
   ;;(prog-mode . outline-minor-mode) ; using the hideshow package
   ;; (emacs-lisp-mode . outline-minor-mode)
   ;; (markdown-mode . outline-minor-mode)
   ;; (conf-mode . outline-minor-mode)
-  (evil-collection-setup . (lambda (&rest a)
-                             ;; need to rebind after loading outline because 'general' uses
-                             ;; `after-load-functions' and 'evil-collection' uses `eval-after-load'
-                             ;; 'evil-collection' end up binding last...
-                             ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
-                             (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
-                             (general-def 'normal outline-mode-map "z l" nil)))
-  :general
-  ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                            (outline-on-heading-p) 'outline-cycle))
-  ('normal outline-mode-map :prefix "z"
-           "j" 'outline-next-visible-heading
-           "o" 'outline-show-children   ; show first level
-           "A" 'outline-show-all)
-  ;; ('normal outline-mode-map "C-j" nil)
-  ('normal outline-mode-map "M-j" nil)  ; conflicts with c multiline comment
+  ;; (evil-collection-setup . (lambda (&rest a)
+  ;;                            ;; need to rebind after loading outline because 'general' uses
+  ;;                            ;; `after-load-functions' and 'evil-collection' uses `eval-after-load'
+  ;;                            ;; 'evil-collection' end up binding last...
+  ;;                            ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
+  ;;                            (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
+  ;;                            (general-def 'normal outline-mode-map "z l" nil)))
+  ;; :general
+  ;; ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
+  ;;                                           (outline-on-heading-p) 'outline-cycle))
+  ;; ('normal outline-mode-map :prefix "z"
+  ;;          "j" 'outline-next-visible-heading
+  ;;          "o" 'outline-show-children   ; show first level
+  ;;          "A" 'outline-show-all)
+  ;; ;; ('normal outline-mode-map "C-j" nil)
+  ;; ('normal outline-mode-map "M-j" nil)  ; conflicts with c multiline comment
   :config
   (setq outline-minor-mode-cycle nil    ; using general predicate dispatch instead
         ;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
