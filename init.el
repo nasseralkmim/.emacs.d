@@ -4177,9 +4177,10 @@ its results, otherwise display STDERR with
 (use-package gnus-open-external-browser-hack
   :ensure nil
   :after gnus
-  :general
-  ('normal gnus-summary-mode-map "K H" 'gnus-article-browse-html-article-external)
-  ('normal gnus-article-mode-map "K H" 'gnus-article-browse-html-article-external)
+  :bind
+  (:map gnus-summary-mode-map
+        ("K H" . gnus-article-browse-html-article-external)
+        ("K H" . gnus-article-browse-html-article-external))
   :init
   (defun gnus-article-browse-html-article-external (&optional arg)
     "Open on external browser"
