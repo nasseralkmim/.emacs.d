@@ -771,17 +771,15 @@ org-mode"
 (use-package flymake
   :hook
   (prog-mode . flymake-mode)
-  :general
-  (flymake-mode-map "M-n" 'flymake-goto-next-error) 
-  (flymake-mode-map "M-N" 'flymake-goto-prev-error)
+  :bind
+  (:map flymake-mode-map
+        ("M-n" . flymake-goto-next-error) 
+        ("M-N" . flymake-goto-prev-error))
   :config
   ;; delay check, check only on save
   (setq flymake-no-changes-timeout 1                 ;only when saved
         flymake-show-diagnostics-at-end-of-line nil ; just use "M-n"
-        flymake-mode-line-lighter "Fly")
-  ;; avoid warning in the 'flymake' log
-  ;; (remove-hook 'flymake-diagnostic-functions 'flymake-proc-legacy-flymake)
-  )
+        flymake-mode-line-lighter "Fly"))
 
 ;; 'flymake' just for C++ in org edit special
 ;; https://www.gnu.org/software/emacs/manual/html_node/flymake/Example_002d_002d_002dConfiguring-a-tool-called-directly.html
