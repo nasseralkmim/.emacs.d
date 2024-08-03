@@ -1985,60 +1985,20 @@ When matching, reference is stored in match group 1."
 (use-package hideshow
   :ensure nil
   :diminish hs-minor-mode
-  :general
-  ('normal hs-minor-mode-map "z h" 'hs-hide-level)
-  ('normal hs-minor-mode-map "z c" 'my-hs-hide-only-comments)
-  ('normal hs-minor-mode-map "z H" 'hs-hide-all)
-  ('normal hs-minor-mode-map "z l" '(lambda ()
-                                      (interactive)
-                                      (evil-toggle-fold)
-                                      (hs-hide-level 1)))
-  ('normal hs-minor-mode-map "<tab>" (general-predicate-dispatch nil
-                                       (my-hs-header-p)
-                                       'my-hs-toggle-fold))
+  :bind
+  (("C-c z h"  . hs-hide-block)
+   ("C-c z s"  . hs-show-block)
+   ("C-c z M-h". hs-hide-all)
+   ("C-c z M-s". hs-show-allC-z)
+   ("C-c z l"  . hs-hide-level)
+   ("C-c z c"  . hs-toggle-hiding)
+   ("C-c z a"  . hs-show-all)
+   ("C-c z t"  . hs-hide-all)
+   ("C-c z d"  . hs-hide-block)
+   ("C-c z e"  . hs-toggle-hiding))
   :hook
   (emacs-lisp-mode . hs-minor-mode)
   (nxml-mode . hs-minor-mode)
-  :init
-  (defun my-hs-hide-only-comments (arg)
-    (interactive "p")
-    (let ((hs-hide-all-non-comment-function #'ignore))
-      (hs-hide-all)))
-  (defun my-hs-header-p ()
-    "Return non-nil if the cursor is on a header line."
-    (save-excursion
-      (back-to-indentation)
-      (or (hs-looking-at-block-start-p)
-          (hs-already-hidden-p)
-          ;; outline identifies headers with a regex per mode works better than
-          ;; 'hs-looking-at-block-start-p' if the regex is available
-          (outline-on-heading-p))))
-  (defun my-hs-toggle-fold ()
-    "Cycle visibility: show all, then first level, then collapse."
-    (interactive)
-    (let ((hs-allow-nesting nil))
-     (save-excursion
-      (back-to-indentation)
-      (pcase last-command
-        ;; After showing first level, hide all
-        ('my-cycle-visibility-show-all
-         (hs-hide-block)
-         (message "Hide all")
-         (setq this-command 'my-cycle-visibility-hide-all))
-        ;; 
-        ('my-cycle-visibility-show-first
-         (hs-hide-level 1)
-         (message "Show first level")
-         (setq this-command 'my-cycle-visibility-show-all))
-        (_
-         ;; If it is not hidden, hide. If it is hidden, then show and trigger
-         ;; the cycling sequence.
-         (if (not (hs-already-hidden-p))
-             (hs-hide-block)
-           (progn
-             (hs-show-block)
-             (setq this-command 'my-cycle-visibility-show-first)))
-         (message "Toggle"))))))
   :config
   ;; remember internal blocks hiding status, e.g. if internal blocks are hidden, keep them hidden
   (setq hs-allow-nesting t))
