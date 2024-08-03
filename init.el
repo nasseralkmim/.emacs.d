@@ -3431,9 +3431,9 @@ opening a file from dired. Otherwise just regular dired."
   :after dired
   :bind
   (:map dired-mode-map
-           "C-C C-c" . dired-ranger-copy
-           "C-c C-v" . dired-ranger-paste
-           "C-c C-x" . dired-ranger-move))
+        ("C-C C-c" . dired-ranger-copy)
+        ("C-c C-v" . dired-ranger-paste)
+        ("C-c C-x" . dired-ranger-move)))
 
 ;; Open with external program.
 (use-package openwith :disabled         ; too many problems
@@ -3782,7 +3782,7 @@ its results, otherwise display STDERR with
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
 (use-package imenu-list
   :bind
-  ("g o" . imenu-list)
+  ("C-c o" . imenu-list)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-auto-update nil      ; I want to keep the list from a file
@@ -3844,7 +3844,7 @@ its results, otherwise display STDERR with
 (use-package gdb-mi
   :ensure nil
   :bind
-  (:map gud-global-map "C-a" . gud-run)
+  (:map gud-global-map ("C-a" . gud-run))
   :config
   (setq gdb-locals-value-limit 1000
         ;; use gdb layout and just the info locals
@@ -3871,6 +3871,7 @@ its results, otherwise display STDERR with
               :around (lambda (orig-fun name &optional ignore-dedicated window)
                         (funcall orig-fun name ignore-dedicated window)
                         (set-window-dedicated-p window nil))))
+
 
 ;; irony mode for 'org-edit-special' c++ 
 ;; uses libclang
