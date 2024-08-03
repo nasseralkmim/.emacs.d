@@ -2469,8 +2469,9 @@ Only if there is more than one window opened."
 ;; not ready yet
 (use-package c++ts-mode
   :ensure nil
-  :general
-  (c++-ts-mode-map "C-x c" 'compile)
+  :bind
+  (:map c++-ts-mode-map
+        ("C-x c" . compile))
   :init
   ;; From the documentation, substitute to 'tree-sitter' based modes
   ;; [[help:c-ts-mode][help:c-ts-mode]] 
@@ -2503,8 +2504,6 @@ Only if there is more than one window opened."
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
-  :general
-  (python-mode-map "<backtab>" nil)
   :hook ((python-mode . toggle-truncate-lines)
          (python-mode . display-fill-column-indicator-mode))
   :config
@@ -2528,8 +2527,6 @@ Only if there is more than one window opened."
   :ensure nil
   :init
   (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  :general
-  (python-ts-mode-map "<backtab>" nil)
   :hook ((python-mode . toggle-truncate-lines)
          (python-mode . display-fill-column-indicator-mode))
   :config
