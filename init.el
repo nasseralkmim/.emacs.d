@@ -4386,14 +4386,14 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; translation package
 (use-package go-translate
-  :general
-  ("C-c t t" 'gt-do-translate)     ; overrides the tutorial, but ok...
-  ("C-c t d" 'gt-do-setup)     ; overrides the tutorial, but ok...
-  (override "C-c t i" 'gt-do-translate-and-insert)
-  ;; only when there is a gt-result buffer 
-  ('(normal visual) override "C-t" (general-predicate-dispatch nil
-                                     (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
-  ('(normal visual) "SPC t" (general-simulate-key "S-V C-c t t")) ; whole line
+  :bind
+  (("C-c t t" . gt-do-translate)     ; overrides the tutorial, but ok...
+   ("C-c t d" . gt-do-setup))
+  ;; (override "C-c t i" 'gt-do-translate-and-insert)
+  ;; ;; only when there is a gt-result buffer 
+  ;; ('(normal visual) override "C-t" (general-predicate-dispatch nil
+  ;;                                    (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
+  ;; ('(normal visual) "SPC t" (general-simulate-key "S-V C-c t t")) ; whole line
   :hook
   (gt-buffer-render-init . visual-line-mode)
   :init
@@ -4502,8 +4502,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 ;; Shortcut to open notes directory
 (use-package notes
   :ensure nil
-  :general
-  ("<f8>" (lambda ()
+  :bind
+  ("<f8>" . (lambda ()
             (interactive)
             (find-file "/home/nasser/Sync/notes"))))
 
