@@ -341,11 +341,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         auto-revert-remote-files nil))
 
 (use-package helpful
-  :general
-  ("C-h f" 'helpful-callable)
-  ("C-h d" 'helpful-at-point)
-  ("C-h v" 'helpful-variable)
-  ("C-h k" 'helpful-key)
+  :bind
+  (("C-h f" . helpful-callable)
+   ("C-h d" . helpful-at-point)
+   ("C-h v" . helpful-variable)
+   ("C-h k" . helpful-key))
   :init
   (defvar read-symbol-positions-list nil) ; fix bug in upstream emacs
   :config
