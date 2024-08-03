@@ -979,19 +979,16 @@ org-mode"
 
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
-(use-package iedit 
+(use-package iedit
   :custom-face
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
-  :general
-  ("C-;" 'iedit-mode)
-  ('(normal visual) ":" 'iedit-mode)                   ; for tty, I don't use `evil-ex'
-  (iedit-mode-keymap "M-'" 'iedit-show/hide-context-lines)                   ; for tty
-  ("M-d" 'my-iedit-expand-down-to-occurrence)
-  ('normal iedit-mode-occurrence-keymap  "<escape>" 'iedit--quit)
-  (iedit-mode-keymap "C-h k" 'nil)                        ; use 'helpful'
-  (iedit-mode-keymap "C-n" 'iedit-next-occurrence)
-  (iedit-mode-keymap "C-p" 'iedit-prev-occurrence)
-  (iedit-lib-keymap "TAB" nil)
+  :bind
+  (("C-\\" . iedit-mode)
+   ("M-d" . my-iedit-expand-down-to-occurrence)
+   :map iedit-mode-keymap
+   ("M-'" . iedit-show/hide-context-lines)
+   ("C-n" . iedit-next-occurrence)
+   ("C-p" . iedit-prev-occurrence))
   :init
   (defun my-iedit-expand-down-to-occurrence ()
   ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
