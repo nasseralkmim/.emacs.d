@@ -3178,8 +3178,6 @@ Only if there is more than one window opened."
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
   :ensure nil
-  :general
-  ("C-x C-b" 'ibuffer)
   :config
   ;; Grouping
   ;; https://www.emacswiki.org/emacs/IbufferMode#h5o-6
