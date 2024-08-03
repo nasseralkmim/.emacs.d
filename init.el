@@ -89,21 +89,6 @@
 (use-package emacs
   :ensure nil
   :defer 1
-  :general
-  ('normal "gy" 'revert-buffer-quick)
-  ('insert "C-v" 'yank)                 ; for helping in minibuffer.
-  ("C-<tab>" 'next-window-any-frame)
-  ("C-M-o" 'up-list)
-  ("<backtab>" 'previous-window-any-frame)
-  ("C-x C-M-e" 'pp-macroexpand-last-sexp)
-  ("C-x C-e" 'eval-defun)
-  ("C-x e" 'eval-last-sexp)
-  ("C-h j" 'describe-keymap)
-  ;; some sexp moving commads (treesit changes some)
-  ('normal :prefix "z"
-           "u" 'backward-up-list
-           "b" 'backward-sexp
-           "f" 'forward-sexp)
   :config
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
   (column-number-mode t)  ; show column number in the mode line
