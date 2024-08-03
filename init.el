@@ -360,11 +360,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico
   :ensure (vertico :type git :host github :repo "minad/vertico"
                      :files (:defaults "extensions/*"))
-  :general
-  ('insert vertico-map "C-k" 'vertico-exit-input)
-  ('normal vertico-map
-           "C-n" 'vertico-next ; same as in insert mode
-           "C-p" 'vertico-previous) ; same as in insert mode
   :init
   (vertico-mode)
   (setq vertico-resize t))
@@ -373,10 +368,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico-directory
   :ensure nil
   :after vertico
-  :general
-  (vertico-map "RET" 'vertico-directory-enter
-               "DEL" 'vertico-directory-delete-char
-               "M-DEL" 'vertico-directory-delete-word)
   ;; tidy shadowed file names
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
@@ -384,8 +375,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico-repeat
   :ensure nil
   :after vertico
-  :general
-  ("M-r" 'vertico-repeat))
+  :bind
+  ("M-r" . vertico-repeat))
 
 ;; use vertico to complete in region with orderless in terminal
 (use-package vertico-terminal
@@ -420,10 +411,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico-multiform
   :ensure nil
   :after vertico
-  :general
-  ('insert vertico-map "C-<tab>" 'vertico-multiform-reverse)
-  ;; for terminal
-  ('insert vertico-map "M-SPC" 'vertico-multiform-reverse)
   :init
   (vertico-multiform-mode)
   ;; for spell checker
