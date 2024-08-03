@@ -1834,13 +1834,12 @@ When matching, reference is stored in match group 1."
 (use-package corfu
   :ensure (corfu :type git :host github :repo "minad/corfu"
                    :files (:defaults "extensions/*"))
-  :general
-  (corfu-map "<tab>" 'corfu-next
-             "<backtab>" 'corfu-previous
-             "C-n" 'corfu-next
-             "C-p" 'corfu-previous)
-  ('insert "C-n" nil
-           "C-p" nil)
+  :bind
+  (:map corfu-map
+        ("<tab>" . corfu-next)
+        ("<backtab>" . corfu-previous)
+        ("C-n" . corfu-next)
+        ("C-p" . corfu-previous))
   :defer 1
   :hook
   (text-mode . (lambda () (setq-local corfu-auto-prefix 3))) ; increase prefix for text
