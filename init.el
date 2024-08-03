@@ -493,24 +493,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; enhances multiple commands based on completion
 ;; practical navigation and search commands 
 (use-package consult
-  :general
-  ;; m/f/b <SPC> for bookmarks/files/buffers narrowing
-  ("C-x b" 'consult-buffer)		; enhanced switch to buffer
-  ("C-M-s" 'consult-line)
-  ("M-s" 'consult-outline)		; navigation by headings
-  ("C-c o" 'consult-imenu)		; navigation by "imenu" items
-  ("M-y" 'consult-yank-pop)		; editing cycle through kill-ring
-  ("C-M-s" 'consult-line)	; search lines with preview
-  ("C-c C-f" 'consult-focus-lines)	; show only matching results
-  ("C-c m" 'consult-mark)
+  :bind
+  (;; m/f/b <SPC> for bookmarks/files/buffers narrowing
+  ("C-x C-b" . consult-buffer)		; enhanced switch to buffer
+  ("C-M-s" . consult-line)
+  ("M-s" . consult-outline)		; navigation by headings
+  ("C-c C-o" . consult-imenu)		; navigation by "imenu" items
+  ("M-y" . consult-yank-pop)		; editing cycle through kill-ring
+  ("C-M-s" . consult-line)	; search lines with preview
+  ("C-c C-f" . consult-focus-lines)	; show only matching results
+  ("C-c m" . consult-mark)
   ;; two parts: search  and filter
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
   ;; command line can be specified after "--", example: #<search string> -- -C 10 for context!! WHAT!
-  ("C-c r" 'consult-ripgrep)		; search file contents
-  ("C-c C-r" (general-simulate-key "C-u C-c r"))
-  ("C-c f" 'consult-find-fd)		; search files in directories
-  ;; (minibuffer-local-completion-map "<tab>" 'minibuffer-force-complete)
-  ("M-e" 'consult-isearch-history)
+  ("C-c r" . consult-ripgrep)		; search file contents
+  ("C-c f" . consult-find-fd)		; search files in directories
+  ("M-e" . consult-isearch-history))
   :hook
   ;; hook for using default completion mode
   (completion-list-mode . consult-preview-at-point-mode)
@@ -659,14 +657,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package embark
   :ensure (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
-  :general
-  ('(insert visual normal) "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
-  ('(insert motion) minibuffer-local-map "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
-  ("C-S-z" 'embark-dwim)
-  ("C-h B" 'embark-bindings)
-  (embark-function-map "h" 'helpful-symbol)
-  (embark-variable-map "h" 'helpful-symbol)
-  ('normal grep-mode-map "g r" 'embark-rerun-collect-or-export) ; back to completion after 'embark-export' to grep buffer
+  :bind (("C-z" . embark-act))
+  ;; :general
+  ;; ('(insert motion) minibuffer-local-map "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
+  ;; ("C-S-z" 'embark-dwim)
+  ;; ("C-h B" 'embark-bindings)
+  ;; (embark-function-map "h" 'helpful-symbol)
+  ;; (embark-variable-map "h" 'helpful-symbol)
+  ;; ('normal grep-mode-map "g r" 'embark-rerun-collect-or-export) ; back to completion after 'embark-export' to grep buffer
   :commands embark-prefix-help-command
   :config
   (add-to-list 'display-buffer-alist
