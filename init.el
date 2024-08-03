@@ -2338,20 +2338,10 @@ When matching, reference is stored in match group 1."
   :commands dired
   :hook
   (dired-mode . dired-hide-details-mode)
-  ;; (dired-mode . (lambda () (toggle-truncate-lines)))
-  :general
-  (dired-mode-map "C-c C-d" 'mkdir
-                  "C-," 'dired-omit-mode)
-  ('normal dired-mode-map "h" 'dired-up-directory)
-  (dired-mode-map "M-o" 'dired-omit-mode)
-  ('normal dired-mode-map "l" 'dired-find-alternate-file)
-  ('normal dired-mode-map "C-<return>" 'dired-find-file-other-window)
-  ("C-x C-j" 'dired-jump-other-window)
-  ("C-x j" 'dired-jump)
-  (dired-jump-map "j" nil)             ; remove repeat with "j"
-  (dired-mode-map "SPC" nil)             ; use for easymotion
-  ('normal image-dired-thumbnail-mode-map "+" 'image-increase-size)
-  ('normal image-dired-thumbnail-mode-map "g r" 'image-dired-refresh-thumb)
+  :bind (("C-x j" . dired-jump)
+         :map dired-mode-map
+              ("l" . dired-find-alternate-file)
+              ("h" . dired-up-directory))
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
         dired-auto-revert-buffer t
@@ -2366,10 +2356,6 @@ When matching, reference is stored in match group 1."
 
   ;; kill the dired buffer and enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil)
-
-  ;; after 'evil-collection'
-  ;; because general uses `after-load-functions' and evil-collection uses `eval-after-load'
-  (general-def 'normal dired-mode-map "SPC" nil)
 
   ;; Open pdf in dired with `!` and the default application 
   (setq dired-guess-shell-alist-user
@@ -2390,13 +2376,14 @@ When matching, reference is stored in match group 1."
 
 ;; open dired as a sidebar
 (use-package dired-sidebar
-  :general
-  ("C-x C-j" 'dired-sidebar-jump)
-  ('normal dired-sidebar-mode-map
-           "l" 'dired-sidebar-find-file ; use 'C-u' to select specific window
-           "h" 'dired-sidebar-up-directory)
-  ;; this package requires 'dired-subtree' from 'dired-hacks'
-  ('normal dired-mode-map "<TAB>" 'dired-subtree-toggle)
+  :bind
+  (("C-x C-j" . dired-sidebar-jump)
+   :map dired-sidebar-mode-map
+   ("l" . dired-sidebar-find-file) ; use 'C-u' to select specific window
+   ("h" . dired-sidebar-up-directory)
+   ;; this package requires 'dired-subtree' from 'dired-hacks'
+   :map dired-mode-map
+   ("<TAB>" . dired-subtree-toggle))
   :hook
   (dired-sidebar-mode . visual-line-mode)
   ;; avoid fixing window size
