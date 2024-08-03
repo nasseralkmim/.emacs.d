@@ -2046,12 +2046,6 @@ When matching, reference is stored in match group 1."
   (font-latex-sectioning-5-face ((t (:slant normal :height 1.0))))
   :hook
   (LaTeX-mode . outline-minor-mode)
-  :general
-  ('normal LaTeX-mode-map "g f" '(:keymap TeX-fold-keymap))
-  (TeX-fold-keymap
-   "b" 'TeX-fold-buffer
-   "c" 'TeX-fold-clearout-buffer
-   "f" 'TeX-fold-dwim)
   :hook
   (LaTeX-mode . (lambda ()
                   (prettify-symbols-mode) ; for greek letters and other math symbols
@@ -2147,8 +2141,9 @@ When matching, reference is stored in match group 1."
 (use-package latex-insert-figure-from-clipboard-hack
   :ensure nil
   :after latex
-  :general
-  (LaTeX-mode-map "C-M-y" 'my-tex-insert-clipboard)
+  :bind
+  (:map LaTeX-mode-map
+        ("C-M-y" . my-tex-insert-clipboard))
   :init
   ;; function definition, not the best...
   (defun my-tex-insert-clipboard ()
