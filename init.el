@@ -734,15 +734,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package smartparens
   :diminish smartparens-mode
   ;; :ensure (:includes smartparens-config)
-  :general
-  ('normal smartparens-mode-map "M-l" 'sp-next-sexp)
-  ('normal smartparens-mode-map "M-h" 'sp-previous-sexp)
-  ('normal smartparens-mode-map "M-k" 'sp-up-sexp)
-  ('normal smartparens-mode-map "M-j" 'sp-down-sexp)
-  ('(normal visual) smartparens-mode-map "] ]" 'sp-forward-sexp) ; go to balancing closing pair
-  ('(normal visual) smartparens-mode-map "[ [" 'sp-beginning-of-sexp) ; go back to matching opening pair
-  ;; binding all modes for Latex
-  ('insert '(prog-mode-map LaTeX-mode-map org-mode-map) "C-<tab>" 'sp-forward-sexp)
   :custom-face
   (sp-show-pair-match-content-face ((t (:inherit show-paren-match))))
   :hook
