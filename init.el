@@ -5169,9 +5169,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (add-to-list 'auto-mode-alist '("\\.out\\'" . text-mode)))
 
 (use-package tab-bar
-  :ensure nil
-  :general
-  ("C-x t 2" 'tab-new))
+  :ensure nil)
 
 (use-package xref
   :ensure nil
