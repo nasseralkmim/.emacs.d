@@ -5003,18 +5003,15 @@ If INTERACTIVE is nil the function acts like a Capf."
         indent-bars-highlight-current-depth '(:width 0.25)))
 
 (use-package docview
-  :ensure nil
-  :general
-  ('normal doc-view-mode-map "j" 'doc-view-scroll-up-or-next-page)
-  ('normal doc-view-mode-map "k" 'doc-view-scroll-down-or-previous-page))
+  :ensure nil)
 
 ;; Use eglot when in org-edit-special (hack, experimental)
 ;; https://github.com/joaotavora/eglot/issues/216
 (use-package org-edit-special-with-eglot-hack
   :ensure nil
   :after org 
-  :general
-  ([remap org-edit-special] 'mb/org-babel-edit)
+  :bind
+  ([remap org-edit-special] . mb/org-babel-edit)
   :init
   (defun mb/org-babel-edit ()
     "Edit python src block with lsp support by tangling the block and
@@ -5164,23 +5161,26 @@ absolute path. Finally load eglot."
   ;; make sure to "build" 'calfw-org.el' as well.
   :ensure (calfw :files ("calfw.el"
                          "calfw-org.el"))
+  :bind
+  ("C-c A". cfw:open-org-calendar)
   :init
   ;; autoload 'calfw-org' when opening calendar
   (unless (fboundp 'cfw:open-org-calendar)
     (autoload #'cfw:open-org-calendar "calfw-org" nil t))
-  (general-def "C-c A" 'cfw:open-org-calendar :package 'calfw)
+  ;; (general-def "C-c A" 'cfw:open-org-calendar :package 'calfw)
   ;; defer config
-  (with-eval-after-load 'calfw-org
-    (general-def cfw:calendar-mode-map "g" nil)
-    (general-def 'normal cfw:calendar-mode-map :prefix "g d"
-      "d" 'cfw:change-view-day
-      "w" 'cfw:change-view-week
-      "m" 'cfw:change-view-month)
-    (general-def 'normal cfw:calendar-mode-map
-      "C-j" 'cfw:navi-next-month-command
-      "C-k" 'cfw:navi-previous-month-command
-      "RET" 'cfw:org-open-agenda-day
-      "q" 'cfw:org-clean-exit)))
+  ;; (with-eval-after-load 'calfw-org
+  ;;   (general-def cfw:calendar-mode-map "g" nil)
+  ;;   (general-def 'normal cfw:calendar-mode-map :prefix "g d"
+  ;;     "d" 'cfw:change-view-day
+  ;;     "w" 'cfw:change-view-week
+  ;;     "m" 'cfw:change-view-month)
+  ;;   (general-def 'normal cfw:calendar-mode-map
+  ;;     "C-j" 'cfw:navi-next-month-command
+  ;;     "C-k" 'cfw:navi-previous-month-command
+  ;;     "RET" 'cfw:org-open-agenda-day
+  ;;     "q" 'cfw:org-clean-exit))
+  )
 
 (use-package czm-tex-util :disabled
   :ensure (:host github :repo "ultronozm/czm-tex-util.el")
@@ -5231,12 +5231,8 @@ absolute path. Finally load eglot."
 (use-package dslide
   :ensure (dslide :host github
                   :repo "positron-solutions/dslide")
-  :general
-  ('normal "C-<f12>" 'dslide-deck-start)
-  ('normal dslide-mode-map
-           "<right>" 'dslide-deck-forward
-           "<left>" 'dslide-deck-backward
-           "<f12>" 'dslide-deck-stop)
+  :bind
+  ("C-<f12>" . dslide-deck-start)
   :config
   (setq dslide-animation-duration 0))
 
@@ -5249,10 +5245,10 @@ absolute path. Finally load eglot."
 
 (use-package treesit-fold
   :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
-  :general
-  ('normal "z A" 'treesit-fold-open-recursively)
-  ('normal "<tab>" (general-predicate-dispatch nil
-                   (treesit-node-p) 'treesit-fold-toggle))
+  ;; :general
+  ;; ('normal "z A" 'treesit-fold-open-recursively)
+  ;; ('normal "<tab>" (general-predicate-dispatch nil
+  ;;                  (treesit-node-p) 'treesit-fold-toggle))
   :hook 
   (c++-ts-mode . treesit-fold-mode)
   (python-ts-mode . treesit-fold-mode)
