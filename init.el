@@ -1053,7 +1053,7 @@ org-mode"
 
 ;; Change color of mode line evil mode indicator
 ;; https://www.reddit.com/r/emacs/comments/gqc9fm/visual_indication_of_the_mode_of_editing_with_evil/
-(use-package hack-evil-mode-line-indicator
+(use-package hack-evil-mode-line-indicator :disables
   :ensure nil
   :after evil
   :init
@@ -1190,19 +1190,9 @@ org-mode"
   :demand t)
 
 (use-package magit
-  :general
-  ("C-x g" 'magit-status)
-  ("C-x C-g" 'magit-file-dispatch)
-  (magit-diff-section-map "M-RET" 'magit-diff-visit-worktree-file)
   :config
-  ;; after evil collection
-  (general-def magit-section-mode-map "C-<tab>" nil)
-  (general-def 'normal magit-section-mode-map "C-<tab>" nil)
-  (general-def '(normal visual) magit-status-mode-map "g t" nil) ; using for switching tabs
   (setq magit-diff-hide-trailing-cr-characters t
         magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
-  ;; open commit in insert mode
-  (add-hook 'git-commit-mode-hook 'evil-insert-state)
   ;; auto refresh magit
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
 
