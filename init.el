@@ -1353,7 +1353,7 @@ graphics."
     (org-display-inline-images)))
 
 ;; For some reason I need to redisplay images twice
-(use-package org-toggle-inline-images-hack
+(use-package org-toggle-inline-images-hack :disabled
   :ensure nil
   :after org
   :general (org-mode-map "<f10>" '(lambda ()
@@ -1482,8 +1482,8 @@ graphics."
 (use-package ob-core
   :ensure nil
   :after org
-  :general
-  ('normal org-mode-map "g s" (general-simulate-key "C-u C-u C-c C-v C-t"))
+  ;; :general
+  ;; ('normal org-mode-map "g s" (general-simulate-key "C-u C-u C-c C-v C-t"))
   :init
   ;; mkdirp allows creating the :dir if it does not exist
   (add-to-list 'org-babel-default-header-args '(:mkdirp . "yes"))
@@ -1535,11 +1535,6 @@ graphics."
 
 (use-package org-clock
   :ensure nil
-  :general
-  ('normal org-mode-map :prefix "z x"
-           "i" 'org-clock-in
-           "o" 'org-clock-out
-           "x" 'org-clock-in-last)
   :after org
   :config
   ;; Save the running clock and all clock history when exiting Emacs, load it on startup
@@ -1552,10 +1547,6 @@ graphics."
 
 (use-package org-src
   :ensure nil
-  :general
-  ('normal org-mode-map "z e" 'org-edit-special)
-  ('normal org-src-mode-map "z e" 'org-edit-src-exit)
-  ('normal org-mode-map "z g" 'org-toggle-blocks-visibility)
   :after org
   :init
   ;; babel and source blocks
@@ -1618,8 +1609,8 @@ When matching, reference is stored in match group 1."
 ;; 2. 'deadline': finish a 'task' by this date. It can have warnings before the deadline.
 (use-package org-agenda
   :ensure nil
-  :general
-  ("C-c a" 'org-agenda)
+  :bind
+  ("C-c a" . org-agenda)
   :config
   (setq org-agenda-files '("~/Sync/notes/log-notes/")
         org-agenda-window-setup 'current-window ; don't change my windows
@@ -1745,9 +1736,10 @@ When matching, reference is stored in match group 1."
 ;; copy image from clipboard, save it and insert it
 (use-package org-download
   :after org
-  :general
-  (org-mode-map "C-M-y" 'org-download-screenshot)
-  (org-mode-map "C-M-S-y" 'org-download-clipboard)
+  :bind
+  (:map org-mode-map
+        ("C-M-y" . org-download-screenshot)
+        ("C-M-S-y" . org-download-clipboard))
   :init
   (setq
    ;; apparently I need to manually create the images folder
