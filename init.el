@@ -5359,8 +5359,6 @@ absolute path. Finally load eglot."
   (general-def "C-c A" 'cfw:open-org-calendar :package 'calfw)
   ;; defer config
   (with-eval-after-load 'calfw-org
-    ;; start in normal mode, not "emacs mode"
-    (add-to-list 'evil-normal-state-modes 'cfw:calendar-mode)
     (general-def cfw:calendar-mode-map "g" nil)
     (general-def 'normal cfw:calendar-mode-map :prefix "g d"
       "d" 'cfw:change-view-day
