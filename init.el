@@ -1905,9 +1905,6 @@ When matching, reference is stored in match group 1."
 ;; completion any text based on buffer contents
 (use-package dabbrev
   :ensure nil
-  :general
-  ("M-/" 'dabbrev-completion)           ; this can be completed with corfu
-  ("C-M-/" 'dabbrev-expand)
   :config
   ;; preserve the expansion's case pattern
   (setq dabbrev-case-replace nil))
