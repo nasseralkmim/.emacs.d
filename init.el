@@ -433,11 +433,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                         (minibuffer (initials)))))
 
 ;; default completion framework
-(use-package simple
+(use-package simple 
   :ensure nil
-  ;; :general
-  ;; (minibuffer-mode-map "C-n" 'minibuffer-next-completion)
-  ;; (minibuffer-mode-map "C-p" 'minibuffer-previous-completion)
   :config
   ;; first TAB shows candidates
   ;; second TAB switches to the candidates buffer
@@ -613,7 +610,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (add-to-list 'consult-buffer-sources 'dired-source 'append))
 
 ;; insert recent openend directories in prompt
-(use-package consult-dir
+(use-package consult-dir :disabled
   :ensure (consult-dir :type git :host github :repo "karthink/consult-dir") 
   :general
   ("C-x C-d" 'consult-dir)
@@ -628,14 +625,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package embark
   :ensure (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
-  :bind (("C-z" . embark-act))
-  ;; :general
-  ;; ('(insert motion) minibuffer-local-map "C-z" 'embark-act)  ; use "\" for "evil-execute-in-emacs-state"
-  ;; ("C-S-z" 'embark-dwim)
-  ;; ("C-h B" 'embark-bindings)
-  ;; (embark-function-map "h" 'helpful-symbol)
-  ;; (embark-variable-map "h" 'helpful-symbol)
-  ;; ('normal grep-mode-map "g r" 'embark-rerun-collect-or-export) ; back to completion after 'embark-export' to grep buffer
+  :bind (("C-z" . embark-act)
+         :map embark-function-map
+         ("h" . helpful-symbol)
+         :map embark-variable-map
+         ("h" . helful-symbol))
   :commands embark-prefix-help-command
   :config
   (add-to-list 'display-buffer-alist
