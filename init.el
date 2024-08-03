@@ -2665,8 +2665,8 @@ Only if there is more than one window opened."
   (define-key consult-bibtex-embark-map "t" #'consult-bibtex-open-pdf-tools))
 
 (use-package citar
-  :general
-  ("C-c b" 'citar-open)
+  :bind
+  ("C-c b" . citar-open)
   :hook
   (LaTeX-mode . citar-capf-setup)
   (org-mode . citar-capf-setup)
