@@ -4085,42 +4085,19 @@ its results, otherwise display STDERR with
 
 ;; for reading email lists
 ;; summary marks: [[info:gnus#Read Articles][gnus#Read Articles]]
-;; Usfeful commands:
+;; Useful commands:
 ;; 'gnus-summary-refer-thread' to recover thread, with prefix-argumetn looks the whole server.
 ;; 'gnus-summary-very-wide-reply' reply to author and CC participants in the thread, including the mailing list.
 ;; 'gnus-summary-kill-thread' "collapse" a thread by marking it as-read. With prefix-argument do the opposite.
 ;; 'gnus-group-catchup-current' mark all messages in a group as-read.
+;; 'gnus-summary-mark-as-processable' and then 'gnus-summary-universal-argument' with 'gnus-summary-mark-as-read-forward' to mark processable as read.
 (use-package gnus
   :ensure nil
-  :general
-  ("C-x C-m" 'gnus) 
-  ('visual gnus-summary-mode-map "!" 'gnus-summary-mark-region-as-read)
-  ('visual gnus-summary-mode-map "?" 'gnus-summary-mark-as-dormant) ; recover all messages in the thread when a new one is posted
-  ('normal gnus-summary-mode-map "g c" 'gnus-summary-catchup-and-exit)
+  :bind (("C-x C-m" . gnus))
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
-  ;; (gnus-summary-prepared . variable-pitch-mode)
   (gnus-article-mode . variable-pitch-mode)
   (gnus-article-mode . visual-line-mode)
-  (evil-collection-setup . (lambda (&rest a)
-                             ;; Setting keybindings after evil-collection (after gnus is loaded)
-                             ;; keybindings set before 'evil-collection-init' are overwritten by evil-collection
-                             ;; because general uses `after-load-functions' and evil-collection uses `with-eval-after-load'
-                             ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
-                             (general-def 'normal gnus-article-mode-map "SPC" nil) 
-                             (general-def 'normal gnus-article-mode-map "s" nil) ; use for isearch
-                             (general-def 'normal gnus-group-mode-map "s" nil) ; use for isearch
-                             (general-def 'normal gnus-summary-mode-map "C-q" 'gnus-summary-expand-window) ; close current article been viewed
-                             (general-def 'normal gnus-summary-mode-map "TA" 'gnus-summary-refer-thread)
-                             ;; for agent
-                             (general-def 'normal gnus-group-mode-map "J" nil)
-                             (general-def 'normal gnus-group-mode-map :prefix "J"
-                               "j" 'gnus-agent-toggle-plugged
-                               "s" 'gnus-agent-fetch-session
-                               "u" 'gnus-agent-fetch-group
-                               "c" 'gnus-enter-category-buffer)
-                             (general-def 'normal gnus-summary-mode-map
-                               "@" 'gnus-agent-toggle-mark)))
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
         ;; 'select method' means the 'backend': how gnus stores the messages 
