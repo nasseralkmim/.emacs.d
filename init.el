@@ -485,8 +485,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; minibuffer annotations details
 (use-package marginalia
   :if (eq system-type 'gnu/linux)
-  :general
-  (minibuffer-local-map "M-A" 'marginalia-cycle)
   :defer 1
   :config
   (marginalia-mode))
