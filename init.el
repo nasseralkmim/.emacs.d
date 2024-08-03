@@ -403,9 +403,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-r" 'vertico-repeat))
 
 ;; use vertico to complete in region with orderless in terminal
-(use-package vertico-terminal :disabled
+(use-package vertico-terminal
   :ensure nil
   :unless (display-graphic-p)
+  :after vertico
   :init
   ;; Use `consult-completion-in-regionegion' if Vertico is enabled.
   ;; Otherwise use the default `completion--in-region' function.
