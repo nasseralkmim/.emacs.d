@@ -60,7 +60,7 @@
 (elpaca-process-queues)
 
 ;; general for keybinding
-(use-package general
+(use-package general :disabled
   :ensure (:wait t)
   :demand t
   :config
@@ -1865,8 +1865,8 @@ When matching, reference is stored in match group 1."
   :ensure (cape :type git :host github :repo "minad/cape")
   :demand
   :after corfu
-  :general
-  ('insert "M-/" 'cape-dabbrev)
+  :bind
+  ("M-/" . cape-dabbrev)
   :config
   ;; Add `completion-at-point-functions', used by `completion-at-point'.
   (add-to-list 'completion-at-point-functions #'cape-file)
@@ -2754,7 +2754,7 @@ Only if there is more than one window opened."
   (setq browse-url-browser-function 'eww-browse-url))
 
 ;; jump to link
-(use-package ace-link
+(use-package ace-link :disabled
   :general
   ('normal eww-mode-map "C-f" 'ace-link-eww)
   ('normal helpful-mode-map "C-f" 'ace-link-help)
@@ -2781,11 +2781,6 @@ Only if there is more than one window opened."
 
 ;; Terminal emulator based on libvterm (in C)
 (use-package vterm
-  :general
-  ;; ("<f9>" 'vterm-other-window)
-  (vterm-mode-map "<f9>" nil
-                  "C-w" nil
-                 "<backtab>" nil)
   :hook
   (vterm-mode . (lambda ()
                   (general-def 'normal vterm-mode-map "s" 'isearch-forward)))
@@ -2799,11 +2794,12 @@ Only if there is more than one window opened."
 
 ;; Quickly switch to 'vterm' buffer.
 (use-package vterm-toggle
-  :general
-  ("<f9>" 'vterm-toggle-cd) 	; opens term in current cd including remote
-  ("C-<f9>" 'vterm-toggle-insert-cd)
-  (vterm-mode-map "s-n" 'vterm-toggle-forward
-                  "s-p" 'vterm-toggle-backward)
+  :bind
+  (("<f9>" . vterm-toggle-cd) 	; opens term in current cd including remote
+   ("C-<f9>" . vterm-toggle-insert-cd)
+   :map vterm-mode-map
+   ("s-n" . vterm-toggle-forward)
+   ("s-p" . vterm-toggle-backward))
   :config
   ;; toggle terminal bellow the selected window (avoid messing with other windows)
   ;; https://github.com/jixiuf/vterm-toggle/issues/33#issuecomment-1100027238
@@ -2811,8 +2807,8 @@ Only if there is more than one window opened."
 
 ;; multiple terminals
 (use-package multi-vterm
-  :general
-  ("S-<f9>" 'multi-vterm)
+  :bind
+  ("S-<f9>" . multi-vterm)
   :commands multi-vterm
   :config
   (add-to-list 'display-buffer-alist `("^\\*vterminal.*" display-buffer-below-selected)))
@@ -2888,23 +2884,23 @@ Only if there is more than one window opened."
 (use-package ol
   :ensure nil
   :after org
-  :general
-  (org-mode-map :prefix "C-c s" "s" 'org-store-link))
+  :bind
+  (:map org-mode-map
+        ("C-c s s" . org-store-link)))
 
 ;; create backlinks when linking org-mode headings
 (use-package org-super-links
   :ensure (org-super-links :type git :host github :repo "toshism/org-super-links")
   ;; :after org  ; can use outside of org-mode, so use the keybindings to load
-  :general
-  (:prefix "C-c s"
-           "l" 'org-super-links-store-link
-           "P" 'org-super-links-insert-link)
-  (org-mode-map :prefix "C-c s"
-                "l" 'org-super-links-store-link
-                "P" 'org-super-links-insert-link
-                "d" 'org-super-links-quick-insert-drawer-link
-                "i" 'org-super-links-quick-insert-inline-link
-                "C-d" 'org-super-links-delete-link)
+  :bind
+  (("C-c s l" . org-super-links-store-link)
+   ("C-c s P" . org-super-links-insert-link)
+   :map org-mode-map 
+   ("C-c s l" . org-super-links-store-link)
+   ("C-c s P" . org-super-links-insert-link)
+   ("C-c s d" . org-super-links-quick-insert-drawer-link)
+   ("C-c s i" . org-super-links-quick-insert-inline-link)
+   ("C-c s C-d" . org-super-links-delete-link))
   :config
   ;; just use plain link with no description, easy to edit
   (setq org-super-links-default-description-formatter ""))
@@ -2970,8 +2966,8 @@ Only if there is more than one window opened."
 ;; emacs built in version control
 (use-package vc-git
   :ensure nil
-  :general
-  ("C-x v p" 'vc-push)
+  :bind
+  ("C-x v p" . vc-push)
   :hook
   (diff-mode . outline-minor-mode)
   (vc-git-region-history-mode . outline-minor-mode))
@@ -3059,7 +3055,7 @@ Only if there is more than one window opened."
                      (ibuffer-do-sort-by-alphabetic))))
 
 ;; group by Remote in ibuffer
-(use-package ibuffer-tramp
+(use-package ibuffer-tramp :disabled
   :general
   ('normal ibuffer-mode-map "s t" 'ibuffer-tramp-set-filter-groups-by-tramp-connection)
   ('normal ibuffer-mode-map "s r" 'ibuffer-switch-to-saved-filter-groups))
@@ -3069,9 +3065,6 @@ Only if there is more than one window opened."
 ;; and put in ./emacs.d/tree-sitter
 (use-package treesit
   :ensure nil
-  :general
-  ('normal c++-ts-mode-map "zj" 'treesit-end-of-defun)
-  ('normal c++-ts-mode-map "zk" 'treesit-beginning-of-defun)
   :custom-face
   (font-lock-function-call-face ((t :inherit outline-7)))
   (font-lock-function-name-face ((t :inherit t :weight bold)))
@@ -3145,10 +3138,11 @@ Only if there is more than one window opened."
 ;; easily change windows
 (use-package ace-window
   :commands aw-select aw-window-list                   ; for dired with C-u
-  :general
-  ('normal "C-w C-w" 'ace-window)
-  ('normal dired-mode-map "l" 'dired-find-alternate-file-ace)
-  ('normal dired-mode-map "C-c l" 'dired-find-alternate-file-ace-rem)
+  :bind
+  (("C-c C-w" . ace-window)
+   :map dired-mode-map
+   ("l" . dired-find-alternate-file-ace)
+   ("C-c l" . dired-find-alternate-file-ace-rem))
   :init
   ;; Adapted from: https://stackoverflow.com/a/47624310
   (defun dired-find-alternate-file-ace ()
@@ -3198,13 +3192,12 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; moving cursor around fast and efficiently
 (use-package avy
-  :general
-  ('normal "/" 'avy-goto-char-timer)
-  (isearch-mode-map "C-'" 'avy-isearch)
-  (isearch-mode-map "M-'" 'avy-isearch) ; to work in tty as well
-  ('(normal visual) :prefix "SPC"
-   "j" 'avy-goto-line-below
-   "k" 'avy-goto-line-above)
+  :bind
+  (("/" . avy-goto-char-timer)
+   :map isearch-mode-map 
+   ("C-'" . avy-isearch)
+   ("M-'" . avy-isearch) ; to work in tty as well
+   )
   :demand
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
@@ -3239,8 +3232,9 @@ opening a file from dired. Otherwise just regular dired."
   :ensure nil
   :custom-face
   (eglot-highlight-symbol-face ((t (:underline t :weight bold))))
-  :general
-  (eglot-mode-map "C-c SPC" 'eglot-code-actions)
+  :bind
+  (:map eglot-mode-map
+        ("C-c RET" . eglot-code-actions))
   :hook
   (eglot-managed-mode . eglot-inlay-hints-mode)
   ;; python "pyright" language server
@@ -3435,11 +3429,11 @@ opening a file from dired. Otherwise just regular dired."
 ;; Mass copy-paste or copy-move (analogous to cut-paste) for dired.
 (use-package dired-ranger
   :after dired
-  :general
-  ('normal dired-mode-map :prefix "C-c"
-           "C-c" 'dired-ranger-copy
-           "C-v" 'dired-ranger-paste
-           "C-x" 'dired-ranger-move))
+  :bind
+  (:map dired-mode-map
+           "C-C C-c" . dired-ranger-copy
+           "C-c C-v" . dired-ranger-paste
+           "C-c C-x" . dired-ranger-move))
 
 ;; Open with external program.
 (use-package openwith :disabled         ; too many problems
@@ -3566,12 +3560,9 @@ opening a file from dired. Otherwise just regular dired."
 ;; helps with windows popups
 (use-package popper
   :defer 1
-  :general
-  (popper-mode-map "C-`" 'popper-toggle)
-  ('(normal insert) popper-mode-map "C-@" 'popper-toggle-latest) ; for term
-  (popper-mode-map "C-M-`" 'popper-cycle)
-  ('normal popper-mode-map "q" (general-predicate-dispatch nil
-                                 (popper-popup-p (current-buffer)) 'popper-kill-latest-popup))
+  :bind
+  (:map popper-mode-map
+        ("C-`" . popper-toggle))
   :init
   ;; treat those as popups
   (setq popper-reference-buffers
@@ -3671,8 +3662,6 @@ opening a file from dired. Otherwise just regular dired."
 (use-package eldoc-box
   :if (display-graphic-p)
   :diminish eldoc-box-hover-mode
-  :general
-  ('normal :keymaps 'override "K" 'eldoc-box-help-at-point)
   :hook
   (prog-mode . eldoc-box-hover-mode)
   :config
@@ -3692,7 +3681,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; function to run local command on remote file
 ;; https://emacs.stackexchange.com/questions/42252/run-local-command-on-remote-file-with-tramp
-(use-package dired-local-command-on-remote
+(use-package dired-local-command-on-remote :disabled
   :ensure nil
   :after dired
   :general
@@ -3732,8 +3721,8 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; Anther package to find synonyms
 (use-package powerthesaurus 
-  :general
-  ("C-c d s" 'powerthesaurus-lookup-dwim))
+  :bind
+  ("C-c d s" . powerthesaurus-lookup-dwim))
 
 ;; org-mode toc heading
 (use-package org-make-toc :disabled
@@ -3792,8 +3781,8 @@ its results, otherwise display STDERR with
 ;; better faces than 'consult-imenu'
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
 (use-package imenu-list
-  :general
-  ('normal "g o" 'imenu-list)
+  :bind
+  ("g o" . imenu-list)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-auto-update nil      ; I want to keep the list from a file
@@ -3824,7 +3813,7 @@ its results, otherwise display STDERR with
   (add-hook 'org-babel-after-execute-hook 'ek/babel-ansi))
 
 ;; custom detangle function
-(use-package org-babel-detangle
+(use-package org-babel-detangle :disabled
   :ensure nil
   :after org
   :commands org-babel-detangle-bg
@@ -3854,8 +3843,8 @@ its results, otherwise display STDERR with
 ;; ':config' would be evaluated after this file is loaded.
 (use-package gdb-mi
   :ensure nil
-  :general
-  (gud-global-map "C-a" 'gud-run)
+  :bind
+  (:map gud-global-map "C-a" . gud-run)
   :config
   (setq gdb-locals-value-limit 1000
         ;; use gdb layout and just the info locals
