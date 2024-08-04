@@ -1246,8 +1246,8 @@ org-mode"
   ;;          "n" 'org-babel-next-src-block
   ;;          "p" 'org-babel-previous-src-block
   ;;          "h" 'org-babel-goto-src-block-head)
-  ;; ;; global map
-  ;; ('(normal visual) "M-o" 'org-open-at-point-global)
+  :bind
+  ("M-o" . org-open-at-point-global)
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
