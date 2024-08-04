@@ -1253,26 +1253,26 @@ org-mode"
   (org-mode . turn-on-org-cdlatex)      ; easy to type greek letters "`a" for \alpha
   ;; (org-mode . org-indent-mode)          ; align with heading, sometimes slow
   :config
-  (setq org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
-        org-startup-indented nil		; start collapsed
-        org-startup-folded t               ; folded in "overview" state
-        org-hide-leading-stars nil           ; don't show a  bunch of '*' (maybe is more performant if shows)
-        org-edit-src-content-indentation 0
-        org-pretty-entities nil           ; don't show alpha symbol instead \alpha (toggle to edit 'C-c C-x \', or just rewrite it with 'org-cdlatex')
-        org-ellipsis "…"                ;use single character for elipses
-        org-outline-path-complete-in-steps nil
-        org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
-        org-cycle-separator-lines 0  ; no empty lines between headings
-        org-fontify-quote-and-verse-blocks nil ; no special fortification for those blocks 
-        org-fontify-whole-heading-line nil     ; make faster
-        org-insert-heading-respect-content nil ; nil: heading after current line/ t: after current sub-tree
-        org-catch-invisible-edits 'show-and-error ; make visible then abort
-        org-tags-column 0                        ; tag right after text
-        org-html-htmlize-output-type 'inline-css   ; nil to export as plain text
-        org-startup-with-inline-images t           ; show images
-        org-indent-indentation-per-level 1         ; indent just 1 space
-        org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
-  (transient-mark-mode -1)
+  (setq
+   org-hide-emphasis-markers nil        ; avoid noisy //,__, **(makes annoying to edit) 
+   org-startup-indented nil		; start collapsed
+   org-startup-folded t               ; folded in "overview" state
+   org-hide-leading-stars nil           ; don't show a  bunch of '*' (maybe is more performant if shows)
+   org-edit-src-content-indentation 0
+   org-pretty-entities nil           ; don't show alpha symbol instead \alpha (toggle to edit 'C-c C-x \', or just rewrite it with 'org-cdlatex')
+   org-ellipsis "…"                ;use single character for elipses
+   org-outline-path-complete-in-steps nil
+   org-special-ctrl-a/e t       ; when jump to beginning of line be aware of *
+   org-cycle-separator-lines 0  ; no empty lines between headings
+   org-fontify-quote-and-verse-blocks nil ; no special fortification for those blocks 
+   org-fontify-whole-heading-line nil     ; make faster
+   org-insert-heading-respect-content nil ; nil: heading after current line/ t: after current sub-tree
+   org-catch-invisible-edits 'show-and-error ; make visible then abort
+   org-tags-column 0                        ; tag right after text
+   org-html-htmlize-output-type 'inline-css   ; nil to export as plain text
+   org-startup-with-inline-images t           ; show images
+   org-indent-indentation-per-level 1         ; indent just 1 space
+   org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
 
   ;; remove org-cycle-hide-drawers from cycle hook
   ;; so it shows the plots inside a "results drawer" when the heading is opened
@@ -2326,7 +2326,7 @@ When matching, reference is stored in match group 1."
   :bind
   ("<f5>" . modus-themes-toggle)
   :config
-  (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
+  (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi))
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
@@ -5016,9 +5016,8 @@ absolute path. Finally load eglot."
     (eglot-ensure)
     (breadcrumb-mode -1)))
 
-(use-package standard-themes
-  :defer 1
-  :config
+(use-package standard-themes 
+  :init
   (standard-themes-load-dark))
 
 (use-package org-treesit-src-blocks :disabled
