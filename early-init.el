@@ -19,8 +19,8 @@
  default-frame-alist
  '((horizontal-scroll-bars . nil)       ;; No horizontal scroll-bars
    (menu-bar-lines . 0)                 ;; No menu bar
-   (right-divider-width . 1)            ;; Thin vertical window divider
-   (right-fringe . 8)                   ;; Thin right fringe
+   ;; (right-divider-width . 1)            ;; Thin vertical window divider
+   ;; (right-fringe . 8)                   ;; Thin right fringe
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)))       ;; No vertical scroll-bars
 

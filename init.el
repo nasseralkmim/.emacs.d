@@ -2774,9 +2774,6 @@ Only if there is more than one window opened."
 
 ;; Terminal emulator based on libvterm (in C)
 (use-package vterm
-  :hook
-  (vterm-mode . (lambda ()
-                  (general-def 'normal vterm-mode-map "s" 'isearch-forward)))
   :config
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0)
