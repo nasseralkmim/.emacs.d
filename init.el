@@ -109,23 +109,16 @@
        )
 
   (setq ring-bell-function 'ignore)
-  ;; (setq inhibit-startup-screen t)       ; start at scratch buffer
 
   (setq custom-file "~/.emacs.d/emacs-custom.el")
   (load custom-file)
-
-  ;; UTF-8 encoding
-  (prefer-coding-system 'utf-8)
-  (set-default-coding-systems 'utf-8)
-  (set-terminal-coding-system 'utf-8)
-  (set-keyboard-coding-system 'utf-8)
 
   ;; create backups in separate folder
   (setq backup-directory-alist `(("." . "~/.saves")))
   (setq create-lockfiles nil)		; files with # problem with onedrive...
 
   ;; ;; answering just 'y' or 'n' will do
-  (setopt use-short-answers t)
+  (setq use-short-answers t)
 
   (setq-default
    completion-cycle-threshold nil    ; show all candidates
@@ -372,7 +365,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook (rfn-eshadow-update-overlay . vertico-directory-tidy))
 
 ;; repeat last vertico session
-(use-package vertico-repeat
+(use-package vertico-repeat :disabled
   :ensure nil
   :after vertico
   :bind
@@ -812,8 +805,7 @@ org-mode"
   (add-hook 'org-src-mode-hook 'flymake-in-org-edit-special))
 
 (use-package meow
-  :defer 1
-  :demand
+  :defer 0.5
   :config
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -2566,7 +2558,7 @@ Only if there is more than one window opened."
   :general ('normal "g b" 'goto-last-change))
 
 ;; easy select region
-(use-package expand-region
+(use-package expand-region :disabled
   :bind ("C-=" . er/expand-region))
 
 ;; key chord hint
@@ -3562,7 +3554,8 @@ opening a file from dired. Otherwise just regular dired."
   :defer 1
   :bind
   (:map popper-mode-map
-        ("C-`" . popper-toggle))
+        ("C-`" . popper-toggle)
+        ("C-c C-`" . popper-toggle))
   :init
   ;; treat those as popups
   (setq popper-reference-buffers
@@ -5102,6 +5095,7 @@ absolute path. Finally load eglot."
 
 (use-package dape
   :ensure (dape :type git :host github :repo "svaante/dape")
+  :commands dape
   :config
   ;; Add inline variable hints, this feature is highly experimental
   (setq dape-inline-variables nil))
@@ -5144,19 +5138,18 @@ absolute path. Finally load eglot."
   :after eglot
   :init (eglot-booster-mode))
 
-(use-package ztree
+(use-package ztree :disabled
   :defer t)
 
 (use-package calfw
   ;; make sure to "build" 'calfw-org.el' as well.
   :ensure (calfw :files ("calfw.el"
                          "calfw-org.el"))
-  :bind
-  ("C-c A". cfw:open-org-calendar)
   :init
   ;; autoload 'calfw-org' when opening calendar
   (unless (fboundp 'cfw:open-org-calendar)
     (autoload #'cfw:open-org-calendar "calfw-org" nil t))
+  (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar))
   ;; (general-def "C-c A" 'cfw:open-org-calendar :package 'calfw)
   ;; defer config
   ;; (with-eval-after-load 'calfw-org

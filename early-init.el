@@ -3,6 +3,13 @@
 (advice-add 'package--ensure-init-file :override 'ignore)
 ;; inhibit resizing frame
 (setq frame-inhibit-implied-resize t)
+(setq inhibit-startup-screen t)       ; start at scratch buffer
+(setq initial-major-mode 'fundamental-mode
+      initial-scratch-message nil)
+;; Remove "For information about GNU Emacs..." message at startup
+;; https://github.com/jamescherti/minimal-emacs.d/blob/main/early-init.el
+(advice-add #'display-startup-echo-area-message :override #'ignore)
+
 
 ;; Avoid delay with corfu
 ;; https://github.com/minad/corfu/issues/307 
@@ -29,21 +36,7 @@
 (setq-default cursor-in-non-selected-windows nil)
 (setq idle-update-delay 1.0)
 (setq auto-mode-case-fold nil)
-
-(setq inhibit-startup-screen t
-      inhibit-startup-echo-area-message user-login-name)
-(setq initial-buffer-choice nil
-      inhibit-startup-buffer-menu t
-      inhibit-x-resources t)
-
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
-
-(setq bidi-inhibit-bpa t)
-
-(advice-add #'display-startup-echo-area-message :override #'ignore)
-
-(advice-add #'display-startup-screen :override #'ignore)
-
-(setq initial-major-mode 'fundamental-mode
-      initial-scratch-message nil)
+(setq read-process-output-max (* 128 1024))
+(set-language-environment "UTF-8")
