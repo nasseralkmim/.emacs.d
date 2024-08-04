@@ -1832,6 +1832,7 @@ When matching, reference is stored in match group 1."
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
 (use-package corfu
+  :when (display-graphic-p)
   :ensure (corfu :type git :host github :repo "minad/corfu"
                    :files (:defaults "extensions/*"))
   :bind
@@ -3198,7 +3199,6 @@ opening a file from dired. Otherwise just regular dired."
    ("C-'" . avy-isearch)
    ("M-'" . avy-isearch) ; to work in tty as well
    )
-  :demand
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
         avy-all-windows-alt t           ; allow all windows when `C-u`
@@ -5031,7 +5031,7 @@ absolute path. Finally load eglot."
   :config
   (standard-themes-load-dark))
 
-(use-package org-treesit-src-blocks
+(use-package org-treesit-src-blocks :disabled
   :ensure nil
   :after org
   :init
