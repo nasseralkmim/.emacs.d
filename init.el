@@ -3941,7 +3941,7 @@ its results, otherwise display STDERR with
   :after org
   :bind
   (:map org-mode-map
-        ("z =" . org-show-current-heading-tidily))
+        ("C-x =" . org-show-current-heading-tidily))
   :init
   (defun org-show-current-heading-tidily ()
     (interactive)  ;Inteactive
