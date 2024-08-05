@@ -2249,7 +2249,8 @@ When matching, reference is stored in match group 1."
   :bind (("C-x j" . dired-jump)
          :map dired-mode-map
               ("l" . dired-find-alternate-file)
-              ("h" . dired-up-directory))
+              ("h" . dired-up-directory)
+              ("C-c C-d" . mkdir))
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
         dired-auto-revert-buffer t
@@ -2872,6 +2873,14 @@ Only if there is more than one window opened."
                      ("k" . shrink-window)
                      ("h" . shrink-window-horizontally)
                      ("l" . enlarge-window-horizontally)))
+
+(use-package windmode
+  :ensure nil
+  :bind (:map windmove-mode-map
+              ("C-w l" . windmove-right)
+              ("C-w h" . windmove-left)
+              ("C-w k" . windmove-up)
+              ("C-w j" . windmove-down)))
 
 (use-package ol
   :ensure nil
