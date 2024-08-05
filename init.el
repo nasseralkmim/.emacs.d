@@ -949,6 +949,14 @@ org-mode"
   (when (not (display-graphic-p))
     (set-face-attribute 'iedit-occurrence nil :inherit 'isearch :weight 'bold)))
 
+(use-package lisp
+  :ensure nil
+  :bind
+  ("M-[" . insert-pair)
+  ("M-{" . insert-pair)
+  ("M-\"" . insert-pair)
+  ("M-\'" . insert-pair))
+
 ;; Tips:
 ;; 'evil-mc-make-all-cursors' create a cursor on matching
 ;; you can 'evil-mc-pause-cursors' to check if it is right. Useful when cursors are out of the screen.
