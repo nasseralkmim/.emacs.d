@@ -2336,25 +2336,25 @@ When matching, reference is stored in match group 1."
         modus-themes-bold-constructs nil
         modus-themes-headings '((t . (rainbow))))
   ;; hook to enforce change when theme is toggled (which loads the theme)
-  (defun my-modus-tweaks ()
-    (progn 
-      ;; Adjust some org faces
-      (eval-after-load 'org
-        ;; make org source blocks headers with same main background, so there is no different background when collapsed
-        '(set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
-      ;; adjust org modern if GUI
-      (eval-after-load 'org-modern
-        '(global-org-modern-mode))
-      ;; reset icons cache to match theme
-      (eval-after-load 'kind-icon
-        '(kind-icon-reset-cache))
-      ;; recompute face for indentation guide
-      (eval-after-load 'hl-indent-scope
-        '(hl-indent-scope--auto-color-calc))
-      ;; make inside of parenthesis different background
-      (eval-after-load 'smartparens
-        '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression)))))
-  (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
+  ;; (defun my-modus-tweaks ()
+  ;;   (progn 
+  ;;     ;; Adjust some org faces
+  ;;     (eval-after-load 'org
+  ;;       ;; make org source blocks headers with same main background, so there is no different background when collapsed
+  ;;       '(set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
+  ;;     ;; adjust org modern if GUI
+  ;;     (eval-after-load 'org-modern
+  ;;       '(global-org-modern-mode))
+  ;;     ;; reset icons cache to match theme
+  ;;     (eval-after-load 'kind-icon
+  ;;       '(kind-icon-reset-cache))
+  ;;     ;; recompute face for indentation guide
+  ;;     (eval-after-load 'hl-indent-scope
+  ;;       '(hl-indent-scope--auto-color-calc))
+  ;;     ;; make inside of parenthesis different background
+  ;;     (eval-after-load 'smartparens
+  ;;       '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression)))))
+  ;; (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
   ;; (if (not (display-graphic-p))
@@ -2866,7 +2866,8 @@ Only if there is more than one window opened."
 (use-package window
   :ensure nil
   :bind-keymap ("C-c w" . resize-window-repeat-map)
-  :bind (:repeat-map resize-window-repeat-map
+  :bind (("C-c o" . other-window)
+         :repeat-map resize-window-repeat-map
                      ("j" . enlarge-window)
                      ("k" . shrink-window)
                      ("h" . shrink-window-horizontally)
@@ -3773,7 +3774,7 @@ its results, otherwise display STDERR with
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
 (use-package imenu-list
   :bind
-  ("C-c o" . imenu-list)
+  ("C-c C-o" . imenu-list)
   :config
   (setq imenu-list-auto-resize t
         imenu-list-auto-update nil      ; I want to keep the list from a file
@@ -5146,26 +5147,11 @@ absolute path. Finally load eglot."
   ;; autoload 'calfw-org' when opening calendar
   (unless (fboundp 'cfw:open-org-calendar)
     (autoload #'cfw:open-org-calendar "calfw-org" nil t))
-  (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar))
-  ;; (general-def "C-c A" 'cfw:open-org-calendar :package 'calfw)
-  ;; defer config
-  ;; (with-eval-after-load 'calfw-org
-  ;;   (general-def cfw:calendar-mode-map "g" nil)
-  ;;   (general-def 'normal cfw:calendar-mode-map :prefix "g d"
-  ;;     "d" 'cfw:change-view-day
-  ;;     "w" 'cfw:change-view-week
-  ;;     "m" 'cfw:change-view-month)
-  ;;   (general-def 'normal cfw:calendar-mode-map
-  ;;     "C-j" 'cfw:navi-next-month-command
-  ;;     "C-k" 'cfw:navi-previous-month-command
-  ;;     "RET" 'cfw:org-open-agenda-day
-  ;;     "q" 'cfw:org-clean-exit))
-  )
+  (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar)))
 
 (use-package czm-tex-util :disabled
   :ensure (:host github :repo "ultronozm/czm-tex-util.el")
   :after latex)
-
 (use-package czm-tex-fold :disabled
   :ensure (:host github :repo "ultronozm/czm-tex-fold.el"
                  :depth nil)
