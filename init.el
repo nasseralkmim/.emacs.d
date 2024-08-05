@@ -1908,7 +1908,8 @@ When matching, reference is stored in match group 1."
   :ensure nil
   :diminish hs-minor-mode
   :bind
-  (("C-c z h"  . hs-hide-block)
+  (:map hs-minor-mode-map
+   ("C-c z h"  . hs-hide-block)
    ("C-c z s"  . hs-show-block)
    ("C-c z M-h". hs-hide-all)
    ("C-c z M-s". hs-show-allC-z)
@@ -2283,16 +2284,19 @@ When matching, reference is stored in match group 1."
       '((display-buffer-reuse-window
         display-buffer-below-selected))))
 
+(use-package dired-subtree
+  :after dired
+  :bind
+  (:map dired-mode-map
+      ("<TAB>" . dired-subtree-toggle)))
+
 ;; open dired as a sidebar
 (use-package dired-sidebar
   :bind
   (("C-x C-j" . dired-sidebar-jump)
    :map dired-sidebar-mode-map
    ("l" . dired-sidebar-find-file) ; use 'C-u' to select specific window
-   ("h" . dired-sidebar-up-directory)
-   ;; this package requires 'dired-subtree' from 'dired-hacks'
-   :map dired-mode-map
-   ("<TAB>" . dired-subtree-toggle))
+   ("h" . dired-sidebar-up-directory))
   :hook
   (dired-sidebar-mode . visual-line-mode)
   ;; avoid fixing window size
@@ -2874,13 +2878,10 @@ Only if there is more than one window opened."
                      ("h" . shrink-window-horizontally)
                      ("l" . enlarge-window-horizontally)))
 
-(use-package windmove
+(use-package windmove :disabled
   :ensure nil
-  :bind (:map windmove-mode-map
-              ("C-c l" . windmove-right)
-              ("C-c h" . windmove-left)
-              ("C-c k" . windmove-up)
-              ("C-c j" . windmove-down)))
+  :config
+  (windmove-default-keybindings))
 
 (use-package ol
   :ensure nil
@@ -3140,10 +3141,7 @@ Only if there is more than one window opened."
 (use-package ace-window
   :commands aw-select aw-window-list                   ; for dired with C-u
   :bind
-  (("C-c C-w" . ace-window)
-   :map dired-mode-map
-   ("l" . dired-find-alternate-file-ace)
-   ("C-c l" . dired-find-alternate-file-ace-rem))
+  (("C-c C-w" . ace-window))
   :init
   ;; Adapted from: https://stackoverflow.com/a/47624310
   (defun dired-find-alternate-file-ace ()
@@ -5220,10 +5218,13 @@ absolute path. Finally load eglot."
 
 (use-package treesit-fold
   :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
-  ;; :general
-  ;; ('normal "z A" 'treesit-fold-open-recursively)
-  ;; ('normal "<tab>" (general-predicate-dispatch nil
-  ;;                  (treesit-node-p) 'treesit-fold-toggle))
+  :bind
+  (:map treesit-fold-mode-map
+   ("C-c C-z C-h"  . treesit-fold-close)
+   ("C-c C-z C-s"  . treesit-fold-open)
+   ("C-c C-z C-e"  . treesit-fold-toggle)
+   ("C-c C-z C-a"  . treesit-fold-open-all)
+   ("C-c C-z C-t"  . treesit-fold-close-all))
   :hook 
   (c++-ts-mode . treesit-fold-mode)
   (python-ts-mode . treesit-fold-mode)
