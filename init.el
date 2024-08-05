@@ -3194,8 +3194,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :bind
-  (("/" . avy-goto-char-timer)
-   :map isearch-mode-map 
+  (:map isearch-mode-map 
    ("C-'" . avy-isearch)
    ("M-'" . avy-isearch) ; to work in tty as well
    )
