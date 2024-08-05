@@ -2251,7 +2251,8 @@ When matching, reference is stored in match group 1."
          :map dired-mode-map
               ("l" . dired-find-alternate-file)
               ("h" . dired-up-directory)
-              ("C-c C-d" . mkdir))
+              ("C-c C-d" . mkdir)
+              ("C-c C-p" . wdired-change-to-wdired-mode))
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
         dired-auto-revert-buffer t
@@ -2877,11 +2878,6 @@ Only if there is more than one window opened."
                      ("k" . shrink-window)
                      ("h" . shrink-window-horizontally)
                      ("l" . enlarge-window-horizontally)))
-
-(use-package windmove :disabled
-  :ensure nil
-  :config
-  (windmove-default-keybindings))
 
 (use-package ol
   :ensure nil
