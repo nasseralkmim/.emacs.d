@@ -952,10 +952,11 @@ org-mode"
 (use-package lisp
   :ensure nil
   :bind
-  ("M-[" . insert-pair)
+  ("C-M-[" . insert-pair)
   ("M-{" . insert-pair)
   ("M-\"" . insert-pair)
-  ("M-\'" . insert-pair))
+  ("M-\'" . insert-pair)
+  ("C-M-s" . delete-pair))
 
 ;; Tips:
 ;; 'evil-mc-make-all-cursors' create a cursor on matching
