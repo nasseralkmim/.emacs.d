@@ -2874,13 +2874,13 @@ Only if there is more than one window opened."
                      ("h" . shrink-window-horizontally)
                      ("l" . enlarge-window-horizontally)))
 
-(use-package windmode
+(use-package windmove
   :ensure nil
   :bind (:map windmove-mode-map
-              ("C-w l" . windmove-right)
-              ("C-w h" . windmove-left)
-              ("C-w k" . windmove-up)
-              ("C-w j" . windmove-down)))
+              ("C-c l" . windmove-right)
+              ("C-c h" . windmove-left)
+              ("C-c k" . windmove-up)
+              ("C-c j" . windmove-down)))
 
 (use-package ol
   :ensure nil
