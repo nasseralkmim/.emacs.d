@@ -5152,6 +5152,7 @@ absolute path. Finally load eglot."
 (use-package czm-tex-util :disabled
   :ensure (:host github :repo "ultronozm/czm-tex-util.el")
   :after latex)
+
 (use-package czm-tex-fold :disabled
   :ensure (:host github :repo "ultronozm/czm-tex-fold.el"
                  :depth nil)
