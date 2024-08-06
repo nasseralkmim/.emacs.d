@@ -929,7 +929,7 @@ org-mode"
   :custom-face
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
   :bind
-  (("C-\\" . iedit-mode)
+  (("C-;" . iedit-mode)
    ("M-d" . my-iedit-expand-down-to-occurrence)
    :map iedit-mode-keymap
    ("M-'" . iedit-show/hide-context-lines)
