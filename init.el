@@ -3982,10 +3982,15 @@ its results, otherwise display STDERR with
   (prog-mode . puni-global-mode)
   (text-mode . puni-global-mode))
 
-(use-package elec-pair :disabled
+(use-package elec-pair
+  :ensure nil
   :hook
   (prog-mode . electric-pair-mode)
-  (text-mode . electric-pair-mode))
+  (text-mode . electric-pair-mode)
+  :config
+  (electric-pair-mode)
+  (setq electric-pair-inhibit-predicate 'ignore)
+  (setq electric-pair-skip-self t))
 
 (use-package markdown-mode
   :hook
