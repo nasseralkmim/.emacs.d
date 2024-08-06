@@ -5040,7 +5040,8 @@ absolute path. Finally load eglot."
   :init
   (standard-themes-load-dark))
 
-(use-package org-treesit-src-blocks :disabled
+;; use treesit modes in org edit special
+(use-package org-treesit-src-blocks
   :ensure nil
   :after org
   :init
