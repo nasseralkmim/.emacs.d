@@ -5291,5 +5291,12 @@ absolute path. Finally load eglot."
   :ensure (apptainer-mode :type git :host github :repo "jrgant/apptainer-mode")
   :mode ("\\.def\\'" . apptainer-mode))
 
+(use-package kkp
+  :unless (display-graphic-p)
+  :ensure t
+  :demand
+  :config
+  ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
+  (global-kkp-mode +1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
