@@ -4876,11 +4876,11 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Experimental breadcrumb mode based on imenu
 ;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
-(use-package breadcrumb
-  :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb")
+(use-package breadcrumb :disabled
+    :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb")
   :hook
   (c++-ts-mode . breadcrumb-mode)
-  ;; (python-ts-mode . breadcrumb-mode)  ;; giving error 
+  (python-ts-mode . breadcrumb-mode)  ;; giving error 
   (org-mode . breadcrumb-mode))
 
 (use-package org-compat
@@ -4962,7 +4962,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package clipetty
   :if (not (display-graphic-p))
   :bind
-  ("M-Y" . clipetty-kill-ring-save))
+  ("M-S-y" . clipetty-kill-ring-save))
 
 (use-package vertical-divider-term :disabled ; not reliable
   :ensure nil
@@ -5046,7 +5046,7 @@ absolute path. Finally load eglot."
   (standard-themes-load-dark))
 
 ;; use treesit modes in org edit special
-(use-package org-treesit-src-blocks
+(use-package org-treesit-src-blocks-hack
   :ensure nil
   :after org
   :init
