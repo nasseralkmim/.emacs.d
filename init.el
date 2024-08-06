@@ -457,6 +457,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :bind
   (;; m/f/b <SPC> for bookmarks/files/buffers narrowing
   ("C-x C-b" . consult-buffer)		; enhanced switch to buffer
+  ("C-x b" . consult-buffer)		; enhanced switch to buffer
   ("C-M-s" . consult-line)
   ("M-s" . consult-outline)		; navigation by headings
   ("C-c C-o" . consult-imenu)		; navigation by "imenu" items
@@ -2878,6 +2879,10 @@ Only if there is more than one window opened."
   ;; built-in command repeater (like hydra)
   (repeat-mode t))
 
+(use-package windmove
+  :config
+  (windmove-default-keybindings))
+
 ;; built in windows resize functions
 (use-package window
   :ensure nil
@@ -3037,7 +3042,7 @@ Only if there is more than one window opened."
 
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
-  :bind ("C-x b" . ibuffer)
+  :bind ("C-c C-b" . ibuffer)
   :ensure nil
   :config
   ;; Grouping
@@ -5030,7 +5035,8 @@ absolute path. Finally load eglot."
     (eglot-ensure)
     (breadcrumb-mode -1)))
 
-(use-package standard-themes 
+(use-package standard-themes
+  :defer .5
   :init
   (standard-themes-load-dark))
 
