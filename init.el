@@ -933,6 +933,7 @@ org-mode"
    ("M-d" . my-iedit-expand-down-to-occurrence)
    :map iedit-mode-keymap
    ("M-'" . iedit-show/hide-context-lines)
+   ("<escape>" . iedit-mode)
    ("C-n" . iedit-next-occurrence)
    ("C-p" . iedit-prev-occurrence))
   :init
