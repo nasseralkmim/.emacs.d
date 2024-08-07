@@ -895,6 +895,7 @@ org-mode"
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("'" . repeat)
+     '("`" . "C-c @")
      '("<escape>" . ignore)))
   (meow-setup)
   (meow-global-mode))
@@ -1923,18 +1924,18 @@ When matching, reference is stored in match group 1."
 (use-package hideshow
   :ensure nil
   :diminish hs-minor-mode
-  :bind
-  (:map hs-minor-mode-map
-   ("C-c z h"  . hs-hide-block)
-   ("C-c z s"  . hs-show-block)
-   ("C-c z M-h". hs-hide-all)
-   ("C-c z M-s". hs-show-allC-z)
-   ("C-c z l"  . hs-hide-level)
-   ("C-c z c"  . hs-toggle-hiding)
-   ("C-c z a"  . hs-show-all)
-   ("C-c z t"  . hs-hide-all)
-   ("C-c z d"  . hs-hide-block)
-   ("C-c z e"  . hs-toggle-hiding))
+  ;; :bind
+  ;; (:map hs-minor-mode-map
+  ;;  ("C-c z h"  . hs-hide-block)
+  ;;  ("C-c z s"  . hs-show-block)
+  ;;  ("C-c z M-h". hs-hide-all)
+  ;;  ("C-c z M-s". hs-show-allC-z)
+  ;;  ("C-c z l"  . hs-hide-level)
+  ;;  ("C-c z c"  . hs-toggle-hiding)
+  ;;  ("C-c z a"  . hs-show-all)
+  ;;  ("C-c z t"  . hs-hide-all)
+  ;;  ("C-c z d"  . hs-hide-block)
+  ;;  ("C-c z e"  . hs-toggle-hiding))
   :hook
   (emacs-lisp-mode . hs-minor-mode)
   (nxml-mode . hs-minor-mode)
