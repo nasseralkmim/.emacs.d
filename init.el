@@ -1260,7 +1260,9 @@ org-mode"
   ;;          "p" 'org-babel-previous-src-block
   ;;          "h" 'org-babel-goto-src-block-head)
   :bind
-  ("M-o" . org-open-at-point-global)
+  (("M-o" . org-open-at-point-global)
+   ("C-c s s" . org-store-link)
+   ("C-c s i" . org-insert-link-global))
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
@@ -1664,6 +1666,7 @@ When matching, reference is stored in match group 1."
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
                                    ("inkscapelatex=false" "svg"  nil)
                                    ("" "mathrsfs" nil) ; for command mathscr (Calligraphic letters)
+                                   ("" "amsmath")
                                    ("" "bm, upgreek")
                                    ("" "tikz" nil)
                                    ("" "algorithm, algpseudocode"))))
