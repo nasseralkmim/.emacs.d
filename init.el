@@ -1263,7 +1263,9 @@ org-mode"
   :bind
   (("M-o" . org-open-at-point-global)
    ("C-c s s" . org-store-link)
-   ("C-c s i" . org-insert-link-global))
+   ("C-c s i" . org-insert-link-global)
+   :map org-mode-map
+   ("M-<return>" . org-meta-return))
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
