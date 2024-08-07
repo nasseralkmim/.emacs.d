@@ -2259,6 +2259,8 @@ When matching, reference is stored in match group 1."
   :hook
   (dired-mode . dired-hide-details-mode)
   :bind (("C-x j" . dired-jump)
+         :map dired-jump-map
+         ("j" . nil)
          :map dired-mode-map
               ("l" . dired-find-alternate-file)
               ("h" . dired-up-directory)
