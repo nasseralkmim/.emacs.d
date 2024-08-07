@@ -805,6 +805,8 @@ org-mode"
 
   (add-hook 'org-src-mode-hook 'flymake-in-org-edit-special))
 
+;; Useful:
+;; 1. kill without copying, use 'delete-region' from emacs: https://github.com/meow-edit/meow/discussions/474
 (use-package meow
   :defer 0.5
   :config
@@ -3992,9 +3994,7 @@ its results, otherwise display STDERR with
   (prog-mode . electric-pair-mode)
   (text-mode . electric-pair-mode)
   :config
-  (electric-pair-mode)
-  (setq electric-pair-inhibit-predicate 'ignore)
-  (setq electric-pair-skip-self t))
+  (electric-pair-mode))
 
 (use-package markdown-mode
   :hook
