@@ -2880,6 +2880,8 @@ Only if there is more than one window opened."
   (repeat-mode t))
 
 (use-package windmove
+  :ensure nil
+  :defer 1
   :config
   (windmove-default-keybindings))
 
