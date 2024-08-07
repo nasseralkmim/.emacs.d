@@ -4392,7 +4392,8 @@ If INTERACTIVE is nil the function acts like a Capf."
 (use-package go-translate
   :bind
   (("C-c t t" . gt-do-translate)     ; overrides the tutorial, but ok...
-   ("C-c t d" . gt-do-setup))
+   ("C-c t d" . gt-do-setup)
+   ("C-c t c" . my-gt-cycle-translation))
   ;; (override "C-c t i" 'gt-do-translate-and-insert)
   ;; ;; only when there is a gt-result buffer 
   ;; ('(normal visual) override "C-t" (general-predicate-dispatch nil
