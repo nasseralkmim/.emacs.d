@@ -208,7 +208,7 @@
   :preface
   (setq default-monospace '("Monaspace Neon"))
   (setq default-unicode '("Noto Color Emoji"))
-  (setq default-proportional '("Iosevka Etoile"))
+  (setq default-proportional '("Monaspace Neon"))
   (setq default-comments '("Monaspace Radon"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
@@ -898,6 +898,7 @@ org-mode"
      '("`" . "C-c @")
      '("<escape>" . ignore)))
   (meow-setup)
+  (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
   (meow-global-mode))
 
 ;; For some reason is not working with edits in 'dired'
@@ -1265,6 +1266,7 @@ org-mode"
    ("C-c s s" . org-store-link)
    ("C-c s i" . org-insert-link-global)
    :map org-mode-map
+   ("C-c ," . org-insert-structure-template)
    ("M-<return>" . org-meta-return))
   :hook
   (org-mode . visual-line-mode)
