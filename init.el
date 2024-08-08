@@ -896,7 +896,7 @@ org-mode"
      '("z" . meow-pop-selection)
      '("'" . repeat)
      '("`" . "C-c @")
-     '("<escape>" . ignore)))
+     '("<escape>" . meow-cancel-selection)))
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
   (meow-global-mode))
