@@ -4649,6 +4649,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Drawing link support in 'org-mode'
 (use-package edraw
+  :unless (display-graphic-p)
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
   :hook
   (org-mode . (lambda ()
@@ -4918,7 +4919,7 @@ If INTERACTIVE is nil the function acts like a Capf."
 
 ;; Matchs the cursor color when running emacs in terminal
 ;; makes it much more visible, but it does not change the foreground when over the text as in the GUI
-(use-package term-cursor-color
+(use-package term-cursor-color :disabled
   :ensure (term-cursor-color :host github :repo "CyberShadow/term-cursor-color")
   :if (not (display-graphic-p))
   :init
@@ -5150,18 +5151,10 @@ absolute path. Finally load eglot."
    zotra-default-bibliography "~/.bibliography.bib"
    zotra-download-attachment-default-directory "~/Sync/bibliography"))
 
-(use-package solaire-mode
+(use-package solaire-mode :disabled
   :defer 3
   :config
   (solaire-global-mode))
-
-(use-package catppuccin-theme :disabled
-  :defer 1
-  :config
-  (setq catppuccin-flavor 'frappe
-        catppuccin-italic-comments t
-        catppuccin-enlarge-headings nil)
-  (catppuccin-reload))
 
 ;; Rust-based wrapper to speed interaction with LSP servers
 ;; Need to build and install rust binary "emacs-lsp-booster" which should be on the path
@@ -5316,6 +5309,7 @@ absolute path. Finally load eglot."
   :mode ("\\.def\\'" . apptainer-mode))
 
 (use-package kkp
+  :defer 1
   :unless (display-graphic-p)
   :ensure t
   :demand
