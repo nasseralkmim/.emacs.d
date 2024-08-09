@@ -895,7 +895,8 @@ org-mode"
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("'" . repeat)
-     '("`" . "C-c @")
+     '("`" . "C-c @")                   ; for hide-show
+     '("\\" . "C-.")                    ; for avy
      '("<escape>" . meow-cancel-selection)))
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
@@ -3225,10 +3226,11 @@ opening a file from dired. Otherwise just regular dired."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :bind
+  ("C-." . avy-goto-char-timer)
   (:map isearch-mode-map 
-   ("C-'" . avy-isearch)
-   ("M-'" . avy-isearch) ; to work in tty as well
-   )
+        ("C-'" . avy-isearch)
+        ("M-'" . avy-isearch) ; to work in tty as well
+        )
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
         avy-all-windows-alt t           ; allow all windows when `C-u`
