@@ -125,7 +125,6 @@
    completions-detailed t	    ; add details in completions as prefix/sufix
    enable-recursive-minibuffers t	; Enable recursive minibuffers
    visible-bell t			; Don't beep at me
-   resize-mini-windows nil              ; Don't resize minibuffer
    kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
 
   ;; do not allow the cursor in the minibuffer prompt
@@ -1631,6 +1630,9 @@ When matching, reference is stored in match group 1."
   :ensure nil
   :bind
   ("C-c a" . org-agenda)
+  :hook
+  (org-agenda-finalize . (lambda ()
+                           (setq-local resize-mini-windows nil)))
   :config
   (setq org-agenda-files '("~/Sync/notes/log-notes/")
         org-agenda-window-setup 'current-window ; don't change my windows
