@@ -2773,8 +2773,7 @@ Only if there is more than one window opened."
 (use-package browse-url
   :ensure nil
   :config
-  ;; open in eww by default
-  (setq browse-url-browser-function 'eww-browse-url))
+  (setq browse-url-browser-function 'browse-url-default-browser))
 
 ;; jump to link
 (use-package ace-link :disabled
@@ -4002,7 +4001,9 @@ its results, otherwise display STDERR with
   (prog-mode . electric-pair-mode)
   (text-mode . electric-pair-mode)
   :config
-  (electric-pair-mode))
+  (electric-pair-mode)
+  (setq electric-pair-inhibit-predicate 'ignore)
+  (setq electric-pair-skip-self t))
 
 (use-package markdown-mode
   :hook
@@ -4134,7 +4135,7 @@ its results, otherwise display STDERR with
   :after gnus
   :config
   (add-to-list 'nnrss-ignore-article-fields 'pubDate)
-
+  
   ;; Prefer 'text/plain' in general
   ;; Set the default value of ‘mm-discouraged-alternatives’.
   (with-eval-after-load "gnus-sum"
