@@ -125,6 +125,7 @@
    completions-detailed t	    ; add details in completions as prefix/sufix
    enable-recursive-minibuffers t	; Enable recursive minibuffers
    visible-bell t			; Don't beep at me
+   resize-mini-windows nil              ; Don't resize minibuffer
    kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
 
   ;; do not allow the cursor in the minibuffer prompt
