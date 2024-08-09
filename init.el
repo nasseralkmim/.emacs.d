@@ -963,7 +963,13 @@ org-mode"
   ("M-{" . insert-pair)
   ("M-\"" . insert-pair)
   ("M-\'" . insert-pair)
-  ("C-M-s" . delete-pair))
+  ("C-M-s" . delete-pair)
+  (:repeat-map move-repeat-map
+               ("f" . forward-sexp)
+               ("n" . forward-list)
+               ("b" . backward-sexp)
+               ("p" . backward-list)
+               ("u" . backward-up-list)))
 
 ;; Tips:
 ;; 'evil-mc-make-all-cursors' create a cursor on matching
