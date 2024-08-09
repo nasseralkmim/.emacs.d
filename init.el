@@ -3552,6 +3552,16 @@ opening a file from dired. Otherwise just regular dired."
   (setq eldoc-echo-area-use-multiline-p nil
         eldoc-idle-delay 0.5))
 
+(use-package eldoc-buffer-window-hack
+  :ensure nil
+  :after eldoc
+  :init
+  (add-to-list 'display-buffer-alist
+               '("^\\*eldoc"
+                 (display-buffer-below-selected)
+                 (display-buffer-at-bottom)
+                 (window-height . 0.25))))
+
 ;; save windows configurations and use regular bookmarks file
 (use-package burly :disabled
   :ensure (burly :type git :host github :repo "alphapapa/burly.el")
@@ -3611,6 +3621,7 @@ opening a file from dired. Otherwise just regular dired."
           "CAPTURE-.*"
           "^\\*Dicti.*"
           "\\*Pueue Log\\*"
+          "^\\*eldoc\\*"
           ("\\*BBDB\\*" . hide)         ; when the database add an etry
           "\\*compilation\\*"
           compilation-mode))
