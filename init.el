@@ -5323,6 +5323,7 @@ absolute path. Finally load eglot."
 
 ;; tools for display during presentations
 (use-package master-of-ceremonies
+  :after dslide
   :ensure (master-of-ceremonies 
            :host github
            :repo "positron-solutions/master-of-ceremonies"))
