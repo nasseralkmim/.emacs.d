@@ -910,33 +910,6 @@ org-mode"
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
   (meow-global-mode))
 
-;; For some reason is not working with edits in 'dired'
-(use-package evil-multiedit :disabled :disabled
-  :after evil
-  :custom-face
-  (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil :style nil))))
-  :general
-  ("C-;" 'iedit-mode)
-  ('visual "R" 'evil-multiedit-match-all)
-  ("M-d" 'evil-multiedit-match-and-next)
-  ("M-C-d" 'evil-multiedit-match-and-prev)
-  ('(normal visual) evil-multiedit-mode-map "M-t" 'evil-multiedit-toggle-or-restrict-region) 
-  ('normal evil-multiedit-mode-map "<escape>" 'evil-multiedit-abort)
-  ('visual "C-S-d" 'evil-multiedit-restore)
-  ('insert evil-multiedit-mode-map "<RET>" nil) ; avoid toggling when completing with corfu
-  ('normal "M-p" nil)                           ; use to change dictionaries in 'go-translate' package
-  :config
-  (setq evil-multiedit-follow-matches t)
-  (defun make-evil-multiedit-case-sensitive (fn &rest args)
-    (let ((case-fold-search (not iedit-case-sensitive)))
-      (apply fn args)))
-
-  (advice-add #'evil-multiedit-match-and-next :around #'make-evil-multiedit-case-sensitive)
-
-  ;; Change the face for terminal
-  (when (not (display-graphic-p))
-    (set-face-attribute 'iedit-occurrence nil :inherit 'isearch)))
-
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
 (use-package iedit
@@ -978,234 +951,6 @@ org-mode"
                ("b" . backward-sexp)
                ("p" . backward-list)
                ("u" . backward-up-list)))
-
-;; Tips:
-;; 'evil-mc-make-all-cursors' create a cursor on matching
-;; you can 'evil-mc-pause-cursors' to check if it is right. Useful when cursors are out of the screen.
-;; 'evil-mc-make-cursor-in-visual-selection-end' make cursor on selected lines.
-(use-package evil-mc :disabled
-  :after evil
-  :diminish evil-mc-mode
-  :general
-  ;; autoload keymap, will trigger the loading of `evil-mc` library
-  ;; use prefix for `cursors-map` from evil collection
-  ('(normal visual) "g ." '(:keymap evil-mc-cursors-map))
-  (evil-mc-key-map "g r" nil)
-  :config
-  (global-evil-mc-mode 1)
-  ;; extra commands for multiple cursors
-  (push '(eval-last-sexp . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
-  (push '(delete-horizontal-space . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
-  (push '(evil-org-delete . ((:default . evil-mc-execute-default-evil-delete))) evil-mc-known-commands)
-  (push '(org-yank . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
-  (push '(evil-paste-before . ((:default . evil-mc-execute-default-evil-paste))) evil-mc-known-commands)
-  (push '(evil-change-line . ((:default . evil-mc-execute-default-evil-change-line))) evil-mc-known-commands)
-  (push '(evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
-  (push '(evil-digit-argument-or-evil-org-beginning-of-line . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
-  (push '(sp-forward-sexp . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands)
-  (push '(evil-surround-change . ((:default . evil-mc-execute-default-evil-surround-region))) evil-mc-known-commands)
-  (push '(wdired--self-insert . ((:default . evil-mc-execute-default-call))) evil-mc-known-commands))
-
-(use-package evil :disabled
-  :defer 1
-  :diminish evil-mode
-  :init
-  ;; Set before loading evil or evil collection
-  (setq evil-want-keybinding nil ; preference for evil-collection
-        evil-want-minibuffer t); evil in minibuffer
-  :general
-  (evil-motion-state-map "C-i" nil)     ; avoid conflicting with tab in terminal
-  ("C-c \\" 'evil-emacs-state)
-  ('normal ";" 'evil-search-forward)
-  ('normal "M-p" 'nil)                  ; problem with 'go-translate'
-  ('(normal visual) 'override :prefix "SPC" "l" 'evil-last-non-blank)
-  ('(normal visual) 'override :prefix "SPC" "h" 'evil-first-non-blank)
-  ('normal :prefix "SPC" "a" 'evil-append-line)
-  ('(normal visual) "[ ]" 'evil-next-close-paren)
-  ('(normal visual) "] [" 'evil-previous-open-paren)
-  ('normal "j" 'evil-next-visual-line)
-  ('normal "k" 'evil-previous-visual-line)
-  ('normal "C-c r" nil)
-  ('normal "C-S-o" 'evil-jump-forward)
-  :config
-  (evil-mode 1)
-  ;; disable those keybindings 
-  (general-def '(normal motion) "TAB" nil)
-  (general-def 'normal "C-n" nil)
-  (general-def 'normal "C-p" nil)
-  (general-def 'normal "q" nil)
-
-  (setq
-   lazy-highlight-cleanup nil           ; persist highlight
-   lazy-highlight-max-at-a-time nil
-   evil-kill-on-visual-paste nil        ; don't add replaced test onto kill ring
-   lazy-highlight-initial-delay 0
-   evil-esc-delay 0)
-
-  (evil-set-undo-system 'undo-redo)	; use native redo function
-
-  (add-to-list 'evil-insert-state-modes 'log-edit-mode)
-  (add-to-list 'evil-insert-state-modes 'message-mode)
-  (add-to-list 'evil-normal-state-modes 'biblio-selection-mode)
-
-  ;; initialize locals buffer in normal state instead of emacs state
-  (add-hook 'gdb-locals-mode-hook 'evil-normal-state)
-  (add-hook 'dslide-start-hook 'evil-insert-state))
-
-;; Not sure if this still necessary
-(use-package hack-evil-mode-org-mode-babel :disabled
-  :ensure nil
-  :after evil
-  :init
-  ;; fix tab behavior in org-mode source block
-  (defun evil-org-insert-state-in-edit-buffer (fun &rest args)
-    "Bind `evil-default-state' to `insert' before calling FUN with ARGS."
-    (let ((evil-default-state 'insert)
-          ;; Force insert state
-          evil-emacs-state-modes
-          evil-normal-state-modes
-          evil-motion-state-modes
-          evil-visual-state-modes
-          evil-operator-state-modes
-          evil-replace-state-modes)
-      (apply fun args)
-      (evil-refresh-cursor)))
-
-  (advice-add 'org-babel-do-key-sequence-in-edit-buffer
-              :around #'evil-org-insert-state-in-edit-buffer))
-
-;; Change color of mode line evil mode indicator
-;; https://www.reddit.com/r/emacs/comments/gqc9fm/visual_indication_of_the_mode_of_editing_with_evil/
-(use-package hack-evil-mode-line-indicator :disabled
-  :ensure nil
-  :after evil
-  :init
-  ;; Override defun from evil-core.el
-  (defun evil-generate-mode-line-tag (&optional state)
-    "Generate the evil mode-line tag for STATE."
-    (let ((tag (evil-state-property state :tag t)))
-      ;; prepare mode-line: add tooltip
-      (when (functionp tag)
-        (setq tag (funcall tag)))
-      (if (stringp tag)
-          (propertize tag
-	              'face (cond
-		             ((string= "normal" state)
-		              'bold)
-		             ((string= "insert" state)
-		              'success)
-		             ((string= "visual" state)
-		              'font-lock-function-name-face)
-		             ((string= "emacs" state)
-		              'warning))
-	              'help-echo (evil-state-property state :name)
-	              'mouse-face 'mode-line-highlight)
-        tag))))
-
-;; move around text
-(use-package evil-easymotion :disabled :disabled
-  :defer 1
-  :after evil
-  :config
-  (evilem-default-keybindings "SPC"))
-
-;; move aronud text
-(use-package evil-snipe :disabled
-  :diminish (evil-snipe-mode evil-snipe-local-mode evil-snipe-override-mode)
-  :general
-  ('normal evil-snipe-override-mode-map "f" 'evil-snipe-f)
-  :after evil
-  :defer 1
-  :config
-  (evil-snipe-override-mode 1)
-  (setq evil-snipe-spillover-scope 'visible
-        evil-snipe-smart-case t)
-  ;; "f [" goes to parenthesis or bracket
-  (push '(?\[ "[[{(]") evil-snipe-aliases)
-  (push '(?\] "[]})]") evil-snipe-aliases))
-
-;; visualize evil commands
-(use-package evil-goggles :disabled
-  :diminish evil-goggles-mode
-  :after evil
-  :defer 1
-  :config
-  (evil-goggles-mode)
-  (setq
-   evil-goggles-duration 1        ; show what I copied
-        evil-goggles-async-duration 1  ; affects indenting
-        evil-goggles-blocking-duration 0) ; don't want to wait when deleting
-  (evil-goggles-use-diff-faces))
-
-;; unimpaired is a collection of commands with '[' or ']'
-(use-package evil-collection :disabled
-  :diminish evil-collection-unimpaired-mode
-  :after evil
-  :init
-  (setq evil-collection-setup-minibuffer t) ; makes company works betters I think
-  ;; compile: for consult-ripgrep wgrep mode
-  (evil-collection-init '(dired magit gnus minibuffer corfu org evil-mc
-                                helpful consult vertico ibuffer vterm embark
-                                eglot ediff edebug eww outline
-                                ;; compile: for consult-ripgrep wgrep mode
-                                compile
-                                grep)))
-
-;; navigation: gh, gj, gk, gl
-;; promoting/demoting headings: M-hjkl
-;; headings: M-ret
-(use-package evil-org :disabled
-  :diminish evil-org-mode
-  :general
-  ('normal org-mode-map "x" 'evil-delete-char)
-  :hook
-  (org-mode . evil-org-mode)
-  :init
-  ;; defer loading
-  (with-eval-after-load 'evil-org
-    (evil-org-set-key-theme '(textobjects insert  additional shift todo)))
-
-  ;; Since we can dispatch 'org-agenda' before loading 'org'
-  (with-eval-after-load 'org-agenda
-    (require 'evil-org-agenda)
-    (evil-org-agenda-set-keys)
-    ;; Change keybindings after 'evil-org-agenda-set-keys'
-    ;; the prefix argument can be used to set specific week, e.g. '34gdw' goes to week 34
-    ;; or '6gdm' to June.
-    (general-def 'motion org-agenda-mode-map
-      "gt" 'org-todo-list
-      "gd" 'org-agenda-view-mode-dispatch)))
-
-(use-package evil-surround :disabled
-  :after evil
-  :general
-  ('normal "g c" 'evil-surround-change)
-  ('visual "S" 'evil-Surround-region)
-  :init
-  (global-evil-surround-mode 1))
-
-(use-package evil-exchange :disabled
-  :after evil
-  :general ('normal "g x" 'evil-exchange)
-  :config (evil-exchange-install))
-
-;; jump to matched tags
-(use-package evil-matchit :disabled :disabled
-  :after python evil
-  :config
-  (global-evil-matchit-mode 4))
-
-(use-package undo-propose :disabled     ; using regular undo in region
-  :after evil
-  :general
-  ('normal 'global "C-c u" 'undo-propose)
-  ('normal 'global "u" 'undo-only)
-  :config
-  (setq undo-propose-pop-to-buffer t))
-
-;; visual undo
-(use-package vundo
-  :commands vundo)
 
 ;; Need to be explicitly required for magit
 ;; https://emacs.stackexchange.com/questions/50592/whats-this-slot-missing-invalid-slot-name-transient-prefix-transient-pref
@@ -1476,36 +1221,6 @@ graphics."
           (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
-
-(use-package ob-julia :disabled
-  :ensure nil
-  :after org
-  :commands org-babel-execute:julia
-  :init
-  (setq org-babel-default-header-args:julia
-        '((:results . "output")
-          (:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
-          (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
-          ;; add tag variable to all python blocks... maybe not ideal, but usefull
-          (:exports . "results"))))
-
-(use-package julia-mode :disabled
-  :mode ("\\.jl\\'" . julia-mode))
-
-(use-package julia-vterm :disabled)
-
-(use-package ob-julia-vterm :disabled
-  :after org
-  :commands org-babel-execute:julia-vterm
-  :init
-  (setq org-babel-default-header-args:julia-vterm
-        '((:noweb . "no-export") ; referencing other blocks with <<>> syntax, don't expand during export
-          (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
-          (:exports . "results")))
-
-  ;; alias
-  (defalias 'org-babel-execute:julia 'org-babel-execute:julia-vterm)
-  (defalias 'org-babel-variable-assignments:julia 'org-babel-variable-assignments:julia-vterm))
 
 (use-package ob-core
   :ensure nil
@@ -2246,13 +1961,6 @@ When matching, reference is stored in match group 1."
    '(("^%\\(chapter\\|\\(sub\\|subsub\\)?section\\|paragraph\\)" 0 'font-lock-keyword-face t)
      ("^%paragraph{\\(.*\\)}"     1 'font-latex-sectioning-5-face t))))
 
-;; text objects for latex editing
-;; math, commands, delimiters are usefull
-(use-package evil-tex :disabled
-  :general (evil-tex-mode-map "M-n" nil) ; using with flymake
-  :after latex
-  :hook (LaTeX-mode . evil-tex-mode))
-
 ;; Creates UNIQUE labels, helps referencing them (not so good)
 ;; AUCTeX defaut: C-c RET -> eqref -> prompts for label (can be with completion)
 ;; RefTeX interface: C-c RET -> eqref -> TAB -> select label with completion
@@ -2351,22 +2059,6 @@ When matching, reference is stored in match group 1."
     (dired-sidebar-show-sidebar)        ;show the side bar
     (dired-sidebar-toggle-with-current-directory) ; hide it and re opening with current dir
     (dired-sidebar-toggle-with-current-directory)))
-
-;; improved dired
-;; problem with tramp
-(use-package dirvish :disabled
-  :ensure (dirvish :type git :host github :repo "alexluigit/dirvish")
-  :general
-  ('normal dired-mode-map "Y" 'dirvish-copy-file-path)
-  :init
-  ;; Let Dirvish take over Dired globally
-  (dirvish-override-dired-mode)
-  :config
-  (setq dirvish-attributes '(collapse file-size))
-  (setq dired-mouse-drag-files t)                   ; added in Emacs 29
-  (setq mouse-drag-and-drop-region-cross-program t) ; added in Emacs 29
-  ;; kill buffer after entry file, avoid accumulate buffers
-  (put 'dired-find-alternate-file 'disabled nil))  
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
 (use-package modus-themes
@@ -2635,76 +2327,6 @@ Only if there is more than one window opened."
 (use-package yaml-mode
   :mode ("\\.yaml\\'" . yaml-mode))
 
-;; dependency of consult-bibtex
-(use-package bibtex-completion
-  :after consult-bibtex
-  :ensure (bibtex-completion :host github
-                               :repo "tmalsburg/helm-bibtex"
-                               :files (:defaults (:exclude "helm-bibtex.el" "ivy-bibtex.el")))
-  :init
-  (setq bibtex-completion-bibliography "~/.bibliography.bib"
-        bibtex-completion-library-path "~/Sync/bibliography/"
-        bibtex-completion-pdf-open-function (lambda (fpath)
-                                              (call-process "xdg-open" nil 0 nil fpath)))
-  ;; dont prompt for anything, just insert the citation please.
-  (setq bibtex-completion-cite-prompt-for-optional-arguments nil))
-
-;; using okular to at least view the documents...
-(use-package bibtex-completion-wsl
-  :ensure nil
-  :when (string-match "-[Mm]icrosoft" operating-system-release)
-  :after consult-bibtex
-  :init
-  (setq bibtex-completion-pdf-open-function (lambda (fpath)
-                                              (call-process "okular" nil 0 nil fpath))))
-
-;; search bibtex bibliography with consult
-;; depends on helm-bibtex
-(use-package consult-bibtex :disabled
-  :if (eq system-type 'gnu/linux)
-  :ensure (consult-bibtex :host github
-                            :repo "mohkale/consult-bibtex")
-  :general
-  ("C-c b" 'consult-bibtex)
-  :config
-  (with-eval-after-load 'embark
-    (add-to-list 'embark-keymap-alist '(bibtex-completion . consult-bibtex-embark-map))))
-
-;; bibtex completion add option for pdf view (one for annotation other for viewing)
-(use-package consult-bibtex-annotation :disabled
-  :ensure nil
-  :after consult-bibtex
-  :init
-  (defun bibtex-completion-open-pdf-annotation (keys &optional fallback-action)
-    (let ((bibtex-completion-pdf-open-function
-           (lambda (fpath) (call-process "xournalpp" nil 0 nil fpath))))
-      (bibtex-completion-open-pdf keys fallback-action)))
-  (consult-bibtex-embark-action consult-bibtex-open-pdf-annotation bibtex-completion-open-pdf-annotation)
-  (define-key consult-bibtex-embark-map "n" #'consult-bibtex-open-pdf-annotation))
-
-;; option to open with evince for printing
-(use-package consult-bibtex-evince :disabled
-  :ensure nil
-  :after consult-bibtex
-  :init
-  (defun bibtex-completion-open-pdf-evince (keys &optional fallback-action)
-    (let ((bibtex-completion-pdf-open-function
-           (lambda (fpath) (call-process "evince" nil 0 nil fpath))))
-      (bibtex-completion-open-pdf keys fallback-action)))
-  (consult-bibtex-embark-action consult-bibtex-open-pdf-evince bibtex-completion-open-pdf-evince)
-  (define-key consult-bibtex-embark-map "p" #'consult-bibtex-open-pdf-evince))
-
-;; option for open with pdf-tools (default with find-file when `openwith-mode' is disabled) 
-(use-package consult-bibtex-pdftools :disabled
-  :ensure nil
-  :after consult-bibtex
-  :init
-  (defun bibtex-completion-open-pdf-tools (keys &optional fallback-action)
-    (let ((bibtex-completion-pdf-open-function 'find-file))
-      (bibtex-completion-open-pdf keys fallback-action)))
-  (consult-bibtex-embark-action consult-bibtex-open-pdf-tools bibtex-completion-open-pdf-tools)
-  (define-key consult-bibtex-embark-map "t" #'consult-bibtex-open-pdf-tools))
-
 (use-package citar
   :bind
   ("C-c b" . citar-open)
@@ -2738,16 +2360,6 @@ Only if there is more than one window opened."
 (use-package table
   :ensure nil
   :after org)
-
-;; needs to be added manually to .emacs.d/lisp folder
-(use-package wsl-path :disabled
-  :if (not (string-match "-[Mm]icrosoft" operating-system-release))
-  :ensure nil
-  :load-path "./lisp"
-  :commands (wsl-path-activate
-             wsl-path-convert-file-name)
-  :init
-  (wsl-path-activate))
 
 (use-package yasnippet
   :diminish yas-minor-mode
@@ -2884,20 +2496,6 @@ Only if there is more than one window opened."
         time-stamp-end "$"		; regex for end of line
         time-stamp-start "#\\+lastmod:[ \t]*"))
 
-;; terminal emacs with evil cursor indication
-;; does not work with mosh: https://github.com/mobile-shell/mosh/issues/352 
-(use-package evil-terminal-cursor-changer :disabled
-  :unless (display-graphic-p)
-  :init
-  (evil-terminal-cursor-changer-activate))
-
-;; don't change background when in terminal
-(use-package terminal-disable-bg :disabled
-  :ensure nil
-  :unless (display-graphic-p)
-  :init
-  (set-face-background 'default "undefined"))
-
 (use-package repeat
   ;; :if (string-greaterp emacs-version "28") ; need emacs > 28
   :ensure nil
@@ -2985,28 +2583,6 @@ Only if there is more than one window opened."
   (with-eval-after-load 'ox
     (require 'oc)
     (require 'ox-beamer)))
-
-;; highlight indentation
-(use-package highlight-indent-guides :disabled
-  :diminish highlight-indent-guides-mode
-  :hook
-  (prog-mode . highlight-indent-guides-mode)
-  :config
-  (setq highlight-indent-guides-method 'character))
-
-;; suppress error on tui
-(use-package highlight-indent-guides :disabled
-  :after highlight-indent-guides
-  :unless (display-graphic-p)
-  :init
-  (setq highlight-indent-guides-suppress-auto-error t))
-
-;; highlight based on scope
-(use-package hl-indent-scope :disabled
-  :when (display-graphic-p)
-  :ensure (hl-indent-scope :type git :host nil :repo "http://codeberg.org/ideasman42/emacs-hl-indent-scope")
-  :hook
-  (prog-mode . hl-indent-scope-mode))
 
 ;; emacs built in version control
 (use-package vc-git
@@ -3117,53 +2693,6 @@ Only if there is more than one window opened."
   ;; maximum fontification
   (setq treesit-font-lock-level 4))
 
-;; better code highlight and fold
-(use-package tree-sitter :disabled
-  :diminish tree-sitter-mode
-  :hook
-  (c-mode-common . tree-sitter-mode)
-  (python-mode . tree-sitter-mode)
-  ;; replace regex-based highlighting
-  (tree-sitter-after-on . tree-sitter-hl-mode))
-
-;; language bundle for `tree-sitter`
-(use-package tree-sitter-langs :disabled
-  :demand                               ; require it after loading tree-sitter
-  :after tree-sitter)
-
-;; fold based on tree sitter syntax tree
-(use-package ts-fold :disabled
-  :ensure (ts-fold :type git :host github :repo "emacs-tree-sitter/ts-fold")
-  :general
-  ('normal :predicate '(outline-on-heading-p) "<tab>" 'evil-toggle-fold)
-  :hook
-  (c-mode-common . ts-fold-mode)
-  (python-mode . ts-fold-mode)
-  :config
-  (setq ts-fold-replacement "…"
-        ts-fold-summary-exceeded-string "…"
-        ts-fold-summary-format " %s"))
-
-;; use tree sitter as evil text objects
-(use-package evil-textobj-tree-sitter :disabled :disabled
-  :ensure (evil-textobj-tree-sitter :type git
-                                      :host github
-                                      :repo "meain/evil-textobj-tree-sitter"
-                                      :files (:defaults "queries"))
-  :after tree-sitter
-  :config
-  (define-key evil-outer-text-objects-map "s" (evil-textobj-tree-sitter-get-textobj "statement.outer"))
-  (define-key evil-inner-text-objects-map "n" (evil-textobj-tree-sitter-get-textobj "scopename.inner"))
-  (define-key evil-outer-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.outer"))
-  (define-key evil-inner-text-objects-map "c" (evil-textobj-tree-sitter-get-textobj "call.inner"))
-  (define-key evil-outer-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.outer"))
-  (define-key evil-inner-text-objects-map "f" (evil-textobj-tree-sitter-get-textobj "function.inner")))
-
-(use-package hide-comnt :disabled
-  :ensure nil
-  :general ('normal "g h c" 'hide/show-comments-toggle)
-  :commands hide/show-comments-toggle)
-
 (use-package wgrep)
 
 ;; config for windows
@@ -3173,12 +2702,6 @@ Only if there is more than one window opened."
   :init
   (setq w32-get-true-file-attributes nil
         recentf-auto-cleanup 'never))
-
-;; use emacs to edit text within chrome
-(use-package atomic-chrome :disabled
-  :commands atomic-chrome-start-server
-  :config
-  (setq atomic-chrome-default-major-mode 'LaTeX-mode))
 
 ;; easily change windows
 (use-package ace-window
@@ -3649,18 +3172,6 @@ opening a file from dired. Otherwise just regular dired."
 (use-package rainbow-delimiters
   :hook (smartparens-mode . rainbow-delimiters-mode))
 
-;; highlight scope defined by delimiters
-;; useful sometimes in tex
-(use-package rainbow-blocks :disabled
-  :diminish rainbow-blocks-mode
-  :hook (LaTeX-mode . rainbow-blocks-mode)
-  :config
-  (setq rainbow-blocks-outermost-only-face-count 1))
-
-;; alternative to flyspell
-(use-package spell-fu :disabled
-  :hook (LaTeX-mode . spell-fu-mode))
-
 ;; eye candy for org
 (use-package org-modern
   :when (display-graphic-p)             ;only when gui, there is a problem with tty
@@ -3674,30 +3185,6 @@ opening a file from dired. Otherwise just regular dired."
   :config
   ;; don't prettify table
   (setq org-modern-table nil))
-
-;; usefull for email composing
-(use-package flymake-grammarly :disabled
-  :config
-  (setq flymake-grammarly-check-time 0.2)
-  :commands load-flymake-with-grammarly)
-
-(use-package virtual-comment :disabled
-  :diminish virtual-comment-mode
-  :general
-  ('normal "C-<return>" 'virtual-comment-make)
-  :hook 
-  (python-mode . virtual-comment-mode)
-  (c++-mode . virtual-comment-mode)
-  :config
-  (setq virtual-comment-face 'lazy-highlight
-        virtual-comment-default-file "~/.emacs.d/.evc"))
-
-;; Improve org latex support to use Auctex (faster and async)
-;; I don't know why it fails on the first preview call
-(use-package org-auctex :disabled; does not play nicely when there is $ in shell src blocks
-  :after org
-  :ensure (org-auctex :type git :host github :repo "karthink/org-auctex")
-  :hook (org-mode . org-auctex-mode))
 
 ;; query for org
 (use-package org-ql :disabled
@@ -3726,12 +3213,6 @@ opening a file from dired. Otherwise just regular dired."
   :ensure nil
   :hook (dired-mode . dired-async-mode))
 
-;; try later as alternative to dired-async
-(use-package dired-rsync :disabled
-  :after dired
-  :general
-  (dired-mode-map "C-c C-r" 'dired-rsync))
-
 ;; function to run local command on remote file
 ;; https://emacs.stackexchange.com/questions/42252/run-local-command-on-remote-file-with-tramp
 (use-package dired-local-command-on-remote :disabled
@@ -3748,29 +3229,6 @@ opening a file from dired. Otherwise just regular dired."
            (default-directory temporary-file-directory)
            (command (dired-read-shell-command "! on %s: " num-files marked-files)))
       (dired-do-shell-command command num-files local-tmp-files))))
-
-;; custom writing rules
-;; download vale and put on path (~/.local/bin/)
-;; use vale with flymake
-;; need ~/.vale.ini with minimum:
-;;
-;; MinAlertLevel = suggestion
-;; [*]
-;; BasedOnStyles = Vale
-;;
-;; or more elaboratate https://vale.sh/generator/
-;; for write good, download wget https://github.com/errata-ai/write-good/releases/download/v0.4.0/write-good.zip 
-;; and unzip write-good.zip -d ~/.config/vale/styles/
-;; add add to the .vale.ini the "StylesPath = /home/nasser/.config/vale/styles"
-(use-package flymake-vale :disabled
-  :ensure (flymake-vale :type git :host github :repo "tpeacock19/flymake-vale")
-  :commands flymake-vale-load)
-
-;; Query synonyms
-(use-package le-thesaurus :disabled
-  :general
-  ("C-c u" 'le-thesaurus-get-synonyms)
-  :commands le-thesaurus-get-synonyms)
 
 ;; Anther package to find synonyms
 (use-package powerthesaurus 
@@ -3824,12 +3282,6 @@ its results, otherwise display STDERR with
               nil)
           (buffer-string))))))
 
-;; dim text color from surroundings
-(use-package focus :disabled
-  :commands focus-mode
-  :config
-  (add-to-list 'focus-mode-to-thing '(prog-mode . sexp)))
-
 ;; list 'imenu' entries in a buffer
 ;; better faces than 'consult-imenu'
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
@@ -3879,11 +3331,6 @@ its results, otherwise display STDERR with
     (org-babel-detangle)
     (find-file buffer-file-name)))
 
-;; format code when saving based on `.clang-format' file
-;; use eglot
-(use-package clang-format+ :disabled
-  :hook (c-mode-common . clang-format+-mode))
-
 (use-package org-footnote
   :ensure nil
   :after org
@@ -3924,71 +3371,6 @@ its results, otherwise display STDERR with
               :around (lambda (orig-fun name &optional ignore-dedicated window)
                         (funcall orig-fun name ignore-dedicated window)
                         (set-window-dedicated-p window nil))))
-
-
-;; irony mode for 'org-edit-special' c++ 
-;; uses libclang
-(use-package irony :disabled            ; using experimental eglot function
-  :after org
-  :hook
-  (org-src-mode . (lambda ()
-                    (when (string-equal major-mode "c++-mode")
-                      (irony-mode)))))
-
-;; eldoc support for irony
-(use-package irony-eldoc :disabled
-  :hook
-  (irony-mode . irony-eldoc))
-
-;; flymake for C++ blocks with 'org-edit-special'
-;; https://stackoverflow.com/a/14866268 
-;; does not work, maybe because of the temp file
-(use-package flymake-org-edit-special-c++ :disabled
-  :ensure nil
-  :after org
-  :hook
-  (org-src-mode . (lambda ()
-                    (when (string-equal major-mode "c++-mode")
-                      (setq-local flymake-cc-command 'flymake-cc-init)
-                      (flymake-mode))))
-  :init
-  (defun flymake-cc-init ()
-    (let* ((temp-file   (flymake-init-create-temp-buffer-copy
-                         'flymake-create-temp-inplace))
-           (local-file  (file-relative-name
-                         temp-file
-                         (file-name-directory buffer-file-name))))
-      (list "g++" (list "-Wall" "-Wextra" "-fsyntax-only" local-file)))))
-
-
-;; tags with different colors in org
-(use-package org-rainbow-tags :disabled
-  :ensure (:host github :repo "KaratasFurkan/org-rainbow-tags")
-  :hook (org-mode . org-rainbow-tags-mode))
-
-;; python support for org-edit-special
-(use-package elpy :disabled
-  :hook
-  (org-src-mode . (lambda ()
-                    (when (string-equal major-mode "python-mode")
-                      ;; remove company mode
-                      (setq elpy-modules '(elpy-module-flymake elpy-module-sane-defaults))
-                      (elpy-enable)
-                      ;; add company backend as CAPF for cape
-                      ;; need some company functions...
-                      (require 'company)
-                      (setq-local completion-at-point-functions
-                                  (cape-company-to-capf 'elpy-company-backend))))))
-
-;; auto complete with company backend adapter for corfu
-;; there was a problem with numpy, this fixes: https://github.com/davidhalter/jedi/issues/1864#issuecomment-1306543244
-(use-package company-jedi :disabled     ; using experimental eglot function
-  :hook
-  (org-src-mode . (lambda ()
-                    (when (string-equal major-mode "python-mode")
-                      (require 'company-jedi)
-                      (setq-local completion-at-point-functions
-                                  (cape-company-to-capf 'company-jedi))))))
 
 ;; Unified interface for 'secrets' backends
 (use-package auth-source
@@ -4236,79 +3618,6 @@ its results, otherwise display STDERR with
     (let ((browse-url-browser-function 'browse-url-default-browser))
       (gnus-article-browse-html-article arg))))
 
-;; Database for email completion
-;; sometimes does not add automatically: use `bbdb-mua-display-sender'
-(use-package bbdb :disabled             ; trying EBDB
-  :after (:any gnus message)
-  :config
-  (bbdb-initialize 'gnus 'message)
-  ;; auto update database based on messages I read
-  (bbdb-mua-auto-update-init 'gnus 'message)
-  (setq bbdb-mua-auto-update-p 'create   ; create contact if it does not exist
-        ;; suppress pop up contact list when new contact is created
-        bbdb-mua-pop-up nil
-        bbdb-message-try-all-headers t  ; try all headers from a message to extract an email
-        )
-
-  ;; use capf to provide completion
-  (setq bbdb-complete-mail nil
-        bbdb-completion-list nil))
-
-(use-package dianyou :disabled
-  :after gnus
-  :general
-  ('normal gnus-summary-mode-map "&" 'dianyou-email-view-in-web-ui)
-  ('normal gnus-article-mode-map "&" 'dianyou-email-view-in-web-ui))
-
-;; Implements a complete at point function for BBDB database
-;; https://github.com/minad/cape/pull/50/commits
-(use-package cape-bbdb :disabled
-  :after cape
-  :ensure nil
-  :hook
-  (message-mode . bbdb-setup-cape)
-  :init
-  (declare-function bbdb-records "bbdb")
-  (declare-function bbdb-record-field "bbdb")
-
-  (defvar cape--bbdb-properties
-    (list :annotation-function (lambda (_) " BBDB")
-          :company-kind (lambda (_) 'text)
-          :exclusive 'no)
-    "Completion extra properties for `cape-bbdb'.")
-
-  (defvar cape--bbdb-records nil)
-  (defun cape--bbdb-records ()
-    "BBDB records formated like FIRSTNAME LASTNAME <email@example.com>."
-    (or cape--bbdb-records
-        (setq cape--bbdb-records
-              (mapcar #'cape--bbdb-record-format (bbdb-records)))))
-
-  (defun cape--bbdb-record-format (record)
-    "Formats a BBDB record into a string like FIRSTNAME LASTNAME <email@example.com>."
-    (format "%s %s"
-            (bbdb-record-field record 'name)
-            (apply #'concat
-                   (mapcar (lambda (e) (concat "<" e ">"))
-                           (bbdb-record-field record 'mail)))))
-
-  (defun cape-bbdb (&optional interactive)
-    "Complete name from BBDB and insert with email.
-If INTERACTIVE is nil the function acts like a Capf."
-    (interactive (list t))
-    (if interactive
-        (cape-interactive #'cape-bbdb)
-      (let ((bounds (cape--bounds 'word)))
-        `(,(car bounds) ,(cdr bounds)
-          ,(cape--properties-table (cape--bbdb-records) :category 'cape-bbdb)
-          ,@cape--bbdb-properties))))
-
-  ;; add to top of `capf` list only in mail buffer with a hook with this function
-  (defun bbdb-setup-cape ()
-    (setq-local completion-at-point-functions
-              (cons #'cape-bbdb
-                    completion-at-point-functions))))
-
 ;; Contact manager package
 ;; 'ebdb-migrate-from-bbdb' converts from bbdb
 ;; 'ebdb-mua-update-records' can be used to add contacts
@@ -4332,18 +3641,6 @@ If INTERACTIVE is nil the function acts like a Capf."
           (unless (ebdb-mua-message-header "Newsgroups")
             ;; only create when not in a newsgroup, there are too many people in newsgroups
             'create))))
-
-;; there is no language server for it yet
-(use-package chapel-mode :disabled
-  :mode ("\\.chpl\\'" . 'chapel-mode))
-
-;; org backend export to reveal.js
-;; need to install external 'reveal.js'
-(use-package ox-reveal
-  :after org
-  :demand  ; require after org
-  :config
-  (setq org-reveal-root "~/.local/src/reveal.js/"))
 
 ;; Highlight current line
 (use-package hl-line
@@ -4629,49 +3926,12 @@ If INTERACTIVE is nil the function acts like a Capf."
                                  (file+datetree "~/Sync/notes/log-notes/gcal.org")
                                  "* TODO %?\n:org-gcal:\n%a\n:END:\n%^{SCHEDULED}p"))))
 
-;; Templates that can be used as 'capf'
-(use-package tempel :disabled
-  :after corfu
-  :init
-  (defun tempel-setup-capf ()
-    ;; Add the Tempel Capf to `completion-at-point-functions'.
-    ;; `tempel-expand' only triggers on exact matches. Alternatively use
-    ;; `tempel-complete' if you want to see all matches, but then you
-    ;; should also configure `tempel-trigger-prefix', such that Tempel
-    ;; does not trigger too often when you don't expect it. NOTE: We add
-    ;; `tempel-expand' *before* the main programming mode Capf, such
-    ;; that it will be tried first.
-    (setq-local completion-at-point-functions
-                (cons #'tempel-expand
-                      completion-at-point-functions)))
-  :hook
-  (prog-mode . tempel-setup-capf)
-  (text-mode . tempel-setup-capf))
-
-(use-package tempel-collection :disabled
-  :after tempel)
-
 ;; Link to org commits
 (use-package orgit
   :after org)
 
 (use-package orgit-forge
   :after org)
-
-;; Stackexchange mode for emacs
-(use-package sx :disabled
-  :general
-  ("M-<f12>" 'sx-search)
-  (sx-question-list-mode-map "j" 'sx-question-list-next)
-  (sx-question-list-mode-map "k" 'sx-question-list-previous)
-  :custom-face
-  (sx-question-mode-content-face ((t (:background unspecified))))
-  :hook
-  (sx-question-mode . variable-pitch-mode)
-  :config
-  (evil-set-initial-state 'sx-question-list-mode 'emacs)
-  ;; use the same 'question list' buffer to show the question
-  (setq sx-question-mode-display-buffer-function 'switch-to-buffer))
 
 (use-package hack-org-edraw-async-export
   :ensure nil
@@ -4710,15 +3970,6 @@ If INTERACTIVE is nil the function acts like a Capf."
                                                   (stroke . "#707070")
                                                   (stroke-width . 1)
                                                   (fill . "none"))))
-
-;; Git annotations
-(use-package blamer :disabled           ; problem with it showing in 'org-mode', when I don't enabled 'blamer-mode' in it.
-  :hook
-  (prog-mode . blamer-mode)
-  :config
-  (setq blamer-commit-formatter ": %s"
-        blamer-force-truncate-long-line t ; don't wrap lines
-        blamer-idle-time 2))
 
 (use-package cmake
   :ensure nil
@@ -4783,23 +4034,6 @@ If INTERACTIVE is nil the function acts like a Capf."
   :config
   (setq jinx-languages "en de pt_BR it"
         jinx-delay 1))
-
-;; Change default compile command
-(use-package compile :disabled
-  :ensure nil
-  :general
-  ([remap compile] '(lambda ()
-                       (interactive)
-                       (let ((current-prefix-arg '(4)))
-                         (call-interactively 'compile))))
-  :init
-  (setq compile-command "make -k -C ../build"))
-
-(use-package cape-yasnippet :disabled
-  :ensure (cape-yasnippet :host github :repo "elken/cape-yasnippet")
-  :after yasnippet corfu
-  :init
-  (add-to-list 'completion-at-point-functions #'yasnippet-capf))
 
 (use-package ediff
   :ensure nil
@@ -4876,71 +4110,11 @@ If INTERACTIVE is nil the function acts like a Capf."
         ;; https://github.com/simonmichael/hledger/issues/367#issuecomment-753455796
         ledger-report-native-highlighting-arguments nil))
 
-;; Display information on side of the buffer
-(use-package sideline :disabled         ; too much noise, not useful information
-  :hook
-  (prog-mode . sideline-mode)
-  :config
-  (setq sideline-backends-skip-current-line t  ; don't display on current line
-        sideline-order-left 'down              ; or 'up
-        sideline-order-right 'up               ; or 'down
-        sideline-format-left "%s   "           ; format for left aligment
-        sideline-format-right "   %s"          ; format for right aligment
-        sideline-priority 100                  ; overlays' priority
-        sideline-display-backend-name t))      ; display the backend name
-
-(use-package sideline-eldoc :disabled
-  :ensure (sideline-eldoc :host github :repo "ginqi7/sideline-eldoc")
-  :after sideline
-  :diminish sideline-mode
-  :demand
-  :config
-  (add-to-list 'sideline-backends-right '(sideline-eldoc . up)))
-
-(use-package sideline-blame :disabled
-  :ensure (sideline-blame :host github :repo "emacs-sideline/sideline-blame")
-  :after sideline
-  :demand
-  :config
-  (add-to-list 'sideline-backends-right '(sideline-blame . down)))
-
-;; ChatGTP client that integrates with 'org-mode'
-(use-package chatgpt-shell :disabled
-  :ensure (chatgpt-shell :host github :repo "xenodium/chatgpt-shell")
-  :config
-  ;; Maybe use a lambda to prevent password prompt
-  (setq chatgpt-shell-openai-key (auth-source-pick-first-password :host "api.openai.com"))
-  :after org
-  :init
-  (require 'ob-chatgpt-shell)
-  (ob-chatgpt-shell-setup)
-  ;; change header arguments, remove "raw"
-  (setq org-babel-default-header-args:chatgpt-shell '((:version . nil)
-                                                        (:preface . nil)))
-  (require 'ob-dall-e-shell)
-  (ob-dall-e-shell-setup))
-
-;; Experimental breadcrumb mode based on imenu
-;; https://debbugs.gnu.org/cgi/bugreport.cgi?bug=58431#28
-(use-package breadcrumb :disabled
-    :ensure (breadcrumb :host github :repo "joaotavora/breadcrumb")
-  :hook
-  (c++-ts-mode . breadcrumb-mode)
-  (python-ts-mode . breadcrumb-mode)  ;; giving error 
-  (org-mode . breadcrumb-mode))
-
 (use-package org-compat
   :ensure nil
   :after org
   :init
   (setq org-imenu-depth 5))
-
-(use-package circadian :disabled
-  :defer 1
-  :config
-  (setq circadian-themes '(("7:00" . modus-operandi-tinted)
-                           ("20:00" . modus-vivendi-tinted)))
-  (circadian-setup))
 
 (use-package pueue
   :ensure (pueue :host github :repo "xFA25E/pueue")
@@ -4959,68 +4133,18 @@ If INTERACTIVE is nil the function acts like a Capf."
   :init
   (term-cursor-color-mode))
 
-;; AI code completion based on "huggin face" api
-(use-package starhugger :disabled
-  :ensure (starhugger :url "https://gitlab.com/daanturo/starhugger.el")
-  :general
-  ("M-/" 'starhugger-trigger-suggestion)
-  :config
-  ;; Use https://huggingface.co/bigcode/starcoderplus instead
-  (setq starhugger-model-api-endpoint-url
-        "https://api-inference.huggingface.co/models/bigcode/starcoderplus")
-
-  (setq starhugger-api-token (funcall
-                              (plist-get (car (auth-source-search :host "api.huggingface.com"))
-                                         :secret)))
-
-  ;; `starhugger-inline-menu-item' makes a conditional binding that is only active at the inline suggestion start
-  (keymap-set starhugger-inlining-mode-map "TAB" (starhugger-inline-menu-item #'starhugger-accept-suggestion))
-  (keymap-set starhugger-inlining-mode-map "M-[" (starhugger-inline-menu-item #'starhugger-show-prev-suggestion))
-  (keymap-set starhugger-inlining-mode-map "M-]" (starhugger-inline-menu-item #'starhugger-show-next-suggestion))
-  (keymap-set starhugger-inlining-mode-map "M-f" (starhugger-inline-menu-item #'starhugger-accept-suggestion-by-word))
-
-   ;; for evil users, dismiss after pressing ESC twice
-  (defvar my-evil-force-normal-state-hook '())
-  (defun my-evil-run-force-normal-state-hook-after-a (&rest _)
-    (run-hooks 'my-evil-force-normal-state-hook))
-
-  (defun my-starhugger-inline-mode-h ()
-    (add-hook 'my-evil-force-normal-state-hook
-              (lambda () (starhugger-dismiss-suggestion t))
-              nil t))
-  (add-hook 'starhugger-inlining-mode-hook #'my-starhugger-inline-mode-h))
-
-(use-package combobulate
+(use-package combobulate :disabled
   :ensure (combobulate :url "https://github.com/mickeynp/combobulate")
   :hook
   (python-ts-mode . combobulate-mode)
   (c++-ts-mode . combobulate-mode)
   (yaml-ts-mode . combobulate-mode))
 
-;; use same frame for speedbar
-(use-package sr-speedbar :disabled      ; not working
-  :ensure (sr-speedbar :url "https://www.emacswiki.org/emacs/sr-speedbar.el")
-  :demand
-  :general
-  ('normal "g s" 'sr-speedbar-toggle))
-
 ;; copy from emacs terminal
 (use-package clipetty
   :if (not (display-graphic-p))
   :bind
   ("M-S-y" . clipetty-kill-ring-save))
-
-(use-package vertical-divider-term :disabled ; not reliable
-  :ensure nil
-  :if (not (display-graphic-p))
-  :init
-  (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│)))
-
-;; Add syntax highlight to Magit diffs
-;; need to install 'yay git-delta'  
-;; maybe too slow
-(use-package magit-delta :disabled
-  :hook (magit-mode . magit-delta-mode))
 
 ;; Add text-mode to files without format extension
 (use-package custom-files-auto-mode
@@ -5168,28 +4292,6 @@ absolute path. Finally load eglot."
   ;; Add inline variable hints, this feature is highly experimental
   (setq dape-inline-variables nil))
 
-;; Susbtitute Zotero, but not as flexible as betterbibtex in zotero
-;; Can not:
-;; 1. use specific authorTitleYear bibtex key format
-;; 2. use bibtex key as pdf name
-;; 3. download pdf from other sources
-(use-package zotra :disabled
-  :ensure (zotra :type git :host github :repo "mpedramfar/zotra")
-  :commands zotra-add-entry ; add entry from identifier
-  :config
-  (setq zotra-backend 'zotra-server)
-  (setq zotra-local-server-directory "~/.opt/zotra-server/")
-
-  ;; where pdfs are saved and default bibliography
-  (setq
-   zotra-default-bibliography "~/.bibliography.bib"
-   zotra-download-attachment-default-directory "~/Sync/bibliography"))
-
-(use-package solaire-mode :disabled
-  :defer 3
-  :config
-  (solaire-global-mode))
-
 ;; Rust-based wrapper to speed interaction with LSP servers
 ;; Need to build and install rust binary "emacs-lsp-booster" which should be on the path
 ;; https://github.com/blahgeek/emacs-lsp-booster
@@ -5197,9 +4299,6 @@ absolute path. Finally load eglot."
   :ensure (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
   :after eglot
   :init (eglot-booster-mode))
-
-(use-package ztree :disabled
-  :defer t)
 
 (use-package calfw :disabled
   ;; make sure to "build" 'calfw-org.el' as well.
@@ -5211,52 +4310,6 @@ absolute path. Finally load eglot."
     (autoload #'cfw:open-org-calendar "calfw-org" nil t))
   (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar)))
 
-(use-package czm-tex-util :disabled
-  :ensure (:host github :repo "ultronozm/czm-tex-util.el")
-  :after latex)
-
-(use-package czm-tex-fold :disabled
-  :ensure (:host github :repo "ultronozm/czm-tex-fold.el"
-                 :depth nil)
-  :demand t
-  :after latex
-  :bind
-  (:map TeX-fold-mode-map
-        ("C-c C-o C-s" . czm-tex-fold-fold-section)
-        ("C-c C-o s" . czm-tex-fold-clearout-section))
-  :config
-  (czm-tex-fold-set-defaults)
-  (czm-tex-fold-install)
-  (add-to-list 'czm-tex-fold-environment-delimiter-spec-list '(("[document]" "[document]") ("document")))
-  (setq
-   TeX-fold-macro-spec-list
-   '(("[f]" ("footnote" "marginpar"))
-     (czm-tex-fold-label-display ("label"))
-     (czm-tex-fold-cite-display ("cite"))
-     (czm-tex-fold-textcolor-display ("textcolor"))
-     (czm-tex-fold-alert-display ("alert"))
-     ("[r]" ("pageref" "footref"))
-     (czm-tex-fold-ref-display ("ref"))
-     (czm-tex-fold-eqref-display ("eqref"))
-     (czm-tex-fold-href-display ("href"))
-     (czm-tex-fold-texorpdfstring ("texorpdfstring"))
-     ("[i]" ("index" "glossary"))
-     ("[class]" ("documentclass"))
-     ("[1]:||*" ("item"))
-     ("…" ("dots"))
-     ("(C)" ("copyright"))
-     ("(R)" ("textregistered"))
-     ("TM" ("texttrademark"))
-     (czm-tex-fold-begin-display ("begin"))
-     (czm-tex-fold-end-display ("end"))
-     (1 ("section" "part" "chapter" "subsection" "subsubsection" "paragraph" "subparagraph" "part*" "chapter*" "\nsection*" "section*" "subsection*" "subsubsection*" "paragraph*" "\nsubparagraph*" "emph" "textit" "textsl" "textmd" "textrm" "textsf" "texttt" "textbf" "textsc" "textup" "underline")))))
-
-(use-package tex-numbers :disabled
-  :ensure (:host github :repo "ultronozm/tex-numbers.el")
-  :after latex
-  :config
-  (tex-numbers-mode 1))
-
 (use-package dslide
   :ensure (dslide :host github
                   :repo "positron-solutions/dslide")
@@ -5264,13 +4317,6 @@ absolute path. Finally load eglot."
   ("C-<f12>" . dslide-deck-start)
   :config
   (setq dslide-animation-duration 0))
-
-(use-package solarized-theme :disabled
-  :init
-  (setq solarized-scale-org-headlines nil
-        solarized-scale-outline-headlines nil
-        solarized-high-contrast-mode-line t)
-  (load-theme 'solarized-dark t))
 
 (use-package treesit-fold
   :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
