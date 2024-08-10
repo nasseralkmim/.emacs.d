@@ -5077,7 +5077,7 @@ absolute path. Finally load eglot."
     (eglot-ensure)
     (breadcrumb-mode -1)))
 
-(use-package standard-themes
+(use-package standard-themes :disabled
   :defer .5
   :init
   (standard-themes-load-dark))
