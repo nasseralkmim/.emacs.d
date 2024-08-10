@@ -202,7 +202,7 @@
   (save-place-mode))
 
 ;; typeface
-(use-package custom-typefaces
+(use-package custom-typefaces :disabled
   ;; :defer 1
   :ensure nil
   :preface
@@ -339,8 +339,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    ("C-h d" . helpful-at-point)
    ("C-h v" . helpful-variable)
    ("C-h k" . helpful-key))
-  :init
-  (defvar read-symbol-positions-list nil) ; fix bug in upstream emacs
+  ;; :init
+  ;; (defvar read-symbol-positions-list nil) ; fix bug in upstream emacs
   :config
   ;; don't create multiple buffers, just switch the current
   (defun pop-or-switch-to-buffer (buffer-name)
@@ -725,7 +725,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; highlight matching parens
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
-(use-package smartparens
+(use-package smartparens :disabled
   :diminish smartparens-mode
   ;; :ensure (:includes smartparens-config)
   :custom-face
@@ -736,14 +736,22 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (nxml-mode . smartparens-mode)
   ;; (org-mode . smartparens-mode) ; messing with org-mode
   ;; (smartparens-mode . smartparens-strict-mode) ; enforce pairs to be balanced
-  (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
+  ;; (smartparens-mode . show-smartparens-mode) ; instead of default show-paren-mode
   :config
   (setq sp-show-pair-delay 0.125
         sp-max-prefix-length 25         ; reduces work
-        sp-max-pair-length 4            ; reduces work
-        )
+        sp-max-pair-length 4))
+
+(use-package parens
+  :ensure nil
+  :hook
+  (after-init-hook . show-paren-mode)
+  :config
   ;; show context (echo area) when closing delimiter is off screen
-  (setq show-paren-context-when-offscreen 'overlay))
+  (setq show-paren-context-when-offscreen 'overlay
+        show-paren-style 'expression
+        show-paren-when-point-in-periphery t
+        show-paren-when-point-inside-paren nil))
 
 (use-package hack-sp-face-in-org
   :ensure nil
@@ -1855,7 +1863,7 @@ When matching, reference is stored in match group 1."
 
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
-(use-package corfu
+(use-package corfu :disabled
   :when (display-graphic-p)
   :ensure (corfu :type git :host github :repo "minad/corfu"
                    :files (:defaults "extensions/*"))
@@ -2366,7 +2374,7 @@ When matching, reference is stored in match group 1."
   :bind
   ("<f5>" . modus-themes-toggle)
   :config
-  (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi))
+  (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
@@ -2516,7 +2524,7 @@ Only if there is more than one window opened."
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
 
-(use-package highlight-doxygen
+(use-package highlight-doxygen :disabled
   :custom-face
   (highlight-doxygen-comment  ((t (:background unspecified :italic nil))))
   :hook
@@ -2757,7 +2765,7 @@ Only if there is more than one window opened."
 ;; to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
 ;; added ~/.local/bin to exec path solves the problem with jupyter
 ;; no need for this package, for now, defer with `:commands`
-(use-package exec-path-from-shell
+(use-package exec-path-from-shell :disabled
   :config
   ;; non interative shell start up faster
   ;; (setq exec-path-from-shell-arguments nil)
@@ -2813,6 +2821,7 @@ Only if there is more than one window opened."
 
 ;; Terminal emulator based on libvterm (in C)
 (use-package vterm
+  :commands vterm
   :config
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0)
@@ -3212,7 +3221,7 @@ opening a file from dired. Otherwise just regular dired."
           (find-file-or-switch-to-buffer file))))))
 
 ;; highlight parensthesis
-(use-package highlight-parentheses
+(use-package highlight-parentheses :disabled
   :diminish highlight-parentheses-mode
   :defer 1 
   :config
@@ -3424,7 +3433,7 @@ opening a file from dired. Otherwise just regular dired."
         languagetool-console-command "~/.opt/LanguageTool-6.4/languagetool-commandline.jar"
         languagetool-server-command "~/.opt/LanguageTool-6.4/languagetool-server.jar"))
 
-(use-package svg-lib
+(use-package svg-lib :disabled
   :ensure (svg-lib :type git :host github :repo "rougier/svg-lib"))
 
 ;; Icons for completion in region.
@@ -3606,7 +3615,7 @@ opening a file from dired. Otherwise just regular dired."
   (:map popper-mode-map
         ("C-`" . popper-toggle)
         ("C-c C-`" . popper-toggle))
-  :init
+  :config
   ;; treat those as popups
   (setq popper-reference-buffers
         '("\\*Messages\\*"
@@ -3816,7 +3825,7 @@ its results, otherwise display STDERR with
           (buffer-string))))))
 
 ;; dim text color from surroundings
-(use-package focus
+(use-package focus :disabled
   :commands focus-mode
   :config
   (add-to-list 'focus-mode-to-thing '(prog-mode . sexp)))
@@ -4621,7 +4630,7 @@ If INTERACTIVE is nil the function acts like a Capf."
                                  "* TODO %?\n:org-gcal:\n%a\n:END:\n%^{SCHEDULED}p"))))
 
 ;; Templates that can be used as 'capf'
-(use-package tempel
+(use-package tempel :disabled
   :after corfu
   :init
   (defun tempel-setup-capf ()
@@ -4639,7 +4648,7 @@ If INTERACTIVE is nil the function acts like a Capf."
   (prog-mode . tempel-setup-capf)
   (text-mode . tempel-setup-capf))
 
-(use-package tempel-collection
+(use-package tempel-collection :disabled
   :after tempel)
 
 ;; Link to org commits
@@ -5192,7 +5201,7 @@ absolute path. Finally load eglot."
 (use-package ztree :disabled
   :defer t)
 
-(use-package calfw
+(use-package calfw :disabled
   ;; make sure to "build" 'calfw-org.el' as well.
   :ensure (calfw :files ("calfw.el"
                          "calfw-org.el"))
@@ -5292,7 +5301,7 @@ absolute path. Finally load eglot."
   (treesit-auto-add-to-auto-mode-alist 'all)
   (global-treesit-auto-mode))
 
-(use-package hledger-rules-mode
+(use-package hledger-rules-mode :disabled
   :ensure nil
   :mode ("\\.rules\\'" . hledger-rules-mode)
   :config
@@ -5300,19 +5309,14 @@ absolute path. Finally load eglot."
     (font-lock-add-keywords nil 
                             '(;; Comments
                               ("^\\s-*#.*" . font-lock-comment-face)
-
                               ;; Keywords
                               ("\\<\\(if\\|fields\\|date-format\\|currency\\|account[0-9]+\\|amount[0-9]+\\|skip\\)\\>" . font-lock-keyword-face)
-
                               ;; Date formats, accounts, etc.
                               ("\\<\\(%Y-%m-%d\\|\\b[a-zA-Z0-9:_-]+\\b\\)\\>" . font-lock-variable-name-face)
-
                               ;; Operators
                               ("\\(=~\\|==\\|!=\\|<=\\|>=\\)" . font-lock-builtin-face)
-
                               ;; Variables like %description, %amount
                               ("\\(%[a-zA-Z_]+\\)" . font-lock-variable-name-face)
-
                               ;; General words
                               ("\\b\\w+\\b" . font-lock-string-face))))
 

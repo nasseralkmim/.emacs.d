@@ -24,6 +24,8 @@
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)))       ;; No vertical scroll-bars
 
+(add-to-list 'default-frame-alist '(font . "Monaspace Neon Light-10"))
+
 ;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
 ;; native compilation settings
 (when (featurep 'native-compile)
