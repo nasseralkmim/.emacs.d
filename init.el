@@ -358,8 +358,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; completion UI (vertical list in minibuffer)
 (use-package vertico
   :ensure (vertico :type git :host github :repo "minad/vertico"
-                     :files (:defaults "extensions/*"))
-  :init
+                   :files (:defaults "extensions/*"))
+  :defer 0.5
+  :config
   (vertico-mode)
   (setq vertico-resize t))
 
@@ -407,7 +408,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         display-buffer-below-selected))))
 
 ;; allows different completion UI configuration
-(use-package vertico-multiform
+(use-package vertico-multiform :disabled
   :ensure nil
   :after vertico
   :init
@@ -1069,7 +1070,7 @@ org-mode"
           org-cycle-show-empty-lines
           org-optimize-window-after-visibility-change)))
 
-(use-package cdlatex)
+(use-package cdlatex :after (:or latex org))
 
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
@@ -2438,7 +2439,7 @@ Only if there is more than one window opened."
         '(display-buffer-reuse-window (reusable-frames . t))))
 
 ;; Terminal emulator based on libvterm (in C)
-(use-package vterm
+(use-package vterm :disabled
   :commands vterm
   :config
   (setq vterm-max-scrollback 20000
@@ -2449,7 +2450,8 @@ Only if there is more than one window opened."
   (add-to-list 'vterm-tramp-shells '("docker" "/bin/bash")))
 
 ;; Quickly switch to 'vterm' buffer.
-(use-package vterm-toggle
+(use-package vterm-toggle :disabled
+  :after vterm
   :bind
   (("<f9>" . vterm-toggle-cd) 	; opens term in current cd including remote
    ("C-<f9>" . vterm-toggle-insert-cd)
@@ -2462,7 +2464,7 @@ Only if there is more than one window opened."
   (add-to-list 'display-buffer-alist `(,vterm-buffer-name display-buffer-below-selected)))
 
 ;; multiple terminals
-(use-package multi-vterm
+(use-package multi-vterm :disabled
   :bind
   ("S-<f9>" . multi-vterm)
   :commands multi-vterm
@@ -2477,7 +2479,7 @@ Only if there is more than one window opened."
   (when (string= system-name "ryzen-ms7c37")
     (setq terminal-here-terminal-command 'gnome-terminal)))
 
-(use-package keycast
+(use-package keycast :disabled
   :commands keycast-mode keycast-log-mode)
 
 (use-package gif-screencast :disabled
@@ -3247,7 +3249,7 @@ opening a file from dired. Otherwise just regular dired."
   :commands org-make-toc-insert org-make-toc)
 
 ;; more color in dired
-(use-package diredfl
+(use-package diredfl :disabled
   :hook (dired-mode . diredfl-mode))
 
 ;; show org-babel error or warning when execute block
@@ -4344,7 +4346,8 @@ absolute path. Finally load eglot."
                             (treesit-fold-range-markers node offset ":")) 0 1))
         (alist-get 'python-ts-mode treesit-fold-range-alist)))
 
-(use-package treesit-auto
+;; Don't need to be enabled all the time
+(use-package treesit-auto :disabled
   :defer 1
   :custom
   (treesit-auto-install 'prompt)
@@ -4384,7 +4387,7 @@ absolute path. Finally load eglot."
            :host github
            :repo "positron-solutions/master-of-ceremonies"))
 
-(use-package hide-mode-line)
+(use-package hide-mode-line :disabled)
 
 (use-package apptainer-mode
   :ensure (apptainer-mode :type git :host github :repo "jrgant/apptainer-mode")
