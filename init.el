@@ -748,10 +748,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         sp-max-prefix-length 25         ; reduces work
         sp-max-pair-length 4))
 
-(use-package parens
+(use-package paren
   :ensure nil
   :hook
-  (after-init-hook . show-paren-mode)
+  (prog-mode . show-paren-mode)
   :config
   ;; show context (echo area) when closing delimiter is off screen
   (setq show-paren-context-when-offscreen 'overlay
