@@ -152,7 +152,13 @@
   (setq-default truncate-lines t)
 
   ;; narrow to region 'C-x n n' and widen with 'C-x n w'
-  (put 'narrow-to-region 'disabled nil))
+  (put 'narrow-to-region 'disabled nil)
+
+  ;; Window divider and continuous line
+  (unless (display-graphic-p)
+    (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+    ;; emacs can not figure out that in the terminal the default BG is dark
+    (setq frame-background-mode 'dark)))
 
 (use-package bookmark
   :ensure nil
