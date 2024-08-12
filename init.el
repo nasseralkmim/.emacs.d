@@ -927,9 +927,7 @@ org-mode"
    ("M-d" . my-iedit-expand-down-to-occurrence)
    :map iedit-mode-keymap
    ("M-'" . iedit-show/hide-context-lines)
-   ("<escape>" . iedit-mode)
-   ("C-n" . iedit-next-occurrence)
-   ("C-p" . iedit-prev-occurrence))
+   ("<escape>" . iedit-mode))
   :init
   (defun my-iedit-expand-down-to-occurrence ()
   ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
@@ -3099,8 +3097,7 @@ opening a file from dired. Otherwise just regular dired."
   (activities-tabs-mode))
 
 ;; view large files
-(use-package vlf
-  :ensure nil
+(use-package vlf :disabled
   :defer 1
   :config
   ;; to have 'vlf' as an option
