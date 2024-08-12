@@ -929,8 +929,7 @@ org-mode"
   (("C-;" . iedit-mode)
    ("M-d" . my-iedit-expand-down-to-occurrence)
    :map iedit-mode-keymap
-   ("M-'" . iedit-show/hide-context-lines)
-   ("<escape>" . iedit-mode))
+   ("M-'" . iedit-show/hide-context-lines))
   :init
   (defun my-iedit-expand-down-to-occurrence ()
   ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
