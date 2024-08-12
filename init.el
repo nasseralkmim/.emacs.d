@@ -433,7 +433,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                                         (minibuffer (initials)))))
 
 ;; default completion framework
-(use-package simple 
+(use-package simple
   :ensure nil
   :config
   ;; first TAB shows candidates
@@ -1575,14 +1575,6 @@ When matching, reference is stored in match group 1."
   ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
   ('normal flyspell-mode-map "[ ," 'flyspell-correct-wrapper))
 
-;; Attempt to make flyspell faster by restricting to region, instead of buffer
-;; note: makes it slow when saving the buffer
-;; if using 'wucuo', should not use 'flyspell-mode'
-(use-package wucuo :disabled
-  :hook
-  (text-mode . wucuo-start)
-  (prog-mode . wucuo-start))
-
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
 (use-package corfu :disabled
@@ -1607,7 +1599,7 @@ When matching, reference is stored in match group 1."
         corfu-quit-no-match 'separator))
 
 ;; corfu extension
-(use-package corfu-history
+(use-package corfu-history :disabled
   :ensure nil
   :after corfu
   :config
@@ -1616,7 +1608,7 @@ When matching, reference is stored in match group 1."
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
 ;; `completion at point' extensions for specific candidates in `completion in region'
-(use-package cape
+(use-package cape :disabled
   :ensure (cape :type git :host github :repo "minad/cape")
   :demand
   :after corfu
@@ -1637,7 +1629,7 @@ When matching, reference is stored in match group 1."
 
 ;; TODO: maybe not needed anymore 
 ;; see [[orgit-log:~/.local/src/emacs/::("master")][~/.local/src/emacs/ (magit-log "master")]]
-(use-package cape-eglot
+(use-package cape-eglot :disabled
   :ensure nil
   :after orderless eglot
   :init
