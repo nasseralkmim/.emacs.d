@@ -158,7 +158,7 @@
   (unless (display-graphic-p)
     (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'dark)))
+    (setq frame-background-mode 'light)))
 
 (use-package bookmark
   :ensure nil
@@ -3118,7 +3118,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; helps with windows popups
 (use-package popper
-  :defer 1
+  :hook (after-init . popper-mode)
   :bind
   (:map popper-mode-map
         ("C-`" . popper-toggle)
@@ -3151,7 +3151,6 @@ opening a file from dired. Otherwise just regular dired."
         ;; 1/3 of the screen height
         popper-window-height 0.33)
 
-  (popper-mode +1)
   (popper-echo-mode +1))
 
 (use-package rainbow-delimiters
@@ -4142,6 +4141,8 @@ its results, otherwise display STDERR with
   (add-to-list 'auto-mode-alist '("\\.out\\'" . text-mode)))
 
 (use-package tab-bar
+  :custom-face
+  (tab-bar  ((t (:inherit default))))
   :ensure nil)
 
 (use-package xref
@@ -4323,8 +4324,7 @@ absolute path. Finally load eglot."
                             (treesit-fold-range-markers node offset ":")) 0 1))
         (alist-get 'python-ts-mode treesit-fold-range-alist)))
 
-;; Don't need to be enabled all the time
-(use-package treesit-auto :disabled
+(use-package treesit-auto
   :defer 1
   :custom
   (treesit-auto-install 'prompt)
