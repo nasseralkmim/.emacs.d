@@ -911,7 +911,7 @@ org-mode"
      '("z" . meow-pop-selection)
      '("'" . repeat)
      '("`" . "C-c @")                   ; for hide-show
-     '("\\" . "C-.")                    ; for avy
+     '("/" . "C-.")                    ; for avy
      '("<escape>" . meow-cancel-selection)))
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
@@ -3927,7 +3927,7 @@ its results, otherwise display STDERR with
 
 ;; Drawing link support in 'org-mode'
 (use-package edraw
-  :unless (display-graphic-p)
+  :when (display-graphic-p)
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
   :hook
   (org-mode . (lambda ()
