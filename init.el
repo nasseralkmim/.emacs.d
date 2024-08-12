@@ -1070,7 +1070,10 @@ org-mode"
           org-cycle-show-empty-lines
           org-optimize-window-after-visibility-change)))
 
-(use-package cdlatex :after (:or latex org))
+;; Quick insert latex macros
+;; for example, "` a" inserts "\alpha"
+;; org-mode already contains a version of cdlatex, 'org-cdlatex-mode'
+(use-package cdlatex :after latex)
 
 ;; bug when display image using :dir
 ;; https://lists.gnu.org/archive/html/emacs-orgmode/2021-04/msg00246.html
