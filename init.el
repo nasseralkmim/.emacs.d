@@ -359,6 +359,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico
   :ensure (vertico :type git :host github :repo "minad/vertico"
                    :files (:defaults "extensions/*"))
+  :bind
+  (:map vertico-map
+        ("M-<return>" . minibuffer-force-complete-and-exit))
   :defer 0.5
   :config
   (vertico-mode)
