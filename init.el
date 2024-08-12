@@ -1004,30 +1004,6 @@ org-mode"
   :mode (("\\.org$" . org-mode))
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
-  ;; :general
-  ;; ("C-c s s" 'org-store-link)
-  ;; ("C-c s i" 'org-insert-link-global)   ; e.g. to insert link to pdf in a latex buffer
-  ;; (org-mode-map "C-c C-l" 'org-insert-link)
-  ;; (org-mode-map "C-," nil)              ; using that for flyspell
-  ;; (org-mode-map "C-'" nil)              ; using that ispell
-  ;; (org-mode-map "C-c ," 'org-insert-structure-template)
-  ;; ;; ('normal org-mode-map "TAB" 'org-cycle) ; avoid binding tab
-  ;; ('normal org-mode-map :prefix "z"
-  ;;          "s j" 'org-babel-next-src-block
-  ;;          "s k" 'org-babel-previous-src-block
-  ;;          "n" 'org-toggle-narrow-to-subtree
-  ;;          "k" 'org-previous-visible-heading
-  ;;          "j" 'org-next-visible-heading
-  ;;          "u" 'outline-up-heading)
-  ;; ('normal org-mode-map :prefix "SPC"
-  ;;          "ves" 'org-babel-execute-subtree
-  ;;          "vg" 'org-babel-goto-named-src-block) 
-  ;; ('normal org-mode-map :prefix "g"
-  ;;          "k" 'org-backward-heading-same-level
-  ;;          "j" 'org-forward-heading-same-level
-  ;;          "n" 'org-babel-next-src-block
-  ;;          "p" 'org-babel-previous-src-block
-  ;;          "h" 'org-babel-goto-src-block-head)
   :bind
   (("M-o" . org-open-at-point-global)
    ("C-c s s" . org-store-link)
@@ -1060,6 +1036,8 @@ org-mode"
    org-html-htmlize-output-type 'inline-css   ; nil to export as plain text
    org-startup-with-inline-images t           ; show images
    org-indent-indentation-per-level 1         ; indent just 1 space
+   org-use-sub-superscripts nil               ; don't need that in tty
+   org-highlight-latex-and-related '(latex)  ; highlight latex fragments
    org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
 
   ;; remove org-cycle-hide-drawers from cycle hook
@@ -1319,7 +1297,10 @@ graphics."
     (if org-blocks-hidden
         (org-show-block-all)
       (org-hide-block-all))
-    (setq-local org-blocks-hidden (not org-blocks-hidden))))
+    (setq-local org-blocks-hidden (not org-blocks-hidden)))
+  
+  ;; https://tecosaur.github.io/emacs-config/config.html#prettier-highlighting
+  (add-to-list 'org-src-block-faces '("latex" (:inherit default :extend t))))
 
 ;; Use unicode for delimiter of noweb syntax
 ;; this avoids problems with sntax highlight inside the block
@@ -2535,7 +2516,7 @@ Only if there is more than one window opened."
         ("C-c s s" . org-store-link)))
 
 ;; create backlinks when linking org-mode headings
-(use-package org-super-links
+(use-package org-super-links :disabled
   :ensure (org-super-links :type git :host github :repo "toshism/org-super-links")
   ;; :after org  ; can use outside of org-mode, so use the keybindings to load
   :bind
@@ -3119,6 +3100,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; view large files
 (use-package vlf
+  :ensure nil
   :defer 1
   :config
   ;; to have 'vlf' as an option
@@ -3670,7 +3652,7 @@ its results, otherwise display STDERR with
         search-whitespace-regexp ".*"))
 
 ;; highlight code in eww
-(use-package shr-tag-pre-highlight
+(use-package shr-tag-pre-highlight :disabled
   :after shr
   :demand
   :config
