@@ -10,7 +10,6 @@
 ;; https://github.com/jamescherti/minimal-emacs.d/blob/main/early-init.el
 (advice-add #'display-startup-echo-area-message :override #'ignore)
 
-
 ;; Avoid delay with corfu
 ;; https://github.com/minad/corfu/issues/307 
 (setq-default pgtk-wait-for-event-timeout 0)
@@ -23,9 +22,6 @@
    ;; (right-fringe . 8)                   ;; Thin right fringe
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)))       ;; No vertical scroll-bars
-
-(add-to-list 'default-frame-alist '(font . "Monaspace Neon Light-10"))
-(set-face-attribute 'variable-pitch nil :family "Iosevka Etoile" :inherit 'default)
 
 ;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
 ;; native compilation settings

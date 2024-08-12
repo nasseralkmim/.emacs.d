@@ -208,13 +208,13 @@
   (save-place-mode))
 
 ;; typeface
-(use-package custom-typefaces :disabled
-  ;; :defer 1
+(use-package custom-typefaces
+  :when (display-graphic-p)
   :ensure nil
   :preface
   (setq default-monospace '("Monaspace Neon"))
-  (setq default-unicode '("Noto Color Emoji"))
-  (setq default-proportional '("Monaspace Neon"))
+  (setq default-unicode '("Symbols Nerd Font Mono"))
+  (setq default-proportional '("Iosevka Etoile"))
   (setq default-comments '("Monaspace Radon"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
@@ -227,6 +227,7 @@
   ;; comment
   (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
   (font-lock-constant-face ((t (:family ,(car default-monospace)))))
+  (font-lock-function-name-face  ((t (:family ,(car default-monospace) :weight medium))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
   ;; so summary line aligned
