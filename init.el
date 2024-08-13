@@ -105,7 +105,7 @@
         mouse-wheel-follow-mouse 't
         ;; scroll-conservatively 0
         ;; scroll-step 0
-       )
+        )
 
   (setq ring-bell-function 'ignore)
 
@@ -445,7 +445,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         ;; Just one column is better.
         completions-format 'one-column
         completions-max-height 20
-        completions-header-format nil))
+        completions-header-format nil
+        ;; use C-SPC after C-u C-SPC to go jump to marks
+        set-mark-command-repeat-pop t))
 
 ;; save the search history
 (use-package savehist
@@ -1008,6 +1010,7 @@ org-mode"
    ("C-c s i" . org-insert-link-global)
    :map org-mode-map
    ("C-c ," . org-insert-structure-template)
+   ("C-," . nil)                        ; use for xref
    ("M-<return>" . org-meta-return))
   :hook
   (org-mode . visual-line-mode)
@@ -4001,7 +4004,6 @@ its results, otherwise display STDERR with
   (prog-mode . jinx-mode)
   (text-mode . jinx-mode)
   :bind
-  ("C-," . jinx-correct)
   ("M-," . jinx-correct)
   :config
   (setq jinx-languages "en de pt_BR it"
@@ -4135,6 +4137,8 @@ its results, otherwise display STDERR with
 
 (use-package xref
   :ensure nil
+  :bind
+  ("C-," . xref-go-back)
   :config
   ;; Need to set both
   (setq xref-show-definitions-function 'xref-show-definitions-completing-read)
