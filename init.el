@@ -919,6 +919,7 @@ org-mode"
      '("<escape>" . meow-cancel-selection)))
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
+  (setq meow-expand-exclude-mode-list '())
   (meow-global-mode))
 
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
