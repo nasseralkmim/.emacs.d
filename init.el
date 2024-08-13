@@ -361,7 +361,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                    :files (:defaults "extensions/*"))
   :bind
   (:map vertico-map
-        ("M-<return>" . minibuffer-force-complete-and-exit))
+        ("M-<return>" . vertico-exit-input))
   :defer 0.5
   :config
   (vertico-mode)
@@ -2193,7 +2193,7 @@ Only if there is more than one window opened."
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
 
-(use-package highlight-doxygen :disabled
+(use-package highlight-doxygen
   :custom-face
   (highlight-doxygen-comment  ((t (:background unspecified :italic nil))))
   :hook
