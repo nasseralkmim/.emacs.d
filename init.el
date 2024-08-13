@@ -68,7 +68,7 @@
   (general-override-mode))
 
 ;; control minor-mode indication in the mode-line
-(use-package diminish
+(use-package diminish :disabled
   :ensure (:wait t)
   :demand t)
 
@@ -78,7 +78,6 @@
 
 ;; minimizes GC interference with user activity
 (use-package gcmh
-  :diminish gcmh-mode
   :defer 1
   :config
   (setq gcmh-idle-delay 0.5
@@ -311,7 +310,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   ;; abbrev for speed and less strain
   (setq-default abbrev-mode t)
-  (diminish 'abbrev-mode)
   (setq save-abbrevs 'silently))
 
 (use-package color-identifiers-mode)
@@ -737,7 +735,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; for wrap/unwrap I use evil-surround
 ;; expand/contract (slurp) is good for elisp
 (use-package smartparens :disabled
-  :diminish smartparens-mode
   ;; :ensure (:includes smartparens-config)
   :custom-face
   (sp-show-pair-match-content-face ((t (:inherit show-paren-match))))
@@ -976,8 +973,7 @@ org-mode"
 ;; show colors
 (use-package rainbow-mode
   :defer 1
-  :commands rainbow-mode 
-  :diminish rainbow-mode)
+  :commands rainbow-mode)
 
 ;; Add-ons to Org https://git.sr.ht/~bzg/org-contrib
 ;; some file produces a bug with inline images (can not toggle) so it is better
@@ -1002,7 +998,6 @@ org-mode"
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
-  :diminish org-indent-mode
   :mode (("\\.org$" . org-mode))
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
@@ -1645,7 +1640,6 @@ When matching, reference is stored in match group 1."
 ;; Allows selectively display portions of program
 (use-package hideshow
   :ensure nil
-  :diminish hs-minor-mode
   ;; :bind
   ;; (:map hs-minor-mode-map
   ;;  ("C-c z h"  . hs-hide-block)
@@ -1710,10 +1704,8 @@ When matching, reference is stored in match group 1."
 ;; folding
 ;; note: evil collection also sets a bunch of keybindings
 (use-package outline
-  :diminish outline-minor-mode
   :mode ("\\.inp\\'" . outline-minor-mode)
   :ensure nil
-  :diminish outline-minor-mode
   ;; :hook
   ;;(prog-mode . outline-minor-mode) ; using the hideshow package
   ;; (emacs-lisp-mode . outline-minor-mode)
@@ -2143,9 +2135,8 @@ Only if there is more than one window opened."
   (dimmer-configure-corfu))
 
 ;; this mode is used to highlight current window
-(use-package face-remap
-  :ensure nil
-  :diminish (buffer-face-mode))
+(use-package face-remap :disabled
+  :ensure nil)
 
 ;; syntax highlight in html export of org-mode source blocks
 ;; does not work well with modus-themes and tree-sitter
@@ -2289,7 +2280,6 @@ Only if there is more than one window opened."
 ;; key chord hint
 (use-package which-key
   :defer 1
-  :diminish which-key-mode
   :config
   (which-key-mode t))
 
@@ -2347,7 +2337,6 @@ Only if there is more than one window opened."
   :after org)
 
 (use-package yasnippet
-  :diminish yas-minor-mode
   :hook
   (LaTeX-mode . yas-minor-mode)
   (org-mode . yas-minor-mode)
@@ -2731,7 +2720,6 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; highlight parensthesis
 (use-package highlight-parentheses :disabled
-  :diminish highlight-parentheses-mode
   :defer 1 
   :config
   (setq highlight-parentheses-colors nil
@@ -3064,7 +3052,6 @@ opening a file from dired. Otherwise just regular dired."
 
 (use-package eldoc
   :ensure nil
-  :diminish eldoc-mode
   :hook (org-mode . eldoc-mode)
   :config
   ;; never resize echo area display, use always 1 truncated line
@@ -3186,7 +3173,6 @@ opening a file from dired. Otherwise just regular dired."
 ;; sometimes it gets in the way
 (use-package eldoc-box
   :if (display-graphic-p)
-  :diminish eldoc-box-hover-mode
   :hook
   (prog-mode . eldoc-box-hover-mode)
   :config
