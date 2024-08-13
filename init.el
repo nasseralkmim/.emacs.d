@@ -208,25 +208,25 @@
 
 ;; typeface
 (use-package custom-typefaces
-  :when (display-graphic-p)
+  ;; :when (not (display-graphic-p))
   :ensure nil
   :preface
-  (setq default-monospace '("Monaspace Neon"))
+  (setq default-monospace '("Monaspace Neon Light"))
   (setq default-unicode '("Symbols Nerd Font Mono"))
-  (setq default-proportional '("Iosevka Etoile"))
+  (setq default-proportional '("Input Sans"))
   (setq default-comments '("Monaspace Radon"))
   :custom-face 
   ;; "Victor Mono" sometimes is nice for comments or "Recursive Mono Casual Static".
   ;; Monospace favorites are "JetBrains Mono NF", "MesloLGS Nerd Font Mono" and "Iosevka NF", or "Recursive Mono Linear Static".
   ;; Variable pitch favorites "Iosevka Etoile", "Recursive Sans Linear Static"
   ;; 'constant'
-  (default  ((t (:family ,(car default-monospace) :weight light))))
+  ;; (default  ((t (:family ,(car default-monospace)))))
   (variable-pitch ((t (:family ,(car default-proportional)))))
-  (variable-pitch-text ((t (:inherit variable-pitch :height unspecified))))
+  (variable-pitch-text ((t (:inherit variable-pitch))))
   ;; comment
   (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
   (font-lock-constant-face ((t (:family ,(car default-monospace)))))
-  (font-lock-function-name-face ((t (:family ,(car default-monospace) :weight regular))))
+  ;; (font-lock-function-name-face ((t (:family ,(car default-monospace) :weight regular))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
   ;; so summary line aligned
@@ -239,7 +239,8 @@
   (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face))))
   :init
-  (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend))
+  (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend)
+  (set-frame-font (car default-monospace) nil t))
 
 ;; change typeface size font
 ;; note: `global-text-scale-adjust' do that
@@ -2043,7 +2044,7 @@ When matching, reference is stored in match group 1."
   :bind
   ("<f5>" . modus-themes-toggle)
   :config
-  (setq modus-themes-to-toggle '(modus-vivendi-tinted modus-operandi-tinted))
+  (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
