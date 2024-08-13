@@ -227,7 +227,7 @@
   ;; comment
   (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic))))
   (font-lock-constant-face ((t (:family ,(car default-monospace)))))
-  (font-lock-function-name-face  ((t (:family ,(car default-monospace) :weight medium))))
+  (font-lock-function-name-face ((t (:family ,(car default-monospace) :weight regular))))
   ;; outline 4 inherits from comment face... make it oblique instead of italic
   (outline-4 ((t (:inherit font-lock-doc-face))))
   ;; so summary line aligned
@@ -909,7 +909,7 @@ org-mode"
      '("w" . meow-mark-word)
      '("W" . meow-mark-symbol)
      '("x" . meow-line)
-     '("X" . meow-goto-line)
+     '("X" . meow-visual-line)
      '("y" . meow-save)
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
@@ -2673,7 +2673,7 @@ Only if there is more than one window opened."
   :ensure nil
   :custom-face
   (font-lock-function-call-face ((t :inherit outline-7)))
-  (font-lock-function-name-face ((t :inherit t :weight bold)))
+  ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
   :config
   ;; maximum fontification
   (setq treesit-font-lock-level 4))
