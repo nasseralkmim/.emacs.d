@@ -21,7 +21,8 @@
    ;; (right-divider-width . 1)            ;; Thin vertical window divider
    ;; (right-fringe . 8)                   ;; Thin right fringe
    (tool-bar-lines . 0)                 ;; No tool bar
-   (vertical-scroll-bars . nil)))       ;; No vertical scroll-bars
+   (vertical-scroll-bars . nil)
+   (font . "Monaspace Neon Light-10")))       ;; No vertical scroll-bars
 
 ;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
 ;; native compilation settings

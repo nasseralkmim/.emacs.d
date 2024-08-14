@@ -207,7 +207,7 @@
   (save-place-mode))
 
 ;; typeface
-(use-package custom-typefaces
+(use-package custom-typefaces :disabled
   ;; :when (not (display-graphic-p))
   :ensure nil
   :preface
@@ -424,6 +424,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; filter with space-separated components and match components in any order
 ;; filter means how a input string is matched against candidates
 (use-package orderless
+  :defer 1
   :demand
   :config
   ;; partial completion for files to allows path expansion
