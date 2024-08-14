@@ -1,6 +1,5 @@
 ; -*- coding: utf-8; lexical-binding: t -*-
 
-
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
@@ -232,7 +231,7 @@
 
 (use-package variable-pitch-typeface
   :ensure nil
-  :when (display-graphic-p)
+  :after org
   :preface
   (setq default-proportional '("Input Sans"))
   :custom-face
@@ -241,7 +240,6 @@
 
 (use-package org-typeface-when-variable-pitch
   :ensure nil
-  :when (display-graphic-p)
   :after org
   :preface
   (setq default-monospace '("Monaspace Neon Light"))
@@ -1721,31 +1719,8 @@ When matching, reference is stored in match group 1."
 (use-package outline
   :mode ("\\.inp\\'" . outline-minor-mode)
   :ensure nil
-  ;; :hook
-  ;;(prog-mode . outline-minor-mode) ; using the hideshow package
-  ;; (emacs-lisp-mode . outline-minor-mode)
-  ;; (markdown-mode . outline-minor-mode)
-  ;; (conf-mode . outline-minor-mode)
-  ;; (evil-collection-setup . (lambda (&rest a)
-  ;;                            ;; need to rebind after loading outline because 'general' uses
-  ;;                            ;; `after-load-functions' and 'evil-collection' uses `eval-after-load'
-  ;;                            ;; 'evil-collection' end up binding last...
-  ;;                            ;; https://github.com/emacs-evil/evil-collection/issues/214#issuecomment-451489870
-  ;;                            (general-def 'normal outline-mode-map "z k" 'outline-previous-visible-heading)
-  ;;                            (general-def 'normal outline-mode-map "z l" nil)))
-  ;; :general
-  ;; ('normal outline-minor-mode-map "<tab>" (general-predicate-dispatch nil
-  ;;                                           (outline-on-heading-p) 'outline-cycle))
-  ;; ('normal outline-mode-map :prefix "z"
-  ;;          "j" 'outline-next-visible-heading
-  ;;          "o" 'outline-show-children   ; show first level
-  ;;          "A" 'outline-show-all)
-  ;; ;; ('normal outline-mode-map "C-j" nil)
-  ;; ('normal outline-mode-map "M-j" nil)  ; conflicts with c multiline comment
   :config
-  (setq outline-minor-mode-cycle nil    ; using general predicate dispatch instead
-        ;; outline-minor-mode-highlight 'append  ;;  bug with C++ source block
-        ))  
+  (setq outline-minor-mode-cycle t))  
 
 ;; trying to make outline work with python docstring
 (use-package outline-python-regex :disabled
