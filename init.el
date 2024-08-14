@@ -231,7 +231,7 @@
 
 (use-package variable-pitch-typeface
   :ensure nil
-  :after org
+  :after (:or org latex)
   :preface
   (setq default-proportional '("Input Sans"))
   :custom-face
@@ -240,7 +240,7 @@
 
 (use-package org-typeface-when-variable-pitch
   :ensure nil
-  :after org
+  :after (:or org latex)
   :preface
   (setq default-monospace '("Monaspace Neon Light"))
   :custom-face
@@ -1839,11 +1839,23 @@ When matching, reference is stored in match group 1."
   ;; only preview displaymath and not textmath which can be anoying when inside a table or algorithm
   ;; It is ok if we can fold the table or algorithm.
   (setq preview-default-option-list '("displaymath" "showlabels" "textmath")
-        preview-auto-cache-preamble t)
+        preview-auto-cache-preamble 'ask
+        ;; preview-LaTeX-command-replacements '(preview-LaTeX-disable-pdfoutput)
+        )
+  (add-to-list 'preview-auto-reveal-commands 'meow-left)
+  (add-to-list 'preview-auto-reveal-commands 'meow-right)))
+
+;; Better math preview in latex
+(use-package preview-auto
+  :ensure (preview-auto :type git :host github :repo "ultronozm/preview-auto.el")
+  :after latex
+  :demand t
   :config
-  ;; make sure evil-commands reveal the preview
-  (add-to-list 'preview-auto-reveal-commands 'evil-forward-char)
-  (add-to-list 'preview-auto-reveal-commands 'evil-backward-char))
+  (setq preview-protect-point t)
+  (setq preview-locating-previews-message nil)
+  (setq preview-leave-open-previews-visible t)
+  :custom
+  (preview-auto-interval 0.1))
 
 ;; latex function
 (use-package latex-insert-figure-from-clipboard-hack
@@ -1908,9 +1920,9 @@ When matching, reference is stored in match group 1."
 
   (setq TeX-fold-ellipsis "…")
 
-  ;; make sure evil-mode keybindings auto reveal folded regions
-  (add-to-list 'TeX-fold-auto-reveal-commands 'evil-forward-char)
-  (add-to-list 'TeX-fold-auto-reveal-commands 'evil-backward-char))
+  ;; make sure meow keybindings auto reveal folded regions
+  (add-to-list 'TeX-fold-auto-reveal-commands 'meow-left)
+  (add-to-list 'TeX-fold-auto-reveal-commands 'meow-right))
 
 ;; fake headers for latex
 ;; https://emacs.stackexchange.com/a/3103
