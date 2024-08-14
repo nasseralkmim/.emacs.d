@@ -1289,6 +1289,8 @@ graphics."
 (use-package org-src
   :ensure nil
   :after org
+  :custom-face
+  (org-block  ((t (:inherit org-agenda-restriction-lock))))
   :init
   ;; babel and source blocks
   (setq org-src-fontify-natively t
@@ -1834,16 +1836,16 @@ When matching, reference is stored in match group 1."
 (use-package preview
   :ensure nil
   :after latex
-  :init
+  :config
   ;; preview latex config
   ;; only preview displaymath and not textmath which can be anoying when inside a table or algorithm
   ;; It is ok if we can fold the table or algorithm.
   (setq preview-default-option-list '("displaymath" "showlabels" "textmath")
-        preview-auto-cache-preamble 'ask
+        preview-auto-cache-preamble t
         ;; preview-LaTeX-command-replacements '(preview-LaTeX-disable-pdfoutput)
         )
   (add-to-list 'preview-auto-reveal-commands 'meow-left)
-  (add-to-list 'preview-auto-reveal-commands 'meow-right)))
+  (add-to-list 'preview-auto-reveal-commands 'meow-right))
 
 ;; Better math preview in latex
 (use-package preview-auto
