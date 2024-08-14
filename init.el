@@ -1,5 +1,6 @@
 ; -*- coding: utf-8; lexical-binding: t -*-
 
+
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
@@ -224,15 +225,32 @@
   ;; so summary line aligned
   (gnus-summary-normal-unread  ((t (:family ,(car default-monospace)))))
   ;; when using variable pitch in org mode, use monospace for code blocks
-  (org-block ((t (:family ,(car default-monospace)))))
-  (org-table ((t (:family ,(car default-monospace)))))
-  (org-meta-line ((t (:family ,(car default-monospace)))))
-  (org-verbatim ((t (:family ,(car default-monospace)))))
-  (org-code ((t (:slant italic :inherit org-verbatim :box nil))))
   (tree-sitter-hl-face:comment ((t (:inherit font-lock-comment-face))))
   :init
   (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend)
   (set-frame-font (car default-monospace) nil t))
+
+(use-package variable-pitch-typeface
+  :ensure nil
+  :when (display-graphic-p)
+  :preface
+  (setq default-proportional '("Input Sans"))
+  :custom-face
+  (variable-pitch ((t (:family ,(car default-proportional)))))
+  (variable-pitch-text ((t (:inherit variable-pitch)))))
+
+(use-package org-typeface-when-variable-pitch
+  :ensure nil
+  :when (display-graphic-p)
+  :after org
+  :preface
+  (setq default-monospace '("Monaspace Neon Light"))
+  :custom-face
+  (org-block ((t (:family ,(car default-monospace)))))
+  (org-table ((t (:family ,(car default-monospace)))))
+  (org-meta-line ((t (:family ,(car default-monospace)))))
+  (org-verbatim ((t (:family ,(car default-monospace)))))
+  (org-code ((t (:slant italic :inherit org-verbatim :box nil)))))
 
 ;; change typeface size font
 ;; note: `global-text-scale-adjust' do that
