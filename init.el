@@ -233,7 +233,7 @@
   :ensure nil
   :after (:or org latex)
   :preface
-  (setq default-proportional '("Input Sans"))
+  (setq default-proportional '("Input Sans Narrow"))
   :custom-face
   (variable-pitch ((t (:family ,(car default-proportional)))))
   (variable-pitch-text ((t (:inherit variable-pitch)))))
