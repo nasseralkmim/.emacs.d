@@ -50,7 +50,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics t ; compute statistics about package initialization
+      use-package-compute-statistics nil ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
       use-package-expand-minimally t	; minimal expanded macro
@@ -75,14 +75,6 @@
 ;; ':general' and ':diminish' add keywords to 'use-package'
 ;; need to process before continue
 (elpaca-process-queues)
-
-;; minimizes GC interference with user activity
-(use-package gcmh
-  :defer 1
-  :config
-  (setq gcmh-idle-delay 0.5
-        gcmh-high-cons-threshold (* 64 1024 1024))
-  (gcmh-mode 1))
 
 ;; basics and better default
 (use-package emacs
