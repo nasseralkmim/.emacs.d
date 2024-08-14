@@ -1289,8 +1289,6 @@ graphics."
 (use-package org-src
   :ensure nil
   :after org
-  :custom-face
-  (org-block  ((t (:inherit org-agenda-restriction-lock))))
   :init
   ;; babel and source blocks
   (setq org-src-fontify-natively t
@@ -3150,7 +3148,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; eye candy for org
 (use-package org-modern
-  :when (display-graphic-p)             ;only when gui, there is a problem with tty
+  ;; :when (display-graphic-p)             ;only when gui, there is a problem with tty
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
