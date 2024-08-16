@@ -1275,6 +1275,8 @@ graphics."
 
 (use-package org-src
   :ensure nil
+  :custom-face
+  (org-block ((t (:inherit org-agenda-restriction-lock))))
   :after org
   :init
   ;; babel and source blocks
