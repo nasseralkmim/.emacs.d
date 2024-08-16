@@ -1824,6 +1824,8 @@ When matching, reference is stored in match group 1."
 (use-package preview
   :ensure nil
   :after latex
+  :custom-face
+  (preview-face  ((t (:background unspecified))))
   :config
   ;; preview latex config
   ;; only preview displaymath and not textmath which can be anoying when inside a table or algorithm
