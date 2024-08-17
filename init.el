@@ -3253,7 +3253,7 @@ its results, otherwise display STDERR with
 ;; list 'imenu' entries in a buffer
 ;; better faces than 'consult-imenu'
 ;; 'imenu' gives the namespace, functions, classes and methods in a tree
-(use-package imenu-list
+(use-package imenu-list :disabled
   :bind
   ("C-c C-o" . imenu-list)
   :config
