@@ -3349,7 +3349,7 @@ its results, otherwise display STDERR with
 
 ;; hide everything except current heading
 ;; https://stackoverflow.com/a/28031539/20449842
-(use-package org-show-current-tidyly
+(use-package org-show-current-tidyly-hack
   :ensure nil
   :after org
   :bind
@@ -3370,11 +3370,6 @@ its results, otherwise display STDERR with
       (let ((current-prefix-arg '(4))) (call-interactively 'org-reveal))
       (org-show-entry)
       (show-children))))
-
-(use-package puni :disabled
-  :hook
-  (prog-mode . puni-global-mode)
-  (text-mode . puni-global-mode))
 
 (use-package elec-pair
   :ensure nil
