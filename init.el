@@ -1020,6 +1020,7 @@ org-mode"
    :map org-mode-map
    ("C-c ," . org-insert-structure-template)
    ("C-," . nil)                        ; use for xref
+   ("C-c C-v C-g" . org-fold-hide-block-all)
    ("M-<return>" . org-meta-return))
   :hook
   (org-mode . visual-line-mode)
@@ -2010,6 +2011,8 @@ When matching, reference is stored in match group 1."
 
 (use-package dired-subtree
   :after dired
+  :custom-face
+  (dired-subtree-depth-1-face ((t (:background unspecified))))
   :bind
   (:map dired-mode-map
       ("<TAB>" . dired-subtree-toggle)))
