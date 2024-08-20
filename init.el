@@ -180,6 +180,7 @@
     (interactive)
     (if (eq frame-background-mode 'dark)
         (setq frame-background-mode 'light)
+      (setq frame-background-mode 'dark))
     (invert-face 'default)))
 
 ;; Move between windows configuration
