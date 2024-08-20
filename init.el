@@ -180,7 +180,6 @@
     (interactive)
     (if (eq frame-background-mode 'dark)
         (setq frame-background-mode 'light)
-      (setq frame-background-mode 'dark))
     (invert-face 'default)))
 
 ;; Move between windows configuration
@@ -2732,14 +2731,16 @@ opening a file from dired. Otherwise just regular dired."
 ;; moving cursor around fast and efficiently
 (use-package avy
   :bind
-  ("C-." . avy-goto-char-timer)
+  ("M-j" . avy-goto-char-timer)
+  ("C-M-j" . avy-resume)
+  ("C-c j" . avy-goto-line-below)       ; nice for org-mode buffers
+  ("C-c k" . avy-goto-line-above)
   (:map isearch-mode-map 
-        ("C-'" . avy-isearch)
-        ("M-'" . avy-isearch) ; to work in tty as well
-        )
+        ("M-j" . avy-isearch))
   :config
   (setq avy-timeout-seconds 0.2         ; quicker
         avy-all-windows-alt t           ; allow all windows when `C-u`
+        avy-background t
         avy-all-windows nil))           ; restrict to one window
 
 (use-package all-the-icons-completion
