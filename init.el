@@ -836,7 +836,7 @@ org-mode"
 ;; Useful:
 ;; 1. kill without copying, use 'delete-region' from emacs: https://github.com/meow-edit/meow/discussions/474
 (use-package meow
-  :defer 0.5
+  :demand
   :config
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -928,7 +928,6 @@ org-mode"
      '("<escape>" . meow-cancel-selection)))
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
-  (setq meow-expand-exclude-mode-list '())
   (meow-global-mode))
 
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
