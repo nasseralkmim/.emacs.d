@@ -937,6 +937,7 @@ org-mode"
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
   :bind
   (("C-;" . iedit-mode)
+   ("C-c ;" . iedit-mode)               ; for mosh/tmux
    ("M-d" . my-iedit-expand-down-to-occurrence)
    :map iedit-mode-keymap
    ("M-'" . iedit-show/hide-context-lines))
