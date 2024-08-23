@@ -1049,7 +1049,12 @@ org-mode"
         '(org-cycle-hide-archived-subtrees
           org-cycle-hide-drawers
           org-cycle-show-empty-lines
-          org-optimize-window-after-visibility-change)))
+          org-optimize-window-after-visibility-change))
+
+  :init
+  ;; Make windmove work in Org mode:
+  ;; [[info:org#Conflicts][org#Conflicts]]
+  (setq org-replace-disputed-keys t))
 
 ;; Quick insert latex macros
 ;; for example, "` a" inserts "\alpha"
