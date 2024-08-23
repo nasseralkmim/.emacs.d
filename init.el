@@ -1045,11 +1045,11 @@ org-mode"
 
   ;; remove org-cycle-hide-drawers from cycle hook
   ;; so it shows the plots inside a "results drawer" when the heading is opened
-  (setq org-cycle-hook
-        '(org-cycle-hide-archived-subtrees
-          org-cycle-hide-drawers
-          org-cycle-show-empty-lines
-          org-optimize-window-after-visibility-change))
+  ;; (setq org-cycle-hook
+  ;;       '(org-cycle-hide-archived-subtrees
+  ;;         org-cycle-hide-drawers
+  ;;         org-cycle-show-empty-lines
+  ;;         org-optimize-window-after-visibility-change))
 
   :init
   ;; Make windmove work in Org mode:
@@ -2023,6 +2023,8 @@ When matching, reference is stored in match group 1."
   :after dired
   :custom-face
   (dired-subtree-depth-1-face ((t (:background unspecified))))
+  (dired-subtree-depth-2-face ((t (:background unspecified))))
+  (dired-subtree-depth-3-face ((t (:background unspecified))))
   :bind
   (:map dired-mode-map
       ("<TAB>" . dired-subtree-toggle)))
@@ -4374,7 +4376,7 @@ absolute path. Finally load eglot."
   ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
   (global-kkp-mode +1))
 
-(use-package nxml
+(use-package rng-nxml
   :ensure nil
   :config
   (setq rng-nxml-auto-validate-flag nil))
