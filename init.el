@@ -4369,4 +4369,9 @@ absolute path. Finally load eglot."
   ;; (setq kkp-alt-modifier 'alt) ;; use this if you want to map the Alt keyboard modifier to Alt in Emacs (and not to Meta)
   (global-kkp-mode +1))
 
+(use-package nxml
+  :ensure nil
+  :config
+  (setq rng-nxml-auto-validate-flag nil))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
