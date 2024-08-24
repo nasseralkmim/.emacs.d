@@ -968,12 +968,19 @@ org-mode"
   ("M-\"" . insert-pair)
   ("M-\'" . insert-pair)
   ("C-M-s" . delete-pair)
+  ("C-M-l" . back-up-list-and-forward-sexp)
   (:repeat-map move-repeat-map
                ("f" . forward-sexp)
                ("n" . forward-list)
                ("b" . backward-sexp)
                ("p" . backward-list)
-               ("u" . backward-up-list)))
+               ("l" . back-up-list-and-forward-sexp)
+               ("u" . backward-up-list))
+  :init
+  (defun back-up-list-and-forward-sexp ()
+    (interactive)
+    (backward-up-list)
+    (forward-sexp)))
 
 ;; Need to be explicitly required for magit
 ;; https://emacs.stackexchange.com/questions/50592/whats-this-slot-missing-invalid-slot-name-transient-prefix-transient-pref
