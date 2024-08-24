@@ -1425,8 +1425,7 @@ When matching, reference is stored in match group 1."
   (when (string-greaterp org-version "9.8")
     (add-hook 'org-mode-hook 'org-latex-preview-auto-mode))
   :config
-  (setq org-latex-preview-live-throttle 2
-        org-latex-preview-auto-ignored-commands '(next-line previous-line)))
+  (setq org-latex-preview-auto-ignored-commands '(next-line previous-line)))
 
 (use-package ox-beamer
   :ensure nil
