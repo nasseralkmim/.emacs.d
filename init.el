@@ -1238,7 +1238,7 @@ graphics."
   (add-to-list 'org-babel-default-header-args '(:noweb . "no-export")))
 
 ;; custom org function
-(use-package org-zoom-inline-image
+(use-package org-zoom-inline-image-hack
   :ensure nil
   :after org
   :bind
@@ -1251,7 +1251,7 @@ graphics."
     ;; get size specified or start with 300
     (let* ((size (if org-image-actual-width
                      org-image-actual-width
-                   300))
+                   100))
            ;; amount can be specified with prefix argument
            ;; or use default value
            (scale (if (eq current-prefix-arg nil)
