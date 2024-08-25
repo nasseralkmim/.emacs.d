@@ -931,10 +931,17 @@ org-mode"
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
   (meow-global-mode)
+  (setq meow-replace-state-name-list
+        '((normal . "🟢 N")
+          (motion . "🟠 M")
+          (insert . "🔵 I")
+          (keypad . "🔴 K")
+          (beacon . "🟣 B")))
+  (meow-setup-indicator)
   :config
   (meow-thing-register 'block
-                   '(regexp "^[ \\|\t]*\\(#\\+begin_\\|```\\)[^\n]*\n" "^[ \\|\t]*\\(#\\+end_[^\n]*\\|```\\)$")
-                   '(regexp "^[ \\|\t]*\\(#\\+begin_\\|```\\)[^\n]*\n" "^[ \\|\t]*\\(#\\+end_[^\n]*\\|```\\)$"))
+                       '(regexp "^[ \\|\t]*\\(#\\+begin_\\|```\\)[^\n]*\n" "^[ \\|\t]*\\(#\\+end_[^\n]*\\|```\\)$")
+                       '(regexp "^[ \\|\t]*\\(#\\+begin_\\|```\\)[^\n]*\n" "^[ \\|\t]*\\(#\\+end_[^\n]*\\|```\\)$"))
   (add-to-list 'meow-char-thing-table '(?o . block)))
 
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
