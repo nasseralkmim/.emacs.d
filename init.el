@@ -149,7 +149,9 @@
   (unless (display-graphic-p)
     (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'light)))
+    (setq frame-background-mode 'light))
+
+  (global-completion-preview-mode))
 
 (use-package bookmark
   :ensure nil
