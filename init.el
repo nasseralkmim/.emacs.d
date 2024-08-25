@@ -4389,4 +4389,14 @@ absolute path. Finally load eglot."
   :config
   (setq rng-nxml-auto-validate-flag nil))
 
+(use-package eat
+  :ensure (eat :type git
+               :host codeberg
+               :repo "akib/emacs-eat"
+               :files ("*.el" ("term" "term/*.el") "*.texi"
+                       "*.ti" ("terminfo/e" "terminfo/e/*")
+                       ("terminfo/65" "terminfo/65/*")
+                       ("integration" "integration/*")
+                       (:exclude ".dir-locals.el" "*-tests.el"))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
