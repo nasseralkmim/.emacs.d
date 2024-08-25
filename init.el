@@ -1041,6 +1041,8 @@ org-mode"
    :map org-mode-map
    ("C-c ," . org-insert-structure-template)
    ("C-," . nil)                        ; use for xref
+   ("C-c ;" . nil)                        ; use iedit
+   ("C-c M-;" . org-toggle-comment)
    ("C-c C-v C-g" . org-fold-hide-block-all)
    ("M-<return>" . org-meta-return))
   :hook
