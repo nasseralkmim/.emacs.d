@@ -4174,7 +4174,12 @@ its results, otherwise display STDERR with
   :config
   (setq indent-bars-pattern "."
         indent-bars-width-frac 0.1
-        indent-bars-highlight-current-depth '(:width 0.25)))
+        indent-bars-highlight-current-depth '(:width 0.25))
+  (setq
+   indent-bars-color '(highlight :face-bg t :blend 0.75)
+   indent-bars-color-by-depth '(:regexp "outline-\\([0-9]+\\)" :blend 1)
+   indent-bars-unspecified-fg-color "white"
+   indent-bars-unspecified-bg-color "black"))
 
 (use-package docview
   :ensure nil)
