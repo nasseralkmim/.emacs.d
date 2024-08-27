@@ -2001,7 +2001,7 @@ When matching, reference is stored in match group 1."
          ("l" . dired-find-alternate-file)
          ("h" . dired-up-directory)
          ("o" . dired-sort-toggle-or-edit)
-         ("s" . nil)                    ; using for isearch
+         ("s" . isearch-forward)
          ("C-c C-d" . mkdir)
          ("C-c C-p" . wdired-change-to-wdired-mode))
   :config
