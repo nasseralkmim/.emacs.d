@@ -4411,6 +4411,9 @@ absolute path. Finally load eglot."
                        "*.ti" ("terminfo/e" "terminfo/e/*")
                        ("terminfo/65" "terminfo/65/*")
                        ("integration" "integration/*")
-                       (:exclude ".dir-locals.el" "*-tests.el"))))
+                       (:exclude ".dir-locals.el" "*-tests.el"
+                                 ;; for the info manual node
+                                 ;; https://github.com/progfolio/elpaca/issues/241
+                                 "fdl.texi" "gpl.texi"))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
