@@ -147,7 +147,7 @@
 
   ;; Window divider and continuous line
   (unless (display-graphic-p)
-    (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+    ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
     (setq frame-background-mode 'light))
 
@@ -1063,11 +1063,11 @@ org-mode"
 
   ;; remove org-cycle-hide-drawers from cycle hook
   ;; so it shows the plots inside a "results drawer" when the heading is opened
-  ;; (setq org-cycle-hook
-  ;;       '(org-cycle-hide-archived-subtrees
-  ;;         org-cycle-hide-drawers
-  ;;         org-cycle-show-empty-lines
-  ;;         org-optimize-window-after-visibility-change))
+  (setq org-cycle-hook
+        '(org-cycle-hide-archived-subtrees
+          org-cycle-hide-drawers
+          org-cycle-show-empty-lines
+          org-optimize-window-after-visibility-change))
 
   :init
   ;; Make windmove work in Org mode:
