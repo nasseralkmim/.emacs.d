@@ -149,9 +149,7 @@
   (unless (display-graphic-p)
     ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'light))
-
-  (global-completion-preview-mode))
+    (setq frame-background-mode 'light)))
 
 (use-package bookmark
   :ensure nil
@@ -2000,10 +1998,12 @@ When matching, reference is stored in match group 1."
          :map dired-jump-map
          ("j" . nil)
          :map dired-mode-map
-              ("l" . dired-find-alternate-file)
-              ("h" . dired-up-directory)
-              ("C-c C-d" . mkdir)
-              ("C-c C-p" . wdired-change-to-wdired-mode))
+         ("l" . dired-find-alternate-file)
+         ("h" . dired-up-directory)
+         ("o" . dired-sort-toggle-or-edit)
+         ("s" . nil)                    ; using for isearch
+         ("C-c C-d" . mkdir)
+         ("C-c C-p" . wdired-change-to-wdired-mode))
   :config
   (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
         dired-auto-revert-buffer t
