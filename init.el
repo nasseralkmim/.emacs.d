@@ -2514,6 +2514,11 @@ Only if there is more than one window opened."
 (use-package windmove
   :ensure nil
   :defer 1
+  :bind
+  ("C-c C-h" . windmove-left)
+  ("C-c C-l" . windmove-right)
+  ("C-c C-j" . windmove-down)
+  ("C-c C-k" . windmove-up)
   :config
   (windmove-default-keybindings))
 
