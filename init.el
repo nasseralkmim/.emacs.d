@@ -965,7 +965,7 @@ org-mode"
 
   ;; Change the face for terminal
   (when (not (display-graphic-p))
-    (set-face-attribute 'iedit-occurrence nil :inherit 'isearch :weight 'bold)))
+    (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)))
 
 (use-package lisp
   :ensure nil
