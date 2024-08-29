@@ -4164,8 +4164,6 @@ its results, otherwise display STDERR with
   (add-to-list 'auto-mode-alist '("\\.out\\'" . text-mode)))
 
 (use-package tab-bar
-  :custom-face
-  (tab-bar  ((t (:inherit default))))
   :ensure nil)
 
 (use-package xref
