@@ -1045,7 +1045,7 @@ org-mode"
    ("M-<return>" . org-meta-return))
   :hook
   (org-mode . visual-line-mode)
-  (org-mode . variable-pitch-mode)
+  ;; (org-mode . variable-pitch-mode)
   (org-mode . turn-on-org-cdlatex)      ; easy to type greek letters "`a" for \alpha
   ;; (org-mode . org-indent-mode)          ; align with heading, sometimes slow
   :config
