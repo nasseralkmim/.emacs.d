@@ -3396,7 +3396,7 @@ its results, otherwise display STDERR with
         ("C-x =" . org-show-current-heading-tidily))
   :init
   (defun org-show-current-heading-tidily ()
-    (interactive)  ;Inteactive
+    (interactive)
     "Show next entry, keeping other entries closed."
     (if (save-excursion (end-of-line) (outline-invisible-p))
         (progn (org-show-entry) (show-children))
@@ -3408,7 +3408,13 @@ its results, otherwise display STDERR with
       (org-overview)
       (let ((current-prefix-arg '(4))) (call-interactively 'org-reveal))
       (org-show-entry)
-      (show-children))))
+      (show-children)))
+  (defun org-fold-hide-block-all-nonvisible ()
+    (interactive)
+    (org-fold-show-all)
+    (org-fold-hide-block-all)
+    (org-show-current-heading-tidily)))
+
 
 (use-package elec-pair
   :ensure nil
