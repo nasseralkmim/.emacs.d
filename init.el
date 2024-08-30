@@ -4164,7 +4164,12 @@ its results, otherwise display STDERR with
   (add-to-list 'auto-mode-alist '("\\.out\\'" . text-mode)))
 
 (use-package tab-bar
-  :ensure nil)
+  :ensure nil
+  :bind
+  (:map tab-prefix-map
+        ("t" . tab-bar-select-tab))
+  :config
+  (setq tab-bar-tab-hints t))
 
 (use-package xref
   :ensure nil
@@ -4423,6 +4428,8 @@ absolute path. Finally load eglot."
                        (:exclude ".dir-locals.el" "*-tests.el"
                                  ;; for the info manual node
                                  ;; https://github.com/progfolio/elpaca/issues/241
-                                 "fdl.texi" "gpl.texi"))))
+                                 "fdl.texi" "gpl.texi")))
+  :bind
+  ("<f9>" . eat))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
