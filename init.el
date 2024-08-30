@@ -1045,7 +1045,7 @@ org-mode"
    ("M-<return>" . org-meta-return))
   :hook
   (org-mode . visual-line-mode)
-  ;; (org-mode . variable-pitch-mode)
+  (org-mode . variable-pitch-mode)
   (org-mode . turn-on-org-cdlatex)      ; easy to type greek letters "`a" for \alpha
   ;; (org-mode . org-indent-mode)          ; align with heading, sometimes slow
   :config
@@ -3182,7 +3182,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; eye candy for org
 (use-package org-modern
-  ;; :when (display-graphic-p)             ;only when gui, there is a problem with tty
+  :when (display-graphic-p)             ;only when gui, there is a problem with tty
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
