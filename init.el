@@ -2670,7 +2670,7 @@ Only if there is more than one window opened."
                            (name . "^\\*scratch\\*$")
                            (name . "^\\*Messages\\*$")))
                  ("outputs" (or
-                             (name . "\\.out$")))
+                             (name . "\\.out")))
                  ("gnus" (or
                           (mode . message-mode)
                           (mode . bbdb-mode)
