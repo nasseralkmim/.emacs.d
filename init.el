@@ -4150,6 +4150,7 @@ its results, otherwise display STDERR with
 ;; copy from emacs terminal
 (use-package clipetty
   :if (not (display-graphic-p))
+  :hook (after-init . global-clippety-mode)
   :bind
   ("M-S-y" . clipetty-kill-ring-save))
 
@@ -4431,5 +4432,11 @@ absolute path. Finally load eglot."
                                  "fdl.texi" "gpl.texi")))
   :bind
   ("<f9>" . eat))
+
+;; Mouse support on terminal
+(use-package xt-mouse
+  :ensure nil
+  :config
+  (xterm-mouse-mode))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
