@@ -4438,5 +4438,7 @@ absolute path. Finally load eglot."
   :ensure nil
   :config
   (xterm-mouse-mode))
+(use-package org-drill
+  :after org)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
