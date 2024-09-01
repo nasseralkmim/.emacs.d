@@ -936,6 +936,7 @@ org-mode"
           (keypad . "🔴 K")
           (beacon . "🟣 B")))
   (meow-setup-indicator)
+  (setq meow-use-clipboard t)
   :config
   (meow-thing-register 'block
                        '(regexp "^[ \\|\t]*\\(#\\+begin_\\|```\\)[^\n]*\n" "^[ \\|\t]*\\(#\\+end_[^\n]*\\|```\\)$")
