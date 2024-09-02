@@ -52,6 +52,7 @@
 (setq use-package-verbose nil		; don't print anything
       use-package-compute-statistics nil ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
+      use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
