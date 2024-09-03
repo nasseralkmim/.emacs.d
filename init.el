@@ -2676,6 +2676,8 @@ Only if there is more than one window opened."
                            (name . "^\\*Messages\\*$")))
                  ("outputs" (or
                              (name . "\\.out")))
+                 ("python-sessions" (or
+                             (mode . inferior-python-mode)))
                  ("gnus" (or
                           (mode . message-mode)
                           (mode . bbdb-mode)
