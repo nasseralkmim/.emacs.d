@@ -1925,6 +1925,8 @@ When matching, reference is stored in match group 1."
 (use-package tex-fold
   :ensure nil
   :after (:any latex org)
+  :custom-face
+  (TeX-fold-unfolded-face ((t (:background unspecified))))
   :config
   ;; add tables and figure to fold
   (add-to-list 'TeX-fold-env-spec-list '("[table]" ("table")))  
