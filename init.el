@@ -2244,7 +2244,8 @@ Only if there is more than one window opened."
 (use-package python
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
-  :hook ((python-mode . toggle-truncate-lines)
+  :hook ((python-mode . visual-line-mode)
+         (inferior-python-mode . visual-line-mode)
          (python-mode . display-fill-column-indicator-mode))
   :config
   ;; dont guess the indent offset
@@ -3107,6 +3108,16 @@ opening a file from dired. Otherwise just regular dired."
                  (display-buffer-at-bottom)
                  (window-height . 0.25))))
 
+(use-package inferior-python-buffer-window-hack
+  :ensure nil
+  :after python
+  :init
+  (add-to-list 'display-buffer-alist
+               '((major-mode . inferior-python-mode)
+                 (display-buffer-below-selected)
+                 (display-buffer-at-bottom)
+                 (window-height . 0.25))))
+
 ;; save windows configurations and use regular bookmarks file
 (use-package burly :disabled
   :ensure (burly :type git :host github :repo "alphapapa/burly.el")
@@ -3146,9 +3157,9 @@ opening a file from dired. Otherwise just regular dired."
 (use-package popper
   :hook (after-init . popper-mode)
   :bind
-  (:map popper-mode-map
-        ("C-`" . popper-toggle)
-        ("C-c C-`" . popper-toggle))
+  (("C-`" . popper-toggle)
+   :map popper-mode-map
+   ("C-c C-`" . popper-toggle))
   :config
   ;; treat those as popups
   (setq popper-reference-buffers
