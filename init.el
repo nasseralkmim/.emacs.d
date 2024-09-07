@@ -3129,7 +3129,6 @@ opening a file from dired. Otherwise just regular dired."
           ".log$"              ;for dtache log
           ("^\\*Detached Shell.*" . hide)
           help-mode
-          inferior-python-mode          ; python session org-mode
           "Command\\*$"                   ;for shell command
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
