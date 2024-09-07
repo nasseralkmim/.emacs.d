@@ -102,7 +102,7 @@
 
   (setq ring-bell-function 'ignore)
 
-  (setq custom-file "~/.emacs.d/emacs-custom.el")
+  (setq custom-file "~/.emacs.d/custom.el")
   (load custom-file)
 
   ;; create backups in separate folder
