@@ -4152,7 +4152,7 @@ its results, otherwise display STDERR with
 
 ;; Matchs the cursor color when running emacs in terminal
 ;; makes it much more visible, but it does not change the foreground when over the text as in the GUI
-(use-package term-cursor-color :disabled
+(use-package term-cursor-color
   :ensure (term-cursor-color :host github :repo "CyberShadow/term-cursor-color")
   :if (not (display-graphic-p))
   :init
