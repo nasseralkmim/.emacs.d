@@ -4155,6 +4155,15 @@ its results, otherwise display STDERR with
   (setq xref-show-definitions-function 'xref-show-definitions-completing-read)
   (setq xref-show-xrefs-function 'xref-show-definitions-completing-read))
 
+(use-package indent
+  :ensure nil
+  :bind
+  (:repeat-map indent-rigidly-map
+              ("h" . indent-rigidly-left)
+              ("H" . indent-rigidly-left-to-tab-stop)
+              ("l" . indent-rigidly-right)
+              ("L" . indent-rigidly-right-to-tab-stop)))
+
 ;; Show guides on indentation level
 (use-package indent-bars
   :ensure (indent-bars :url "https://github.com/jdtsmith/indent-bars")
