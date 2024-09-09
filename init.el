@@ -4140,6 +4140,8 @@ its results, otherwise display STDERR with
 
 (use-package tab-bar
   :ensure nil
+  :custom-face 
+  (tab-bar ((t (:inherit unspecified))))
   :bind
   (:map tab-prefix-map
         ("t" . tab-bar-select-tab))
