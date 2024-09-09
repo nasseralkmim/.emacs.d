@@ -953,6 +953,7 @@ org-mode"
   :demand t)
 
 (use-package magit
+  :ensure (magit :files (:defaults "git-commit.el"))
   :config
   (setq magit-diff-hide-trailing-cr-characters t
         magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
