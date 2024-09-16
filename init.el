@@ -150,7 +150,7 @@
   (unless (display-graphic-p)
     ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'light)))
+    (setq frame-background-mode 'dark)))
 
 (use-package bookmark
   :ensure nil
@@ -4423,7 +4423,31 @@ absolute path. Finally load eglot."
   :ensure nil
   :config
   (xterm-mouse-mode))
+
 (use-package org-drill
-  :after org)
+  :after org
+  :init
+  ;; fix problem with latex fragment on tty
+  (defun org-drill-present-default-answer (session reschedule-fn)
+  "Present a default answer.
+
+SESSION is the current session.
+RESCHEDULE-FN is the function to reschedule."
+  (prog1 (cond
+          ((oref session drill-answer)
+           (org-drill-with-replaced-entry-text
+            (format "\nAnswer:\n\n  %s\n" (oref session drill-answer))
+            (funcall reschedule-fn session)
+            ))
+          (t
+           (org-drill-hide-subheadings-if 'org-drill-entry-p)
+           (org-drill-unhide-clozed-text)
+           (org-drill--show-latex-fragments)
+           (ignore-errors
+             (org-display-inline-images t))
+           (org-cycle-hide-drawers 'all)
+           (org-remove-latex-fragment-image-overlays)
+           (org-drill-with-hidden-cloze-hints
+            (funcall reschedule-fn session)))))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
