@@ -150,7 +150,7 @@
   (unless (display-graphic-p)
     ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'dark)))
+    (setq frame-background-mode 'light)))
 
 (use-package bookmark
   :ensure nil
@@ -3066,7 +3066,7 @@ opening a file from dired. Otherwise just regular dired."
                  (display-buffer-at-bottom)
                  (window-height . 0.25))))
 
-(use-package inferior-python-buffer-window-hack
+(use-package inferior-python-buffer-window-hack :disabled
   :ensure nil
   :after python
   :init
