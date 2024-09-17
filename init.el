@@ -1579,24 +1579,20 @@ When matching, reference is stored in match group 1."
   (add-to-list 'savehist-additional-variables 'corfu-history))
 
 ;; `completion at point' extensions for specific candidates in `completion in region'
-(use-package cape :disabled
+(use-package cape
   :ensure (cape :type git :host github :repo "minad/cape")
   :demand
-  :after corfu
   :bind
-  ("M-/" . cape-dabbrev)
+  ("C-c p" . cape-prefix-map)
   :config
-  ;; Add `completion-at-point-functions', used by `completion-at-point'.
-  (add-to-list 'completion-at-point-functions #'cape-file)
-  ;; cape does not support 'case-replace' yet: https://github.com/minad/cape/issues/51
-  (add-to-list 'completion-at-point-functions #'cape-dabbrev)
-  (add-to-list 'completion-at-point-functions #'cape-keyword)
-  ;; (add-to-list 'completion-at-point-functions #'cape-symbol)
-  ;; (add-to-list 'completion-at-point-functions #'cape-dict)
-  ;; (add-to-list 'completion-at-point-functions #'cape-line)
-  ;; (add-to-list 'completion-at-point-functions #'cape-history)
-  ;; (add-to-list 'completion-at-point-functions #'cape-tex)
-  )
+  ;; used by `completion-at-point'.  The order of the functions matters, the
+  ;; first function returning a result wins.  Note that the list of buffer-local
+  ;; completion functions takes precedence over the global list.
+  (add-hook 'completion-at-point-functions #'cape-dabbrev)
+  (add-hook 'completion-at-point-functions #'cape-file)
+  (add-hook 'completion-at-point-functions #'cape-dict)
+  (add-hook 'emacs-lisp-mode-hook (lambda ()
+                                    (add-to-list 'completion-at-point-functions #'cape-elisp-symbol))))
 
 ;; TODO: maybe not needed anymore 
 ;; see [[orgit-log:~/.local/src/emacs/::("master")][~/.local/src/emacs/ (magit-log "master")]]
@@ -3638,6 +3634,7 @@ its results, otherwise display STDERR with
   :ensure nil
   :bind
   (:map isearch-mode-map
+        ("DEL" . isearch-edit-string)
         ("C-n" . isearch-repeat-forward)
         ("C-p" . isearch-repeat-backward)
         ("C-s" . isearch-toggle-invisible))
