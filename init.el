@@ -2632,6 +2632,8 @@ Only if there is more than one window opened."
                              (name . "\\.out")))
                  ("python-sessions" (or
                              (mode . inferior-python-mode)))
+                 ("dired" (or
+                             (mode . dired-mode)))
                  ("gnus" (or
                           (mode . message-mode)
                           (mode . bbdb-mode)
