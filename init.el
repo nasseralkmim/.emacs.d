@@ -150,7 +150,7 @@
   (unless (display-graphic-p)
     ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'dark)
+    (setq frame-background-mode 'light)
     (mapc 'frame-set-background-mode (frame-list))))
 
 (use-package bookmark
@@ -988,7 +988,7 @@ org-mode"
 (use-package org
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
-  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :mode (("\\.org$" . org-mode))
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
@@ -4388,7 +4388,7 @@ absolute path. Finally load eglot."
   :ensure (apptainer-mode :type git :host github :repo "jrgant/apptainer-mode")
   :mode ("\\.def\\'" . apptainer-mode))
 
-(use-package kkp
+(use-package kkp :disabled              ; having problems with org-export not been able to export subtree on kitty
   :defer 1
   :unless (display-graphic-p)
   :ensure t
