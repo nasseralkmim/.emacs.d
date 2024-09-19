@@ -205,7 +205,7 @@
   ;; :when (not (display-graphic-p))
   :ensure nil
   :preface
-  (setq default-monospace '("Monaspace Neon Light"))
+  (setq default-monospace '("Commit Mono"))
   (setq default-unicode '("Symbols Nerd Font Mono"))
   (setq default-proportional '("Input Sans"))
   (setq default-comments '("Monaspace Radon"))
