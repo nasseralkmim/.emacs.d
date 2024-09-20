@@ -1002,7 +1002,10 @@ org-mode"
    ("C-c ;" . nil)                        ; use iedit
    ("C-c M-;" . org-toggle-comment)
    ("C-c C-v C-g" . org-fold-hide-block-all)
-   ("M-<return>" . org-meta-return))
+   ("M-<return>" . org-meta-return)
+   :repeat-map org-babel-map
+   ("n" . org-babel-next-src-block)
+   ("p" . org-babel-previous-src-block))
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
@@ -4127,7 +4130,9 @@ its results, otherwise display STDERR with
   :if (not (display-graphic-p))
   :hook (after-init . global-clippety-mode)
   :bind
-  ("M-S-y" . clipetty-kill-ring-save))
+  ("M-S-y" . clipetty-kill-ring-save)
+  ;; for terminal support
+  ("C-M-y" . clipetty-kill-ring-save))
 
 ;; Add text-mode to files without format extension
 (use-package custom-files-auto-mode
