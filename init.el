@@ -3929,7 +3929,7 @@ its results, otherwise display STDERR with
 
 ;; Drawing link support in 'org-mode'
 (use-package edraw
-  :when (display-graphic-p)
+  ;; :when (display-graphic-p)
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
   :hook
   (org-mode . (lambda ()
