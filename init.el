@@ -2218,10 +2218,7 @@ Only if there is more than one window opened."
   ;; change default function to identify docstring
   (defun my-python-mode-hook ()
     (setq indent-line-function #'my-python-indent-line))
-  (add-hook 'python-mode-hook #'my-python-mode-hook)
-
-  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards.
-  (setq python-flymake-command '("flake8" "--max-line-length" "88" "-")))
+  (add-hook 'python-mode-hook #'my-python-mode-hook))
 
 (use-package python-ts
   :ensure nil
@@ -2241,12 +2238,7 @@ Only if there is more than one window opened."
   ;; change default function to identify docstring
   (defun my-python-mode-hook ()
     (setq indent-line-function #'my-python-indent-line))
-  (add-hook 'python-mode-hook #'my-python-mode-hook)
-
-  ;; flake8 combines pyflakes (error checker) with stylistic check against pep8 standards.
-  ;; using flake9 for support to 'pyproject.toml'.
-  (setq python-flymake-command '("flake8" "-")
-        python-check-command "/home/nasser/.local/bin/flake8"))
+  (add-hook 'python-mode-hook #'my-python-mode-hook))
 
 ;; formatting python code
 (use-package python-black
@@ -2781,26 +2773,11 @@ opening a file from dired. Otherwise just regular dired."
   ;; sudo npm install --global pyright
   (python-mode . eglot-ensure) ; works if there is only one server available
   (python-ts-mode . eglot-ensure)
-  ;; python 'flymake' tweak
-  (eglot-managed-mode . (lambda ()
-                          ;; https://old.reddit.com/r/emacs/comments/xq6rpa/weekly_tips_tricks_c_thread/
-                          ;; re-enable 'flymake' checkers because 'eglot' clobbers
-                          ;; them when starting
-                          (when (or (derived-mode-p 'python-mode)
-                                    (derived-mode-p 'python-ts-mode))
-                            (add-hook 'flymake-diagnostic-functions 
-                                      'python-flymake nil t)
-                            ;; for some reason I need to "start" 'flymake' again
-                            (flymake-start))))
-  ;; (LaTeX-mode . eglot-ensure) ; works if there is only one server available
   (c++-mode . eglot-ensure) ; works if there is only one server available
   (c++-ts-mode . eglot-ensure)
   (c-mode . eglot-ensure)
   (js-mode . eglot-ensure) ; works if there is only one server available
   :config
-  ;; using a hook to 
-  ;; (add-to-list 'eglot-stay-out-of 'flymake)     ; using own flymake command (flake8)
-
   ;; add watch mode "-w" for performance
   ;; pyright only reanalyze the files that have been modified
   ;; (add-to-list 'eglot-server-programs
@@ -4455,5 +4432,17 @@ RESCHEDULE-FN is the function to reschedule."
            (org-remove-latex-fragment-image-overlays)
            (org-drill-with-hidden-cloze-hints
             (funcall reschedule-fn session)))))))
+
+(use-package flymake-ruff
+  :ensure (flymake-ruff
+           :type git
+           :host github
+           :repo "erickgnavar/flymake-ruff")
+  :hook
+  (eglot-managed-mode . (lambda ()
+                          (flymake-ruff-load)
+                          ;; for some reason I need to "start" 'flymake' again
+                          (flymake-start))))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
