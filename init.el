@@ -988,7 +988,7 @@ org-mode"
 (use-package org
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
-  ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :mode (("\\.org$" . org-mode))
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
@@ -1319,7 +1319,7 @@ When matching, reference is stored in match group 1."
   (org-babel-lob-ingest "~/.emacs.d/lisp/scripts.org"))
 
 ;; Agenda
-;; 'org-agenda-view-mode-dispatch' to view month/week 
+;; 'org-agenda-view-mode-dispatch' to view month/week  (e.g., prefix argument with week number)
 ;; 'org-agenda-todo' change todo state
 ;; 'org-todo-list' go to todo view (not scheduled), org just use the agenda view that include both ('C-c a n')
 ;; Some concepts:
