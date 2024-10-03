@@ -150,7 +150,7 @@
   (unless (display-graphic-p)
     ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'light)
+    (setq frame-background-mode 'dark)
     (mapc 'frame-set-background-mode (frame-list))))
 
 (use-package bookmark
@@ -244,8 +244,8 @@
   :ensure nil
   :after (:or org latex)
   :preface
-  (setq default-monospace '("Monaspace Neon Light"))
-  :custom-face
+  (setq default-monospace (alist-get 'font default-frame-alist))
+    :custom-face
   (org-block ((t (:family ,(car default-monospace)))))
   (org-table ((t (:family ,(car default-monospace)))))
   (org-meta-line ((t (:family ,(car default-monospace)))))
