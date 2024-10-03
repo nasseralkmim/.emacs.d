@@ -3618,7 +3618,6 @@ its results, otherwise display STDERR with
   :ensure nil
   :bind
   (:map isearch-mode-map
-        ("DEL" . isearch-edit-string)
         ("C-n" . isearch-repeat-forward)
         ("C-p" . isearch-repeat-backward)
         ("C-s" . isearch-toggle-invisible))
@@ -4433,6 +4432,7 @@ RESCHEDULE-FN is the function to reschedule."
            (org-drill-with-hidden-cloze-hints
             (funcall reschedule-fn session)))))))
 
+;; Style check for python instead of flake8
 (use-package flymake-ruff
   :ensure (flymake-ruff
            :type git
@@ -4443,6 +4443,16 @@ RESCHEDULE-FN is the function to reschedule."
                           (flymake-ruff-load)
                           ;; for some reason I need to "start" 'flymake' again
                           (flymake-start))))
+
+(use-package org-rainbow-tags
+  :ensure t
+  :custom
+  (org-rainbow-tags-hash-start-index 10)
+  (org-rainbow-tags-extra-face-attributes
+   ;; Default is '(:weight 'bold)
+   '(:inverse-video t :box t :weight 'bold))
+  :hook
+  (org-mode . org-rainbow-tags-mode))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
