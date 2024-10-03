@@ -449,6 +449,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; default completion framework
 (use-package simple
   :ensure nil
+  :bind
+  ("C-x @" . pop-global-mark)
+  (:repeat-map ctrl-x-map
+               ("@" . pop-global-mark))
   :config
   ;; first TAB shows candidates
   ;; second TAB switches to the candidates buffer
