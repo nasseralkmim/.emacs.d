@@ -4458,5 +4458,17 @@ RESCHEDULE-FN is the function to reschedule."
   :hook
   (org-mode . org-rainbow-tags-mode))
 
+;; Don't execute sub-block if heading has specific tag
+(use-package org-babel-execute-subtree-hack
+  :ensure nil
+  :after org
+  :init
+  (defun my-org-babel-do-not-execute-if-tagged (orig-fun &rest args)
+    (let ((headline (org-element-lineage (org-element-at-point) '(headline) t)))
+      (unless (and headline
+                   (member "noexecute" (org-element-property :tags headline)))
+        (apply orig-fun args))))
+
+  (advice-add 'org-babel-execute-src-block :around #'my-org-babel-do-not-execute-if-tagged))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
