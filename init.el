@@ -506,7 +506,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                      consult-bookmark
                      consult-outline
                      consult-line
-                     :preview-key '(:debounce 1 any))
+                     :preview-key '(:debounce 5 any))
   ;; use a key for preview from ripgrep and find
   (consult-customize consult-ripgrep consult-find-fd
                      :preview-key '("M-."))
