@@ -4456,7 +4456,26 @@ RESCHEDULE-FN is the function to reschedule."
    ;; Default is '(:weight 'bold)
    '(:inverse-video t :box t :weight 'bold))
   :hook
-  (org-mode . org-rainbow-tags-mode))
+  (org-mode . org-rainbow-tags-mode)
+  :config
+  ;; fix problem when it tries to get the background-color with 'color-name-to-rgb' but
+  ;; it returns nil when there is no theme
+  (defun org-rainbow-tags--adjust-color (hex-color)
+  "Adjust HEX-COLOR according to active theme."
+  (let ((background-color (face-attribute 'default :background)))
+    (cond
+     ;; Lighten when both dark
+     ((and background-color
+           (color-dark-p (or (color-name-to-rgb background-color) '(0 0 0)))
+           (color-dark-p (color-name-to-rgb hex-color)))
+      (color-lighten-name hex-color org-rainbow-tags-adjust-color-percent))
+     ;; Darken when both light
+     ((and background-color
+           (not (color-dark-p (or (color-name-to-rgb background-color) '(1 1 1))))
+           (not (color-dark-p (color-name-to-rgb hex-color))))
+      (color-darken-name hex-color org-rainbow-tags-adjust-color-percent))
+     (t
+      hex-color)))))
 
 ;; Don't execute sub-block if heading has specific tag
 (use-package org-babel-execute-subtree-hack
