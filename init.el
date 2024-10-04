@@ -4482,12 +4482,19 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure nil
   :after org
   :init
-  (defun my-org-babel-do-not-execute-if-tagged (orig-fun &rest args)
-    (let ((headline (org-element-lineage (org-element-at-point) '(headline) t)))
-      (unless (and headline
-                   (member "noexecute" (org-element-property :tags headline)))
-        (apply orig-fun args))))
+  (defun my-org-heading-has-noexecute-tag-p ()
+  "Check if the current heading or any parent heading has the 'noexecute' tag."
+  (save-excursion
+    (let ((has-noexecute (member "noexecute" (org-get-tags))))
+      (while (and (not has-noexecute) (org-up-heading-safe))
+        (setq has-noexecute (member "noexecute" (org-get-tags))))
+      has-noexecute)))
+  (defun my-org-babel-execute-src-block-advice (orig-fun &rest args)
+    "Advice to skip src block execution if a 'noexecute' tag is found."
+    (if (my-org-heading-has-noexecute-tag-p)
+        (message "Skipping execution due to 'noexecute' tag")
+      (apply orig-fun args)))
 
-  (advice-add 'org-babel-execute-src-block :around #'my-org-babel-do-not-execute-if-tagged))
+  (advice-add 'org-babel-execute-src-block :around #'my-org-babel-execute-src-block-advice))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
