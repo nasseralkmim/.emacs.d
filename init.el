@@ -244,7 +244,7 @@
   :ensure nil
   :after (:or org latex)
   :preface
-  (setq default-monospace (alist-get 'font default-frame-alist))
+  (setq default-monospace '((alist-get 'font default-frame-alist)))
     :custom-face
   (org-block ((t (:family ,(car default-monospace)))))
   (org-table ((t (:family ,(car default-monospace)))))
