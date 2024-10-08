@@ -686,7 +686,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package nerd-icons
   :defer 1
-  :demand t)
+  :demand t
+  :config
+  (setq nerd-icons-scale-factor .6))
 
 (use-package nerd-icons-dired
   :ensure (nerd-icons-dired :type git :host github :repo "rainstormstudio/nerd-icons-dired")
