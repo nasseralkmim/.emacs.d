@@ -2887,7 +2887,9 @@ opening a file from dired. Otherwise just regular dired."
 ;; download latest version https://languagetool.org/download/
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
-(use-package flymake-languagetool :disabled ; not working
+;;
+;; make sure you have a working version of java (archlinux-java status) for me 11 works
+(use-package flymake-languagetool
   :commands flymake-languagetool-start
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
@@ -2900,7 +2902,7 @@ opening a file from dired. Otherwise just regular dired."
   :config
   ;; (setq flymake-languagetool-server-jar nil)
   ;; (setq flymake-languagetool-url "https://api.languagetool.org")
-  (setq flymake-languagetool-server-jar "~/.opt/LanguageTool-6.4/languagetool-server.jar"))
+  (setq flymake-languagetool-server-jar "/home/nasser/.opt/LanguageTool-6.5/languagetool-server.jar"))
 
 (use-package languagetool :disabled
   :commands (languagetool-check
@@ -2912,9 +2914,11 @@ opening a file from dired. Otherwise just regular dired."
              languagetool-server-start
              languagetool-server-stop)
   :config
-  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8") ; accept file in UTF-8
-        languagetool-console-command "~/.opt/LanguageTool-6.4/languagetool-commandline.jar"
-        languagetool-server-command "~/.opt/LanguageTool-6.4/languagetool-server.jar"))
+  (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8"
+                                    "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*")
+      languagetool-console-command "org.languagetool.commandline.Main"
+      languagetool-server-command "org.languagetool.server.HTTPServer")
+  )
 
 (use-package svg-lib :disabled
   :ensure (svg-lib :type git :host github :repo "rougier/svg-lib"))
