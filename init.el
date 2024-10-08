@@ -2046,25 +2046,26 @@ When matching, reference is stored in match group 1."
         modus-themes-bold-constructs nil
         modus-themes-headings '((t . (rainbow))))
   ;; hook to enforce change when theme is toggled (which loads the theme)
-  ;; (defun my-modus-tweaks ()
-  ;;   (progn 
-  ;;     ;; Adjust some org faces
-  ;;     (eval-after-load 'org
-  ;;       ;; make org source blocks headers with same main background, so there is no different background when collapsed
-  ;;       '(set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
-  ;;     ;; adjust org modern if GUI
-  ;;     (eval-after-load 'org-modern
-  ;;       '(global-org-modern-mode))
-  ;;     ;; reset icons cache to match theme
-  ;;     (eval-after-load 'kind-icon
-  ;;       '(kind-icon-reset-cache))
-  ;;     ;; recompute face for indentation guide
-  ;;     (eval-after-load 'hl-indent-scope
-  ;;       '(hl-indent-scope--auto-color-calc))
-  ;;     ;; make inside of parenthesis different background
-  ;;     (eval-after-load 'smartparens
-  ;;       '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression)))))
-  ;; (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
+  (defun my-modus-tweaks ()
+    (progn 
+      ;; ;; Adjust some org faces
+      ;; (eval-after-load 'org
+      ;;   ;; make org source blocks headers with same main background, so there is no different background when collapsed
+      ;;   '(set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
+      ;; ;; adjust org modern if GUI
+      ;; (eval-after-load 'org-modern
+      ;;   '(global-org-modern-mode))
+      ;; ;; reset icons cache to match theme
+      ;; (eval-after-load 'kind-icon
+      ;;   '(kind-icon-reset-cache))
+      ;; ;; recompute face for indentation guide
+      ;; (eval-after-load 'hl-indent-scope
+      ;;   '(hl-indent-scope--auto-color-calc))
+      ;; ;; make inside of parenthesis different background
+      ;; (eval-after-load 'smartparens
+      ;; '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
+      (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)))
+  (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
   ;; (if (not (display-graphic-p))
@@ -2863,8 +2864,10 @@ opening a file from dired. Otherwise just regular dired."
       . ((eglot-workspace-configuration
           . (:ltex . (:disabledRules (:en-US ["MORFOLOGIK_RULE_EN_US"])))))))))
 
+;; Not supported anymore: https://github.com/znck/grammarly/issues/411
 ;; need to install grammarly-languageserver
-(use-package eglot-grammarly
+;; npm install -g @emacs-grammarly/grammarly-languageserver
+(use-package eglot-grammarly :disabled
   :ensure (:host github :repo "emacs-grammarly/eglot-grammarly")
   :commands start-eglot-grammarly 
   :init
