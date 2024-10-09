@@ -2066,7 +2066,8 @@ When matching, reference is stored in match group 1."
       ;; ;; make inside of parenthesis different background
       ;; (eval-after-load 'smartparens
       ;; '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
-      (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)))
+      (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
+      (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue"))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
