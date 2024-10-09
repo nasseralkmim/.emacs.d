@@ -2891,7 +2891,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; unzip <download> -d ~/.opt/
 ;;
 ;; make sure you have a working version of java (archlinux-java status) for me 11 works
-(use-package flymake-languagetool
+(use-package flymake-languagetool :disabled ; not working with latex
   :commands flymake-languagetool-start
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
@@ -2915,12 +2915,12 @@ opening a file from dired. Otherwise just regular dired."
              languagetool-server-mode
              languagetool-server-start
              languagetool-server-stop)
-  :config
+  :init
   (setq languagetool-java-arguments '("-Dfile.encoding=UTF-8"
-                                    "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*")
+                                      "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*")
       languagetool-console-command "org.languagetool.commandline.Main"
-      languagetool-server-command "org.languagetool.server.HTTPServer")
-  )
+      languagetool-server-command "org.languagetool.server.HTTPServer"
+      languagetool-server-arguments '("--config" "/home/nasser/.opt/fasttext/server.properties")))
 
 (use-package svg-lib :disabled
   :ensure (svg-lib :type git :host github :repo "rougier/svg-lib"))
@@ -4289,8 +4289,7 @@ absolute path. Finally load eglot."
   :ensure (dape :type git :host github :repo "svaante/dape")
   :commands dape
   :config
-  ;; Add inline variable hints, this feature is highly experimental
-  (setq dape-inline-variables nil))
+  (setq dape-inlay-hints t))
 
 ;; Rust-based wrapper to speed interaction with LSP servers
 ;; Need to build and install rust binary "emacs-lsp-booster" which should be on the path
