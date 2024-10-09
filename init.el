@@ -2891,7 +2891,10 @@ opening a file from dired. Otherwise just regular dired."
 ;; unzip <download> -d ~/.opt/
 ;;
 ;; make sure you have a working version of java (archlinux-java status) for me 11 works
-(use-package flymake-languagetool :disabled ; not working with latex
+;;
+;; There is a problem with the % character
+;; here is the fix: https://github.com/mhayashi1120/Emacs-langtool/issues/73#issuecomment-2171271512
+(use-package flymake-languagetool
   :commands flymake-languagetool-start
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
@@ -2904,7 +2907,15 @@ opening a file from dired. Otherwise just regular dired."
   :config
   ;; (setq flymake-languagetool-server-jar nil)
   ;; (setq flymake-languagetool-url "https://api.languagetool.org")
-  (setq flymake-languagetool-server-jar "/home/nasser/.opt/LanguageTool-6.5/languagetool-server.jar"))
+  (setq
+   flymake-languagetool-server-jar nil
+   ;; flymake-languagetool-server-jar "/home/nasser/.opt/LanguageTool-6.5/languagetool-server.jar"
+   flymake-languagetool-server-command '(
+                                         ;; "java" "-Dfile.encoding=UTF-8" "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*" "org.languagetool.server.HTTPServer" "--port" "8081"
+                                         "languagetool" "--http"
+                                         "--port" "8081"
+                                         "--config" "/home/nasser/.opt/server.properties"
+                                         "--allow-origin" "\"*\"")))
 
 (use-package languagetool :disabled
   :commands (languagetool-check
