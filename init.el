@@ -2891,10 +2891,25 @@ opening a file from dired. Otherwise just regular dired."
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
 ;;
-;; make sure you have a working version of java (archlinux-java status) for me 11 works
+;; make sure you have a working version of java (check with $ archlinux-java status) for me 11 works
 ;;
 ;; There is a problem with the % character
 ;; here is the fix: https://github.com/mhayashi1120/Emacs-langtool/issues/73#issuecomment-2171271512
+;; need to change the code, compile and install emacs ($ make && make install)
+;;
+;; https://dev.languagetool.org/http-server#starting-from-command-line
+;; Install also 'fasttext' for language identification: $ yay fasttext
+;; Download the model in binary: wget https://dl.fbaipublicfiles.com/fasttext/supervised-models/lid.176.bin -P ~/.opt
+;; Add to the 'server.properties' file:
+;; fasttextModel=/home/nasser/.opt/lid.176.bin
+;; fasttextBinary=/usr/bin/fasttext            
+;;
+;; Install 'ngram' data for finding errors not related to grammar/spelling but context
+;; $ yay languagetool-ngram-en
+;; add the path to the folder with the ngram in the 'server.properties' file: "languageModel=/usr/share/ngrams/"
+;;
+;; need to rerun the server after change the 'server.properties'
+;; kill the task: $ ps aux | grep java.*languagetool
 (use-package flymake-languagetool
   :commands flymake-languagetool-start
   ;; better to do manually, sometimes slow to start
