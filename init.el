@@ -2043,6 +2043,7 @@ When matching, reference is stored in match group 1."
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
+        modus-themes-common-palette-overrides modus-themes-preset-overrides-cooler
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
         modus-themes-bold-constructs nil
@@ -2067,7 +2068,8 @@ When matching, reference is stored in match group 1."
       ;; (eval-after-load 'smartparens
       ;; '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
       (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
-      (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue"))))
+      (eval-after-load 'flymake
+        (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
@@ -3139,6 +3141,7 @@ opening a file from dired. Otherwise just regular dired."
   :hook (after-init . popper-mode)
   :bind
   (("C-`" . popper-toggle)
+   ("C-c `" . popper-toggle)
    :map popper-mode-map
    ("C-c C-`" . popper-toggle))
   :config
