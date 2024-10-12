@@ -2052,23 +2052,23 @@ When matching, reference is stored in match group 1."
   (defun my-modus-tweaks ()
     (progn 
       ;; ;; Adjust some org faces
-      ;; (eval-after-load 'org
+      ;; (with-eval-after-load 'org
       ;;   ;; make org source blocks headers with same main background, so there is no different background when collapsed
       ;;   '(set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
       ;; ;; adjust org modern if GUI
-      ;; (eval-after-load 'org-modern
+      ;; (with-eval-after-load 'org-modern
       ;;   '(global-org-modern-mode))
       ;; ;; reset icons cache to match theme
-      ;; (eval-after-load 'kind-icon
+      ;; (with-eval-after-load 'kind-icon
       ;;   '(kind-icon-reset-cache))
       ;; ;; recompute face for indentation guide
-      ;; (eval-after-load 'hl-indent-scope
+      ;; (with-eval-after-load 'hl-indent-scope
       ;;   '(hl-indent-scope--auto-color-calc))
       ;; ;; make inside of parenthesis different background
-      ;; (eval-after-load 'smartparens
+      ;; (with-eval-after-load 'smartparens
       ;; '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
       (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
-      (eval-after-load 'flymake
+      (with-eval-after-load 'flymake
         (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
