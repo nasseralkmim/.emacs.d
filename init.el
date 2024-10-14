@@ -3739,12 +3739,9 @@ its results, otherwise display STDERR with
   :bind
   (("C-c t t" . gt-do-translate)     ; overrides the tutorial, but ok...
    ("C-c t d" . gt-do-setup)
-   ("C-c t c" . my-gt-cycle-translation))
-  ;; (override "C-c t i" 'gt-do-translate-and-insert)
-  ;; ;; only when there is a gt-result buffer 
-  ;; ('(normal visual) override "C-t" (general-predicate-dispatch nil
-  ;;                                    (when (get-buffer "*gt-result*") t) 'my-gt-cycle-translation))
-  ;; ('(normal visual) "SPC t" (general-simulate-key "S-V C-c t t")) ; whole line
+   ("C-c t c" . my-gt-cycle-translation)
+   :repeat-map mode-specific-map
+   ("c" . my-gt-cycle-translation))
   :hook
   (gt-buffer-render-init . visual-line-mode)
   :init
