@@ -3642,7 +3642,7 @@ its results, otherwise display STDERR with
 
   ;; when reading or sending with the "reader" in GNUS create contact if it does not exist
   ;; ;; (info "(ebdb) Auto-Updating Records")
-  (setq ebdb-mua-auto-update-p
+  (setq ebdb-gnus-auto-update-p 
         (lambda ()
           (unless (ebdb-mua-message-header "Newsgroups")
             ;; only create when not in a newsgroup, there are too many people in newsgroups
