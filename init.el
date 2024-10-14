@@ -1989,8 +1989,8 @@ When matching, reference is stored in match group 1."
   ;; Open pdf in dired with `!` and the default application 
   (setq dired-guess-shell-alist-user
         '(("\\.pdf\\'" "okular")
-          ("\\.png\\'" "feh --auto-reload")
-          ("\\.svg\\'" "feh --auto-reload"))))
+          ("\\.png\\'" "swayimg")
+          ("\\.svg\\'" "swayimg"))))
 
 (use-package dired-image-window-placement-hack
   :ensure nil
