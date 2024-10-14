@@ -3741,6 +3741,7 @@ its results, otherwise display STDERR with
   (("C-c t t" . gt-do-translate)     ; overrides the tutorial, but ok...
    ("C-c t d" . gt-do-setup)
    ("C-c t c" . my-gt-cycle-translation)
+   ("C-c t i" . my-gt-do-translate-and-insert)
    :repeat-map mode-specific-map
    ("c" . my-gt-cycle-translation))
   :hook
@@ -3765,8 +3766,7 @@ its results, otherwise display STDERR with
         gt-chatgpt-model "gpt-3.5")
 
   ;; function to translate and insert translation
-  (defun gt-do-translate-and-insert ()
-    (interactive)
+  (defun my-gt-do-translate-and-insert ()
     (interactive)
     (let ((translator (gt-translator
                        :engines (list (gt-deepl-engine))
