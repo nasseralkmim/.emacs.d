@@ -2933,7 +2933,8 @@ opening a file from dired. Otherwise just regular dired."
                                          "languagetool" "--http"
                                          "--port" "8081"
                                          "--config" "/home/nasser/.opt/server.properties"
-                                         "--allow-origin" "\"*\"")))
+                                         "--allow-origin" "\"*\"")
+   flymake-languagetool-disabled-rules '("WHITESPACE_RULE")))
 
 (use-package languagetool :disabled
   :commands (languagetool-check
