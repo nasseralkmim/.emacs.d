@@ -3153,6 +3153,7 @@ opening a file from dired. Otherwise just regular dired."
   :bind
   (("C-`" . popper-toggle)
    ("C-c `" . popper-toggle)
+   ("C-c M-`" . popper-toggle)          ; for terminal and org-mode
    :map popper-mode-map
    ("C-c C-`" . popper-toggle))
   :config
