@@ -3102,6 +3102,16 @@ opening a file from dired. Otherwise just regular dired."
                  (display-buffer-at-bottom)
                  (window-height . 0.25))))
 
+(use-package org-babel-error-buffer-window-hack
+  :ensure nil
+  :after org
+  :init
+  (add-to-list 'display-buffer-alist
+               '("^\\*Org-Babel"
+                 (display-buffer-below-selected)
+                 (display-buffer-at-bottom)
+                 (window-height . 0.25))))
+
 ;; save windows configurations and use regular bookmarks file
 (use-package burly :disabled
   :ensure (burly :type git :host github :repo "alphapapa/burly.el")
