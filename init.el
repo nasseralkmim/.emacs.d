@@ -1011,7 +1011,10 @@ org-mode"
    ("M-<return>" . org-meta-return)
    :repeat-map org-babel-map
    ("n" . org-babel-next-src-block)
-   ("p" . org-babel-previous-src-block))
+   ("p" . org-babel-previous-src-block)
+   :repeat-map org-mode-map
+   ("n" . org-next-visible-heading)
+   ("p" . org-previous-visible-heading))
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
