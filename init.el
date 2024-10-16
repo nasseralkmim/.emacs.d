@@ -1011,10 +1011,7 @@ org-mode"
    ("M-<return>" . org-meta-return)
    :repeat-map org-babel-map
    ("n" . org-babel-next-src-block)
-   ("p" . org-babel-previous-src-block)
-   :repeat-map org-mode-map
-   ("n" . org-next-visible-heading)
-   ("p" . org-previous-visible-heading))
+   ("p" . org-babel-previous-src-block))
   :hook
   (org-mode . visual-line-mode)
   (org-mode . variable-pitch-mode)
@@ -3158,7 +3155,9 @@ opening a file from dired. Otherwise just regular dired."
    ("C-c `" . popper-toggle)
    ("C-c M-`" . popper-toggle)          ; for terminal and org-mode
    :map popper-mode-map
-   ("C-c C-`" . popper-toggle))
+   ("C-c C-`" . popper-toggle)
+   :repeat-map mode-specific-map
+   ("`" . popper-toggle))
   :config
   ;; treat those as popups
   (setq popper-reference-buffers
@@ -3757,7 +3756,7 @@ its results, otherwise display STDERR with
    ("C-c t c" . my-gt-cycle-translation)
    ("C-c t i" . my-gt-do-translate-and-insert)
    :repeat-map mode-specific-map
-   ("c" . my-gt-cycle-translation))
+   ("t c" . my-gt-cycle-translation))
   :hook
   (gt-buffer-render-init . visual-line-mode)
   :init
