@@ -3161,10 +3161,10 @@ opening a file from dired. Otherwise just regular dired."
 ;; helps with windows popups
 (use-package popper
   :hook (after-init . popper-mode)
+  :bind*
+  ("C-c `" . popper-toggle)             ; for tty
   :bind
   (("C-`" . popper-toggle)
-   ("C-c `" . popper-toggle)
-   ("C-c M-`" . popper-toggle)          ; for terminal and org-mode
    :map popper-mode-map
    ("C-c C-`" . popper-toggle)
    :repeat-map mode-specific-map
