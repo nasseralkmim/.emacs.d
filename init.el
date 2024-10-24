@@ -151,7 +151,12 @@
     ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
     (setq frame-background-mode 'dark)
-    (mapc 'frame-set-background-mode (frame-list))))
+    (mapc 'frame-set-background-mode (frame-list)))
+
+  ;; Allow to add 'compile-command' as safe in the custom.el file
+  ;; https://emacs.stackexchange.com/questions/10983/remember-permission-to-execute-risky-local-variables
+  ;; (add-to-list 'safe-local-variable-directories "~/.local/src/Trilinos/")
+  (advice-add 'risky-local-variable-p :override #'ignore))
 
 (use-package bookmark
   :ensure nil
