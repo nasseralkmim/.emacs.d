@@ -3576,7 +3576,11 @@ its results, otherwise display STDERR with
   ;; https://old.reddit.com/r/emacs/comments/18cbeel/anyone_using_gnus_in_2023/kcceopw/
   (defun my-gnus-group-activate-on-idle ()
     (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 2))))
-  (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle))
+  (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
+
+
+  ;; disable autoselect [[help:gnus-auto-select-first]]
+  (add-hook 'gnus-select-group-hook (lambda () (setq gnus-auto-select-first nil))))
 
 (use-package nnrss
   :ensure nil
