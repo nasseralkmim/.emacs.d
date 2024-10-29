@@ -3927,8 +3927,6 @@ its results, otherwise display STDERR with
   :ensure nil
   :bind
   ("C-c c" . org-capture)
-  :hook
-  (org-capture-mode . evil-insert-state)
   :init
   ;; Don't delete other window when calling 'org-capture'
   ;; https://stackoverflow.com/a/54251825
@@ -4023,11 +4021,11 @@ its results, otherwise display STDERR with
                        (plist-get (car (auth-source-search :host "api.openai.com"))
                                   :secret)))
   ;; make Ollama the default
-  (setq-default gptel-model "llama3.1"
+  (setq-default gptel-model "llama3.2"
                 gptel-backend (gptel-make-ollama
                                "Ollama"                               ;Any name of your choosing
                                :host "localhost:11434"                ;Where it's running
-                               :models '("llama3.1" "llama3.1:70b")            ;Installed models (ollama pull "model")
+                               :models '("llama3.2")            ;Installed models (ollama pull "model")
                                :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
