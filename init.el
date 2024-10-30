@@ -3984,6 +3984,9 @@ its results, otherwise display STDERR with
   (org-mode . (lambda ()
                 (require 'edraw-org)
                 (edraw-org-setup-default)))
+  :bind
+  (:map edraw-editor-map
+        ("<mouse-3>" . edraw-editor-select-tool-select))
   :config
   (setq edraw-editor-default-grid-visible nil
         edraw-editor-default-tool 'freehand
