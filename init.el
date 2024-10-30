@@ -3186,6 +3186,7 @@ opening a file from dired. Otherwise just regular dired."
           "Command\\*$"                   ;for shell command
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
+          "\\*Diff\\*"
           "^\\*gt-result\\*"               ; gt translate
           "^\\*py.*"
           "CAPTURE-.*"
@@ -3196,7 +3197,7 @@ opening a file from dired. Otherwise just regular dired."
           "\\*compilation\\*"
           compilation-mode))
 
-  ;; only show the pop up and don't focus on its window
+    ;; only show the pop up and don't focus on its window
   (setq popper-display-function #'popper-display-popup-at-bottom
         popper-display-control 'user    ; control only explicitly marked popups
         ;; 1/3 of the screen height
@@ -3988,8 +3989,8 @@ its results, otherwise display STDERR with
         edraw-editor-default-tool 'freehand
         edraw-editor-tool-freehand-smoothing-method 'bezier-fitting
         edraw-editor-default-transparent-bg-visible nil    ; always see transparent as white
-        edraw-default-document-properties '((width . 800)
-                                            (height . 600)
+        edraw-default-document-properties '((width . 1500)
+                                            (height . 1000)
                                             (background . "none"))
         ;; make toolbar small
         ;; f - free hand 
