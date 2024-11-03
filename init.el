@@ -199,11 +199,10 @@
   (winner-mode))
 
 ;; Visit file from where you left
-(use-package saveplace :disabled        ; slow to quit emacs
+(use-package saveplace
   :ensure nil
-  :defer 1
-  :config
-  (save-place-mode))
+  :hook 
+  (after-init . save-place-mode))
 
 ;; typeface
 (use-package custom-typefaces :disabled
@@ -471,9 +470,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; save the search history
 (use-package savehist
   :ensure nil
-  :defer 1
-  :config
-  (savehist-mode))
+  :hook
+  (after-init . savehist-mode))
 
 ;; minibuffer annotations details
 (use-package marginalia

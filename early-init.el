@@ -1,3 +1,5 @@
+;;; early-init.el --- Early Init -*- no-byte-compile: t; lexical-binding: t; -*-
+
 ;; prevent emacs package (package.el) initialization
 (setq package-enable-at-startup nil)
 (advice-add 'package--ensure-init-file :override 'ignore)
@@ -40,6 +42,7 @@
               bidi-paragraph-direction 'left-to-right)
 (setq read-process-output-max (* 128 1024))
 (set-language-environment "UTF-8")
+(setq load-prefer-newer t)
 
 (setq gc-cons-threshold most-positive-fixnum)
 
