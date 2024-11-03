@@ -344,8 +344,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure nil
   :if (eq system-type 'gnu/linux)
   :hook
-  (text-mode . auto-revert-mode)
-  (dired-mode . auto-revert-mode)
+  (after-init . global-auto-revert-mode)
   :config
   (setq auto-revert-interval 1
         auto-revert-verbose nil
