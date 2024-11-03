@@ -333,9 +333,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; save recent visited files
 (use-package recentf
   :ensure nil
-  :defer 5
+  :hook
+  (after-init . recentf-mode)
   :config
-  (recentf-mode 1)
   (setq recentf-max-saved-items 25
         recentf-auto-cleanup 'mode))
 
