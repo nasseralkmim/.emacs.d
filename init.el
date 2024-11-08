@@ -4568,7 +4568,8 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package key-chord
   :ensure t
-  :config
+  :after meow
+  :init
   (key-chord-mode 1)
   (key-chord-define meow-insert-state-keymap "jj" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "kk" 'meow-insert-exit))
