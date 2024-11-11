@@ -2082,7 +2082,9 @@ When matching, reference is stored in match group 1."
       ;; '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
       (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
       (with-eval-after-load 'flymake
-        (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))))
+        (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))
+      (with-eval-after-load 'highlight-doxygen
+        (set-face-attribute 'highlight-doxygen-code-block nil :background (modus-themes-get-color-value 'bg-dim)))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
@@ -2208,6 +2210,7 @@ Only if there is more than one window opened."
 (use-package highlight-doxygen
   :custom-face
   (highlight-doxygen-comment  ((t (:background unspecified :italic nil))))
+  (highlight-doxygen-code-block  ((t (:background unspecified :italic nil))))
   :hook
   (c++-mode . highlight-doxygen-mode)
   (c++-ts-mode . highlight-doxygen-mode))
@@ -4572,7 +4575,6 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   (key-chord-mode 1)
   (key-chord-define meow-insert-state-keymap "jj" 'meow-insert-exit)
-  (key-chord-define meow-insert-state-keymap "lll" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "hh" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "kk" 'meow-insert-exit))
 
