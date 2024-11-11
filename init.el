@@ -4572,6 +4572,8 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   (key-chord-mode 1)
   (key-chord-define meow-insert-state-keymap "jj" 'meow-insert-exit)
+  (key-chord-define meow-insert-state-keymap "lll" 'meow-insert-exit)
+  (key-chord-define meow-insert-state-keymap "hh" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "kk" 'meow-insert-exit))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
