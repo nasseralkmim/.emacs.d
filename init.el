@@ -2056,7 +2056,7 @@ When matching, reference is stored in match group 1."
   (setq modus-themes-org-blocks 'gray-background
         modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
-        modus-themes-common-palette-overrides modus-themes-preset-overrides-cooler
+        modus-themes-common-palette-overrides modus-themes-preset-overrides-faint
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
         modus-themes-bold-constructs nil
