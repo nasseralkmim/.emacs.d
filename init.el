@@ -2991,6 +2991,10 @@ opening a file from dired. Otherwise just regular dired."
   :hook
   (prog-mode . which-function-mode))
 
+(use-package breadcrumb
+  :hook
+  (prog-mode . breadcrum-mode))
+
 ;; Work git servers (forges)
 ;; uses 'Ghub' to access github/gitlab
 ;; need to set 'git config --global github.user <>'
