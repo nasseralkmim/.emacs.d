@@ -2699,8 +2699,8 @@ Only if there is more than one window opened."
 ;; easily change windows
 (use-package ace-window
   :commands aw-select aw-window-list                   ; for dired with C-u
-  :bind
-  (("C-c C-w" . ace-window))
+  :bind*
+  ("C-c C-w" . ace-window)
   :init
   ;; Adapted from: https://stackoverflow.com/a/47624310
   (defun dired-find-alternate-file-ace ()
@@ -2993,7 +2993,7 @@ opening a file from dired. Otherwise just regular dired."
 
 (use-package breadcrumb
   :hook
-  (prog-mode . breadcrum-mode))
+  (prog-mode . breadcrumb-mode))
 
 ;; Work git servers (forges)
 ;; uses 'Ghub' to access github/gitlab
@@ -3838,6 +3838,15 @@ its results, otherwise display STDERR with
         ;; reuse window, otherwise open bellow
       '((display-buffer-reuse-window
         display-buffer-below-selected))))
+
+(use-package compilation-window-placement-hack
+  :ensure nil
+  :init
+  (setf (alist-get "^\\*compilation\\*$"
+                 display-buffer-alist
+                 nil nil #'string=)
+        ;; reuse window
+      '((display-buffer-reuse-window))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
