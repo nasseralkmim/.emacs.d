@@ -4196,9 +4196,9 @@ its results, otherwise display STDERR with
   :hook (after-init . global-clippety-mode)
   :bind
   ("M-S-y" . clipetty-kill-ring-save)
+  :bind*
   ;; for terminal support
-  ("C-M-y" . clipetty-kill-ring-save)
-  ("C-c M-y" . clipetty-kill-ring-save))
+  ("C-M-y" . clipetty-kill-ring-save))
 
 ;; Add text-mode to files without format extension
 (use-package custom-files-auto-mode
