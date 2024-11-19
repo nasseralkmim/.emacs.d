@@ -918,7 +918,12 @@ org-mode"
   (meow-thing-register 'block
                        '(regexp "^[ \\|\t]*\\(#\\+begin_\\|```\\)[^\n]*\n" "^[ \\|\t]*\\(#\\+end_[^\n]*\\|```\\)$")
                        '(regexp "^[ \\|\t]*\\(#\\+begin_\\|```\\)[^\n]*\n" "^[ \\|\t]*\\(#\\+end_[^\n]*\\|```\\)$"))
-  (add-to-list 'meow-char-thing-table '(?o . block)))
+  (add-to-list 'meow-char-thing-table '(?o . block))
+  (meow-thing-register 'angle
+                     '(pair ("<") (">"))
+                     '(pair ("<") (">")))
+  (add-to-list 'meow-char-thing-table
+               '(?> . angle)))
 
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
@@ -4037,6 +4042,7 @@ its results, otherwise display STDERR with
   (setq gptel-api-key (funcall
                        (plist-get (car (auth-source-search :host "api.openai.com"))
                                   :secret)))
+  (setq gptel-default-mode #'org-mode)
   ;; make Ollama the default
   (setq-default gptel-model "llama3.2"
                 gptel-backend (gptel-make-ollama
