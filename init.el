@@ -2826,7 +2826,8 @@ opening a file from dired. Otherwise just regular dired."
 
   ;; Maybe improve performance
   ;; https://old.reddit.com/r/emacs/comments/16vixg6/how_to_make_lsp_and_eglot_way_faster_like_neovim/
-  (fset #'jsonrpc--log-event #'ignore))
+  (fset #'jsonrpc--log-event #'ignore)
+  (setq jsonrcp-event-hook nil))
 
 ;; Use 'mypy' check for type in python
 ;; need to install 'pip install mypy'
