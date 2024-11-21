@@ -922,8 +922,11 @@ org-mode"
   (meow-thing-register 'angle
                      '(pair ("<") (">"))
                      '(pair ("<") (">")))
-  (add-to-list 'meow-char-thing-table
-               '(?> . angle)))
+  (add-to-list 'meow-char-thing-table '(?> . angle))
+  (meow-thing-register 'math
+                       '(regexp "\\$" "\\$")
+                       '(regexp "\\$" "\\$"))
+  (add-to-list 'meow-char-thing-table '(?m . math)))
 
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
