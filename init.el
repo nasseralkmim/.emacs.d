@@ -1843,7 +1843,7 @@ When matching, reference is stored in match group 1."
   ;; It is ok if we can fold the table or algorithm.
   (setq preview-default-option-list '("displaymath" "showlabels" "textmath")
         preview-auto-cache-preamble t
-        preview-scale-function 1
+        preview-scale-function 1.3
         ;; preview-LaTeX-command-replacements '(preview-LaTeX-disable-pdfoutput)
         )
   (add-to-list 'preview-auto-reveal-commands 'meow-left)
@@ -3999,10 +3999,9 @@ its results, otherwise display STDERR with
 (use-package edraw
   ;; :when (display-graphic-p)
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
-  :hook
-  (org-mode . (lambda ()
-                (require 'edraw-org)
-                (edraw-org-setup-default)))
+  :init
+  (with-eval-after-load 'org-mode
+    (progn (require 'edraw-org) (edraw-org-setup-default)))
   :bind
   (:map edraw-editor-map
         ("<mouse-3>" . edraw-editor-select-tool-select))
