@@ -1,5 +1,8 @@
 ;;; early-init.el --- Early Init -*- no-byte-compile: t; lexical-binding: t; -*-
 
+;; Maximum optimization (potentially not good)
+(setq native-comp-speed 3)
+
 ;; prevent emacs package (package.el) initialization
 (setq package-enable-at-startup nil)
 (advice-add 'package--ensure-init-file :override 'ignore)
