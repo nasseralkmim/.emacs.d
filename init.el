@@ -1843,7 +1843,7 @@ When matching, reference is stored in match group 1."
   ;; It is ok if we can fold the table or algorithm.
   (setq preview-default-option-list '("displaymath" "showlabels" "textmath")
         preview-auto-cache-preamble t
-        preview-scale-function (/ 1 1.01659593) ; make the math approximately same height as text
+        preview-scale-function 1
         ;; preview-LaTeX-command-replacements '(preview-LaTeX-disable-pdfoutput)
         )
   (add-to-list 'preview-auto-reveal-commands 'meow-left)
