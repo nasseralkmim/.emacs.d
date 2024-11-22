@@ -1792,7 +1792,8 @@ When matching, reference is stored in match group 1."
 
   (setq-default TeX-engine 'default
                 ;; for xetex with shell escape
-                TeX-command-extra-options "-shell-escape")
+                TeX-command-extra-options "-shell-escape"
+                TeX-output-dir "./output")
   
   ;; variables for jumping between source and pdf
   (setq TeX-source-correlate-method 'synctex ;; Method for enabling forward and inverse search 
@@ -1801,18 +1802,7 @@ When matching, reference is stored in match group 1."
 
   ;; update PDF buffers after successful LaTeX runs
   (add-hook 'TeX-after-compilation-finished-functions  
-            'TeX-revert-document-buffer) 
-
-  ;; TODO: currently does not work
-  ;; remove intermediate files
-  ;; file argument because of `TeX-after-compilation-finished-functions'
-  (defun TeX-clean-intermediate (file)
-    (let ((buf (find-buffer-visiting file)))
-      (when buf
-        (with-current-buffer buf
-          (setq TeX-clean-confirm nil)          ; don't ask to confirm
-          (TeX-clean t)))))
-  ;; (add-hook 'TeX-after-compilation-finished-functions #'TeX-clean-intermediate) 
+            'TeX-revert-document-buffer)
 
   ;; nomenclature compilation option for latex
   (eval-after-load "tex"
@@ -2092,7 +2082,9 @@ When matching, reference is stored in match group 1."
       (with-eval-after-load 'flymake
         (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))
       (with-eval-after-load 'highlight-doxygen
-        (set-face-attribute 'highlight-doxygen-code-block nil :background (modus-themes-get-color-value 'bg-dim)))))
+        (set-face-attribute 'highlight-doxygen-code-block nil :background (modus-themes-get-color-value 'bg-dim)))
+      (with-eval-after-load 'gptel-rewrite
+        (set-face-attribute 'gptel-rewrite-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; load the theme automatically in the terminal and disable others automatically
