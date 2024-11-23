@@ -2051,8 +2051,7 @@ When matching, reference is stored in match group 1."
   ("<f5>" . modus-themes-toggle)
   :config
   (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
-  (setq modus-themes-org-blocks 'gray-background
-        modus-themes-prompts '(intense italic)
+  (setq modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
         modus-themes-common-palette-overrides modus-themes-preset-overrides-faint
         modus-themes-variable-pitch-ui nil
@@ -2087,6 +2086,9 @@ When matching, reference is stored in match group 1."
         (set-face-attribute 'gptel-rewrite-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
+  ;; Make mode line more distinct
+  (add-to-list 'modus-themes-common-palette-overrides '(bg-mode-line-active bg-blue-intense))
+  
   ;; load the theme automatically in the terminal and disable others automatically
   ;; (if (not (display-graphic-p))
   ;;     (modus-themes-load-theme 'modus-vivendi-tinted))
@@ -4045,6 +4047,26 @@ its results, otherwise display STDERR with
                                :host "localhost:11434"                ;Where it's running
                                :models '("llama3.2")            ;Installed models (ollama pull "model")
                                :stream t)))
+
+
+(use-package gptel-directives
+  :ensure nil
+  :after gptel
+  :init
+  (setq gptel-directives
+        '((default . "To assist:  Be terse.  Do not offer unprompted advice or clarifications. Speak in specific,
+ topic relevant terminology. Do NOT hedge or qualify. Do not waffle. Speak
+ directly and be willing to make creative guesses. Explain your reasoning. if you
+ don’t know, say you don’t know.
+
+ Remain neutral on all topics. Be willing to reference less reputable sources for
+ ideas.
+
+ Never apologize.  Ask questions when unsure.")
+          (programmer . "You are a careful programmer.  Provide code and only code as output without any additional text, prompt or note.")
+          (cliwhiz . "You are a command line helper.  Generate command line commands that do what is requested, without any additional description or explanation.  Generate ONLY the command, I will edit it myself before running.")
+          (emacser . "You are an Emacs maven.  Reply only with the most appropriate built-in Emacs command for the task I specify.  Do NOT generate any additional description or explanation.")
+          (explain . "Explain what this code does to a novice programmer."))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
