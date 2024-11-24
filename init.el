@@ -523,6 +523,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; available when a project file is visited (project-switch-project)
   (setq consult-project-root-function nil)
 
+  ;; Use Consult to select xref locations with preview
+  (setq xref-show-xrefs-function #'consult-xref
+        xref-show-definitions-function #'consult-xref)
+  
   ;; #'vc-root-dir ; using current folder as default
   ;; added --no-ignore-vcs to avoid skipping files in gitignore
   (setq consult-ripgrep-args 
