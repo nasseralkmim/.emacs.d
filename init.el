@@ -88,6 +88,9 @@
 
   (setq warning-minimum-level :error)		 ;avoid warning buffer
 
+  ;; don't highlight with mouse (messes up with edraw)
+  (setq mouse-highlight nil)
+
   ;; scroll
   (setq auto-window-vscroll nil  ; avoid next-line to trigger line-move-partial
         mouse-wheel-scroll-amount '(1 ((shift) . 1) ((control) . nil)) ; 1 line at a time
