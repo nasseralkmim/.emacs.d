@@ -736,6 +736,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure nil
   :hook
   (prog-mode . show-paren-mode)
+  ;; Show only parenthesis in org-mode
+  (org-mode . (lambda ()
+                (setq-local show-paren-style 'parenthesis)))
   :config
   ;; show context (echo area) when closing delimiter is off screen
   (setq show-paren-context-when-offscreen 'overlay
