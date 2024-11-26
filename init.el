@@ -163,6 +163,11 @@
   ;; (add-to-list 'safe-local-variable-directories "~/.local/src/Trilinos/")
   (advice-add 'risky-local-variable-p :override #'ignore))
 
+(use-package compile
+  :ensure nil
+  :config
+  (setq compilation-scroll-output t))
+
 (use-package bookmark
   :ensure nil
   :defer 1
@@ -2673,7 +2678,7 @@ Only if there is more than one window opened."
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
   :config
   ;; maximum fontification
-  (setq treesit-font-lock-level 4))
+  (setq treesit-font-lock-level 3))
 
 (use-package wgrep)
 
