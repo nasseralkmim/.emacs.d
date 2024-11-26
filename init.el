@@ -507,6 +507,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; command line can be specified after "--", example: #<search string> -- -C 10 for context!! WHAT!
   ("C-c r" . consult-ripgrep)		; search file contents
   ("C-c f" . consult-find-fd)		; search files in directories
+  ("C-x C-@" . consult-global-mark)
   ("M-e" . consult-isearch-history))
   :hook
   ;; hook for using default completion mode
