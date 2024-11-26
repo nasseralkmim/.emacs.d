@@ -332,11 +332,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq-default abbrev-mode t)
   (setq save-abbrevs 'silently))
 
-;; Add more colors to code: https://medium.com/@evnbr/coding-in-color-3a6db2743a1e
-(use-package color-identifiers-mode
-  :hook
-  (prog-mode . color-identifiers-mode))
-
 ;; save recent visited files
 (use-package recentf
   :ensure nil
