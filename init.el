@@ -4022,24 +4022,25 @@ its results, otherwise display STDERR with
   :bind
   ("C-c C-g" . gptel-menu)
   :config
-  (setq gptel-api-key (funcall
-                       (plist-get (car (auth-source-search :host "api.openai.com"))
-                                  :secret)))
   (setq gptel-default-mode #'org-mode)
   ;; make Ollama the default
-  (setq-default gptel-model "llama3.2"
-                gptel-backend (gptel-make-ollama
-                               "Ollama"                               ;Any name of your choosing
-                               :host "localhost:11434"                ;Where it's running
-                               :models '("llama3.2")            ;Installed models (ollama pull "model")
-                               :stream t)))
-
+  (setq-default gptel-model "llama3.2")
+  ;; Setup for Ollama
+  (gptel-make-ollama "Ollama"
+    :stream t
+    :host "localhost:11434" ; Where it's running
+    ;; Installed models (ollama pull "model")
+    :models '("llama3.2"))
+  ;; setup for Anthropic
+  (gptel-make-anthropic "Claude"
+    :stream t
+    :key (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret))))
 
 (use-package gptel-directives
   :ensure nil
   :after gptel
   :init
-  (setq gptel-directives
+  (setq-default gptel-directives
         '((default . "To assist:  Be terse.  Do not offer unprompted advice or clarifications. Speak in specific,
  topic relevant terminology. Do NOT hedge or qualify. Do not waffle. Speak
  directly and be willing to make creative guesses. Explain your reasoning. if you
