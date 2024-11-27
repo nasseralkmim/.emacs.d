@@ -4025,6 +4025,7 @@ its results, otherwise display STDERR with
 ;; Also need to run a model to pull manifest "ollama run mistral"
 (use-package gptel
   :ensure (gptel :type git :host github :repo "karthink/gptel")
+  :commands gptel-quick                 ; load gptel when gptel-quick is called
   :bind
   ("C-c C-g" . gptel-menu)
   :config
@@ -4606,5 +4607,11 @@ RESCHEDULE-FN is the function to reschedule."
   (key-chord-define meow-insert-state-keymap "jj" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "hh" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "kk" 'meow-insert-exit))
+
+(use-package gptel-quick
+  :ensure (gptel-quick :type git :host github :repo "karthink/gptel-quick")
+  :after embark
+  :init
+  (keymap-set embark-general-map "?" #'gptel-quick))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
