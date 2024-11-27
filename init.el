@@ -4026,29 +4026,9 @@ its results, otherwise display STDERR with
 (use-package gptel
   :ensure (gptel :type git :host github :repo "karthink/gptel")
   :commands gptel-quick                 ; load gptel when gptel-quick is called
-  :bind
-  ("C-c C-g" . gptel-menu)
-  :config
-  (setq gptel-default-mode #'org-mode)
-  ;; make Ollama the default
-  (setq-default gptel-model "llama3.2")
-  ;; Setup for Ollama
-  (gptel-make-ollama "Ollama"
-    :stream t
-    :host "localhost:11434" ; Where it's running
-    ;; Installed models (ollama pull "model")
-    :models '("llama3.2"))
-  ;; setup for Anthropic
-  (gptel-make-anthropic "Claude"
-    :stream t
-    :key (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret))))
-
-(use-package gptel-directives
-  :ensure nil
-  :after gptel
-  :init
-  (setq-default gptel-directives
-        '((default . "To assist:  Be terse.  Do not offer unprompted advice or clarifications. Speak in specific,
+  :custom
+  (gptel-directives
+   '((default . "To assist:  Be terse.  Do not offer unprompted advice or clarifications. Speak in specific,
  topic relevant terminology. Do NOT hedge or qualify. Do not waffle. Speak
  directly and be willing to make creative guesses. Explain your reasoning. if you
  don’t know, say you don’t know.
@@ -4057,10 +4037,26 @@ its results, otherwise display STDERR with
  ideas.
 
  Never apologize.  Ask questions when unsure.")
-          (programmer . "You are a careful programmer.  Provide code and only code as output without any additional text, prompt or note.")
-          (cliwhiz . "You are a command line helper.  Generate command line commands that do what is requested, without any additional description or explanation.  Generate ONLY the command, I will edit it myself before running.")
-          (emacser . "You are an Emacs maven.  Reply only with the most appropriate built-in Emacs command for the task I specify.  Do NOT generate any additional description or explanation.")
-          (explain . "Explain what this code does to a novice programmer."))))
+     (programmer . "You are a careful programmer.  Provide code and only code as output without any additional text, prompt or note.")
+     (cliwhiz . "You are a command line helper.  Generate command line commands that do what is requested, without any additional description or explanation.  Generate ONLY the command, I will edit it myself before running.")
+     (emacser . "You are an Emacs maven.  Reply only with the most appropriate built-in Emacs command for the task I specify.  Do NOT generate any additional description or explanation.")
+     (explain . "Explain what this code does to a novice programmer.")))
+  :bind
+  ("C-c C-g" . gptel-menu)
+  :config
+  (setq gptel-default-mode #'org-mode)
+  (gptel-make-anthropic "Claude"
+    :stream t
+    :key (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
+  (gptel-make-openai "OpenAI"
+    :stream t
+    :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
+  ;; make Ollama the default
+  (setq gptel-model 'llama3:8b
+        gptel-backend (gptel-make-ollama "Ollama" 
+                        :host "localhost:11434"
+                        :models '(llama3:8b llama3.2:latest)            ;Installed models (ollama pull "model")
+                        :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
