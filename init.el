@@ -3989,7 +3989,7 @@ its results, otherwise display STDERR with
   ;; :when (display-graphic-p)
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
   :init
-  (with-eval-after-load 'org-mode
+  (with-eval-after-load 'org
     (progn (require 'edraw-org) (edraw-org-setup-default)))
   :bind
   (:map edraw-editor-map
