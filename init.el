@@ -1031,7 +1031,7 @@ org-mode"
 (use-package org
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
-  ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :mode (("\\.org$" . org-mode))
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
@@ -4052,10 +4052,10 @@ its results, otherwise display STDERR with
     :stream t
     :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
   ;; make Ollama the default
-  (setq gptel-model 'llama3:8b
+  (setq gptel-model 'qwq
         gptel-backend (gptel-make-ollama "Ollama" 
                         :host "localhost:11434"
-                        :models '(llama3:8b llama3.2:latest)            ;Installed models (ollama pull "model")
+                        :models '(qwq llama3:8b llama3.2:latest)            ;Installed models (ollama pull "model")
                         :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
