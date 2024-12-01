@@ -4051,12 +4051,27 @@ its results, otherwise display STDERR with
   (gptel-make-openai "OpenAI"
     :stream t
     :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
-  ;; make Ollama the default
-  (setq gptel-model 'qwq
-        gptel-backend (gptel-make-ollama "Ollama" 
+  ;; Perplexity offers an OpenAI compatible API
+  (gptel-make-openai "Perplexity"         ;Any name you want
+    :host "api.perplexity.ai"
+    :key (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))
+    :endpoint "/chat/completions"
+    :stream t
+    :models '(llama-3.1-sonar-large-128k-online
+              llama-3.1-sonar-huge-128k-online))
+  (gptel-make-ollama "Ollama" 
                         :host "localhost:11434"
-                        :models '(qwq llama3:8b llama3.2:latest)            ;Installed models (ollama pull "model")
-                        :stream t)))
+                        :models '(qwq llama3:8b llama3.2:latest)
+                        :stream t)
+  ;; make Ollama the default
+  (setq gptel-model 'llama-3.1-sonar-large-128k-online
+        gptel-backend (gptel-make-openai "Perplexity"         ;Any name you want
+                        :host "api.perplexity.ai"
+                        :key (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))
+                        :endpoint "/chat/completions"
+                        :stream t
+                        :models '(llama-3.1-sonar-large-128k-online
+                                  llama-3.1-sonar-huge-128k-online))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
