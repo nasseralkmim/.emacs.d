@@ -4404,15 +4404,22 @@ absolute path. Finally load eglot."
   :after eglot
   :init (eglot-booster-mode))
 
-(use-package calfw :disabled
+(use-package calfw
   ;; make sure to "build" 'calfw-org.el' as well.
-  :ensure (calfw :files ("calfw.el"
-                         "calfw-org.el"))
+  :ensure (calfw 
+           :files ("*.el" "calfw-org.el"))
   :init
   ;; autoload 'calfw-org' when opening calendar
   (unless (fboundp 'cfw:open-org-calendar)
     (autoload #'cfw:open-org-calendar "calfw-org" nil t))
   (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar)))
+
+(use-package calfw-blocks
+  :ensure (calfw-blocks :type git :host github :repo "haji-ali/calfw-blocks")
+  :after calfw
+  :init
+  (require 'calfw-blocks)
+  (require 'calfw-transpose))
 
 (use-package dslide
   :ensure (dslide :host github
