@@ -3205,7 +3205,7 @@ opening a file from dired. Otherwise just regular dired."
   (popper-echo-mode +1))
 
 (use-package rainbow-delimiters
-  :hook (smartparens-mode . rainbow-delimiters-mode))
+  :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; eye candy for org
 (use-package org-modern
