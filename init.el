@@ -4624,7 +4624,8 @@ RESCHEDULE-FN is the function to reschedule."
   (key-chord-mode 1)
   (key-chord-define meow-insert-state-keymap "jj" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "hh" 'meow-insert-exit)
-  (key-chord-define meow-insert-state-keymap "kk" 'meow-insert-exit))
+  (key-chord-define meow-insert-state-keymap "kk" 'meow-insert-exit)
+  (key-chord-define meow-normal-state-keymap "gg" 'beginning-of-buffer))
 
 (use-package gptel-quick
   :ensure (gptel-quick :type git :host github :repo "karthink/gptel-quick")
