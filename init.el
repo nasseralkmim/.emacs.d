@@ -4414,7 +4414,7 @@ absolute path. Finally load eglot."
     (autoload #'cfw:open-org-calendar "calfw-org" nil t))
   (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar)))
 
-(use-package calfw-blocks
+(use-package calfw-blocks :disabled     ; problem with missing 'cfw:cp-dipatch-funcs'
   :ensure (calfw-blocks :type git :host github :repo "haji-ali/calfw-blocks")
   :after calfw
   :init
