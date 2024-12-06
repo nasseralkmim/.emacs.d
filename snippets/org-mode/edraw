@@ -3,4 +3,4 @@
 # key: <d
 # binding: C-c y d
 # --
-[[edraw:file=images/`(format-time-string "edraw-%Y-%m-%d--%H-%M-%S.svg")`]]
+[[edraw:file=figures/`(format-time-string "edraw-%Y-%m-%d--%H-%M-%S.svg")`]]
