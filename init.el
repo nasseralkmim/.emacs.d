@@ -1425,7 +1425,7 @@ When matching, reference is stored in match group 1."
 
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
-                                   ("inkscapelatex=false" "svg"  nil)
+                                   ("inkscapelatex=false,inkscapepath=./figures/" "svg"  nil)
                                    ("" "mathrsfs" nil) ; for command mathscr (Calligraphic letters)
                                    ("" "amsmath")
                                    ("" "bm, upgreek")
