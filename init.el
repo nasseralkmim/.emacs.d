@@ -4016,23 +4016,6 @@ its results, otherwise display STDERR with
                                                   (stroke-width . 1)
                                                   (fill . "none"))))
 
-(use-package edraw-org-toggle-image-display-hack :disabled
-  :ensure nil
-  :after org edraw
-  :init
-  (defun advice-org-toggle-inline-images-with-edraw ()
-      "Advice to toggle edraw images after regular org-toggle-inline-images"
-      (interactive)
-      (if edraw-org-link-image-mode
-          (progn
-            (edraw-org-link-image-remove-all)
-            (edraw-org-link-image-mode -1))
-        (progn
-          (edraw-org-link-image-activate)
-            (edraw-org-link-image-mode 1))))
-
-  (advice-add 'org-link-preview :after #'advice-org-toggle-inline-images-with-edraw))
-
 (use-package edraw-link-preview-hack
   :ensure nil
   :after org edraw
