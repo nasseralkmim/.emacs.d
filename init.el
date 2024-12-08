@@ -1031,7 +1031,7 @@ org-mode"
 (use-package org
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
-  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :mode (("\\.org$" . org-mode))
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock))))
@@ -1432,7 +1432,7 @@ When matching, reference is stored in match group 1."
                                    ("" "tikz" nil)
                                    ("" "algorithm, algpseudocode"))))
 
-(use-package org-latex-preview
+(use-package org-latex-preview :disabled
   :when (display-graphic-p)
   :ensure nil
   :after org
@@ -4016,7 +4016,7 @@ its results, otherwise display STDERR with
                                                   (stroke-width . 1)
                                                   (fill . "none"))))
 
-(use-package edraw-org-toggle-image-display-hack
+(use-package edraw-org-toggle-image-display-hack :disabled
   :ensure nil
   :after org edraw
   :init
@@ -4031,7 +4031,45 @@ its results, otherwise display STDERR with
           (edraw-org-link-image-activate)
             (edraw-org-link-image-mode 1))))
 
-  (advice-add 'org-toggle-inline-images-command :after #'advice-org-toggle-inline-images-with-edraw))
+  (advice-add 'org-link-preview :after #'advice-org-toggle-inline-images-with-edraw))
+
+(use-package edraw-link-preview-hack
+  :ensure nil
+  :after org edraw
+  :when (string-greaterp org-version "9.8")
+  :init
+  (defun org-link-preview-edraw (ov path link)
+    "Display edraw SVG file in overlay OV for LINK.
+Handles edraw links in the format edraw:file=/path/to/image.svg"
+    (if (not (display-graphic-p))
+        (prog1 nil
+          (message "Your Emacs does not support displaying images!"))
+      (require 'image)
+      (when-let* ((file-path (and (string-match "file=\\(.*\\)" path)
+                                  (match-string 1 path)))
+                  (file-full (expand-file-name file-path))
+                  (file (substitute-in-file-name file-full))
+                  ((string-match-p (image-file-name-regexp) file))
+                  ((file-exists-p file)))
+        (let* ((width (org-display-inline-image--width link))
+               (align (org-image--align link))
+               (image (org--create-inline-image file width)))
+          (when image
+            (image-flush image)
+            (overlay-put ov 'display image)
+            (overlay-put ov 'face 'default)
+            (overlay-put ov 'keymap image-map)
+            (when align
+              (overlay-put
+               ov 'before-string
+               (propertize
+                " " 'face 'default
+                'display
+                (pcase align
+                  ("center" `(space :align-to (- center (0.5 . ,image))))
+                  ("right"  `(space :align-to (- right ,image)))))))
+            t)))))
+  (org-link-set-parameters "edraw" :preview #'org-link-preview-edraw))
 
 (use-package cmake
   :ensure nil
