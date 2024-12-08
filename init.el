@@ -3990,7 +3990,7 @@ its results, otherwise display STDERR with
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
   :init
   (with-eval-after-load 'org
-    (progn (require 'edraw-org) (edraw-org-setup-default)))
+    (progn (require 'edraw-org) (edraw-org-setup-exporter)))
   :bind
   (:map edraw-editor-map
         ("<mouse-3>" . edraw-editor-select-tool-select))
