@@ -4019,7 +4019,6 @@ its results, otherwise display STDERR with
 (use-package edraw-link-preview-hack
   :ensure nil
   :after org edraw
-  :when (string-greaterp org-version "9.8")
   :init
   (defun org-link-preview-edraw (ov path link)
     "Display edraw SVG file in overlay OV for LINK.
