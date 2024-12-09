@@ -4520,11 +4520,11 @@ absolute path. Finally load eglot."
     (hledger-rules-mode-setup)))
 
 ;; tools for display during presentations
-(use-package master-of-ceremonies
+(use-package moc :disabled
   :after dslide
-  :ensure (master-of-ceremonies 
+  :ensure (moc 
            :host github
-           :repo "positron-solutions/master-of-ceremonies"))
+           :repo "positron-solutions/moc"))
 
 (use-package hide-mode-line :disabled)
 
