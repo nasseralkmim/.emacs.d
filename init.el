@@ -4041,15 +4041,15 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
             (overlay-put ov 'display image)
             (overlay-put ov 'face 'default)
             (overlay-put ov 'keymap image-map)
-            (when align
-              (overlay-put
-               ov 'before-string
-               (propertize
-                " " 'face 'default
-                'display
-                (pcase align
-                  ("center" `(space :align-to (- center (0.5 . ,image))))
-                  ("right"  `(space :align-to (- right ,image)))))))
+            ;; (when align
+            ;;   (overlay-put
+            ;;    ov 'before-string
+            ;;    (propertize
+            ;;     " " 'face 'default
+            ;;     'display
+            ;;     (pcase align
+            ;;       ("center" `(space :align-to (- center (0.5 . ,image))))
+            ;;       ("right"  `(space :align-to (- right ,image)))))))
             t)))))
   (org-link-set-parameters "edraw" :preview #'org-link-preview-edraw))
 
