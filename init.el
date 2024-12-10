@@ -4018,7 +4018,7 @@ its results, otherwise display STDERR with
 
 (use-package edraw-link-preview-hack
   :ensure nil
-  :after org edraw
+  :after org
   :init
   (defun org-link-preview-edraw (ov path link)
     "Display edraw SVG file in overlay OV for LINK.
@@ -4041,15 +4041,15 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
             (overlay-put ov 'display image)
             (overlay-put ov 'face 'default)
             (overlay-put ov 'keymap image-map)
-            ;; (when align
-            ;;   (overlay-put
-            ;;    ov 'before-string
-            ;;    (propertize
-            ;;     " " 'face 'default
-            ;;     'display
-            ;;     (pcase align
-            ;;       ("center" `(space :align-to (- center (0.5 . ,image))))
-            ;;       ("right"  `(space :align-to (- right ,image)))))))
+            (when align
+              (overlay-put
+               ov 'before-string
+               (propertize
+                " " 'face 'default
+                'display
+                (pcase align
+                  ("center" `(space :align-to (- center (0.5 . ,image))))
+                  ("right"  `(space :align-to (- right ,image)))))))
             t)))))
   (org-link-set-parameters "edraw" :preview #'org-link-preview-edraw))
 
@@ -4669,5 +4669,21 @@ RESCHEDULE-FN is the function to reschedule."
   :after embark
   :init
   (keymap-set embark-general-map "?" #'gptel-quick))
+
+(use-package eglot-inactive-regions
+  :ensure (eglot-inactive-regions :type git :host github :repo "fargiolas/eglot-inactive-regions")
+  :after eglot
+  :custom
+  (eglot-inactive-regions-style 'darken-foreground)
+  (eglot-inactive-regions-opacity 0.4)
+  :hook 
+  (prog-mode . eglot-inactive-regions-mode))
+
+(use-package org-xopp
+  :after org
+  :ensure (:host github :repo "mahmoodsh36/org-xopp" :files (:defaults "*.sh"))
+  :demand
+  :config
+  (org-xopp-setup))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
