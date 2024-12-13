@@ -773,6 +773,7 @@ org-mode"
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
 
 (use-package flymake
+  :ensure nil
   :hook
   (prog-mode . flymake-mode)
   :bind
@@ -1029,6 +1030,7 @@ org-mode"
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
+  :ensure nil
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
   ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
@@ -1859,7 +1861,7 @@ When matching, reference is stored in match group 1."
   (add-to-list 'preview-auto-reveal-commands 'meow-right))
 
 ;; Better math preview in latex
-(use-package preview-auto
+(use-package preview-auto :disabled
   :ensure (preview-auto :type git :host github :repo "ultronozm/preview-auto.el")
   :after latex
   :demand t
@@ -2221,6 +2223,7 @@ Only if there is more than one window opened."
 ;; it seems to be faster than pyls
 ;; does not have formating
 (use-package python
+  :ensure nil
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
   :hook ((python-mode . visual-line-mode)
