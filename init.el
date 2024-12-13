@@ -4098,7 +4098,7 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
               llama-3.1-sonar-huge-128k-online))
   (gptel-make-ollama "Ollama" 
                         :host "localhost:11434"
-                        :models '(qwq llama3:8b llama3.2:latest)
+                        :models '(llama3.3)
                         :stream t)
   ;; make Ollama the default
   (setq gptel-model 'llama-3.1-sonar-large-128k-online
@@ -4685,5 +4685,12 @@ RESCHEDULE-FN is the function to reschedule."
   :demand
   :config
   (org-xopp-setup))
+
+(use-package copilot
+  :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :bind
+  (:map copilot-completion-map
+        ("<tab>" . copilot-accept-completion)))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
