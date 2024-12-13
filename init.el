@@ -4697,7 +4697,9 @@ RESCHEDULE-FN is the function to reschedule."
    ("M-n" . 'copilot-next-completion)
    ("M-f" . 'copilot-accept-completion-by-word)
    ("M-<return>" . 'copilot-accept-completion-by-line)
-   ("TAB" . copilot-accept-completion)))
+   ("TAB" . copilot-accept-completion))
+  :config
+  (setq copilot-max-char -1))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
