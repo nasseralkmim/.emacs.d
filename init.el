@@ -52,7 +52,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil ; compute statistics about package initialization
+      use-package-compute-statistics t ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
@@ -4699,7 +4699,8 @@ RESCHEDULE-FN is the function to reschedule."
    ("M-<return>" . 'copilot-accept-completion-by-line)
    ("TAB" . copilot-accept-completion))
   :config
-  (setq copilot-max-char -1))
+  (setq copilot-max-char -1
+        copilot-idle-delay 0.3))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
