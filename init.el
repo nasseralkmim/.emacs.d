@@ -1030,7 +1030,7 @@ org-mode"
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  :ensure nil
+  ;; :ensure nil
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
   ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
@@ -1253,7 +1253,7 @@ graphics."
   (add-to-list 'org-babel-default-header-args '(:noweb . "no-export")))
 
 ;; custom org function
-(use-package org-zoom-inline-image-hack
+(use-package org-zoom-inline-image-hack :disabled
   :ensure nil
   :after org
   :bind
