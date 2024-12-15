@@ -256,11 +256,11 @@
 
 (use-package org-typeface-when-variable-pitch
   :ensure nil
-  :after (:or org latex)
+  :after org
   :preface
-  (setq default-monospace (list (alist-get 'font default-frame-alist nil nil 'equal)))
+  (setq default-monospace (list (alist-get 'font default-frame-alist)))
   :custom-face
-  (org-block ((t (:family ,(car default-monospace)))))
+  (org-block ((t (:family ,(car default-monospace) :inherit org-agenda-restriction-lock))))
   (org-table ((t (:family ,(car default-monospace)))))
   (org-meta-line ((t (:family ,(car default-monospace)))))
   (org-verbatim ((t (:family ,(car default-monospace)))))
@@ -468,6 +468,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; first TAB shows candidates
   ;; second TAB switches to the candidates buffer
   (setq completion-auto-select 'second-tab
+        completion-auto-help 'always
         ;; Just one column is better.
         completions-format 'one-column
         completions-max-height 20
@@ -1035,8 +1036,6 @@ org-mode"
   ;; So we load the correct version of org instead of built-in when exporting async.
   ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :mode (("\\.org$" . org-mode))
-  :custom-face
-  (org-block ((t (:inherit org-agenda-restriction-lock))))
   :bind
   (("M-o" . org-open-at-point-global)
    ("C-c s s" . org-store-link)
@@ -1310,8 +1309,6 @@ graphics."
 
 (use-package org-src
   :ensure nil
-  :custom-face
-  (org-block ((t (:inherit org-agenda-restriction-lock))))
   :after org
   :init
   ;; babel and source blocks
