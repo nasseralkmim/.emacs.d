@@ -27,7 +27,7 @@
    ;; (right-fringe . 8)                   ;; Thin right fringe
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)
-   (font . "Monaspace Neon 14")))
+   (font . "Monaspace Neon")))
 
 ;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
 ;; native compilation settings
