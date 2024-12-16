@@ -4690,7 +4690,7 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package copilot
   :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :hook (prog-mode . (lambda () (run-with-idle-timer 2 nil (copilot-mode))))
+  :hook (prog-mode . copilot-mode)
   :bind
   (("C-c M-f" . copilot-complete)
    :map copilot-completion-map
