@@ -2004,6 +2004,7 @@ When matching, reference is stored in match group 1."
         dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
         dired-recursive-copies 'always
         dired-recursive-deletes 'always
+        dired-dwim-target t
         ;; manjaro: ~/.local/share/Trash/
         delete-by-moving-to-trash t	; move to trash (problem with naming and tramp)
         remote-file-name-inhibit-delete-by-moving-to-trash t ; when in remote, just delete
@@ -4655,9 +4656,10 @@ RESCHEDULE-FN is the function to reschedule."
   (advice-add 'org-babel-execute-src-block :around #'my-org-babel-execute-src-block-advice))
 
 (use-package key-chord
+  :defer 1
   :ensure t
   :after meow
-  :init
+  :config
   (key-chord-mode 1)
   (key-chord-define meow-insert-state-keymap "jj" 'meow-insert-exit)
   (key-chord-define meow-insert-state-keymap "hh" 'meow-insert-exit)
@@ -4688,7 +4690,7 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package copilot
   :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :hook (prog-mode . copilot-mode)
+  :hook (prog-mode . (lambda () (run-with-idle-timer 2 nil (copilot-mode))))
   :bind
   (("C-c M-f" . copilot-complete)
    :map copilot-completion-map
