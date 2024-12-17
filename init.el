@@ -1987,6 +1987,7 @@ When matching, reference is stored in match group 1."
   :commands dired
   :hook
   (dired-mode . dired-hide-details-mode)
+  (dired-mode . auto-revert-mode)
   :bind (("C-x j" . dired-jump)
          :map dired-jump-map
          ("j" . nil)
