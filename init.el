@@ -1153,8 +1153,14 @@ graphics."
                                     (org-redisplay-inline-images)
                                     (org-redisplay-inline-images))))
 
+(use-package org-refresh-images-after-src-block-execution-hack
+  :ensure nil
+  :after org
+  :init
+  (add-hook 'org-babel-after-execute-hook 'org-link-preview-refresh))
+
 ;; org image remote
-(use-package org-display-inline-image-remote
+(use-package org-display-inline-image-remote :disabled
   :ensure nil
   :after org
   :init
