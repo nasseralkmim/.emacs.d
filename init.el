@@ -4705,5 +4705,15 @@ RESCHEDULE-FN is the function to reschedule."
   (setq copilot-max-char -1
         copilot-idle-delay 0.3))
 
+(use-package aider
+  :ensure (:host github :repo "tninja/aider.el" :files ("aider.el"))
+  :bind
+  ("C-c C-a" . aider-transient-menu)
+  :config
+  ;; (setq aider-args '("--model" "ollama_chat/llama3.3"))
+  (setq aider-args '("--model" "perplexity/llama-3.1-sonar-large-128k-online" "--map-tokens" "1024"))
+  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
+  (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
