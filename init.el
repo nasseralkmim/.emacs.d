@@ -2009,6 +2009,7 @@ When matching, reference is stored in match group 1."
         ;; manjaro: ~/.local/share/Trash/
         delete-by-moving-to-trash t	; move to trash (problem with naming and tramp)
         remote-file-name-inhibit-delete-by-moving-to-trash t ; when in remote, just delete
+        dired-mouse-drag-files t
         )
 
   ;; kill the dired buffer and enters the current line file or directory
@@ -4566,7 +4567,7 @@ absolute path. Finally load eglot."
 ;; Mouse support on terminal
 (use-package xt-mouse
   :ensure nil
-  :config
+  :init
   (xterm-mouse-mode))
 
 (use-package org-drill
