@@ -52,7 +52,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics t ; compute statistics about package initialization
+      use-package-compute-statistics nil ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
@@ -4453,13 +4453,6 @@ absolute path. Finally load eglot."
   (unless (fboundp 'cfw:open-org-calendar)
     (autoload #'cfw:open-org-calendar "calfw-org" nil t))
   (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar)))
-
-(use-package calfw-blocks :disabled     ; problem with missing 'cfw:cp-dipatch-funcs'
-  :ensure (calfw-blocks :type git :host github :repo "haji-ali/calfw-blocks")
-  :after calfw
-  :init
-  (require 'calfw-blocks)
-  (require 'calfw-transpose))
 
 (use-package dslide
   :ensure (dslide :host github
