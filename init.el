@@ -266,6 +266,11 @@
   (org-verbatim ((t (:family ,(car default-monospace)))))
   (org-code ((t (:slant italic :inherit org-verbatim :box nil)))))
 
+(use-package gui-font-size
+  :ensure nil
+  :init
+  (set-face-attribute 'default nil :height 140))
+
 ;; change typeface size font
 ;; note: `global-text-scale-adjust' do that
 (use-package emacs-frame-zoom :disabled
