@@ -4114,15 +4114,12 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
                         :host "localhost:11434"
                         :models '(llama3.3)
                         :stream t)
-  ;; make Ollama the default
-  (setq gptel-model 'llama-3.1-sonar-large-128k-online
-        gptel-backend (gptel-make-openai "Perplexity"         ;Any name you want
-                        :host "api.perplexity.ai"
-                        :key (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))
-                        :endpoint "/chat/completions"
-                        :stream t
-                        :models '(llama-3.1-sonar-large-128k-online
-                                  llama-3.1-sonar-huge-128k-online))))
+  ;; set the default
+  (setq gptel-model 'llama3
+        gptel-backend (gptel-make-ollama "Ollama" 
+                        :host "localhost:11434"
+                        :models '(llama3.3)
+                        :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
@@ -4715,12 +4712,16 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-c C-a" . aider-transient-menu)
   :config
-  ;; (setq aider-args '("--model" "ollama_chat/llama3.3"))
   (setq aider-args '("--model"
-                     "perplexity/llama-3.1-sonar-large-128k-online"
+                     "ollama_chat/llama3"
                      "--map-tokens" "2048"
                      "--architect"
                      "--watch-files"))
+  ;; (setq aider-args '("--model"
+  ;;                    "perplexity/llama-3.1-sonar-large-128k-online"
+  ;;                    "--map-tokens" "2048"
+  ;;                    "--architect"
+  ;;                    "--watch-files"))
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))))
 
