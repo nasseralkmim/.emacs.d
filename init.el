@@ -3011,9 +3011,12 @@ opening a file from dired. Otherwise just regular dired."
 (use-package forge
   :demand
   :after magit
-  :init
-  ;; use evil collection keybindings
-  (setq forge-add-default-bindings nil))
+  :config
+  ;; add custom gitlab instance
+  (push '("git@git.uibk.ac.at"
+          "git.uibk.ac.at/api/v4"
+          "git.uibk.ac.at" forge-gitlab-repository)
+        forge-alist))
 
 ;; Mass copy-paste or copy-move (analogous to cut-paste) for dired.
 (use-package dired-ranger
