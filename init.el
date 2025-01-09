@@ -4725,5 +4725,12 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))))
 
+(use-package ultra-scroll
+  :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
+  :init
+  (setq scroll-conservatively 101 ; important!
+        scroll-margin 0) 
+  :config
+  (ultra-scroll-mode 1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
