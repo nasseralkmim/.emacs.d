@@ -4119,13 +4119,13 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
               llama-3.1-sonar-huge-128k-online))
   (gptel-make-ollama "Ollama" 
                         :host "localhost:11434"
-                        :models '(llama3.3)
+                        :models '(phi4 llama3.3)
                         :stream t)
   ;; set the default
   (setq gptel-model 'llama3
         gptel-backend (gptel-make-ollama "Ollama" 
                         :host "localhost:11434"
-                        :models '(llama3.3)
+                        :models '(phi4 llama3.3)
                         :stream t)))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
@@ -4616,7 +4616,7 @@ RESCHEDULE-FN is the function to reschedule."
                           ;; for some reason I need to "start" 'flymake' again
                           (flymake-start))))
 
-(use-package org-rainbow-tags
+(use-package org-rainbow-tags :disabled ; not robust to changes in the tags
   :ensure t
   :custom
   (org-rainbow-tags-hash-start-index 10)
