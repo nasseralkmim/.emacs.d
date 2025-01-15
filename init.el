@@ -266,6 +266,19 @@
   (org-verbatim ((t (:family ,(car default-monospace)))))
   (org-code ((t (:slant italic :inherit org-verbatim :box nil)))))
 
+(use-package org-face-for-checked-item-in-list-hack
+  :ensure nil
+  :after org
+  :init
+  (defface org-checkbox-done-text
+     '((t (:foreground "grey50")))
+     "Face for the text part of a checked org-mode checkbox.")
+
+   (font-lock-add-keywords
+    'org-mode
+    `(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[X\\][^\n]*\n\\)"
+       1 'org-checkbox-done-text prepend))))
+
 (use-package gui-font-size
   :ensure nil
   :init
