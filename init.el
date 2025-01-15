@@ -4117,16 +4117,25 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
     :stream t
     :models '(llama-3.1-sonar-large-128k-online
               llama-3.1-sonar-huge-128k-online))
+  ;; Github Models offers an OpenAI compatible API
+  (gptel-make-openai "Github Models" ;Any name you want
+    :host "models.inference.ai.azure.com"
+    :endpoint "/chat/completions?api-version=2024-05-01-preview"
+    :stream t
+    :key (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret))
+    :models '(gpt-4o))
   (gptel-make-ollama "Ollama" 
                         :host "localhost:11434"
                         :models '(phi4 llama3.3)
                         :stream t)
   ;; set the default
   (setq gptel-model 'llama3
-        gptel-backend (gptel-make-ollama "Ollama" 
-                        :host "localhost:11434"
-                        :models '(phi4 llama3.3)
-                        :stream t)))
+        gptel-backend (gptel-make-openai "Github Models" ;Any name you want
+                        :host "models.inference.ai.azure.com"
+                        :endpoint "/chat/completions?api-version=2024-05-01-preview"
+                        :stream t
+                        :key (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret))
+                        :models '(gpt-4o))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
