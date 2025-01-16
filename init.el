@@ -4741,18 +4741,18 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-c C-a" . aider-transient-menu)
   :config
-  ;; Github models
-  (setq aider-args '("--model"
-                     "openai/gpt-4o"
-                     "--map-tokens" "2048"
-                     "--architect"
-                     "--watch-files"))
-  ;; Ollama
+  ;; Github models -- Not enough bandwidth for larger problems
   ;; (setq aider-args '("--model"
-  ;;                    "ollama_chat/llama3"
+  ;;                    "openai/gpt-4o"
   ;;                    "--map-tokens" "2048"
   ;;                    "--architect"
   ;;                    "--watch-files"))
+  ;; Ollama
+  (setq aider-args '("--model"
+                     "ollama_chat/llama3"
+                     "--map-tokens" "2048"
+                     "--architect"
+                     "--watch-files"))
   ;; Perplexity
   ;; (setq aider-args '("--model"
   ;;                    "perplexity/llama-3.1-sonar-large-128k-online"
