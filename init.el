@@ -4749,7 +4749,7 @@ RESCHEDULE-FN is the function to reschedule."
   ;;                    "--watch-files"))
   ;; Ollama
   (setq aider-args '("--model"
-                     "ollama_chat/llama3"
+                     "ollama_chat/phi4"
                      "--map-tokens" "2048"
                      "--architect"
                      "--watch-files"))
