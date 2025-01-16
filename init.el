@@ -4741,18 +4741,29 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-c C-a" . aider-transient-menu)
   :config
+  ;; Github models
   (setq aider-args '("--model"
-                     "ollama_chat/llama3"
+                     "openai/gpt-4o"
                      "--map-tokens" "2048"
                      "--architect"
                      "--watch-files"))
+  ;; Ollama
+  ;; (setq aider-args '("--model"
+  ;;                    "ollama_chat/llama3"
+  ;;                    "--map-tokens" "2048"
+  ;;                    "--architect"
+  ;;                    "--watch-files"))
+  ;; Perplexity
   ;; (setq aider-args '("--model"
   ;;                    "perplexity/llama-3.1-sonar-large-128k-online"
   ;;                    "--map-tokens" "2048"
   ;;                    "--architect"
   ;;                    "--watch-files"))
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
-  (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))))
+  (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
+  (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
+  (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
+  )
 
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
