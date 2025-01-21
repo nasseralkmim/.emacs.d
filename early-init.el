@@ -1,7 +1,7 @@
 ;;; early-init.el --- Early Init -*- no-byte-compile: t; lexical-binding: t; -*-
 
 ;; Maximum optimization (potentially not good)
-(setq native-comp-speed 3)
+(setq native-comp-speed 2)
 
 ;; prevent emacs package (package.el) initialization
 (setq package-enable-at-startup nil)
@@ -17,7 +17,7 @@
 
 ;; Avoid delay with corfu
 ;; https://github.com/minad/corfu/issues/307 
-(setq-default pgtk-wait-for-event-timeout 0)
+;; (setq-default pgtk-wait-for-event-timeout 0)
 
 (setq-default
  default-frame-alist

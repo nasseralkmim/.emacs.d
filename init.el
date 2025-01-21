@@ -245,6 +245,13 @@
   (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend)
   (set-frame-font (car default-monospace) nil t))
 
+(use-package custom-comments-typeface
+  :ensure nil
+  :preface
+  (setq default-comments '("Monaspace Radon"))
+  :custom-face 
+  (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic)))))
+
 (use-package variable-pitch-typeface
   :ensure nil
   :after (:or org latex)
@@ -3500,6 +3507,7 @@ its results, otherwise display STDERR with
 ;; 'gnus-summary-kill-thread' "collapse" a thread by marking it as-read. With prefix-argument do the opposite.
 ;; 'gnus-group-catchup-current' mark all messages in a group as-read.
 ;; 'gnus-summary-mark-as-processable' and then 'gnus-summary-universal-argument' with 'gnus-summary-mark-as-read-forward' to mark processable as read.
+;; 'gnus-summary-increase-score' create a score rule based on 'subject'
 (use-package gnus
   :ensure nil
   :bind (("C-x C-m" . gnus))
