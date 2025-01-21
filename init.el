@@ -52,7 +52,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil ; compute statistics about package initialization
+      use-package-compute-statistics t ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
@@ -286,10 +286,10 @@
     `(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[X\\][^\n]*\n\\)"
        1 'org-checkbox-done-text prepend))))
 
-(use-package gui-font-size
+(use-package gui-font-size :disabled
   :ensure nil
-  :init
-  (set-face-attribute 'default nil :height 140))
+  :custom-face 
+  (default  ((t (:height 140)))))
 
 ;; change typeface size font
 ;; note: `global-text-scale-adjust' do that
