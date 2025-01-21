@@ -4,7 +4,7 @@
   "Time when Emacs was started")
 
 ;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.8)
+(defvar elpaca-installer-version 0.9)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -1135,7 +1135,7 @@ graphics."
          (org-mark-subtree)
          (setq beg (point))
          (setq end (mark)))
-       (when-let ((info (org-babel-get-src-block-info t))
+       (when-let* ((info (org-babel-get-src-block-info t))
                   (params (org-babel-process-params (nth 2 info)))
                   (result-params (cdr (assq :result-params params)))
                   ((member "file" result-params)))
@@ -3383,7 +3383,7 @@ its results, otherwise display STDERR with
   ;; for org babel
   ;; https://emacs.stackexchange.com/questions/44664/apply-ansi-color-escape-sequences-for-org-babel-results
   (defun ek/babel-ansi ()
-    (when-let ((beg (org-babel-where-is-src-block-result nil nil)))
+    (when-let* ((beg (org-babel-where-is-src-block-result nil nil)))
       (save-excursion
         (goto-char beg)
         (when (looking-at org-babel-result-regexp)
