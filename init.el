@@ -4147,7 +4147,7 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
     :models '(gpt-4o))
   (gptel-make-ollama "Ollama" 
                         :host "localhost:11434"
-                        :models '(phi4 llama3.3)
+                        :models '(deepseek-r1:32b phi4 llama3.3)
                         :stream t)
   ;; set the default
   (setq gptel-model 'llama3
@@ -4780,5 +4780,10 @@ RESCHEDULE-FN is the function to reschedule."
         scroll-margin 0) 
   :config
   (ultra-scroll-mode 1))
+
+(use-package xenops
+  :hook (LaTeX-mode . xenops-mode)
+  :config
+  (setq xenops-reveal-on-entry t))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
