@@ -4781,9 +4781,4 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (ultra-scroll-mode 1))
 
-(use-package xenops
-  :hook (LaTeX-mode . xenops-mode)
-  :config
-  (setq xenops-reveal-on-entry t))
-
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
