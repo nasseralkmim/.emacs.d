@@ -245,7 +245,7 @@
   (set-fontset-font  t 'unicode (car default-unicode) nil 'prepend)
   (set-frame-font (car default-monospace) nil t))
 
-(use-package custom-comments-typeface
+(use-package custom-comments-typeface :disabled
   :ensure nil
   :preface
   (setq default-comments '("Monaspace Radon"))
