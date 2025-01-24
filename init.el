@@ -4119,6 +4119,11 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
  ideas.
 
  Never apologize.  Ask questions when unsure.")
+     (rewrite . "Rewrite this text to be more concise and clear.  Do not add any additional information or context.  Do not change the meaning of the text.  Do not add any additional information or context.
+Do not change the meaning of the text.
+Do not add any additional information or context.
+Do not change the meaning of the text.
+Use one line per sentence.")
      (programmer . "You are a careful programmer.  Provide code and only code as output without any additional text, prompt or note.")
      (cliwhiz . "You are a command line helper.  Generate command line commands that do what is requested, without any additional description or explanation.  Generate ONLY the command, I will edit it myself before running.")
      (emacser . "You are an Emacs maven.  Reply only with the most appropriate built-in Emacs command for the task I specify.  Do NOT generate any additional description or explanation.")
@@ -4149,9 +4154,9 @@ Handles edraw links in the format edraw:file=/path/to/image.svg"
     :key (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret))
     :models '(gpt-4o))
   (gptel-make-ollama "Ollama" 
-                        :host "localhost:11434"
-                        :models '(deepseek-r1:32b phi4 llama3.3)
-                        :stream t)
+    :host "localhost:11434"
+    :models '(deepseek-r1:7b)
+    :stream t)
   ;; set the default
   (setq gptel-model 'llama3
         gptel-backend (gptel-make-openai "Github Models" ;Any name you want
