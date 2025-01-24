@@ -2352,7 +2352,10 @@ Only if there is more than one window opened."
   :custom
   (citar-bibliography '("~/.bibliography.bib"))
   :config
-  (setq citar-library-paths '("~/Sync/bibliography/"))
+  (setq citar-library-paths '("~/Sync/bibliography/")
+        bibtex-dialect 'BibTeX
+        bibtex-dialect-list '(BibTeX biblatex))
+  
   ;; open xournalpp and pdf externally
   (add-to-list 'citar-file-open-functions '("xopp" . (lambda (file) (call-process "xournalpp" nil 0 nil file))))
   (add-to-list 'citar-file-open-functions '("pdf" . citar-file-open-external)))
