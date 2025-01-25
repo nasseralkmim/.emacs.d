@@ -1322,7 +1322,7 @@ graphics."
           (org-toggle-inline-images))))
 
 ;; for windows
-(use-package ob-python
+(use-package ob-python :disabled
   :ensure nil
   :after org
   :when (eq system-type 'windows-nt)
