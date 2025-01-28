@@ -3226,6 +3226,7 @@ opening a file from dired. Otherwise just regular dired."
           ".log$"              ;for dtache log
           ("^\\*Detached Shell.*" . hide)
           help-mode
+          inferior-python-mode
           "Command\\*$"                   ;for shell command
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
@@ -4155,7 +4156,7 @@ Use one line per sentence.")
     :models '(gpt-4o))
   (gptel-make-ollama "Ollama" 
     :host "localhost:11434"
-    :models '(deepseek-r1:7b)
+    :models '(deepseek-r1:7b deepseek-r1:32b)
     :stream t)
   ;; set the default
   (setq gptel-model 'llama3
@@ -4765,7 +4766,7 @@ RESCHEDULE-FN is the function to reschedule."
   ;;                    "--watch-files"))
   ;; Ollama
   (setq aider-args '("--model"
-                     "ollama_chat/phi4"
+                     "ollama_chat/deepseek-r1:7b"
                      "--map-tokens" "2048"
                      "--architect"
                      "--watch-files"))
