@@ -3253,7 +3253,7 @@ opening a file from dired. Otherwise just regular dired."
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; eye candy for org
-(use-package org-modern
+(use-package org-modern :disabled
   :when (display-graphic-p)             ;only when gui, there is a problem with tty
   :hook
   (org-mode . org-modern-mode)
