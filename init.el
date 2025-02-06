@@ -4767,8 +4767,14 @@ RESCHEDULE-FN is the function to reschedule."
   ;;                    "--architect"
   ;;                    "--watch-files"))
   ;; Ollama
+  ;; (setq aider-args '("--model"
+  ;;                    "ollama_chat/deepseek-r1:7b"
+  ;;                    "--map-tokens" "2048"
+  ;;                    "--architect"
+  ;;                    "--watch-files"))
+  ;; Gemini
   (setq aider-args '("--model"
-                     "ollama_chat/deepseek-r1:7b"
+                     "gemini/gemini-2.0-flash-thinking-exp"
                      "--map-tokens" "2048"
                      "--architect"
                      "--watch-files"))
@@ -4782,7 +4788,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
   (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
-  )
+  (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
