@@ -4133,6 +4133,8 @@ Use one line per sentence.")
   ("C-c C-g" . gptel-menu)
   :config
   (setq gptel-default-mode #'org-mode)
+  (gptel-make-gemini "Gemini"
+    :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret)))
   (gptel-make-anthropic "Claude"
     :stream t
     :key (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
