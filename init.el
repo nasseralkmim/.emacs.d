@@ -1824,7 +1824,7 @@ When matching, reference is stored in match group 1."
                   (reftex-isearch-minor-mode)
                   (visual-line-mode)
                   (outline-hide-sublevels 1) ; start folded
-                  (variable-pitch-mode)      ; use variable pitch font (not monospace)
+                  ;; (variable-pitch-mode)      ; use variable pitch font (not monospace)
                   (yas-minor-mode)
                   (turn-off-auto-fill)))
   :config
