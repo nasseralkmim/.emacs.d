@@ -4141,33 +4141,19 @@ Use one line per sentence.")
   (gptel-make-openai "OpenAI"
     :stream t
     :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
-  ;; Perplexity offers an OpenAI compatible API
-  (gptel-make-openai "Perplexity"         ;Any name you want
-    :host "api.perplexity.ai"
-    :key (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret))
-    :endpoint "/chat/completions"
-    :stream t
-    :models '(llama-3.1-sonar-large-128k-online
-              llama-3.1-sonar-huge-128k-online))
   ;; Github Models offers an OpenAI compatible API
   (gptel-make-openai "Github Models" ;Any name you want
     :host "models.inference.ai.azure.com"
     :endpoint "/chat/completions?api-version=2024-05-01-preview"
     :stream t
-    :key (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret))
-    :models '(gpt-4o))
+    :key (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
   (gptel-make-ollama "Ollama" 
     :host "localhost:11434"
-    :models '(deepseek-r1:7b deepseek-r1:32b)
     :stream t)
   ;; set the default
   (setq gptel-model 'llama3
-        gptel-backend (gptel-make-openai "Github Models" ;Any name you want
-                        :host "models.inference.ai.azure.com"
-                        :endpoint "/chat/completions?api-version=2024-05-01-preview"
-                        :stream t
-                        :key (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret))
-                        :models '(gpt-4o))))
+        gptel-backend (gptel-make-gemini "Gemini"
+                        :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret)))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
