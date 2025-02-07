@@ -252,7 +252,7 @@
   :custom-face 
   (font-lock-comment-face ((t (:family ,(car default-comments) :slant italic)))))
 
-(use-package variable-pitch-typeface
+(use-package variable-pitch-typeface :disabled
   :ensure nil
   :after (:or org latex)
   :preface
@@ -261,9 +261,10 @@
   (variable-pitch ((t (:family ,(car default-proportional)))))
   (variable-pitch-text ((t (:inherit variable-pitch)))))
 
-(use-package org-typeface-when-variable-pitch
+(use-package org-typeface-when-variable-pitch :disabled
   :ensure nil
-  :after org
+  :hook
+  (org-mode . variable-pitch-mode)
   :preface
   (setq default-monospace (list (alist-get 'font default-frame-alist)))
   :custom-face
@@ -1081,7 +1082,6 @@ org-mode"
    ("p" . org-babel-previous-src-block))
   :hook
   (org-mode . visual-line-mode)
-  (org-mode . variable-pitch-mode)
   (org-mode . turn-on-org-cdlatex)      ; easy to type greek letters "`a" for \alpha
   ;; (org-mode . org-indent-mode)          ; align with heading, sometimes slow
   :config

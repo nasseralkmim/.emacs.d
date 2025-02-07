@@ -28,7 +28,8 @@
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)
    ;; (font . "Monaspace Neon")
-   (font . "Input Mono")))
+   (font . "Input Mono")
+   ))
 
 ;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
 ;; native compilation settings
@@ -52,4 +53,4 @@
 
 (add-hook 'emacs-startup-hook
           (lambda ()
-            (setq gc-cons-threshold (* 64 1024 1024))))
+            (setq gc-cons-threshold (* 16 1024 1024))))
