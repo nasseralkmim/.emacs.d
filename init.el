@@ -1277,6 +1277,20 @@ graphics."
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
 
+(use-package ob-python-open-session-buffer-after-execute
+  :ensure nil
+  :after org
+  :init
+  (defun org-babel-python-open-session-buffer-after-execute ()
+    "Open the python session buffer after executing the code block."
+    (let ((session-buffer (format "*%s*" (cdr (assoc :session (nth 2 (org-babel-get-src-block-info)))))))
+      (dolist (buffer (buffer-list))
+        (when (string= (buffer-name buffer) session-buffer)
+          ;; open session buffer but don't move cursor to it
+          (display-buffer buffer nil 'visible)))))
+
+  (add-hook 'org-babel-after-execute-hook 'org-babel-python-open-session-buffer-after-execute))
+
 (use-package ob-core
   :ensure nil
   :after org
