@@ -1033,6 +1033,7 @@ org-mode"
   :config
   (setq magit-diff-hide-trailing-cr-characters t
         magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+  (setopt magit-format-file-function #'magit-format-file-nerd-icons)  
   ;; auto refresh magit
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
 
