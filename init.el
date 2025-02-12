@@ -972,6 +972,29 @@ org-mode"
                        '(regexp "\\$" "\\$"))
   (add-to-list 'meow-char-thing-table '(?m . math)))
 
+(use-package meow-latex-thing
+  :after meow
+  :init
+  (defun my/meow-latex-inner-env ()
+    "Get the boundaries of the inner part of the current LaTeX environment."
+    (save-excursion
+      (when (re-search-backward "\\\\begin{\\([^}]+\\)}" nil t)
+        (let ((begin (match-end 0)))
+          (when (re-search-forward (concat "\\\\end{" (match-string 1) "}") nil t)
+            (cons begin (match-beginning 0)))))))
+
+  (defun my/meow-latex-outer-env ()
+    "Get the boundaries of the entire LaTeX environment, including \\begin and \\end."
+    (save-excursion
+      (when (re-search-backward "\\\\begin{\\([^}]+\\)}" nil t)
+        (let ((begin (match-beginning 0)))
+          (when (re-search-forward (concat "\\\\end{" (match-string 1) "}") nil t)
+            (cons begin (point)))))))
+  (meow-thing-register 'latex-env
+                       #'my/meow-latex-inner-env
+                       #'my/meow-latex-outer-env)
+  (add-to-list 'meow-char-thing-table '(?E . latex-env)))
+
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
 (use-package iedit
