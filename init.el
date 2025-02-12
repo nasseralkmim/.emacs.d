@@ -3034,7 +3034,9 @@ opening a file from dired. Otherwise just regular dired."
 (use-package image-mode
   :ensure nil
   :config
-  (setq image-animate-loop t))
+  (setq image-animate-loop t)
+  ;; fit image to window every time an image is opened
+  (add-hook 'image-mode-hook 'image-transform-fit-to-window))
 
 ;; Shows which function in the mode line.
 (use-package which-func :disabled ; using breadcrumb
