@@ -3019,7 +3019,7 @@ opening a file from dired. Otherwise just regular dired."
    flymake-languagetool-server-jar nil
    ;; flymake-languagetool-server-jar "/home/nasser/.opt/LanguageTool-6.5/languagetool-server.jar"
    flymake-languagetool-server-command '(
-                                         ;; "java" "-Dfile.encoding=UTF-8" "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*" "org.languagetool.server.HTTPServer" "--port" "8081"
+                                         ;; "java" "-Dfile.encoding=UTF-8" "-cp" "/usr/share/languagetool:/usr/share/java/languagetool/*" "org.languagetool.server.HTTPServer"
                                          "languagetool" "--http"
                                          "--port" "8081"
                                          "--config" "/home/nasser/.opt/server.properties"
