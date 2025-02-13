@@ -973,6 +973,7 @@ org-mode"
   (add-to-list 'meow-char-thing-table '(?m . math)))
 
 (use-package meow-latex-thing
+  :ensure nil
   :after meow
   :init
   (defun my/meow-latex-inner-env ()
@@ -2230,7 +2231,7 @@ Only if there is more than one window opened."
 (use-package pyvenv
   :commands pyvenv-activate pyvenv-workon
   :config
-  (setenv "WORK_HOME" "~/.virtualenvs"))
+  (setenv "WORKON_HOME" "~/.venvs"))
 
 ;; mode for C++
 (use-package c++-mode :disabled
@@ -4818,14 +4819,13 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package aidermacs
   :ensure (:host github :repo "MatthewZMD/aidermacs")
-  :bind
+  :bind*
   ("C-c C-a" . aidermacs-transient-menu)
   :config
   ;; Gemini
   (setq aidermacs-args '("--model"
                      "gemini/gemini-2.0-flash-thinking-exp"
                      "--map-tokens" "2048"
-                     "--architect"
                      "--watch-files"))
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
