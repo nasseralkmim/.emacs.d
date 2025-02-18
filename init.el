@@ -4816,9 +4816,7 @@ RESCHEDULE-FN is the function to reschedule."
   ("C-c C-a" . aidermacs-transient-menu)
   :config
   ;; Gemini
-  (setq aidermacs-editor-model "gemini/gemini-2.0-flash-exp"
-        aidermacs-use-architect-mode t
-        aidermacs-architect-model "gemini/gemini-2.0-flash-thinking-exp")
+  (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
   
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
