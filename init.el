@@ -4819,12 +4819,12 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package aidermacs
   :ensure (:host github :repo "MatthewZMD/aidermacs")
-  :bind*
+  :bind
   ("C-c C-a" . aidermacs-transient-menu)
   :config
   ;; Gemini
   (setq aidermacs-args '("--model"
-                     "gemini/gemini-2.0-flash-thinking-exp"
+                     "gemini/gemini-2.0-flash-exp"
                      "--map-tokens" "2048"
                      "--watch-files"))
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
