@@ -3880,8 +3880,7 @@ its results, otherwise display STDERR with
   (setq gt-langs '(en de pt it)
         gt-default-translator (gt-translator
                                :engines (list (gt-deepl-engine)
-                                              (gt-google-engine))
-                               :render (gt-buffer-render)))
+                                              (gt-google-engine))))
   (setq gt-chatgpt-key (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))
         gt-chatgpt-model "gpt-3.5")
 
@@ -3896,19 +3895,13 @@ its results, otherwise display STDERR with
   (setq gt-preset-translators
         `((ts-pt-de . ,(gt-translator
                         :taker (gt-taker :langs '(pt de))
-                        :engines (list (gt-deepl-engine)
-                                       (gt-google-engine))
-                        :render (gt-buffer-render)))
+                        :engines (gt-deepl-engine)))
           (ts-pt-it . ,(gt-translator
                         :taker (gt-taker :langs '(pt it))
-                        :engines (list (gt-deepl-engine)
-                                       (gt-google-engine))
-                        :render (gt-buffer-render)))
+                        :engines (gt-deepl-engine)))
           (ts-en-de . ,(gt-translator
                         :taker (gt-taker :langs '(en de))
-                        :engines (list (gt-deepl-engine)
-                                       (gt-google-engine))
-                        :render (gt-buffer-render))))))
+                        :engines gt-deepl-engine)))))
 
 (use-package go-translate-window-placement-hack
   :ensure nil
