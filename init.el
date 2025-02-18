@@ -3858,7 +3858,7 @@ its results, otherwise display STDERR with
 ;; translation package
 (use-package go-translate
   :bind
-  (("C-c t t" . gt-do-translate)     ; overrides the tutorial, but ok...
+  (("C-c t t" . my-gt-do-translate)     ; overrides the tutorial, but ok...
    ("C-c t d" . gt-do-setup)
    ("C-c t c" . my-gt-cycle-translation)
    ("C-c t i" . my-gt-do-translate-and-insert)
@@ -3877,33 +3877,33 @@ its results, otherwise display STDERR with
   ;; Add 'visual-line-mode' to the translation buffer
   ;; (gt-after-buffer-prepared . (lambda () (visual-line-mode 1)))
   :config
-  (setq gt-langs '(en de pt it)
-        gt-default-translator (gt-translator
-                               :engines (list (gt-deepl-engine)
-                                              (gt-google-engine))))
+  (setq gt-langs '(de en pt it)
+        gt-default-translator (gt-translator :engines (gt-deepl-engine)))
+  
   (setq gt-chatgpt-key (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))
         gt-chatgpt-model "gpt-3.5")
 
+  (defun my-gt-do-translate (&optional arg)
+    "Translate with the default translator.
+
+With prefix argument, use prompt taker to select a language pair."
+    (interactive "P")
+    (let ((translator (if arg
+                          (gt-translator
+                           :engines (gt-deepl-engine)
+                           :taker (gt-taker :prompt t))
+                        gt-default-translator)))
+          (gt-start translator)))
+  
   ;; function to translate and insert translation
   (defun my-gt-do-translate-and-insert ()
     (interactive)
     (let ((translator (gt-translator
                        :engines (list (gt-deepl-engine))
                        :render (gt-insert-render :type 'after))))
-      (gt-start translator)))
+      (gt-start translator))))
 
-  (setq gt-preset-translators
-        `((ts-pt-de . ,(gt-translator
-                        :taker (gt-taker :langs '(pt de))
-                        :engines (gt-deepl-engine)))
-          (ts-pt-it . ,(gt-translator
-                        :taker (gt-taker :langs '(pt it))
-                        :engines (gt-deepl-engine)))
-          (ts-en-de . ,(gt-translator
-                        :taker (gt-taker :langs '(en de))
-                        :engines gt-deepl-engine)))))
-
-(use-package go-translate-window-placement-hack
+(use-package go-translate-window-placement-hack :disabled
   :ensure nil
   :after go-translate
   :init
