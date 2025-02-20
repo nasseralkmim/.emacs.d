@@ -488,6 +488,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure nil
   :bind
   ("C-x @" . pop-global-mark)
+  ("C-c l" . list-processes)
   (:repeat-map ctrl-x-map
                ("@" . pop-global-mark))
   :config
