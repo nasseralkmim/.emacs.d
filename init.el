@@ -4760,6 +4760,9 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (org-xopp-setup))
 
+;; run 'copilot-install-server' with npm
+;; make sure correct npm is set with nvm (fist 'source /usr/share/nvm/init-nvm.sh' then
+;; 'nvm use 22', (or 'nvm list' to see available))
 (use-package copilot
   :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
   :hook (prog-mode . copilot-mode)
