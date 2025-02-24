@@ -4833,4 +4833,8 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (ultra-scroll-mode 1))
 
+(use-package comint-mode
+  :ensure nil
+  :hook (comint-mode . visual-line-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
