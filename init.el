@@ -4819,12 +4819,13 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-c C-a" . aidermacs-transient-menu)
   :config
-  ;; Gemini
-  (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
+  ;; (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
+  (setq aidermacs-default-model "anthropic/claude-3-7-sonnet-20250219")
   
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
   (setenv "ANTHROPIC_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
+  (setenv "OPENROUTER_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
   (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
