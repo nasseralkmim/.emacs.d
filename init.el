@@ -2115,7 +2115,24 @@ When matching, reference is stored in match group 1."
   (dired-subtree-depth-3-face ((t (:background unspecified))))
   :bind
   (:map dired-mode-map
-      ("<TAB>" . dired-subtree-toggle)))
+        ("<TAB>" . dired-subtree-toggle-smart))
+  :config
+  (defun dired-subtree-toggle-smart (&optional arg)
+    "Toggle subtree at point, or all directories if prefix ARG is provided.
+When called with a prefix argument (C-u), toggle all directories in the buffer.
+Otherwise, toggle only the directory at point."
+    (interactive "P")
+    (if arg
+        ;; With prefix argument: toggle all directories
+        (save-excursion
+          (goto-char (point-min))
+          (while (not (eobp))
+            (when (and (dired-get-filename nil t)
+                       (file-directory-p (dired-get-filename nil t)))
+              (dired-subtree-toggle))
+            (dired-subtree-next-sibling)))
+      ;; Without prefix argument: toggle current directory only
+      (dired-subtree-toggle))))
 
 ;; open dired as a sidebar
 (use-package dired-sidebar
