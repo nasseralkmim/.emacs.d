@@ -4,7 +4,7 @@
   "Time when Emacs was started")
 
 ;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.9)
+(defvar elpaca-installer-version 0.10)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -1090,7 +1090,7 @@ org-mode"
   ;; :ensure nil
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
-  ;; :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :mode (("\\.org$" . org-mode))
   :bind
   (("M-o" . org-open-at-point-global)
@@ -1506,8 +1506,8 @@ When matching, reference is stored in match group 1."
                                    ("" "tikz" nil)
                                    ("" "algorithm, algpseudocode"))))
 
-(use-package org-latex-preview :disabled
-  :when (display-graphic-p)
+(use-package org-latex-preview
+  ;; :when (display-graphic-p)
   :ensure nil
   :after org
   :init
