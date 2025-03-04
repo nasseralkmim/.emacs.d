@@ -4088,7 +4088,9 @@ With prefix argument, use prompt taker to select a language pair."
   :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
   :init
   (with-eval-after-load 'org
-    (progn (require 'edraw-org) (edraw-org-setup-exporter)))
+    (progn
+      ;; (require 'edraw-org)
+      (edraw-org-setup-exporter)))
   :bind
   (:map edraw-editor-map
         ("<mouse-3>" . edraw-editor-select-tool-select))
@@ -4836,7 +4838,8 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-c C-a" . aidermacs-transient-menu)
   :config
-  (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
+  ;; (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
+  (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
   
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
