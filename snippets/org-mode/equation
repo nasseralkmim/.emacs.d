@@ -1,7 +1,7 @@
 # -*- mode: snippet -*-
 # name: equation
 # key: <e
-# binding: C-c y e
+# binding: C-c e e
 # --
 \begin{equation}
 $0
