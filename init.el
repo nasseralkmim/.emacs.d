@@ -4837,6 +4837,8 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure (:host github :repo "MatthewZMD/aidermacs")
   :bind
   ("C-c C-a" . aidermacs-transient-menu)
+  (:map comint-mode-map
+        ("C-c C-a" . aidermacs-transient-menu))
   :config
   ;; (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
   (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
