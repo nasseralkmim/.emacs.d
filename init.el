@@ -501,7 +501,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         completions-max-height 20
         completions-header-format nil
         ;; use C-SPC after C-u C-SPC to go jump to marks
-        set-mark-command-repeat-pop t))
+        set-mark-command-repeat-pop t)
+
+  ;; Don't ask about confirmation when running async commands
+  (setq async-shell-command-buffer 'rename-buffer))
 
 ;; save the search history
 (use-package savehist
@@ -4840,8 +4843,8 @@ RESCHEDULE-FN is the function to reschedule."
   (:map comint-mode-map
         ("C-c C-a" . aidermacs-transient-menu))
   :config
-  ;; (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
-  (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
+  (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
+  ;; (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
   
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
