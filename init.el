@@ -1520,6 +1520,12 @@ When matching, reference is stored in match group 1."
   :config
   (setq org-latex-preview-auto-ignored-commands '(next-line previous-line)))
 
+(use-package ox-beamer
+  :ensure nil
+  :after org
+  :bind
+  ("C-c g" . org-beamer-select-environment))
+
 (use-package ox-beamer-hack-for-async-export
   :ensure nil
   :init
