@@ -1520,7 +1520,7 @@ When matching, reference is stored in match group 1."
   :config
   (setq org-latex-preview-auto-ignored-commands '(next-line previous-line)))
 
-(use-package ox-beamer
+(use-package ox-beamer-hack-for-async-export
   :ensure nil
   :init
   ;; allows async export
@@ -2660,14 +2660,6 @@ Only if there is more than one window opened."
   ;; for async export
   (with-eval-after-load 'ox
     (require 'ox-icalendar)))
-
-(use-package ox-beamer
-  :ensure nil
-  :init
-  ;; for async export
-  (with-eval-after-load 'ox
-    (require 'oc)
-    (require 'ox-beamer)))
 
 ;; emacs built in version control
 (use-package vc-git
