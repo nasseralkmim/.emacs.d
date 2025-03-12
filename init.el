@@ -4855,6 +4855,19 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
+(use-package aidermacs-window-placement-hack
+  :after aidermacs
+  :ensure nil
+  :init
+  (setf (alist-get "^\\*aidermacs"
+                 display-buffer-alist
+                 nil nil #'string=)
+        ;; reuse window, even if in another frame
+      '((display-buffer-reuse-window display-buffer-same-window)
+        (reusable-frames . t)
+        (inhibit-switch-frame . t)
+        (inhibit-same-window . nil))))
+
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
   :init
