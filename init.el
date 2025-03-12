@@ -3940,8 +3940,11 @@ With prefix argument, use prompt taker to select a language pair."
   (setf (alist-get "^\\*compilation\\*$"
                  display-buffer-alist
                  nil nil #'string=)
-        ;; reuse window
-      '((display-buffer-reuse-window))))
+        ;; reuse window, even if in another frame
+      '((display-buffer-reuse-window display-buffer-same-window)
+        (reusable-frames . t)
+        (inhibit-switch-frame . t)
+        (inhibit-same-window . nil))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
