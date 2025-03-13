@@ -1331,7 +1331,7 @@ graphics."
   (add-to-list 'org-babel-default-header-args '(:noweb . "no-export")))
 
 ;; custom org function
-(use-package org-zoom-inline-image-hack :disabled
+(use-package org-zoom-inline-image-hack
   :ensure nil
   :after org
   :bind
@@ -1340,30 +1340,31 @@ graphics."
         ("C-_" . my/org-zoom-out-inline-images))
   :init
   (defun my/org-zoom-in-inline-images (&optional scale)
-    (interactive "p")
-    ;; get size specified or start with 300
-    (let* ((size (if org-image-actual-width
-                     org-image-actual-width
-                    300))
-           ;; amount can be specified with prefix argument
-           ;; or use default value
-           (scale (if (eq current-prefix-arg nil)
-                    1.1
-                  current-prefix-arg))
-           (new-size (floor (* size scale))))
-      (customize-set-variable 'org-image-actual-width new-size)
-      ;; don't redisplay if in tramp
-      (unless (file-remote-p default-directory)
-          (org-toggle-inline-images)
-          (org-toggle-inline-images))))
+  "Zoom in inline images in org-mode.
+With prefix argument SCALE, use that as the scaling factor.
+Otherwise use 1.1 as default scaling factor."
+  (interactive "p")
+  ;; Use proper default value handling
+  (let* ((current-size (if (numberp org-image-actual-width)
+                           org-image-actual-width
+                         (or (car-safe org-image-actual-width) 300)))
+         (scale-factor (if (and current-prefix-arg (not (eq current-prefix-arg 1)))
+                           current-prefix-arg
+                         1.1))
+         (new-size (floor (* current-size scale-factor))))
+    (message "Resizing images from %d to %d pixels" current-size new-size)
+    (setq org-image-actual-width new-size)
+    ;; Don't redisplay if in tramp
+    (unless (file-remote-p default-directory)
+      ;; More efficient than toggling twice
+      (org-link-preview-refresh))))
 
   (defun my/org-zoom-out-inline-images ()
     (interactive)
     (customize-set-variable 'org-image-actual-width nil)
     ;; don't redisplay if in tramp
     (unless (file-remote-p default-directory)
-          (org-toggle-inline-images)
-          (org-toggle-inline-images))))
+          (org-link-preview-refresh))))
 
 ;; for windows
 (use-package ob-python :disabled
