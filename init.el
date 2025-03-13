@@ -379,7 +379,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (after-init . global-auto-revert-mode)
   :config
-  (setq auto-revert-interval 1
+  (setq auto-revert-interval 0.5
         auto-revert-verbose nil
         ;; maybe slow
         auto-revert-check-vc-info nil
