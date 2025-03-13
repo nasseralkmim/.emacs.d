@@ -1335,31 +1335,31 @@ graphics."
   :ensure nil
   :after org
   :bind
-  (:map org-mode-map  
-        ("C-+" . org-zoom-inline-images)
-        ("C-_" . org-zoom-out-inline-images))
+  (:map org-mode-map
+        ("C-+" . my/org-zoom-in-inline-images)
+        ("C-_" . my/org-zoom-out-inline-images))
   :init
-  (defun org-zoom-inline-images (&optional scale)
+  (defun my/org-zoom-in-inline-images (&optional scale)
     (interactive "p")
     ;; get size specified or start with 300
     (let* ((size (if org-image-actual-width
                      org-image-actual-width
-                   100))
+                    300))
            ;; amount can be specified with prefix argument
            ;; or use default value
            (scale (if (eq current-prefix-arg nil)
                     1.1
                   current-prefix-arg))
            (new-size (floor (* size scale))))
-      (setq org-image-actual-width new-size)
+      (customize-set-variable 'org-image-actual-width new-size)
       ;; don't redisplay if in tramp
       (unless (file-remote-p default-directory)
           (org-toggle-inline-images)
           (org-toggle-inline-images))))
 
-  (defun org-zoom-out-inline-images ()
+  (defun my/org-zoom-out-inline-images ()
     (interactive)
-    (setq org-image-actual-width nil)
+    (customize-set-variable 'org-image-actual-width nil)
     ;; don't redisplay if in tramp
     (unless (file-remote-p default-directory)
           (org-toggle-inline-images)
