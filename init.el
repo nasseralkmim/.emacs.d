@@ -4096,7 +4096,8 @@ With prefix argument, use prompt taker to select a language pair."
   (with-eval-after-load 'org
     (progn
       ;; (require 'edraw-org)
-      (edraw-org-setup-exporter)))
+      (edraw-org-setup-exporter)
+      (advice-add 'edraw-org-link-finish-edit :after 'org-link-preview-refresh)))
   :bind
   (:map edraw-editor-map
         ("<mouse-3>" . edraw-editor-select-tool-select))
