@@ -12,6 +12,25 @@
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
    '((compile-command concat "cmake" " --fresh"
+                      " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/intrepid2-develop-release/config.cmake"
+                      " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/intrepid2-develop-release/"
+                      " -S ~/.local/src/Trilinos/"
+                      " -B ~/.local/src/Trilinos/build/intrepid2-develop-release/"
+                      " && cmake --build  ~/.local/src/Trilinos/build/intrepid2-develop-release/ -j32"
+                      " && cmake --install ~/.local/src/Trilinos/build/intrepid2-develop-release/")
+     (compile-command concat "cmake" " --fresh"
+                      " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/intrepid2-develop-release/config.cmake"
+                      " -S ~/.local/src/Trilinos/"
+                      " -B ~/.local/src/Trilinos/build/intrepid2-develop-release/"
+                      " && cmake --build  ~/.local/src/Trilinos/build/intrepid2-develop-release/ -j32"
+                      " && cmake --install ~/.local/src/Trilinos/build/intrepid2-develop-release/")
+     (compile-command concat "cmake" " --fresh"
+                      " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/74d609-release/config.cmake"
+                      " -S ~/.local/src/Trilinos/"
+                      " -B ~/.local/src/Trilinos/build/74d609-release/"
+                      " && cmake --build  ~/.local/src/Trilinos/build/74d609-release/ -j32"
+                      " && cmake --install ~/.local/src/Trilinos/build/74d609-release/")
+     (compile-command concat "cmake" " --fresh"
                       " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/trilinos-fork-master-release/config.cmake"
                       " -S ~/.local/src/Trilinos/"
                       " -B ~/.local/src/Trilinos/build/trilinos-fork-master-release/"
