@@ -4847,14 +4847,16 @@ RESCHEDULE-FN is the function to reschedule."
   (:map comint-mode-map
         ("C-c C-a" . aidermacs-transient-menu))
   :config
-  (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
+  ;; (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
   ;; (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
+  (setq aidermacs-default-model "deepseek/deepseek-chat")
 
   (setq aidermacs-extra-args '("--map-refresh" "manual"
                                "--no-gitignore"))
   
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
+  (setenv "DEEPSEEK_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
   (setenv "ANTHROPIC_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
   (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
