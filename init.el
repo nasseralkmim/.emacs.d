@@ -3942,10 +3942,9 @@ With prefix argument, use prompt taker to select a language pair."
                  display-buffer-alist
                  nil nil #'string=)
         ;; reuse window, even if in another frame
-      '((display-buffer-reuse-window display-buffer-same-window)
-        (reusable-frames . t)
-        (inhibit-switch-frame . t)
-        (inhibit-same-window . nil))))
+      '((display-buffer-reuse-window display-buffer-in-side-window)
+       (side . right) ; Or 'left', 'top', 'bottom'
+       (window-width . 0.33))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
