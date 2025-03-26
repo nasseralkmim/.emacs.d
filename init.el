@@ -3939,12 +3939,13 @@ With prefix argument, use prompt taker to select a language pair."
   :ensure nil
   :init
   (setf (alist-get "^\\*compilation\\*$"
-                 display-buffer-alist
-                 nil nil #'string=)
+                   display-buffer-alist
+                   nil nil #'string=)
         ;; reuse window, even if in another frame
-      '((display-buffer-reuse-window display-buffer-in-side-window)
-       (side . right) ; Or 'left', 'top', 'bottom'
-       (window-width . 0.33))))
+        '((display-buffer-reuse-window display-buffer-in-side-window)
+          (reusable-frames . t)
+          (side . right) ; Or 'left', 'top', 'bottom'
+          (window-width . 0.33))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
@@ -4870,6 +4871,7 @@ RESCHEDULE-FN is the function to reschedule."
                  nil nil #'string=)
        ;; reuse window, otherwise open on a side window
      '((display-buffer-reuse-window display-buffer-in-side-window)
+       (reusable-frames . t)
        (side . right) ; Or 'left', 'top', 'bottom'
        (window-width . 0.33)))) ; Adjust width as needed
 
