@@ -4847,9 +4847,9 @@ RESCHEDULE-FN is the function to reschedule."
   (:map comint-mode-map
         ("C-c C-a" . aidermacs-transient-menu))
   :config
-  ;; (setq aidermacs-default-model "gemini/gemini-2.0-flash-exp")
+  (setq aidermacs-default-model "gemini/gemini-2.5-pro-exp-03-25")
   ;; (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
-  (setq aidermacs-default-model "deepseek/deepseek-chat")
+  ;; (setq aidermacs-default-model "deepseek/deepseek-chat")
 
   (setq aidermacs-extra-args '("--map-refresh" "manual"
                                "--no-gitignore"))
@@ -4869,11 +4869,10 @@ RESCHEDULE-FN is the function to reschedule."
   (setf (alist-get "^\\*aidermacs"
                  display-buffer-alist
                  nil nil #'string=)
-        ;; reuse window, even if in another frame
-      '((display-buffer-reuse-window display-buffer-same-window)
-        (reusable-frames . t)
-        (inhibit-switch-frame . t)
-        (inhibit-same-window . nil))))
+       ;; reuse window, otherwise open on a side window
+     '((display-buffer-reuse-window display-buffer-in-side-window)
+       (side . right) ; Or 'left', 'top', 'bottom'
+       (window-width . 0.33)))) ; Adjust width as needed
 
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
