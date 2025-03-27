@@ -4890,8 +4890,9 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package lumen-hack
   :ensure nil
-  :command lumen-generate-commit
-  :init
+  :bind (:map magit-mode-map
+              ("C-c C-s" . lumen-generate-commit))
+  :config
   (defun lumen-generate-commit (&optional arg)
     "Run 'lumen draft' and use its output as the git commit message.
 If called with a prefix argument, prompt for a context string."
