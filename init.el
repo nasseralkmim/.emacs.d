@@ -4887,4 +4887,19 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure nil
   :hook (comint-mode . visual-line-mode))
 
+(use-package lumen-hack
+  :ensure nil
+  :command lumen-generate-commit
+  :init
+  (defun lumen-generate-commit (&optional arg)
+    "Run 'lumen draft' and use its output as the git commit message.
+If called with a prefix argument, prompt for a context string."
+    (interactive "P")
+    (let ((command "lumen draft")
+          (context (when arg
+                     (read-string "Enter context: "))))
+      (when context
+        (setq command (concat command " --context " (shell-quote-argument context))))
+      (async-shell-command (concat command " | git commit -F -")))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
