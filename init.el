@@ -1525,7 +1525,8 @@ When matching, reference is stored in match group 1."
   :ensure nil
   :after org
   :bind
-  ("C-c g" . org-beamer-select-environment))
+  (:map org-mode-map
+        ("C-c g" . org-beamer-select-environment)))
 
 (use-package ox-beamer-hack-for-async-export
   :ensure nil
