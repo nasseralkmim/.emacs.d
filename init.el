@@ -3563,7 +3563,8 @@ its results, otherwise display STDERR with
 
 (use-package markdown-mode
   :hook
-  (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
+  ;; (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
+  (markdown-mode . outline-minor-mode)
   (markdown-mode . visual-line-mode))
 
 ;; for reading email lists
