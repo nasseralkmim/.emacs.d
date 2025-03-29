@@ -4853,6 +4853,10 @@ RESCHEDULE-FN is the function to reschedule."
   ;; (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
   ;; (setq aidermacs-default-model "deepseek/deepseek-chat")
 
+  ;; better for tty
+  (when (display-graphic-p)
+      (setq aidermacs-comint-multiline-newline-key "M-RET"))
+  
   (setq aidermacs-extra-args '("--map-refresh" "manual"
                                "--no-gitignore"))
   
