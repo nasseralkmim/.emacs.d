@@ -4891,6 +4891,7 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package lumen-hack
   :ensure nil
+  :after magit
   :bind (:map magit-mode-map
               ("C-c C-s" . lumen-generate-commit))
   :init
