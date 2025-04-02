@@ -2175,7 +2175,6 @@ Otherwise, toggle only the directory at point."
   (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-prompts '(intense italic)
         modus-themes-diffs 'desaturated
-        modus-themes-common-palette-overrides modus-themes-preset-overrides-faint
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
         modus-themes-bold-constructs nil
@@ -2780,7 +2779,7 @@ Only if there is more than one window opened."
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
   :config
   ;; maximum fontification
-  (setq treesit-font-lock-level 3))
+  (setq treesit-font-lock-level 4))
 
 (use-package wgrep)
 
@@ -4204,6 +4203,9 @@ Use one line per sentence.")
   (gptel-make-openai "OpenAI"
     :stream t
     :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
+  (gptel-make-deepseek "Deepseek"
+    :stream t
+    :key (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
   ;; Github Models offers an OpenAI compatible API
   (gptel-make-openai "Github Models" ;Any name you want
     :host "models.inference.ai.azure.com"
