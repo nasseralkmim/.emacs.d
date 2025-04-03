@@ -4866,7 +4866,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
-(use-package aidermacs-window-placement-hack
+(use-package aidermacs-window-placement-hack :disabled
   :after aidermacs
   :ensure nil
   :init

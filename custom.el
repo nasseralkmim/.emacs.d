@@ -12,6 +12,13 @@
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
    '((compile-command concat "cmake" " --fresh"
+                      " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/master-release/config.cmake"
+                      " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/master-release/"
+                      " -S ~/.local/src/Trilinos/"
+                      " -B ~/.local/src/Trilinos/build/master-release/"
+                      " && cmake --build  ~/.local/src/Trilinos/build/master-release/ -j32"
+                      " && cmake --install ~/.local/src/Trilinos/build/master-release/")
+     (compile-command concat "cmake" " --fresh"
                       " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/intrepid2-develop-debug/config.cmake"
                       " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/intrepid2-develop-debug/"
                       " -S ~/.local/src/Trilinos/"
