@@ -3943,7 +3943,7 @@ With prefix argument, use prompt taker to select a language pair."
                    display-buffer-alist
                    nil nil #'string=)
         ;; reuse window, even if in another frame
-        '((display-buffer-reuse-window display-buffer-in-side-window)
+        '((display-buffer-reuse-window)
           (reusable-frames . t)
           (side . right) ; Or 'left', 'top', 'bottom'
           (window-width . 0.33))))
@@ -4866,7 +4866,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
-(use-package aidermacs-window-placement-hack :disabled
+(use-package aidermacs-window-placement-hack
   :after aidermacs
   :ensure nil
   :init
@@ -4874,10 +4874,10 @@ RESCHEDULE-FN is the function to reschedule."
                  display-buffer-alist
                  nil nil #'string=)
        ;; reuse window, otherwise open on a side window
-     '((display-buffer-reuse-window display-buffer-in-side-window)
+     '((display-buffer-reuse-window)
        (reusable-frames . t)
        (side . right) ; Or 'left', 'top', 'bottom'
-       (window-width . 0.33)))) ; Adjust width as needed
+       (window-width . 0.33))))
 
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
