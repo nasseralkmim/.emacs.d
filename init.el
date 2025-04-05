@@ -168,6 +168,28 @@
   :config
   (setq compilation-scroll-output t))
 
+(use-package compile-buffer-name-hack
+  :ensure nil
+  :after compile
+  :init
+  (defun my-project-compilation-buffer-name (mode-name)
+    "Generate compilation buffer name based on the current project.
+Falls back to *compilation* if no project is found."
+    ;; mode-name is passed by compile, but we don't strictly need it here.
+    ;; We use project.el to find the current project.
+    (let* ((current-project (project-current t)) ; t means use cache
+           (project-name (if current-project
+                           (project-name current-project)
+                         nil)))
+      (if (and project-name (> (length project-name) 0))
+          ;; Construct the buffer name, e.g., *compile-my-project*
+          (format "*compile-%s*" project-name)
+        ;; Fallback if no project is found or name is empty
+        "*compilation*")))
+
+  ;; Set the custom function
+  (setq compilation-buffer-name-function #'my-project-compilation-buffer-name))
+
 (use-package bookmark
   :ensure nil
   :defer 1
