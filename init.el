@@ -3961,14 +3961,13 @@ With prefix argument, use prompt taker to select a language pair."
 (use-package compilation-window-placement-hack
   :ensure nil
   :init
-  (setf (alist-get "^\\*compilation\\*$"
+  (setf (alist-get "^\\*compile"
                    display-buffer-alist
                    nil nil #'string=)
         ;; reuse window, even if in another frame
-        '((display-buffer-reuse-window)
-          (reusable-frames . t)
-          (side . right) ; Or 'left', 'top', 'bottom'
-          (window-width . 0.33))))
+        '((display-buffer-reuse-window display-buffer-in-side-window)
+          (side . right)
+          (reusable-frames . t))))
 
 ;; custom function to connect to vpn
 (use-package connect-vpn
@@ -4897,13 +4896,13 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure nil
   :init
   (setf (alist-get "^\\*aidermacs"
-                 display-buffer-alist
-                 nil nil #'string=)
-       ;; reuse window, otherwise open on a side window
-     '((display-buffer-reuse-window)
-       (reusable-frames . t)
-       (side . right) ; Or 'left', 'top', 'bottom'
-       (window-width . 0.33))))
+                   display-buffer-alist
+                   nil nil #'string=)
+        ;; reuse window, otherwise open on a side window
+        '((display-buffer-reuse-window display-buffer-in-side-window)
+          (reusable-frames . t)
+          (side . right) ; Or 'left', 'top', 'bottom'
+          (window-width . 0.33))))
 
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
