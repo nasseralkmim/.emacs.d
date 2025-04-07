@@ -4809,42 +4809,27 @@ RESCHEDULE-FN is the function to reschedule."
   (setq copilot-max-char -1
         copilot-idle-delay 0.3))
 
-(use-package aider :disabled
-  :ensure (:host github :repo "tninja/aider.el" :files ("aider.el"))
+(use-package aider 
+  :ensure (:host github :repo "tninja/aider.el" :files ("*.el"))
   :bind
   ("C-c C-a" . aider-transient-menu)
   :config
-  ;; Github models -- Not enough bandwidth for larger problems
-  ;; (setq aider-args '("--model"
-  ;;                    "openai/gpt-4o"
-  ;;                    "--map-tokens" "2048"
-  ;;                    "--architect"
-  ;;                    "--watch-files"))
-  ;; Ollama
-  ;; (setq aider-args '("--model"
-  ;;                    "ollama_chat/deepseek-r1:7b"
-  ;;                    "--map-tokens" "2048"
-  ;;                    "--architect"
-  ;;                    "--watch-files"))
   ;; Gemini
   (setq aider-args '("--model"
-                     "gemini/gemini-2.0-flash-thinking-exp"
-                     "--map-tokens" "2048"
-                     "--architect"
+                     "gemini/gemini-2.5-pro-exp-03-25"
+                     "--map-refresh" "manual"
+                     "--no-gitignore"
+                     ;; "--map-tokens" "2048"
                      "--watch-files"))
-  ;; Perplexity
-  ;; (setq aider-args '("--model"
-  ;;                    "perplexity/llama-3.1-sonar-large-128k-online"
-  ;;                    "--map-tokens" "2048"
-  ;;                    "--architect"
-  ;;                    "--watch-files"))
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
+  (setenv "DEEPSEEK_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
+  (setenv "ANTHROPIC_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
   (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
-(use-package aidermacs
+(use-package aidermacs :disabled
   :ensure (:host github :repo "MatthewZMD/aidermacs")
   :bind
   ("C-c C-a" . aidermacs-transient-menu)
