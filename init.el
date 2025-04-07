@@ -4853,12 +4853,15 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure (:host github :repo "tninja/aider.el" :files ("*.el"))
   :bind
   ("C-c C-a" . aider-transient-menu)
+  (:map comint-mode-map
+        ("C-c C-a" . nil))
   :config
   ;; Gemini
   (setq aider-args '("--model"
                      "gemini/gemini-2.5-pro-exp-03-25"
                      "--map-refresh" "manual"
                      "--no-gitignore"
+                     "--no-auto-commits"
                      ;; "--map-tokens" "2048"
                      "--watch-files"))
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
@@ -4891,11 +4894,11 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
-(use-package aidermacs-window-placement-hack
-  :after aidermacs
+(use-package aider-window-placement-hack
+  :after aider
   :ensure nil
   :init
-  (setf (alist-get "^\\*aidermacs"
+  (setf (alist-get "^\\*aider"
                    display-buffer-alist
                    nil nil #'string=)
         ;; reuse window, otherwise open on a side window
