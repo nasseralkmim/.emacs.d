@@ -4570,7 +4570,8 @@ absolute path. Finally load eglot."
 (use-package eglot-booster
   :ensure (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
   :after eglot
-  :init (eglot-booster-mode))
+  :init (eglot-booster-mode)
+  (setq eglot-booster-io-only t))
 
 (use-package calfw
   ;; make sure to "build" 'calfw-org.el' as well.
