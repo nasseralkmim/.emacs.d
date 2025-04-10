@@ -4576,6 +4576,7 @@ absolute path. Finally load eglot."
    ("C-c @ C-h"  . treesit-fold-close)
    ("C-c @ C-s"  . treesit-fold-open)
    ("C-c @ C-e"  . treesit-fold-toggle)
+   ("C-c @ C-o"  . treesit-fold-close-other)
    ("C-c @ C-a"  . treesit-fold-open-all)
    ("C-c @ C-t"  . treesit-fold-close-all))
   :hook 
@@ -4587,7 +4588,25 @@ absolute path. Finally load eglot."
   ;; TODO: would be nice to folde if...else..., and not just if...
   (push '(if_statement . ((lambda (node offset)
                             (treesit-fold-range-markers node offset ":")) 0 1))
-        (alist-get 'python-ts-mode treesit-fold-range-alist)))
+        (alist-get 'python-ts-mode treesit-fold-range-alist))
+
+  (defun treesit-fold-close-other ()
+    "Close all top-level folds except the one containing point.
+If point is not within any fold that can be opened, closes all folds."
+    (interactive)
+    ;; Ensure the mode is active before proceeding
+    (when (bound-and-true-p treesit-fold-mode)
+      (let ((p (point))) ; Remember the current point position
+        ;; Use save-excursion to avoid moving the cursor permanently
+        ;; and to restore window state if opening changes it.
+        (save-excursion
+          ;; The following functions should handle parsing checks internally
+          (treesit-fold-close-all) ; First, close everything
+          (goto-char p)          ; Go back to the original position
+          ;; Now, try to open the fold containing the original point.
+          (condition-case nil ; Ignore error if point isn't in a foldable region
+              (treesit-fold-open)
+            (error nil)))))))
 
 (use-package treesit-auto
   :defer 1
