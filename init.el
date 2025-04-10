@@ -4860,6 +4860,7 @@ RESCHEDULE-FN is the function to reschedule."
   ;; Gemini
   (setq aider-args '("--model"
                      "gemini/gemini-2.5-pro-exp-03-25"
+                     "--no-auto-accept-architect"
                      "--map-refresh" "manual"
                      "--no-gitignore"
                      "--no-auto-commits"
