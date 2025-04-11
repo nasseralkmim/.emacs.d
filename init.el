@@ -4410,6 +4410,7 @@ Use one line per sentence.")
   :ensure nil
   :custom-face 
   (tab-bar ((t (:inherit unspecified))))
+  :bind-keymap ("C-x C-t" . tab-prefix-map)
   :bind
   (:map tab-prefix-map
         ("t" . tab-bar-select-tab))
