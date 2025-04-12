@@ -4832,7 +4832,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setq copilot-max-char -1
         copilot-idle-delay 0.3))
 
-(use-package aider 
+(use-package aider :disabled
   :ensure (:host github :repo "tninja/aider.el" :files ("*.el"))
   :bind
   ("C-c C-a" . aider-transient-menu)
@@ -4856,7 +4856,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
-(use-package aidermacs :disabled
+(use-package aidermacs
   :ensure (:host github :repo "MatthewZMD/aidermacs")
   :bind
   ("C-c C-a" . aidermacs-transient-menu)
@@ -4864,8 +4864,6 @@ RESCHEDULE-FN is the function to reschedule."
         ("C-c C-a" . aidermacs-transient-menu))
   :config
   (setq aidermacs-default-model "gemini/gemini-2.5-pro-exp-03-25")
-  ;; (setq aidermacs-default-model "anthropic/claude-3-5-sonnet-latest")
-  ;; (setq aidermacs-default-model "deepseek/deepseek-chat")
 
   (setq aidermacs-extra-args '("--map-refresh" "manual"
                                "--no-gitignore"))
