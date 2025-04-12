@@ -4944,6 +4944,7 @@ If called with a prefix argument, prompt for a context string."
                      (read-string "Enter context: "))))
       (when context
         (setq command (concat command " --context " (shell-quote-argument context))))
-      (async-shell-command (concat command " | git commit -F -")))))
+      (shell-command (concat command " | git commit -F -"))
+      (revert-buffer))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
