@@ -4879,17 +4879,17 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
 (use-package aider-window-placement-hack
-  :after aider
+  :after (:or aider aidermacs) ; Ensure it loads after either package
   :ensure nil
   :init
-  (setf (alist-get "^\\*aider"
-                   display-buffer-alist
-                   nil nil #'string=)
-        ;; reuse window, otherwise open on a side window
-        '((display-buffer-reuse-window display-buffer-in-side-window)
-          (reusable-frames . t)
-          (side . right) ; Or 'left', 'top', 'bottom'
-          (window-width . 0.33))))
+  ;; Configure window placement for both *aider and *aidermacs buffers
+  (add-to-list 'display-buffer-alist
+               '("^\\*aidermacs"
+                 ;; 1. Try to reuse an existing window (even across frames)
+                 ;; 2. If not visible, split vertically and use the right window
+                 (display-buffer-reuse-window display-buffer-in-side-window)
+                 (side . right)
+                 (reusable-frames . t))))
 
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
