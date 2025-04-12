@@ -2097,6 +2097,11 @@ When matching, reference is stored in match group 1."
   :hook
   (dired-mode . dired-hide-details-mode)
   (dired-mode . auto-revert-mode)
+  :init
+  ;; Define face for dotfiles
+  (defface dired-dotfile-face
+    '((t (:inherit shadow))) ; Inherit from shadow face for dimming
+    "Face for dotfiles and dot directories in Dired.")
   :bind (("C-x j" . dired-jump)
          :map dired-jump-map
          ("j" . nil)
@@ -2108,9 +2113,17 @@ When matching, reference is stored in match group 1."
          ("C-c C-d" . mkdir)
          ("C-c C-p" . wdired-change-to-wdired-mode))
   :config
-  (setq dired-omit-files "^\\.\\|^#.#$\\|.~$"
-        dired-auto-revert-buffer t
-        dired-listing-switches "-AGhlv -lt --group-directories-first --time-style=long-iso"	; human readable format when in detail
+  (setq dired-auto-revert-buffer t
+        ;; -A: almost all (no . or ..)
+        ;; -G: no group
+        ;; -h: human readable sizes
+        ;; -l: long listing format
+        ;; -v: natural sort of version numbers
+        ;; -r: reverse order while sorting
+        ;; --group-directories-first: list directories before files
+        ;; --time-style=long-iso: use ISO format for time
+        ;; Sorting reverse alphabetically (-r) combined with -v places dotfiles last within their group.
+        dired-listing-switches "-AGhlvr --group-directories-first --time-style=long-iso"
         dired-kill-when-opening-new-dired-buffer t ; kill when changing dir
         dired-recursive-copies 'always
         dired-recursive-deletes 'always
@@ -2118,8 +2131,21 @@ When matching, reference is stored in match group 1."
         ;; manjaro: ~/.local/share/Trash/
         delete-by-moving-to-trash t	; move to trash (problem with naming and tramp)
         remote-file-name-inhibit-delete-by-moving-to-trash t ; when in remote, just delete
-        dired-mouse-drag-files t
-        )
+        dired-mouse-drag-files t)
+
+  ;; Highlight dotfiles and dot directories
+  ;; Regex explanation:
+  ;; ^                  - Start of line
+  ;; .*                 - Match initial part of the line (permissions, size, date, etc.)
+  ;; [ ]                - Match the space before the filename
+  ;; \\(                 - Start capture group 1
+  ;;   \\.              - Match the literal dot
+  ;;   [^/\n]+          - Match one or more characters that are not '/' or newline (the filename)
+  ;;   /?               - Match an optional trailing slash (for directories)
+  ;; \\)                 - End capture group 1
+  ;; $                  - End of line
+  (add-to-list 'dired-font-lock-keywords
+               '("^.* \\(\\.[^/\n]+/?\\)$" 1 'dired-dotfile-face t))
 
   ;; kill the dired buffer and enters the current line file or directory
   (put 'dired-find-alternate-file 'disabled nil)
