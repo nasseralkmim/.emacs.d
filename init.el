@@ -4436,10 +4436,14 @@ Use one line per sentence.")
   :ensure nil
   :custom-face 
   (tab-bar ((t (:inherit unspecified))))
-  :bind-keymap ("C-x C-t" . tab-prefix-map)
   :bind
+  ("C-c TAB" . tab-bar-switch-to-next-tab)
+  ("C-c <backtab>" . tab-bar-switch-to-prev-tab)
   (:map tab-prefix-map
         ("t" . tab-bar-select-tab))
+  (:repeat-map tab-bar-switch-repeat-map
+               ("TAB" . tab-bar-switch-to-next-tab)
+               ("<backtab>" . tab-bar-switch-to-prev-tab))
   :config
   (setq tab-bar-tab-hints t))
 
