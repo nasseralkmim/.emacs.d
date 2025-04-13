@@ -1125,6 +1125,7 @@ org-mode"
    ("C-c ," . org-insert-structure-template)
    ("C-," . nil)                        ; use for xref
    ("C-c ;" . nil)                        ; use iedit
+   ("C-c TAB" . nil)                        ; use for tab-bar
    ("C-c C-a" . nil)                      ; use for aider
    ("C-c M-;" . org-toggle-comment)
    ("C-c C-v C-g" . org-fold-hide-block-all)
