@@ -808,7 +808,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         show-paren-when-point-in-periphery t
         show-paren-when-point-inside-paren nil))
 
-(use-package hack-sp-face-in-org
+(use-package hack-sp-face-in-org :disabled
   :ensure nil
   :after org
   :init
