@@ -11,7 +11,21 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((compile-command
+   '((compile-command concat "cmake" " --fresh"
+                      " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked-debug/config.cmake"
+                      " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/dev-muelu-add-userdata-for-blocked-debug/"
+                      " -S ~/.local/src/Trilinos/"
+                      " -B ~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked-debug/"
+                      " && cmake --build  ~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked-debug/ -j32"
+                      " && cmake --install ~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked-debug/")
+     (compile-command concat "cmake" " --fresh"
+                      " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked/config.cmake"
+                      " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/dev-muelu-add-userdata-for-blocked/"
+                      " -S ~/.local/src/Trilinos/"
+                      " -B ~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked/"
+                      " && cmake --build  ~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked/ -j32"
+                      " && cmake --install ~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked/")
+     (compile-command
       "cmake --fresh -DCMAKE_INSTALL_PREFIX=~/.local/src/Marmot/build-debug "
       "-DCMAKE_BUILD_TYPE=Debug -S ~/.local/src/Markmot "
       "-B ~/.local/src/Marmot/build-debug/ && "
