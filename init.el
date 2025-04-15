@@ -3325,9 +3325,7 @@ opening a file from dired. Otherwise just regular dired."
   :bind
   (("C-`" . popper-toggle)
    :map popper-mode-map
-   ("C-c C-`" . popper-toggle)
-   :repeat-map mode-specific-map
-   ("`" . popper-toggle))
+   ("C-c C-`" . popper-toggle))
   :config
   ;; treat those as popups
   (setq popper-reference-buffers
