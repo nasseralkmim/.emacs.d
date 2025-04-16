@@ -12,6 +12,13 @@
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
    '((compile-command concat "cmake" " --fresh"
+                      " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/dev-debug/config.cmake"
+                      " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/Trilinos/dev-debug/"
+                      " -S ~/.local/src/Trilinos/"
+                      " -B ~/.local/src/Trilinos/build/dev-debug/"
+                      " && cmake --build  ~/.local/src/Trilinos/build/dev-debug/ -j32"
+                      " && cmake --install ~/.local/src/Trilinos/build/dev-debug/")
+     (compile-command concat "cmake" " --fresh"
                       " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/dev-muelu-add-userdata-for-blocked-debug/config.cmake"
                       " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/dev-muelu-add-userdata-for-blocked-debug/"
                       " -S ~/.local/src/Trilinos/"

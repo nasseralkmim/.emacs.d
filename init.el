@@ -4413,7 +4413,6 @@ Use one line per sentence.")
 
 ;; copy from emacs terminal
 (use-package clipetty
-  :if (not (display-graphic-p))
   :hook (after-init . global-clippety-mode)
   :bind
   ("M-S-y" . clipetty-kill-ring-save)
