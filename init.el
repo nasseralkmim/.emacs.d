@@ -4437,6 +4437,9 @@ Use one line per sentence.")
   :bind
   ("C-c TAB" . tab-bar-switch-to-next-tab)
   ("C-c <backtab>" . tab-bar-switch-to-prev-tab)
+  ;; Page-up and Page-down
+  ("C-<prior>" . tab-bar-switch-to-next-tab)
+  ("C-<next>" . tab-bar-switch-to-prev-tab)
   (:map tab-prefix-map
         ("t" . tab-bar-select-tab))
   (:repeat-map tab-bar-switch-repeat-map
