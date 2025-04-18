@@ -4,7 +4,7 @@
   "Time when Emacs was started")
 
 ;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.10)
+(defvar elpaca-installer-version 0.11)
 (defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
 (defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
 (defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
@@ -4631,6 +4631,7 @@ absolute path. Finally load eglot."
    ("C-c @ C-s"  . treesit-fold-open)
    ("C-c @ C-e"  . treesit-fold-toggle)
    ("C-c @ C-a"  . treesit-fold-open-all)
+   ("C-c @ C-l"  . treesit-fold-close-children)
    ("C-c @ C-t"  . treesit-fold-close-all))
   :hook 
   (c++-ts-mode . treesit-fold-mode)
@@ -4642,6 +4643,54 @@ absolute path. Finally load eglot."
   (push '(if_statement . ((lambda (node offset)
                             (treesit-fold-range-markers node offset ":")) 0 1))
         (alist-get 'python-ts-mode treesit-fold-range-alist)))
+
+(use-package treesit-fold-close-children
+  :after treesit-fold
+  :init
+  (defun treesit-fold-close-children (&optional node)
+    "Fold all foldable syntax nodes that are descendants of NODE or the node at point.
+
+Foldable nodes are defined in `treesit-fold-range-alist' for the
+current `major-mode'.
+
+If NODE is non-nil, use it as the parent. Otherwise, find a
+foldable node at `point` to use as the parent. If no parent
+node is found, do nothing.
+
+This function iterates through descendants of the parent node and
+calls `treesit-fold-close` on each foldable one found (excluding
+nodes where the start and end are on the same line).
+
+Returns t if any nodes were folded, nil otherwise."
+    (interactive)
+    (treesit-fold--ensure-ts
+      (when-let* ((parent-node (or node (treesit-fold--foldable-node-at-pos)))) ; Get parent
+        (let (nodes-folded) ; Keep track if we did anything
+          (let* ((language (treesit-node-language parent-node))
+                 ;; Get the patterns for foldable nodes for this major mode
+                 (patterns (seq-mapcat (lambda (fold-range) `((,(car fold-range)) @name))
+                                       (alist-get major-mode treesit-fold-range-alist)))
+                 ;; Compile the query if patterns exist
+                 (query (when patterns (treesit-query-compile language patterns))))
+            (when query ; Only proceed if we have a valid query
+              ;; Find all matching nodes *within* the parent-node
+              (let* ((captures (treesit-query-capture parent-node query))
+                     ;; Filter out nodes that start and end on the same line
+                     (nodes (cl-remove-if (lambda (capture)
+                                            (treesit-fold--node-range-on-same-line (cdr capture)))
+                                          captures))
+                     ;; Extract the actual node objects
+                     (nodes-to-fold (mapcar #'cdr nodes)))
+
+                ;; Iterate and fold each identified descendant node
+                (dolist (child-node nodes-to-fold)
+                  ;; Avoid folding the parent node itself if it was captured by the query
+                  (unless (eq child-node parent-node)
+                    ;; treesit-fold-close returns the overlay if successful, nil otherwise
+                    (when (treesit-fold-close child-node)
+                      (setq nodes-folded t)))) ; Mark that we folded at least one
+                )))
+          nodes-folded)))))
 
 (use-package treesit-auto
   :defer 1
