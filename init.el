@@ -3394,6 +3394,8 @@ opening a file from dired. Otherwise just regular dired."
   (prog-mode . eldoc-box-hover-mode)
   :config
   (setq eldoc-box-only-multi-line t
+        eldoc-box-clear-with-C-g t
+        eldoc-box-max-pixel-width 400
         eldoc-box-lighter t))
 
 ;; async support for dired
