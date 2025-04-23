@@ -1080,6 +1080,9 @@ org-mode"
 
 (use-package magit
   :ensure (magit :files (:defaults "git-commit.el"))
+  :bind
+  (:map magit-mode-map
+        ("C-x 4 j" . magit-diff-visit-worktree-file-other-window))
   :config
   (setq magit-diff-hide-trailing-cr-characters t
         magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
