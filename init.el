@@ -4650,6 +4650,7 @@ absolute path. Finally load eglot."
         (alist-get 'python-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-fold-close-children
+  :ensure nil
   :after treesit-fold
   :init
   (defun treesit-fold-close-children (&optional node)
