@@ -808,7 +808,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         show-paren-when-point-in-periphery t
         show-paren-when-point-inside-paren nil))
 
-(use-package hack-sp-face-in-org :disabled
+(use-package hack-sp-face-in-org
   :ensure nil
   :after org
   :init
@@ -5006,5 +5006,11 @@ If called with a prefix argument, prompt for a context string."
         (setq command (concat command " --context " (shell-quote-argument context))))
       (shell-command (concat command " | git commit -F -"))
       (revert-buffer))))
+
+(use-package org-link-preview-async-export-hack
+  :ensure nil
+  :after ox
+  :init
+  (require 'ol))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
