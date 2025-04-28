@@ -1119,6 +1119,8 @@ org-mode"
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
+  :custom-face
+  (org-block ((t (:inherit org-agenda-restriction-lock))))
   :mode (("\\.org$" . org-mode))
   :bind
   (("M-o" . org-open-at-point-global)
