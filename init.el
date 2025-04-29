@@ -3328,7 +3328,8 @@ opening a file from dired. Otherwise just regular dired."
   :bind*
   ("C-c `" . popper-toggle)             ; for tty
   :bind
-  (("C-`" . popper-toggle)
+  (:repeat-map popper-repeat-map
+   ("`" . popper-toggle)
    :map popper-mode-map
    ("C-c C-`" . popper-toggle))
   :config
