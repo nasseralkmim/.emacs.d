@@ -4650,6 +4650,14 @@ absolute path. Finally load eglot."
   ;; TODO: would be nice to folde if...else..., and not just if...
   (push '(if_statement . ((lambda (node offset)
                             (treesit-fold-range-markers node offset ":")) 0 1))
+        (alist-get 'python-ts-mode treesit-fold-range-alist))
+  ;; add support for "try" statement
+  (push '(try_statement . ((lambda (node offset)
+                             (treesit-fold-range-markers node offset ":")) 0 1))
+        (alist-get 'python-ts-mode treesit-fold-range-alist))
+  ;; add support for "except" clause
+  (push '(except_clause . ((lambda (node offset)
+                             (treesit-fold-range-markers node offset ":")) 0 1))
         (alist-get 'python-ts-mode treesit-fold-range-alist)))
 
 (use-package treesit-fold-close-children
