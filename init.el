@@ -1083,6 +1083,8 @@ org-mode"
   :bind
   (:map magit-mode-map
         ("C-x 4 j" . magit-diff-visit-worktree-file-other-window))
+  (:repeat-map magit-section-mode-repeat-map
+               ("TAB" . magit-section-cycle))
   :config
   (setq magit-diff-hide-trailing-cr-characters t
         magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
@@ -1120,7 +1122,7 @@ org-mode"
   ;; So we load the correct version of org instead of built-in when exporting async.
   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git")
   :custom-face
-  (org-block ((t (:inherit org-agenda-restriction-lock))))
+  (org-block ((t (:inherit org-agenda-restriction-lock) :extend t)))
   :mode (("\\.org$" . org-mode))
   :bind
   (("M-o" . org-open-at-point-global)
