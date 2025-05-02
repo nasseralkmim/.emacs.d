@@ -4445,8 +4445,6 @@ Use one line per sentence.")
   :custom-face 
   (tab-bar ((t (:inherit unspecified))))
   :bind
-  ("C-c TAB" . tab-bar-switch-to-next-tab)
-  ("C-c <backtab>" . tab-bar-switch-to-prev-tab)
   ;; Page-up and Page-down
   ("C-<prior>" . tab-bar-switch-to-next-tab)
   ("C-<next>" . tab-bar-switch-to-prev-tab)
