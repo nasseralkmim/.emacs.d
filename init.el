@@ -3536,6 +3536,18 @@ its results, otherwise display STDERR with
       (unless (eq (window-buffer (selected-window)) original-buffer)
         (switch-to-buffer original-buffer)))))
 
+;; https://www.reddit.com/r/emacs/comments/jof1p3/visit_tangled_file_with_orgopenatpoint/
+(use-package org-babel-goto-tangle-file-hack
+  :after org
+  :init
+  (defun ibizaman/org-babel-goto-tangle-file ()
+    (if-let* ((args (nth 2 (org-babel-get-src-block-info t)))
+	      (tangle (alist-get :tangle args)))
+	(when (not (equal "no" tangle))
+	  (find-file tangle)
+	  t)))
+  (add-hook 'org-open-at-point-functions 'ibizaman/org-babel-goto-tangle-file))
+
 (use-package org-footnote
   :ensure nil
   :after org
