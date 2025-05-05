@@ -3515,12 +3515,12 @@ its results, otherwise display STDERR with
   (add-hook 'org-babel-after-execute-hook 'ek/babel-ansi))
 
 ;; custom detangle function
-(use-package org-babel-detangle :disabled
+(use-package org-babel-detangle
   :ensure nil
   :after org
   :commands org-babel-detangle-bg
-  :general
-  ("C-c C-t C-t" 'org-babel-detangle-bg)
+  :bind
+  ("C-c C-t C-t" . org-babel-detangle-bg)
   :init
   (defun org-babel-detangle-bg ()
     "Use `org-babel-detangle' but maintain focus on source code"
