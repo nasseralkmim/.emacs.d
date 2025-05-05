@@ -3523,10 +3523,16 @@ its results, otherwise display STDERR with
   ("C-c C-t C-t" . org-babel-detangle-bg)
   :init
   (defun org-babel-detangle-bg ()
-    "Use `org-babel-detangle' but maintain focus on source code"
+    "Use `org-babel-detangle' but maintain focus on the original Org buffer and window configuration."
     (interactive)
-    (org-babel-detangle)
-    (find-file buffer-file-name)))
+    (let ((original-config (current-window-configuration)) ; Store original window config
+          (original-buffer (current-buffer)))             ; Store original buffer
+      (org-babel-detangle)
+      ;; Restore the window configuration
+      (set-window-configuration original-config)
+      ;; Ensure the original buffer is current in the selected window, just in case.
+      (unless (eq (window-buffer (selected-window)) original-buffer)
+        (switch-to-buffer original-buffer)))))
 
 (use-package org-footnote
   :ensure nil
