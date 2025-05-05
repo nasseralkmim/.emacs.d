@@ -3523,6 +3523,7 @@ its results, otherwise display STDERR with
   :commands org-babel-detangle-bg
   :bind
   ("C-c C-t C-t" . org-babel-detangle-bg)
+  ("C-c C-t t" . org-babel-detangle)
   :init
   (defun org-babel-detangle-bg ()
     "Use `org-babel-detangle' but maintain focus on the original Org buffer and window configuration."
