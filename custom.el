@@ -11,7 +11,14 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((compile-command concat "cmake" " --fresh"
+   '((compile-command concat
+                      "cmake --fresh -DCMAKE_INSTALL_PREFIX=~/.local/src/Marmot/build-debug "
+                      "-DCMAKE_BUILD_TYPE=Debug -S ~/.local/src/Marmot "
+                      "-B ~/.local/src/Marmot/build-debug/ && "
+                      "cmake --build  ~/.local/src/Marmot/build-debug -j32 && "
+                      "cmake --install ~/.local/src/Marmot/build-debug && "
+                      "ctest --output-on-failure --test-dir ~/.local/src/Marmot/build-debug")
+     (compile-command concat "cmake" " --fresh"
                       " -D Trilinos_CONFIGURE_OPTIONS_FILE=~/.local/src/Trilinos/build/dev-release/config.cmake"
                       " -D CMAKE_INSTALL_PREFIX=/home/nasser/.opt/Trilinos/dev-release/"
                       " -S ~/.local/src/Trilinos/"
