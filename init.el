@@ -168,7 +168,8 @@
 (use-package compile
   :ensure nil
   :config
-  (setq compilation-scroll-output 'first-error))
+  (setq compilation-scroll-output 'first-error
+        next-error-recenter '(4)))
 
 (use-package compile-buffer-name-hack
   :ensure nil
@@ -397,7 +398,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         recentf-auto-cleanup 'mode))
 
 ;; Enable autorevert on specific modes
-(use-package autorevert
+(use-package autorevert :disabled
   :ensure nil
   :if (eq system-type 'gnu/linux)
   :hook
@@ -410,6 +411,17 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         ;; maybe slow, but useful
         auto-revert-remote-files nil))
 
+(use-package auto-revert
+  :ensure nil
+  :config
+  (setq revert-without-query (list ".")  ; Do not prompt
+        auto-revert-stop-on-user-input nil
+        auto-revert-verbose t)
+
+  ;; Revert other buffers (e.g, Dired)
+  (setq global-auto-revert-non-file-buffers t)
+  (setq global-auto-revert-ignore-modes '(Buffer-menu-mode)))
+  
 (use-package helpful
   :bind
   (("C-h f" . helpful-callable)
