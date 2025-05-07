@@ -4997,9 +4997,6 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (setq aidermacs-default-model "gemini/gemini-2.5-pro-exp-03-25")
 
-  (setq aidermacs-extra-args '("--map-refresh" "manual"
-                               "--no-gitignore"))
-
   (setq aidermacs-show-diff-after-change nil)
   
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
