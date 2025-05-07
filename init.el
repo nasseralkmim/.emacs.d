@@ -3551,6 +3551,7 @@ its results, otherwise display STDERR with
 
 ;; https://www.reddit.com/r/emacs/comments/jof1p3/visit_tangled_file_with_orgopenatpoint/
 (use-package org-babel-goto-tangle-file-hack
+  :ensure nil
   :after org
   :init
   (defun ibizaman/org-babel-goto-tangle-file ()
