@@ -155,9 +155,9 @@
 
   ;; Window divider and continuous line
   (unless (display-graphic-p)
-    ;; (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
+    (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?│))
     ;; emacs can not figure out that in the terminal the default BG is dark
-    (setq frame-background-mode 'dark)
+    (setq frame-background-mode 'light)
     (mapc 'frame-set-background-mode (frame-list)))
 
   ;; Allow to add 'compile-command' as safe in the custom.el file
@@ -213,10 +213,10 @@ Falls back to *compilation* if no project is found."
 ;; My custom emacs theme
 (use-package seralk-theme :disabled
   :ensure nil
-  :general
-  ("<f5>"'toggle-dark-theme)
+  :bind
+  ("<f5>" . toggle-dark-theme)
   :init
-  (load-theme 'seralk t)
+  ;; (load-theme 'seralk t)
   (defun toggle-dark-theme ()
     (interactive)
     (if (eq frame-background-mode 'dark)
