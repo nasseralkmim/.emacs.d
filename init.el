@@ -168,7 +168,7 @@
 (use-package compile
   :ensure nil
   :config
-  (setq compilation-scroll-output t))
+  (setq compilation-scroll-output 'first-error))
 
 (use-package compile-buffer-name-hack
   :ensure nil
