@@ -4513,7 +4513,8 @@ Use one line per sentence.")
 (use-package indent-bars
   :ensure (indent-bars :url "https://github.com/jdtsmith/indent-bars")
   :hook
-  (prog-mode . indent-bars-mode)
+  (c++-ts-mode . indent-bars-mode)
+  (python-ts-mode . indent-bars-mode)
   :config
   (setq indent-bars-pattern "."
         indent-bars-width-frac 0.1
