@@ -2688,7 +2688,7 @@ Only if there is more than one window opened."
   ("C-c C-j" . windmove-down)
   ("C-c C-k" . windmove-up)
   :config
-  (windmove-default-keybindings))
+  (windmove-default-keybindings 'ctrl))
 
 ;; built in windows resize functions
 (use-package window
