@@ -1177,11 +1177,11 @@ org-mode"
           org-cycle-hide-drawers
           org-cycle-show-empty-lines
           org-optimize-window-after-visibility-change))
-
-  :init
+  ;; :init
   ;; Make windmove work in Org mode:
   ;; [[info:org#Conflicts][org#Conflicts]]
-  (setq org-replace-disputed-keys t))
+  ;; (setq org-replace-disputed-keys t))
+  )
 
 ;; Quick insert latex macros
 ;; for example, "` a" inserts "\alpha"
@@ -1503,6 +1503,7 @@ When matching, reference is stored in match group 1."
 ;; 'org-agenda-view-mode-dispatch' to view month/week  (e.g., prefix argument with week number)
 ;; 'org-agenda-todo' change todo state
 ;; 'org-todo-list' go to todo view (not scheduled), org just use the agenda view that include both ('C-c a n')
+;; 'org-agenda-later' to move to next day/week/month
 ;; Some concepts:
 ;; 1. 'task': some todo item.
 ;; 2. 'event': something taking place at a time and optionally at a place.
