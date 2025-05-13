@@ -4162,6 +4162,9 @@ With prefix argument, use prompt taker to select a language pair."
   (setq org-default-notes-file "~/Sync/notes/log-notes/tasks.org")
 
   (setq org-capture-templates '(;; 'Event' is something that happens in a time, it takes a timestamp.
+                                ;; To change the time:
+                                ;; 1. create the time stamp with the correct date (S-<arrow> to navigate)
+                                ;; 2. In the org capture buffer, in the time stamp use S-up/down to change time
                                 ("e" "Event" entry ; type entry creates a headline
                                  (file+datetree "~/Sync/notes/log-notes/gcal.org")
                                  "* %?\n:org-gcal:\n%^T--%^T\n%a\n:END:")
