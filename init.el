@@ -2812,7 +2812,7 @@ Only if there is more than one window opened."
 ;; shows git information on fringe
 (use-package diff-hl
   :hook
-  (prog-mode . diff-hl-margin-mode)
+  (prog-mode . diff-hl-mode)
   ;; (dired-mode . diff-hl-dired-mode)
   ;; integration with magit
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
@@ -4161,13 +4161,15 @@ With prefix argument, use prompt taker to select a language pair."
   ;; In Agenda, they can be viewed: 'org-todo-list'
   (setq org-default-notes-file "~/Sync/notes/log-notes/tasks.org")
 
+  ;; See [[info:org#Capture templates][org#Capture templates]]
   (setq org-capture-templates '(;; 'Event' is something that happens in a time, it takes a timestamp.
                                 ;; To change the time:
                                 ;; 1. create the time stamp with the correct date (S-<arrow> to navigate)
                                 ;; 2. In the org capture buffer, in the time stamp use S-up/down to change time
+                                ;; 3. For time slot: use <2025-05-14 Wed 10:05-12:00> format
                                 ("e" "Event" entry ; type entry creates a headline
                                  (file+datetree "~/Sync/notes/log-notes/gcal.org")
-                                 "* %?\n:org-gcal:\n%^T--%^T\n%a\n:END:")
+                                 "* %?\n:org-gcal:\n%^T\n%a\n:END:")
                                 ;; 'Task' is a 'TODO' entry and is scheduled,
                                 ;; therefore it is shown continuously until
                                 ;; marked as done.
