@@ -1365,20 +1365,6 @@ graphics."
 
   (add-hook 'org-babel-after-execute-hook 'org-babel-python-open-session-buffer-after-execute))
 
-(use-package ob-shell-open-session-buffer-after-execute-hack
-  :ensure nil
-  :after org
-  :init
-  (defun org-babel-shell-open-session-buffer-after-execute ()
-    "Open the shell session buffer after executing the code block."
-    (let ((session-buffer (format "*%s*" (cdr (assoc :session (nth 2 (org-babel-get-src-block-info)))))))
-      (dolist (buffer (buffer-list))
-        (when (string= (buffer-name buffer) session-buffer)
-          ;; open session buffer but don't move cursor to it
-          (display-buffer buffer nil 'visible)))))
-
-  (add-hook 'org-babel-after-execute-hook 'org-babel-shell-open-session-buffer-after-execute))
-
 (use-package ob-core
   :ensure nil
   :after org
