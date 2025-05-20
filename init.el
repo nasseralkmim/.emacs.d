@@ -824,16 +824,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         show-paren-when-point-in-periphery t
         show-paren-when-point-inside-paren nil))
 
-(use-package hack-sp-face-in-org
-  :ensure nil
-  :after org
-  :init
-  (defun change-sp-face-when-in-org ()
-    "remove background to avoid annoying color when drawing with edraw in
-org-mode"
-    (face-remap-add-relative 'show-paren-match '(:background 'unspecified)))
-  (add-hook 'org-mode-hook #'change-sp-face-when-in-org))
-
 (use-package smartparens-config
   :ensure nil
   :demand
