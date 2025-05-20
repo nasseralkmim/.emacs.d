@@ -5058,12 +5058,16 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure nil
   :hook (comint-mode . visual-line-mode))
 
-(use-package lumen-hack
+(use-package lumen-git-commit-message-hack
   :ensure nil
   :after magit
   :bind (:map magit-mode-map
               ("C-c C-s" . lumen-generate-commit))
   :init
+  (setenv "LUMEN_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
+  (setenv "LUMEN_AI_PROVIDER" "openrouter")
+  (setenv "LUMEN_AI_MODEL" "google/gemini-2.5-flash-preview")
+
   (defun lumen-generate-commit (&optional arg)
     "Run 'lumen draft' and use its output as the git commit message.
 If called with a prefix argument, prompt for a context string."
