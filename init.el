@@ -5021,7 +5021,7 @@ RESCHEDULE-FN is the function to reschedule."
   (:map comint-mode-map
         ("C-c C-a" . aidermacs-transient-menu))
   :config
-  (setq aidermacs-default-model "gemini/gemini-2.5-pro-exp-03-25")
+  (setq aidermacs-default-model "gemini/gemini-2.5-pro-preview-05-06")
 
   (setq aidermacs-show-diff-after-change nil)
   
