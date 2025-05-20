@@ -4216,36 +4216,60 @@ With prefix argument, use prompt taker to select a language pair."
   :after org
   :init
   (defun org-link-preview-edraw (ov path link)
-    "Display edraw SVG file in overlay OV for LINK.
-Handles edraw links in the format edraw:file=/path/to/image.svg"
-    (if (not (display-graphic-p))
-        (prog1 nil
-          (message "Your Emacs does not support displaying images!"))
-      (require 'image)
-      (when-let* ((file-path (and (string-match "file=\\(.*\\)" path)
-                                  (match-string 1 path)))
-                  (file-full (expand-file-name file-path))
-                  (file (substitute-in-file-name file-full))
-                  ((string-match-p (image-file-name-regexp) file))
-                  ((file-exists-p file)))
-        (let* ((width (org-display-inline-image--width link))
-               (align (org-image--align link))
-               (image (org--create-inline-image file width)))
-          (when image
-            (image-flush image)
-            (overlay-put ov 'display image)
-            (overlay-put ov 'face 'default)
-            (overlay-put ov 'keymap image-map)
-            (when align
-              (overlay-put
-               ov 'before-string
-               (propertize
-                " " 'face 'default
-                'display
-                (pcase align
-                  ("center" `(space :align-to (- center (0.5 . ,image))))
-                  ("right"  `(space :align-to (- right ,image)))))))
-            t)))))
+  "Display edraw SVG file in overlay OV for LINK.
+Handles edraw links in the format edraw:file=/path/to/image.svg.
+If an edraw editor is active for this link, preview is skipped."
+  (if (not (display-graphic-p))
+      (prog1 nil
+        (message "Your Emacs does not support displaying images!"))
+    (require 'image)
+    (let ((link-begin (org-element-property :begin link))
+          (link-end (org-element-property :end link))
+          (editor-is-active-for-this-link nil))
+
+      ;; Check if an edraw editor overlay is active for this specific link.
+      ;; The edraw editor creates an overlay with the 'edraw-editor property
+      ;; spanning the link's original extent.
+      (when (and link-begin link-end)
+        (dolist (existing-ov (overlays-in link-begin link-end) editor-is-active-for-this-link)
+          ;; Check if it's an edraw editor overlay and if it exactly matches the link's extent
+          (when (and (overlay-get existing-ov 'edraw-editor) 
+                     (eq (overlay-start existing-ov) link-begin)
+                     (eq (overlay-end existing-ov) link-end))
+            (setq editor-is-active-for-this-link t))))
+      
+      (if editor-is-active-for-this-link
+          (progn
+            ;; (message "Edraw link at %s is being edited. Skipping preview." link-begin)
+            ;; Return t to indicate that the preview has been "handled" (by skipping it)
+            t) 
+        ;; No active editor for this link, proceed with normal preview logic
+        (when-let* ((file-path (and (string-match "file=\\(.*\\)" path)
+                                    (match-string 1 path)))
+                    (file-full (expand-file-name file-path))
+                    (file (substitute-in-file-name file-full))
+                    ((string-match-p (image-file-name-regexp) file))
+                    ((file-exists-p file)))
+          (let* ((width (org-display-inline-image--width link))
+                 (align (org-image--align link))
+                 ;; Assuming image-map is defined in your setup as per your original function
+                 (image-map (if (boundp 'image-map) image-map nil)) 
+                 (image (org--create-inline-image file width)))
+            (when image
+              (image-flush image)
+              (overlay-put ov 'display image)
+              (overlay-put ov 'face 'default)
+              (when image-map (overlay-put ov 'keymap image-map))
+              (when align
+                (overlay-put
+                 ov 'before-string
+                 (propertize
+                  " " 'face 'default
+                  'display
+                  (pcase align
+                    ("center" `(space :align-to (- center (0.5 . ,image))))
+                    ("right"  `(space :align-to (- right ,image)))))))
+              t)))))))
   (org-link-set-parameters "edraw" :preview #'org-link-preview-edraw))
 
 (use-package cmake
