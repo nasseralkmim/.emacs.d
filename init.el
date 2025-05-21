@@ -3660,7 +3660,6 @@ its results, otherwise display STDERR with
   :bind (("C-x C-m" . gnus))
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
-  (gnus-article-mode . variable-pitch-mode)
   (gnus-article-mode . visual-line-mode)
   :config
   (setq user-mail-address "nasser.alkmim@gmail.com"
