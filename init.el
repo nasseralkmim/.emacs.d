@@ -2228,8 +2228,8 @@ Otherwise, toggle only the directory at point."
 ;; Load modus in terminal, it is very clever to figure out the colors there
 (use-package modus-themes
   :defer 1
-  :bind
-  ("<f5>" . modus-themes-toggle)
+  ;; :bind
+  ;; ("<f5>" . modus-themes-toggle)
   :config
   (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-prompts '(intense italic)
@@ -5083,7 +5083,7 @@ If called with a prefix argument, prompt for a context string."
   :init
   (require 'ol))
 
-(use-package automagic-dark-mode :disabled
+(use-package automagic-dark-mode
   :ensure (automagic-dark-mode :url  "https://github.com/sstraust/automagic-dark-mode")
   :bind ("<f5>" . automagic-dark-mode)
   :config
