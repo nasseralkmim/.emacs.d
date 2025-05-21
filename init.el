@@ -5024,6 +5024,7 @@ RESCHEDULE-FN is the function to reschedule."
   
   (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
   (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
+  (setenv "OPENROUTER_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
   (setenv "DEEPSEEK_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
   (setenv "ANTHROPIC_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
   (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
