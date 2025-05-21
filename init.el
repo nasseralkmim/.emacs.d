@@ -5070,11 +5070,11 @@ If called with a prefix argument, prompt for a context string."
   :init
   (require 'ol))
 
-(use-package automagic-dark-mode
+(use-package automagic-dark-mode :disabled
   :ensure (automagic-dark-mode :url  "https://github.com/sstraust/automagic-dark-mode")
   :bind ("<f5>" . automagic-dark-mode)
   :config
   (setq automagic-dark-wcag-ratio 1.
-        automagic-dark-luminance-inversion-exp 0.3))
+        automagic-dark-luminance-inversion-exp 0.35))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
