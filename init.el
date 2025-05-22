@@ -814,7 +814,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure nil
   :hook
   (prog-mode . show-paren-mode)
-  (org-mode . (lambda () (show-paren-mode -1)))
+  (org-mode . (lambda () (show-paren-local-mode -1)))
   :config
   ;; show context (echo area) when closing delimiter is off screen
   (setq show-paren-context-when-offscreen 'overlay
