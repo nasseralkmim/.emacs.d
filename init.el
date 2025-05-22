@@ -5089,6 +5089,6 @@ If called with a prefix argument, prompt for a context string."
   :bind ("<f5>" . automagic-dark-mode)
   :config
   (setq automagic-dark-wcag-ratio 1
-        automagic-dark-luminance-inversion-exp 0.5))
+        automagic-dark-luminance-inversion-exp 0.8))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
