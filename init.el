@@ -52,7 +52,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil ; compute statistics about package initialization
+      use-package-compute-statistics t ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
@@ -812,13 +812,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package paren
   :ensure nil
-  :custom-face
-  (show-paren-match ((t (:extend t))))
   :hook
   (prog-mode . show-paren-mode)
   (org-mode . (lambda () (show-paren-local-mode -1)))
   :config
   ;; show context (echo area) when closing delimiter is off screen
+  (set-face-attribute 'show-paren-match nil :extend t))
   (setq show-paren-context-when-offscreen 'overlay
         show-paren-style 'expression
         show-paren-when-point-in-periphery t
