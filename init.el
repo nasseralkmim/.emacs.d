@@ -548,7 +548,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package savehist
   :ensure nil
   :hook
-  (after-init . savehist-mode))
+  (after-init . savehist-mode)
+  :config
+  (setq savehist-additional-variables '(global-mark-ring)))
 
 ;; minibuffer annotations details
 (use-package marginalia
