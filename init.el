@@ -1342,19 +1342,27 @@ graphics."
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
 
-(use-package ob-python-open-session-buffer-after-execute-hack
+(use-package ob-open-session-buffer-after-execute-hack
   :ensure nil
   :after org
   :init
-  (defun org-babel-python-open-session-buffer-after-execute ()
-    "Open the python session buffer after executing the code block."
-    (let ((session-buffer (format "*%s*" (cdr (assoc :session (nth 2 (org-babel-get-src-block-info)))))))
-      (dolist (buffer (buffer-list))
-        (when (string= (buffer-name buffer) session-buffer)
-          ;; open session buffer but don't move cursor to it
-          (display-buffer buffer nil 'visible)))))
+  (defun org-babel-open-session-buffer-after-execute ()
+    "Open the session buffer after executing the code block."
+    (interactive)
+    (let ((session-buffer (cdr (assoc :session (nth 2 (org-babel-get-src-block-info))))))
+      (when session-buffer
+        (let* ((target-buffer nil))
+          (dolist (buffer (buffer-list))
+            ;; try to find python buffer with ** in the name
+            (when (string= (buffer-name buffer) (format "*%s*" session-buffer))
+              (setq target-buffer buffer))
+            (when (string= (buffer-name buffer) session-buffer)
+              ;; open session buffer but don't move cursor to it
+              (setq target-buffer buffer)))
+          (when target-buffer
+            (display-buffer target-buffer nil 'visible)))))))
 
-  (add-hook 'org-babel-after-execute-hook 'org-babel-python-open-session-buffer-after-execute))
+  (add-hook 'org-babel-after-execute-hook 'org-babel-open-session-buffer-after-execute))
 
 (use-package ob-core
   :ensure nil
@@ -5093,6 +5101,6 @@ If called with a prefix argument, prompt for a context string."
   :bind ("<f5>" . automagic-dark-mode)
   :config
   (setq automagic-dark-wcag-ratio 1
-        automagic-dark-luminance-inversion-exp 0.4))
+        automagic-dark-luminance-inversion-exp 0.7))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
