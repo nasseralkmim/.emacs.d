@@ -1360,7 +1360,7 @@ graphics."
               ;; open session buffer but don't move cursor to it
               (setq target-buffer buffer)))
           (when target-buffer
-            (display-buffer target-buffer nil 'visible)))))))
+            (display-buffer target-buffer nil 'visible))))))
 
   (add-hook 'org-babel-after-execute-hook 'org-babel-open-session-buffer-after-execute))
 
