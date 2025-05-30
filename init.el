@@ -5107,10 +5107,11 @@ If called with a prefix argument, prompt for a context string."
   :ensure (automagic-dark-mode :url  "https://github.com/sstraust/automagic-dark-mode")
   :bind ("<f5>" . automagic-dark-mode)
   :config
-  (setq automagic-dark-wcag-ratio 1
-        automagic-dark-luminance-inversion-exp 0.7))
+  (setq automagic-dark-wcag-ratio .9
+        automagic-dark-sat-boost 1.5
+        automagic-dark-luminance-inversion-exp .5))
 
-(use-package claude-code
+(use-package claude-code :disabled
   :ensure (claude-code :type git :host github :repo "stevemolitor/claude-code.el" :files ("*.el" (:exclude "demo.gif")))
   :bind-keymap
   ("C-c C-a" . claude-code-command-map))
