@@ -4336,6 +4336,12 @@ Use one line per sentence.")
   (gptel-make-ollama "Ollama" 
     :host "localhost:11434"
     :stream t)
+  (gptel-make-openai "OpenRouter"               ;Any name you want
+  :host "openrouter.ai"
+  :endpoint "/api/v1/chat/completions"
+  :stream t
+  :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
+  :models '(openai/gpt-4o-mini))
   ;; set the default
   (setq gptel-model 'llama3
         gptel-backend (gptel-make-gemini "Gemini"
@@ -5103,5 +5109,10 @@ If called with a prefix argument, prompt for a context string."
   :config
   (setq automagic-dark-wcag-ratio 1
         automagic-dark-luminance-inversion-exp 0.7))
+
+(use-package claude-code
+  :ensure (claude-code :type git :host github :repo "stevemolitor/claude-code.el" :files ("*.el" (:exclude "demo.gif")))
+  :bind-keymap
+  ("C-c C-a" . claude-code-command-map))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
