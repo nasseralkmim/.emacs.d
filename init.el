@@ -2927,6 +2927,7 @@ opening a file from dired. Otherwise just regular dired."
   (setq avy-timeout-seconds 0.2         ; quicker
         avy-all-windows-alt t           ; allow all windows when `C-u`
         avy-background t
+        avy-indent-line-overlay t
         avy-all-windows nil))           ; restrict to one window
 
 (use-package all-the-icons-completion
