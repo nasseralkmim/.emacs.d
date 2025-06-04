@@ -226,7 +226,7 @@ Falls back to *compilation* if no project is found."
     (invert-face 'default)))
 
 ;; Move between windows configuration
-(use-package winner
+(use-package winner :disabled           ;use tab-bar-history-mode
   :ensure nil
   :defer 1
   :config
@@ -4513,12 +4513,18 @@ Use one line per sentence.")
 
 (use-package tab-bar
   :ensure nil
+  :hook (after-init . tab-bar-history-mode)
   :custom-face 
   (tab-bar ((t (:inherit unspecified))))
   :bind
   ;; Page-up and Page-down
   ("C-<prior>" . tab-bar-switch-to-next-tab)
   ("C-<next>" . tab-bar-switch-to-prev-tab)
+  ("C-c <left>" . tab-bar-history-back)
+  ("C-c <right>" . tab-bar-history-forward)
+  (:repeat-map tab-bar-history-repeat-map
+               ("<left>" . tab-bar-history-back)
+               ("<right>" . tab-bar-history-forward))
   (:map tab-prefix-map
         ("t" . tab-bar-select-tab))
   (:repeat-map tab-bar-switch-repeat-map
