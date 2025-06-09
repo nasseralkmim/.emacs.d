@@ -1638,7 +1638,7 @@ When matching, reference is stored in match group 1."
   :after org)
 
 ;; copy image from clipboard, save it and insert it
-(use-package org-download
+(use-package org-download :disabled     ; built-in yank-media
   :after org
   :bind
   (:map org-mode-map
