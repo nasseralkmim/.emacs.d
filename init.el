@@ -982,6 +982,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
      '("<escape>" . meow-cancel-selection)))
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
+  (add-to-list 'meow-mode-state-list '(ediff-meta-mode . normal))
   (meow-global-mode)
   (setq meow-replace-state-name-list
         '((normal . "🟢 N")
@@ -5043,7 +5044,7 @@ RESCHEDULE-FN is the function to reschedule."
   (:map comint-mode-map
         ("C-c C-a" . aidermacs-transient-menu))
   :config
-  (setq aidermacs-default-model "gemini/gemini-2.5-pro-preview-05-06")
+  (setq aidermacs-default-model "gemini/gemini-2.5-pro-preview-06-05")
 
   (setq aidermacs-show-diff-after-change nil)
   
