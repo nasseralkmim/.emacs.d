@@ -3082,7 +3082,8 @@ opening a file from dired. Otherwise just regular dired."
 ;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
 ;; unzip <download> -d ~/.opt/
 ;;
-;; make sure you have a working version of java (check with $ archlinux-java status) for me 11 works
+;; make sure you have a working version of java (check with $ archlinux-java status)
+;; also check if the JAVA_HOME is set correctly
 ;;
 ;; There is a problem with the % character
 ;; here is the fix: https://github.com/mhayashi1120/Emacs-langtool/issues/73#issuecomment-2171271512
