@@ -5047,7 +5047,8 @@ RESCHEDULE-FN is the function to reschedule."
   (:map comint-mode-map
         ("C-c C-a" . aidermacs-transient-menu))
   :config
-  (setq aidermacs-default-model "gemini/gemini-2.5-pro-preview-06-05")
+  (setq aidermacs-default-model "gemini/gemini-2.5-pro-preview-06-05"
+        aidermacs-extra-args '("--edit-format" "diff-fenced" "--no-gitignore"))
 
   (setq aidermacs-show-diff-after-change nil)
   
