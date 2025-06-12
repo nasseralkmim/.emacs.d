@@ -3429,8 +3429,8 @@ opening a file from dired. Otherwise just regular dired."
         eldoc-box-lighter t))
 
 ;; async support for dired
-(use-package dired-async
-  :ensure nil
+(use-package emacs-async
+  :ensure (emacs-async :host github :repo "jwiegley/emacs-async")
   :hook (dired-mode . dired-async-mode))
 
 ;; function to run local command on remote file
