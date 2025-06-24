@@ -2776,7 +2776,7 @@ Only if there is more than one window opened."
   (setq tramp-use-scp-direct-remote-copying t ; use scp when move files
         tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
         tramp-histfile-override nil
-        tramp-verbose 1)                ; increase to 6 to debug
+        tramp-verbose 0)                ; increase to 6 to debug
 
   ;; apparently makes it faster
   ;; https://www.gnu.org/software/tramp/#Frequently-Asked-Questions
