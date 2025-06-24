@@ -2773,7 +2773,7 @@ Only if there is more than one window opened."
   :config
   ;; scp is faster than ssh for copying files, but scp is apparently deprecated
   ;; https://www.reddit.com/r/emacs/comments/xul3qm/how_to_make_tramp_faster/
-  (setq tramp-default-method "scp"
+  (setq tramp-use-scp-direct-remote-copying t ; use scp when move files
         tramp-shell-prompt-pattern "\\(?:^\\|\r\\)[^]#$%>\n]*#?[]#$%>].* *\\(^[\\[[0-9;]*[a-zA-Z] *\\)*"
         tramp-histfile-override nil
         tramp-verbose 1)                ; increase to 6 to debug
@@ -2783,7 +2783,8 @@ Only if there is more than one window opened."
   ;; https://emacs.stackexchange.com/questions/17543/tramp-mode-is-much-slower-than-using-terminal-to-ssh 
   (setq remote-file-name-inhibit-cache nil)
   ;; Ok, if different emacs sessions are not editing the same file
-  (setq remote-file-name-inhibit-locks t)
+  (setq remote-file-name-inhibit-locks t
+        remote-file-name-inhibit-auto-save-visited t)
 
   ;; ignore version control 
   ;; https://www.reddit.com/r/emacs/comments/gxhomh/help_tramp_connections_make_emacs_unresponsive_on/
@@ -4346,7 +4347,7 @@ Use one line per sentence.")
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/gpt-4o-mini))
+  :models '(openai/o3))
   ;; set the default
   (setq gptel-model 'llama3
         gptel-backend (gptel-make-gemini "Gemini"
