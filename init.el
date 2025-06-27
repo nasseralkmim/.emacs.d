@@ -3977,6 +3977,10 @@ its results, otherwise display STDERR with
 (use-package speedbar 
   :ensure nil)
 
+(use-package pdd
+  :ensure (pdd :host github :repo "lorniu/pdd.el")
+  :defer t)
+
 ;; translation package
 (use-package go-translate
   :bind
@@ -4179,10 +4183,10 @@ With prefix argument, use prompt taker to select a language pair."
                                  "* TODO %?\n:org-gcal:\n%a\n:END:\n%^{SCHEDULED}p"))))
 
 ;; Link to org commits
-(use-package orgit :disabled
+(use-package orgit
   :after org)
 
-(use-package orgit-forge :disabled
+(use-package orgit-forge
   :after org)
 
 (use-package hack-org-edraw-async-export
