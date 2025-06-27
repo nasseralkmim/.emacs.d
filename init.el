@@ -1569,6 +1569,8 @@ When matching, reference is stored in match group 1."
     (add-hook 'org-mode-hook 'org-latex-preview-auto-mode))
   :config
   (setq org-latex-preview-auto-ignored-commands '(next-line previous-line)
+        org-latex-preview-process-precompiled nil
+        org-latex-preview-cache 'temp
         org-latex-preview-live-debounce 2))
 
 (use-package ox-beamer
@@ -3429,7 +3431,7 @@ opening a file from dired. Otherwise just regular dired."
         eldoc-box-lighter t))
 
 ;; async support for dired
-(use-package emacs-async
+(use-package emacs-async :disabled
   :ensure (emacs-async :host github :repo "jwiegley/emacs-async")
   :hook (dired-mode . dired-async-mode))
 
@@ -4177,10 +4179,10 @@ With prefix argument, use prompt taker to select a language pair."
                                  "* TODO %?\n:org-gcal:\n%a\n:END:\n%^{SCHEDULED}p"))))
 
 ;; Link to org commits
-(use-package orgit
+(use-package orgit :disabled
   :after org)
 
-(use-package orgit-forge
+(use-package orgit-forge :disabled
   :after org)
 
 (use-package hack-org-edraw-async-export
@@ -4198,9 +4200,10 @@ With prefix argument, use prompt taker to select a language pair."
   :init
   (with-eval-after-load 'org
     (progn
-      ;; (require 'edraw-org)
+      (require 'edraw-org)
       (edraw-org-setup-exporter)
-      (advice-add 'edraw-org-link-finish-edit :after 'org-link-preview-refresh)))
+      ;; (advice-add 'edraw-org-link-finish-edit :after 'org-link-preview-refresh)
+    ))
   :bind
   (:map edraw-editor-map
         ("<mouse-3>" . edraw-editor-select-tool-select))
@@ -4308,11 +4311,7 @@ If an edraw editor is active for this link, preview is skipped."
  ideas.
 
  Never apologize.  Ask questions when unsure.")
-     (rewrite . "Rewrite this text to be more concise and clear.  Do not add any additional information or context.  Do not change the meaning of the text.  Do not add any additional information or context.
-Do not change the meaning of the text.
-Do not add any additional information or context.
-Do not change the meaning of the text.
-Use one line per sentence.")
+     (rewrite . "Rewrite this text to be more concise and clear, with better and more fluid connection between ideas. Output only the rewritten text.")
      (programmer . "You are a careful programmer.  Provide code and only code as output without any additional text, prompt or note.")
      (cliwhiz . "You are a command line helper.  Generate command line commands that do what is requested, without any additional description or explanation.  Generate ONLY the command, I will edit it myself before running.")
      (emacser . "You are an Emacs maven.  Reply only with the most appropriate built-in Emacs command for the task I specify.  Do NOT generate any additional description or explanation.")
