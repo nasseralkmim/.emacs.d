@@ -742,6 +742,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("C-a" . embark-act-all))
   :commands embark-prefix-help-command
   :config
+  (setq prefix-help-command #'embark-prefix-help-command)
   (add-to-list 'display-buffer-alist
                ;; hide the mode line of the Embark live/completions buffers
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
@@ -2464,7 +2465,7 @@ Only if there is more than one window opened."
   :bind ("C-=" . er/expand-region))
 
 ;; key chord hint
-(use-package which-key
+(use-package which-key :disabled        ; use embark
   :defer 1
   :config
   (which-key-mode t))
