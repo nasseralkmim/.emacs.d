@@ -741,8 +741,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("C-SPC" . embark-select)
          ("C-a" . embark-act-all))
   :commands embark-prefix-help-command
-  :config
+  :init
   (setq prefix-help-command #'embark-prefix-help-command)
+  :config
   (add-to-list 'display-buffer-alist
                ;; hide the mode line of the Embark live/completions buffers
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
