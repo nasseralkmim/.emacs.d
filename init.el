@@ -83,7 +83,7 @@
 (use-package emacs
   :ensure nil
   :custom-face
-  (font-lock-comment-face ((t (:foreground "#7b5000" :slant italic))))
+  (font-lock-comment-face ((t (:foreground "#595959" :slant italic))))
   :defer 1
   :config
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
