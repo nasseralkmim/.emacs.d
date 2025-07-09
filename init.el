@@ -578,6 +578,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; #<search string>#<filter terms> filtering with orderless! amazing!
   ;; command line can be specified after "--", example: #<search string> -- -C 10 for context!! WHAT!
   ("C-c r" . consult-ripgrep)		; search file contents
+  ("C-c C-r" . (lambda ()
+                 "Call consult-ripgrep interactively with prefix argument."
+                 (interactive)
+                 (let ((current-prefix-arg '(4)))
+                   (call-interactively #'consult-ripgrep))))
   ("C-c f" . consult-find-fd)		; search files in directories
   ("C-x C-@" . consult-global-mark)
   ("M-e" . consult-isearch-history))
