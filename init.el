@@ -496,13 +496,14 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         display-buffer-below-selected))))
 
 ;; allows different completion UI configuration
-(use-package vertico-multiform :disabled
+(use-package vertico-multiform
   :ensure nil
   :after vertico
   :init
   (vertico-multiform-mode)
   ;; for spell checker
   (add-to-list 'vertico-multiform-categories
+               '(embark-keybinding grid)
                '(jinx grid (vertico-grid-annotate . 25))))
 
 ;; `completion STYLE` with flexible candidate filtering
