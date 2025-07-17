@@ -3405,7 +3405,7 @@ opening a file from dired. Otherwise just regular dired."
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; eye candy for org
-(use-package org-modern :disabled
+(use-package org-modern
   :when (display-graphic-p)             ;only when gui, there is a problem with tty
   :hook
   (org-mode . org-modern-mode)
@@ -5109,7 +5109,7 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   (setenv "LUMEN_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
   (setenv "LUMEN_AI_PROVIDER" "openrouter")
-  (setenv "LUMEN_AI_MODEL" "google/gemini-2.5-flash-preview")
+  (setenv "LUMEN_AI_MODEL" "google/gemini-2.5-flash")
 
   (defun lumen-generate-commit (&optional arg)
     "Run 'lumen draft' and use its output as the git commit message.
