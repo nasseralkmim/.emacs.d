@@ -3993,7 +3993,8 @@ its results, otherwise display STDERR with
   :defer t)
 
 ;; translation package
-(use-package go-translate
+(use-package gt
+  :ensure (gt :host github :repo "lorniu/gt.el")
   :bind
   (("C-c t t" . my-gt-do-translate)     ; overrides the tutorial, but ok...
    ("C-c t d" . gt-do-setup)
@@ -4042,7 +4043,7 @@ With prefix argument, use prompt taker to select a language pair."
 
 (use-package go-translate-window-placement-hack :disabled
   :ensure nil
-  :after go-translate
+  :after gt
   :init
   (setf (alist-get "^\\*gt-result\\*$"
                  display-buffer-alist
