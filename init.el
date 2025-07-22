@@ -3904,6 +3904,8 @@ its results, otherwise display STDERR with
 ;; Highlight current line
 (use-package hl-line
   :ensure nil
+  :custom-face
+  (hl-line ((t (:box (:line-width (-1 . -1) :style released-button) :extend t))))
   :hook
   (prog-mode . hl-line-mode)
   (dired-mode . hl-line-mode)
