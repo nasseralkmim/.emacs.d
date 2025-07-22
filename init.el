@@ -3905,7 +3905,7 @@ its results, otherwise display STDERR with
 (use-package hl-line
   :ensure nil
   :custom-face
-  (hl-line ((t (:box (:line-width (-1 . -1) :style released-button) :extend t))))
+  (hl-line ((t (:box (:line-width (-1 . -1)) :extend t))))
   :hook
   (prog-mode . hl-line-mode)
   (dired-mode . hl-line-mode)
