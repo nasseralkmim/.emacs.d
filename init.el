@@ -3913,7 +3913,7 @@ its results, otherwise display STDERR with
 (use-package hl-line
   :when (display-graphic-p) ; only in GUI
   :custom-face
-  (hl-line ((t (:box (:line-width (-1 . -1)) :extend t)))))
+  (hl-line ((t (:box (:color "grey80" :line-width (-1 . -1)) :extend t)))))
 
 (use-package isearch
   :ensure nil
