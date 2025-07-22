@@ -3904,14 +3904,17 @@ its results, otherwise display STDERR with
 ;; Highlight current line
 (use-package hl-line
   :ensure nil
-  :custom-face
-  (hl-line ((t (:box (:line-width (-1 . -1)) :extend t))))
   :hook
   (prog-mode . hl-line-mode)
   (dired-mode . hl-line-mode)
   :config
   ;; only active window
   (setq hl-line-sticky-flag nil))
+
+(use-package hl-line
+  :when (display-graphic-p) ; only in GUI
+  :custom-face
+  (hl-line ((t (:box (:line-width (-1 . -1)) :extend t)))))
 
 (use-package isearch
   :ensure nil
