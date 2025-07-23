@@ -3380,6 +3380,7 @@ opening a file from dired. Otherwise just regular dired."
           help-mode
           inferior-python-mode
           "Command\\*$"                   ;for shell command
+          "^\\*Shell.*"                   ;for shell command
           ("^\\*Async.*" . hide)                   ; async commands
           "\\*xref\\*"
           "\\*Diff\\*"
