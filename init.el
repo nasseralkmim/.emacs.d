@@ -2235,7 +2235,7 @@ Otherwise, toggle only the directory at point."
       (dired-subtree-toggle))))
 
 ;; open dired as a sidebar
-(use-package dired-sidebar
+(use-package dired-sidebar :disabled
   :bind
   (("C-x C-j" . dired-sidebar-jump)
    :map dired-sidebar-mode-map
