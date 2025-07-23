@@ -2701,8 +2701,11 @@ Only if there is more than one window opened."
          :repeat-map resize-window-repeat-map
                      ("j" . enlarge-window)
                      ("k" . shrink-window)
-                     ("h" . shrink-window-horizontally)
-                     ("l" . enlarge-window-horizontally)))
+                     ("h" . my/shrink-window-horizontally-10)
+                     ("l" . my/enlarge-window-horizontally-10))
+  :config
+  (defun my/enlarge-window-horizontally-10 () (interactive) (enlarge-window-horizontally 10))
+  (defun my/shrink-window-horizontally-10 () (interactive) (shrink-window-horizontally 10)))
 
 (use-package ol
   :ensure nil
