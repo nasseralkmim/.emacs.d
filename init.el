@@ -3413,7 +3413,6 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; eye candy for org
 (use-package org-modern
-  :when (display-graphic-p)             ;only when gui, there is a problem with tty
   :hook
   (org-mode . org-modern-mode)
   (org-agenda-finalize . org-modern-agenda)
@@ -4739,6 +4738,14 @@ absolute path. Finally load eglot."
   ("C-<f12>" . dslide-deck-start)
   :config
   (setq dslide-animation-duration 0))
+
+(use-package moc
+  :ensure (moc
+           :host github
+           :repo "positron-solutions/moc"))
+
+(use-package org-appear
+  :ensure (org-appear :type git :host github :repo "awth13/org-appear"))
 
 (use-package treesit-fold
   :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
