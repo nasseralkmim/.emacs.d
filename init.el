@@ -82,8 +82,6 @@
 ;; basics and better default
 (use-package emacs
   :ensure nil
-  :custom-face
-  (font-lock-comment-face ((t (:foreground "#595959" :slant italic))))
   :defer 1
   :config
   (setq-default fill-column 88)	  ; column length (88 python black default, I think is good)
@@ -3184,9 +3182,6 @@ opening a file from dired. Otherwise just regular dired."
   (prog-mode . which-function-mode))
 
 (use-package breadcrumb
-  :custom-face 
-  (breadcrumb-face ((t (:inherit font-lock-comment-face))))
-  (breadcrumb-imenu-leaf-face ((t (:inherit unspecified))))
   :hook
   (prog-mode . breadcrumb-mode))
 
@@ -3258,6 +3253,7 @@ opening a file from dired. Otherwise just regular dired."
   :if (not (display-graphic-p))
   :after org
   :init
+  (setq browse-url-browser-function 'eww-browse-url)
   (add-to-list 'org-file-apps '("\\.svg\\'" . "swayimg %s & disown"))
   ;; (add-to-list 'org-file-apps '("\\.svg\\'" . "feh -B white --auto-reload --auto-zoom %s & disown"))
   (add-to-list 'org-file-apps '("\\.png\\'" . "feh -B white --auto-reload --auto-zoom %s & disown")))
