@@ -3181,8 +3181,9 @@ opening a file from dired. Otherwise just regular dired."
   (prog-mode . which-function-mode))
 
 (use-package breadcrumb
-  :custom-face
-  (header-line ((t (:inherit mode-line-inactive))))
+  :custom-face 
+  (breadcrumb-face ((t (:inherit font-lock-comment-face))))
+  (breadcrumb-imenu-leaf-face ((t (:inherit unspecified))))
   :hook
   (prog-mode . breadcrumb-mode))
 
