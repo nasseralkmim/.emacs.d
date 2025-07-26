@@ -3913,6 +3913,7 @@ its results, otherwise display STDERR with
   (setq hl-line-sticky-flag nil))
 
 (use-package hl-line
+  :ensure nil
   :when (display-graphic-p) ; only in GUI
   :custom-face
   (hl-line ((t (:box (:color "grey80" :line-width (-1 . -1)) :extend t)))))
