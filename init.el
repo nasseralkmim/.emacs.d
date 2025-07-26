@@ -830,7 +830,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (org-mode . (lambda () (show-paren-local-mode -1)))
   :config
   ;; show context (echo area) when closing delimiter is off screen
-  (set-face-attribute 'show-paren-match nil :extend t)
   (setq show-paren-context-when-offscreen 'overlay
         show-paren-style 'expression
         show-paren-when-point-in-periphery t
