@@ -3181,6 +3181,8 @@ opening a file from dired. Otherwise just regular dired."
   (prog-mode . which-function-mode))
 
 (use-package breadcrumb
+  :custom-face
+  (header-line ((t (:inherit mode-line-inactive))))
   :hook
   (prog-mode . breadcrumb-mode))
 
@@ -4542,6 +4544,7 @@ If an edraw editor is active for this link, preview is skipped."
   :hook (after-init . tab-bar-history-mode)
   :custom-face 
   (tab-bar ((t (:inherit unspecified))))
+  (tab-bar-tab-inactive ((t (:inherit mode-line-inactive))))
   :bind
   ;; Page-up and Page-down
   ("C-<prior>" . tab-bar-switch-to-next-tab)
