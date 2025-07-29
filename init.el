@@ -4544,7 +4544,8 @@ If an edraw editor is active for this link, preview is skipped."
   :hook (after-init . tab-bar-history-mode)
   :custom-face 
   (tab-bar ((t (:inherit unspecified))))
-  (tab-bar-tab-inactive ((t (:inherit mode-line-inactive))))
+  (tab-bar-tab ((t (:inherit mode-line-inactive))))
+  (tab-bar-tab-inactive ((t (:inherit unspecified))))
   :bind
   ;; Page-up and Page-down
   ("C-<prior>" . tab-bar-switch-to-next-tab)
