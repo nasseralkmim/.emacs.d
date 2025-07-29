@@ -2830,16 +2830,16 @@ Only if there is more than one window opened."
   ;; https://www.emacswiki.org/emacs/IbufferMode#h5o-6
   (setq ibuffer-saved-filter-groups
         (quote (("default"
-                 ("emacs" (or
+                 ("Emacs" (or
                            (name . "^\\*scratch\\*$")
                            (name . "^\\*Messages\\*$")))
-                 ("outputs" (or
+                 ("Outputs" (or
                              (name . "\\.out")))
-                 ("python-sessions" (or
+                 ("Python sessions" (or
                              (mode . inferior-python-mode)))
-                 ("dired" (or
+                 ("Dired" (or
                              (mode . dired-mode)))
-                 ("gnus" (or
+                 ("Gnus" (or
                           (mode . message-mode)
                           (mode . bbdb-mode)
                           (mode . mail-mode)
