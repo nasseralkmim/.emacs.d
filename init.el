@@ -5171,15 +5171,18 @@ If called with a prefix argument, prompt for a context string."
     "Update buffer backgrounds based on light/dark theme."
     (let ((color (if (eq frame-background-mode 'dark) "grey10" "grey90")))
       (setq buffer-background-color-alist
-            `((dired-mode . (:color ,color :opacity 0.9))
-              (eat-mode . (:color ,color :opacity 0.9))
-              ("*Warnings*" . (:color ,color :opacity 0.9))
+            `((dired-mode . (:color ,color :opacity 0.95))
+              (eat-mode . (:color ,color :opacity 0.95))
+              ("*Warnings*" . (:color ,color :opacity 0.95))
               ((lambda (buf)
                  (file-remote-p default-directory))
-               . (:color ,color :opacity 0.9))))
+               . (:color ,color :opacity 0.95))))
       (buffer-background-global-mode 1)))
 
   ;; Configure different backgrounds for different buffer types
-  (my/update-buffer-backgrounds))
+  (my/update-buffer-backgrounds)
+  (advice-add 'frame-set-background-mode :after
+              (lambda (&rest _)
+                (my/update-buffer-backgrounds))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
