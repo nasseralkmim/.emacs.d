@@ -5165,20 +5165,17 @@ If called with a prefix argument, prompt for a context string."
 (use-package buffer-background
   :ensure (buffer-background :url "https://github.com/theesfeld/buffer-background")
   :defer 1
-  :custom
-  ;; Set default opacity
-  (buffer-background-opacity 0.3)
   :config
   ;; Configure different backgrounds for different buffer types
   (setq buffer-background-color-alist
-        '(;; Simple color assignments
-          ("*Warnings*" . (:color "#3d1a1a" :opacity 0.8))
-          (dired-mode . (:color "#1e1e2e" :opacity 1.0))
-          ((file . "txt") . (:color "#1c1c1c" :opacity 0.7))
+        '((dired-mode . (:color "grey90" :opacity 0.9))
+          (eat-mode . (:color "grey90" :opacity 0.9))
+          ("*Warnings*" . (:color "grey90" :opacity 0.9))
+          ;; ((file . "txt") . (:color "grey90" :opacity 0.9))
           ;; Custom predicates for special conditions
           ((lambda (buf)
              (file-remote-p default-directory))
-           . (:color "#1a1a3d" :opacity 0.8))))
+           . (:color "grey90" :opacity 0.9))))
   ;; Enable global mode for automatic buffer assignment
   (buffer-background-global-mode 1))
 
