@@ -5181,11 +5181,9 @@ If called with a prefix argument, prompt for a context string."
         (with-current-buffer buf
           (buffer-background-toggle)
           (buffer-background-toggle)))))
-
-  ;; Configure different backgrounds for different buffer types
-  (my/update-buffer-backgrounds)
   (advice-add 'frame-set-background-mode :after
               (lambda (&rest _)
-                (my/update-buffer-backgrounds))))
+                (my/update-buffer-backgrounds)))
+  (buffer-background-global-mode 1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
