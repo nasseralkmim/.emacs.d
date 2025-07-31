@@ -5177,7 +5177,10 @@ If called with a prefix argument, prompt for a context string."
               ((lambda (buf)
                  (file-remote-p default-directory))
                . (:color ,color :opacity 0.95))))
-      (buffer-background-global-mode 1)))
+      (dolist (buf (buffer-list))
+        (with-current-buffer buf
+          (buffer-background-toggle)
+          (buffer-background-toggle)))))
 
   ;; Configure different backgrounds for different buffer types
   (my/update-buffer-backgrounds)
