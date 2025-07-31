@@ -5173,6 +5173,9 @@ If called with a prefix argument, prompt for a context string."
       (setq buffer-background-color-alist
             `((dired-mode . (:color ,color :opacity 0.95))
               (eat-mode . (:color ,color :opacity 0.95))
+              (inferior-python-mode . (:color ,color :opacity 0.95))
+              (magit-status-mode . (:color ,color :opacity 0.95))
+              (help-mode . (:color ,color :opacity 0.95))
               ("*Warnings*" . (:color ,color :opacity 0.95))
               ((lambda (buf)
                  (file-remote-p default-directory))
