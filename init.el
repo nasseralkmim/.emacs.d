@@ -3691,6 +3691,7 @@ its results, otherwise display STDERR with
 ;; 'gnus-group-catchup-current' mark all messages in a group as-read.
 ;; 'gnus-summary-mark-as-processable' and then 'gnus-summary-universal-argument' with 'gnus-summary-mark-as-read-forward' to mark processable as read.
 ;; 'gnus-summary-increase-score' create a score rule based on 'subject'
+;; 'gnus-summary-limit-to-subject' can be used to mark filter based on subject, then 'C-x h' selects the whole buffer and '#' mark all messages, this can be used to delete all messages with a subject
 (use-package gnus
   :ensure nil
   :bind (("C-x C-m" . gnus))
