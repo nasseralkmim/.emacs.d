@@ -4950,13 +4950,8 @@ RESCHEDULE-FN is the function to reschedule."
                           ;; for some reason I need to "start" 'flymake' again
                           (flymake-start))))
 
-(use-package org-rainbow-tags :disabled ; not robust to changes in the tags
+(use-package org-rainbow-tags
   :ensure t
-  :custom
-  (org-rainbow-tags-hash-start-index 10)
-  (org-rainbow-tags-extra-face-attributes
-   ;; Default is '(:weight 'bold)
-   '(:inverse-video t :box t :weight 'bold))
   :hook
   (org-mode . org-rainbow-tags-mode)
   :config
