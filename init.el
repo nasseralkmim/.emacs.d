@@ -5171,12 +5171,12 @@ If called with a prefix argument, prompt for a context string."
     "Update buffer backgrounds based on light/dark theme."
     (let ((color (if (eq frame-background-mode 'dark) "grey10" "grey90")))
       (setq buffer-background-color-alist
-            `((dired-mode . (:color ,color :opacity 0.5))
-              (eat-mode . (:color ,color :opacity 0.5))
-              (inferior-python-mode . (:color ,color :opacity 0.5))
-              (magit-status-mode . (:color ,color :opacity 0.5))
-              (help-mode . (:color ,color :opacity 0.5))
-              ("*Warnings*" . (:color ,color :opacity 0.5))
+            `((dired-mode . (:color ,color :opacity 0.75))
+              (eat-mode . (:color ,color :opacity 0.75))
+              (inferior-python-mode . (:color ,color :opacity 0.75))
+              (magit-status-mode . (:color ,color :opacity 0.75))
+              (help-mode . (:color ,color :opacity 0.75))
+              ("*Warnings*" . (:color ,color :opacity 0.75))
               ((lambda (buf)
                  (file-remote-p default-directory))
                . (:color ,color :opacity 0.5))))
