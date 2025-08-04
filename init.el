@@ -5151,7 +5151,7 @@ If called with a prefix argument, prompt for a context string."
   :config
   (setq automagic-dark-wcag-ratio 4
         automagic-dark-sat-boost 1
-        automagic-dark-luminance-inversion-exp 1.5))
+        automagic-dark-luminance-inversion-exp 0.6))
 
 (use-package claude-code :disabled
   :ensure (claude-code :type git :host github :repo "stevemolitor/claude-code.el" :files ("*.el" (:exclude "demo.gif")))
