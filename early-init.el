@@ -30,8 +30,8 @@
    ;; (font . "Monaspace Neon")
    ;; (font . "Input Mono")
    ;; (font . "Iosevka SS12 Extended")
-   ;; (font . "Dejavu Sans Mono")
-   (font . "Maple Mono")
+   (font . "Dejavu Sans Mono")
+   ;; (font . "Maple Mono")
    ))
 
 ;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
