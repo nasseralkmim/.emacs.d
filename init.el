@@ -161,10 +161,7 @@
   ;; Allow to add 'compile-command' as safe in the custom.el file
   ;; https://emacs.stackexchange.com/questions/10983/remember-permission-to-execute-risky-local-variables
   ;; (add-to-list 'safe-local-variable-directories "~/.local/src/Trilinos/")
-  (advice-add 'risky-local-variable-p :override #'ignore)
-
-  ;; Enable line numbers
-  (global-display-line-numbers-mode))
+  (advice-add 'risky-local-variable-p :override #'ignore))
 
 (use-package compile
   :ensure nil
@@ -2815,7 +2812,7 @@ Only if there is more than one window opened."
   ;; enable apptainer method
   (tramp-enable-apptainer-method))
 
-;; Shows git information on fringe
+;; shows git information on fringe
 (use-package diff-hl
   :hook
   (prog-mode . diff-hl-mode)
@@ -5152,9 +5149,9 @@ If called with a prefix argument, prompt for a context string."
   :ensure (automagic-dark-mode :url  "https://github.com/sstraust/automagic-dark-mode")
   :bind ("<f5>" . automagic-dark-mode)
   :config
-  (setq automagic-dark-wcag-ratio 2.5
+  (setq automagic-dark-wcag-ratio 4
         automagic-dark-sat-boost 1
-        automagic-dark-luminance-inversion-exp 0.3))
+        automagic-dark-luminance-inversion-exp 1.5))
 
 (use-package claude-code :disabled
   :ensure (claude-code :type git :host github :repo "stevemolitor/claude-code.el" :files ("*.el" (:exclude "demo.gif")))
@@ -5170,16 +5167,16 @@ If called with a prefix argument, prompt for a context string."
     "Update buffer backgrounds based on light/dark theme."
     (let ((color (if (eq frame-background-mode 'dark) "grey10" "grey90")))
       (setq buffer-background-color-alist
-            `((dired-mode . (:color ,color :opacity 0.95))
-              (eat-mode . (:color ,color :opacity 0.95))
-              (compilation-mode . (:color ,color :opacity 0.95))
-              (inferior-python-mode . (:color ,color :opacity 0.95))
-              (magit-status-mode . (:color ,color :opacity 0.95))
-              (help-mode . (:color ,color :opacity 0.95))
-              ("*Warnings*" . (:color ,color :opacity 0.95))
+            `((dired-mode . (:color ,color :opacity 0.75))
+              (eat-mode . (:color ,color :opacity 0.75))
+              (compilation-mode . (:color ,color :opacity 0.75))
+              (inferior-python-mode . (:color ,color :opacity 0.75))
+              (magit-status-mode . (:color ,color :opacity 0.75))
+              (help-mode . (:color ,color :opacity 0.75))
+              ("*Warnings*" . (:color ,color :opacity 0.75))
               ((lambda (buf)
                  (file-remote-p default-directory))
-               . (:color ,color :opacity 0.95))))
+               . (:color ,color :opacity 0.75))))
       (dolist (buf (buffer-list))
         (with-current-buffer buf
           (buffer-background-toggle)
