@@ -5165,7 +5165,8 @@ If called with a prefix argument, prompt for a context string."
   (defun my/update-buffer-backgrounds ()
     (interactive)
     "Update buffer backgrounds based on light/dark theme."
-    (let ((color (if (eq frame-background-mode 'dark) "grey10" "grey90")))
+    (let ((color (if (or (eq frame-background-mode 'light)
+                         (and (boundp 'custom-enabled-themes) (member 'automagic-dark custom-enabled-themes))) "grey10" "grey90")))
       (setq buffer-background-color-alist
             `((dired-mode . (:color ,color :opacity 0.75))
               (eat-mode . (:color ,color :opacity 0.75))
