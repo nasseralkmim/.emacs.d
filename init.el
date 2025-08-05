@@ -5162,32 +5162,17 @@ If called with a prefix argument, prompt for a context string."
   :ensure (buffer-background :url "https://github.com/theesfeld/buffer-background")
   :defer 1
   :config
-  (defun my/update-buffer-backgrounds ()
-    (interactive)
-    "Update buffer backgrounds based on light/dark theme."
-    (let ((color (if (or (eq frame-background-mode 'dark)
-                         (and (boundp 'custom-enabled-themes) (member 'automagic-dark custom-enabled-themes))) "grey10" "grey90")))
-      (setq buffer-background-color-alist
-            `((dired-mode . (:color ,color :opacity 0.75))
-              (eat-mode . (:color ,color :opacity 0.75))
-              (compilation-mode . (:color ,color :opacity 0.75))
-              (inferior-python-mode . (:color ,color :opacity 0.75))
-              (magit-status-mode . (:color ,color :opacity 0.75))
-              (help-mode . (:color ,color :opacity 0.75))
-              ("*Warnings*" . (:color ,color :opacity 0.75))
+  (setq buffer-background-color-alist
+            `((dired-mode . (:color "grey10" :opacity 0.75))
+              (eat-mode . (:color "grey10" :opacity 0.75))
+              (compilation-mode . (:color "grey10" :opacity 0.75))
+              (inferior-python-mode . (:color "grey10" :opacity 0.75))
+              (magit-status-mode . (:color "grey10" :opacity 0.75))
+              (help-mode . (:color "grey10" :opacity 0.75))
+              ("*Warnings*" . (:color "grey10" :opacity 0.75))
               ((lambda (buf)
                  (file-remote-p default-directory))
-               . (:color ,color :opacity 0.75))))
-      (dolist (buf (buffer-list))
-        (with-current-buffer buf
-          (buffer-background-toggle)
-          (buffer-background-toggle)))))
-  (advice-add 'frame-set-background-mode :after
-              (lambda (&rest _)
-                (my/update-buffer-backgrounds)))
-  (advice-add 'automagic-dark-mode :after
-              (lambda (&rest _)
-                (my/update-buffer-backgrounds)))
+               . (:color "grey10" :opacity 0.75))))
   (buffer-background-global-mode 1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
