@@ -1450,7 +1450,7 @@ Otherwise use 1.1 as default scaling factor."
   ;; babel and source blocks
   (setq org-src-fontify-natively t
         org-src-window-setup 'split-window-right ; don't move my windows around!
-        org-src-preserve-indentation t  ; preserve indentation in code
+        org-src-preserve-indentation nil  ; preserve indentation in code
         org-adapt-indentation nil ; no extra space... better use indent mode (virtual)
         org-edit-src-content-indentation 0 ; dont indent source code
         org-src-tab-acts-natively nil	; if t, it is slow!
