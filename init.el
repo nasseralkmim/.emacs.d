@@ -4549,6 +4549,7 @@ If an edraw editor is active for this link, preview is skipped."
   (tab-bar ((t (:inherit unspecified))))
   (tab-bar-tab ((t (:inherit mode-line-inactive))))
   (tab-bar-tab-inactive ((t (:inherit unspecified))))
+  :bind
   ("C-c <left>" . tab-bar-history-back)
   ("C-c <right>" . tab-bar-history-forward)
   (:repeat-map tab-bar-history-repeat-map
