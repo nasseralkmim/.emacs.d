@@ -4549,10 +4549,6 @@ If an edraw editor is active for this link, preview is skipped."
   (tab-bar ((t (:inherit unspecified))))
   (tab-bar-tab ((t (:inherit mode-line-inactive))))
   (tab-bar-tab-inactive ((t (:inherit unspecified))))
-  :bind
-  ;; Page-up and Page-down
-  ("C-<prior>" . tab-bar-switch-to-next-tab)
-  ("C-<next>" . tab-bar-switch-to-prev-tab)
   ("C-c <left>" . tab-bar-history-back)
   ("C-c <right>" . tab-bar-history-forward)
   (:repeat-map tab-bar-history-repeat-map
@@ -4565,6 +4561,33 @@ If an edraw editor is active for this link, preview is skipped."
                ("<backtab>" . tab-bar-switch-to-prev-tab))
   :config
   (setq tab-bar-tab-hints t))
+
+(use-package windmove-tab-bar-integration-hack
+  :ensure nil
+  :bind
+  ;; Page-up and Page-down
+  ("C-<prior>" . my-windmove-next)
+  ("C-<next>" . my-windmove-prev)
+  :config
+  (defun my-windmove-next () "Move to next window or next tab."
+  (interactive)
+  (condition-case nil
+      (windmove-right)
+    (error
+     (condition-case nil
+         (windmove-down)
+       (error
+        (tab-bar-switch-to-next-tab))))))
+
+(defun my-windmove-prev () "Move to previous window or previous tab."
+  (interactive)
+  (condition-case nil
+      (windmove-left)
+    (error
+     (condition-case nil
+         (windmove-up)
+       (error
+        (tab-bar-switch-to-prev-tab)))))))
 
 (use-package xref
   :ensure nil
