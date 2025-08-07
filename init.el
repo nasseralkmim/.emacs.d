@@ -5176,4 +5176,7 @@ If called with a prefix argument, prompt for a context string."
                . (:color "grey10" :opacity 0.75))))
   (buffer-background-global-mode 1))
 
+(use-package auto-dim-other-buffers
+  :hook (after-init . auto-dim-other-buffers-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
