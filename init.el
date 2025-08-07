@@ -5177,6 +5177,9 @@ If called with a prefix argument, prompt for a context string."
   (buffer-background-global-mode 1))
 
 (use-package auto-dim-other-buffers
-  :hook (after-init . auto-dim-other-buffers-mode))
+  :hook (after-init . auto-dim-other-buffers-mode)
+  :config
+  (setq auto-dim-other-buffers-affected-faces
+        (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
