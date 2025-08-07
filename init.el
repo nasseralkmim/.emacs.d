@@ -1140,9 +1140,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
   :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
-  :custom-face
-  (org-block ((t (:inherit org-agenda-restriction-lock :extend t))))
-  (org-meta-line ((t (:foreground "gray60"))))
+  ;; :custom-face
+  ;; (org-block ((t (:inherit org-agenda-restriction-lock :extend t))))
+  ;; (org-meta-line ((t (:foreground "gray60"))))
   :mode (("\\.org$" . org-mode))
   :bind
   (("M-o" . org-open-at-point-global)
