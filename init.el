@@ -4551,30 +4551,31 @@ If an edraw editor is active for this link, preview is skipped."
 
 (use-package windmove-tab-bar-integration-hack
   :ensure nil
+  :after (:all windmove tab-bar)
   :bind
   ;; Page-up and Page-down
   ("C-<prior>" . my-windmove-next)
   ("C-<next>" . my-windmove-prev)
-  :config
+  :init
   (defun my-windmove-next () "Move to next window or next tab."
-  (interactive)
-  (condition-case nil
-      (windmove-right)
-    (error
-     (condition-case nil
-         (windmove-down)
-       (error
-        (tab-bar-switch-to-next-tab))))))
+         (interactive)
+         (condition-case nil
+             (windmove-right)
+           (error
+            (condition-case nil
+                (windmove-down)
+              (error
+               (tab-bar-switch-to-next-tab))))))
 
-(defun my-windmove-prev () "Move to previous window or previous tab."
-  (interactive)
-  (condition-case nil
-      (windmove-left)
-    (error
-     (condition-case nil
-         (windmove-up)
-       (error
-        (tab-bar-switch-to-prev-tab)))))))
+  (defun my-windmove-prev () "Move to previous window or previous tab."
+         (interactive)
+         (condition-case nil
+             (windmove-left)
+           (error
+            (condition-case nil
+                (windmove-up)
+              (error
+               (tab-bar-switch-to-prev-tab)))))))
 
 (use-package xref
   :ensure nil
