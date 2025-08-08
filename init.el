@@ -1046,15 +1046,18 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package iedit
   :custom-face
   (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
+  :bind* ; avoid getting shadowed by other minor modes (eg. LaTeX-mode)
+  ("C-c ;" . iedit-mode)               ; for mosh/tmux
   :bind
   (("C-;" . iedit-mode)
-   ("C-c ;" . iedit-mode)               ; for mosh/tmux
    ("M-d" . my-iedit-expand-down-to-occurrence)
    :map iedit-mode-keymap
    ("<tab>" . nil)
    ("TAB" . nil)
    ("C-S-n" . iedit-next-occurrence)
    ("C-S-p" . iedit-prev-occurrence)
+   ("C-M-n" . iedit-next-occurrence)    ; for tty support
+   ("C-M-p" . iedit-prev-occurrence)
    ("M-'" . iedit-show/hide-context-lines))
   :init
   (defun my-iedit-expand-down-to-occurrence ()
