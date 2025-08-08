@@ -5169,7 +5169,7 @@ If called with a prefix argument, prompt for a context string."
   :bind-keymap
   ("C-c C-a" . claude-code-command-map))
 
-(use-package buffer-background
+(use-package buffer-background :disabled
   :ensure (buffer-background :url "https://github.com/theesfeld/buffer-background")
   :defer 1
   :config
@@ -5187,8 +5187,9 @@ If called with a prefix argument, prompt for a context string."
   (buffer-background-global-mode 1))
 
 (use-package auto-dim-other-buffers
-  :hook (after-init . auto-dim-other-buffers-mode)
+  :defer 1
   :config
+  (auto-dim-other-buffers-mode t)
   (setq auto-dim-other-buffers-affected-faces
         (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces)))
 
