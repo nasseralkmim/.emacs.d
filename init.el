@@ -2260,46 +2260,32 @@ Otherwise, toggle only the directory at point."
   :config
   (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-prompts '(intense italic)
-        modus-themes-diffs 'desaturated
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
         modus-themes-bold-constructs nil
-        modus-themes-headings '((t . (rainbow))))
+        ;; modus-themes-headings '((t . (rainbow)))
+        )
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (defun my-modus-tweaks ()
     (progn 
-      ;; ;; Adjust some org faces
-      ;; (with-eval-after-load 'org
-      ;;   ;; make org source blocks headers with same main background, so there is no different background when collapsed
-      ;;   '(set-face-attribute 'org-block-begin-line nil :background (modus-themes-get-color-value 'bg-main) :slant 'italic))
-      ;; ;; adjust org modern if GUI
-      ;; (with-eval-after-load 'org-modern
-      ;;   '(global-org-modern-mode))
-      ;; ;; reset icons cache to match theme
-      ;; (with-eval-after-load 'kind-icon
-      ;;   '(kind-icon-reset-cache))
       ;; ;; recompute face for indentation guide
       ;; (with-eval-after-load 'hl-indent-scope
       ;;   '(hl-indent-scope--auto-color-calc))
       ;; ;; make inside of parenthesis different background
       ;; (with-eval-after-load 'smartparens
       ;; '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
-      (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
-      (with-eval-after-load 'flymake
-        (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))
-      (with-eval-after-load 'highlight-doxygen
-        (set-face-attribute 'highlight-doxygen-code-block nil :background (modus-themes-get-color-value 'bg-dim)))
-      (with-eval-after-load 'gptel-rewrite
-        (set-face-attribute 'gptel-rewrite-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))))
+      ;; (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
+      ;; (with-eval-after-load 'flymake
+      ;;   (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))
+      ;; (with-eval-after-load 'highlight-doxygen
+      ;;   (set-face-attribute 'highlight-doxygen-code-block nil :background (modus-themes-get-color-value 'bg-dim)))
+      ;; (with-eval-after-load 'gptel-rewrite
+      ;;   (set-face-attribute 'gptel-rewrite-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))
+      ))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
   ;; Make mode line more distinct
-  (add-to-list 'modus-themes-common-palette-overrides '(bg-mode-line-active bg-blue-intense))
-  
-  ;; load the theme automatically in the terminal and disable others automatically
-  ;; (if (not (display-graphic-p))
-  ;;     (modus-themes-load-theme 'modus-vivendi-tinted))
-  )
+  (add-to-list 'modus-themes-common-palette-overrides '(bg-mode-line-active bg-blue-intense)))
 
 ;; change backgroud of other windows
 ;; when with custom theme and GUI
