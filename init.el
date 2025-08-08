@@ -3246,7 +3246,6 @@ opening a file from dired. Otherwise just regular dired."
   :if (not (display-graphic-p))
   :after org
   :init
-  (setq browse-url-browser-function 'eww-browse-url)
   (add-to-list 'org-file-apps '("\\.svg\\'" . "swayimg %s & disown"))
   ;; (add-to-list 'org-file-apps '("\\.svg\\'" . "feh -B white --auto-reload --auto-zoom %s & disown"))
   (add-to-list 'org-file-apps '("\\.png\\'" . "feh -B white --auto-reload --auto-zoom %s & disown")))
