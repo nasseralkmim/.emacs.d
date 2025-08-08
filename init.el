@@ -1104,7 +1104,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure (magit :files (:defaults "git-commit.el"))
   :bind
   (:map magit-mode-map
-        ("C-x 4 j" . magit-diff-visit-worktree-file-other-window))
+        ("C-x 4 j" . magit-diff-visit-worktree-file-other-window)
+        ("=" . magit-diff-toggle-refine-hunk))
   (:repeat-map magit-section-mode-repeat-map
                ("TAB" . magit-section-cycle))
   :config
