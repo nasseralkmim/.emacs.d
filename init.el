@@ -2268,12 +2268,12 @@ Otherwise, toggle only the directory at point."
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (defun my-modus-tweaks ()
     (progn 
+      (with-eval-after-load 'breadcrumb
+        (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
       ;; ;; recompute face for indentation guide
       ;; (with-eval-after-load 'hl-indent-scope
       ;;   '(hl-indent-scope--auto-color-calc))
       ;; ;; make inside of parenthesis different background
-      ;; (with-eval-after-load 'smartparens
-      ;; '(set-face-attribute 'sp-show-pair-match-content-face nil :background (modus-themes-get-color-value 'bg-paren-expression))))
       ;; (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
       ;; (with-eval-after-load 'flymake
       ;;   (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))
@@ -5191,6 +5191,6 @@ If called with a prefix argument, prompt for a context string."
   :config
   (auto-dim-other-buffers-mode t)
   (setq auto-dim-other-buffers-affected-faces
-        (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces)))
-
+        (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces))
+  (add-to-list 'auto-dim-other-buffers-affected-faces '(header-line-inactive auto-dim-other-buffers-hide)))
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
