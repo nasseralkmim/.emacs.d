@@ -2283,8 +2283,8 @@ Otherwise, toggle only the directory at point."
       ;;   (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))
       ;; (with-eval-after-load 'highlight-doxygen
       ;;   (set-face-attribute 'highlight-doxygen-code-block nil :background (modus-themes-get-color-value 'bg-dim)))
-      ;; (with-eval-after-load 'gptel-rewrite
-      ;;   (set-face-attribute 'gptel-rewrite-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))
+      (with-eval-after-load 'gptel-rewrite
+        (set-face-attribute 'gptel-rewrite-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))
       ))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
