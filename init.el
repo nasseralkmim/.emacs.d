@@ -744,8 +744,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          :map embark-variable-map
          ("h" . helful-symbol)
          :map vertico-map
-         ("C-SPC" . embark-select)
-         ("C-@" . embark-select)        ; for terminal
+         ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))
+         ("C-@" . (lambda () (interactive) (embark-select) (vertico-next)))        ; for terminal
          ("C-a" . embark-act-all))
   :commands embark-prefix-help-command
   :init
