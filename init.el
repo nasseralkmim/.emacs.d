@@ -5194,7 +5194,9 @@ If called with a prefix argument, prompt for a context string."
   :defer 1
   :config
   (auto-dim-other-buffers-mode t)
-  (setq auto-dim-other-buffers-affected-faces
-        (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces))
+  ;; (setq auto-dim-other-buffers-affected-faces
+  ;;       (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces))
+  (add-to-list 'auto-dim-other-buffers-affected-faces '(org-block-begin-line auto-dim-other-buffers))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(header-line-inactive auto-dim-other-buffers-hide)))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
