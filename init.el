@@ -1579,7 +1579,7 @@ When matching, reference is stored in match group 1."
   :after org
   :init
   (when (string-greaterp org-version "9.8")
-    (add-hook 'org-mode-hook 'org-latex-preview-auto-mode))
+    (add-hook 'org-mode-hook 'org-latex-preview-mode))
   :config
   (setq org-latex-preview-auto-ignored-commands '(next-line previous-line)
         org-latex-preview-process-precompiled nil
