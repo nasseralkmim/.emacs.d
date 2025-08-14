@@ -11,7 +11,27 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((delete-by-moving-to-trash)
+   '((compile-command concat
+                      "source ~/miniconda3/etc/profile.d/conda.sh && conda activate edelweissfe && "
+                      "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
+                      "python setup.py build_ext -i --force")
+     (compile-command concat
+                      "source ~/miniconda3/etc/profile.d/conda.sh && activate edelweissfe && "
+                      "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
+                      "python setup.py build_ext -i --force")
+     (compile-command concat "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
+                      "conda run -n edelweissfe " "python setup.py build_ext -i --force")
+     (compile-command concat "conda init bash && conda activate edelweissfe && "
+                      "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
+                      "python setup.py build_ext -i --force")
+     (compile-command concat "conda activate edelweissfe && "
+                      "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
+                      "python setup.py build_ext -i --force")
+     (compile-command concat "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
+                      "~/miniconda3/envs/edelweissfe/bin/python setup.py build_ext -i --force")
+     (compile-command concat "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build"
+                      "~/miniconda3/envs/edelweissfe/bin/python setup.py build_ext -i --force")
+     (delete-by-moving-to-trash)
      (compile-command concat
                       "cmake --fresh -DCMAKE_INSTALL_PREFIX=~/.local/src/Marmot/build-debug "
                       "-DCMAKE_BUILD_TYPE=Debug -S ~/.local/src/Marmot "
