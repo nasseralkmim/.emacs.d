@@ -2272,15 +2272,15 @@ Otherwise, toggle only the directory at point."
     (progn 
       (with-eval-after-load 'breadcrumb
         (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
-      ;; ;; recompute face for indentation guide
-      ;; (with-eval-after-load 'hl-indent-scope
-      ;;   '(hl-indent-scope--auto-color-calc))
-      ;; ;; make inside of parenthesis different background
-      ;; (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)
-      ;; (with-eval-after-load 'flymake
-      ;;   (set-face-attribute 'flymake-warning nil :underline '(:style wave :color "deep sky blue")))
-      ;; (with-eval-after-load 'highlight-doxygen
-      ;;   (set-face-attribute 'highlight-doxygen-code-block nil :background (modus-themes-get-color-value 'bg-dim)))
+      (modus-themes-with-colors
+        ;; The `org-src-block-faces' does not get re-applied in existing
+        ;; Org buffers.  Do M-x org-mode-restart for changes to take
+        ;; effect.
+        (setq org-src-block-faces
+              `(("c++" modus-themes-nuanced-blue)
+                ("sh" modus-themes-nuanced-yellow)
+                ("shell" modus-themes-nuanced-yellow)
+                ("python" modus-themes-nuanced-green))))
       (with-eval-after-load 'gptel-context
         (set-face-attribute 'gptel-context-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))
       ))
