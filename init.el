@@ -2266,9 +2266,7 @@ Otherwise, toggle only the directory at point."
   (setq modus-themes-prompts '(intense italic)
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
-        modus-themes-bold-constructs nil
-        ;; modus-themes-headings '((t . (rainbow)))
-        )
+        modus-themes-bold-constructs nil)
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (defun my-modus-tweaks ()
     (progn 
