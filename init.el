@@ -2281,8 +2281,8 @@ Otherwise, toggle only the directory at point."
                 ("sh" modus-themes-nuanced-yellow)
                 ("shell" modus-themes-nuanced-yellow)
                 ("python" modus-themes-nuanced-green))))
-      (with-eval-after-load 'gptel-context
-        (set-face-attribute 'gptel-context-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))
+      (with-eval-after-load 'gptel-rewrite
+        (set-face-attribute 'gptel-rewrite-highlight-face nil :background (modus-themes-get-color-value 'bg-dim)))
       ))
   (add-hook 'modus-themes-after-load-theme-hook 'my-modus-tweaks)
 
