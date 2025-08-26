@@ -11,7 +11,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((compile-command concat
+   '((eval add-hook 'after-save-hook #'org-babel-tangle)
+     (compile-command concat
                       "source ~/miniconda3/etc/profile.d/conda.sh && conda activate edelweissfe && "
                       "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
                       "python setup.py build_ext -i --force")
