@@ -761,7 +761,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
                '("\\*Embark Export: .*"
                  (display-buffer-in-side-window)))
   ;; change 'describe-symbol' to 'helpful-symbol'
-  (add-to-list 'embark-default-action-overrides '(describe-symbol . helpful-symbol)))
+  (add-to-list 'embark-default-action-overrides '(describe-symbol . helpful-symbol))
+
+  ;; Don't quit the minibuffer after kill-buffer
+  (setq embark-quit-after-action '((kill-buffer . nil) (t . t))))
 
 ;; allows consult previews as you move around an auto-updating embark collect
 ;; buffer
