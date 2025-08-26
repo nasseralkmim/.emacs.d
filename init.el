@@ -2827,7 +2827,10 @@ Only if there is more than one window opened."
                  ("Python sessions" (or
                              (mode . inferior-python-mode)))
                  ("Dired" (or
-                             (mode . dired-mode)))
+                           (mode . dired-mode)))
+                 ("Inputs" (and
+                            (mode . fundamental-mode)
+                            (filename . "Experiments")))
                  ("Gnus" (or
                           (mode . message-mode)
                           (mode . bbdb-mode)
