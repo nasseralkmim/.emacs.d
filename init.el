@@ -5164,6 +5164,13 @@ If called with a prefix argument, prompt for a context string."
   :init
   (require 'ol))
 
+(use-package org-attach
+  :ensure nil
+  :after org
+  :init
+  ;; Don't add tag when yanking media
+  (setq org-attach-auto-tag nil))
+
 (use-package automagic-dark-mode :disabled
   :ensure (automagic-dark-mode :url  "https://github.com/sstraust/automagic-dark-mode")
   :bind ("<f5>" . automagic-dark-mode)
