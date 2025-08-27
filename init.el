@@ -4365,7 +4365,7 @@ If an edraw editor is active for this link, preview is skipped."
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/o3))
+  :models '(openai/gpt-5))
   ;; set the default
   (setq gptel-model 'llama3
         gptel-backend (gptel-make-gemini "Gemini"
