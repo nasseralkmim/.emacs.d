@@ -1118,6 +1118,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; auto refresh magit
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
 
+(use-package cond-let
+  :ensure (:url "https://github.com/tarsius/cond-let"))
+
 ;; show colors
 (use-package rainbow-mode
   :defer 1
@@ -4365,14 +4368,14 @@ If an edraw editor is active for this link, preview is skipped."
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/gpt-5 openai/o3-mini))
+  :models '(openai/gpt-5 openai/gpt-5-mini))
   ;; set the default
   (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/o3-mini))))
+                        :models '(openai/gpt-5-mini))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
@@ -5147,7 +5150,7 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   (setenv "LUMEN_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
   (setenv "LUMEN_AI_PROVIDER" "openrouter")
-  (setenv "LUMEN_AI_MODEL" "google/gemini-2.5-flash")
+  (setenv "LUMEN_AI_MODEL" "openai/gpt-5-mini")
 
   (defun lumen-generate-commit (&optional arg)
     "Run 'lumen draft' and use its output as the git commit message.
