@@ -5150,7 +5150,7 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   (setenv "LUMEN_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
   (setenv "LUMEN_AI_PROVIDER" "openrouter")
-  (setenv "LUMEN_AI_MODEL" "openai/gpt-5-mini")
+  (setenv "LUMEN_AI_MODEL" "openai/gpt-4.1-nano")
 
   (defun lumen-generate-commit (&optional arg)
     "Run 'lumen draft' and use its output as the git commit message.
