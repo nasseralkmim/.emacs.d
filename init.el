@@ -395,20 +395,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq recentf-max-saved-items 25
         recentf-auto-cleanup 'mode))
 
-;; Enable autorevert on specific modes
-(use-package autorevert :disabled
-  :ensure nil
-  :if (eq system-type 'gnu/linux)
-  :hook
-  (after-init . global-auto-revert-mode)
-  :config
-  (setq auto-revert-interval 0.5
-        auto-revert-verbose nil
-        ;; maybe slow
-        auto-revert-check-vc-info nil
-        ;; maybe slow, but useful
-        auto-revert-remote-files nil))
-
 (use-package auto-revert
   :ensure nil
   :hook
