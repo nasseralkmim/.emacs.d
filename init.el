@@ -1118,9 +1118,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; auto refresh magit
   (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
 
-(use-package cond-let
-  :ensure (:url "https://github.com/tarsius/cond-let"))
-
 ;; show colors
 (use-package rainbow-mode
   :defer 1
