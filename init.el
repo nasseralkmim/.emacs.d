@@ -5172,6 +5172,7 @@ If called with a prefix argument, prompt for a context string."
   :ensure (:type git :host github :repo "manzaltu/claude-code-ide.el")
   :bind ("C-c C-a" . claude-code-ide-menu)
   :config
+  (setq claude-code-ide-terminal-backend 'eat)
   (claude-code-ide-emacs-tools-setup))
 
 (use-package buffer-background :disabled
