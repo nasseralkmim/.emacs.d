@@ -5079,7 +5079,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
-(use-package aidermacs
+(use-package aidermacs :disabled
   :ensure (:host github :repo "MatthewZMD/aidermacs")
   :bind
   ("C-c C-a" . aidermacs-transient-menu)
@@ -5100,7 +5100,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
   (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
 
-(use-package aider-window-placement-hack
+(use-package aider-window-placement-hack :disabled
   :after (:or aider aidermacs) ; Ensure it loads after either package
   :ensure nil
   :init
@@ -5168,10 +5168,11 @@ If called with a prefix argument, prompt for a context string."
         automagic-dark-sat-boost 1
         automagic-dark-luminance-inversion-exp 0.6))
 
-(use-package claude-code :disabled
-  :ensure (claude-code :type git :host github :repo "stevemolitor/claude-code.el" :files ("*.el" (:exclude "demo.gif")))
-  :bind-keymap
-  ("C-c C-a" . claude-code-command-map))
+(use-package claude-code-ide
+  :ensure (:type git :host github :repo "manzaltu/claude-code-ide.el")
+  :bind ("C-c C-a" . claude-code-ide-menu)
+  :config
+  (claude-code-ide-emacs-tools-setup))
 
 (use-package buffer-background :disabled
   :ensure (buffer-background :url "https://github.com/theesfeld/buffer-background")
@@ -5198,5 +5199,8 @@ If called with a prefix argument, prompt for a context string."
   ;;       (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(org-block-begin-line auto-dim-other-buffers))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(header-line-inactive auto-dim-other-buffers-hide)))
+
+
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
