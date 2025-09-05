@@ -3234,10 +3234,13 @@ This is a simple text pass (not a C++ parser), but works well for identifiers."
 ;; uses 'Ghub' to access github/gitlab
 ;; need to set 'git config --global github.user <>'
 ;; resolved issues are dimmed, to view them one need 'forge-visit-topic' or 'forge-visit-issue' with prefix-argument
+;;
+;; To fork: N c f (this looks for owned accounts 'forge-owned-accounts)
 (use-package forge
   :demand
   :after magit
   :config
+  (setq forge-owned-accounts '(("nasseralkmim")))
   ;; add custom gitlab instance
   (push '("git@git.uibk.ac.at"
           "git.uibk.ac.at/api/v4"
