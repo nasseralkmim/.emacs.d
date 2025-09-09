@@ -3168,68 +3168,6 @@ opening a file from dired. Otherwise just regular dired."
   :hook
   (prog-mode . breadcrumb-mode))
 
-
-(use-package imenu-hide-c++-template-parameters-hack
-  :ensure nil
-  :init
-  ;;; Hide C++ template args in imenu (for breadcrumb etc.)
-
-  (require 'imenu)
-
-  (defcustom my/cpp-hide-template-params t
-    "If non-nil, remove <…> template argument lists from C++ names in imenu."
-    :type 'boolean
-    :group 'my-cpp-imenu)
-
-  (defvar-local my/cpp--imenu-orig-create-index nil
-    "Buffer-local stash of the original `imenu-create-index-function'.")
-
-  (defun my/cpp--strip-templates-in-string (s)
-    "Remove all <…> segments from S, robust against nesting.
-This is a simple text pass (not a C++ parser), but works well for identifiers."
-    (let ((start 0))
-      ;; Repeatedly delete innermost <...> groups until none remain.
-      (while (string-match "<[^<>]*>" s start)
-        (setq s (replace-match "" t t s))
-        (setq start 0)) ; restart to catch newly-exposed groups after removal
-      s))
-
-  (defun my/imenu--map-items (fn alist)
-    "Apply FN to every string NAME in an imenu ALIST, recursively."
-    (mapcar
-     (lambda (item)
-       (cond
-        ;; A submenu: (\"Section\" . ( ...subitems... ))
-        ((and (consp item) (imenu--subalist-p item))
-         (cons (car item) (my/imenu--map-items fn (cdr item))))
-        ;; A leaf: (\"Name\" . POSITION/MARKER/INDEX-FN)
-        ((and (consp item) (stringp (car item)))
-         (cons (funcall fn (car item)) (cdr item)))
-        (t item)))
-     alist))
-
-  (defun my/cpp--imenu-create-index ()
-    "Wrapper around the original imenu creator that strips template args."
-    (let ((alist (funcall my/cpp--imenu-orig-create-index)))
-      (if my/cpp-hide-template-params
-          (my/imenu--map-items #'my/cpp--strip-templates-in-string alist)
-        alist)))
-
-  (defun my/enable-cpp-imenu-transform ()
-    "Install the template-stripping imenu wrapper for this buffer."
-    (setq my/cpp--imenu-orig-create-index
-          (or imenu-create-index-function
-              #'imenu-default-create-index-function))
-    (setq-local imenu-create-index-function #'my/cpp--imenu-create-index)
-    ;; Nuke caches so consumers (breadcrumb, which-function, etc.) see changes now.
-    (setq-local imenu--index-alist nil)
-    (setq-local imenu--last-menubar-index-alist nil))
-
-  ;; Turn it on in C++ buffers (both cc-mode and tree-sitter, if available).
-  (add-hook 'c++-mode-hook #'my/enable-cpp-imenu-transform)
-  (when (boundp 'c++-ts-mode-hook)
-    (add-hook 'c++-ts-mode-hook #'my/enable-cpp-imenu-transform)))
-
 ;; Work git servers (forges)
 ;; uses 'Ghub' to access github/gitlab
 ;; need to set 'git config --global github.user <>'
