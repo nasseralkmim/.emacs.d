@@ -3704,10 +3704,10 @@ its results, otherwise display STDERR with
                                         ;;         (nnimap-address "imap.gmail.com"))
                                         ;; (nnimap "work"
                                         ;;         (nnimap-address "exchange.uibk.ac.at"))
-                                        (nnmaildir "personal"
-                                                   (directory "~/Sync/news/mail/personal"))
-                                        (nnmaildir "work"
-                                                   (directory "~/Sync/news/mail/work")))
+                                        (nnmaildir "gmail"
+                                                   (directory "~/Sync/news/mail/gmail"))
+                                        (nnmaildir "uibk"
+                                                   (directory "~/Sync/news/mail/uibk")))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
@@ -3832,13 +3832,14 @@ its results, otherwise display STDERR with
   (setq gnus-parameters '((".*"          ; all groups, including personal gmail
                            ;; https://www.bounga.org/tips/2020/05/03/multiple-smtp-accounts-in-gnus-without-external-tools/
                            ;; https://www.gnu.org/software/emacs/manual/html_node/message/Mail-Variables.html
+                           (gcc-self . t) ; sent emails are sent to myself so I can reconstruct thread with reply
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@gmail.com>")
                             (signature "Nasser Alkmim")
                             ("X-Message-SMTP-Method" "smtp smtp.gmail.com 587 nasser.alkmim@gmail.com")))
-                          ("work"
+                          ("uibk"
                            ;; Messages (emails) are GCC to the this group so it collects my sent mails on the server
-                           ;; Gmail does not need this, for some reason.
+                           ;; Gmail does not need this if used with nnimap backend
                            (gcc-self "nnimap+work:Sent Items")
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
