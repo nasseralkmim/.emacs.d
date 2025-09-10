@@ -3675,6 +3675,10 @@ its results, otherwise display STDERR with
 ;; 'gnus-summary-mark-as-processable' and then 'gnus-summary-universal-argument' with 'gnus-summary-mark-as-read-forward' to mark processable as read.
 ;; 'gnus-summary-increase-score' create a score rule based on 'subject'
 ;; 'gnus-summary-limit-to-subject' can be used to mark filter based on subject, then 'C-x h' selects the whole buffer and '#' mark all messages, this can be used to delete all messages with a subject
+;; 'gnus-group-kill-group' to remove a group from groups view ('gnus-group-list-all-groups' view them again, prefix argument for specific level)
+;; 
+;; Workflow for adding news source: server -> group -> articlea
+;; enter the server: 'gnus-group-enter-server-mode', then we select the server 'gnus-server-read-server', once in the server we can subscribe/unsubscribe to specific group 'gnus-browse-toggle-subscription-at-point'
 (use-package gnus
   :ensure nil
   :bind (("C-x C-m" . gnus))
@@ -3696,10 +3700,14 @@ its results, otherwise display STDERR with
                                               ;; [1] https://stackoverflow.com/a/48214757
                                               ;; [2] [[info:gnus#Mail and Post][gnus#Mail and Post]]
                                               (nntp-address "news.gmane.io"))
-                                        (nnimap "personal"
-                                                (nnimap-address "imap.gmail.com"))
-                                        (nnimap "work"
-                                                (nnimap-address "exchange.uibk.ac.at")))
+                                        ;; (nnimap "personal"
+                                        ;;         (nnimap-address "imap.gmail.com"))
+                                        ;; (nnimap "work"
+                                        ;;         (nnimap-address "exchange.uibk.ac.at"))
+                                        (nnmaildir "personal"
+                                                   (directory "~/Sync/news/mail/personal"))
+                                        (nnmaildir "work"
+                                                   (directory "~/Sync/news/mail/work")))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
