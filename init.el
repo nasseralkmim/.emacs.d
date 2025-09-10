@@ -3700,10 +3700,14 @@ its results, otherwise display STDERR with
                                               ;; [1] https://stackoverflow.com/a/48214757
                                               ;; [2] [[info:gnus#Mail and Post][gnus#Mail and Post]]
                                               (nntp-address "news.gmane.io"))
-                                        (nnimap "personal"
-                                                (nnimap-address "imap.gmail.com"))
-                                        (nnimap "work"
-                                                (nnimap-address "exchange.uibk.ac.at")))
+                                        ;; (nnimap "personal"
+                                        ;;         (nnimap-address "imap.gmail.com"))
+                                        ;; (nnimap "work"
+                                        ;;         (nnimap-address "exchange.uibk.ac.at"))
+                                        (nnmaildir "personal"
+                                                   (directory "~/Sync/news/mail/personal"))
+                                        (nnmaildir "work"
+                                                   (directory "~/Sync/news/mail/work")))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
