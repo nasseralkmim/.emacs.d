@@ -3700,14 +3700,10 @@ its results, otherwise display STDERR with
                                               ;; [1] https://stackoverflow.com/a/48214757
                                               ;; [2] [[info:gnus#Mail and Post][gnus#Mail and Post]]
                                               (nntp-address "news.gmane.io"))
-                                        ;; (nnimap "personal"
-                                        ;;         (nnimap-address "imap.gmail.com"))
-                                        ;; (nnimap "work"
-                                        ;;         (nnimap-address "exchange.uibk.ac.at"))
-                                        (nnmaildir "personal"
-                                                   (directory "~/Sync/news/mail/personal"))
-                                        (nnmaildir "work"
-                                                   (directory "~/Sync/news/mail/work")))
+                                        (nnimap "personal"
+                                                (nnimap-address "imap.gmail.com"))
+                                        (nnimap "work"
+                                                (nnimap-address "exchange.uibk.ac.at")))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
@@ -3749,7 +3745,7 @@ its results, otherwise display STDERR with
         gnus-use-cross-reference nil
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         ;; (info "(gnus)Startup Files")
-        gnus-read-active-file nil        ; only read '.newsrc', speeds up
+        gnus-read-active-file 'some       ; better than nil or t
         gnus-save-newsrc-file nil        ; I will not use anything other than gnus
         gnus-read-newsrc-file nil        ; speed up start
         ;; Maybe improve https://gluer.org/blog/2023/trying-gnus-as-an-email-client/
@@ -3775,7 +3771,8 @@ its results, otherwise display STDERR with
         ;; avoid duplicate messages/articles, specially in rss fields
         gnus-suppress-duplicates t
         ;; don't show messages with same ID
-        gnus-summary-ignore-duplicates t)
+        gnus-summary-ignore-duplicates t
+        gnus-treat-display-smileys t)
 
   ;; a: name of the day of the weak abreviated
   ;; k: hour (blank-padded)
@@ -4362,14 +4359,14 @@ If an edraw editor is active for this link, preview is skipped."
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/gpt-5 openai/gpt-5-mini))
+  :models '(openai/gpt-5 openai/gpt-5-mini openai/gpt-5-mini))
   ;; set the default
   (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5-mini))))
+                        :models '(openai/gpt-5-nano))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
