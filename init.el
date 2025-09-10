@@ -3771,8 +3771,7 @@ its results, otherwise display STDERR with
         ;; avoid duplicate messages/articles, specially in rss fields
         gnus-suppress-duplicates t
         ;; don't show messages with same ID
-        gnus-summary-ignore-duplicates t
-        gnus-treat-display-smileys t)
+        gnus-summary-ignore-duplicates t)
 
   ;; a: name of the day of the weak abreviated
   ;; k: hour (blank-padded)
