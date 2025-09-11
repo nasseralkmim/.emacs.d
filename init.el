@@ -4363,14 +4363,14 @@ If an edraw editor is active for this link, preview is skipped."
   :endpoint "/api/v1/chat/completions"
   :stream t
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/gpt-5 openai/gpt-5-mini openai/gpt-5-mini))
+  :models '(openai/gpt-5 openai/gpt-5-mini openai/gpt-4.1-nano))
   ;; set the default
   (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5-nano))))
+                        :models '(openai/gpt-4.1-nano))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
