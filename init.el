@@ -3840,7 +3840,7 @@ its results, otherwise display STDERR with
                           ("uibk"
                            ;; Messages (emails) are GCC to the this group so it collects my sent mails on the server
                            ;; Gmail does not need this if used with nnimap backend
-                           (gcc-self "nnimap+work:Sent Items")
+                           (gcc-self "nnimap+uibk:Sent Items")
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
                             (signature-file "/home/nasser/Sync/documents/signature")
