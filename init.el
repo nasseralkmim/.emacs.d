@@ -3700,14 +3700,10 @@ its results, otherwise display STDERR with
                                               ;; [1] https://stackoverflow.com/a/48214757
                                               ;; [2] [[info:gnus#Mail and Post][gnus#Mail and Post]]
                                               (nntp-address "news.gmane.io"))
-                                        ;; (nnimap "personal"
-                                        ;;         (nnimap-address "imap.gmail.com"))
-                                        ;; (nnimap "work"
-                                        ;;         (nnimap-address "exchange.uibk.ac.at"))
-                                        (nnmaildir "gmail"
-                                                   (directory "~/Sync/news/mail/gmail"))
-                                        (nnmaildir "uibk"
-                                                   (directory "~/Sync/news/mail/uibk")))
+                                        (nnimap "gmail"
+                                                (nnimap-address "imap.gmail.com"))
+                                        (nnimap "uibk"
+                                                (nnimap-address "exchange.uibk.ac.at")))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
@@ -3749,7 +3745,7 @@ its results, otherwise display STDERR with
         gnus-use-cross-reference nil
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
         ;; (info "(gnus)Startup Files")
-        gnus-read-active-file 'some       ; better than nil or t
+        gnus-read-active-file nil       ; better than nil or t
         gnus-save-newsrc-file nil        ; I will not use anything other than gnus
         gnus-read-newsrc-file nil        ; speed up start
         ;; Maybe improve https://gluer.org/blog/2023/trying-gnus-as-an-email-client/
