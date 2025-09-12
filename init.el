@@ -3800,14 +3800,6 @@ its results, otherwise display STDERR with
   :config
   (add-to-list 'nnrss-ignore-article-fields 'pubDate)
   
-  ;; Prefer 'text/plain' in general
-  ;; Set the default value of ‘mm-discouraged-alternatives’.
-  (with-eval-after-load "gnus-sum"
-    (add-to-list 'gnus-newsgroup-variables
-                 '(mm-discouraged-alternatives . '("text/html" "image/.*")))
-    (add-to-list 'gnus-newsgroup-variables
-       '(mm-automatic-display . (remove "text/html" mm-automatic-display))))
-
   ;; Display ‘text/html’ parts in ‘nnrss’ groups.
   ;; nnrss generates *always* text/plain and text/html [[info:gnus#RSS]]
   (add-to-list
