@@ -3694,6 +3694,10 @@ its results, otherwise display STDERR with
                                               ;; [1] https://stackoverflow.com/a/48214757
                                               ;; [2] [[info:gnus#Mail and Post][gnus#Mail and Post]]
                                               (nntp-address "news.gmane.io"))
+                                        (nntp "feedbase"
+                                              (nntp-open-connection-function nntp-open-tls-stream) ; feedbase does not do STARTTLS (yet?)
+                                              (nntp-port-number 563) ; nntps
+                                              (nntp-address "feedbase.org"))
                                         (nnimap "gmail"
                                                 (nnimap-address "imap.gmail.com"))
                                         (nnimap "uibk"
