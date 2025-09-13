@@ -163,12 +163,6 @@
   ;; (add-to-list 'safe-local-variable-directories "~/.local/src/Trilinos/")
   (advice-add 'risky-local-variable-p :override #'ignore))
 
-(use-package compile
-  :ensure nil
-  :config
-  (setq compilation-scroll-output 'first-error
-        next-error-recenter '(4)))
-
 (use-package compile-buffer-name-hack
   :ensure nil
   :after compile
