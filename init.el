@@ -2794,10 +2794,9 @@ Only if there is more than one window opened."
 
 ;; shows git information on fringe
 (use-package diff-hl
-  :defer 3
-  :init
-  (global-diff-hl-mode)
   :hook
+  (prog-mode . diff-hl-mode)
+  ;; (dired-mode . diff-hl-dired-mode)
   ;; integration with magit
   (magit-pre-refresh . diff-hl-magit-pre-refresh)
   (magit-post-refresh . diff-hl-magit-post-refresh))
