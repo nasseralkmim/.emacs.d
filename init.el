@@ -2260,6 +2260,8 @@ Otherwise, toggle only the directory at point."
     (progn 
       (with-eval-after-load 'breadcrumb
         (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
+      ;; 
+      (set-face-attribute 'hl-line nil :background (modus-themes-get-color-value 'bg-hl-line) :box '(:color "grey40" :line-width (-1 . -1)) :extend t)
       (modus-themes-with-colors
         ;; The `org-src-block-faces' does not get re-applied in existing
         ;; Org buffers.  Do M-x org-mode-restart for changes to take
@@ -3898,7 +3900,7 @@ its results, otherwise display STDERR with
   ;; only active window
   (setq hl-line-sticky-flag nil))
 
-(use-package hl-line
+(use-package hl-line-custom-face-gui :disabled
   :ensure nil
   :when (display-graphic-p) ; only in GUI
   :custom-face
