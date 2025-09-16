@@ -401,7 +401,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq revert-without-query (list ".")  ; Do not prompt
         auto-revert-stop-on-user-input nil
-        auto-revert-check-vc-info t
         auto-revert-verbose t)
 
   ;; Revert other buffers (e.g, Dired)
