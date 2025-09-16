@@ -2796,10 +2796,10 @@ Only if there is more than one window opened."
 (use-package diff-hl
   :hook
   (prog-mode . diff-hl-mode)
+  (magit-post-refresh . diff-hl-magit-post-refresh)
   ;; (dired-mode . diff-hl-dired-mode)
-  ;; integration with magit
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh))
+  :demand
+  :after magit)
 
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
