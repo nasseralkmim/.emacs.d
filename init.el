@@ -2795,8 +2795,10 @@ Only if there is more than one window opened."
 (use-package diff-hl
   :hook
   (prog-mode . diff-hl-mode)
-  (magit-pre-refresh . diff-hl-magit-pre-refresh)
-  (magit-post-refresh . diff-hl-magit-post-refresh))
+  :config
+  (with-eval-after-load 'magit
+    (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
 
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
