@@ -2801,7 +2801,10 @@ Only if there is more than one window opened."
   (setq diff-hl-global-modes '(not image-mode org-mode))
   (with-eval-after-load 'magit
     (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
+  ;; Last-resort workaround if some buffers still don't refresh after commits
+  (with-eval-after-load 'vc-hooks
+    (advice-add 'vc-refresh-state :after #'diff-hl-update)))
 
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
