@@ -2794,11 +2794,10 @@ Only if there is more than one window opened."
 ;; shows git information on fringe
 (use-package diff-hl
   :defer 1
-  :init
-  (global-diff-hl-mode)
   :config
   ;; Remove org-mode from diff-hl-global-modes
   (setq diff-hl-global-modes '(not image-mode org-mode))
+  (global-diff-hl-mode)
   (with-eval-after-load 'magit
     (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
     (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
