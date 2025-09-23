@@ -4351,7 +4351,7 @@ If an edraw editor is active for this link, preview is skipped."
   :stream t
   :request-params '(:reasoning (:effort "low"))
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/gpt-5-nano))
+  :models '(openai/gpt-5-mini))
   ;; set the default
   (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
                         :host "openrouter.ai"
