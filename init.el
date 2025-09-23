@@ -401,6 +401,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq revert-without-query (list ".")  ; Do not prompt
         auto-revert-stop-on-user-input nil
+        auto-revert-check-vc-info t
         auto-revert-verbose t)
 
   ;; Revert other buffers (e.g, Dired)
@@ -732,7 +733,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))
          ("C-@" . (lambda () (interactive) (embark-select) (vertico-next)))        ; for terminal
          ("C-a" . embark-act-all))
-  :commands embark-prefix-help-command
+  :commands embark-prefix-help-command embark-select
   :init
   (setq prefix-help-command #'embark-prefix-help-command)
   :config
@@ -2794,16 +2795,13 @@ Only if there is more than one window opened."
 ;; shows git information on fringe
 (use-package diff-hl
   :defer 1
+  :hook
+  (prog-mode . diff-hl-mode)
   :config
-  (global-diff-hl-mode)
   ;; Remove org-mode from diff-hl-global-modes
   (setq diff-hl-global-modes '(not image-mode org-mode))
   (with-eval-after-load 'magit
-    (add-hook 'magit-pre-refresh-hook 'diff-hl-magit-pre-refresh)
-    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh))
-  ;; Last-resort workaround if some buffers still don't refresh after commits
-  (with-eval-after-load 'vc-hooks
-    (advice-add 'vc-refresh-state :after #'diff-hl-update)))
+    (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
 
 ;; built in substitute for `list-buffer`
 (use-package ibuffer
@@ -4347,15 +4345,6 @@ If an edraw editor is active for this link, preview is skipped."
   (gptel-make-deepseek "Deepseek"
     :stream t
     :key (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
-  ;; Github Models offers an OpenAI compatible API
-  (gptel-make-openai "Github Models" ;Any name you want
-    :host "models.inference.ai.azure.com"
-    :endpoint "/chat/completions?api-version=2024-05-01-preview"
-    :stream t
-    :key (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
-  (gptel-make-ollama "Ollama" 
-    :host "localhost:11434"
-    :stream t)
   (gptel-make-openai "OpenRouter"               ;Any name you want
   :host "openrouter.ai"
   :endpoint "/api/v1/chat/completions"
