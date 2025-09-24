@@ -4363,12 +4363,29 @@ If an edraw editor is active for this link, preview is skipped."
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
+  :bind (:map magit-mode-map
+              ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
-  (defun gptel-magit-commit-and-finish ()
-    (interactive)
-    (magit-commit-create)
-    (gptel-magit-generate-message)
-    (with-editor-finish)))
+  (defun gptel-magit-commit-and-finish (&optional args)
+    (interactive (list (magit-commit-arguments)))
+    (let* ((commit-args (or args (magit-commit-arguments)))
+           (cleaned-args (let ((result '())
+                               (skip-next nil))
+                           (dolist (arg commit-args (nreverse result))
+                             (cond
+                              (skip-next
+                               (setq skip-next nil))
+                              ((member arg '("--message" "-m"))
+                               (setq skip-next t))
+                              (t
+                               (push arg result)))))))
+      (gptel-magit--generate
+       (lambda (message)
+         (if (stringp message)
+             (magit-commit-create (append cleaned-args
+                                          (list "--message" message)))
+           (message "magit-gptel: Commit message generation failed"))))
+      (message "magit-gptel: Generating commit..."))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
