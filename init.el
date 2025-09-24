@@ -4362,9 +4362,7 @@ If an edraw editor is active for this link, preview is skipped."
                         :models '(openai/gpt-5))))
 
 (use-package gptel-magit
-  :hook (magit-mode . gptel-magit-install)
-  :config
-  (setq gptel-magit-model 'openai/gpt-5-nano))
+  :hook (magit-mode . gptel-magit-install))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
