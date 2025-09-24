@@ -4359,7 +4359,7 @@ If an edraw editor is active for this link, preview is skipped."
                         :stream t
                         :request-params '(:reasoning (:effort "low"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5-nano))))
+                        :models '(openai/gpt-5 openai/gpt-5-nano))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
@@ -5126,7 +5126,7 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure nil
   :hook (comint-mode . visual-line-mode))
 
-(use-package lumen-git-commit-message-hack
+(use-package lumen-git-commit-message-hack :disabled
   :ensure nil
   :after magit
   :bind (:map magit-mode-map
@@ -5147,6 +5147,11 @@ If called with a prefix argument, prompt for a context string."
         (setq command (concat command " --context " (shell-quote-argument context))))
       (shell-command (concat command " | git commit -F -"))
       (revert-buffer))))
+
+(use-package gptel-magit
+  :hook (magit-mode . gptel-magit-install)
+  :config
+  (setq gptel-magit-model 'openai/gpt-5-nano))
 
 (use-package org-link-preview-async-export-hack
   :ensure nil
@@ -5201,8 +5206,5 @@ If called with a prefix argument, prompt for a context string."
   ;;       (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(org-block-begin-line auto-dim-other-buffers))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(header-line-inactive auto-dim-other-buffers-hide)))
-
-
-
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
