@@ -4351,7 +4351,7 @@ If an edraw editor is active for this link, preview is skipped."
   :stream t
   :request-params '(:reasoning (:effort "minimal"))
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/gpt-5-mini))
+  :models '(openai/gpt-5))
   ;; set the default
   (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
                         :host "openrouter.ai"
@@ -4360,6 +4360,11 @@ If an edraw editor is active for this link, preview is skipped."
                         :request-params '(:reasoning (:effort "minimal"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
                         :models '(openai/gpt-5))))
+
+(use-package gptel-magit
+  :hook (magit-mode . gptel-magit-install)
+  :config
+  (setq gptel-magit-model 'openai/gpt-5-nano))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
@@ -5147,11 +5152,6 @@ If called with a prefix argument, prompt for a context string."
         (setq command (concat command " --context " (shell-quote-argument context))))
       (shell-command (concat command " | git commit -F -"))
       (revert-buffer))))
-
-(use-package gptel-magit
-  :hook (magit-mode . gptel-magit-install)
-  :config
-  (setq gptel-magit-model 'openai/gpt-5-nano))
 
 (use-package org-link-preview-async-export-hack
   :ensure nil
