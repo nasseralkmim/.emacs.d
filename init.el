@@ -4349,7 +4349,7 @@ If an edraw editor is active for this link, preview is skipped."
   :host "openrouter.ai"
   :endpoint "/api/v1/chat/completions"
   :stream t
-  :request-params '(:reasoning (:effort "low"))
+  :request-params '(:reasoning (:effort "minimal"))
   :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
   :models '(openai/gpt-5-mini))
   ;; set the default
@@ -4357,9 +4357,9 @@ If an edraw editor is active for this link, preview is skipped."
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
-                        :request-params '(:reasoning (:effort "low"))
+                        :request-params '(:reasoning (:effort "minimal"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5 openai/gpt-5-nano))))
+                        :models '(openai/gpt-5))))
 
 ;; Alternative to 'mail-mode' and preferred mode for 'gnus'
 (use-package message
