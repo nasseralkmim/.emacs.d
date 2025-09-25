@@ -5195,7 +5195,7 @@ If called with a prefix argument, prompt for a context string."
         automagic-dark-sat-boost 1
         automagic-dark-luminance-inversion-exp 0.6))
 
-(use-package claude-code-ide
+(use-package claude-code-ide :disabled
   :ensure (:type git :host github :repo "manzaltu/claude-code-ide.el")
   :bind ("C-c C-a" . claude-code-ide-menu)
   :config
@@ -5227,5 +5227,103 @@ If called with a prefix argument, prompt for a context string."
   ;;       (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(org-block-begin-line auto-dim-other-buffers))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(header-line-inactive auto-dim-other-buffers-hide)))
+
+(use-package shell-maker)
+
+(use-package acp
+  :ensure (:fetcher github :repo "xenodium/acp.el"))
+
+(use-package agent-shell
+  :ensure (:fetcher github :repo "xenodium/agent-shell")
+  :commands agent-shell-start-codex-acp-agent
+  :config
+  ;; Per-buffer override for agent-shell CWD so we can start sessions
+  ;; in the current file's directory instead of a project root.
+  (defvar-local my/agent-shell-cwd-override nil
+    "When non-nil, use this path as CWD in agent-shell buffers.")
+
+  (defun my/agent-shell-cwd-advice (orig &rest args)
+    (if (and (boundp 'my/agent-shell-cwd-override)
+             my/agent-shell-cwd-override)
+        my/agent-shell-cwd-override
+      (apply orig args)))
+
+  ;; Only affects calls from agent-shell; harmless elsewhere.
+  (advice-add 'agent-shell-cwd :around #'my/agent-shell-cwd-advice)
+
+  ;; Codex ACP (https://github.com/cola-io/codex-acp) integration via cargo run
+  (defvar agent-shell-codex-acp-dir (expand-file-name "~/.local/src/codex-acp")
+    "Directory where the codex-acp repo lives. Used as working directory.")
+
+  (defvar agent-shell-codex-acp-command "cargo"
+    "Launcher command for codex-acp. Defaults to `cargo`.")
+
+  (defvar agent-shell-codex-acp-args '("run" "--quiet")
+    "Arguments passed to `agent-shell-codex-acp-command` for starting ACP over stdio.")
+
+  (defvar agent-shell-openai-key nil
+    "OpenAI API key string or function returning it. Used when auth method is `apikey`.")
+
+  (defvar agent-shell-codex-acp-auth-method nil
+    "Auth method string for codex-acp (e.g., 'chatgpt' or 'apikey'). If nil, skip authenticate.")
+
+  (defvar agent-shell-codex-acp-extra-env nil
+    "Extra environment entries (list of VAR=VALUE strings) for codex-acp process.")
+
+  (defun agent-shell--maybe-openai-env ()
+    (when-let* ((key (cond
+                      ((functionp agent-shell-openai-key) (funcall agent-shell-openai-key))
+                      ((stringp agent-shell-openai-key) agent-shell-openai-key)
+                      (t nil))))
+      (list (format "OPENAI_API_KEY=%s" key))))
+
+  (defun agent-shell-start-codex-acp-agent ()
+    "Start an interactive Codex ACP agent shell (cargo run in repo)."
+    (interactive)
+    (let* ((cmd agent-shell-codex-acp-command)
+           (args agent-shell-codex-acp-args)
+           (env (append (agent-shell--maybe-openai-env)
+                        agent-shell-codex-acp-extra-env))
+           (auth-method agent-shell-codex-acp-auth-method)
+           (needs-auth (and (stringp auth-method)
+                            (> (length auth-method) 0)))
+           (auth-maker (when needs-auth
+                         (lambda ()
+                           (acp-make-authenticate-request :method-id auth-method)))))
+      ;; Start the shell in the current file's directory (or buffer's default).
+      (let* ((file-cwd (or (and buffer-file-name (file-name-directory buffer-file-name))
+                           default-directory))
+             ;; Client runs in the codex-acp repo, regardless of shell CWD.
+             (client-maker (lambda ()
+                             (acp-make-client
+                              :command cmd
+                              :command-params args
+                              :environment-variables env
+                              :request-sender (lambda (&rest rs-args)
+                                                (let ((default-directory agent-shell-codex-acp-dir))
+                                                  (apply #'acp--request-sender rs-args))))))
+             shell-buf)
+        ;; Ensure the shell buffer CWD and session CWD use file-cwd.
+        ;; Use cl-letf to force initial agent-shell-cwd during start,
+        ;; then set a buffer-local override for subsequent calls.
+        (cl-letf (((symbol-function 'agent-shell-cwd)
+                   (lambda () file-cwd)))
+          (setq shell-buf
+                (agent-shell--start
+                 :new-session t
+                 :mode-line-name "Codex"
+                 :buffer-name "Codex"
+                 :shell-prompt "Codex> "
+                 :shell-prompt-regexp "Codex> "
+                 :icon-name "openai.png"
+                 :needs-authentication needs-auth
+                 :authenticate-request-maker auth-maker
+                 :client-maker client-maker)))
+        (when (buffer-live-p shell-buf)
+          (with-current-buffer shell-buf
+            (setq-local my/agent-shell-cwd-override file-cwd))))))
+  ;; Optional: bind a key if you like. Commented by default.
+  ;; (global-set-key (kbd "C-c a c") #'agent-shell-start-codex-acp-agent)
+  )
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
