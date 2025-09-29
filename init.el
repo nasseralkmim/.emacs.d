@@ -5234,9 +5234,9 @@ If called with a prefix argument, prompt for a context string."
   :ensure (:fetcher github :repo "xenodium/acp.el"))
 
 (use-package agent-shell
-  :commands agent-shell-start-codex-agent
+  :commands agent-shell-openai-start-codex
   :ensure (:fetcher github :repo "xenodium/agent-shell")
   :config
-  (setq agent-shell-openai-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret))))
+  (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :api-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
