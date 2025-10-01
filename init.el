@@ -2798,8 +2798,6 @@ Only if there is more than one window opened."
   :hook
   (prog-mode . diff-hl-mode)
   :config
-  ;; Remove org-mode from diff-hl-global-modes
-  (setq diff-hl-global-modes '(not image-mode org-mode))
   (with-eval-after-load 'magit
     (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
 
