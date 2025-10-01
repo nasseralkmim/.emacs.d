@@ -5238,4 +5238,8 @@ If called with a prefix argument, prompt for a context string."
   :config
   (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :api-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))))
 
+(use-package yank-media
+  :ensure nil
+  :bind ("C-c M-y" . yank-media))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
