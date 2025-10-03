@@ -3791,7 +3791,7 @@ its results, otherwise display STDERR with
                                       (t . "%b %Y")))
 
 
-  ;; Prefer text over html
+  ;; When there is text/plain and text/html prefer the text
   (setq mm-discouraged-alternatives '("text/html"))
   
   ;; Activate groups on idle, and not so important stuff get news manually with
@@ -3800,7 +3800,6 @@ its results, otherwise display STDERR with
   (defun my-gnus-group-activate-on-idle ()
     (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 2))))
   (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
-
 
   ;; disable autoselect [[help:gnus-auto-select-first]]
   (add-hook 'gnus-select-group-hook (lambda () (setq gnus-auto-select-first nil))))
