@@ -3790,6 +3790,10 @@ its results, otherwise display STDERR with
                                       ((gnus-seconds-month) . "%e %b")
                                       (t . "%b %Y")))
 
+
+  ;; Prefer text over html
+  (setq mm-discouraged-alternatives '("text/html"))
+  
   ;; Activate groups on idle, and not so important stuff get news manually with
   ;; 'gnus-topic-get-new-news-this-topic'
   ;; https://old.reddit.com/r/emacs/comments/18cbeel/anyone_using_gnus_in_2023/kcceopw/
