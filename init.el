@@ -1947,7 +1947,8 @@ When matching, reference is stored in match group 1."
 
   (setq-default TeX-engine 'default
                 ;; for xetex with shell escape
-                TeX-command-extra-options "-shell-escape")
+                TeX-command-extra-options "-shell-escape"
+                TeX-output-dir "./output")
   
   ;; variables for jumping between source and pdf
   (setq TeX-source-correlate-method 'synctex ;; Method for enabling forward and inverse search 
