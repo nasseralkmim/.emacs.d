@@ -2065,9 +2065,6 @@ When matching, reference is stored in match group 1."
   (add-to-list 'TeX-fold-env-spec-list '("[tikzpicture]" ("tikzpicture")))
   (add-to-list 'TeX-fold-env-spec-list '("[algorithm]" ("algorithm")))
 
-  ;; fold comments as well
-  (add-to-list 'TeX-fold-type-list 'comment)
-
   ;; fold document class and document macros
   (add-to-list 'TeX-fold-macro-spec-list '("[class]" ("documentclass")))
   (add-to-list 'TeX-fold-macro-spec-list '("[note]" ("note")))
