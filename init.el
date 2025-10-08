@@ -5245,4 +5245,13 @@ If called with a prefix argument, prompt for a context string."
   :ensure nil
   :bind ("C-c M-y" . yank-media))
 
+(use-package nyan-mode
+  :defer 1
+  :config
+  (nyan-mode 1)
+  (setq nyan-wavy-trail t
+        nyan-animate-nyancat t
+        nyan-cat-face-number 2
+        nyan-bar-length 8))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
