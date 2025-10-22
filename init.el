@@ -5233,10 +5233,12 @@ If called with a prefix argument, prompt for a context string."
   :ensure (:fetcher github :repo "xenodium/acp.el"))
 
 (use-package agent-shell
-  :commands agent-shell-openai-start-codex
+  :commands (agent-shell-openai-start-codex agent-shell-google-start-gemini)
   :ensure (:fetcher github :repo "xenodium/agent-shell")
   :config
-  (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :api-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))))
+  (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :api-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret))))
+  (setq agent-shell-header-style nil
+        agent-shell-show-welcome-message nil))
 
 (use-package yank-media
   :ensure nil
