@@ -5233,6 +5233,7 @@ If called with a prefix argument, prompt for a context string."
 (use-package agent-shell
   :commands (agent-shell-openai-start-codex agent-shell-google-start-gemini)
   :ensure (:fetcher github :repo "xenodium/agent-shell")
+  :hook (agent-shell-mode . agent-shell-completion-mode)
   :config
   (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :api-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret))))
   (setq agent-shell-header-style nil
