@@ -3071,9 +3071,7 @@ opening a file from dired. Otherwise just regular dired."
     (call-interactively #'eglot)))
 
 ;; Use language tool with flymake
-;; download latest version https://languagetool.org/download/
-;; wget https://languagetool.org/download/LanguageTool-stable.zip -P ~/Downloads
-;; unzip <download> -d ~/.opt/
+;; Use package manager to install languagetool: $ yay languagetool
 ;;
 ;; make sure you have a working version of java (check with $ archlinux-java status)
 ;; also check if the JAVA_HOME is set correctly
