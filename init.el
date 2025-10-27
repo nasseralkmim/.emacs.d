@@ -3273,11 +3273,39 @@ opening a file from dired. Otherwise just regular dired."
 (use-package eldoc
   :ensure nil
   :hook (org-mode . eldoc-mode)
+  :bind (:map eglot-mode-map
+              ("C-h ." . my/eldoc-open-or-scroll))
   :config
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
   (setq eldoc-echo-area-use-multiline-p nil
-        eldoc-idle-delay 0.5))
+        eldoc-idle-delay 0.5)
+  :init
+  (defun my/eldoc-open-or-scroll ()
+    "Open Eldoc doc buffer; on repeat key, scroll it."
+    (interactive)
+    (let* ((buf (eldoc-doc-buffer))     ; ensure buffer exists and is populated
+           (win (or (get-buffer-window buf)
+                    (and buf (display-buffer buf)))))
+      (when (and (window-live-p win) (buffer-live-p (window-buffer win)))
+        ;; Ensure point in that window so scrolling commands act on it.
+        (with-selected-window win
+          (goto-char (window-point win)))
+        ;; If this command is repeated (same command), scroll; otherwise just show.
+        (if (or (eq last-command this-command)
+                (and (boundp 'repeat-in-progress) repeat-in-progress)) ; repeat-mode friendly
+            (with-selected-window win
+              (ignore-errors (scroll-up 1)))
+          ;; First invocation just ensures it is visible; do nothing else.
+          )
+        ;; Set a transient map so the "." key continues to call this command.
+        ;; keep active as long as we keep hitting "."
+        (set-transient-map
+         (let ((map (make-sparse-keymap)))
+           (define-key map (kbd ".") #'my/eldoc-open-or-scroll)
+           map)
+         t)))))
+
 
 (use-package eldoc-buffer-window-hack
   :ensure nil

@@ -11,7 +11,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(safe-local-variable-values
-   '((eval add-hook 'after-save-hook #'org-babel-tangle)
+   '((compile-command concat
+                      "cmake --fresh -S ~/.local/src/mpFEM/ -B ~/.local/src/mpFEM/ && "
+                      "cmake --build ~/.local/src/mpFEM/ -j32 && "
+                      "ctest --output-on-failure --test-dir ~/.local/src/mpFEM/ -j32")
+     (eval add-hook 'after-save-hook #'org-babel-tangle)
      (compile-command concat
                       "source ~/miniconda3/etc/profile.d/conda.sh && conda activate edelweissfe && "
                       "MARMOT_INSTALL_DIR=~/.local/src/Marmot/build "
