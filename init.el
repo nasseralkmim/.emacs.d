@@ -3273,13 +3273,17 @@ opening a file from dired. Otherwise just regular dired."
 (use-package eldoc
   :ensure nil
   :hook (org-mode . eldoc-mode)
-  :bind (:map eglot-mode-map
-              ("C-h ." . my/eldoc-open-or-scroll))
   :config
   ;; never resize echo area display, use always 1 truncated line
   ;; use `eldoc-doc-buffer' for multiple lines (with popper is good)
   (setq eldoc-echo-area-use-multiline-p nil
-        eldoc-idle-delay 0.5)
+        eldoc-idle-delay 0.5))
+
+(use-package eldoc-eglot-doc-buffer-hack
+  :ensure nil
+  :after eglot
+  :bind (:map eglot-mode-map
+              ("C-h ." . my/eldoc-open-or-scroll))
   :init
   (defun my/eldoc-open-or-scroll ()
     "Open Eldoc doc buffer; on repeat key, scroll it."
@@ -3305,7 +3309,6 @@ opening a file from dired. Otherwise just regular dired."
            (define-key map (kbd ".") #'my/eldoc-open-or-scroll)
            map)
          t)))))
-
 
 (use-package eldoc-buffer-window-hack
   :ensure nil
