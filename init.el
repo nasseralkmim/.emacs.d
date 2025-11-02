@@ -70,11 +70,6 @@
   ;; keybinding on 'override' keymap are not overridden by a minor-mode. 
   (general-override-mode))
 
-;; control minor-mode indication in the mode-line
-(use-package diminish :disabled
-  :ensure (:wait t)
-  :demand t)
-
 ;; ':general' and ':diminish' add keywords to 'use-package'
 ;; need to process before continue
 (elpaca-process-queues)
