@@ -5292,4 +5292,8 @@ If called with a prefix argument, prompt for a context string."
   :config
   (buffer-terminator-mode 1))
 
+(use-package mcp-server
+  :ensure (:type git :host github :repo "rhblind/emacs-mcp-server"
+             :files ("*.el" "mcp-wrapper.py" "mcp-wrapper.sh")))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
