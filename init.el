@@ -4385,9 +4385,9 @@ If an edraw editor is active for this link, preview is skipped."
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
-                        ;; :request-params '(:reasoning (:effort "minimal"))
+                        :request-params '(:reasoning (:effort "minimal"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(anthropic/claude-haiku-4.5))))
+                        :models '(openai/gpt-5-nano))))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
@@ -4397,6 +4397,7 @@ If an edraw editor is active for this link, preview is skipped."
   (defun gptel-magit-commit-and-finish (&optional args)
     (interactive (list (magit-commit-arguments)))
     (let* ((commit-args (or args (magit-commit-arguments)))
+           (magit-buffer (current-buffer))
            (cleaned-args (let ((result '())
                                (skip-next nil))
                            (dolist (arg commit-args (nreverse result))
@@ -4410,8 +4411,9 @@ If an edraw editor is active for this link, preview is skipped."
       (gptel-magit--generate
        (lambda (message)
          (if (stringp message)
-             (magit-commit-create (append cleaned-args
-                                          (list "--message" message)))
+             (with-current-buffer magit-buffer
+               (magit-commit-create (append cleaned-args
+                                            (list "--message" message))))
            (message "magit-gptel: Commit message generation failed"))))
       (message "magit-gptel: Generating commit..."))))
 
