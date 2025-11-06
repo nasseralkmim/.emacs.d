@@ -5299,4 +5299,8 @@ If called with a prefix argument, prompt for a context string."
   :ensure (:type git :host github :repo "rhblind/emacs-mcp-server"
              :files ("*.el" "mcp-wrapper.py" "mcp-wrapper.sh")))
 
+;; Get user and ipaddress
+;; echo "Username: $(whoami)"
+;; echo "IP: $(ip addr show | awk '/inet / && $2 !~ /^127/ {print $2}' | cut -d/ -f1 | head -n 1)"
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
