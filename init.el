@@ -4385,9 +4385,9 @@ If an edraw editor is active for this link, preview is skipped."
                         :host "openrouter.ai"
                         :endpoint "/api/v1/chat/completions"
                         :stream t
-                        :request-params '(:reasoning (:effort "minimal"))
+                        ;; :request-params '(:reasoning (:effort "minimal"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5-nano))))
+                        :models '(anthropic/claude-haiku-4.5))))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
