@@ -2660,10 +2660,11 @@ Only if there is more than one window opened."
   :ensure nil
   :defer 1
   :bind
-  ("C-c C-h" . windmove-left)
-  ("C-c C-l" . windmove-right)
-  ("C-c C-j" . windmove-down)
-  ("C-c C-k" . windmove-up)
+  (:map windmove-mode-map
+        ("C-c C-h" . windmove-left)
+        ("C-c C-l" . windmove-right)
+        ("C-c C-j" . windmove-down)
+        ("C-c C-k" . windmove-up))
   :config
   (windmove-default-keybindings 'ctrl))
 
