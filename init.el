@@ -4966,7 +4966,9 @@ Returns t if any nodes were folded, nil otherwise."
                                  ;; https://github.com/progfolio/elpaca/issues/241
                                  "fdl.texi" "gpl.texi")))
   :bind
-  ("<f9>" . eat))
+  ("<f9>" . eat)
+  (:map eat-mode-map
+        ("C-c C-a" . eat-semi-char-mode)))
 
 ;; Mouse support on terminal
 (use-package xt-mouse
