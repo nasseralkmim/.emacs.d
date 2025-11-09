@@ -30,7 +30,9 @@
    ;; (font . "Monaspace Neon")
    ;; (font . "Input Mono")
    ;; (font . "Iosevka SS12 Extended")
-   (font . "Dejavu Sans Mono")
+   (font . "Ioskeley Mono")
+   ;; (font . "Fixedsys Excelsior")
+   ;; (font . "Dejavu Sans Mono")
    ;; (font . "Maple Mono")
    ))
 
