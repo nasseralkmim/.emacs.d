@@ -5283,21 +5283,4 @@ If called with a prefix argument, prompt for a context string."
         nyan-cat-face-number 2
         nyan-bar-length 8))
 
-(use-package buffer-terminator
-  :defer 5
-  :custom
-  (buffer-terminator-verbose nil)
-  (buffer-terminator-inactivity-timeout (* 30 60)) ; 30 minutes
-  (buffer-terminator-interval (* 10 60)) ; 10 minutes
-  :config
-  (buffer-terminator-mode 1))
-
-(use-package mcp-server
-  :ensure (:type git :host github :repo "rhblind/emacs-mcp-server"
-             :files ("*.el" "mcp-wrapper.py" "mcp-wrapper.sh")))
-
-;; Get user and ipaddress
-;; echo "Username: $(whoami)"
-;; echo "IP: $(ip addr show | awk '/inet / && $2 !~ /^127/ {print $2}' | cut -d/ -f1 | head -n 1)"
-
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
