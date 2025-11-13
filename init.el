@@ -2255,6 +2255,8 @@ Otherwise, toggle only the directory at point."
         (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
       (with-eval-after-load 'hl-line
         (set-face-attribute 'hl-line nil :background 'unspecified :box '(:color "grey40" :line-width (-1 . -1)) :extend t))
+      (with-eval-after-load 'iedit
+        (set-face-attribute 'iedit-occurrence nil :box '(:line-width (-1 . -1))))
       (modus-themes-with-colors
         ;; The `org-src-block-faces' does not get re-applied in existing
         ;; Org buffers.  Do M-x org-mode-restart for changes to take
