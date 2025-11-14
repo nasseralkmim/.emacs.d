@@ -5292,4 +5292,26 @@ If called with a prefix argument, prompt for a context string."
         nyan-cat-face-number 2
         nyan-bar-length 8))
 
+(setq use-default-font-for-symbols nil)
+
+;; Create a new fontset based on the default
+(create-fontset-from-fontset-spec
+ "-*-Ioskeley Mono-normal-normal-normal-*-*-*-*-*-*-0-fontset-ioskeley")
+
+;; Set DejaVu Sans Mono for specific unicode ranges that contain symbols
+(dolist (range '((#x2500 . #x257F)  ; Box Drawing
+                 (#x2580 . #x259F)  ; Block Elements
+                 (#x25A0 . #x25FF)  ; Geometric Shapes (includes ○)
+                 (#x2600 . #x26FF)  ; Miscellaneous Symbols
+                 (#x2700 . #x27BF)  ; Dingbats
+                 (#x2190 . #x21FF)  ; Arrows
+                 (#x2200 . #x22FF)  ; Mathematical Operators
+                 (#x2300 . #x23FF)  ; Miscellaneous Technical
+                 (#x2000 . #x206F))) ; General Punctuation
+  (set-fontset-font "fontset-ioskeley" range "DejaVu Sans Mono" nil 'prepend))
+
+;; Set the frame font to use our custom fontset
+(set-frame-font "fontset-ioskeley" nil t)
+(add-to-list 'default-frame-alist '(font . "fontset-ioskeley"))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
