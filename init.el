@@ -4048,14 +4048,21 @@ its results, otherwise display STDERR with
   (defun my-gt-do-translate (&optional arg)
     "Translate with the default translator.
 
-With prefix argument, use prompt taker to select a language pair."
+With single prefix argument (C-u), use prompt taker to select a language pair.
+With double prefix argument (C-u C-u), auto-detect EN<->DE and render in buffer."
     (interactive "P")
-    (let ((translator (if arg
-                          (gt-translator
-                           :engines (gt-deepl-engine)
-                           :taker (gt-taker :prompt t))
-                        gt-default-translator)))
-          (gt-start translator)))
+    (let ((translator (cond
+                       ((equal arg '(16))  ; C-u C-u
+                        (gt-translator
+                         ;; :taker (gt-taker :langs '(en de))
+                         :engines (gt-deepl-engine)
+                         :render (gt-buffer-render)))
+                       (arg  ; C-u
+                        (gt-translator
+                         :engines (gt-deepl-engine)
+                         :taker (gt-taker :prompt t)))
+                       (t gt-default-translator))))
+      (gt-start translator)))
   
   ;; function to translate and insert translation
   (defun my-gt-do-translate-and-insert ()
@@ -4065,7 +4072,7 @@ With prefix argument, use prompt taker to select a language pair."
                        :render (gt-insert-render :type 'after))))
       (gt-start translator))))
 
-(use-package go-translate-window-placement-hack :disabled
+(use-package go-translate-window-placement-hack
   :ensure nil
   :after gt
   :init
