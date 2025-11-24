@@ -2577,8 +2577,10 @@ Only if there is more than one window opened."
         '(display-buffer-reuse-window (reusable-frames . t))))
 
 ;; Terminal emulator based on libvterm (in C)
-(use-package vterm :disabled
+(use-package vterm
   :commands vterm
+  :bind
+  ("<f9>" . vterm)
   :config
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0)
@@ -4962,7 +4964,7 @@ Returns t if any nodes were folded, nil otherwise."
   :config
   (setq rng-nxml-auto-validate-flag nil))
 
-(use-package eat
+(use-package eat :disabled
   :ensure (eat :type git
                :host codeberg
                :repo "akib/emacs-eat"
