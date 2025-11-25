@@ -2217,6 +2217,22 @@ Otherwise, toggle only the directory at point."
       ;; Without prefix argument: toggle current directory only
       (dired-subtree-toggle))))
 
+;; https://superuser.com/questions/462079/how-can-i-display-folder-sizes-in-emacs-dired
+(use-package dired-size-hack
+  :after dired
+  :init
+  (defun dired-get-size ()
+    (interactive)
+    (let ((files (dired-get-marked-files)))
+      (with-temp-buffer
+        (apply 'call-process "/usr/bin/du" nil t nil "-sch" files)
+        (message "Size of all marked files: %s"
+                 (progn 
+                   (re-search-backward "\\(^[0-9.,]+[A-Za-z]+\\).*total$")
+                   (match-string 1))))))
+
+  (define-key dired-mode-map (kbd "?") 'dired-get-size))
+
 ;; open dired as a sidebar
 (use-package dired-sidebar :disabled
   :bind
