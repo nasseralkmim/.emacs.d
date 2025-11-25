@@ -2597,6 +2597,8 @@ Only if there is more than one window opened."
   :commands vterm
   :bind
   ("<f9>" . vterm)
+  (:map vterm-mode-map
+        ("M-y" . vterm-yank-pop))
   :config
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0)
