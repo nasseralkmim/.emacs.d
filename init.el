@@ -3846,7 +3846,12 @@ its results, otherwise display STDERR with
   (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
 
   ;; disable autoselect [[help:gnus-auto-select-first]]
-  (add-hook 'gnus-select-group-hook (lambda () (setq gnus-auto-select-first nil))))
+  (add-hook 'gnus-select-group-hook (lambda () (setq gnus-auto-select-first nil)))
+
+  ;; When entering a groups buffer, keep the existing window layout
+  (defun gnus-remove-some-windows ()
+    "Do nothing - keep existing window layout."
+    nil))
 
 (use-package nnrss
   :ensure nil
