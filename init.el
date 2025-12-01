@@ -2219,6 +2219,7 @@ Otherwise, toggle only the directory at point."
 
 ;; https://superuser.com/questions/462079/how-can-i-display-folder-sizes-in-emacs-dired
 (use-package dired-size-hack
+  :ensure nil
   :after dired
   :init
   (defun dired-get-size ()
