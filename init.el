@@ -5318,7 +5318,7 @@ If called with a prefix argument, prompt for a context string."
         nyan-cat-face-number 2
         nyan-bar-length 8))
 
-(use-package unicode-font-hack
+(use-package unicode-font-hack :disabled
   :ensure nil
   :init
   (setq use-default-font-for-symbols nil)
