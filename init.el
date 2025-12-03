@@ -1028,8 +1028,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
 (use-package iedit
-  :custom-face
-  (iedit-occurrence ((t (:box (:line-width (-1 . -1)) :inherit nil))))
   :bind* ; avoid getting shadowed by other minor modes (eg. LaTeX-mode)
   ("C-c ;" . iedit-mode)               ; for mosh/tmux
   :bind
@@ -2270,10 +2268,8 @@ Otherwise, toggle only the directory at point."
     (progn 
       (with-eval-after-load 'breadcrumb
         (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
-      (with-eval-after-load 'hl-line
-        (set-face-attribute 'hl-line nil :background 'unspecified :box '(:color "grey40" :line-width (-1 . -1)) :extend t))
-      (with-eval-after-load 'iedit
-        (set-face-attribute 'iedit-occurrence nil :box '(:line-width (-1 . -1))))
+      (with-eval-after-load 'faces
+        (set-face-attribute 'region nil :box '(:line-width (-1 . -1))))
       (modus-themes-with-colors
         ;; The `org-src-block-faces' does not get re-applied in existing
         ;; Org buffers.  Do M-x org-mode-restart for changes to take
