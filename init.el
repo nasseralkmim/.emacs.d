@@ -1970,7 +1970,10 @@ When matching, reference is stored in match group 1."
   ;; To jump to source, from Okular, one needs to use the 'Browser tool'
   ;; (Ctrl-1) and click on the text with shift key pressed on.
   ;; (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
-  (add-to-list 'TeX-view-program-selection '(output-pdf "Okular")))
+  (add-to-list 'TeX-view-program-selection '(output-pdf "Okular"))
+
+  ;; Not nice to change line width
+  (setq font-latex-fontify-script nil))
 
 ;; preview in latex
 (use-package preview
