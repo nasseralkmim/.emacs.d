@@ -4435,8 +4435,6 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
            (max-chars 40000) ; ~10000 tokens
            (content
             (if (> (length diff) max-chars)
-                (message
-                 "Diff too large, truncating for commit message generation.")
                 (let ((files (magit-git-output "diff" "--cached" "--name-status")))
                   (concat "Changed files:\n" files
                           "\n\nTruncated diff (first part):\n"
