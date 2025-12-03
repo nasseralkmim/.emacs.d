@@ -2269,7 +2269,7 @@ Otherwise, toggle only the directory at point."
       (with-eval-after-load 'breadcrumb
         (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
       (with-eval-after-load 'faces
-        (set-face-attribute 'region nil :box '(:line-width (-1 . -1))))
+        (set-face-attribute 'region nil :foreground 'unspecified :box '(:line-width (-1 . -1) :color "grey80")))
       (modus-themes-with-colors
         ;; The `org-src-block-faces' does not get re-applied in existing
         ;; Org buffers.  Do M-x org-mode-restart for changes to take
