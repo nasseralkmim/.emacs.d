@@ -3729,7 +3729,8 @@ its results, otherwise display STDERR with
 ;; enter the server: 'gnus-group-enter-server-mode', then we select the server 'gnus-server-read-server', once in the server we can subscribe/unsubscribe to specific group 'gnus-browse-toggle-subscription-at-point'
 (use-package gnus
   :ensure nil
-  :bind (("C-x C-m" . gnus))
+  :bind
+  ("C-x C-m" . gnus)
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   (gnus-article-mode . visual-line-mode)
