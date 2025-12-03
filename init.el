@@ -3970,6 +3970,12 @@ its results, otherwise display STDERR with
         ;; behavior similar to orderless
         search-whitespace-regexp ".*"))
 
+(use-package shr
+  :ensure nil
+  :config
+  ;; avoid unreadable colors in gnus when in dark mode
+  (setq shr-use-colors nil))
+
 ;; highlight code in eww
 (use-package shr-tag-pre-highlight :disabled
   :after shr
