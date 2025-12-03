@@ -4426,6 +4426,27 @@ If an edraw editor is active for this link, preview is skipped."
   :bind (:map magit-mode-map
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
+  ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
+  (defun gptel-magit--generate (callback)
+    "Generate a commit message for current magit repo.
+Invokes CALLBACK with the generated message when done.
+Truncates diff if it exceeds 10000 tokens to avoid high API costs."
+    (let* ((diff (magit-git-output "diff" "--cached"))
+           (max-chars 40000) ; ~10000 tokens
+           (content
+            (if (> (length diff) max-chars)
+                (let ((files (magit-git-output "diff" "--cached" "--name-status")))
+                  (concat "Changed files:\n" files
+                          "\n\nTruncated diff (first part):\n"
+                          (substring diff 0 (min max-chars (length diff)))))
+              diff)))
+      (gptel-magit--request content
+        :system gptel-magit-commit-prompt
+        :context nil
+        :callback (lambda (response _info)
+                    (let ((msg (gptel-magit--format-commit-message response)))
+                      (funcall callback msg))))))
+
   (defun gptel-magit-commit-and-finish (&optional args)
     (interactive (list (magit-commit-arguments)))
     (let* ((commit-args (or args (magit-commit-arguments)))
