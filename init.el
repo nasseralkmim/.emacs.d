@@ -3946,6 +3946,7 @@ its results, otherwise display STDERR with
   :ensure nil
   :hook
   (prog-mode . hl-line-mode)
+  (LaTeX-mode . hl-line-mode)
   :config
   ;; only active window
   (setq hl-line-sticky-flag nil))
