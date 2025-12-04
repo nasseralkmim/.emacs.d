@@ -4407,12 +4407,12 @@ If an edraw editor is active for this link, preview is skipped."
     :stream t
     :key (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
   (gptel-make-openai "OpenRouter"               ;Any name you want
-  :host "openrouter.ai"
-  :endpoint "/api/v1/chat/completions"
-  :stream t
-  :request-params '(:reasoning (:effort "minimal"))
-  :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  :models '(openai/gpt-5))
+    :host "openrouter.ai"
+    :endpoint "/api/v1/chat/completions"
+    :stream t
+    :request-params '(:reasoning (:effort "minimal"))
+    :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
+    :models '(openai/gpt-5-nano openai/gpt-5-mini openai/gpt-5.1))
   ;; set the default
   (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
                         :host "openrouter.ai"
@@ -4420,7 +4420,7 @@ If an edraw editor is active for this link, preview is skipped."
                         :stream t
                         :request-params '(:reasoning (:effort "minimal"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5-nano))))
+                        :models '(openai/gpt-5-nano openai/gpt-5-mini openai/gpt-5.1))))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
