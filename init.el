@@ -2806,6 +2806,7 @@ Only if there is more than one window opened."
   :defer 1
   :hook
   (prog-mode . diff-hl-mode)
+  (LaTeX-mode . diff-hl-mode)
   :config
   (with-eval-after-load 'magit
     (add-hook 'magit-post-refresh-hook 'diff-hl-magit-post-refresh)))
