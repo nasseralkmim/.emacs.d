@@ -4432,10 +4432,13 @@ If an edraw editor is active for this link, preview is skipped."
 Invokes CALLBACK with the generated message when done.
 Truncates diff if it exceeds 10000 tokens to avoid high API costs."
     (let* ((diff (magit-git-output "diff" "--cached"))
-           (max-chars 40000) ; ~10000 tokens
+           (max-chars 10000)
+           (truncated (> (length diff) max-chars))
            (content
-            (if (> (length diff) max-chars)
+            (if truncated
                 (let ((files (magit-git-output "diff" "--cached" "--name-status")))
+                  (message "Diff truncated from %d to %d chars (~%d tokens)"
+                           (length diff) max-chars (/ max-chars 2))
                   (concat "Changed files:\n" files
                           "\n\nTruncated diff (first part):\n"
                           (substring diff 0 (min max-chars (length diff)))))
