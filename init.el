@@ -3972,7 +3972,7 @@ its results, otherwise display STDERR with
 
 (use-package shr
   :ensure nil
-  :init
+  :config
   ;; avoid unreadable colors in gnus when in dark mode
   (setq shr-use-colors nil))
 
