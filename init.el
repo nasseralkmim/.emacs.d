@@ -4429,6 +4429,8 @@ If an edraw editor is active for this link, preview is skipped."
   :bind (:map magit-mode-map
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
+  (setq gptel-magit-backend (gptel-get-backend "OpenRouter")
+        gptel-magit-model 'openai/gpt-5-nano)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
