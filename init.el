@@ -1084,6 +1084,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package magit
   :ensure (magit :files (:defaults "git-commit.el"))
+  :hook
+  (magit-mode . magit-auto-revert-mode) ; auto refresh
   :bind
   (:map magit-mode-map
         ("C-x 4 j" . magit-diff-visit-worktree-file-other-window)
