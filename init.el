@@ -4421,7 +4421,7 @@ If an edraw editor is active for this link, preview is skipped."
                         :stream t
                         :request-params '(:reasoning (:effort "minimal"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5-nano openai/gpt-5-mini openai/gpt-5.1))))
+                        :models '(openai/gpt-5-mini))))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
