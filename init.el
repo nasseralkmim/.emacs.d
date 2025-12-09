@@ -1052,8 +1052,26 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq iedit-search-invisible t)       ; use visual line to narrow candidates
 
   ;; Change the face for terminal
-  (when (not (display-graphic-p))
-    (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t)))
+  ;; (when (not (display-graphic-p))
+  ;;   (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t))
+
+  ;; Use box region face only during iedit-mode to see region on top of iedit highlights
+  (defvar my-region-face-saved nil "Saved region face attributes.")
+  (defun my-iedit-region-face-on ()
+    "Set region face to box style for iedit-mode."
+    (setq my-region-face-saved (face-all-attributes 'region (selected-frame)))
+    (set-face-attribute 'region nil :foreground 'unspecified :background 'unspecified
+                        :box '(:line-width (-1 . -1) :color "gray60") :extend 'unspecified))
+  (defun my-iedit-region-face-off ()
+    "Restore region face after iedit-mode."
+    (when my-region-face-saved
+      (set-face-attribute 'region nil :box 'unspecified)
+      (apply #'set-face-attribute 'region nil
+             (cl-loop for (attr . val) in my-region-face-saved
+                      unless (eq val 'unspecified)
+                      append (list attr val)))))
+  (add-hook 'iedit-mode-hook #'my-iedit-region-face-on)
+  (add-hook 'iedit-mode-end-hook #'my-iedit-region-face-off))
 
 (use-package lisp
   :ensure nil
@@ -2273,8 +2291,7 @@ Otherwise, toggle only the directory at point."
     (progn 
       (with-eval-after-load 'breadcrumb
         (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
-      (with-eval-after-load 'faces
-        (set-face-attribute 'region nil :foreground 'unspecified :background 'unspecified :box '(:line-width (-1 . -1) :color "gray60") :extend 'unspecified))
+
       (modus-themes-with-colors
         ;; The `org-src-block-faces' does not get re-applied in existing
         ;; Org buffers.  Do M-x org-mode-restart for changes to take
