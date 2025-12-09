@@ -52,7 +52,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil ; compute statistics about package initialization
+      use-package-compute-statistics t ; compute statistics about package initialization
       use-package-minimum-reported-time 0.0001
       use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
@@ -2556,7 +2556,6 @@ Only if there is more than one window opened."
   (eww-mode . visual-line-mode)
   :config
   (setq shr-use-fonts t                 ; change heading size
-        shr-use-colors t
         shr-max-image-proportion .5
         shr-folding-mode t
         shr-bullet "• "
