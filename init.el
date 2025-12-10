@@ -3258,7 +3258,7 @@ opening a file from dired. Otherwise just regular dired."
           ("\\.pdf:::\\([0-9]+\\)?\\'" . "okular %s -p %1 & disown")
           ;; if file has ::<page> opens at this page
           ("\\.pdf::\\([0-9]+\\)?\\'" . "xournalpp %s -n %1 & disown")
-          ("\\.svg\\'" . "swayimg %s & disown")
+          ("\\.svg\\'" . "swayimg %s")
           (auto-mode . emacs)
           (directory . emacs))))
 
