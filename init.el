@@ -2956,7 +2956,7 @@ opening a file from dired. Otherwise just regular dired."
         avy-all-windows-alt t           ; allow all windows when `C-u`
         avy-background t
         avy-indent-line-overlay nil
-        avy-all-windows nil))           ; restrict to one window
+        avy-all-windows nil))
 
 (use-package all-the-icons-completion
   :ensure (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
