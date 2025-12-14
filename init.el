@@ -5003,7 +5003,7 @@ Returns t if any nodes were folded, nil otherwise."
   :ensure (apptainer-mode :type git :host github :repo "jrgant/apptainer-mode")
   :mode ("\\.def\\'" . apptainer-mode))
 
-(use-package kkp :disabled              ; having problems with org-export not been able to export subtree on kitty
+(use-package kkp              ; having problems with org-export not been able to export subtree on kitty
   :defer 1
   :unless (display-graphic-p)
   :ensure t
