@@ -3000,10 +3000,8 @@ opening a file from dired. Otherwise just regular dired."
   (c-mode . eglot-ensure)
   (js-mode . eglot-ensure) ; works if there is only one server available
   :config
-  ;; add watch mode "-w" for performance
-  ;; pyright only reanalyze the files that have been modified
-  ;; (add-to-list 'eglot-server-programs
-  ;;              '((python-mode python-ts-mode) . ("pyright-langserver" "--stdio" "--watch")))
+  (add-to-list 'eglot-server-programs
+               '((python-mode python-ts-mode) . ("ty" "server")))
   ;; (add-to-list 'eglot-server-programs
   ;;              `((c++-mode c++-ts-mode) . ,(eglot-alternatives
   ;;                                           '(("clangd" "--clang-tidy")))))
@@ -5328,7 +5326,7 @@ If called with a prefix argument, prompt for a context string."
                . (:color "grey10" :opacity 0.75))))
   (buffer-background-global-mode 1))
 
-(use-package auto-dim-other-buffers
+(use-package auto-dim-other-buffers :disabled
   :defer 1
   :config
   (auto-dim-other-buffers-mode t)
