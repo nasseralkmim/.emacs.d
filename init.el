@@ -5339,10 +5339,10 @@ If called with a prefix argument, prompt for a context string."
 
 (use-package shell-maker)
 
-(use-package acp
+(use-package acp :disabled
   :ensure (:fetcher github :repo "xenodium/acp.el"))
 
-(use-package agent-shell
+(use-package agent-shell :disabled
   :commands (agent-shell-openai-start-codex agent-shell-google-start-gemini)
   :ensure (:fetcher github :repo "xenodium/agent-shell" :branch "main")
   :hook (agent-shell-mode . agent-shell-completion-mode)
@@ -5373,5 +5373,10 @@ If called with a prefix argument, prompt for a context string."
   (set-fontset-font "fontset-ioskeley" 'symbol "DejaVu Sans Mono" nil 'prepend)
   (set-frame-font "fontset-ioskeley" nil t)
   (add-to-list 'default-frame-alist '(font . "fontset-ioskeley")))
+
+
+(use-package vterm-anti-flicker-filter
+  :ensure (:fetcher github :repo "martinbaillie/vterm-anti-flicker-filter")
+  :demand t)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
