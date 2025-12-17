@@ -5364,19 +5364,5 @@ If called with a prefix argument, prompt for a context string."
         nyan-cat-face-number 2
         nyan-bar-length 8))
 
-(use-package unicode-font-hack :disabled
-  :ensure nil
-  :init
-  (setq use-default-font-for-symbols nil)
-  (create-fontset-from-fontset-spec
-   "-*-Ioskeley Mono-normal-normal-normal-*-*-*-*-*-*-0-fontset-ioskeley")
-  (set-fontset-font "fontset-ioskeley" 'symbol "DejaVu Sans Mono" nil 'prepend)
-  (set-frame-font "fontset-ioskeley" nil t)
-  (add-to-list 'default-frame-alist '(font . "fontset-ioskeley")))
-
-
-(use-package vterm-anti-flicker-filter
-  :ensure (:fetcher github :repo "martinbaillie/vterm-anti-flicker-filter")
-  :demand t)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
