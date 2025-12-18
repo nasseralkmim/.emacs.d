@@ -4726,6 +4726,10 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
 ;; Show guides on indentation level
 (use-package indent-bars
   :ensure (indent-bars :url "https://github.com/jdtsmith/indent-bars")
+  :custom
+  (indent-bars-no-descend-lists t) ; no extra bars in continued func arg lists
+  (indent-bars-treesit-support t)
+  (indent-bars-treesit-ignore-blank-lines-types '("module"))
   :hook
   (c++-ts-mode . indent-bars-mode)
   (python-ts-mode . indent-bars-mode)
