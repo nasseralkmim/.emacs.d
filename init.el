@@ -4730,6 +4730,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
   (indent-bars-no-descend-lists t) ; no extra bars in continued func arg lists
   (indent-bars-treesit-support t)
   (indent-bars-treesit-ignore-blank-lines-types '("module"))
+  (indent-bars-treesit-wrap '((c argument_list parameter_list init_declarator parenthesized_expression)))
   :hook
   (c++-ts-mode . indent-bars-mode)
   (python-ts-mode . indent-bars-mode)
