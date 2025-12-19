@@ -1267,7 +1267,7 @@ graphics."
                                     (org-redisplay-inline-images)
                                     (org-redisplay-inline-images))))
 
-(use-package org-refresh-images-after-src-block-execution-hack
+(use-package org-refresh-images-after-src-block-execution-hack :disabled
   :ensure nil
   :after org
   :init
