@@ -2850,6 +2850,11 @@ Only if there is more than one window opened."
                  ("Inputs" (and
                             (mode . fundamental-mode)
                             (filename . "Experiments")))
+                 ("Magit" (or
+                          (mode . magit-mode)
+                          (name . "^magit")))
+                 ("Org" (or
+                           (mode . org-mode)))
                  ("Gnus" (or
                           (mode . message-mode)
                           (mode . bbdb-mode)
