@@ -5339,11 +5339,14 @@ If called with a prefix argument, prompt for a context string."
   :ensure (:fetcher github :repo "xenodium/acp.el"))
 
 (use-package agent-shell :disabled
-  :commands (agent-shell-openai-start-codex agent-shell-google-start-gemini)
+  :commands (agent-shell)
   :ensure (:fetcher github :repo "xenodium/agent-shell" :branch "main")
   :hook (agent-shell-mode . agent-shell-completion-mode)
   :config
   (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :api-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret))))
+  (setq agent-shell-anthropic-authentication
+      (agent-shell-anthropic-make-authentication
+       :api-key ""))
   (setq agent-shell-header-style nil
         agent-shell-show-welcome-message nil))
 
@@ -5360,5 +5363,13 @@ If called with a prefix argument, prompt for a context string."
         nyan-cat-face-number 2
         nyan-bar-length 8))
 
+(use-package claude-code-setup
+  :ensure nil
+  :init
+  (setenv "ANTHROPIC_BASE_URL" "https://openrouter.ai/api")
+  (setenv "ANTHROPIC_AUTH_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
+  (setenv "ANTHROPIC_API_KEY" "")
+  (setenv "ANTHROPIC_DEFAULT_HAIKU_MODEL" "google/gemini-3-flash-preview")
+  )
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
