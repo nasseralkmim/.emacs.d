@@ -2281,7 +2281,6 @@ Otherwise, toggle only the directory at point."
   :bind
   ("<f5>" . modus-themes-toggle)
   :config
-  (setq modus-themes-to-toggle '(modus-vivendi modus-operandi))
   (setq modus-themes-prompts '(intense italic)
         modus-themes-variable-pitch-ui nil
         modus-themes-italic-constructs t
