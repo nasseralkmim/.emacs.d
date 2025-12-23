@@ -5371,8 +5371,7 @@ If called with a prefix argument, prompt for a context string."
   :ensure nil
   :init
   (setenv "ANTHROPIC_BASE_URL" "https://openrouter.ai/api")
-  (setenv "ANTHROPIC_AUTH_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
-  (setenv "ANTHROPIC_API_KEY" "")
-  (setenv "ANTHROPIC_DEFAULT_HAIKU_MODEL" "google/gemini-3-flash-preview"))
+  (setenv "ANTHROPIC_AUTH_TOKEN" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
+  (setenv "ANTHROPIC_API_KEY" ""))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
