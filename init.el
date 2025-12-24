@@ -4415,17 +4415,9 @@ If an edraw editor is active for this link, preview is skipped."
   ("C-c C-g" . gptel-menu)
   :config
   (setq gptel-default-mode #'org-mode)
-  (gptel-make-gemini "Gemini"
-    :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret)))
-  (gptel-make-anthropic "Claude"
-    :stream t
-    :key (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
-  (gptel-make-openai "OpenAI"
-    :stream t
-    :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
-  (gptel-make-deepseek "Deepseek"
-    :stream t
-    :key (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
+  ;; (gptel-make-openai "OpenAI"
+  ;;   :stream t
+  ;;   :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
   ;; set the default
   (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
                         :host "openrouter.ai"
@@ -4433,7 +4425,7 @@ If an edraw editor is active for this link, preview is skipped."
                         :stream t
                         :request-params '(:reasoning (:effort "minimal"))
                         :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(openai/gpt-5-mini openai/gpt-5-nano))))
+                        :models '(z-ai/glm-4.5-air:free openai/gpt-5-mini openai/gpt-5-nano))))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
@@ -4441,7 +4433,7 @@ If an edraw editor is active for this link, preview is skipped."
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
   (setq gptel-magit-backend (gptel-get-backend "OpenRouter")
-        gptel-magit-model 'openai/gpt-5-nano)
+        gptel-magit-model 'z-ai/glm-4.5-air:free)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
