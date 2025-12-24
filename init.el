@@ -4202,7 +4202,7 @@ With double prefix argument (C-u C-u), auto-detect EN<->DE and render in buffer.
 ;; create a project here https://console.developers.google.com/project
 ;; setup consent in the API & Services -> Credentials, then get the id/secrect
 ;; in API & Services -> Library: enable Calendar API
-(use-package org-gcal
+(use-package org-gcal :disabled
   :after org
   :demand
   :init 
