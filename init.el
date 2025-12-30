@@ -4087,12 +4087,9 @@ its results, otherwise display STDERR with
   ;; Add 'visual-line-mode' to the translation buffer
   ;; (gt-after-buffer-prepared . (lambda () (visual-line-mode 1)))
   :config
-  (setq gt-langs '(de en pt it)
+  (setq gt-langs '(de en pt it fr)
         gt-default-translator (gt-translator :engines (gt-deepl-engine)))
   
-  (setq gt-chatgpt-key (funcall (plist-get (nth 0 (auth-source-search :host "api.openai.com")) :secret))
-        gt-chatgpt-model "gpt-3.5")
-
   (defun my-gt-do-translate (&optional arg)
     "Translate with the default translator.
 
