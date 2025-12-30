@@ -4395,22 +4395,6 @@ If an edraw editor is active for this link, preview is skipped."
 (use-package gptel
   :ensure (gptel :type git :host github :repo "karthink/gptel")
   :commands gptel-quick                 ; load gptel when gptel-quick is called
-  :custom
-  (gptel-directives
-   '((default . "To assist:  Be terse.  Do not offer unprompted advice or clarifications. Speak in specific,
- topic relevant terminology. Do NOT hedge or qualify. Do not waffle. Speak
- directly and be willing to make creative guesses. Explain your reasoning. if you
- don’t know, say you don’t know.
-
- Remain neutral on all topics. Be willing to reference less reputable sources for
- ideas.
-
- Never apologize.  Ask questions when unsure.")
-     (rewrite . "Rewrite this text in a formal academic scholarly tone to be more concise and clear, with better and more fluid connection between ideas. Improve paragraph coherence via explicit topic sentences and transitions. Output only the rewritten text. Do not change latex markup. Use one line per sentence.")
-     (programmer . "You are a careful programmer.  Provide code and only code as output without any additional text, prompt or note.")
-     (cliwhiz . "You are a command line helper.  Generate command line commands that do what is requested, without any additional description or explanation.  Generate ONLY the command, I will edit it myself before running.")
-     (emacser . "You are an Emacs maven.  Reply only with the most appropriate built-in Emacs command for the task I specify.  Do NOT generate any additional description or explanation.")
-     (explain . "Explain what this code does to a novice programmer.")))
   :bind
   ("C-c C-g" . gptel-menu)
   :config
