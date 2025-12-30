@@ -4402,22 +4402,25 @@ If an edraw editor is active for this link, preview is skipped."
   ;; (gptel-make-openai "OpenAI"
   ;;   :stream t
   ;;   :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
-  ;; set the default
-  (setq gptel-backend (gptel-make-openai "OpenRouter"               ;Any name you want
-                        :host "openrouter.ai"
-                        :endpoint "/api/v1/chat/completions"
-                        :stream t
-                        :request-params '(:reasoning (:effort "minimal"))
-                        :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-                        :models '(z-ai/glm-4.5-air:free openai/gpt-5-mini openai/gpt-5-nano))))
+  ;; (gptel-make-openai "OpenRouter"               ;Any name you want
+  ;;                       :host "openrouter.ai"
+  ;;                       :endpoint "/api/v1/chat/completions"
+  ;;                       :stream t
+  ;;                       :request-params '(:reasoning (:effort "minimal"))
+  ;;                       :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
+  ;;                       :models '(z-ai/glm-4.5-air:free openai/gpt-5-mini openai/gpt-5-nano))
+  (setq gptel-backend  (gptel-make-gemini "Gemini"
+                         :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))
+                         :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 0)))
+                         :stream t)))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
   :bind (:map magit-mode-map
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
-  (setq gptel-magit-backend (gptel-get-backend "OpenRouter")
-        gptel-magit-model 'z-ai/glm-4.5-air:free)
+  (setq gptel-magit-backend (gptel-get-backend "Gemini")
+        gptel-magit-model 'gemini-3-flash-preview)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
