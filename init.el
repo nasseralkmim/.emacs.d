@@ -4502,7 +4502,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
   :bind
   ("M-," . jinx-correct)
   :config
-  (setq jinx-languages "en de pt_BR it"
+  (setq jinx-languages "en de pt_BR it fr"
         jinx-delay 1))
 
 (use-package ediff
