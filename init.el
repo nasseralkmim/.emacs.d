@@ -4072,6 +4072,7 @@ its results, otherwise display STDERR with
    ("C-c t d" . gt-do-setup)
    ("C-c t c" . my-gt-cycle-translation)
    ("C-c t i" . my-gt-do-translate-and-insert)
+   ("C-c t s" . my-gt-speak)
    :repeat-map mode-specific-map
    ("t c" . my-gt-cycle-translation))
   :hook
@@ -4115,7 +4116,25 @@ With double prefix argument (C-u C-u), auto-detect EN<->DE and render in buffer.
     (let ((translator (gt-translator
                        :engines (list (gt-deepl-engine))
                        :render (gt-insert-render :type 'after))))
-      (gt-start translator))))
+      (gt-start translator)))
+
+  (defvar my-gt-speak-default-lang 'en
+    "Default language for text-to-speech.")
+
+  (defun my-gt-speak (arg)
+    "Speak selected text or text at point using Google TTS.
+With prefix argument, prompt for a new default language."
+    (interactive "P")
+    (when arg
+      (setq my-gt-speak-default-lang
+            (intern (completing-read "Choose default language: "
+                                     gt-langs
+                                     nil t))))
+    (let ((text (if (use-region-p)
+                    (buffer-substring-no-properties (region-beginning) (region-end))
+                  (thing-at-point 'sentence t))))
+      (when text
+        (gt-speech (gt-google-rpc-engine) text my-gt-speak-default-lang)))))
 
 (use-package go-translate-window-placement-hack
   :ensure nil
