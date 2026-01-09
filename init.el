@@ -4409,16 +4409,6 @@ If an edraw editor is active for this link, preview is skipped."
   ("C-c C-g" . gptel-menu)
   :config
   (setq gptel-default-mode #'org-mode)
-  ;; (gptel-make-openai "OpenAI"
-  ;;   :stream t
-  ;;   :key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret)))
-  ;; (gptel-make-openai "OpenRouter"               ;Any name you want
-  ;;                       :host "openrouter.ai"
-  ;;                       :endpoint "/api/v1/chat/completions"
-  ;;                       :stream t
-  ;;                       :request-params '(:reasoning (:effort "minimal"))
-  ;;                       :key (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret))
-  ;;                       :models '(z-ai/glm-4.5-air:free openai/gpt-5-mini openai/gpt-5-nano))
   (setq gptel-backend  (gptel-make-gemini "Gemini"
                          :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))
                          :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 0)))
