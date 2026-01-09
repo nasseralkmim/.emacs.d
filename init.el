@@ -1558,13 +1558,7 @@ When matching, reference is stored in match group 1."
         ;; precompile not working command
         org-latex-precompile nil)
 
-  ;; mint and svg export require '-shell-escape' option
-  (setq org-latex-listings 'minted
-        org-latex-pdf-process
-        '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "bibtex %b"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
-          "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+  (setq org-latex-listings 'minted)
 
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
