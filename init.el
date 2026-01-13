@@ -5013,23 +5013,6 @@ Returns t if any nodes were folded, nil otherwise."
   :config
   (setq rng-nxml-auto-validate-flag nil))
 
-(use-package eat :disabled
-  :ensure (eat :type git
-               :host codeberg
-               :repo "akib/emacs-eat"
-               :files ("*.el" ("term" "term/*.el") "*.texi"
-                       "*.ti" ("terminfo/e" "terminfo/e/*")
-                       ("terminfo/65" "terminfo/65/*")
-                       ("integration" "integration/*")
-                       (:exclude ".dir-locals.el" "*-tests.el"
-                                 ;; for the info manual node
-                                 ;; https://github.com/progfolio/elpaca/issues/241
-                                 "fdl.texi" "gpl.texi")))
-  :bind
-  ("<f9>" . eat)
-  (:map eat-mode-map
-        ("C-c C-a" . eat-semi-char-mode)))
-
 ;; Mouse support on terminal
 (use-package xt-mouse
   :ensure nil
@@ -5170,64 +5153,6 @@ RESCHEDULE-FN is the function to reschedule."
   (setq copilot-max-char -1
         copilot-idle-delay 0.3))
 
-(use-package aider :disabled
-  :ensure (:host github :repo "tninja/aider.el" :files ("*.el"))
-  :bind
-  ("C-c C-a" . aider-transient-menu)
-  (:map comint-mode-map
-        ("C-c C-a" . nil))
-  :config
-  ;; Gemini
-  (setq aider-args '("--model"
-                     "gemini/gemini-2.5-pro-exp-03-25"
-                     "--no-auto-accept-architect"
-                     "--map-refresh" "manual"
-                     "--no-gitignore"
-                     "--no-auto-commits"
-                     ;; "--map-tokens" "2048"
-                     "--watch-files"))
-  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
-  (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
-  (setenv "DEEPSEEK_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
-  (setenv "ANTHROPIC_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
-  (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
-  (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
-  (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
-
-(use-package aidermacs :disabled
-  :ensure (:host github :repo "MatthewZMD/aidermacs")
-  :bind
-  ("C-c C-a" . aidermacs-transient-menu)
-  (:map comint-mode-map
-        ("C-c C-a" . aidermacs-transient-menu))
-  :config
-  (setq aidermacs-default-model "gemini/gemini-2.5-pro-preview-06-05"
-        aidermacs-extra-args '("--edit-format" "diff-fenced" "--no-gitignore"))
-
-  (setq aidermacs-show-diff-after-change nil)
-  
-  (setenv "OLLAMA_API_BASE" "http://127.0.0.1:11434")
-  (setenv "PERPLEXITYAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.perplexity.com")) :secret)))
-  (setenv "OPENROUTER_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
-  (setenv "DEEPSEEK_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.deepseek.com")) :secret)))
-  (setenv "ANTHROPIC_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.anthropic.com")) :secret)))
-  (setenv "OPENAI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.github.com" :user "nasseralkmim^gptel")) :secret)))
-  (setenv "OPENAI_API_BASE" "https://models.inference.ai.azure.com")
-  (setenv "GEMINI_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))))
-
-(use-package aider-window-placement-hack :disabled
-  :after (:or aider aidermacs) ; Ensure it loads after either package
-  :ensure nil
-  :init
-  ;; Configure window placement for both *aider and *aidermacs buffers
-  (add-to-list 'display-buffer-alist
-               '("^\\*aidermacs"
-                 ;; 1. Try to reuse an existing window (even across frames)
-                 ;; 2. If not visible, split vertically and use the right window
-                 (display-buffer-reuse-window display-buffer-in-side-window)
-                 (side . right)
-                 (reusable-frames . t))))
-
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
   :init
@@ -5239,28 +5164,6 @@ RESCHEDULE-FN is the function to reschedule."
 (use-package comint-mode
   :ensure nil
   :hook (comint-mode . visual-line-mode))
-
-(use-package lumen-git-commit-message-hack :disabled
-  :ensure nil
-  :after magit
-  :bind (:map magit-mode-map
-              ("C-c C-s" . lumen-generate-commit))
-  :init
-  (setenv "LUMEN_API_KEY" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
-  (setenv "LUMEN_AI_PROVIDER" "openrouter")
-  (setenv "LUMEN_AI_MODEL" "openai/gpt-4.1-nano")
-
-  (defun lumen-generate-commit (&optional arg)
-    "Run 'lumen draft' and use its output as the git commit message.
-If called with a prefix argument, prompt for a context string."
-    (interactive "P")
-    (let ((command "lumen draft")
-          (context (when arg
-                     (read-string "Enter context: "))))
-      (when context
-        (setq command (concat command " --context " (shell-quote-argument context))))
-      (shell-command (concat command " | git commit -F -"))
-      (revert-buffer))))
 
 (use-package org-link-preview-async-export-hack
   :ensure nil
@@ -5318,21 +5221,6 @@ If called with a prefix argument, prompt for a context string."
 
 (use-package shell-maker)
 
-(use-package acp :disabled
-  :ensure (:fetcher github :repo "xenodium/acp.el"))
-
-(use-package agent-shell :disabled
-  :commands (agent-shell)
-  :ensure (:fetcher github :repo "xenodium/agent-shell" :branch "main")
-  :hook (agent-shell-mode . agent-shell-completion-mode)
-  :config
-  (setq agent-shell-openai-authentication (agent-shell-openai-make-authentication :api-key (funcall (plist-get (car (auth-source-search :host "api.openai.com")) :secret))))
-  (setq agent-shell-anthropic-authentication
-      (agent-shell-anthropic-make-authentication
-       :api-key ""))
-  (setq agent-shell-header-style nil
-        agent-shell-show-welcome-message nil))
-
 (use-package yank-media
   :ensure nil
   :bind ("C-c M-y" . yank-media))
@@ -5345,12 +5233,5 @@ If called with a prefix argument, prompt for a context string."
         nyan-animate-nyancat t
         nyan-cat-face-number 2
         nyan-bar-length 8))
-
-(use-package claude-code-setup
-  :ensure nil
-  :init
-  (setenv "ANTHROPIC_BASE_URL" "https://openrouter.ai/api")
-  (setenv "ANTHROPIC_AUTH_TOKEN" (funcall (plist-get (car (auth-source-search :host "api.openrouter.com")) :secret)))
-  (setenv "ANTHROPIC_API_KEY" ""))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
