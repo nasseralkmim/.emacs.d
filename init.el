@@ -2684,7 +2684,7 @@ Only if there is more than one window opened."
   ;; built-in command repeater (like hydra)
   (repeat-mode t))
 
-(use-package windmove
+(use-package windmove :disabled
   :ensure nil
   :defer 1
   :config
