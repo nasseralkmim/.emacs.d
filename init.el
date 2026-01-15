@@ -2440,23 +2440,8 @@ Only if there is more than one window opened."
 
 (use-package python-ts
   :ensure nil
-  :init
-  (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
-  :hook ((python-mode . toggle-truncate-lines)
-         (python-mode . display-fill-column-indicator-mode))
-  :config
-  ;; dont guess the indent offset
-  (setq python-indent-guess-indent-offset nil)
-
-  ;; make indentation aware of docstring
-  (defun my-python-indent-line ()
-    (if (eq (car (python-indent-context)) :inside-docstring)
-        'noindent
-      (python-indent-line)))
-  ;; change default function to identify docstring
-  (defun my-python-mode-hook ()
-    (setq indent-line-function #'my-python-indent-line))
-  (add-hook 'python-mode-hook #'my-python-mode-hook))
+  :hook ((python-ts-mode . display-fill-column-indicator-mode)
+         (python-ts-mode . eglot-semantic-tokens-mode)))
 
 ;; formatting python code
 (use-package python-black
