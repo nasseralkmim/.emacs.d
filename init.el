@@ -2867,7 +2867,8 @@ Only if there is more than one window opened."
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
   :config
   ;; maximum fontification
-  (setq treesit-font-lock-level 4))
+  (setq treesit-font-lock-level 4
+        treesit-enabled-modes t))
 
 (use-package wgrep)
 
