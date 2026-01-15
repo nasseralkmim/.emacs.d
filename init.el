@@ -1095,6 +1095,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (backward-up-list)
     (forward-sexp)))
 
+(use-package elisp-mode
+  :ensure nil
+  :config
+  (setq elisp-fontify-semantically t))
+
 ;; Need to be explicitly required for magit
 ;; https://emacs.stackexchange.com/questions/50592/whats-this-slot-missing-invalid-slot-name-transient-prefix-transient-pref
 (use-package transient
