@@ -1191,12 +1191,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         '(org-cycle-hide-archived-subtrees
           org-cycle-hide-drawers
           org-cycle-show-empty-lines
-          org-optimize-window-after-visibility-change))
-  ;; :init
-  ;; Make windmove work in Org mode:
-  ;; [[info:org#Conflicts][org#Conflicts]]
-  ;; (setq org-replace-disputed-keys t))
-  )
+          org-optimize-window-after-visibility-change)))
 
 ;; Quick insert latex macros
 ;; for example, "` a" inserts "\alpha"
@@ -2674,11 +2669,17 @@ Only if there is more than one window opened."
   ;; built-in command repeater (like hydra)
   (repeat-mode t))
 
-(use-package windmove :disabled
+(use-package windmove
   :ensure nil
-  :defer 1
-  :config
-  (windmove-default-keybindings 'meta)) ; META(ALT)+arrow to move between windows
+  :defer 1)
+
+(use-package org-mode-windmove
+  :after (org windmove)
+  :init
+  (add-hook 'org-shiftup-final-hook 'windmove-up)
+  (add-hook 'org-shiftleft-final-hook 'windmove-left)
+  (add-hook 'org-shiftdown-final-hook 'windmove-down)
+  (add-hook 'org-shiftright-final-hook 'windmove-right))
 
 ;; built in windows resize functions
 (use-package window
