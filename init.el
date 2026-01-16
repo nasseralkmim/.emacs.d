@@ -2671,7 +2671,9 @@ Only if there is more than one window opened."
 
 (use-package windmove
   :ensure nil
-  :defer 1)
+  :defer 1
+  :config
+  (windmove-default-keybindings))
 
 (use-package org-mode-windmove
   :after (org windmove)
