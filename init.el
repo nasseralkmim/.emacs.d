@@ -2676,6 +2676,7 @@ Only if there is more than one window opened."
   (windmove-default-keybindings))
 
 (use-package org-mode-windmove
+  :ensure nil
   :after (org windmove)
   :init
   (add-hook 'org-shiftup-final-hook 'windmove-up)
@@ -4699,6 +4700,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
   :custom
   (indent-bars-no-descend-lists t) ; no extra bars in continued func arg lists
   (indent-bars-treesit-support t)
+  ;; https://github.com/jdtsmith/indent-bars/wiki/indent%E2%80%90bars-config-Wiki
   (indent-bars-treesit-ignore-blank-lines-types '("module"))
   (indent-bars-treesit-wrap '((c argument_list parameter_list init_declarator parenthesized_expression)))
   :hook
