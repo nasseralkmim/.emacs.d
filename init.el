@@ -1361,7 +1361,7 @@ graphics."
           (:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:exports . "results")))) ; export only plots by default
 
-(use-package ob-open-session-buffer-after-execute-hack
+(use-package ob-open-session-buffer-after-execute-hack :disabled
   :ensure nil
   :after org
   :init
