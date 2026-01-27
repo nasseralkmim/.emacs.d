@@ -3734,6 +3734,8 @@ its results, otherwise display STDERR with
   :ensure nil
   :bind
   ("C-x C-m" . gnus)
+  (:map gnus-article-mode-map
+     ("q" . delete-window))
   :hook
   (gnus-mode . turn-on-gnus-dired-mode )
   (gnus-article-mode . visual-line-mode)
