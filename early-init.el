@@ -37,8 +37,10 @@
    ))
 
 ;; Don't use Sans serif
-(set-face-attribute 'variable-pitch nil :family "Monospace")
-(set-face-attribute 'variable-pitch-text nil :height 'unspecified)
+(when (facep 'variable-pitch)
+  (set-face-attribute 'variable-pitch nil :family "Monospace"))
+(when (facep 'variable-pitch-text)
+  (set-face-attribute 'variable-pitch-text nil :height 'unspecified))
 
 ;; from: https://github.com/SystemCrafters/rational-emacs/blob/master/early-init.el
 ;; native compilation settings
