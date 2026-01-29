@@ -482,7 +482,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (vertico-multiform-mode)
   ;; for spell checker
   (add-to-list 'vertico-multiform-categories
-               '(embark-keybinding grid)
+               '(embark-keybinding grid))
+  (add-to-list 'vertico-multiform-categories
                '(jinx grid (vertico-grid-annotate . 25))))
 
 ;; `completion STYLE` with flexible candidate filtering
