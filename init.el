@@ -721,6 +721,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure (embark :files (:defaults "embark-org.el"))
   ;; :demand                               ; load it independently of bind and hook
   :bind (("C-z" . embark-act)
+         ("C-M-z" . embark-dwim)
          :map embark-function-map
          ("h" . helpful-symbol)
          :map embark-variable-map
