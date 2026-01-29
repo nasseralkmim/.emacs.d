@@ -2662,6 +2662,7 @@ Only if there is more than one window opened."
 (use-package repeat
   ;; :if (string-greaterp emacs-version "28") ; need emacs > 28
   :ensure nil
+  :if (fboundp 'repeat-mode)
   :defer 1
   :demand
   :config
