@@ -1909,16 +1909,16 @@ When matching, reference is stored in match group 1."
 (use-package latex
   ;; version for solving problem with evil-tex https://github.com/progfolio/elpaca/issues/217
   :ensure (auctex :pre-build (("./autogen.sh")
-                    ("./configure"
-                     "--without-texmf-dir"
-                     "--with-packagelispdir=./"
-                     "--with-packagedatadir=./")
-                    ("make"))
-        :build (:not elpaca--compile-info) ;; Make will take care of this step
-        :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style"))
+                              ("./configure"
+                               "--without-texmf-dir"
+                               "--with-packagelispdir=./"
+                               "--with-packagedatadir=./")
+                              ("make"))
+                  :build (:not elpaca--compile-info) ;; Make will take care of this step
+                  :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style"))
   :init
   ;; This commit add a remap from LaTeX-mode (which Auctex) uses to latex-mode
-  ;; [[orgit-rev:~/.local/src/emacs/::1ea3b369021c90701c634c512426f75ce1291d77][~/.local/src/emacs/ (magit-rev 1ea3b369021)]]
+  
   (setq major-mode-remap-defaults nil)
   :mode ("\\.tex\\'" . LaTeX-mode)
   :commands TeX-command-sentinel
@@ -1929,18 +1929,15 @@ When matching, reference is stored in match group 1."
   (font-latex-sectioning-4-face ((t (:slant normal :inherit outline-5 :underline nil :height 1.0))))
   (font-latex-sectioning-5-face ((t (:slant normal :height 1.0))))
   :hook
-  (LaTeX-mode . outline-minor-mode)
-  :hook
-  (LaTeX-mode . (lambda ()
-                  (prettify-symbols-mode) ; for greek letters and other math symbols
-                  (LaTeX-math-mode)       ; easy to type greek letters
-                  (TeX-fold-mode) ; fold (reduce clutter) footnotes, comments etc (C-c C-o C-o DWIM)
-                  (reftex-isearch-minor-mode)
-                  (visual-line-mode)
-                  (outline-hide-sublevels 1) ; start folded
-                  ;; (variable-pitch-mode)      ; use variable pitch font (not monospace)
-                  (yas-minor-mode)
-                  (turn-off-auto-fill)))
+  ((LaTeX-mode . outline-minor-mode)
+   (LaTeX-mode . prettify-symbols-mode)
+   (LaTeX-mode . LaTeX-math-mode)
+   (LaTeX-mode . TeX-fold-mode)
+   (LaTeX-mode . reftex-isearch-minor-mode)
+   (LaTeX-mode . visual-line-mode)
+   (LaTeX-mode . yas-minor-mode)
+   (LaTeX-mode . turn-off-auto-fill)
+   (LaTeX-mode . (lambda () (outline-hide-sublevels 1))))
   :config
   ;; basics configs
   (setq TeX-save-query nil
@@ -1950,9 +1947,6 @@ When matching, reference is stored in match group 1."
         TeX-electric-escape t
         TeX-insert-macro-default-style 'mandatory-args-only ; don't ask for optional argument afte "C-c m"
         TeX-master nil) ; make auctex aware of multi-file documents
-
-  ;; start latex buffer folded
-  ;; (add-hook 'find-file-hook 'TeX-fold-buffer t)
 
   (setq-default TeX-engine 'default
                 ;; for xetex with shell escape
@@ -1968,24 +1962,6 @@ When matching, reference is stored in match group 1."
   (add-hook 'TeX-after-compilation-finished-functions  
             'TeX-revert-document-buffer)
 
-  ;; nomenclature compilation option for latex
-  (eval-after-load "tex"
-    '(add-to-list 'TeX-command-list 
-                  '("Nomenclature" "makeindex %s.nlo -s nomencl.ist -o %s.nls"
-                    (lambda (name command file)
-                      (TeX-run-compile name command file)
-                      (TeX-process-set-variable file 'TeX-command-next TeX-command-default))
-                    nil t :help "Create nomenclature file")))
-
-  ;; PDF Toll is ok when I'm with just one screen
-  ;; one advantage of PDF Tools is 'pdf-view-set-slice-from-bounding-box', good for small screens
-  ;; actually, Okular can trim margins as well...
-  ;; Okular has better: continuous scrolling, zoom, more responsive
-  ;; In the 'Editor Options', in Okular, need to add the 'Emacs client' option
-  ;; for jumping to source functionality
-  ;; To jump to source, from Okular, one needs to use the 'Browser tool'
-  ;; (Ctrl-1) and click on the text with shift key pressed on.
-  ;; (add-to-list 'TeX-view-program-selection '(output-pdf "PDF Tools"))
   (add-to-list 'TeX-view-program-selection '(output-pdf "Okular"))
 
   ;; Not nice to change line width
