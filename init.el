@@ -478,7 +478,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 (use-package vertico-multiform
   :ensure nil
   :after vertico
-  :init
+  :demand t
+  :config
   (vertico-multiform-mode)
   ;; for spell checker
   (add-to-list 'vertico-multiform-categories
