@@ -5000,7 +5000,8 @@ Returns t if any nodes were folded, nil otherwise."
   :after org
   :init
   ;; fix problem with latex fragment on tty
-  (defun org-drill-present-default-answer (session reschedule-fn)
+  (with-eval-after-load 'org-drill
+    (defun org-drill-present-default-answer (session reschedule-fn)
   "Present a default answer.
 
 SESSION is the current session.
@@ -5020,7 +5021,7 @@ RESCHEDULE-FN is the function to reschedule."
            (org-cycle-hide-drawers 'all)
            (org-remove-latex-fragment-image-overlays)
            (org-drill-with-hidden-cloze-hints
-            (funcall reschedule-fn session)))))))
+            (funcall reschedule-fn session))))))))
 
 ;; Style check for python instead of flake8
 (use-package flymake-ruff
