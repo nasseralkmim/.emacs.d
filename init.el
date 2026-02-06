@@ -119,6 +119,10 @@
    visible-bell t			; Don't beep at me
    kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
 
+  ;; Hide commands in M-x which do not work in the current mode.  Vertico
+  ;; commands are hidden in normal buffers. This setting is useful beyond
+  ;; Vertico.
+  (setq read-extended-command-predicate #'command-completion-default-include-p)
   ;; do not allow the cursor in the minibuffer prompt
   (setq minibuffer-prompt-properties
         '(read-only t cursor-intangible t face minibuffer-prompt))
@@ -427,6 +431,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (:map vertico-map
         ("M-<return>" . vertico-exit-input))
   :defer 0.5
+  :custom
+  (context-menu-mode t)
   :config
   (vertico-mode)
   (setq vertico-resize t))
@@ -481,6 +487,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand t
   :config
   (vertico-multiform-mode)
+  
   ;; for spell checker
   (add-to-list 'vertico-multiform-categories
                '(embark-keybinding grid))
