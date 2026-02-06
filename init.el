@@ -1568,7 +1568,11 @@ When matching, reference is stored in match group 1."
         ;; precompile not working command
         org-latex-precompile nil)
 
+  
   (setq org-latex-listings 'minted)
+  
+  ;; pass shell-escape to latex compiler
+  (setq org-latex-pdf-process '("latexmk -f -shell-escape -pdf -%latex -interaction=nonstopmode -output-directory=%o %f"))
 
   ;; extra latex packages for every header
   (setq org-latex-packages-alist '(("newfloat" "minted" nil)
