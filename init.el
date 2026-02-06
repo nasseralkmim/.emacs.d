@@ -5117,7 +5117,9 @@ RESCHEDULE-FN is the function to reschedule."
 ;; 'nvm use 22', (or 'nvm list' to see available))
 (use-package copilot
   :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
-  :hook (prog-mode . (lambda () (run-with-idle-timer 1 nil #'copilot-mode) ))
+  :hook
+  (prog-mode . (lambda () (run-with-idle-timer 1 nil #'copilot-mode)))
+  (org-mode . (lambda () (run-with-idle-timer 1 nil #'copilot-mode)))
   :bind
   (("C-c M-f" . copilot-complete)
    :map copilot-completion-map
