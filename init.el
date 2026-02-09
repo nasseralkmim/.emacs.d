@@ -884,7 +884,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Useful:
 ;; 1. kill without copying, use 'delete-region' from emacs: https://github.com/meow-edit/meow/discussions/474
 (use-package meow
+<<<<<<< HEAD
   :demand
+=======
+>>>>>>> 3eb2d1a (feat(gptel): Add University AI backend configuration)
   :config
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
@@ -4396,6 +4399,20 @@ If an edraw editor is active for this link, preview is skipped."
   ("C-c C-g" . gptel-menu)
   :config
   (setq gptel-default-mode #'org-mode)
+  (setq gptel-log-level 'debug)
+  
+  (setq gptel-university
+        (gptel-make-openai "University AI"
+          :host "ca-backend-uibkai-prod.wittystone-43265e4a.swedencentral.azurecontainerapps.io"
+          :endpoint "/api/v1/llm/chat"
+          :stream t
+          :key (lambda () 
+                 (funcall (plist-get (car (auth-source-search :host "api.academicai.com")) :secret)))
+          :header (lambda () 
+                    (when-let ((key (gptel--get-api-key)))
+                      `(("X-Client-ID" . ,key))))
+          :models '(gpt-5)))
+  
   (setq gptel-backend  (gptel-make-gemini "Gemini"
                          :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))
                          :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 0)))
