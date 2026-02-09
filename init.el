@@ -884,10 +884,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Useful:
 ;; 1. kill without copying, use 'delete-region' from emacs: https://github.com/meow-edit/meow/discussions/474
 (use-package meow
-<<<<<<< HEAD
-  :demand
-=======
->>>>>>> 3eb2d1a (feat(gptel): Add University AI backend configuration)
+  :demand t
   :config
   (defun meow-setup ()
     (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
