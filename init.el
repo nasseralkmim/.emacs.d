@@ -5229,4 +5229,10 @@ RESCHEDULE-FN is the function to reschedule."
         nyan-cat-face-number 2
         nyan-bar-length 8))
 
+(use-package winpulse
+  :ensure (:url "https://github.com/xenodium/winpulse"
+                :rev :newest)
+  :config
+  (winpulse-mode +1))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
