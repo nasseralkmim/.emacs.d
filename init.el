@@ -5238,6 +5238,7 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure (:url "https://github.com/xenodium/winpulse"
                 :rev :newest)
   :config
+  (setq winpulse-brightness 40)
   (winpulse-mode +1))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
