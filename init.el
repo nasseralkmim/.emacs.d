@@ -2593,6 +2593,11 @@ Only if there is more than one window opened."
   (add-to-list 'vterm-tramp-shells '("apptainer" "/bin/bash"))
   (add-to-list 'vterm-tramp-shells '("docker" "/bin/bash")))
 
+
+(use-package vterm-anti-flicker-filter
+  :ensure (:url "https://github.com/martinbaillie/vterm-anti-flicker-filter" :rev :newest)
+  :hook (vterm-mode . vterm-anti-flicker-filter-enable))
+
 ;; Quickly switch to 'vterm' buffer.
 (use-package vterm-toggle :disabled
   :after vterm
