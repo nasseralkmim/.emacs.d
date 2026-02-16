@@ -5247,7 +5247,8 @@ RESCHEDULE-FN is the function to reschedule."
   :commands (flash-jump flash-treesitter)
   :bind ("M-j" . flash-jump)
   :config
-  (require 'flash-isearch)
-  (flash-isearch-mode 1))
+  (with-eval-after-load 'isearch
+    (require 'flash-isearch)
+    (flash-isearch-mode 1)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
