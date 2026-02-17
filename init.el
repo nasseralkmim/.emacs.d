@@ -5244,11 +5244,14 @@ RESCHEDULE-FN is the function to reschedule."
   (winpulse-mode +1))
 
 (use-package flash
-  :ensure t
+  :ensure (flash :host github :repo "Prgebish/flash")
   :commands (flash-jump flash-treesitter)
   :bind ("M-j" . flash-jump)
-  :config
+  :custom
+  (flash-multiple-window t)
+  :init
   (with-eval-after-load 'isearch
+    (require 'flash)
     (require 'flash-isearch)
     (flash-isearch-mode 1)))
 
