@@ -1191,6 +1191,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    org-cycle-separator-lines 0  ; no empty lines between headings
    org-fontify-quote-and-verse-blocks nil ; no special fortification for those blocks 
    org-indent-indentation-per-level 1         ; indent just 1 space
+   org-use-sub-superscripts nil               ; don't need that in tty
    org-highlight-latex-and-related '(latex)  ; highlight latex fragments
    org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
 
