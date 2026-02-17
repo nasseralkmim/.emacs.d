@@ -1579,8 +1579,10 @@ When matching, reference is stored in match group 1."
                                    ("" "mathrsfs" nil) ; for command mathscr (Calligraphic letters)
                                    ("" "amsmath")
                                    ("" "bm, upgreek")
-                                   ("" "tikz" nil)
-                                   ("" "algorithm, algpseudocode"))))
+                                   ("" "tikz" t)
+                                   ("" "algorithm" nil)   ; for captions/number in the environment
+                                   ("" "algpseudocode" t) ; for pseudo-code with algorithmic environment
+                                   )))
 
 (use-package org-latex-preview
   :when (display-graphic-p)
