@@ -5248,6 +5248,8 @@ RESCHEDULE-FN is the function to reschedule."
   :bind ("M-j" . flash-jump)
   :custom
   (flash-multiple-window t)
+  (flash-rainbow t)
+  (flash-backdrop nil)
   :init
   (with-eval-after-load 'isearch
     (require 'flash)
