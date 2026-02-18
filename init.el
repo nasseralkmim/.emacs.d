@@ -4407,8 +4407,8 @@ If an edraw editor is active for this link, preview is skipped."
   :bind (:map magit-mode-map
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
-  (setq gptel-magit-backend (gptel-get-backend "Gemini")
-        gptel-magit-model 'gemini-3-flash-preview)
+  (setq gptel-magit-backend (gptel-get-backend "Copilot")
+        gptel-magit-model 'gpt-5-mini)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
