@@ -4395,12 +4395,12 @@ If an edraw editor is active for this link, preview is skipped."
   (setq gptel-default-mode #'org-mode)
   (setq gptel-log-level 'debug)
 
-  (gptel-make-gh-copilot "Copilot")
+  (gptel-make-gemini "Gemini"
+    :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))
+    :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 0)))
+    :stream t)
   
-  (setq gptel-backend  (gptel-make-gemini "Gemini"
-                         :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))
-                         :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 0)))
-                         :stream t)))
+  (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
 
 (use-package gptel-magit
   :hook (magit-mode . gptel-magit-install)
