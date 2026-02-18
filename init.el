@@ -4394,18 +4394,8 @@ If an edraw editor is active for this link, preview is skipped."
   :config
   (setq gptel-default-mode #'org-mode)
   (setq gptel-log-level 'debug)
-  
-  (setq gptel-university
-        (gptel-make-openai "University AI"
-          :host "ca-backend-uibkai-prod.wittystone-43265e4a.swedencentral.azurecontainerapps.io"
-          :endpoint "/api/v1/llm/chat"
-          :stream t
-          :key (lambda () 
-                 (funcall (plist-get (car (auth-source-search :host "api.academicai.com")) :secret)))
-          :header (lambda () 
-                    (when-let ((key (gptel--get-api-key)))
-                      `(("X-Client-ID" . ,key))))
-          :models '(gpt-5)))
+
+  (gptel-make-gh-copilot "Copilot")
   
   (setq gptel-backend  (gptel-make-gemini "Gemini"
                          :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))
