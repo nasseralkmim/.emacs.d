@@ -2827,6 +2827,8 @@ Only if there is more than one window opened."
                            (name . "^\\*Messages\\*$")))
                  ("Outputs" (or
                              (name . "\\.out")))
+                 ("Xml" (or
+                             (name . "\\.xml")))
                  ("Python sessions" (or
                              (mode . inferior-python-mode)))
                  ("Dired" (or
