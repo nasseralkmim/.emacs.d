@@ -918,16 +918,16 @@ frame if FRAME is nil, and to 1 if AMT is nil."
      '("/" . meow-keypad-describe-key)
      '("?" . meow-cheatsheet))
     (meow-normal-define-key
-     '("0" . meow-expand-0)
-     '("9" . meow-expand-9)
-     '("8" . meow-expand-8)
-     '("7" . meow-expand-7)
-     '("6" . meow-expand-6)
-     '("5" . meow-expand-5)
-     '("4" . meow-expand-4)
-     '("3" . meow-expand-3)
-     '("2" . meow-expand-2)
-     '("1" . meow-expand-1)
+     '("0" . meow-expand-or-digit-argument)
+     '("9" . meow-expand-or-digit-argument)
+     '("8" . meow-expand-or-digit-argument)
+     '("7" . meow-expand-or-digit-argument)
+     '("6" . meow-expand-or-digit-argument)
+     '("5" . meow-expand-or-digit-argument)
+     '("4" . meow-expand-or-digit-argument)
+     '("3" . meow-expand-or-digit-argument)
+     '("2" . meow-expand-or-digit-argument)
+     '("1" . meow-expand-or-digit-argument)
      '("-" . negative-argument)
      '(";" . meow-reverse)
      '("," . meow-inner-of-thing)
@@ -985,6 +985,27 @@ frame if FRAME is nil, and to 1 if AMT is nil."
      '("`" . "C-c @")                   ; for hide-show
      '("/" . "C-.")                    ; for avy
      '("<escape>" . meow-cancel-selection)))
+
+  ;; Define the conditional expand function.
+  (defun meow-expand-or-digit-argument (n)
+  "Run meow-expand-N if region is active, else digit-argument."
+  (interactive "P")
+  (let ((digit (- (logand (car (append (this-command-keys) nil)) #xff) ?0)))
+    (if (use-region-p)
+        (pcase digit
+          (0 (meow-expand-0))
+          (1 (meow-expand-1))
+          (2 (meow-expand-2))
+          (3 (meow-expand-3))
+          (4 (meow-expand-4))
+          (5 (meow-expand-5))
+          (6 (meow-expand-6))
+          (7 (meow-expand-7))
+          (8 (meow-expand-8))
+          (9 (meow-expand-9)))
+      (digit-argument nil))))
+
+  
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
   (add-to-list 'meow-mode-state-list '(ediff-meta-mode . normal))
