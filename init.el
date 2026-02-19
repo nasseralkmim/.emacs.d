@@ -5251,4 +5251,8 @@ RESCHEDULE-FN is the function to reschedule."
     (require 'flash-isearch)
     (flash-isearch-mode 1)))
 
+(use-package linum-relative
+  :custom (linum-relative-backend 'display-line-numbers-mode)
+  :hook (prog-mode . linum-relative-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
