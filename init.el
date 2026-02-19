@@ -5240,7 +5240,7 @@ RESCHEDULE-FN is the function to reschedule."
   :commands (flash-jump flash-treesitter)
   :bind ("M-j" . flash-jump)
   :custom
-  (flash-multiple-window t)
+  (flash-multi-window nil)
   (flash-rainbow t)
   (flash-backdrop nil)
   :init
