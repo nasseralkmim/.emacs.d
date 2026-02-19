@@ -1004,7 +1004,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
           (8 (meow-expand-8))
           (9 (meow-expand-9)))
       (digit-argument nil))))
-
   
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
