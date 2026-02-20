@@ -3987,7 +3987,10 @@ its results, otherwise display STDERR with
   (setq isearch-lazy-count t
         ;; make a whitespace work as regex ".*" which represents "anyting in between"
         ;; behavior similar to orderless
-        search-whitespace-regexp ".*"))
+        search-whitespace-regexp ".*")
+  
+  ;; search visible by default in org-mode
+  (add-hook 'org-mode-hook (lambda () (setq-local search-invisible nil)) t))
 
 (use-package shr
   :ensure nil
