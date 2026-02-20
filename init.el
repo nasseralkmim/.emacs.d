@@ -1613,10 +1613,8 @@ When matching, reference is stored in match group 1."
   (when (string-greaterp org-version "9.8")
     (add-hook 'org-mode-hook 'org-latex-preview-mode))
   :config
-  (setq org-latex-preview-auto-ignored-commands '(next-line previous-line)
-        org-latex-preview-process-precompiled nil
-        org-latex-preview-cache 'temp
-        org-latex-preview-live-debounce 2))
+  (setq org-latex-preview-mode-ignored-commands '(next-line previous-line)
+        org-latex-preview-mode-update-delay 3.0))
 
 (use-package ox-beamer
   :ensure nil
