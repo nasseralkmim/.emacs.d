@@ -4246,6 +4246,12 @@ With prefix argument, prompt for a new default language."
     (run-with-idle-timer 3 nil (lambda () (org-gcal-sync))))
   (add-hook 'org-agenda-finalize-hook 'sync-gcal-idle))
 
+(use-package org-caldev
+  :custom
+  (org-caldav-url 'google)
+  (org-caldav-calendar-id "nasser.alkmim@gmail.com")
+  (org-caldav-inbox "~/Sync/notes/log-notes/inbox.org"))
+
 ;; Setup template for capture gcal 
 (use-package org-capture-template
   :ensure nil
