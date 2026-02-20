@@ -1199,7 +1199,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    ("M-<return>" . org-meta-return)
    :repeat-map org-babel-map
    ("n" . org-babel-next-src-block)
-   ("p" . org-babel-previous-src-block))
+   ("p" . org-babel-previous-src-block)
+   :map org-read-date-minibuffer-local-map
+   ("M-l" . org-calendar-forward-day)
+   ("M-h" . org-calendar-backward-day)
+   ("M-j" . org-calendar-forward-week)
+   ("M-k" . org-calendar-backward-week))
   :hook
   (org-mode . visual-line-mode)
   (org-mode . turn-on-org-cdlatex)      ; easy to type greek letters "`a" for \alpha
@@ -4250,8 +4255,8 @@ With prefix argument, prompt for a new default language."
 (use-package org-caldev
   :custom
   (org-caldav-url 'google)
-  (org-caldav-calendar-id "nasser.alkmim@gmail.com")
-  (org-caldav-inbox "~/Sync/notes/log-notes/inbox.org"))
+  (org-caldav-calendar-id "96a79315128379be53688e022f71f4e6a47af83e85a1d781ffca7296d9e2963d@group.calendar.google.com")
+  (org-caldav-inbox "~/Sync/notes/log-notes/org-caldev.org"))
 
 ;; Setup template for capture gcal 
 (use-package org-capture-template
