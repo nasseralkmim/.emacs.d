@@ -2957,7 +2957,7 @@ opening a file from dired. Otherwise just regular dired."
   (global-highlight-parentheses-mode))
 
 ;; moving cursor around fast and efficiently
-(use-package avy
+(use-package avy :disabled
   :bind
   ("M-j" . avy-goto-char-timer)
   ("C-M-j" . avy-resume)
