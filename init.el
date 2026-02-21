@@ -434,7 +434,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :custom
   (context-menu-mode t)
   :config
-  (vertico-mode))
+  (vertico-mode)
+  (vertico-unobtrusive-mode))
 
 ;; improves behavior when dealing with directories in the minibuffer
 (use-package vertico-directory
