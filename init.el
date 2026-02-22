@@ -5284,4 +5284,11 @@ RESCHEDULE-FN is the function to reschedule."
   :custom (linum-relative-backend 'display-line-numbers-mode)
   :hook (prog-mode . linum-relative-mode))
 
+;; Emacs interface to GnuPG for encryption
+(use-package epg-config
+  :ensure nil
+  :custom
+  ;; use Emacs for passphrase entry
+  (epg-pinetry-mode 'loopback))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
