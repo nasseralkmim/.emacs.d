@@ -4237,19 +4237,6 @@ With prefix argument, prompt for a new default language."
   ;; plstore package stores OAuth token to avoid repeatdly prompts
   (setq plstore-cache-passphrase-for-symmetric-encryption t)
   (setq-default oauth2-auto-plstore "/home/nasser/Sync/secrets/oauth2-auto.plist")
-  ;; Uses asymmetric encryption with gnuPG
-  ;; Need to setup a key and maybe edit '~/.gnupg/gnu-agent.conf' with 'pinentry-program /usr/bin/pinetry' (but maybe this is not necesssary on linux)
-  ;; stores OAuth token
-  ;; (require 'plstore)
-  ;; Add key ID
-  ;; 'plstore-encrypt-to' is a list of strings (documentation is wrong)
-  ;; https://github.com/kidd/org-gcal.el/issues/225
-  ;; (add-to-list 'plstore-encrypt-to "C0FDC21258188852FFC70E2C3A3B897B81E89865")
-  ;; Apparently new Gnupg does not work
-  ;; https://github.com/kidd/org-gcal.el/issues/236
-  ;; (setq epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg")
-  ;; this avoids problem with hanging in "Contacting host: oauth2.googleapis.com:443"
-  ;; (fset 'epg-wait-for-status 'ignore)
 
   (defun sync-gcal-idle ()
     (run-with-idle-timer 3 nil (lambda () (org-gcal-sync))))
