@@ -4224,7 +4224,7 @@ With prefix argument, prompt for a new default language."
 ;; create a project here https://console.developers.google.com/project
 ;; setup consent in the API & Services -> Credentials, then get the id/secrect
 ;; in API & Services -> Library: enable Calendar API
-(use-package org-gcal :disabled
+(use-package org-gcal
   :after org
   :demand
   :init 
@@ -4233,20 +4233,23 @@ With prefix argument, prompt for a new default language."
     (setq org-gcal-client-id id
           org-gcal-client-secret secret
           org-gcal-fetch-file-alist '(("nasser.alkmim@gmail.com" .  "~/Sync/notes/log-notes/gcal.org"))))
+
+  ;; plstore package stores OAuth token to avoid repeatdly prompts
+  (setq plstore-cache-passphrase-for-symmetric-encryption t)
+  (setq-default oauth2-auto-plstore "/home/nasser/Sync/secrets/oauth2-auto.plist")
   ;; Uses asymmetric encryption with gnuPG
   ;; Need to setup a key and maybe edit '~/.gnupg/gnu-agent.conf' with 'pinentry-program /usr/bin/pinetry' (but maybe this is not necesssary on linux)
   ;; stores OAuth token
-  (setq-default oauth2-auto-plstore "/home/nasser/Sync/secrets/oauth2-auto.plist")
-  (require 'plstore)
+  ;; (require 'plstore)
   ;; Add key ID
   ;; 'plstore-encrypt-to' is a list of strings (documentation is wrong)
   ;; https://github.com/kidd/org-gcal.el/issues/225
-  (add-to-list 'plstore-encrypt-to "C0FDC21258188852FFC70E2C3A3B897B81E89865")
+  ;; (add-to-list 'plstore-encrypt-to "C0FDC21258188852FFC70E2C3A3B897B81E89865")
   ;; Apparently new Gnupg does not work
-;; https://github.com/kidd/org-gcal.el/issues/236
-  (setq epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg")
+  ;; https://github.com/kidd/org-gcal.el/issues/236
+  ;; (setq epg-gpg-program "~/.opt/gnupg-2.4.0/bin/gpg")
   ;; this avoids problem with hanging in "Contacting host: oauth2.googleapis.com:443"
-  (fset 'epg-wait-for-status 'ignore)
+  ;; (fset 'epg-wait-for-status 'ignore)
 
   (defun sync-gcal-idle ()
     (run-with-idle-timer 3 nil (lambda () (org-gcal-sync))))
