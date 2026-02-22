@@ -5263,7 +5263,7 @@ RESCHEDULE-FN is the function to reschedule."
   :defer 1
   :config
   (setq winpulse-brightness 40
-        winpulse-duration 1.2)
+        winpulse-duration 0.62)
   (winpulse-mode +1))
 
 (use-package flash
