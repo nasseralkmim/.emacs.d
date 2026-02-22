@@ -4224,6 +4224,8 @@ With prefix argument, prompt for a new default language."
 ;; create a project here https://console.developers.google.com/project
 ;; setup consent in the API & Services -> Credentials, then get the id/secrect
 ;; in API & Services -> Library: enable Calendar API
+;; Org->Calendar: 'org-gcal-post-at-point' to send the current entry to google calendar.
+;; Calendar->Org: 'org-gcal-sync' to sync with google calendar
 (use-package org-gcal
   :after org
   :demand
