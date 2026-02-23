@@ -2610,7 +2610,7 @@ Only if there is more than one window opened."
   ("<f9>" . vterm)
   (:map vterm-mode-map
         ("M-y" . vterm-yank-pop)
-        ("<escape>" . vterm-send-escape))
+        ("C-c <escape>" . vterm-send-escape))
   :config
   (setq vterm-max-scrollback 20000
         vterm-timer-delay 0)
