@@ -2547,6 +2547,7 @@ Only if there is more than one window opened."
   (defun my/enlarge-window-horizontally-10 () (interactive) (enlarge-window-horizontally 10))
   (defun my/shrink-window-horizontally-10 () (interactive) (shrink-window-horizontally 10)))
 
+;; Org-link
 (use-package ol
   :ensure nil
   :after org
