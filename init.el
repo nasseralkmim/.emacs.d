@@ -1602,38 +1602,6 @@ When matching, reference is stored in match group 1."
         '((:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:noweb . "no-export"))))
 
-;; insert web links with better description
-(use-package org-cliplink :disabled
-  :commands org-cliplink
-  :general (org-mode-map "C-c l" 'org-cliplink)
-  :after org)
-
-;; copy image from clipboard, save it and insert it
-(use-package org-download :disabled     ; built-in yank-media
-  :after org
-  :bind
-  (:map org-mode-map
-        ("C-M-y" . org-download-screenshot)
-        ("C-M-S-y" . org-download-clipboard))
-  :init
-  (setq
-   ;; apparently I need to manually create the images folder
-   org-download-image-dir "./figures"
-   org-download-image-html-width 350
-   org-download-image-latex-width 10)
-  ;; can resize screen shot
-  ;; (setq org-download-screenshot-method "flameshot gui --raw > %s")
-  ;; for Wayland (need to install grim slurp and wl-clipboard, and swappy)
-  (setq org-download-screenshot-method "grim -g \"$(slurp -w 0 -d)\" - | swappy -f - -o %s"))
-
-;; wsl specific config
-(use-package org-download-windows :disabled
-  :after org-download
-  :when (string-match "-[Mm]icrosoft" operating-system-release)
-  :init
-  ;; add .exe to work within wsl2
-  (setq org-download-screenshot-method "convert.exe clipboard: %s"))
-
 ;; Languages spell checker
 ;; apparently, Aspell is faster than Hunspell http://aspell.net/test/cur/
 ;; aspell need to install dictionaries with 'yay aspell-us' ('pt' and 'de')
