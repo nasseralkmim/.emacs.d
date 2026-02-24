@@ -4689,9 +4689,9 @@ absolute path. Finally load eglot."
            :files ("*.el" "calfw-org.el"))
   :init
   ;; autoload 'calfw-org' when opening calendar
-  (unless (fboundp 'cfw:open-org-calendar)
-    (autoload #'cfw:open-org-calendar "calfw-org" nil t))
-  (bind-keys :package calfw ("C-c A" . cfw:open-org-calendar)))
+  (unless (fboundp 'calfw-org-open-calendar)
+    (autoload #'calfw-org-open-calendar "calfw-org" nil t))
+  (bind-keys :package calfw ("C-c A" . calfw-org-open-calendar)))
 
 (use-package dslide
   :ensure (dslide :host github
