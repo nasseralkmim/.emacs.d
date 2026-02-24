@@ -1602,67 +1602,10 @@ When matching, reference is stored in match group 1."
         '((:eval . "never-export") ; don't eval blocks when exporting, except when `:eval yes`
           (:noweb . "no-export"))))
 
-;; Languages spell checker
-;; apparently, Aspell is faster than Hunspell http://aspell.net/test/cur/
-;; aspell need to install dictionaries with 'yay aspell-us' ('pt' and 'de')
-;; available dicts: 'aspell dump dicts'
-(use-package flyspell :disabled
-  :if (eq system-type 'gnu/linux)
-  :hook
-  (text-mode . flyspell-mode)
-  (prog-mode . flyspell-prog-mode) 
-  (message-send . flyspell-mode)
-  :config
-  (setq flyspell-issue-message-flag nil ; don't emit messages
-        ;; '--camel-case' check camel case variables... maybe useful
-        ;; '--sug-mode' suggestion mode 'ultra' is the fastest
-        ;; '--ignore-case' when checking
-        ;; '--extra-dicts' use extra dictionaries
-        ;; the user dictionary files must be defaults in '~/'
-        ispell-extra-args '("--sug-mode=ultra" "--camel-case=true" "--ignore-case=true")
-        ;; use this mixed language as default dictionary
-        ispell-local-dictionary-alist '((nil "[A-Za-z]" "[^A-Za-z]" "[']" nil ("--lang=en_US,pt_BR,de_DE") nil utf-8))))
-
-;; Attempt to use multiple dictionaries with 'aspell'
-(use-package ispell-multi :disabled)
-
 (use-package ispell
   :ensure nil
   :config
   (setq ispell-alternate-dictionary "/home/nasser/.personal"))
-
-;; 'husnpell' is alternative to 'aspell' that accepts multiple simultaneous dictionaries
-;; download 'hunspell' and the dictionaries 'yay hunspell hunspell-en (de, pt)
-;; run 'hunspell -D' to check where dictionaries are
-;; https://emacs.stackexchange.com/a/21379
-(use-package flyspell :disabled
-  :ensure nil
-  :defer 1 ; add hook for 'text-mode' after 1s
-  :config
-  (add-hook 'text-mode-hook 'flyspell-mode)
-  (add-hook 'prog-mode-hook 'flyspell-prog-mode) 
-  (add-hook 'message-send-hook 'flyspell-mode)
-  (setq ispell-program-name "hunspell")	; dictionary /usr/share/hunspell
-  (setq ispell-dictionary "en_US,de_DE,pt_BR")
-  (ispell-set-spellchecker-params)
-  (ispell-hunspell-add-multi-dic "en_US,de_DE,pt_BR")
-  (setq ispell-personal-dictionary "~/.personal"))
-
-;; 'flyspell' uses `hooks` and `sit-for` to delay
-;; this uses `idle-timers`
-(use-package flyspell-lazy :disabled
-  :after flyspell
-  :hook
-  (flyspell-mode . flyspell-lazy-mode)
-  :config
-  (setq flyspell-lazy-idle-seconds 1))
-
-;; Convenient functions for correcting with 'flyspell'.
-(use-package flyspell-correct :disabled
-  :after flyspell
-  :general
-  ('normal flyspell-mode-map "C-," 'flyspell-correct-wrapper)
-  ('normal flyspell-mode-map "[ ," 'flyspell-correct-wrapper))
 
 ;; completion in region manually summoned with <tab> (no auto pop up)
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
