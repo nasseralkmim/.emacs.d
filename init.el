@@ -5271,9 +5271,11 @@ RESCHEDULE-FN is the function to reschedule."
     (require 'flash-isearch)
     (flash-isearch-mode 1)))
 
-(use-package linum-relative
-  :custom (linum-relative-backend 'display-line-numbers-mode)
-  :hook (prog-mode . linum-relative-mode))
+(use-package display-line-numbers
+  :ensure nil
+  :hook (prog-mode . display-line-numbers-mode)
+  :custom
+  (display-line-numbers-type 'visual))
 
 ;; Emacs interface to GnuPG for encryption
 (use-package epg-config
