@@ -415,11 +415,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :bind
   (:map vertico-map
         ("M-<return>" . vertico-exit-input))
-  :defer 0.5
+  :hook (after-init . vertico-mode)
   :custom
   (context-menu-mode t)
   :config
-  (vertico-mode)
   (vertico-unobtrusive-mode))
 
 ;; improves behavior when dealing with directories in the minibuffer
