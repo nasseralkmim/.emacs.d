@@ -2355,8 +2355,7 @@ Only if there is more than one window opened."
   (prog-mode . yas-minor-mode)
   :commands yas-insert-snippet
   :config
-  (yas-reload-all)
-  (yas-global-mode))
+  (yas-reload-all))
 
 ;; ensures environment variables inside Emacs is the same in the user's shell
 ;; emacs' exec-path is not automatically updated from PATH
