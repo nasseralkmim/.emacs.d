@@ -59,21 +59,6 @@
       use-package-expand-minimally t	; minimal expanded macro
       use-package-always-defer t)	; always defer, don't "require", except when :demand
 
-;; Block until current queue processed.
-(elpaca-process-queues)
-
-;; general for keybinding
-(use-package general :disabled
-  :ensure (:wait t)
-  :demand t
-  :config
-  ;; keybinding on 'override' keymap are not overridden by a minor-mode. 
-  (general-override-mode))
-
-;; ':general' and ':diminish' add keywords to 'use-package'
-;; need to process before continue
-(elpaca-process-queues)
-
 ;; basics and better default
 (use-package emacs
   :ensure nil
