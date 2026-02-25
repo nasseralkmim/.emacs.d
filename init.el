@@ -1117,6 +1117,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Need to be explicitly required for magit
 ;; https://emacs.stackexchange.com/questions/50592/whats-this-slot-missing-invalid-slot-name-transient-prefix-transient-pref
 (use-package transient
+  :after magit
   :demand t)
 
 (use-package magit
