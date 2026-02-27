@@ -2099,7 +2099,7 @@ Otherwise, toggle only the directory at point."
     (dired-sidebar-toggle-with-current-directory)))
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
-(use-package modus-themes
+(use-package modus-themes :disabled
   :defer 1
   :bind
   ("<f5>" . modus-themes-toggle)
@@ -5098,5 +5098,12 @@ RESCHEDULE-FN is the function to reschedule."
   :custom
   ;; use Emacs for passphrase entry
   (epg-pinetry-mode 'loopback))
+
+(use-package standard-themes
+  :init
+  (standard-themes-take-over-modus-themes-mode 1)
+  :defer nil
+  :config
+  (modus-themes-load-theme 'standard-dark))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
