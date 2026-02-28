@@ -3910,7 +3910,7 @@ its results, otherwise display STDERR with
   ;; Add 'visual-line-mode' to the translation buffer
   ;; (gt-after-buffer-prepared . (lambda () (visual-line-mode 1)))
   :config
-  (setq gt-langs '(de en pt it fr)
+  (setq gt-langs '(de en pt it fr es)
         gt-default-translator (gt-translator :engines (gt-deepl-engine)))
   
   (defun my-gt-do-translate (&optional arg)
@@ -4329,7 +4329,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
   :bind
   ("M-," . jinx-correct)
   :config
-  (setq jinx-languages "en de pt_BR it fr"
+  (setq jinx-languages "en de pt_BR it fr es"
         jinx-delay 1))
 
 (use-package ediff
