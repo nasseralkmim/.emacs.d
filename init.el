@@ -4979,7 +4979,8 @@ RESCHEDULE-FN is the function to reschedule."
    ("TAB" . copilot-accept-completion))
   :config
   (setq copilot-max-char -1
-        copilot-idle-delay 0.3))
+        copilot-idle-delay 0.3
+        copilot-indent-offset-warning-disable t))
 
 (use-package ultra-scroll
   :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
