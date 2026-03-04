@@ -4154,7 +4154,7 @@ With prefix argument, prompt for a new default language."
                                                   (stroke-width . 1)
                                                   (fill . "none"))))
 
-(use-package edraw-link-preview-hack
+(use-package edraw-link-preview-hack :disabled
   :ensure nil
   :after org
   :init
