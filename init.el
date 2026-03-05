@@ -3537,7 +3537,10 @@ its results, otherwise display STDERR with
   (setq electric-pair-inhibit-predicate 'ignore)
   (setq electric-pair-skip-self t))
 
-(use-package markdown-mode
+(use-package markdown-ts-mode
+  :bind
+  (:map markdown-ts-mode-map
+        ("C-c C-d" . markdown-do))
   :hook
   ;; (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
   (markdown-ts-mode . outline-minor-mode)
