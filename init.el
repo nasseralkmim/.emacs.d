@@ -5071,8 +5071,7 @@ RESCHEDULE-FN is the function to reschedule."
                 :rev :newest)
   :defer 1
   :config
-  (setq winpulse-brightness 40
-        winpulse-duration 0.62)
+  (setq winpulse-brightness 40)
   (winpulse-mode +1))
 
 (use-package flash
