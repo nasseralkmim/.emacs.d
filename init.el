@@ -5109,15 +5109,4 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (modus-themes-load-theme 'standard-dark))
 
-(use-package ascii-latex-preview
-  :ensure (ascii-latex-preview :url "https://github.com/nasseralkmim/ascii-latex-preview")
-  :after org
-  :bind
-  (:map org-mode-map
-        ("C-c C-x C-k" . ascii-latex-preview-toggle)
-        ("C-c C-x k" . ascii-latex-preview-at-point))
-  :config
-  (setq ascii-latex-preview-mode-ignored-commands
-        '( next-line previous-line)))
-
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
