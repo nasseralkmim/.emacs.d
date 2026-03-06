@@ -3542,8 +3542,6 @@ its results, otherwise display STDERR with
   (:map markdown-ts-mode-map
         ("C-c C-d" . markdown-do))
   :hook
-  ;; (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
-  (markdown-ts-mode . outline-minor-mode)
   (markdown-ts-mode . visual-line-mode))
 
 ;; for reading email lists
