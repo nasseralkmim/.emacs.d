@@ -1573,53 +1573,6 @@ When matching, reference is stored in match group 1."
         corfu-auto-prefix 2
         corfu-quit-no-match 'separator))
 
-;; corfu extension
-(use-package corfu-history :disabled
-  :ensure nil
-  :after corfu
-  :config
-  (corfu-history-mode 1)
-  (savehist-mode 1)
-  (add-to-list 'savehist-additional-variables 'corfu-history))
-
-;; `completion at point' extensions for specific candidates in `completion in region'
-(use-package cape
-  :vc (:url "https://github.com/minad/cape")
-  :demand
-  :bind
-  ("C-c p" . cape-prefix-map)
-  :config
-  ;; used by `completion-at-point'.  The order of the functions matters, the
-  ;; first function returning a result wins.  Note that the list of buffer-local
-  ;; completion functions takes precedence over the global list.
-  (add-hook 'completion-at-point-functions #'cape-dabbrev)
-  (add-hook 'completion-at-point-functions #'cape-file)
-  (add-hook 'completion-at-point-functions #'cape-dict)
-  (add-hook 'emacs-lisp-mode-hook (lambda ()
-                                    (add-to-list 'completion-at-point-functions #'cape-elisp-symbol))))
-
-;; TODO: maybe not needed anymore 
-;; see [[orgit-log:~/.local/src/emacs/::("master")][~/.local/src/emacs/ (magit-log "master")]]
-(use-package cape-eglot :disabled
-  :ensure nil
-  :after orderless eglot
-  :init
-  ;; use orderless style for completion (default is flex)
-  ;; https://github.com/minad/corfu/wiki
-  (setq completion-category-overrides '((eglot (styles orderless)))))
-
-;; use corfu on terminal
-(use-package corfu-terminal :disabled
-  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
-  :unless (display-graphic-p)
-  :after corfu
-  :defer 1
-  :config
-  (corfu-terminal-mode)
-  ;; does not play nicely with 'org-indent-mode'
-  (with-eval-after-load 'org
-    (remove-hook 'org-mode-hook 'org-indent-mode))) 
-
 ;; completion any text based on buffer contents
 (use-package dabbrev
   :ensure nil
