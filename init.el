@@ -3435,6 +3435,10 @@ its results, otherwise display STDERR with
   (setq electric-pair-skip-self t))
 
 (use-package markdown-mode
+  :ensure t
+  :init (setq markdown-command "multimarkdown")
+  :bind (:map markdown-mode-map
+              ("C-c C-e" . markdown-do))
   :hook
   ;; (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
   (markdown-ts-mode . outline-minor-mode)
