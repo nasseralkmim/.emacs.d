@@ -4547,11 +4547,6 @@ absolute path. Finally load eglot."
     (eglot-ensure)
     (breadcrumb-mode -1)))
 
-(use-package standard-themes :disabled
-  :defer .5
-  :init
-  (standard-themes-load-dark))
-
 ;; use treesit modes in org edit special
 (use-package org-treesit-src-blocks-hack
   :ensure nil
@@ -5059,9 +5054,7 @@ RESCHEDULE-FN is the function to reschedule."
   (epg-pinetry-mode 'loopback))
 
 (use-package standard-themes
-  :init
-  (standard-themes-take-over-modus-themes-mode 1)
-  :defer nil
+  :defer 0.5
   :config
   (modus-themes-load-theme 'standard-dark))
 
