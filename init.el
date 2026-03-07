@@ -2350,27 +2350,6 @@ Only if there is more than one window opened."
   :config
   (add-to-list 'display-buffer-alist `("^\\*vterminal.*" display-buffer-below-selected)))
 
-(use-package terminal-here :disabled
-  :general
-  ('normal "C-<f7>" 'terminal-here-launch)
-  :config
-  ;; change terminal command
-  (when (string= system-name "ryzen-ms7c37")
-    (setq terminal-here-terminal-command 'gnome-terminal)))
-
-(use-package keycast :disabled
-  :commands keycast-mode keycast-log-mode)
-
-(use-package gif-screencast :disabled
-  :commands gif-screencast
-  :general
-  ("<f8>" 'gif-screencast)
-  (gif-screencast-mode-map "<f8>" 'gif-screencast-stop)
-  :config
-  ;; change the function gif-screencast--generate-gif to generate file without ":"
-  ;; (format-time-string "output-%F-%H-%M-%S.gif" (current-time))
-  (setq gif-screencast-output-directory "./gif/"))
-
 ;; update time stamp of org files
 (use-package time-stamp
   :ensure nil
