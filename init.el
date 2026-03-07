@@ -3,57 +3,15 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
-;; Bootstrap elpaca
-(defvar elpaca-installer-version 0.11)
-(defvar elpaca-directory (expand-file-name "elpaca/" user-emacs-directory))
-(defvar elpaca-builds-directory (expand-file-name "builds/" elpaca-directory))
-(defvar elpaca-repos-directory (expand-file-name "repos/" elpaca-directory))
-(defvar elpaca-order '(elpaca :repo "https://github.com/progfolio/elpaca.git"
-                              :ref nil :depth 1
-                              :files (:defaults "elpaca-test.el" (:exclude "extensions"))
-                              :build (:not elpaca--activate-package)))
-(let* ((repo  (expand-file-name "elpaca/" elpaca-repos-directory))
-       (build (expand-file-name "elpaca/" elpaca-builds-directory))
-       (order (cdr elpaca-order))
-       (default-directory repo))
-  (add-to-list 'load-path (if (file-exists-p build) build repo))
-  (unless (file-exists-p repo)
-    (make-directory repo t)
-    (when (< emacs-major-version 28) (require 'subr-x))
-    (condition-case-unless-debug err
-        (if-let* ((buffer (pop-to-buffer-same-window "*elpaca-bootstrap*"))
-                  ((zerop (apply #'call-process `("git" nil ,buffer t "clone"
-                                                  ,@(when-let* ((depth (plist-get order :depth)))
-                                                      (list (format "--depth=%d" depth) "--no-single-branch"))
-                                                  ,(plist-get order :repo) ,repo))))
-                  ((zerop (call-process "git" nil buffer t "checkout"
-                                        (or (plist-get order :ref) "--"))))
-                  (emacs (concat invocation-directory invocation-name))
-                  ((zerop (call-process emacs nil buffer nil "-Q" "-L" "." "--batch"
-                                        "--eval" "(byte-recompile-directory \".\" 0 'force)")))
-                  ((require 'elpaca))
-                  ((elpaca-generate-autoloads "elpaca" repo)))
-            (progn (message "%s" (buffer-string)) (kill-buffer buffer))
-          (error "%s" (with-current-buffer buffer (buffer-string))))
-      ((error) (warn "%s" err) (delete-directory repo 'recursive))))
-  (unless (require 'elpaca-autoloads nil t)
-    (require 'elpaca)
-    (elpaca-generate-autoloads "elpaca" repo)
-    (load "./elpaca-autoloads")))
-(add-hook 'after-init-hook #'elpaca-process-queues)
-(elpaca `(,@elpaca-order))
-
-;; Install 'use-package' support
-(elpaca elpaca-use-package
-  ;; Enable :elpaca use-package keyword.
-  (elpaca-use-package-mode))
+(with-eval-after-load 'package
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/")))
 
 ;; 'always-defer' means that for a package to load we need a ':hook' or using a ':general' keybinding
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
-(setq use-package-verbose nil		; don't print anything
-      use-package-compute-statistics nil ; compute statistics about package initialization
-      use-package-minimum-reported-time 0.0001
+(setq use-package-verbose nil 		; don't print anything
+      use-package-compute-statistics t ; compute statistics about package initialization
       use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
       use-package-expand-minimally t	; minimal expanded macro
@@ -385,6 +343,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :config
   (setq revert-without-query (list ".")  ; Do not prompt
         auto-revert-stop-on-user-input nil
+        auto-revert-avoid-polling t     ; automatically reread from disk
         auto-revert-check-vc-info t
         auto-revert-verbose t)
 
@@ -410,8 +369,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; completion UI (vertical list in minibuffer)
 (use-package vertico
-  :ensure (vertico :type git :host github :repo "minad/vertico"
-                   :files (:defaults "extensions/*"))
+  :ensure t
   :bind
   (:map vertico-map
         ("M-<return>" . vertico-exit-input))
@@ -467,8 +425,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; allows different completion UI configuration
 (use-package vertico-multiform
-  :ensure nil
   :after vertico
+  :ensure nil
   :demand t
   :config
   (vertico-multiform-mode)
@@ -699,7 +657,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 ;; insert recent openend directories in prompt
 (use-package consult-dir :disabled
-  :ensure (consult-dir :type git :host github :repo "karthink/consult-dir") 
+  :vc (:url "https://github.com/karthink/consult-dir")
   :general
   ("C-x C-d" 'consult-dir)
   (vertico-map "C-x C-d" 'consult-dir))
@@ -711,7 +669,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; `export` the set of targets are shown in an appropriate major-mode
 ;; embark-mixed-indicator: if no action is selected, buffer will pop up
 (use-package embark
-  :ensure (embark :files (:defaults "embark-org.el"))
+  :ensure t
   ;; :demand                               ; load it independently of bind and hook
   :bind (("C-z" . embark-act)
          ("C-M-z" . embark-dwim)
@@ -768,12 +726,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq nerd-icons-scale-factor .6))
 
 (use-package nerd-icons-dired
-  :ensure (nerd-icons-dired :type git :host github :repo "rainstormstudio/nerd-icons-dired")
+  :vc (:url "https://github.com/rainstormstudio/nerd-icons-dired")
   :hook
   (dired-mode . nerd-icons-dired-mode))
 
 (use-package nerd-icons-completion
-  :ensure (nerd-icons-completion :type git :host github :repo "rainstormstudio/nerd-icons-completion")
+  :vc (:url "https://github.com/rainstormstudio/nerd-icons-completion")
   ;; need to load after marginalia 
   ;; https://github.com/rainstormstudio/nerd-icons-completion/issues/4
   :after (nerd-icons marginalia)
@@ -1122,10 +1080,11 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :demand t)
 
 (use-package magit
-  :ensure (magit :files (:defaults "git-commit.el"))
+  :ensure t
   :hook
   (magit-mode . magit-auto-revert-mode) ; auto refresh
   :bind
+  ("C-x g" . magit-status)
   (:map magit-mode-map
         ("C-x 4 j" . magit-diff-visit-worktree-file-other-window)
         ("=" . magit-diff-toggle-refine-hunk))
@@ -1148,10 +1107,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; to use just what is needed
 (use-package org-contrib
   ;; build only selected (symlink to `build/' and make an pre-compiled '.elc')
-  :ensure (org-contrib :files ("lisp/org-eldoc.el" ; show src block arguments
-                               "lisp/ox-bibtex.el" ; export latex properly
-                               "lisp/ox-extra.el" ; ignore headlines (need to config)
-                               ))
+  ;; :ensure (org-contrib :files ("lisp/org-eldoc.el" ; show src block arguments
+  ;;                              "lisp/ox-bibtex.el" ; export latex properly
+  ;;                              "lisp/ox-extra.el" ; ignore headlines (need to config)
+  ;;                              ))
   :init
   (with-eval-after-load 'org
     (require 'ox-extra)
@@ -1166,7 +1125,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ;; :ensure nil
   ;; Since elpaca queue fist before loading, we need to wait here.
   ;; So we load the correct version of org instead of built-in when exporting async.
-  :ensure (org :repo "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
+  :vc (:url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
   ;; :custom-face
   ;; (org-block ((t (:inherit org-agenda-restriction-lock :extend t))))
   ;; (org-meta-line ((t (:foreground "gray60"))))
@@ -1514,7 +1473,7 @@ When matching, reference is stored in match group 1."
                                    )))
 
 (use-package org-latex-preview
-  ;; :when (display-graphic-p)
+  :when (display-graphic-p)
   :ensure nil
   :after org
   :init
@@ -1597,8 +1556,7 @@ When matching, reference is stored in match group 1."
 ;; allows space (separator M-SPC) between filter words (combined with oderless)
 (use-package corfu :disabled
   :when (display-graphic-p)
-  :ensure (corfu :type git :host github :repo "minad/corfu"
-                   :files (:defaults "extensions/*"))
+  :vc (:url "https://github.com/minad/corfu")
   :bind
   (:map corfu-map
         ("<tab>" . corfu-next)
@@ -1627,7 +1585,7 @@ When matching, reference is stored in match group 1."
 
 ;; `completion at point' extensions for specific candidates in `completion in region'
 (use-package cape
-  :ensure (cape :type git :host github :repo "minad/cape")
+  :vc (:url "https://github.com/minad/cape")
   :demand
   :bind
   ("C-c p" . cape-prefix-map)
@@ -1653,7 +1611,7 @@ When matching, reference is stored in match group 1."
 
 ;; use corfu on terminal
 (use-package corfu-terminal :disabled
-  :ensure (corfu-terminal :type git :repo "https://codeberg.org/akib/emacs-corfu-terminal.git")
+  :vc (:url "https://codeberg.org/akib/emacs-corfu-terminal.git")
   :unless (display-graphic-p)
   :after corfu
   :defer 1
@@ -1758,15 +1716,16 @@ When matching, reference is stored in match group 1."
                                              eow))))))
 
 (use-package latex
+  :ensure auctex
   ;; version for solving problem with evil-tex https://github.com/progfolio/elpaca/issues/217
-  :ensure (auctex :pre-build (("./autogen.sh")
-                              ("./configure"
-                               "--without-texmf-dir"
-                               "--with-packagelispdir=./"
-                               "--with-packagedatadir=./")
-                              ("make"))
-                  :build (:not elpaca--compile-info) ;; Make will take care of this step
-                  :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style"))
+  ;; :ensure (auctex :pre-build (("./autogen.sh")
+  ;;                             ("./configure"
+  ;;                              "--without-texmf-dir"
+  ;;                              "--with-packagelispdir=./"
+  ;;                              "--with-packagedatadir=./")
+  ;;                             ("make"))
+  ;;                 :build (:not elpaca--compile-info) ;; Make will take care of this step
+  ;;                 :files ("*.el" "doc/*.info*" "etc" "images" "latex" "style"))
   :init
   ;; This commit add a remap from LaTeX-mode (which Auctex) uses to latex-mode
   
@@ -1838,7 +1797,7 @@ When matching, reference is stored in match group 1."
 
 ;; Better math preview in latex
 (use-package preview-auto :disabled
-  :ensure (preview-auto :type git :host github :repo "ultronozm/preview-auto.el")
+  :vc (:url "https://github.com/ultronozm/preview-auto.el")
   :after latex
   :demand t
   :config
@@ -2157,6 +2116,7 @@ Only if there is more than one window opened."
 
 ;; dimm other buffers
 (use-package dimmer
+  :ensure t
   :commands dimmer-mode
   :config
   (setq dimmer-fraction 0.3)
@@ -2336,6 +2296,7 @@ Only if there is more than one window opened."
   :config (citar-embark-mode))
 
 (use-package biblio
+  :ensure t
   :commands biblio-lookup)
 
 (use-package server
@@ -2349,7 +2310,8 @@ Only if there is more than one window opened."
   :ensure nil
   :after org)
 
-(use-package yasnippet
+(use-package yasnippet :disabled
+  :ensure t
   :hook
   (LaTeX-mode . yas-minor-mode)
   (org-mode . yas-minor-mode)
@@ -2418,6 +2380,7 @@ Only if there is more than one window opened."
 
 ;; Terminal emulator based on libvterm (in C)
 (use-package vterm
+  :ensure t
   :commands vterm
   :bind
   ("<f9>" . vterm)
@@ -2434,7 +2397,7 @@ Only if there is more than one window opened."
 
 
 (use-package vterm-anti-flicker-filter
-  :ensure (:url "https://github.com/martinbaillie/vterm-anti-flicker-filter" :rev :newest)
+  :vc (:url "https://github.com/martinbaillie/vterm-anti-flicker-filter" :rev :newest)
   :hook (vterm-mode . vterm-anti-flicker-filter-enable))
 
 ;; Quickly switch to 'vterm' buffer.
@@ -2542,7 +2505,7 @@ Only if there is more than one window opened."
 
 ;; create backlinks when linking org-mode headings
 (use-package org-super-links :disabled
-  :ensure (org-super-links :type git :host github :repo "toshism/org-super-links")
+  :vc (:url "https://github.com/toshism/org-super-links")
   ;; :after org  ; can use outside of org-mode, so use the keybindings to load
   :bind
   (("C-c s l" . org-super-links-store-link)
@@ -2722,7 +2685,7 @@ Only if there is more than one window opened."
         recentf-auto-cleanup 'never))
 
 ;; easily change windows
-(use-package ace-window
+(use-package ace-window :disabled
   :commands aw-select aw-window-list                   ; for dired with C-u
   :bind*
   ("C-c C-w" . ace-window)
@@ -2788,8 +2751,8 @@ opening a file from dired. Otherwise just regular dired."
         avy-indent-line-overlay nil
         avy-all-windows nil))
 
-(use-package all-the-icons-completion
-  :ensure (all-the-icons-completion :type git :host github :repo "MintSoup/all-the-icons-completion")
+(use-package all-the-icons-completion :disabled
+  :vc (:url "https://github.com/MintSoup/all-the-icons-completion")
   :when (display-graphic-p)
   :after marginalia all-the-icons
   :defer 1
@@ -2854,7 +2817,7 @@ opening a file from dired. Otherwise just regular dired."
 (use-package flymake-mypy :disabled     ; for some reason not working, I'm
                                         ; relying on the language server for
                                         ; type check now
-  :ensure (flymake-mypy :type git :host github :repo "com4/flymake-mypy")
+  :vc (:url "https://github.com/com4/flymake-mypy")
   :hook
   (eglot-managed-mode . (lambda ()
                            (when (or (derived-mode-p 'python-mode)
@@ -2881,7 +2844,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; 
 (use-package eglot-ltex :disabled
   :unless (string-match "-[Mm]icrosoft" operating-system-release) ; only in linux
-  :ensure (eglot-ltex :type git :host github :repo "emacs-languagetool/eglot-ltex")
+  :vc (:url "https://github.com/emacs-languagetool/eglot-ltex")
   :commands start-eglot-ltex
   :init
   ;; apparently the newer version does not work 
@@ -2914,7 +2877,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; need to install grammarly-languageserver
 ;; npm install -g @emacs-grammarly/grammarly-languageserver
 (use-package eglot-grammarly :disabled
-  :ensure (:host github :repo "emacs-grammarly/eglot-grammarly")
+  :vc (:url "https://github.com/emacs-grammarly/eglot-grammarly")
   :commands start-eglot-grammarly 
   :init
   (defun start-eglot-grammarly ()
@@ -2952,7 +2915,7 @@ opening a file from dired. Otherwise just regular dired."
 ;;
 ;; need to rerun the server after change the 'server.properties'
 ;; kill the task: $ ps aux | grep java.*languagetool
-(use-package flymake-languagetool
+(use-package flymake-languagetool :disabled
   :commands flymake-languagetool-start
   ;; better to do manually, sometimes slow to start
   ;; :hook (text-mode . flymake-languagetool-maybe-load)
@@ -2993,11 +2956,11 @@ opening a file from dired. Otherwise just regular dired."
       languagetool-server-arguments '("--config" "/home/nasser/.opt/fasttext/server.properties")))
 
 (use-package svg-lib :disabled
-  :ensure (svg-lib :type git :host github :repo "rougier/svg-lib"))
+  :vc (:url "https://github.com/rougier/svg-lib"))
 
 ;; Icons for completion in region.
 (use-package kind-icon :disabled
-  :ensure (kind-icon :type git :host github :repo "jdtsmith/kind-icon")
+  :vc (:url "https://github.com/jdtsmith/kind-icon")
   :after corfu 
   :custom
   (kind-icon-default-face 'corfu-default)
@@ -3018,6 +2981,7 @@ opening a file from dired. Otherwise just regular dired."
   (prog-mode . which-function-mode))
 
 (use-package breadcrumb
+  :ensure t
   :custom-face 
   (breadcrumb-face ((t (:inherit font-lock-comment-face))))
   (breadcrumb-imenu-leaf-face ((t (:inherit unspecified))))
@@ -3031,6 +2995,7 @@ opening a file from dired. Otherwise just regular dired."
 ;;
 ;; To fork: N c f (this looks for owned accounts 'forge-owned-accounts)
 (use-package forge
+  :ensure t
   :demand
   :after magit
   :config
@@ -3043,6 +3008,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; Mass copy-paste or copy-move (analogous to cut-paste) for dired.
 (use-package dired-ranger
+  :ensure t
   :after dired
   :bind
   (:map dired-mode-map
@@ -3191,7 +3157,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; save windows configurations and use regular bookmarks file
 (use-package burly :disabled
-  :ensure (burly :type git :host github :repo "alphapapa/burly.el")
+  :vc (:url "https://github.com/alphapapa/burly.el")
   :general
   ('normal "<f6>" 'burly-bookmark-windows)
   :config
@@ -3201,7 +3167,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; Instead of burly
 ;; restore windows as LAST-SEEN state
 (use-package activities
-  :ensure (activities :type git :host github :repo "alphapapa/activities.el")
+  :ensure t
   :after consult                        ; access with 'consult-buffer' and 'b <SPC>' for bookmarks
   :init
   (activities-mode)
@@ -3217,7 +3183,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; requires dtach `yay dtach'
 ;; run shell commands detached from emacs
 (use-package detached :disabled
-  :ensure (detached :type git :host nil :repo "https://git.sr.ht/~niklaseklund/detached.el")
+  :vc (:url "https://git.sr.ht/~niklaseklund/detached.el")
   :general
   ([remap async-shell-command] 'detached-shell-command)
   :custom ((detached-show-output-on-attach t))
@@ -3268,6 +3234,7 @@ opening a file from dired. Otherwise just regular dired."
   (popper-echo-mode +1))
 
 (use-package rainbow-delimiters
+  :ensure t
   :hook (prog-mode . rainbow-delimiters-mode))
 
 ;; eye candy for org
@@ -3286,17 +3253,16 @@ opening a file from dired. Otherwise just regular dired."
 ;; query for org
 (use-package org-ql :disabled
   :after org
-  :ensure (org-ql :host github :repo "alphapapa/org-ql"
-                    :files (:defaults (:exclude "helm-org-ql.el"))))
+  :vc (:url "https://github.com/alphapapa/org-ql"))
 
 ;; allows inline animations in org
-(use-package org-inline-anim
+(use-package org-inline-anim :disabled
   :after org
   :commands org-inline-anim-mode)
 
 ;; eldoc in childframe
 ;; sometimes it gets in the way
-(use-package eldoc-box
+(use-package eldoc-box :disabled
   :if (display-graphic-p)
   :hook
   (prog-mode . eldoc-box-hover-mode)
@@ -3308,7 +3274,7 @@ opening a file from dired. Otherwise just regular dired."
 
 ;; async support for dired
 (use-package emacs-async :disabled
-  :ensure (emacs-async :host github :repo "jwiegley/emacs-async")
+  :vc (:url "https://github.com/jwiegley/emacs-async")
   :hook (dired-mode . dired-async-mode))
 
 ;; function to run local command on remote file
@@ -3329,7 +3295,8 @@ opening a file from dired. Otherwise just regular dired."
       (dired-do-shell-command command num-files local-tmp-files))))
 
 ;; Anther package to find synonyms
-(use-package powerthesaurus 
+(use-package powerthesaurus :disabled
+  :ensure t
   :bind
   ("C-c d s" . powerthesaurus-lookup-dwim))
 
@@ -3537,11 +3504,10 @@ its results, otherwise display STDERR with
   (setq electric-pair-inhibit-predicate 'ignore)
   (setq electric-pair-skip-self t))
 
-(use-package markdown-ts-mode
-  :bind
-  (:map markdown-ts-mode-map
-        ("C-c C-d" . markdown-do))
+(use-package markdown-mode
   :hook
+  ;; (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
+  (markdown-ts-mode . outline-minor-mode)
   (markdown-ts-mode . visual-line-mode))
 
 ;; for reading email lists
@@ -3760,8 +3726,9 @@ its results, otherwise display STDERR with
 ;; 'ebdb-migrate-from-bbdb' converts from bbdb
 ;; 'ebdb-mua-update-records' can be used to add contacts
 (use-package ebdb
+  :ensure t
   :after (:any gnus message)
-  :init
+  :config
   ;; load code for GNUs for reading and message for sending 
   (require 'ebdb-gnus)
   (require 'ebdb-message)
@@ -3883,13 +3850,13 @@ its results, otherwise display STDERR with
   :ensure nil)
 
 (use-package pdd
-  :ensure (pdd :host github :repo "lorniu/pdd.el")
+  :vc (:url "https://github.com/lorniu/pdd.el")
   :after gt
   :defer t)
 
 ;; translation package
 (use-package gt
-  :ensure (gt :host github :repo "lorniu/gt.el")
+  :vc (:url "https://github.com/lorniu/gt.el")
   :bind
   (("C-c t t" . my-gt-do-translate)     ; overrides the tutorial, but ok...
    ("C-c t d" . gt-do-setup)
@@ -4113,7 +4080,7 @@ With prefix argument, prompt for a new default language."
 
 (use-package hack-org-edraw-async-export
   :ensure nil
-  :load-path "./elpaca/builds/edraw/"
+  :load-path "./elpa/edraw/"
   :after ox
   :init
   (require 'edraw-org)
@@ -4122,7 +4089,7 @@ With prefix argument, prompt for a new default language."
 ;; Drawing link support in 'org-mode'
 (use-package edraw
   ;; :when (display-graphic-p)
-  :ensure (edraw :type git :host github :repo "misohena/el-easydraw")
+  :vc (:url "https://github.com/misohena/el-easydraw")
   :init
   (with-eval-after-load 'org
     (progn
@@ -4224,7 +4191,7 @@ If an edraw editor is active for this link, preview is skipped."
 ;; For Ollama, need to download and execute "ollama"
 ;; Also need to run a model to pull manifest "ollama run mistral"
 (use-package gptel
-  :ensure (gptel :type git :host github :repo "karthink/gptel")
+  :vc (:url "https://github.com/karthink/gptel")
   :commands gptel-quick                 ; load gptel when gptel-quick is called
   :bind
   ("C-c C-g" . gptel-menu)
@@ -4322,8 +4289,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
 ;; One can create a symlink ('dired-do-symlink') from the main list of words file to this 'en.dic' file.
 ;; Remember to disable 'flyspell'.
 (use-package jinx
-  :ensure (jinx :host github :repo "minad/jinx"
-                :files (:defaults "*.c"))
+  :vc (:url "https://github.com/minad/jinx")
   :hook
   (prog-mode . jinx-mode)
   (text-mode . jinx-mode)
@@ -4415,7 +4381,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
   (setq org-imenu-depth 5))
 
 (use-package pueue
-  :ensure (pueue :host github :repo "xFA25E/pueue")
+  :vc (:url "https://github.com/xFA25E/pueue")
   :hook (pueue-mode . (lambda ()
                         (setq auto-revert-interval 0)
                         (auto-revert-mode)))
@@ -4425,14 +4391,14 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
 
 ;; Matchs the cursor color when running emacs in terminal
 ;; makes it much more visible, but it does not change the foreground when over the text as in the GUI
-(use-package term-cursor-color
-  :ensure (term-cursor-color :host github :repo "CyberShadow/term-cursor-color")
+(use-package term-cursor-color :disabled
+  :vc (:url "https://github.com/CyberShadow/term-cursor-color")
   :if (not (display-graphic-p))
   :init
   (term-cursor-color-mode))
 
 (use-package combobulate :disabled
-  :ensure (combobulate :url "https://github.com/mickeynp/combobulate")
+  :vc (:url "https://github.com/mickeynp/combobulate")
   :hook
   (python-ts-mode . combobulate-mode)
   (c++-ts-mode . combobulate-mode)
@@ -4440,12 +4406,14 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
 
 ;; copy from emacs terminal
 (use-package clipetty
-  :hook (after-init . global-clippety-mode)
+  :ensure t
   :bind
   ("M-S-y" . clipetty-kill-ring-save)
   :bind*
   ;; for terminal support
-  ("C-M-y" . clipetty-kill-ring-save))
+  ("C-M-y" . clipetty-kill-ring-save)
+  :config
+  (global-clipetty-mode))
 
 ;; Add text-mode to files without format extension
 (use-package custom-files-auto-mode
@@ -4526,7 +4494,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
 
 ;; Show guides on indentation level
 (use-package indent-bars
-  :ensure (indent-bars :url "https://github.com/jdtsmith/indent-bars")
+  :vc (:url "https://github.com/jdtsmith/indent-bars")
   :custom
   (indent-bars-no-descend-lists t) ; no extra bars in continued func arg lists
   (indent-bars-treesit-support t)
@@ -4598,7 +4566,7 @@ absolute path. Finally load eglot."
   (advice-add 'org-src-get-lang-mode :filter-return #'change-mode-to-ts-mode))
 
 (use-package immersive-translate :disabled
-  :ensure (immersive-translate :url "https://github.com/Elilif/emacs-immersive-translate.git")
+  :vc (:url "https://github.com/Elilif/emacs-immersive-translate.git")
   :config
   (immersive-translate-setup)
   (setq immersive-translate-backend 'trans
@@ -4656,7 +4624,7 @@ absolute path. Finally load eglot."
            (t (error "mark no more than 2 files"))))))
 
 (use-package dape
-  :ensure (dape :type git :host github :repo "svaante/dape")
+  :vc (:url "https://github.com/svaante/dape")
   :commands dape
   :config
   (setq dape-inlay-hints t))
@@ -4665,15 +4633,14 @@ absolute path. Finally load eglot."
 ;; Need to build and install rust binary "emacs-lsp-booster" which should be on the path
 ;; https://github.com/blahgeek/emacs-lsp-booster
 (use-package eglot-booster
-  :ensure (eglot-booster :type git :host github :repo "jdtsmith/eglot-booster")
+  :vc (:url "https://github.com/jdtsmith/eglot-booster")
   :after eglot
   :init (eglot-booster-mode)
   (setq eglot-booster-io-only t))
 
 (use-package calfw
   ;; make sure to "build" 'calfw-org.el' as well.
-  :ensure (calfw 
-           :files ("*.el" "calfw-org.el"))
+  :ensure t
   :init
   ;; autoload 'calfw-org' when opening calendar
   (unless (fboundp 'calfw-org-open-calendar)
@@ -4681,23 +4648,20 @@ absolute path. Finally load eglot."
   (bind-keys :package calfw ("C-c A" . calfw-org-open-calendar)))
 
 (use-package dslide
-  :ensure (dslide :host github
-                  :repo "positron-solutions/dslide")
+  :vc (:url "https://github.com/positron-solutions/dslide")
   :bind
   ("C-<f12>" . dslide-deck-start)
   :config
   (setq dslide-animation-duration 0))
 
 (use-package moc
-  :ensure (moc
-           :host github
-           :repo "positron-solutions/moc"))
+  :vc (:url "https://github.com/positron-solutions/moc"))
 
 (use-package org-appear
-  :ensure (org-appear :type git :host github :repo "awth13/org-appear"))
+  :vc (:url "https://github.com/awth13/org-appear"))
 
 (use-package treesit-fold
-  :ensure (treesit-fold :type git :host github :repo "emacs-tree-sitter/treesit-fold")
+  :vc (:url "https://github.com/emacs-tree-sitter/treesit-fold")
   :bind
   (:map treesit-fold-mode-map
    ("C-c @ C-h"  . treesit-fold-close)
@@ -4815,14 +4779,12 @@ Returns t if any nodes were folded, nil otherwise."
 ;; tools for display during presentations
 (use-package moc :disabled
   :after dslide
-  :ensure (moc 
-           :host github
-           :repo "positron-solutions/moc"))
+  :vc (:url "https://github.com/positron-solutions/moc"))
 
 (use-package hide-mode-line :disabled)
 
 (use-package apptainer-mode
-  :ensure (apptainer-mode :type git :host github :repo "jrgant/apptainer-mode")
+  :vc (:url "https://github.com/jrgant/apptainer-mode")
   :mode ("\\.def\\'" . apptainer-mode))
 
 (use-package kkp              ; having problems with org-export not been able to export subtree on kitty
@@ -4874,10 +4836,7 @@ RESCHEDULE-FN is the function to reschedule."
 
 ;; Style check for python instead of flake8
 (use-package flymake-ruff
-  :ensure (flymake-ruff
-           :type git
-           :host github
-           :repo "erickgnavar/flymake-ruff")
+  :vc (:url "https://github.com/erickgnavar/flymake-ruff")
   :hook
   (eglot-managed-mode . (lambda ()
                           (flymake-ruff-load)
@@ -4940,13 +4899,13 @@ RESCHEDULE-FN is the function to reschedule."
   (key-chord-define meow-normal-state-keymap "gg" 'beginning-of-buffer))
 
 (use-package gptel-quick
-  :ensure (gptel-quick :type git :host github :repo "karthink/gptel-quick")
+  :vc (:url "https://github.com/karthink/gptel-quick")
   :after embark
   :init
   (keymap-set embark-general-map "?" #'gptel-quick))
 
 (use-package eglot-inactive-regions
-  :ensure (eglot-inactive-regions :type git :host github :repo "fargiolas/eglot-inactive-regions")
+  :vc (:url "https://github.com/fargiolas/eglot-inactive-regions")
   :after eglot
   :custom
   (eglot-inactive-regions-style 'darken-foreground)
@@ -4956,7 +4915,7 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package org-xopp
   :after org
-  :ensure (:host github :repo "mahmoodsh36/org-xopp" :files (:defaults "*.sh"))
+  :vc (:url "https://github.com/mahmoodsh36/org-xopp")
   :demand
   :config
   (org-xopp-setup))
@@ -4965,7 +4924,7 @@ RESCHEDULE-FN is the function to reschedule."
 ;; make sure correct npm is set with nvm (fist 'source /usr/share/nvm/init-nvm.sh' then
 ;; 'nvm use 22', (or 'nvm list' to see available))
 (use-package copilot
-  :ensure (:host github :repo "copilot-emacs/copilot.el" :files ("*.el"))
+  :vc (:url "https://github.com/copilot-emacs/copilot.el")
   :hook
   (prog-mode . (lambda () (run-with-idle-timer 1 nil #'copilot-mode)))
   (org-mode . (lambda () (run-with-idle-timer 1 nil #'copilot-mode)))
@@ -4984,7 +4943,7 @@ RESCHEDULE-FN is the function to reschedule."
         copilot-indent-offset-warning-disable t))
 
 (use-package ultra-scroll
-  :ensure (ultra-scroll :url  "https://github.com/jdtsmith/ultra-scroll")
+  :vc (:url "https://github.com/jdtsmith/ultra-scroll")
   :init
   (setq scroll-conservatively 101 ; important!
         scroll-margin 0) 
@@ -5009,7 +4968,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setq org-attach-auto-tag nil))
 
 (use-package automagic-dark-mode :disabled
-  :ensure (automagic-dark-mode :url  "https://github.com/sstraust/automagic-dark-mode")
+  :vc (:url "https://github.com/sstraust/automagic-dark-mode")
   :bind ("<f5>" . automagic-dark-mode)
   :config
   (setq automagic-dark-wcag-ratio 4
@@ -5017,14 +4976,14 @@ RESCHEDULE-FN is the function to reschedule."
         automagic-dark-luminance-inversion-exp 0.6))
 
 (use-package claude-code-ide :disabled
-  :ensure (:type git :host github :repo "manzaltu/claude-code-ide.el")
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el")
   :bind ("C-c C-a" . claude-code-ide-menu)
   :config
   (setq claude-code-ide-terminal-backend 'eat)
   (claude-code-ide-emacs-tools-setup))
 
 (use-package buffer-background :disabled
-  :ensure (buffer-background :url "https://github.com/theesfeld/buffer-background")
+  :vc (:url "https://github.com/theesfeld/buffer-background")
   :defer 1
   :config
   (setq buffer-background-color-alist
@@ -5065,15 +5024,15 @@ RESCHEDULE-FN is the function to reschedule."
         nyan-bar-length 8))
 
 (use-package winpulse
-  :ensure (:url "https://github.com/xenodium/winpulse"
-                :rev :newest)
+  :vc (:url "https://github.com/xenodium/winpulse" :rev :newest)
   :defer 1
   :config
-  (setq winpulse-brightness 40)
+  (setq winpulse-brightness 40
+        winpulse-duration 0.62)
   (winpulse-mode +1))
 
 (use-package flash
-  :ensure (flash :host github :repo "Prgebish/flash")
+  :ensure t
   :commands (flash-jump flash-treesitter)
   :bind ("M-j" . flash-jump)
   :custom
@@ -5106,5 +5065,16 @@ RESCHEDULE-FN is the function to reschedule."
   :defer nil
   :config
   (modus-themes-load-theme 'standard-dark))
+
+(use-package ascii-latex-preview
+  :vc (:url "https://github.com/nasseralkmim/ascii-latex-preview")
+  :after org
+  :bind
+  (:map org-mode-map
+        ("C-c C-x C-k" . ascii-latex-preview-toggle)
+        ("C-c C-x k" . ascii-latex-preview-at-point))
+  :config
+  (setq ascii-latex-preview-mode-ignored-commands
+        '( next-line previous-line)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))

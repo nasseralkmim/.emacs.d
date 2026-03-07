@@ -10,6 +10,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(activities apptainer-mode ascii-latex-preview auctex biblio breadcrumb calfw cape
+                cdlatex citar-embark clipetty copilot csv-mode dape diff-hl dimmer
+                dired-ranger dired-subtree dslide ebdb edraw eglot-booster
+                eglot-inactive-regions embark-consult evil flash flymake-ruff
+                gptel-magit gptel-quick gt helpful highlight-doxygen hl-todo iedit
+                indent-bars jinx key-chord kkp ledger-mode marginalia meow moc
+                nerd-icons-completion nerd-icons-dired nerd-icons-ibuffer nyan-mode
+                orderless org-appear org-contrib org-drill org-gcal org-modern
+                org-rainbow-tags org-xopp orgit-forge ox-gfm popper pueue python-black
+                pyvenv rainbow-delimiters rainbow-mode shell-maker standard-themes
+                treesit-auto treesit-fold ultra-scroll vertico vterm-anti-flicker-filter
+                wgrep winpulse yaml-mode))
  '(safe-local-variable-values
    '((compile-command concat
                       "cmake --fresh -S ~/.local/src/mpFEM/ -B ~/.local/src/mpFEM/ && "
