@@ -1551,28 +1551,6 @@ When matching, reference is stored in match group 1."
   :config
   (setq ispell-alternate-dictionary "/home/nasser/.personal"))
 
-;; completion in region manually summoned with <tab> (no auto pop up)
-;; allows space (separator M-SPC) between filter words (combined with oderless)
-(use-package corfu :disabled
-  :when (display-graphic-p)
-  :vc (:url "https://github.com/minad/corfu")
-  :bind
-  (:map corfu-map
-        ("<tab>" . corfu-next)
-        ("<backtab>" . corfu-previous)
-        ("C-n" . corfu-next)
-        ("C-p" . corfu-previous))
-  :defer 1
-  :hook
-  (text-mode . (lambda () (setq-local corfu-auto-prefix 3))) ; increase prefix for text
-  :config
-  (global-corfu-mode)
-  (corfu-popupinfo-mode)                ; show doc -> using eldoc box, sometimes they overlap
-  (setq corfu-auto t                    ; enables timer-based completion
-        corfu-auto-delay 0.2
-        corfu-auto-prefix 2
-        corfu-quit-no-match 'separator))
-
 ;; completion any text based on buffer contents
 (use-package dabbrev
   :ensure nil
