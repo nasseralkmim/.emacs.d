@@ -3436,8 +3436,7 @@ its results, otherwise display STDERR with
 
 (use-package markdown-mode
   :ensure t
-  :init (setq markdown-command "multimarkdown")
-  :bind (:map markdown-mode-map
+  :bind (:map markdown-ts-mode-map
               ("C-c C-e" . markdown-do))
   :hook
   ;; (markdown-mode . variable-pitch-mode) ; use variable pitch fonts
