@@ -1084,7 +1084,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (magit-mode . magit-auto-revert-mode) ; auto refresh
   :bind
-  ("C-x g" . magit-status)
   (:map magit-mode-map
         ("C-x 4 j" . magit-diff-visit-worktree-file-other-window)
         ("=" . magit-diff-toggle-refine-hunk))
