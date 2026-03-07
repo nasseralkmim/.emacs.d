@@ -4142,7 +4142,7 @@ If an edraw editor is active for this link, preview is skipped."
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
   (setq gptel-magit-backend (gptel-get-backend "Copilot")
-        gptel-magit-model 'gpt-5-mini)
+        gptel-magit-model 'claude-haiku-4.5)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
@@ -4549,7 +4549,7 @@ absolute path. Finally load eglot."
            (t (error "mark no more than 2 files"))))))
 
 (use-package dape
-  :vc (:url "https://github.com/svaante/dape")
+  :ensure t
   :commands dape
   :config
   (setq dape-inlay-hints t))
@@ -4572,21 +4572,8 @@ absolute path. Finally load eglot."
     (autoload #'calfw-org-open-calendar "calfw-org" nil t))
   (bind-keys :package calfw ("C-c A" . calfw-org-open-calendar)))
 
-(use-package dslide
-  :vc (:url "https://github.com/positron-solutions/dslide")
-  :bind
-  ("C-<f12>" . dslide-deck-start)
-  :config
-  (setq dslide-animation-duration 0))
-
-(use-package moc
-  :vc (:url "https://github.com/positron-solutions/moc"))
-
-(use-package org-appear
-  :vc (:url "https://github.com/awth13/org-appear"))
-
 (use-package treesit-fold
-  :vc (:url "https://github.com/emacs-tree-sitter/treesit-fold")
+  :ensure t
   :bind
   (:map treesit-fold-mode-map
    ("C-c @ C-h"  . treesit-fold-close)
