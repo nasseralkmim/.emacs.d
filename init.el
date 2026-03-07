@@ -4951,12 +4951,14 @@ RESCHEDULE-FN is the function to reschedule."
   (flash-multi-window nil)
   (flash-isearch-update-delay .4)
   :config
-  (setq flash-backdrop nil)
+  (setq flash-backdrop nil))
+
+(use-package flash-isearch
+  :ensure nil
+  :after isearch
   :init
-  (with-eval-after-load 'isearch
-    (require 'flash)
-    (require 'flash-isearch)
-    (flash-isearch-mode 1)))
+  (require 'flash-isearch)
+  (flash-isearch-mode 1))
 
 (use-package display-line-numbers
   :ensure nil
