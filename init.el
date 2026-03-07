@@ -4142,7 +4142,7 @@ If an edraw editor is active for this link, preview is skipped."
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
   (setq gptel-magit-backend (gptel-get-backend "Copilot")
-        gptel-magit-model 'claude-haiku-4.5)
+        gptel-magit-model 'gpt-5-nano)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
