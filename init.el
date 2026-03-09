@@ -1119,10 +1119,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  ;; :ensure nil
-  ;; Since elpaca queue fist before loading, we need to wait here.
-  ;; So we load the correct version of org instead of built-in when exporting async.
-  :vc (:url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
+  :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
   ;; :custom-face
   ;; (org-block ((t (:inherit org-agenda-restriction-lock :extend t))))
   ;; (org-meta-line ((t (:foreground "gray60"))))
