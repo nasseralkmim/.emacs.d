@@ -2602,6 +2602,7 @@ Only if there is more than one window opened."
   :config
   ;; maximum fontification
   (setq treesit-font-lock-level 4
+        treesit-auto-install-grammar t
         treesit-enabled-modes t))
 
 (use-package wgrep)
@@ -4655,15 +4656,6 @@ Returns t if any nodes were folded, nil otherwise."
                       (setq nodes-folded t)))) ; Mark that we folded at least one
                 )))
           nodes-folded)))))
-
-(use-package treesit-auto
-  :defer 1
-  :custom
-  (treesit-auto-install 'prompt)
-  :demand
-  :config
-  (treesit-auto-add-to-auto-mode-alist 'all)
-  (global-treesit-auto-mode))
 
 (use-package hledger-rules-mode :disabled
   :ensure nil
