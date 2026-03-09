@@ -773,7 +773,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 
 (use-package smartparens-config
   :ensure nil
-  :demand
+  :demand t
   :after smartparens
   :config
   (sp-local-pair 'org-mode "$" "$" :unless '(sp-point-after-word-p)))
