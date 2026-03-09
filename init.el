@@ -3202,74 +3202,8 @@ opening a file from dired. Otherwise just regular dired."
            (command (dired-read-shell-command "! on %s: " num-files marked-files)))
       (dired-do-shell-command command num-files local-tmp-files))))
 
-;; Anther package to find synonyms
-(use-package powerthesaurus :disabled
-  :ensure t
-  :bind
-  ("C-c d s" . powerthesaurus-lookup-dwim))
-
-;; org-mode toc heading
-(use-package org-make-toc :disabled
-  :after org
-  :commands org-make-toc-insert org-make-toc)
-
-;; more color in dired
-(use-package diredfl :disabled
-  :hook (dired-mode . diredfl-mode))
-
-;; show org-babel error or warning when execute block
-;; just using prologue command is sufficient
-(use-package org-babel-eval-verbose :disabled
-  :ensure nil
-  :after org
-  :init
-  (defvar org-babel-eval-verbose nil
-    "A non-nil value makes `org-babel-eval' display")
-
-  (defun org-babel-eval (command query)
-    "Run COMMAND on QUERY.
-Writes QUERY into a temp-buffer that is processed with
-`org-babel--shell-command-on-region'.  If COMMAND succeeds then return
-its results, otherwise display STDERR with
-`org-babel-eval-error-notify'."
-    (let ((error-buffer (get-buffer-create " *Org-Babel Error*")) exit-code)
-      (with-current-buffer error-buffer (erase-buffer))
-      (with-temp-buffer
-        (insert query)
-        (setq exit-code
-              (org-babel--shell-command-on-region
-               command error-buffer))
-
-        (if (or (not (numberp exit-code)) (> exit-code 0)
-                (and org-babel-eval-verbose (> (buffer-size error-buffer) 0)))
-            (progn
-              (with-current-buffer error-buffer
-                (org-babel-eval-error-notify exit-code (buffer-string)))
-              (save-excursion
-                (when (get-buffer org-babel-error-buffer-name)
-                  (with-current-buffer org-babel-error-buffer-name
-                    (unless (derived-mode-p 'compilation-mode)
-                      (compilation-mode))
-                    ;; Compilation-mode enforces read-only, but Babel expects the buffer modifiable.
-                    (setq buffer-read-only nil))))
-              nil)
-          (buffer-string))))))
-
-;; list 'imenu' entries in a buffer
-;; better faces than 'consult-imenu'
-;; 'imenu' gives the namespace, functions, classes and methods in a tree
-(use-package imenu-list :disabled
-  :bind
-  ("C-c C-o" . imenu-list)
-  :config
-  (setq imenu-list-auto-resize t
-        imenu-list-auto-update nil      ; I want to keep the list from a file
-        imenu-list-position 'left
-        imenu-list-size 0.1
-        imenu-list-focus-after-activation t))
-
 ;; deal with ANSI escape sequences for coloring
-(use-package ansi-color
+(use-package ansi-color :disabled
   :ensure nil
   :init
   ;; for compile mode
@@ -4785,13 +4719,6 @@ RESCHEDULE-FN is the function to reschedule."
   (eglot-inactive-regions-opacity 0.4)
   :hook 
   (prog-mode . eglot-inactive-regions-mode))
-
-(use-package org-xopp
-  :after org
-  :vc (:url "https://github.com/mahmoodsh36/org-xopp")
-  :demand
-  :config
-  (org-xopp-setup))
 
 ;; run 'copilot-install-server' with npm
 ;; make sure correct npm is set with nvm (fist 'source /usr/share/nvm/init-nvm.sh' then
