@@ -4689,16 +4689,7 @@ Returns t if any nodes were folded, nil otherwise."
     :lighter " hledger-rules"
     (hledger-rules-mode-setup)))
 
-;; tools for display during presentations
-(use-package moc :disabled
-  :after dslide
-  :vc (:url "https://github.com/positron-solutions/moc"))
-
 (use-package hide-mode-line :disabled)
-
-(use-package apptainer-mode
-  :vc (:url "https://github.com/jrgant/apptainer-mode")
-  :mode ("\\.def\\'" . apptainer-mode))
 
 (use-package kkp              ; having problems with org-export not been able to export subtree on kitty
   :defer 1
