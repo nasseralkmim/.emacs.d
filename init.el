@@ -3166,10 +3166,12 @@ opening a file from dired. Otherwise just regular dired."
       (dired-do-shell-command command num-files local-tmp-files))))
 
 ;; deal with ANSI escape sequences for coloring
-(use-package ansi-color :disabled
+;; avoid that: [100%] [1m[32mLinking CXX executable [0m 
+(use-package ansi-color
   :ensure nil
   :init
   ;; for compile mode
+  ;; https://endlessparentheses.com/ansi-colors-in-the-compilation-buffer-output.html
   ;; https://www.reddit.com/r/emacs/comments/kbwkca/compile_buffer_show_weird_symbols/
   (defun colorize-compilation-buffer ()
     (ansi-color-apply-on-region compilation-filter-start (point)))
