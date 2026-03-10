@@ -336,14 +336,12 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq recentf-max-saved-items 25
         recentf-auto-cleanup 'mode))
 
-(use-package auto-revert
+(use-package autorevert
   :ensure nil
   :hook
   (after-init . global-auto-revert-mode)
   :config
-  (setq revert-without-query (list ".")  ; Do not prompt
-        auto-revert-stop-on-user-input nil
-        auto-revert-avoid-polling t     ; automatically reread from disk
+  (setq auto-revert-stop-on-user-input nil
         auto-revert-check-vc-info t
         auto-revert-verbose t)
 
