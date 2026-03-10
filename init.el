@@ -1,5 +1,4 @@
 ; -*- coding: utf-8; lexical-binding: t -*-
-
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
@@ -11,7 +10,7 @@
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
 (setq use-package-verbose nil 		; don't print anything
-      use-package-compute-statistics t ; compute statistics about package initialization
+      use-package-compute-statistics nil ; compute statistics about package initialization
       use-package-enable-imenu-support t
       use-package-always-ensure t	; always ensure the package is installed, unless :ensure nil
       use-package-expand-minimally t	; minimal expanded macro
@@ -825,6 +824,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Useful:
 ;; 1. kill without copying, use 'delete-region' from emacs: https://github.com/meow-edit/meow/discussions/474
 (use-package meow
+  :ensure t
   :demand t
   :config
   (defun meow-setup ()
@@ -1154,7 +1154,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    org-edit-src-content-indentation 0
    org-cycle-separator-lines 0  ; no empty lines between headings
    org-fontify-quote-and-verse-blocks nil ; no special fortification for those blocks 
-   org-indent-indentation-per-level 1         ; indent just 1 space
    org-use-sub-superscripts nil               ; don't need that in tty
    org-highlight-latex-and-related '(latex)  ; highlight latex fragments
    org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
@@ -1177,7 +1176,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure nil
   :after org
   :init
-  (setq org-export-in-background t))
+  (setq org-export-in-background nil))
 
 (use-package ox-html
   :ensure nil
@@ -1670,7 +1669,6 @@ When matching, reference is stored in match group 1."
    (LaTeX-mode . TeX-fold-mode)
    (LaTeX-mode . reftex-isearch-minor-mode)
    (LaTeX-mode . visual-line-mode)
-   (LaTeX-mode . yas-minor-mode)
    (LaTeX-mode . turn-off-auto-fill)
    (LaTeX-mode . (lambda () (outline-hide-sublevels 1))))
   :config
