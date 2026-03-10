@@ -340,13 +340,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :hook
   (after-init . global-auto-revert-mode)
   :config
-  (setq auto-revert-stop-on-user-input nil
-        auto-revert-check-vc-info t
-        auto-revert-verbose t)
-
   ;; Revert other buffers (e.g, Dired)
-  (setq global-auto-revert-non-file-buffers t)
-  (setq global-auto-revert-ignore-modes '(Buffer-menu-mode)))
+  (setq global-auto-revert-non-file-buffers t))
   
 (use-package helpful
   :bind
