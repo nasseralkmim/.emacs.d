@@ -3311,12 +3311,12 @@ opening a file from dired. Otherwise just regular dired."
   (setq electric-pair-inhibit-predicate 'ignore)
   (setq electric-pair-skip-self t))
 
-(use-package markdown-ts-mode
+(use-package markdown-mode
   :ensure t
-  :bind (:map markdown-ts-mode-map
+  :bind (:map markdown-mode-map
               ("C-c C-e" . markdown-do))
   :hook
-  (markdown-ts-mode . visual-line-mode))
+  (markdown-mode . visual-line-mode))
 
 ;; for reading email lists
 ;; summary marks: [[info:gnus#Read Articles][gnus#Read Articles]]
