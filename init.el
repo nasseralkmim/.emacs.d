@@ -2089,13 +2089,6 @@ Only if there is more than one window opened."
   :bind
   (:map c++-ts-mode-map
         ("C-x c" . compile))
-  :init
-  ;; From the documentation, substitute to 'tree-sitter' based modes
-  ;; [[help:c-ts-mode][help:c-ts-mode]] 
-  ;; (add-to-list 'major-mode-remap-alist '(c-mode . c-ts-mode))
-  ;; (add-to-list 'major-mode-remap-alist '(c++-mode . c++-ts-mode))
-  ;; (add-to-list 'major-mode-remap-alist
-  ;;              '(c-or-c++-mode . c-or-c++-ts-mode))
   :config
   (setq c-ts-mode-indent-style "linux"
         c-ts-mode-indent-offset 4)) 
@@ -2119,7 +2112,7 @@ Only if there is more than one window opened."
 ;; Microsoft python language server
 ;; it seems to be faster than pyls
 ;; does not have formating
-(use-package python
+(use-package python :disabled
   :ensure nil
   :mode ("\\.py\\'" . python-mode)
   :interpreter ("python" . python-mode)
@@ -2142,6 +2135,8 @@ Only if there is more than one window opened."
 
 (use-package python-ts
   :ensure nil
+  ;; :init
+  ;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
   :hook ((python-ts-mode . display-fill-column-indicator-mode)
          (python-ts-mode . eglot-semantic-tokens-mode)))
 
@@ -2539,11 +2534,11 @@ Only if there is more than one window opened."
   :custom-face
   (font-lock-function-call-face ((t :inherit outline-7)))
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
-  :config
+  :init
+  (setopt treesit-enabled-modes t)
   ;; maximum fontification
   (setq treesit-font-lock-level 4
-        treesit-auto-install-grammar t
-        treesit-enabled-modes t))
+        treesit-auto-install-grammar t))
 
 (use-package wgrep)
 
