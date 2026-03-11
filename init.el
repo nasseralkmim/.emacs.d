@@ -6,6 +6,11 @@
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/")))
 
+(require 'diff)
+(when (string-greaterp emacs-version "31")
+  (setq package-review-policy t
+        package-review-diff-command '("git" "diff" "--no-index" "--color=never" "--diff-filter=d")))
+
 ;; 'always-defer' means that for a package to load we need a ':hook' or using a ':general' keybinding
 ;; if there is none, we need to explicitly add ':demand' to load the package
 ;; can also load with ':defer time'
@@ -2233,27 +2238,6 @@ Only if there is more than one window opened."
   :ensure nil
   :after org)
 
-(use-package yasnippet :disabled
-  :ensure t
-  :hook
-  (LaTeX-mode . yas-minor-mode)
-  (org-mode . yas-minor-mode)
-  (prog-mode . yas-minor-mode)
-  :commands yas-insert-snippet
-  :config
-  (yas-reload-all))
-
-;; ensures environment variables inside Emacs is the same in the user's shell
-;; emacs' exec-path is not automatically updated from PATH
-;; to run jupyter which is installed in ~/.local/bin, not in the (print exec-path)
-;; added ~/.local/bin to exec path solves the problem with jupyter
-;; no need for this package, for now, defer with `:commands`
-(use-package exec-path-from-shell :disabled
-  :config
-  ;; non interative shell start up faster
-  ;; (setq exec-path-from-shell-arguments nil)
-  :commands (exec-path-from-shell-initialize))
-
 ;; browser the web inside emacs
 (use-package eww
   :ensure nil
@@ -2275,32 +2259,6 @@ Only if there is more than one window opened."
   :config
   (setq browse-url-browser-function 'browse-url-default-browser))
 
-;; jump to link
-(use-package ace-link :disabled
-  :general
-  ('normal eww-mode-map "C-f" 'ace-link-eww)
-  ('normal helpful-mode-map "C-f" 'ace-link-help)
-  ('normal gnus-article-mode-map "C-f" 'ace-link-gnus))
-
-(use-package pdf-tools :disabled
-  ;; :if (eq system-type 'windows-nt)
-  :mode ("\\.pdf\\'" . pdf-view-mode)
-  :general
-  ('normal pdf-view-mode-map "M-h" 'pdf-history-backward)
-  ('normal pdf-view-mode-map "C" 'pdf-view-center-in-window)
-  ;; use 'isearch' and before quitting use 'consult-isearch-forward'
-  ('normal pdf-view-mode-map "/" 'isearch-forward-regexp)
-  :init
-  (pdf-loader-install)
-  :config
-  (setq pdf-view-midnight-colors '("white" . "black"))
-  
-  ;; sync pdf in different frame
-  (setq pdf-sync-forward-display-action
-        '(display-buffer-reuse-window (reusable-frames . t)))
-  (setq pdf-sync-backward-display-action
-        '(display-buffer-reuse-window (reusable-frames . t))))
-
 ;; Terminal emulator based on libvterm (in C)
 (use-package vterm
   :ensure t
@@ -2318,32 +2276,6 @@ Only if there is more than one window opened."
   (add-to-list 'vterm-tramp-shells '("apptainer" "/bin/bash"))
   (add-to-list 'vterm-tramp-shells '("docker" "/bin/bash")))
 
-
-(use-package vterm-anti-flicker-filter
-  :vc (:url "https://github.com/martinbaillie/vterm-anti-flicker-filter" :rev :newest)
-  :hook (vterm-mode . vterm-anti-flicker-filter-enable))
-
-;; Quickly switch to 'vterm' buffer.
-(use-package vterm-toggle :disabled
-  :after vterm
-  :bind
-  (("<f9>" . vterm-toggle-cd) 	; opens term in current cd including remote
-   ("C-<f9>" . vterm-toggle-insert-cd)
-   :map vterm-mode-map
-   ("s-n" . vterm-toggle-forward)
-   ("s-p" . vterm-toggle-backward))
-  :config
-  ;; toggle terminal bellow the selected window (avoid messing with other windows)
-  ;; https://github.com/jixiuf/vterm-toggle/issues/33#issuecomment-1100027238
-  (add-to-list 'display-buffer-alist `(,vterm-buffer-name display-buffer-below-selected)))
-
-;; multiple terminals
-(use-package multi-vterm :disabled
-  :bind
-  ("S-<f9>" . multi-vterm)
-  :commands multi-vterm
-  :config
-  (add-to-list 'display-buffer-alist `("^\\*vterminal.*" display-buffer-below-selected)))
 
 ;; update time stamp of org files
 (use-package time-stamp
@@ -4802,8 +4734,6 @@ RESCHEDULE-FN is the function to reschedule."
   ;;       (assq-delete-all 'fringe auto-dim-other-buffers-affected-faces))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(org-block-begin-line auto-dim-other-buffers))
   (add-to-list 'auto-dim-other-buffers-affected-faces '(header-line-inactive auto-dim-other-buffers-hide)))
-
-(use-package shell-maker)
 
 (use-package yank-media
   :ensure nil

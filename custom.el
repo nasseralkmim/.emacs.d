@@ -19,9 +19,9 @@
                 ledger-mode marginalia meow nerd-icons-completion nerd-icons-dired
                 nerd-icons-ibuffer nyan-mode orderless org-contrib org-drill org-gcal
                 org-mode org-modern org-rainbow-tags orgit-forge ox-gfm popper pueue
-                python-black pyvenv rainbow-delimiters rainbow-mode shell-maker
-                standard-themes treesit-auto treesit-fold ultra-scroll vertico
-                vterm-anti-flicker-filter wgrep winpulse yaml-mode))
+                python-black pyvenv rainbow-delimiters rainbow-mode standard-themes
+                treesit-auto treesit-fold ultra-scroll vertico vterm-anti-flicker-filter
+                wgrep winpulse yaml-mode))
  '(package-vc-selected-packages
    '((org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
      (ascii-latex-preview :url "https://github.com/nasseralkmim/ascii-latex-preview")
