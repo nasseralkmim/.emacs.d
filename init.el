@@ -4829,6 +4829,7 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package modus-themes
   :ensure nil
+  :defer 0.5
   :custom
   (modus-themes-italic-constructs t)
   (modus-themes-bold-constructs t)
@@ -4945,7 +4946,7 @@ RESCHEDULE-FN is the function to reschedule."
      `(tab-bar-tab-group-inactive ((,c :background "#1e1e2e" :foreground "#9399b2")))
      `(vc-dir-file ((,c :foreground "#89b4fa")))
      `(vc-dir-header-value ((,c :foreground "#b4befe")))))
-  :init
+  :config
   (load-theme 'modus-vivendi t))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
