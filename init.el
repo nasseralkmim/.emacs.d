@@ -70,6 +70,9 @@
         '(read-only t cursor-intangible t face minibuffer-prompt))
   (add-hook 'minibuffer-setup-hook #'cursor-intangible-mode)
 
+  ;; don't resize minibuffer
+  (setq resize-mini-windows nil)
+  
   ;; don't need to confirm to revert buffer
   (setq revert-without-query t)
 
