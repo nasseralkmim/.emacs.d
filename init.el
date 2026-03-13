@@ -2102,38 +2102,6 @@ Only if there is more than one window opened."
   (c++-mode . highlight-doxygen-mode)
   (c++-ts-mode . highlight-doxygen-mode))
 
-(use-package ob-python :disabled
-  :after org lsp
-  :commands org-babel-execute:python
-  :init
-  (defun org-babel-edit-prep:python (babel-info)
-    (setq-local buffer-file-name (->> babel-info caddr (alist-get :tangle)))
-    (lsp)))
-
-;; Microsoft python language server
-;; it seems to be faster than pyls
-;; does not have formating
-(use-package python :disabled
-  :ensure nil
-  :mode ("\\.py\\'" . python-mode)
-  :interpreter ("python" . python-mode)
-  :hook ((python-mode . visual-line-mode)
-         (inferior-python-mode . visual-line-mode)
-         (python-mode . display-fill-column-indicator-mode))
-  :config
-  ;; dont guess the indent offset
-  (setq python-indent-guess-indent-offset nil)
-
-  ;; make indentation aware of docstring
-  (defun my-python-indent-line ()
-    (if (eq (car (python-indent-context)) :inside-docstring)
-        'noindent
-      (python-indent-line)))
-  ;; change default function to identify docstring
-  (defun my-python-mode-hook ()
-    (setq indent-line-function #'my-python-indent-line))
-  (add-hook 'python-mode-hook #'my-python-mode-hook))
-
 (use-package python-ts
   :ensure nil
   ;; :init
@@ -2146,29 +2114,9 @@ Only if there is more than one window opened."
   :after python
   :commands python-black-buffer)
 
-(use-package numpydoc :disabled
-  :after python
-  :custom
-  (numpydoc-insert-examples-block nil)
-  (numpydoc-template-long nil)
-  :general
-  (python-mode-map "C-c C-n" 'numpydoc-generate))
-
-(use-package goto-last-change :disabled ; use the evil one "g ;" and "g ,"
-  :general ('normal "g b" 'goto-last-change))
-
-;; easy select region
-(use-package expand-region :disabled
-  :bind ("C-=" . er/expand-region))
-
-;; key chord hint
-(use-package which-key :disabled        ; use embark
-  :defer 1
-  :config
-  (which-key-mode t))
-
 ;; highligh TODO keyword everywhere
 (use-package hl-todo
+  :ensure t
   :hook
   (prog-mode . hl-todo-mode)
   (text-mode . hl-todo-mode)
