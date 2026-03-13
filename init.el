@@ -2104,7 +2104,7 @@ Only if there is more than one window opened."
   (c++-mode . highlight-doxygen-mode)
   (c++-ts-mode . highlight-doxygen-mode))
 
-(use-package python-ts
+(use-package python
   :ensure nil
   ;; :init
   ;; (add-to-list 'major-mode-remap-alist '(python-mode . python-ts-mode))
