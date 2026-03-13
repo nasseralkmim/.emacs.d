@@ -1318,15 +1318,6 @@ Otherwise use 1.1 as default scaling factor."
     (unless (file-remote-p default-directory)
           (org-link-preview-refresh))))
 
-;; for windows
-(use-package ob-python :disabled
-  :ensure nil
-  :after org
-  :when (eq system-type 'windows-nt)
-  :init
-  ;; windows uses python for versions > 3, argh... 
-  (setq org-babel-python-command "python"))
-
 (use-package org-clock
   :ensure nil
   :after org
@@ -1621,21 +1612,6 @@ When matching, reference is stored in match group 1."
   :ensure nil
   :config
   (setq outline-minor-mode-cycle t))  
-
-;; trying to make outline work with python docstring
-(use-package outline-python-regex :disabled
-  :ensure nil
-  :after outline
-  :init
-  (add-hook 'python-mode-hook  '(lambda ()
-                                  (setq outline-regexp
-                                        (rx (group 
-                                             ;; Heading level
-                                             (group (* space)) ; 0 or more spaces
-                                             bow
-                                             ;; Keywords
-                                             (or "class" "def" "else" "elif" "except" "for" "if" "try" "while")
-                                             eow))))))
 
 (use-package latex
   :ensure auctex
