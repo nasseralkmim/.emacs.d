@@ -820,6 +820,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; 1. kill without copying, use 'delete-region' from emacs: https://github.com/meow-edit/meow/discussions/474
 (use-package meow
   :ensure t
+  :defer 0.5
   :demand t
   :config
   (defun meow-setup ()
@@ -1046,7 +1047,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("M-{" . insert-pair)
   ("M-\"" . insert-pair)
   ("M-\'" . insert-pair)
-  ("C-M-s" . delete-pair)
   ("C-M-l" . back-up-list-and-forward-sexp)
   (:repeat-map move-repeat-map
                ("f" . forward-sexp)
@@ -1082,12 +1082,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         ("=" . magit-diff-toggle-refine-hunk))
   (:repeat-map magit-section-mode-repeat-map
                ("TAB" . magit-section-cycle))
-  :config
-  (setq magit-diff-hide-trailing-cr-characters t
-        magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
-  (setopt magit-format-file-function #'magit-format-file-nerd-icons)  
+  ;; :config
+  ;; (setq magit-diff-hide-trailing-cr-characters t
+  ;;       magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1)
+  ;; (setopt magit-format-file-function #'magit-format-file-nerd-icons)  
   ;; auto refresh magit
-  (add-hook 'after-save-hook 'magit-after-save-refresh-status t))
+  ;; (add-hook 'after-save-hook 'magit-after-save-refresh-status t)
+  )
 
 ;; show colors
 (use-package rainbow-mode
@@ -2531,10 +2532,11 @@ Only if there is more than one window opened."
 ;; and put in ./emacs.d/tree-sitter
 (use-package treesit
   :ensure nil
+  :defer t
   :custom-face
   (font-lock-function-call-face ((t :inherit outline-7)))
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
-  :init
+  :config
   (setopt treesit-enabled-modes t)
   ;; maximum fontification
   (setq treesit-font-lock-level 4
