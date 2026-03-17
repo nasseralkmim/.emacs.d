@@ -998,33 +998,35 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; Show-hide selected with 'C-\'' after 'iedit-mode'
 ;; with prefix "C-u 1", selects just first occurrence, to add more use "M-n" 'iedit-expand-down-to-occurrence'
 (use-package iedit
+  :ensure t
   :bind* ; avoid getting shadowed by other minor modes (eg. LaTeX-mode)
   ("C-c ;" . iedit-mode)               ; for mosh/tmux
   :bind
   (("C-;" . iedit-mode)
-   ("M-d" . my-iedit-expand-down-to-occurrence)
-   :map iedit-mode-keymap
-   ("<tab>" . nil)
-   ("TAB" . nil)
-   ("C-S-n" . iedit-next-occurrence)
-   ("C-S-p" . iedit-prev-occurrence)
-   ("C-M-n" . iedit-next-occurrence)    ; for tty support
-   ("C-M-p" . iedit-prev-occurrence)
-   ("M-'" . iedit-show/hide-context-lines))
-  :init
+   ("M-d" . my-iedit-expand-down-to-occurrence))
+  (:map iedit-mode-keymap
+        ("<tab>" . nil)
+        ("TAB" . nil)
+        ("C-S-n" . iedit-next-occurrence)
+        ("C-S-p" . iedit-prev-occurrence)
+        ("C-M-n" . iedit-next-occurrence)    ; for tty support
+        ("C-M-p" . iedit-prev-occurrence)
+        ("M-'" . iedit-show/hide-context-lines))
+  :custom
+  (iedit-search-invisible t)       ; use visual line to narrow candidates
+  :config
   (defun my-iedit-expand-down-to-occurrence ()
-  ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
+    ;; https://www.reddit.com/r/emacs/comments/rpwdb9/creating_multiple_cursors_from_symbol_under_point/
     (interactive)
     (if (bound-and-true-p iedit-mode)
         (iedit-expand-down-to-occurrence)
-      (iedit-mode 1)))
+      (iedit-mode 1))))
+
+(use-package iedit-custom-face-hack
+  :ensure nil
+  :after iedit
+  :if (display-graphic-p)
   :config
-  (setq iedit-search-invisible t)       ; use visual line to narrow candidates
-
-  ;; Change the face for terminal
-  ;; (when (not (display-graphic-p))
-  ;;   (set-face-attribute 'iedit-occurrence nil :weight 'bold :underline t :italic t))
-
   ;; Use box region face only during iedit-mode to see region on top of iedit highlights
   (defvar my-region-face-saved nil "Saved region face attributes.")
   (defun my-iedit-region-face-on ()
@@ -4614,8 +4616,8 @@ RESCHEDULE-FN is the function to reschedule."
 (use-package copilot
   :vc (:url "https://github.com/copilot-emacs/copilot.el")
   :hook
-  (prog-mode . (lambda () (run-with-idle-timer 1 nil #'copilot-mode)))
-  (org-mode . (lambda () (run-with-idle-timer 1 nil #'copilot-mode)))
+  (prog-mode . (lambda () (run-with-idle-timer 2 nil #'copilot-mode)))
+  (org-mode . (lambda () (run-with-idle-timer 2 nil #'copilot-mode)))
   :bind
   (("C-c M-f" . copilot-complete)
    :map copilot-completion-map
