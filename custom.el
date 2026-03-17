@@ -14,11 +14,11 @@
    '(activities apptainer-mode ascii-latex-preview auctex biblio breadcrumb calfw cdlatex
                 citar-embark clipetty copilot csv-mode dape diff-hl dimmer dired-ranger
                 dired-subtree ebdb edraw eglot-booster eglot-inactive-regions
-                embark-consult flash flymake-ruff gptel-magit gptel-quick gt helpful
-                highlight-doxygen hl-todo iedit indent-bars jinx key-chord kkp
+                embark-consult flash flymake-ruff gptel gptel-magit gptel-quick gt
+                helpful highlight-doxygen hl-todo iedit indent-bars jinx key-chord kkp
                 ledger-mode marginalia meow nerd-icons-completion nerd-icons-dired
                 nerd-icons-ibuffer nyan-mode orderless org-contrib org-drill org-gcal
-                org-mode org-modern org-rainbow-tags orgit-forge ox-gfm popper pueue
+                org-mode org-modern org-rainbow-tags orgit-forge ox-gfm pdd popper pueue
                 python-black pyvenv rainbow-delimiters rainbow-mode standard-themes
                 treesit-auto treesit-fold ultra-scroll vertico vterm-anti-flicker-filter
                 wgrep winpulse yaml-mode))

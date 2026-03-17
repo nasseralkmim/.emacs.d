@@ -2462,11 +2462,10 @@ Only if there is more than one window opened."
   :custom-face
   (font-lock-function-call-face ((t :inherit outline-7)))
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
-  :config
-  (setopt treesit-enabled-modes t)
-  ;; maximum fontification
-  (setq treesit-font-lock-level 4
-        treesit-auto-install-grammar t))
+  :custom
+  (treesit-font-lock-level 4)
+  (treesit-auto-install-grammar t)
+  (treesit-enabled-modes t))
 
 (use-package wgrep)
 
