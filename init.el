@@ -2,9 +2,12 @@
 (defvar my-start-time (current-time)
   "Time when Emacs was started")
 
+;; 'package-refresh-contents' updates the package list (i.e. what packages are available and their versions)
+;; 'package-upgrade-all' upgrades all installed packages
 (with-eval-after-load 'package
   (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/")))
+               '("melpa" . "https://melpa.org/packages/"))
+  (setq package-install-upgrade-built-in t))
 
 ;; 'always-defer' means that for a package to load we need a ':hook' or using a ':general' keybinding
 ;; if there is none, we need to explicitly add ':demand' to load the package
