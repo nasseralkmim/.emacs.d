@@ -2468,7 +2468,6 @@ Only if there is more than one window opened."
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
   :custom
   (treesit-font-lock-level 4)
-  (treesit-auto-install-grammar t)
   (treesit-enabled-modes t))
 
 (use-package wgrep)
