@@ -2465,7 +2465,7 @@ Only if there is more than one window opened."
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
   :custom
   (treesit-font-lock-level 4)
-  (treesit-enabled-modes t))
+  (treesit-enabled-modes '(c++-ts-mode)))
 
 (use-package wgrep)
 
