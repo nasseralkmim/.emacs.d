@@ -3286,7 +3286,8 @@ opening a file from dired. Otherwise just regular dired."
                                         (nnimap "gmail"
                                                 (nnimap-address "imap.gmail.com"))
                                         (nnimap "uibk"
-                                                (nnimap-address "exchange.uibk.ac.at")))
+                                                (nnimap-address "outlook.office365.com")
+                                                (nnimap-authenticator 'xoauth2)))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
@@ -4819,5 +4820,21 @@ RESCHEDULE-FN is the function to reschedule."
   :vc (vterm-anti-flicker-filter :url "https://github.com/martinbaillie/vterm-anti-flicker-filter")
   :after vterm
   :demand t)
+
+(use-package oauth2
+  :ensure t
+  :config
+  ;; Office 365 OAuth2 constants
+  (defvar my/o365-client-id    "9e5f94bc-e8a4-4e73-b8be-63364c29d753")
+  (defvar my/o365-client-secret "TxRBilcHdNkEdW-ZiwnUK8E`")
+  (defvar my/o365-auth-url     "https://login.microsoftonline.com/common/oauth2/v2.0/authorize")
+  (defvar my/o365-token-url    "https://login.microsoftonline.com/common/oauth2/v2.0/token")
+  (defvar my/o365-scope        "https://outlook.office365.com/IMAP.AccessAsUser.All offline_access")
+  (defvar my/o365-token  
+  (oauth2-auth-and-store my/o365-auth-url  
+                         my/o365-token-url  
+                         my/o365-scope  
+                         my/o365-client-id  
+                         my/o365-client-secret)))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
