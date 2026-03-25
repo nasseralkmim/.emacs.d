@@ -10,18 +10,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(canlock-password "d86217004d482042e69272ed4573ae3cfc559161")
  '(package-selected-packages
-   '(activities apptainer-mode auctex biblio breadcrumb calfw cdlatex citar-embark clipetty
-                copilot csv-mode dape diff-hl dimmer dired-ranger dired-subtree ebdb
-                edraw eglot-booster eglot-inactive-regions embark-consult flash
-                flymake-ruff gptel-magit gptel-quick gt helpful highlight-doxygen
-                hl-todo iedit indent-bars jinx key-chord kkp ledger-mode marginalia meow
-                nerd-icons-completion nerd-icons-dired nerd-icons-ibuffer nyan-mode
-                orderless org-contrib org-drill org-gcal org-mode org-modern
-                org-rainbow-tags orgit-forge ox-gfm popper pueue python-black pyvenv
-                rainbow-delimiters rainbow-mode shell-maker standard-themes transient
-                treesit-fold ultra-scroll vertico vterm-anti-flicker-filter wgrep
-                winpulse yaml-mode))
+   '(activities apptainer-mode auctex auth-source-xoauth2-plugin biblio breadcrumb calfw
+                cdlatex citar-embark clipetty copilot csv-mode dape diff-hl dimmer
+                dired-ranger dired-subtree ebdb edraw eglot-booster
+                eglot-inactive-regions embark-consult flash flymake-ruff gptel-magit
+                gptel-quick gt helpful highlight-doxygen hl-todo iedit indent-bars jinx
+                key-chord kkp ledger-mode marginalia meow nerd-icons-completion
+                nerd-icons-dired nerd-icons-ibuffer nyan-mode oauth2 orderless
+                org-contrib org-drill org-gcal org-mode org-modern org-rainbow-tags
+                orgit-forge ox-gfm popper pueue python-black pyvenv rainbow-delimiters
+                rainbow-mode shell-maker standard-themes transient treesit-fold
+                ultra-scroll vertico vterm-anti-flicker-filter wgrep winpulse yaml-mode))
  '(package-vc-selected-packages
    '((org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
      (ascii-latex-preview :url "https://github.com/nasseralkmim/ascii-latex-preview")
