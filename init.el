@@ -3287,6 +3287,7 @@ opening a file from dired. Otherwise just regular dired."
                                                 (nnimap-address "imap.gmail.com"))
                                         (nnimap "uibk"
                                                 (nnimap-address "outlook.office365.com")
+                                                (nnimap-user "c8441205@uibk.ac.at")
                                                 (nnimap-authenticator xoauth2)))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
