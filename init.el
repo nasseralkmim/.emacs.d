@@ -5,8 +5,11 @@
 ;; 'package-refresh-contents' updates the package list (i.e. what packages are available and their versions)
 ;; 'package-upgrade-all' upgrades all installed packages
 (with-eval-after-load 'package
+  ;; useful melpa packages:
+  ;; gptel-magit
   (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/")))
+               '("melpa" . "https://melpa.org/packages/"))
+  (setq package-install-upgrade-built-in t))
 
 ;; 'always-defer' means that for a package to load we need a ':hook' or using a ':general' keybinding
 ;; if there is none, we need to explicitly add ':demand' to load the package
@@ -3860,7 +3863,7 @@ With prefix argument, prompt for a new default language."
 ;; For Ollama, need to download and execute "ollama"
 ;; Also need to run a model to pull manifest "ollama run mistral"
 (use-package gptel
-  :vc (:url "https://github.com/karthink/gptel")
+  :ensure t
   :commands gptel-quick                 ; load gptel when gptel-quick is called
   :bind
   ("C-c C-g" . gptel-menu)
