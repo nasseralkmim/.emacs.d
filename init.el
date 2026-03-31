@@ -3285,10 +3285,7 @@ opening a file from dired. Otherwise just regular dired."
                                               (nntp-address "feedbase.org"))
                                         (nnimap "gmail"
                                                 (nnimap-address "imap.gmail.com"))
-                                        (nnimap "uibk"
-                                                (nnimap-address "outlook.office365.com")
-                                                (nnimap-user "c8441205@uibk.ac.at")
-                                                (nnimap-authenticator xoauth2)))
+                                        (nnmaildir "uibk" (directory "~/Sync/news/mail/uibk")))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
@@ -3421,7 +3418,7 @@ opening a file from dired. Otherwise just regular dired."
                           ("uibk"
                            ;; Messages (emails) are GCC to the this group so it collects my sent mails on the server
                            ;; Gmail does not need this if used with nnimap backend
-                           (gcc-self "nnimap+uibk:Sent Items")
+                           (gcc-self "nnmaildir+uibk:Sent Items")
                            (posting-style
                             (address "Nasser Alkmim <nasser.alkmim@uibk.ac.at>")
                             (signature-file "/home/nasser/Sync/documents/signature")
