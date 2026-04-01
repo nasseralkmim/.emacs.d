@@ -4557,6 +4557,7 @@ RESCHEDULE-FN is the function to reschedule."
   :hook
   (prog-mode . (lambda () (run-with-idle-timer 2 nil #'copilot-mode)))
   (org-mode . (lambda () (run-with-idle-timer 2 nil #'copilot-mode)))
+  (LaTeX-mode . (lambda () (run-with-idle-timer 2 nil #'copilot-mode)))
   :bind
   (("C-c M-f" . copilot-complete)
    :map copilot-completion-map
