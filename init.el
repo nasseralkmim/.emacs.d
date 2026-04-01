@@ -3288,7 +3288,11 @@ opening a file from dired. Otherwise just regular dired."
                                               (nntp-address "feedbase.org"))
                                         (nnimap "gmail"
                                                 (nnimap-address "imap.gmail.com"))
-                                        (nnmaildir "uibk" (directory "~/Sync/news/mail/uibk")))
+                                        (nnmaildir "uibk"
+                                                   (directory "~/Sync/news/mail/uibk")
+                                                   (gnus-search-engine gnus-search-notmuch
+                                                                       (config-file "/home/nasser/Sync/news/.notmuch-config")
+                                                                       (remove-prefix "~/Sync/news/mail/uibk"))))
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
