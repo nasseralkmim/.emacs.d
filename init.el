@@ -4827,4 +4827,7 @@ RESCHEDULE-FN is the function to reschedule."
   :after vterm
   :demand t)
 
+(use-package ghostel
+  :vc (:url "https://github.com/dakra/ghostel" :rev :newest))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))

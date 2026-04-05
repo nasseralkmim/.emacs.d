@@ -13,7 +13,8 @@
  '(canlock-password "d86217004d482042e69272ed4573ae3cfc559161")
  '(package-selected-packages nil)
  '(package-vc-selected-packages
-   '((org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
+   '((ghostel :url "https://github.com/dakra/ghostel")
+     (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
      (ascii-latex-preview :url "https://github.com/nasseralkmim/ascii-latex-preview")
      (org-xopp :url "https://github.com/mahmoodsh36/org-xopp")
      (gptel-quick :url "https://github.com/karthink/gptel-quick")
