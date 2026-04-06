@@ -3329,7 +3329,7 @@ opening a file from dired. Otherwise just regular dired."
         gnus-check-new-newsgroups nil  ; make start up faster, need to manually 'gnus-find-new-newsgroup' to look for others
         ;; When [[gnus:nntp+news:gmane.emacs.gnus.general#56aag99k3g.fsf@news.eternal-september.org][Email from Richard Riley: gnus-unplugged and non agent groups]]
         ;; only check this level and lower or lower on startup
-        gnus-activate-level 1
+        gnus-activate-level 3
         gnus-show-threads nil            ; if nil can make faster, threads again with T t
         gnus-use-cross-reference nil
         gnus-always-read-dribble-file t  ; don't ask, just use auto saved data 
@@ -3379,13 +3379,15 @@ opening a file from dired. Otherwise just regular dired."
   ;; Activate groups on idle, and not so important stuff get news manually with
   ;; 'gnus-topic-get-new-news-this-topic'
   ;; https://old.reddit.com/r/emacs/comments/18cbeel/anyone_using_gnus_in_2023/kcceopw/
-  (defun my-gnus-group-activate-on-idle ()
-    (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 2))))
-  (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
+  ;; (defun my-gnus-group-activate-on-idle ()
+  ;;   (run-with-idle-timer 3 nil (lambda () (gnus-activate-all-groups 2))))
+  ;; (add-hook 'gnus-group-mode-hook #'my-gnus-group-activate-on-idle)
 
-  ;; disable autoselect [[help:gnus-auto-select-first]]
-  (add-hook 'gnus-select-group-hook (lambda () (setq gnus-auto-select-first nil)))
-
+  ;; Activate based on 'gnus-activate-level' but show only level specified here
+  ;; use "l" to show all groups
+  (add-hook 'gnus-started-hook
+          (lambda () (gnus-group-list-groups 2)))
+  
   ;; When entering a groups buffer, keep the existing window layout
   (defun gnus-remove-some-windows ()
     "Do nothing - keep existing window layout."
