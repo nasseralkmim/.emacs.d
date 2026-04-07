@@ -2223,7 +2223,7 @@ Only if there is more than one window opened."
         '(display-buffer-reuse-window (reusable-frames . t))))
 
 ;; Terminal emulator based on libvterm (in C)
-(use-package vterm
+(use-package vterm :disabled
   :ensure t
   :commands vterm
   :bind
@@ -4830,6 +4830,8 @@ RESCHEDULE-FN is the function to reschedule."
   :demand t)
 
 (use-package ghostel
-  :vc (:url "https://github.com/dakra/ghostel" :rev :newest))
+  :ensure t
+  :bind
+  ("<f9>" . ghostel))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
