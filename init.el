@@ -4650,7 +4650,7 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure nil
   :bind ("C-c M-y" . yank-media))
 
-(use-package nyan-mode
+(use-package nyan-mode :disabled
   :defer 1
   :config
   (nyan-mode 1)
