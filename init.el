@@ -4559,7 +4559,7 @@ RESCHEDULE-FN is the function to reschedule."
 ;; make sure correct npm is set with nvm (fist 'source /usr/share/nvm/init-nvm.sh' then
 ;; 'nvm use 22', (or 'nvm list' to see available))
 (use-package copilot
-  :vc (:url "https://github.com/copilot-emacs/copilot.el")
+  :ensure t
   :hook
   (prog-mode . (lambda () (run-with-idle-timer 2 nil #'copilot-mode)))
   (org-mode . (lambda () (run-with-idle-timer 2 nil #'copilot-mode)))

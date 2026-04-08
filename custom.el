@@ -4,14 +4,33 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(modus-themes-search-current ((((class color) (min-colors 256)) :background "#f38ba8" :foreground "#11111b")))
+ '(modus-themes-search-lazy ((((class color) (min-colors 256)) :background "#3e5768" :foreground "#cdd6f5")))
+ '(newsticker-extra-face ((((class color) (min-colors 256)) :foreground "#9399b2" :height 0.8 :slant italic)))
+ '(newsticker-feed-face ((((class color) (min-colors 256)) :foreground "#f38ba8" :height 1.2 :weight bold)))
+ '(newsticker-treeview-face ((((class color) (min-colors 256)) :foreground "#cdd6f4")))
+ '(newsticker-treeview-selection-face ((((class color) (min-colors 256)) :background "#3e5768" :foreground "#cdd6f5"))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(canlock-password "d86217004d482042e69272ed4573ae3cfc559161")
- '(package-selected-packages nil)
+ '(package-selected-packages
+   '(activities apptainer-mode ascii-latex-preview auctex auth-source-xoauth2-plugin biblio
+                breadcrumb calfw cdlatex citar-embark clipetty copilot csharp-mode
+                csv-mode dape dictionary diff-hl dimmer dired-ranger dired-subtree ebdb
+                editorconfig edraw eglot eglot-booster eglot-inactive-regions
+                elixir-ts-mode embark-consult faceup flash flymake-ruff ghostel
+                gptel-magit gptel-quick gt helpful highlight-doxygen hl-todo iedit
+                indent-bars jinx jsonrpc key-chord kkp ledger-mode less-css-mode
+                lua-mode marginalia markdown-ts-mode meow nerd-icons-completion
+                nerd-icons-dired nerd-icons-ibuffer nyan-mode orderless org org-contrib
+                org-drill org-gcal org-mode org-modern org-rainbow-tags orgit-forge
+                ox-gfm pdd peg popper pueue python-black pyvenv rainbow-delimiters
+                rainbow-mode shell-maker standard-themes timeout tramp transient
+                treesit-auto treesit-fold ultra-scroll vertico vterm-anti-flicker-filter
+                wallpaper wgrep which-key winpulse yaml-mode))
  '(package-vc-selected-packages
    '((ghostel :url "https://github.com/dakra/ghostel")
      (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
