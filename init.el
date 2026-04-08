@@ -4832,6 +4832,8 @@ RESCHEDULE-FN is the function to reschedule."
 (use-package ghostel
   :ensure t
   :bind
-  ("<f9>" . ghostel))
+  ("<f9>" . ghostel)
+  (:map ghostel-mode-map
+	("DEL" . (lambda () (interactive) (ghostel--send-encoded "backspace" "")))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
