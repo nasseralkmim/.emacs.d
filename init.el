@@ -4840,4 +4840,11 @@ RESCHEDULE-FN is the function to reschedule."
 	("DEL" . (lambda () (interactive) (ghostel--send-encoded "backspace" "")))
         ("C-c <escape>" . (lambda () (interactive) (ghostel--send-encoded "escape" "")))))
 
+(use-package kitty-graphics :disabled
+  :vc (:url "https://github.com/cashmeredev/kitty-graphics.el" :rev :newest)
+  :if (not (display-graphic-p))
+  :demand t
+  :config
+  (kitty-graphics-mode 1))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
