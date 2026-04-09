@@ -53,11 +53,21 @@
   (setq native-comp-deferred-compilation t))
 
 ;; from https://github.com/jamescherti/minimal-emacs.d/blob/main/early-init.el
+;; also from doom emacs
 (setq-default cursor-in-non-selected-windows nil)
 (setq auto-mode-case-fold nil)
+
+;; avoid extra work on redisplay by assuming always left-to-right
 (setq-default bidi-display-reordering 'left-to-right
               bidi-paragraph-direction 'left-to-right)
-(setq read-process-output-max (* 128 1024))
+(setq bidi-inhibit-bpa t)
+
+;; skip fontification during input, i.e. defer it
+(setq redisplay-skip-fontification-on-input t)
+
+;; reduce the number of read calls when reading process output by increasing the read chunk size to 4mb
+(setq read-process-output-max (* 4 1024 1024))
+
 (set-language-environment "UTF-8")
 (setq load-prefer-newer t)
 

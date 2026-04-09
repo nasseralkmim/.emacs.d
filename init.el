@@ -468,7 +468,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         completions-max-height 20
         completions-header-format nil
         ;; use C-SPC after C-u C-SPC to go jump to marks
-        set-mark-command-repeat-pop t)
+        set-mark-command-repeat-pop t
+        ;; save clipboard before killing, to avoid losing it when killing something else
+        save-interprogram-paste-before-kill t
+        kill-do-not-save-duplicates t)
 
   ;; Don't ask about confirmation when running async commands
   (setq async-shell-command-buffer 'rename-buffer))
