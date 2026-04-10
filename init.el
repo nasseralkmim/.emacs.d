@@ -4837,6 +4837,7 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("<f9>" . ghostel)
   (:map ghostel-mode-map
-	("DEL" . (lambda () (interactive) (ghostel--send-encoded "backspace" "")))))
+	("DEL" . (lambda () (interactive) (ghostel--send-encoded "backspace" "")))
+        ("C-c <escape>" . (lambda () (interactive) (ghostel--send-encoded "escape" "")))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
