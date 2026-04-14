@@ -494,6 +494,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; enhances multiple commands based on completion
 ;; practical navigation and search commands 
 (use-package consult
+  :ensure t
   :bind
   (;; m/f/b <SPC> for bookmarks/files/buffers narrowing
   ("C-x C-b" . consult-buffer)		; enhanced switch to buffer
@@ -3470,6 +3471,7 @@ opening a file from dired. Otherwise just regular dired."
 (use-package ebdb
   :ensure t
   :after (:any gnus message)
+  :demand t
   :config
   ;; load code for GNUs for reading and message for sending 
   (require 'ebdb-gnus)
