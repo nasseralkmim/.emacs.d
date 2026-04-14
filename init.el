@@ -4827,8 +4827,7 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (load-theme 'modus-vivendi t))
 
-(use-package vterm-anti-flicker-filter
-  :vc (vterm-anti-flicker-filter :url "https://github.com/martinbaillie/vterm-anti-flicker-filter")
+(use-package vterm-anti-flicker-filter :disabled  :vc (vterm-anti-flicker-filter :url "https://github.com/martinbaillie/vterm-anti-flicker-filter")
   :after vterm
   :demand t)
 

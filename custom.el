@@ -29,8 +29,8 @@
                 org-drill org-gcal org-mode org-modern org-rainbow-tags orgit-forge
                 ox-gfm pdd peg popper pueue python-black pyvenv rainbow-delimiters
                 rainbow-mode shell-maker standard-themes timeout tramp transient
-                treesit-auto treesit-fold ultra-scroll vertico vterm-anti-flicker-filter
-                wallpaper wgrep which-key winpulse yaml-mode))
+                treesit-auto treesit-fold ultra-scroll vertico wallpaper wgrep which-key
+                winpulse yaml-mode))
  '(package-vc-selected-packages
    '((ghostel :url "https://github.com/dakra/ghostel")
      (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
