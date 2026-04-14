@@ -1647,7 +1647,6 @@ When matching, reference is stored in match group 1."
   :hook
   ((LaTeX-mode . outline-minor-mode)
    (LaTeX-mode . prettify-symbols-mode)
-   (LaTeX-mode . LaTeX-math-mode)
    (LaTeX-mode . TeX-fold-mode)
    (LaTeX-mode . reftex-isearch-minor-mode)
    (LaTeX-mode . visual-line-mode)
