@@ -1700,14 +1700,15 @@ When matching, reference is stored in match group 1."
   (add-to-list 'preview-auto-reveal-commands 'meow-right))
 
 ;; Better math preview in latex
-(use-package preview-auto :disabled
+(use-package preview-auto
   :vc (:url "https://github.com/ultronozm/preview-auto.el")
-  :after latex
-  :demand t
+  :hook (LaTeX-mode . preview-auto-mode)
   :config
   (setq preview-protect-point t)
   (setq preview-locating-previews-message nil)
   (setq preview-leave-open-previews-visible t)
+  (setopt preview-visibility-style 'always)
+  (setopt preview-keep-stale-images t)
   :custom
   (preview-auto-interval 0.1))
 
