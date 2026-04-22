@@ -1700,7 +1700,7 @@ When matching, reference is stored in match group 1."
   (add-to-list 'preview-auto-reveal-commands 'meow-right))
 
 ;; Better math preview in latex
-(use-package preview-auto :disabled
+(use-package preview-auto
   :vc (:url "https://github.com/ultronozm/preview-auto.el")
   :hook (LaTeX-mode . preview-auto-mode)
   :config
@@ -1963,7 +1963,7 @@ Otherwise, toggle only the directory at point."
     (dired-sidebar-toggle-with-current-directory)))
 
 ;; Load modus in terminal, it is very clever to figure out the colors there
-(use-package modus-themes :disabled
+(use-package modus-themes
   :defer 1
   :bind
   ("<f5>" . modus-themes-toggle)
@@ -4707,7 +4707,7 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (modus-themes-load-theme 'standard-dark))
 
-(use-package modus-themes
+(use-package modus-themes :disabled
   :ensure nil
   :defer 0.5
   :custom
