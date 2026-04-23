@@ -4695,7 +4695,9 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package display-line-numbers
   :ensure nil
-  :hook (prog-mode . display-line-numbers-mode)
+  :hook
+  (prog-mode . display-line-numbers-mode)
+  (LaTeX-mode . display-line-numbers-mode)
   :custom
   (display-line-numbers-type 'visual))
 
