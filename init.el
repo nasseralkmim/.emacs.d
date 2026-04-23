@@ -4845,7 +4845,10 @@ RESCHEDULE-FN is the function to reschedule."
   ("<f9>" . ghostel)
   (:map ghostel-mode-map
 	("DEL" . (lambda () (interactive) (ghostel--send-encoded "backspace" "")))
-        ("C-c <escape>" . (lambda () (interactive) (ghostel--send-encoded "escape" "")))))
+        ("C-c <escape>" . (lambda () (interactive) (ghostel--send-encoded "escape" ""))))
+  ;; avoid exiting copy mode with any key other than C-c C-t (or C-c C-l)
+  (:map ghostel-copy-mode-map
+        ([remap self-insert-command] . nil)))
 
 (use-package kitty-graphics :disabled
   :vc (:url "https://github.com/cashmeredev/kitty-graphics.el" :rev :newest)
