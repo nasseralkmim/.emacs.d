@@ -1697,7 +1697,11 @@ When matching, reference is stored in match group 1."
         ;; preview-LaTeX-command-replacements '(preview-LaTeX-disable-pdfoutput)
         )
   (add-to-list 'preview-auto-reveal-commands 'meow-left)
-  (add-to-list 'preview-auto-reveal-commands 'meow-right))
+  (add-to-list 'preview-auto-reveal-commands 'meow-right)
+
+  ;; avoid problems with textmath inside tikzpicture
+  (with-eval-after-load 'preview
+  (add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)))
 
 ;; Better math preview in latex
 (use-package preview-auto
