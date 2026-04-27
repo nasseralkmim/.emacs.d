@@ -16,7 +16,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(canlock-password "d86217004d482042e69272ed4573ae3cfc559161")
- '(package-selected-packages '(preview-auto))
+ '(package-selected-packages
+   '(apptainer-mode ascii-latex-preview edraw eglot-booster eglot-inactive-regions
+                    flymake-ruff gt indent-bars jinx nerd-icons-completion
+                    nerd-icons-dired org-mode pdd preview-auto pueue ultra-scroll
+                    winpulse))
  '(package-vc-selected-packages
    '((ghostel :url "https://github.com/dakra/ghostel")
      (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")

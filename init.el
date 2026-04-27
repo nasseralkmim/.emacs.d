@@ -4035,8 +4035,7 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
   ("C-c d l" . my/dictionary-lookup-definition) ; search for word at a point
   :config
   (setq
-   dictionary-server nil
-  ;; use just one buffer, please.
+   ;; use just one buffer, please.
    dictionary-use-single-buffer t)
 
   (defun my/dictionary-lookup-definition ()
