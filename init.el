@@ -1705,6 +1705,7 @@ When matching, reference is stored in match group 1."
 
 ;; Better math preview in latex
 (use-package preview-auto
+  :if (display-graphic-p)
   :vc (:url "https://github.com/ultronozm/preview-auto.el")
   :hook (LaTeX-mode . preview-auto-mode)
   :config
