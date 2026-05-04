@@ -4857,14 +4857,13 @@ RESCHEDULE-FN is the function to reschedule."
   (kitty-graphics-mode 1))
 
 (use-package kirigami
-  :bind
-  (("C-c @ o" . kirigami-open-fold)     ; Open fold at point
-   ("C-c @ O" . kirigami-open-fold-rec) ; Open fold recursively
-   ("C-c @ r" . kirigami-open-folds)    ; Open all folds
-   ("C-c @ c" . kirigami-close-fold)    ; Close fold at point
-   ("C-c @ m" . kirigami-close-folds)   ; Close all folds
-   ("C-c @ a" . kirigami-toggle-fold)   ; Toggle fold at point
-   )
-)
+  :bind*
+  (("C-c @ C-o" . kirigami-open-fold)     ; Open fold at point
+   ("C-c @ C-O" . kirigami-open-fold-rec) ; Open fold recursively
+   ("C-c @ C-r" . kirigami-open-folds)    ; Open all folds
+   ("C-c @ C-c" . kirigami-close-fold)    ; Close fold at point
+   ("C-c @ C-m" . kirigami-close-folds)   ; Close all folds
+   ("C-c @ C-e" . kirigami-toggle-fold)   ; Toggle fold at point
+   ))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
