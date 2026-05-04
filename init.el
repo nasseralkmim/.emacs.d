@@ -928,7 +928,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
      '("Y" . meow-sync-grab)
      '("z" . meow-pop-selection)
      '("'" . repeat)
-     '("`" . "C-c @")                   ; for hide-show
+     '("`" . "C-c z")                   ; for hide-show
      '("/" . "C-.")                    ; for avy
      '("<escape>" . meow-cancel-selection)))
 
@@ -4855,5 +4855,16 @@ RESCHEDULE-FN is the function to reschedule."
   :demand t
   :config
   (kitty-graphics-mode 1))
+
+(use-package kirigami
+  :bind
+  (("C-c z o" . kirigami-open-fold)     ; Open fold at point
+   ("C-c z O" . kirigami-open-fold-rec) ; Open fold recursively
+   ("C-c z r" . kirigami-open-folds)    ; Open all folds
+   ("C-c z c" . kirigami-close-fold)    ; Close fold at point
+   ("C-c z m" . kirigami-close-folds)   ; Close all folds
+   ("C-c z a" . kirigami-toggle-fold)   ; Toggle fold at point
+   )
+)
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))

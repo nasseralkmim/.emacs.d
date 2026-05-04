@@ -18,7 +18,7 @@
  '(canlock-password "d86217004d482042e69272ed4573ae3cfc559161")
  '(package-selected-packages
    '(apptainer-mode ascii-latex-preview edraw eglot-booster eglot-inactive-regions
-                    flymake-ruff gt indent-bars jinx nerd-icons-completion
+                    flymake-ruff gt indent-bars jinx kirigami nerd-icons-completion
                     nerd-icons-dired org-mode org-ql pdd preview-auto pueue ultra-scroll
                     winpulse))
  '(package-vc-selected-packages
