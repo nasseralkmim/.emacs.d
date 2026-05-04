@@ -19,7 +19,7 @@
  '(package-selected-packages
    '(apptainer-mode ascii-latex-preview edraw eglot-booster eglot-inactive-regions
                     flymake-ruff gt indent-bars jinx nerd-icons-completion
-                    nerd-icons-dired org-mode pdd preview-auto pueue ultra-scroll
+                    nerd-icons-dired org-mode org-ql pdd preview-auto pueue ultra-scroll
                     winpulse))
  '(package-vc-selected-packages
    '((ghostel :url "https://github.com/dakra/ghostel")

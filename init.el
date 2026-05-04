@@ -3056,9 +3056,8 @@ opening a file from dired. Otherwise just regular dired."
   (setq org-modern-table nil))
 
 ;; query for org
-(use-package org-ql :disabled
-  :after org
-  :vc (:url "https://github.com/alphapapa/org-ql"))
+(use-package org-ql
+  :after org)
 
 ;; allows inline animations in org
 (use-package org-inline-anim :disabled
