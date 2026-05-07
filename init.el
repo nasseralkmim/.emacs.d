@@ -1652,6 +1652,11 @@ When matching, reference is stored in match group 1."
    (LaTeX-mode . visual-line-mode)
    (LaTeX-mode . turn-off-auto-fill)
    (LaTeX-mode . (lambda () (outline-hide-sublevels 1))))
+  :bind
+  (:map TeX-mode-map
+        ("C-c C-r" . TeX-command-run-all-region)
+        :map LaTeX-mode-map
+        ("C-c C-z" . LaTeX-command-run-all-section))
   :config
   ;; basics configs
   (setq TeX-save-query nil
@@ -4845,9 +4850,10 @@ RESCHEDULE-FN is the function to reschedule."
   (:map ghostel-mode-map
 	("DEL" . (lambda () (interactive) (ghostel--send-encoded "backspace" "")))
         ("C-c <escape>" . (lambda () (interactive) (ghostel--send-encoded "escape" ""))))
-  ;; avoid exiting copy mode with any key other than C-c C-t (or C-c C-l)
   (:map ghostel-copy-mode-map
-        ([remap self-insert-command] . nil)))
+        ;; avoid exiting copy mode with any key other than C-c C-t (or C-c C-l)
+        ([remap self-insert-command] . nil)
+        ("C-l" . recenter-top-bottom)))
 
 (use-package kitty-graphics :disabled
   :vc (:url "https://github.com/cashmeredev/kitty-graphics.el" :rev :newest)
