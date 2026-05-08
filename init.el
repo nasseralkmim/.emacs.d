@@ -1473,6 +1473,52 @@ When matching, reference is stored in match group 1."
   (setq org-latex-preview-mode-ignored-commands '(next-line previous-line)
         org-latex-preview-mode-update-delay 3.0))
 
+(use-package my-org-latex-preview-anywhere-hack
+  :ensure nil
+  :bind
+  ("C-c C-x C-l" . my-latex-preview-at-point)
+  ("C-c C-x l" . my-latex-preview-buffer)
+  ("C-c C-x r" . my-latex-preview-region)
+  ("C-c C-x c" . my-latex-preview-clear-buffer)
+  ("C-c C-x R" . my-latex-preview-refresh-buffer)
+  :config
+  (require 'org)
+  (require 'org-latex-preview)
+
+  (defun my-latex-preview-anywhere--run (mode)
+    "Run `org-latex-preview' in any buffer."
+    (let ((major-mode 'org-mode))
+      (org-latex-preview mode)))
+
+  (defun my-latex-preview-at-point ()
+    "Preview LaTeX fragment at point in any buffer."
+    (interactive)
+    (my-latex-preview-anywhere--run 'point))
+
+  (defun my-latex-preview-buffer ()
+    "Preview all LaTeX fragments in current buffer."
+    (interactive)
+    (my-latex-preview-anywhere--run 'buffer))
+
+  (defun my-latex-preview-region ()
+    "Preview LaTeX fragments in active region."
+    (interactive)
+    (unless (use-region-p)
+      (user-error "No active region"))
+    (let ((major-mode 'org-mode))
+      (org-latex-preview 'region)))
+
+  (defun my-latex-preview-clear-buffer ()
+    "Clear LaTeX previews in current buffer."
+    (interactive)
+    (org-latex-preview-clear-overlays (point-min) (point-max)))
+
+  (defun my-latex-preview-refresh-buffer ()
+    "Rebuild all LaTeX previews in current buffer."
+    (interactive)
+    (my-latex-preview-clear-buffer)
+    (my-latex-preview-buffer)))
+
 (use-package ox-beamer
   :ensure nil
   :after org
