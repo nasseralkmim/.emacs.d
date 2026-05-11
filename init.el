@@ -1481,12 +1481,11 @@ When matching, reference is stored in match group 1."
   ("C-c C-x r" . my-latex-preview-region)
   ("C-c C-x c" . my-latex-preview-clear-buffer)
   ("C-c C-x R" . my-latex-preview-refresh-buffer)
-  :config
-  (require 'org)
-  (require 'org-latex-preview)
-
+  :init
   (defun my-latex-preview-anywhere--run (mode)
     "Run `org-latex-preview' in any buffer."
+    (require 'org)
+    (require 'org-latex-preview)
     (let ((major-mode 'org-mode))
       (org-latex-preview mode)))
 
