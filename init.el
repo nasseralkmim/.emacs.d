@@ -3950,7 +3950,7 @@ With prefix argument, prompt for a new default language."
   :config
   ;; add
   (setq gptel-magit-backend (gptel-get-backend "Gemini")
-        gptel-magit-model 'gemini-3.5-flash)
+        gptel-magit-model 'gemini-3.1-flash-lite)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
