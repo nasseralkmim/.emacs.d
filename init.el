@@ -3948,8 +3948,9 @@ With prefix argument, prompt for a new default language."
   :bind (:map magit-mode-map
               ("C-c C-s" . gptel-magit-commit-and-finish))
   :config
+  ;; add
   (setq gptel-magit-backend (gptel-get-backend "Gemini")
-        gptel-magit-model 'gemini-3.1-flash-lite-preview)
+        gptel-magit-model 'gemini-3.5-flash)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
