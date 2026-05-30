@@ -60,8 +60,6 @@
   (setq use-short-answers t)
 
   (setq-default
-   completion-cycle-threshold nil    ; show all candidates
-   completions-detailed t	    ; add details in completions as prefix/sufix
    enable-recursive-minibuffers t	; Enable recursive minibuffers
    visible-bell t			; Don't beep at me
    kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
@@ -108,6 +106,19 @@
   ;; https://emacs.stackexchange.com/questions/10983/remember-permission-to-execute-risky-local-variables
   ;; (add-to-list 'safe-local-variable-directories "~/.local/src/Trilinos/")
   (advice-add 'risky-local-variable-p :override #'ignore))
+
+(use-package minibufer
+  :ensure nil
+  :bind
+  (:map minibuffer-mode-map
+        ("TAB" . minibuffer-complete))
+  :init
+  (setopt
+   completion-cycle-threshold 1
+   completions-detailed t	    ; add details in completions as prefix/sufix
+   completion-auto-help 'always	    ; show help when there are no candidates or when cycling
+   completion-auto-select 'second-tab ; first TAB shows candidates, second TAB selects
+   completions-group t))
 
 (use-package compile
   :ensure nil
@@ -365,7 +376,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq helpful-switch-buffer-function 'pop-or-switch-to-buffer))
 
 ;; completion UI (vertical list in minibuffer)
-(use-package vertico
+(use-package vertico :disabled
   :ensure t
   :bind
   (:map vertico-map
@@ -421,7 +432,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         display-buffer-below-selected))))
 
 ;; allows different completion UI configuration
-(use-package vertico-multiform
+(use-package vertico-multiform :disabled
   :after vertico
   :ensure nil
   :demand t
@@ -514,9 +525,6 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   ("C-c f" . consult-find-fd)		; search files in directories
   ("C-x C-@" . consult-global-mark)
   ("M-e" . consult-isearch-history))
-  :hook
-  ;; hook for using default completion mode
-  (completion-list-mode . consult-preview-at-point-mode)
   :config
   (consult-customize consult-buffer
                      consult-bookmark

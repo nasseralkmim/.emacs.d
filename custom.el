@@ -17,10 +17,11 @@
  ;; If there is more than one, they won't work right.
  '(canlock-password "d86217004d482042e69272ed4573ae3cfc559161")
  '(package-selected-packages
-   '(apptainer-mode ascii-latex-preview edraw eglot-booster eglot-inactive-regions
-                    flymake-ruff gt indent-bars jinx kirigami nerd-icons-completion
-                    nerd-icons-dired org-mode org-ql pdd preview-auto pueue ultra-scroll
-                    winpulse))
+   '(apptainer-mode ascii-latex-preview consult copilot edraw eglot-booster
+                    eglot-inactive-regions flymake-ruff ghostel gptel gptel-quick gt
+                    indent-bars jinx kirigami kitty-graphics nerd-icons-completion
+                    nerd-icons-dired org-mode org-ql pdd preview-auto pueue treesit-fold
+                    ultra-scroll winpulse))
  '(package-vc-selected-packages
    '((ghostel :url "https://github.com/dakra/ghostel")
      (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
