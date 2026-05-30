@@ -3958,7 +3958,7 @@ With prefix argument, prompt for a new default language."
   :config
   ;; add
   (setq gptel-magit-backend (gptel-get-backend "Gemini")
-        gptel-magit-model 'gemini-3.1-flash-lite)
+        gptel-magit-model 'gemini-flash-lite-latest)
   ;; Override to truncate large diffs (>10000 tokens ≈ 40000 chars) to avoid high API costs
   (defun gptel-magit--generate (callback)
     "Generate a commit message for current magit repo.
@@ -3980,8 +3980,14 @@ Truncates diff if it exceeds 10000 tokens to avoid high API costs."
         :system gptel-magit-commit-prompt
         :context nil
         :callback (lambda (response _info)
-                    (let ((msg (gptel-magit--format-commit-message response)))
-                      (funcall callback msg))))))
+                    (if (stringp response)
+                        (let ((msg (gptel-magit--format-commit-message response)))
+                          (funcall callback msg))
+                      (let* ((err (plist-get _info :error))
+                             (err-msg (and err (plist-get err :message))))
+                        (when err-msg
+                          (message "gptel-magit error: %s" err-msg))
+                        (funcall callback nil)))))))
 
   (defun gptel-magit-commit-and-finish (&optional args)
     (interactive (list (magit-commit-arguments)))
