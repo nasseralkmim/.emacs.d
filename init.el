@@ -110,8 +110,9 @@
 (use-package minibufer
   :ensure nil
   :bind
-  (:map minibuffer-mode-map
-        ("TAB" . minibuffer-complete))
+  (:map minibuffer-local-completion-map
+       ("C-n" . minibuffer-next-completion)
+       ("C-p" . minibuffer-previous-completion))
   :init
   (setopt
    completion-cycle-threshold 1
@@ -119,7 +120,7 @@
    completion-auto-help 'always	    ; show help when there are no candidates or when cycling
    completions-header-format nil
    completions-format 'one-column
-   completion-auto-select 'second-tab ; first TAB shows candidates, second TAB selects
+   completion-auto-select t
    completions-group t))
 
 (use-package compile
@@ -681,7 +682,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
          ("h" . helpful-symbol)
          :map embark-variable-map
          ("h" . helpful-symbol)
-         :map vertico-map
+         :map minibuffer-mode-map
          ("C-SPC" . (lambda () (interactive) (embark-select) (vertico-next)))
          ("C-@" . (lambda () (interactive) (embark-select) (vertico-next)))        ; for terminal
          ("C-a" . embark-act-all))
