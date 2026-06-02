@@ -379,7 +379,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (setq helpful-switch-buffer-function 'pop-or-switch-to-buffer))
 
 ;; completion UI (vertical list in minibuffer)
-(use-package vertico :disabled
+(use-package vertico
   :ensure t
   :bind
   (:map vertico-map
@@ -435,7 +435,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
         display-buffer-below-selected))))
 
 ;; allows different completion UI configuration
-(use-package vertico-multiform :disabled
+(use-package vertico-multiform
   :after vertico
   :ensure nil
   :demand t
