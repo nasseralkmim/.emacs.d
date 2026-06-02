@@ -117,6 +117,8 @@
    completion-cycle-threshold 1
    completions-detailed t	    ; add details in completions as prefix/sufix
    completion-auto-help 'always	    ; show help when there are no candidates or when cycling
+   completions-header-format nil
+   completions-format 'one-column
    completion-auto-select 'second-tab ; first TAB shows candidates, second TAB selects
    completions-group t))
 
@@ -470,14 +472,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (:repeat-map ctrl-x-map
                ("@" . pop-global-mark))
   :config
-  ;; first TAB shows candidates
-  ;; second TAB switches to the candidates buffer
-  (setq completion-auto-select 'second-tab
-        completion-auto-help 'always
-        ;; Just one column is better.
-        completions-format 'one-column
-        completions-max-height 20
-        completions-header-format nil
+  (setq
         ;; use C-SPC after C-u C-SPC to go jump to marks
         set-mark-command-repeat-pop t
         ;; save clipboard before killing, to avoid losing it when killing something else
