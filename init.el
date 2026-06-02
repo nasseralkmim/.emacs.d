@@ -3655,14 +3655,9 @@ opening a file from dired. Otherwise just regular dired."
 (use-package speedbar :disabled
   :ensure nil)
 
-(use-package pdd
-  :vc (:url "https://github.com/lorniu/pdd.el")
-  :after gt
-  :defer t)
-
 ;; translation package
 (use-package gt
-  :vc (:url "https://github.com/lorniu/gt.el")
+  :ensure t
   :bind
   (("C-c t t" . my-gt-do-translate)     ; overrides the tutorial, but ok...
    ("C-c t d" . gt-do-setup)
