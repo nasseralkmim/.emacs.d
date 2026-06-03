@@ -39,7 +39,7 @@
 
 ;; Don't use Sans serif
 (when (facep 'variable-pitch)
-  (set-face-attribute 'variable-pitch nil :family "Monospace"))
+  (set-face-attribute 'variable-pitch nil :family 'unspecified))
 (when (facep 'variable-pitch-text)
   (set-face-attribute 'variable-pitch-text nil :height 'unspecified))
 
