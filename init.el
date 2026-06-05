@@ -2189,12 +2189,40 @@ Only if there is more than one window opened."
   (citar-bibliography '("~/.bibliography.bib"))
   :config
   (setq citar-library-paths '("~/Sync/bibliography/")
+        citar-notes-paths '("~/Sync/notes/papers-notes")
         bibtex-dialect 'BibTeX
         bibtex-dialect-list '(BibTeX biblatex))
   
   ;; open xournalpp and pdf externally
   (add-to-list 'citar-file-open-functions '("xopp" . (lambda (file) (call-process "xournalpp" nil 0 nil file))))
   (add-to-list 'citar-file-open-functions '("pdf" . citar-file-open-external)))
+
+(use-package citar-icons
+  :ensure nil
+  :after citar
+  :init
+  (defvar citar-indicator-files-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-faicon
+              "nf-fa-file_o"
+              :face 'nerd-icons-green
+              :v-adjust -0.1)
+     :function #'citar-has-files
+     :padding "  " ; need this because the default padding is too low for these icons
+     :tag "has:files"))
+  (defvar citar-indicator-notes-icons
+    (citar-indicator-create
+     :symbol (nerd-icons-codicon
+              "nf-cod-note"
+              :face 'nerd-icons-blue
+              :v-adjust -0.3)
+     :function #'citar-has-notes
+     :padding "    "
+     :tag "has:notes"))
+  
+  (setq citar-indicators
+        (list citar-indicator-files-icons
+              citar-indicator-notes-icons)))
 
 (use-package citar-embark
   :after citar embark
