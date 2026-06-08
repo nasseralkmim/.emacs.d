@@ -4921,4 +4921,15 @@ RESCHEDULE-FN is the function to reschedule."
    ("C-c @ C-e" . kirigami-toggle-fold)   ; Toggle fold at point
    ))
 
+(use-package elfeed
+  :bind
+  ("C-x w" . elfeed)
+  :config
+  (setq elfeed-feeds
+        '(("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" blog finance economics)
+          ("https://www.bis.org/doclist/reshub_papers.rss" economics papers)
+          ("https://www.economist.com/finance-and-economics/rss.xml" news finance economics)
+          ("https://paulkrugman.substack.com/feed" blog)
+          ("https://rbaldwin.substack.com/feed" blog))))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))

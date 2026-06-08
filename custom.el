@@ -18,12 +18,13 @@
  '(canlock-password "d86217004d482042e69272ed4573ae3cfc559161")
  '(package-selected-packages
    '(apptainer-mode ascii-latex-preview consult copilot edraw eglot-booster
-                    eglot-inactive-regions flymake-ruff ghostel gptel gptel-quick gt
-                    indent-bars jinx kirigami kitty-graphics nerd-icons-completion
-                    nerd-icons-dired org-mode org-ql pdd preview-auto pueue treesit-fold
-                    ultra-scroll winpulse))
+                    eglot-inactive-regions elfeed flymake-ruff ghostel gptel gptel-quick
+                    gt indent-bars jinx kirigami kitty-graphics nerd-icons-completion
+                    nerd-icons-dired org-mode org-ql org-super-links pdd preview-auto
+                    pueue treesit-fold ultra-scroll winpulse))
  '(package-vc-selected-packages
-   '((ghostel :url "https://github.com/dakra/ghostel")
+   '((org-super-links :url "https://github.com/toshism/org-super-links")
+     (ghostel :url "https://github.com/dakra/ghostel")
      (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
      (ascii-latex-preview :url "https://github.com/nasseralkmim/ascii-latex-preview")
      (org-xopp :url "https://github.com/mahmoodsh36/org-xopp")
