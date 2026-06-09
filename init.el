@@ -1187,7 +1187,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   :ensure nil
   :after org
   :init
-  (setq org-export-in-background nil))
+  (setq org-export-in-background nil
+        ;; avoid problems with partial documents
+        org-export-with-broken-links t))
 
 (use-package ox-html
   :ensure nil
