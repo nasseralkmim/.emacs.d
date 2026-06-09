@@ -4957,7 +4957,7 @@ RESCHEDULE-FN is the function to reschedule."
   :config
   (setq elfeed-feeds
         '(("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" blog finance economics)
-          ("https://www.bis.org/doclist/reshub_papers.rss" economics papers)
+          ("https://www.bis.org/doclist/reshub_papers.rss" papers economics)
           ("https://www.economist.com/finance-and-economics/rss.xml" news finance economics)
           ("https://www.ft.com/opinion?format=rss" news)
           ("https://paulkrugman.substack.com/feed" blog)
