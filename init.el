@@ -4955,6 +4955,7 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-x w" . elfeed)
   :config
+  (setq elfeed-db-directory "~/Sync/news/elfeed")
   (setq elfeed-feeds
         '(("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" blog finance economics)
           ("https://www.bis.org/doclist/reshub_papers.rss" papers economics)
