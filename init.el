@@ -3567,6 +3567,8 @@ opening a file from dired. Otherwise just regular dired."
   ;; use complete at point interface to select email from contacts
   (setq ebdb-complete-mail 'capf
         ebdb-mua-pop-up nil             ; don't show any pop ups
+        ebdb-add-name 2               ; don't query nor change the name of a record, just briefly show the mismatch 
+        ebdb-add-aka t                  ; store alternate names
         ;; save on exit
         ebdb-save-on-exit t
         ebdb-sources "~/Sync/secrets/ebdb")
