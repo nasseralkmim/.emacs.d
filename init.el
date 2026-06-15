@@ -3708,7 +3708,7 @@ opening a file from dired. Otherwise just regular dired."
   ;; (gt-after-buffer-prepared . (lambda () (visual-line-mode 1)))
   :config
   (setq gt-langs '(de en pt it fr es)
-        gt-default-translator (gt-translator :engines (gt-deepl-engine)))
+        gt-default-translator (gt-translator :engines (gt-google-engine)))
   
   (defun my-gt-do-translate (&optional arg)
     "Translate with the default translator.
@@ -3720,11 +3720,11 @@ With double prefix argument (C-u C-u), auto-detect EN<->DE and render in buffer.
                        ((equal arg '(16))  ; C-u C-u
                         (gt-translator
                          ;; :taker (gt-taker :langs '(en de))
-                         :engines (gt-deepl-engine)
+                         :engines (gt-google-engine)
                          :render (gt-buffer-render)))
                        (arg  ; C-u
                         (gt-translator
-                         :engines (gt-deepl-engine)
+                         :engines (gt-google-engine)
                          :taker (gt-taker :prompt t)))
                        (t gt-default-translator))))
       (gt-start translator)))
@@ -3733,7 +3733,7 @@ With double prefix argument (C-u C-u), auto-detect EN<->DE and render in buffer.
   (defun my-gt-do-translate-and-insert ()
     (interactive)
     (let ((translator (gt-translator
-                       :engines (list (gt-deepl-engine))
+                       :engines (list (gt-google-engine))
                        :render (gt-insert-render :type 'after))))
       (gt-start translator)))
 
