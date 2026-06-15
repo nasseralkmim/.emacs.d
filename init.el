@@ -4985,4 +4985,13 @@ RESCHEDULE-FN is the function to reschedule."
            ("https://arxiv.org/rss/cs.PF" papers computer-science parallel arxiv)
            ("http://rss.arxiv.org/rss/cs.MS" papers computer-science software arxiv))))
 
+(use-package elfeed-score
+  :ensure t
+  :init
+  (with-eval-after-load 'elfeed
+    (elfeed-score-enable))
+  :config
+  (define-key elfeed-search-mode-map "`" elfeed-score-map)
+  (setq elfeed-score-score-file "~/Sync/news/elfeed.score"))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
