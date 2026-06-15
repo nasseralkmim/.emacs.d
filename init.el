@@ -4987,11 +4987,18 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package elfeed-score
   :ensure t
+  :after elfeed
   :init
-  (with-eval-after-load 'elfeed
-    (elfeed-score-enable))
-  :config
+  (elfeed-score-enable)
   (define-key elfeed-search-mode-map "`" elfeed-score-map)
   (setq elfeed-score-score-file "~/Sync/news/elfeed.score"))
+
+(use-package elfeed-goodies
+  :ensure t
+  :after elfeed
+  :init
+  (elfeed-goodies/setup)
+  (setq elfeed-goodies/entry-pane-position 'bottom
+        elfeed-goodies/switch-to-entry nil))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
