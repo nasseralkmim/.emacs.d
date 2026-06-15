@@ -4992,7 +4992,7 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   (elfeed-score-enable)
   (define-key elfeed-search-mode-map "`" elfeed-score-map)
-  (setq elfeed-score-score-file "~/Sync/news/elfeed.score"))
+  (setq elfeed-score-score-file "Sync/news/elfeed.score"))
 
 (use-package elfeed-goodies
   :ensure t
