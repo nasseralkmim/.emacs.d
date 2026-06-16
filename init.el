@@ -4984,7 +4984,14 @@ RESCHEDULE-FN is the function to reschedule."
           ("http://arxiv.org/rss/math.NA" papers math numerical-analysis arxiv)
           ("https://rss.sciencedirect.com/publication/science/00219991" papers physics computational-physics)
           ("https://arxiv.org/rss/cs.PF" papers computer-science parallel arxiv)
-          ("http://rss.arxiv.org/rss/cs.MS" papers computer-science software arxiv))))
+          ("http://rss.arxiv.org/rss/cs.MS" papers computer-science software arxiv)))
+  (setq elfeed-search-face-alist
+        '((unread elfeed-search-unread-title-face)
+          (news error)
+          (finance warning)
+          (mechanics font-lock-keyword-face)
+          (papers font-lock-type-face)
+          (later success))))
 
 (use-package elfeed-score
   :ensure t
