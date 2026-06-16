@@ -5076,45 +5076,46 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-x w" . elfeed)
   :config
-  (setq elfeed-db-directory "~/Sync/news/elfeed")
+  (setq elfeed-db-directory "~/Sync/news/elfeed"
+        elfeed-search-title-min-width 45)
   (setq elfeed-feeds
-      '(("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" opinion finance economics)
-        ("https://www.bis.org/doclist/reshub_papers.rss" paper economics)
-        ("https://www.economist.com/finance-and-economics/rss.xml" news finance economics)
-        ("https://www.ft.com/opinion?format=rss" opinion economics)
-        ("https://rss.nytimes.com/services/xml/rss/nyt/sunday-review.xml" opinion)
-        ("https://www.federalreserve.gov/feeds/working_papers.xml" paper finance economics)
-        ("https://libertystreeteconomics.newyorkfed.org/feed/" opinion finance economics)
-        ("https://news.ycombinator.com/rss" opinion hackernews)
-        ("https://paulkrugman.substack.com/feed" opinion economics)
-        ("https://rbaldwin.substack.com/feed" opinion economics)
-        ;; Mechanics journals
-        ("https://rss.sciencedirect.com/publication/science/00652156" paper mechanics)
-        ("https://rss.sciencedirect.com/publication/science/00457949" paper mechanics structures)
-        ("https://rss.sciencedirect.com/publication/science/00457825" paper mechanics cmame)
-        ("https://rss.sciencedirect.com/publication/science/00207403" paper mechanics mechanical-sciences)
-        ("https://rss.sciencedirect.com/publication/science/00137944" paper mechanics fracture)
-        ("https://rss.sciencedirect.com/publication/science/00936413" paper mechanics mechanics-research)
-        ("https://rss.sciencedirect.com/publication/science/03019322" paper mechanics multiphase)
-        ("https://onlinelibrary.wiley.com/feed/10970207/most-recent" paper mechanics numerical-methods)
-        ("https://link.springer.com/search.rss?facet-sub-discipline=%22Civil+Engineering%22&query=computational+mechanics&facet-discipline=%22Engineering%22&sortOrder=newestFirst&facet-sub-discipline=%22Classical+Mechanics%22&facet-content-type=%22Article%22&facet-sub-discipline=%22Mechanical+Engineering%22&facet-sub-discipline=%22Characterization+and+Evaluation+of+Materials%22" paper mechanics computational-mechanics springer)
-        ;; Geotechnics
-        ("https://rss.sciencedirect.com/publication/science/0266352X" paper geotechnics computers)
-        ("https://onlinelibrary.wiley.com/feed/10969853/most-recent" paper geotechnics geomechanics)
-        ;; Math / CS / Physics
-        ("https://rss.sciencedirect.com/publication/science/0307904X" paper math applied-modelling)
-        ("http://arxiv.org/rss/math.NA" paper math numerical-analysis arxiv)
-        ("https://rss.sciencedirect.com/publication/science/00219991" paper physics computational-physics)
-        ("https://arxiv.org/rss/cs.PF" paper computer-science parallel arxiv)
-        ("http://rss.arxiv.org/rss/cs.MS" paper computer-science software arxiv)))
-(setq elfeed-search-face-alist
-      '((unread elfeed-search-unread-title-face)
-        ;; content type (primary visual distinction)
-        (news font-lock-type-face)
-        (opinion font-lock-doc-face)
-        (paper default)
-        ;; workflow
-        (later warning))))
+        '(("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" opinion finance economics)
+          ("https://www.bis.org/doclist/reshub_papers.rss" paper economics)
+          ("https://www.economist.com/finance-and-economics/rss.xml" news finance economics)
+          ("https://www.ft.com/opinion?format=rss" opinion economics)
+          ("https://rss.nytimes.com/services/xml/rss/nyt/sunday-review.xml" opinion)
+          ("https://www.federalreserve.gov/feeds/working_papers.xml" paper finance economics)
+          ("https://libertystreeteconomics.newyorkfed.org/feed/" opinion finance economics)
+          ("https://news.ycombinator.com/rss" forum hackernews)
+          ("https://paulkrugman.substack.com/feed" opinion economics)
+          ("https://rbaldwin.substack.com/feed" opinion economics)
+          ;; Mechanics journals
+          ("https://rss.sciencedirect.com/publication/science/00652156" paper mechanics)
+          ("https://rss.sciencedirect.com/publication/science/00457949" paper mechanics structures)
+          ("https://rss.sciencedirect.com/publication/science/00457825" paper mechanics cmame)
+          ("https://rss.sciencedirect.com/publication/science/00207403" paper mechanics mechanical-sciences)
+          ("https://rss.sciencedirect.com/publication/science/00137944" paper mechanics fracture)
+          ("https://rss.sciencedirect.com/publication/science/03019322" paper mechanics multiphase)
+          ("https://onlinelibrary.wiley.com/feed/10970207/most-recent" paper mechanics numerical-methods)
+          ("https://link.springer.com/search.rss?facet-sub-discipline=%22Civil+Engineering%22&query=computational+mechanics&facet-discipline=%22Engineering%22&sortOrder=newestFirst&facet-sub-discipline=%22Classical+Mechanics%22&facet-content-type=%22Article%22&facet-sub-discipline=%22Mechanical+Engineering%22&facet-sub-discipline=%22Characterization+and+Evaluation+of+Materials%22" paper mechanics computational-mechanics springer)
+          ;; Geotechnics
+          ("https://rss.sciencedirect.com/publication/science/0266352X" paper geotechnics computers)
+          ("https://onlinelibrary.wiley.com/feed/10969853/most-recent" paper geotechnics geomechanics)
+          ;; Math / CS / Physics
+          ("https://rss.sciencedirect.com/publication/science/0307904X" paper math applied-modelling)
+          ("http://arxiv.org/rss/math.NA" paper math numerical-analysis arxiv)
+          ("https://rss.sciencedirect.com/publication/science/00219991" paper physics computational-physics)
+          ("https://arxiv.org/rss/cs.PF" paper computer-science parallel arxiv)
+          ("http://rss.arxiv.org/rss/cs.MS" paper computer-science software arxiv)))
+  (setq elfeed-search-face-alist
+        '((unread elfeed-search-unread-title-face)
+          ;; content type (primary visual distinction)
+          (news font-lock-type-face)
+          (opinion success)
+          (forum font-lock-keyword-face)
+          (paper font-lock-comment-face)
+          ;; workflow
+          (later warning))))
 
 (use-package elfeed-score
   :ensure t
@@ -5123,13 +5124,5 @@ RESCHEDULE-FN is the function to reschedule."
   (elfeed-score-enable)
   (define-key elfeed-search-mode-map "`" elfeed-score-map)
   (setq elfeed-score-score-file "Sync/news/elfeed.score"))
-
-(use-package elfeed-goodies
-  :ensure t
-  :after elfeed
-  :init
-  (elfeed-goodies/setup)
-  (setq elfeed-goodies/entry-pane-position 'bottom
-        elfeed-goodies/switch-to-entry nil))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
