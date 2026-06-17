@@ -2036,9 +2036,8 @@ Otherwise, toggle only the directory at point."
   ;; hook to enforce change when theme is toggled (which loads the theme)
   (defun my-modus-tweaks ()
     (progn 
-      (with-eval-after-load 'breadcrumb
-        (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
-
+      (with-eval-after-load 'breadcrumb (set-face-attribute 'breadcrumb-project-leaf-face nil :inherit 'default))
+      (with-eval-after-load 'elfeed (set-face-attribute 'elfeed-search-unread-title-face nil :foreground 'unspecified :weight 'bold))
       (modus-themes-with-colors
         ;; The `org-src-block-faces' does not get re-applied in existing
         ;; Org buffers.  Do M-x org-mode-restart for changes to take
