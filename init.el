@@ -4958,7 +4958,9 @@ RESCHEDULE-FN is the function to reschedule."
   ("C-x w" . elfeed)
   :config
   (setq elfeed-db-directory "~/Sync/news/elfeed"
-        elfeed-search-title-min-width 45)
+        elfeed-search-title-max-width 120
+        elfeed-search-title-min-width 60
+        elfeed-search-trailing-width 20)
   (setq elfeed-feeds
         '(("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" opinion finance economics)
           ("https://www.bis.org/doclist/reshub_papers.rss" paper economics)
