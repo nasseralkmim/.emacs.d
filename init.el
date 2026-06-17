@@ -4944,6 +4944,7 @@ RESCHEDULE-FN is the function to reschedule."
   (kitty-graphics-setup))
 
 (use-package kitty-graphics-org-new-latex-preview-hack
+  :ensure nil
   :after kitty-graphics
   :init
   (defun my/kitty-org-latex-preview-around (orig-fn &optional mode)
