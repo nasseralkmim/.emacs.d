@@ -4971,6 +4971,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://news.ycombinator.com/rss" forum hackernews)
           ("https://paulkrugman.substack.com/feed" opinion economics)
           ("https://rbaldwin.substack.com/feed" opinion economics)
+          ("https://bubbles.town/briefing/feed" forum bubbles)
           ;; Mechanics journals
           ("https://rss.sciencedirect.com/publication/science/00652156" paper mechanics)
           ("https://rss.sciencedirect.com/publication/science/00457949" paper mechanics structures)
