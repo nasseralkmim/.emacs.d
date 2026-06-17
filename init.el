@@ -4936,12 +4936,130 @@ RESCHEDULE-FN is the function to reschedule."
   (:map ghostel-readonly-mode-map
         ("C-l" . recenter-top-bottom)))
 
-(use-package kitty-graphics :disabled
+(use-package kitty-graphics
   :vc (:url "https://github.com/cashmeredev/kitty-graphics.el" :rev :newest)
   :if (not (display-graphic-p))
   :demand t
   :config
-  (kitty-graphics-mode 1))
+  (kitty-graphics-setup))
+
+(use-package kitty-graphics-org-new-latex-preview-hack
+  :after kitty-graphics
+  :init
+  (defun my/kitty-org-latex-preview-around (orig-fn &optional mode)
+    "Bypass `display-graphic-p' guard in `org-latex-preview' for kitty terminals.
+
+   Mocks `display-graphic-p' to t for the duration of the call so
+   the `(when (display-graphic-p) …)' gate passes, then overrides the
+   DPI lookup and `clear-image-cache' to be terminal-safe, and forces
+   an explicit foreground color so terminal face attributes like
+   \"unspecified-fg\" never reach the LaTeX color formatter."
+    (if (and (not (display-graphic-p)) (bound-and-true-p kitty-graphics-mode))
+        (cl-letf (((symbol-function 'display-graphic-p)            (lambda (&rest _) t))
+                  ((symbol-function 'clear-image-cache)            #'ignore)
+                  ((symbol-function 'org-latex-preview--get-display-dpi) (lambda () 140)))
+          (let ((org-latex-preview-appearance-options
+                 (org-combine-plists
+                  org-latex-preview-appearance-options
+                  (list :foreground
+                        (let ((fg (face-attribute 'default :foreground nil t)))
+                          (if (and (stringp fg)
+                                   (not (string-prefix-p "unspecified" fg)))
+                              fg "Black"))
+                        :background "Transparent"))))
+            (funcall orig-fn mode)))
+      (funcall orig-fn mode)))
+
+  (defun my/kitty-org-latex-overlay--render (ov)
+    "Core helper: display the image file of OV via kitty-graphics.
+
+   Reads the image file path from OV's `preview-image' property
+   (set by `org-latex-preview--update-overlay'), clears the Emacs
+   `(image …)' display spec that cannot render in a TUI, removes any
+   stale kitty overlay at the same span, then calls
+   `kitty-gfx-display-image'.  Tags the resulting kitty overlay as
+   `org-latex-overlay' so `org-latex-preview-clear-overlays' finds it."
+    (when-let* ((img  (overlay-get ov 'preview-image))
+                ((eq (car-safe img) 'image))       ; guard: must be an image spec
+                (file (plist-get (cdr img) :file)) ; (image :type T :file F …)
+                ((file-exists-p file))
+                (beg  (overlay-start ov))
+                (end  (overlay-end  ov)))
+      ;; Suppress the Emacs image spec — it cannot render in a terminal.
+      (overlay-put ov 'display nil)
+      (overlay-put ov 'face    nil)
+      ;; Remove any stale kitty overlay covering the same span.
+      (dolist (o (overlays-in beg end))
+        (when (and (overlay-get o 'kitty-gfx) (not (eq o ov)))
+          (kitty-gfx--remove-overlay o)))
+      ;; Render.  kitty-gfx-display-image handles PNG directly and
+      ;; converts SVG (dvisvgm output) to PNG via ImageMagick.
+      (kitty-gfx-display-image file beg end)
+      ;; Tag the new kitty overlay so org-latex-preview-clear-overlays
+      ;; picks it up alongside the org overlay.
+      (when-let ((ko (car kitty-gfx--overlays)))
+        (overlay-put ko 'org-overlay-type 'org-latex-overlay))))
+
+  (defun my/kitty-org-latex-overlay-update (ov)
+    "Hook for `org-latex-preview-overlay-update-functions'.
+   Fires asynchronously once per image, after the LaTeX→image pipeline
+   completes.  Skips rendering when the cursor is currently inside the
+   fragment (`view-text' t), since org-latex-preview-mode is showing
+   the raw LaTeX source then."
+    (when (and (not (display-graphic-p))
+               (bound-and-true-p kitty-graphics-mode)
+               (not (overlay-get ov 'view-text)))
+      (my/kitty-org-latex-overlay--render ov)))
+
+  (defun my/kitty-org-latex-overlay-close (ov)
+    "Hook for `org-latex-preview-overlay-close-functions'.
+   Fires when `org-latex-preview-mode' moves the cursor OUT of a
+   fragment.  The close handler has already set `display' to the
+   `(image …)' spec; we clear it and re-render via kitty."
+    (when (and (not (display-graphic-p))
+               (bound-and-true-p kitty-graphics-mode))
+      (my/kitty-org-latex-overlay--render ov)))
+
+  (defun my/kitty-org-latex-overlay-open (ov)
+    "Hook for `org-latex-preview-overlay-open-functions'.
+   Fires when `org-latex-preview-mode' moves the cursor INTO a
+   fragment, revealing the raw LaTeX source.  Remove the kitty image
+   so the source text is visible."
+    (when (and (not (display-graphic-p))
+               (bound-and-true-p kitty-graphics-mode))
+      (let ((beg (overlay-start ov))
+            (end (overlay-end   ov)))
+        (dolist (o (overlays-in beg end))
+          (when (and (overlay-get o 'kitty-gfx) (not (eq o ov)))
+            (kitty-gfx--remove-overlay o))))))
+
+  (defun my/kitty-org-latex-preview-clear-around (orig-fn &optional beg end)
+    "Around advice for `org-latex-preview-clear-overlays'.
+   Properly removes kitty overlays (emitting the terminal-side
+   delete APC) before Org's plain `delete-overlay' sweep runs.
+   Without this, dead kitty overlays would linger in
+   `kitty-gfx--overlays' and leave ghost images in the terminal."
+    (when (and (not (display-graphic-p))
+               (bound-and-true-p kitty-graphics-mode))
+      (dolist (ov (overlays-in (or beg (point-min)) (or end (point-max))))
+        (when (and (overlay-get ov 'kitty-gfx)
+                   (eq (overlay-get ov 'org-overlay-type) 'org-latex-overlay))
+          (kitty-gfx--remove-overlay ov))))
+    (funcall orig-fn beg end))
+
+   ;;; Wire everything up once org-latex-preview.el has been loaded.
+  (with-eval-after-load 'org-latex-preview
+    (advice-add 'org-latex-preview
+                :around #'my/kitty-org-latex-preview-around)
+    (advice-add 'org-latex-preview-clear-overlays
+                :around #'my/kitty-org-latex-preview-clear-around)
+    (add-hook 'org-latex-preview-overlay-update-functions
+              #'my/kitty-org-latex-overlay-update)
+    ;; The next two are only active when org-latex-preview-mode is on.
+    (add-hook 'org-latex-preview-overlay-close-functions
+              #'my/kitty-org-latex-overlay-close)
+    (add-hook 'org-latex-preview-overlay-open-functions
+              #'my/kitty-org-latex-overlay-open)))
 
 (use-package kirigami
   :bind*
