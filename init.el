@@ -5002,9 +5002,10 @@ RESCHEDULE-FN is the function to reschedule."
 (use-package elfeed-score
   :ensure t
   :after elfeed
-  :init
-  (elfeed-score-enable)
+  :demand t
+  :config
   (define-key elfeed-search-mode-map "`" elfeed-score-map)
-  (setq elfeed-score-score-file "Sync/news/elfeed.score"))
+  (setq elfeed-score-serde-score-file "/home/nasser/Sync/news/elfeed.score")
+  (elfeed-score-enable))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
