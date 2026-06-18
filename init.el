@@ -708,7 +708,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; allows consult previews as you move around an auto-updating embark collect
 ;; buffer
 ;; `exbark-collects` grep results to a grep buffer
-(use-package embark-consult
+(use-package embark-consult :disabled
   :demand				;necessary for consult preview
   :hook (embark-collect-mode . consult-preview-at-point-mode)
   :after (embark consult))
