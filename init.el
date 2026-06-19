@@ -5002,10 +5002,13 @@ RESCHEDULE-FN is the function to reschedule."
           (later warning)))
   ;; stay in search view after opening an entry
   (setq elfeed-show-entry-switch 'elfeed-show-entry-other-window)
-  (defun elfeed-show-entry-other-window (buffer &optional act)
+  (defun elfeed-show-entry-other-window (buf &optional act)
     "Display BUFFER in another window, but do not select it."
-    (pop-to-buffer buffer)
-    (set-window-text-height (get-buffer-window) (round (* 0.7 (frame-height))))))
+    (let ((win (display-buffer buf
+                               '((display-buffer-reuse-window
+                                  display-buffer-below-selected)
+                                 (window-height . 0.7)))))
+      (when win (select-window win)))))
 
 (use-package elfeed-score
   :ensure t
