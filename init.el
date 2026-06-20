@@ -107,7 +107,7 @@
   ;; (add-to-list 'safe-local-variable-directories "~/.local/src/Trilinos/")
   (advice-add 'risky-local-variable-p :override #'ignore))
 
-(use-package minibufer
+(use-package minibufer :disabled
   :ensure nil
   :bind
   (:map minibuffer-local-completion-map
