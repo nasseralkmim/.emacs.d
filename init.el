@@ -4990,6 +4990,11 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://rss.sciencedirect.com/publication/science/00219991" paper physics computational-physics)
           ("https://arxiv.org/rss/cs.PF" paper computer-science parallel arxiv)
           ("http://rss.arxiv.org/rss/cs.MS" paper computer-science software arxiv)))
+  
+  (defface elfeed-search-later-face
+    '((t :underline t))
+    "Face for elfeed entries tagged 'later' — adds underline only.")
+  
   (setq elfeed-search-face-alist
         '((unread elfeed-search-unread-title-face)
           ;; content type (primary visual distinction)
@@ -4998,7 +5003,7 @@ RESCHEDULE-FN is the function to reschedule."
           (forum font-lock-keyword-face)
           (paper font-lock-comment-face)
           ;; workflow
-          (later warning)))
+          (later elfeed-search-later-face)))
   ;; stay in search view after opening an entry
   (setq elfeed-show-entry-switch 'elfeed-show-entry-other-window)
   (defun elfeed-show-entry-other-window (buf &optional act)
