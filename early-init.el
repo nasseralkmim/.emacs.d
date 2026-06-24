@@ -31,7 +31,7 @@
    ;; (font . "Monaspace Neon")
    ;; (font . "Input Mono")
    ;; (font . "Iosevka SS12 Extended")
-   (font . "Ioskeley Mono")
+   (font . "Ioskeley Mono Term")
    ;; (font . "Fixedsys Excelsior")
    ;; (font . "Dejavu Sans Mono")
    ;; (font . "Maple Mono")
