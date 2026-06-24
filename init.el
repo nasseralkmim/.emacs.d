@@ -1760,7 +1760,7 @@ When matching, reference is stored in match group 1."
   (add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)))
 
 ;; Better math preview in latex
-(use-package preview-auto
+(use-package preview-auto :disabled
   :vc (:url "https://github.com/ultronozm/preview-auto.el")
   :hook (LaTeX-mode . preview-auto-mode)
   :config
@@ -4792,11 +4792,6 @@ RESCHEDULE-FN is the function to reschedule."
   :custom
   ;; use Emacs for passphrase entry
   (epg-pinetry-mode 'loopback))
-
-(use-package standard-themes :disabled
-  :defer 0.5
-  :config
-  (modus-themes-load-theme 'standard-dark))
 
 (use-package modus-themes :disabled
   :ensure nil
