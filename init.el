@@ -4922,13 +4922,12 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package ghostel
   :ensure t
+  :hook
+  (ghostel-mode . (lambda () (pixel-scroll-precision-mode -1)))
   :bind
   ("<f9>" . ghostel)
-  (:map ghostel-mode-map
-	("DEL" . (lambda () (interactive) (ghostel--send-encoded "backspace" "")))
-        ("C-c <escape>" . (lambda () (interactive) (ghostel--send-encoded "escape" ""))))
-  (:map ghostel-readonly-mode-map
-        ("C-l" . recenter-top-bottom)))
+  (:map ghostel-semi-char-mode-map
+        ("C-c <escape>" . (lambda () (interactive) (ghostel-send-key "escape")))))
 
 (use-package kitty-graphics :disabled
   :vc (:url "https://github.com/cashmeredev/kitty-graphics.el" :rev :newest)
