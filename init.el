@@ -1167,6 +1167,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
    org-fontify-quote-and-verse-blocks nil ; no special fortification for those blocks 
    org-use-sub-superscripts nil               ; don't need that in tty
    org-highlight-latex-and-related '(latex)  ; highlight latex fragments
+   org-yank-image-save-method "images"       ; yank images to "images" folder
    org-image-actual-width nil)     ; if width is specified use that, otherwise keep original size
 
   ;; remove org-cycle-hide-drawers from cycle hook
