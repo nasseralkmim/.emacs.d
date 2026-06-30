@@ -1480,7 +1480,7 @@ When matching, reference is stored in match group 1."
   (setq org-latex-preview-mode-ignored-commands '(next-line previous-line)
         org-latex-preview-mode-update-delay 3.0))
 
-(use-package my-org-latex-preview-anywhere-hack
+(use-package my-org-latex-preview-anywhere-hack :disabled
   :ensure nil
   :bind
   ("C-c C-x C-l" . my-latex-preview-at-point)
@@ -1761,7 +1761,7 @@ When matching, reference is stored in match group 1."
   (add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)))
 
 ;; Better math preview in latex
-(use-package preview-auto :disabled
+(use-package preview-auto
   :vc (:url "https://github.com/ultronozm/preview-auto.el")
   :hook (LaTeX-mode . preview-auto-mode)
   :config
