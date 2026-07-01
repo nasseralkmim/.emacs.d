@@ -1486,13 +1486,37 @@ When matching, reference is stored in match group 1."
         org-latex-preview-mode-update-delay 3.0))
 
 ;; Use org-latex-preview's rendering machinery in ANY buffer (e.g. a
-;; markdown, prog-mode or fundamental-mode buffer containing $..$, \(..\)
-;; or \begin{..}..\end{..} LaTeX).  Org's element parser detects the
-;; fragments fine outside org-mode; binding `major-mode' to `org-mode'
-;; around the call just silences the "non-Org buffer" warning that
-;; `org-element' now emits.
-;; 
-;; example to test:
+;; markdown, prog-mode or a *.tex buffer containing $..$, \(..\), \[..\]
+;; or \begin{env}..\end{env} math).
+;;
+;; Why this isn't a one-liner around `org-latex-preview':
+;;
+;; 1. Org's parser treats `\begin{document}..\end{document}' (and any other
+;;    environment) as ONE opaque latex-environment and never looks inside it.
+;;    So in a real *.tex file `org-element-context' at any point in the body
+;;    returns the whole document, and Org compiles the entire thing.  We work
+;;    around this by parsing a COPY of the buffer in a genuine Org buffer with
+;;    the `document' wrapper blanked out, so every inner fragment/environment
+;;    is seen complete.  The whole buffer (not just a paragraph) is parsed so
+;;    that a blank line inside an environment can never cut it in half.
+;;
+;; 2. Only real math is kept (`my/latex-preview-math-environments' + inline
+;;    fragments); `tikzpicture', `figure', `document' etc. are skipped, which
+;;    is what keeps previews fast.
+;;
+;; 3. Custom macros: previews compile with a preamble built from
+;;    `org-latex-preview-preamble'.  We append the buffer's OWN preamble
+;;    (everything before `\begin{document}', so `\newcommand',
+;;    `\DeclareMathOperator', `\usepackage', ...) so equations using them
+;;    render correctly.
+;;
+;; 4. The `major-mode' fake (to org-mode) is applied ONLY around placement,
+;;    to silence org-element's "non-Org buffer" warning.  It must NOT wrap the
+;;    temp-buffer parse (whose `(org-mode)' errors under a dynamic `major-mode')
+;;    nor the preamble build (Org's buffer-copy skips org-mode setup when it
+;;    thinks the buffer is already Org, then crashes).  Both are computed first.
+;;
+;; example to test
 ;; $\alpha \int_\{0}^{\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$
 (use-package my-org-latex-preview-anywhere
   :ensure nil
@@ -1501,21 +1525,150 @@ When matching, reference is stored in match group 1."
   ("C-c C-x l"   . my/latex-preview-buffer)
   ("C-c C-x c"   . my/latex-preview-clear)
   :init
-  (defun my/latex-preview--run (mode)
-    "Call `org-latex-preview' with MODE while faking an Org buffer."
+  (defcustom my/latex-preview-math-environments
+    '("equation" "align" "gather" "multline" "flalign" "alignat"
+      "eqnarray" "displaymath" "math" "dmath" "cases" "split"
+      "aligned" "gathered" "matrix" "pmatrix" "bmatrix" "vmatrix"
+      "smallmatrix" "array")
+    "LaTeX environments treated as previewable math.
+Any `\\begin{env}..\\end{env}' whose ENV (sans trailing `*') is not in
+this list is skipped, so non-math blocks such as `tikzpicture',
+`figure' or the outer `document' are never compiled as a fragment.
+Inline/display fragments ($..$, \\(..\\), \\[..\\]) are always previewed."
+    :type '(repeat string)
+    :group 'org-latex-preview)
+
+  (defvar-local my/latex-preview--elements-cache nil
+    "Cons (CHARS-MODIFIED-TICK . ELEMENTS) memoising the buffer parse.")
+  (defvar-local my/latex-preview--preamble-cache nil
+    "Cons (CHARS-MODIFIED-TICK . PREAMBLE) memoising the preview preamble.")
+
+  (defun my/latex-preview--env-name (datum)
+    "Return DATUM's environment name (without trailing `*'), or nil."
+    (when (eq (org-element-type datum) 'latex-environment)
+      (let ((value (or (org-element-property :value datum) "")))
+        (and (string-match "\\\\begin{\\([^}*]+\\)\\*?}" value)
+             (match-string 1 value)))))
+
+  (defun my/latex-preview--math-element-p (datum)
+    "Non-nil if DATUM is a fragment or a whitelisted math environment."
+    (pcase (org-element-type datum)
+      ('latex-fragment t)
+      ('latex-environment
+       (and (member (my/latex-preview--env-name datum)
+                    my/latex-preview-math-environments)
+            t))))
+
+  (defun my/latex-preview--all-elements ()
+    "Return all math LaTeX elements in the buffer, with buffer positions.
+The whole buffer is parsed on a copy in a real Org buffer (with the
+`\\begin{document}' wrapper neutralised) so environments are always seen
+complete.  The result is memoised until the buffer text changes."
     (require 'org-latex-preview)
-    (let ((major-mode 'org-mode))
-      (org-latex-preview mode)))
+    (let ((tick (buffer-chars-modified-tick)))
+      (if (eql (car my/latex-preview--elements-cache) tick)
+          (cdr my/latex-preview--elements-cache)
+        (let* ((offset (1- (point-min)))
+               (text (buffer-substring-no-properties (point-min) (point-max)))
+               elements)
+          (with-temp-buffer
+            (delay-mode-hooks (org-mode))
+            (insert text)
+            (goto-char (point-min))
+            (while (re-search-forward "\\\\\\(?:begin\\|end\\){document}" nil t)
+              (replace-match (make-string (length (match-string 0)) ?\s) t t))
+            (dolist (datum (org-latex-preview-collect-fragments))
+              (when (my/latex-preview--math-element-p datum)
+                (push (org-element-create
+                       (org-element-type datum)
+                       (list :begin (+ offset (org-element-property :begin datum))
+                             :end   (+ offset (org-element-property :end datum))
+                             :value (org-element-property :value datum)
+                             :post-blank (or (org-element-property :post-blank datum) 0)))
+                      elements))))
+          (setq elements (nreverse elements)
+                my/latex-preview--elements-cache (cons tick elements))
+          elements))))
+
+  (defun my/latex-preview--element-at-point ()
+    "Return the math LaTeX element surrounding point, or nil."
+    (let ((pt (point)))
+      (seq-find (lambda (datum)
+                  (and (<= (org-element-property :begin datum) pt)
+                       (<  pt (org-element-property :end datum))))
+                (my/latex-preview--all-elements))))
+
+  (defun my/latex-preview--elements-in (beg end)
+    "Return the math LaTeX elements overlapping the region BEG..END."
+    (seq-filter (lambda (datum)
+                  (and (< (org-element-property :begin datum) end)
+                       (> (org-element-property :end datum) beg)))
+                (my/latex-preview--all-elements)))
+
+  (defun my/latex-preview--document-preamble ()
+    "Return the buffer's LaTeX preamble (text before `\\begin{document}'),
+with the `\\documentclass' line removed so it doesn't clash with the one
+Org supplies.  Returns nil when there is no `\\begin{document}'."
+    (save-excursion
+      (goto-char (point-min))
+      (when (re-search-forward "\\\\begin{document}" nil t)
+        (replace-regexp-in-string
+         "^[ \t]*\\\\documentclass\\(?:\\[[^]]*\\]\\)?{[^}]*}.*$" ""
+         (buffer-substring-no-properties (point-min) (match-beginning 0))))))
+
+  (defun my/latex-preview--preamble-content ()
+    "Return the preview preamble, augmented with the buffer's own macros.
+Must be called OUTSIDE the `major-mode' fake (it copies the buffer).
+Memoised until the buffer text changes."
+    (require 'org-latex-preview)
+    (let ((tick (buffer-chars-modified-tick)))
+      (if (eql (car my/latex-preview--preamble-cache) tick)
+          (cdr my/latex-preview--preamble-cache)
+        (let* ((doc (my/latex-preview--document-preamble))
+               (org-latex-preview-preamble
+                (if doc
+                    (concat org-latex-preview-preamble "\n" doc)
+                  org-latex-preview-preamble))
+               (content (org-latex-preview--get-preamble)))
+          (setq my/latex-preview--preamble-cache (cons tick content))
+          content))))
+
+  (defun my/latex-preview--place (elements)
+    "Preview ELEMENTS in the current buffer, or message if none.
+Placement runs under the `major-mode' fake with the preamble
+precomputed, so Org never rebuilds it (and never crashes) under the fake."
+    (require 'org-latex-preview)
+    (if (null elements)
+        (message "No LaTeX math fragment found")
+      (when-let ((ptype (org-latex-preview--effective-process-default))
+                 (org-latex-preview--preamble-content (my/latex-preview--preamble-content)))
+        (let ((major-mode 'org-mode))
+          (org-latex-preview--place-from-elements ptype elements)))))
 
   (defun my/latex-preview-dwim ()
     "Toggle the LaTeX preview at point, or preview the active region."
     (interactive)
-    (my/latex-preview--run (if (use-region-p) 'region 'point)))
+    (require 'org-latex-preview)
+    (if (use-region-p)
+        (my/latex-preview--place
+         (my/latex-preview--elements-in (region-beginning) (region-end)))
+      ;; Detect the fragment and build the preamble OUTSIDE the `major-mode'
+      ;; fake, then toggle inside it.  Use `--auto-aware-toggle' directly, not
+      ;; `org-latex-preview': the latter ignores an element argument and
+      ;; re-derives the region with `org-element-context' -- which in a *.tex
+      ;; buffer returns the whole `document' environment.
+      (let ((datum (my/latex-preview--element-at-point)))
+        (if (null datum)
+            (message "No LaTeX math fragment at point")
+          (let ((org-latex-preview--preamble-content
+                 (my/latex-preview--preamble-content))
+                (major-mode 'org-mode))
+            (org-latex-preview--auto-aware-toggle datum))))))
 
   (defun my/latex-preview-buffer ()
-    "Preview every LaTeX fragment in the current buffer."
+    "Preview every LaTeX math fragment in the current buffer."
     (interactive)
-    (my/latex-preview--run 'buffer))
+    (my/latex-preview--place (my/latex-preview--all-elements)))
 
   (defun my/latex-preview-clear ()
     "Remove all LaTeX previews from the current buffer."
