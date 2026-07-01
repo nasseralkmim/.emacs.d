@@ -1633,16 +1633,24 @@ Memoised until the buffer text changes."
           (setq my/latex-preview--preamble-cache (cons tick content))
           content))))
 
+  (defmacro my/latex-preview--with-org-context (&rest body)
+    "Run BODY with the preview preamble bound and `major-mode' faked to Org.
+The preamble is computed in the `let' init form, i.e. BEFORE the
+`major-mode' fake takes effect (plain `let' evaluates all inits first) --
+exactly the ordering Org's buffer-copying preamble builder needs.  The
+fake then silences org-element's non-Org-buffer warning during placement."
+    (declare (indent 0) (debug t))
+    `(let ((org-latex-preview--preamble-content (my/latex-preview--preamble-content))
+           (major-mode 'org-mode))
+       ,@body))
+
   (defun my/latex-preview--place (elements)
-    "Preview ELEMENTS in the current buffer, or message if none.
-Placement runs under the `major-mode' fake with the preamble
-precomputed, so Org never rebuilds it (and never crashes) under the fake."
+    "Preview ELEMENTS in the current buffer, or message if none."
     (require 'org-latex-preview)
     (if (null elements)
         (message "No LaTeX math fragment found")
-      (when-let ((ptype (org-latex-preview--effective-process-default))
-                 (org-latex-preview--preamble-content (my/latex-preview--preamble-content)))
-        (let ((major-mode 'org-mode))
+      (when-let ((ptype (org-latex-preview--effective-process-default)))
+        (my/latex-preview--with-org-context
           (org-latex-preview--place-from-elements ptype elements)))))
 
   (defun my/latex-preview-dwim ()
@@ -1660,9 +1668,7 @@ precomputed, so Org never rebuilds it (and never crashes) under the fake."
       (let ((datum (my/latex-preview--element-at-point)))
         (if (null datum)
             (message "No LaTeX math fragment at point")
-          (let ((org-latex-preview--preamble-content
-                 (my/latex-preview--preamble-content))
-                (major-mode 'org-mode))
+          (my/latex-preview--with-org-context
             (org-latex-preview--auto-aware-toggle datum))))))
 
   (defun my/latex-preview-buffer ()
@@ -1674,7 +1680,56 @@ precomputed, so Org never rebuilds it (and never crashes) under the fake."
     "Remove all LaTeX previews from the current buffer."
     (interactive)
     (org-latex-preview-clear-overlays (point-min) (point-max))
-    (message "LaTeX previews cleared")))
+    (message "LaTeX previews cleared"))
+
+  ;; Cursor-aware reveal/hide of previews in ANY buffer.
+  ;;
+  ;; `org-latex-preview-mode' already ships a major-mode-agnostic state
+  ;; machine (on `pre-'/`post-command-hook') that hides a preview image and
+  ;; shows its LaTeX source when the cursor moves onto the overlay, then
+  ;; restores the image when it leaves.  It only inspects the `org-overlay-type'
+  ;; overlay property -- never the buffer's mode -- and our previews carry that
+  ;; property (they are placed with the same machinery), so we can just reuse it.
+  ;;
+  ;; Two of the mode's side paths DO assume a real Org buffer, and both reach
+  ;; for `org-element-context' (which in a *.tex body returns the opaque
+  ;; `document' env):
+  ;;   1. `after-change-functions' fragment tracking -- gated by
+  ;;      `org-latex-preview-mode-track-inserts'/`-display-live', so we bind
+  ;;      both nil below to keep it dormant.
+  ;;   2. regeneration after an edit (`--regenerate-overlay') -- not gated, so
+  ;;      we redirect it through our own whole-buffer parser via advice.
+  (defun my/latex-preview--regenerate-in-any-buffer (orig ov &rest args)
+    "Regenerate OV's preview with our parser when `my/latex-preview-cursor-mode'.
+Falls back to ORIG (which uses `org-element-context') elsewhere."
+    (if (buffer-local-value 'my/latex-preview-cursor-mode (overlay-buffer ov))
+        (with-current-buffer (overlay-buffer ov)
+          (save-excursion
+            (goto-char (overlay-start ov))
+            (when-let* ((datum (my/latex-preview--element-at-point))
+                        (ptype (org-latex-preview--effective-process-default)))
+              (my/latex-preview--with-org-context
+                (org-latex-preview--place-from-elements ptype (list datum))))))
+      (apply orig ov args)))
+
+  (define-minor-mode my/latex-preview-cursor-mode
+    "Reveal a preview's LaTeX source when the cursor enters it, in any buffer.
+Reuses `org-latex-preview-mode's overlay tracking so that moving the
+cursor onto a preview (e.g. with left/right motion) shows its source and
+moving away restores the image.  The mode's Org-parsing side paths are
+disabled so it is safe outside Org."
+    :lighter " LtxCur"
+    (require 'org-latex-preview)
+    (if my/latex-preview-cursor-mode
+        (progn
+          (setq-local org-latex-preview-mode-track-inserts nil
+                      org-latex-preview-mode-display-live nil)
+          (org-latex-preview-mode 1))
+      (org-latex-preview-mode -1)))
+
+  (with-eval-after-load 'org-latex-preview
+    (advice-add 'org-latex-preview-mode--regenerate-overlay :around
+                #'my/latex-preview--regenerate-in-any-buffer)))
 
 (use-package ox-beamer
   :ensure nil
