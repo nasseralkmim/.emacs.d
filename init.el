@@ -1123,8 +1123,13 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   (with-eval-after-load 'org
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines))
-    (require 'org-eldoc)
-    (org-eldoc-load))
+    ;; `org-eldoc' adds `org-eldoc-load' to `org-mode-hook' on require, so it
+    ;; sets itself up for every Org buffer.  Do NOT call `org-eldoc-load'
+    ;; directly here: this body runs in whatever buffer is current when Org is
+    ;; first loaded (e.g. a *.tex buffer that triggered `org-latex-preview'),
+    ;; and `org-eldoc-load' would then pollute that non-Org buffer's
+    ;; `eldoc-documentation-functions'.
+    (require 'org-eldoc))
   (with-eval-after-load 'ox
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines)))) 
