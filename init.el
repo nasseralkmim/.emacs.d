@@ -1480,50 +1480,43 @@ When matching, reference is stored in match group 1."
   (setq org-latex-preview-mode-ignored-commands '(next-line previous-line)
         org-latex-preview-mode-update-delay 3.0))
 
-(use-package my-org-latex-preview-anywhere-hack :disabled
+;; Use org-latex-preview's rendering machinery in ANY buffer (e.g. a
+;; markdown, prog-mode or fundamental-mode buffer containing $..$, \(..\)
+;; or \begin{..}..\end{..} LaTeX).  Org's element parser detects the
+;; fragments fine outside org-mode; binding `major-mode' to `org-mode'
+;; around the call just silences the "non-Org buffer" warning that
+;; `org-element' now emits.
+;; 
+;; example to test:
+;; $\alpha \int_\{0}^{\infty} e^{-x^2} dx = \frac{\sqrt{\pi}}{2}$
+(use-package my-org-latex-preview-anywhere
   :ensure nil
   :bind
-  ("C-c C-x C-l" . my-latex-preview-at-point)
-  ("C-c C-x l" . my-latex-preview-buffer)
-  ("C-c C-x r" . my-latex-preview-region)
-  ("C-c C-x c" . my-latex-preview-clear-buffer)
-  ("C-c C-x R" . my-latex-preview-refresh-buffer)
+  ("C-c C-x C-l" . my/latex-preview-dwim)
+  ("C-c C-x l"   . my/latex-preview-buffer)
+  ("C-c C-x c"   . my/latex-preview-clear)
   :init
-  (defun my-latex-preview-anywhere--run (mode)
-    "Run `org-latex-preview' in any buffer."
-    (require 'org)
+  (defun my/latex-preview--run (mode)
+    "Call `org-latex-preview' with MODE while faking an Org buffer."
     (require 'org-latex-preview)
     (let ((major-mode 'org-mode))
       (org-latex-preview mode)))
 
-  (defun my-latex-preview-at-point ()
-    "Preview LaTeX fragment at point in any buffer."
+  (defun my/latex-preview-dwim ()
+    "Toggle the LaTeX preview at point, or preview the active region."
     (interactive)
-    (my-latex-preview-anywhere--run 'point))
+    (my/latex-preview--run (if (use-region-p) 'region 'point)))
 
-  (defun my-latex-preview-buffer ()
-    "Preview all LaTeX fragments in current buffer."
+  (defun my/latex-preview-buffer ()
+    "Preview every LaTeX fragment in the current buffer."
     (interactive)
-    (my-latex-preview-anywhere--run 'buffer))
+    (my/latex-preview--run 'buffer))
 
-  (defun my-latex-preview-region ()
-    "Preview LaTeX fragments in active region."
+  (defun my/latex-preview-clear ()
+    "Remove all LaTeX previews from the current buffer."
     (interactive)
-    (unless (use-region-p)
-      (user-error "No active region"))
-    (let ((major-mode 'org-mode))
-      (org-latex-preview 'region)))
-
-  (defun my-latex-preview-clear-buffer ()
-    "Clear LaTeX previews in current buffer."
-    (interactive)
-    (org-latex-preview-clear-overlays (point-min) (point-max)))
-
-  (defun my-latex-preview-refresh-buffer ()
-    "Rebuild all LaTeX previews in current buffer."
-    (interactive)
-    (my-latex-preview-clear-buffer)
-    (my-latex-preview-buffer)))
+    (org-latex-preview-clear-overlays (point-min) (point-max))
+    (message "LaTeX previews cleared")))
 
 (use-package ox-beamer
   :ensure nil
@@ -1761,7 +1754,7 @@ When matching, reference is stored in match group 1."
   (add-to-list 'preview-default-preamble "\\PreviewEnvironment{tikzpicture}" t)))
 
 ;; Better math preview in latex
-(use-package preview-auto
+(use-package preview-auto :disabled
   :vc (:url "https://github.com/ultronozm/preview-auto.el")
   :hook (LaTeX-mode . preview-auto-mode)
   :config
