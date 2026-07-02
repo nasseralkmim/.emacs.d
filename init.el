@@ -1676,11 +1676,21 @@ fake then silences org-element's non-Org-buffer warning during placement."
     (interactive)
     (my/latex-preview--place (my/latex-preview--all-elements)))
 
-  (defun my/latex-preview-clear ()
-    "Remove all LaTeX previews from the current buffer."
-    (interactive)
-    (org-latex-preview-clear-overlays (point-min) (point-max))
-    (message "LaTeX previews cleared"))
+  (defun my/latex-preview-clear (&optional clear-cache)
+    "Remove all LaTeX previews from the current buffer.
+With a prefix arg CLEAR-CACHE, also wipe the systemwide LaTeX preview
+cache via `org-latex-preview-clear-cache' -- useful when a previous
+theme's foreground/background got baked into cached preview images.
+Called as a plain function (not via its `interactive' form, which
+requires `org-mode'), so this works in any buffer."
+    (interactive "P")
+    (require 'org-latex-preview)
+    (if clear-cache
+        (org-latex-preview-clear-cache nil nil t)
+      (org-latex-preview-clear-overlays (point-min) (point-max)))
+    (message (if clear-cache
+                 "LaTeX previews and cache cleared"
+               "LaTeX previews cleared")))
 
   ;; Cursor-aware reveal/hide of previews in ANY buffer.
   ;;
