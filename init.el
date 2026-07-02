@@ -553,8 +553,8 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   
   ;; #'vc-root-dir ; using current folder as default
   ;; added --no-ignore-vcs to avoid skipping files in gitignore
-  (setq consult-ripgrep-args 
-        "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs --with-filename")
+  ;; (setq consult-ripgrep-args 
+  ;;       "rga --null --line-buffered --color=never --max-columns=1000 --path-separator /   --smart-case --no-heading --line-number --no-ignore-vcs --with-filename")
 
   ;; previous consult line 
   (defvar my-consult-line-map
