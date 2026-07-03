@@ -28,6 +28,7 @@
    ;; (right-fringe . 8)                   ;; Thin right fringe
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)
+   (reverse . t)
    ;; (font . "Monaspace Neon")
    ;; (font . "Input Mono")
    ;; (font . "Iosevka SS12 Extended")
