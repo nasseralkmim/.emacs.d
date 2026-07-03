@@ -5193,7 +5193,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("http://rss.arxiv.org/rss/cs.MS" paper computer-science software arxiv)))
   
   (defface elfeed-search-later-face
-    '((t :underline t))
+       '((t :underline t))
     "Face for elfeed entries tagged 'later' — adds underline only.")
   
   (setq elfeed-search-face-alist
@@ -5208,12 +5208,22 @@ RESCHEDULE-FN is the function to reschedule."
   ;; stay in search view after opening an entry
   (setq elfeed-show-entry-switch 'elfeed-show-entry-other-window)
   (defun elfeed-show-entry-other-window (buf &optional act)
-    "Display BUFFER in another window, but do not select it."
+       "Display BUFFER in another window, but do not select it."
     (let ((win (display-buffer buf
                                '((display-buffer-reuse-window
                                   display-buffer-below-selected)
                                  (window-height . 0.7)))))
-      (when win (select-window win)))))
+      (when win (select-window win))))
+
+  ;; Reload the db from disk when opening elfeed
+  (advice-add 'elfeed :before (lambda () (elfeed-db-load)))
+
+  ;; Save (and unload) when quitting the elfeed buffer
+  (defun my/elfeed-save-and-quit ()
+    (interactive)
+    (elfeed-db-save)
+    (quit-window))
+  (define-key elfeed-search-mode-map "q" #'my/elfeed-save-and-quit))
 
 (use-package elfeed-score
   :ensure t
