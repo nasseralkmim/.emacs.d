@@ -5183,6 +5183,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://paulkrugman.substack.com/feed" opinion economics)
           ("https://rbaldwin.substack.com/feed" opinion economics)
           ("https://bubbles.town/briefing/feed" forum bubbles)
+          ("https://aswathdamodaran.substack.com/feed" opinion finance)
           ;; Mechanics journals
           ("https://rss.sciencedirect.com/publication/science/00652156" paper mechanics)
           ("https://rss.sciencedirect.com/publication/science/00457949" paper mechanics structures)
