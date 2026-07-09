@@ -5176,6 +5176,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://www.economist.com/finance-and-economics/rss.xml" news finance economics)
           ("https://www.ft.com/opinion?format=rss" opinion economics)
           ("https://rss.nytimes.com/services/xml/rss/nyt/sunday-review.xml" opinion)
+          ("https://www.bankofengland.co.uk/rss/publications" news finance economics)
           ("https://www.federalreserve.gov/feeds/working_papers.xml" paper finance economics)
           ("https://libertystreeteconomics.newyorkfed.org/feed/" opinion finance economics)
           ;; ("https://news.ycombinator.com/rss" forum hackernews)
