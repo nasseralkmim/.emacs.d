@@ -2774,9 +2774,9 @@ Only if there is more than one window opened."
   :custom-face
   (font-lock-function-call-face ((t :inherit outline-7)))
   ;; (font-lock-function-name-face ((t :inherit t :weight bold)))
-  :custom
-  (treesit-font-lock-level 4)
-  (treesit-enabled-modes '(c++-ts-mode)))
+  :init
+  (setq treesit-font-lock-level 4)
+  (setq treesit-enabled-modes '(c++-ts-mode)))
 
 (use-package wgrep)
 
