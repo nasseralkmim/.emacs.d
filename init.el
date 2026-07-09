@@ -4990,7 +4990,7 @@ RESCHEDULE-FN is the function to reschedule."
 
 (use-package flash-isearch
   :ensure nil
-  :after isearch
+  :defer 5
   :demand
   :config
   (flash-isearch-mode 1))
