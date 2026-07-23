@@ -4184,7 +4184,6 @@ With prefix argument, prompt for a new default language."
 
   (gptel-make-gemini "Gemini"
     :key (funcall (plist-get (car (auth-source-search :host "api.gemini.com")) :secret))
-    :request-params '(:generationConfig (:thinkingConfig (:thinkingBudget 0)))
     :stream t)
   
   (setq gptel-backend (gptel-make-gh-copilot "Copilot")))
