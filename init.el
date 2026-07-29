@@ -2164,6 +2164,20 @@ disabled so it is safe outside Org."
           ("\\.png\\'" "swayimg")
           ("\\.svg\\'" "swayimg"))))
 
+(use-package dired-join-marked-pdf-hack
+  :ensure nil
+  :after dired
+  :init
+  (defun my-dired-pdf-join (output-file)
+  "Join marked PDFs in dired into OUTPUT-FILE using qpdf."
+  (interactive "FOutput PDF file: ")
+  (let* ((files (dired-get-marked-files))
+         (args (append (list "--empty" "--pages")
+                        files
+                        (list "--" (expand-file-name output-file)))))
+    (apply #'call-process "qpdf" nil "*qpdf-output*" t args)
+    (message "Joined %d files into %s" (length files) output-file))))
+
 (use-package dired-image-window-placement-hack
   :ensure nil
   :after dired
