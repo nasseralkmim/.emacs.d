@@ -28,7 +28,6 @@
    ;; (right-fringe . 8)                   ;; Thin right fringe
    (tool-bar-lines . 0)                 ;; No tool bar
    (vertical-scroll-bars . nil)
-   (reverse . t)
    ;; (font . "Monaspace Neon")
    ;; (font . "Input Mono")
    ;; (font . "Iosevka SS12 Extended")
@@ -37,6 +36,14 @@
    ;; (font . "Dejavu Sans Mono")
    ;; (font . "Maple Mono")
    ))
+
+;; reverse video when gui, not in tty
+;; `display-graphic-p' is always nil this early: the GUI frame does not exist
+;; yet, the selected frame is still the startup tty frame.  Keying off
+;; `window-system-default-frame-alist' also keeps tty frames clean under
+;; `emacs --daemon', where a single check at startup could not.
+(dolist (ws '(x pgtk w32 ns))
+  (push '(reverse . t) (alist-get ws window-system-default-frame-alist)))
 
 ;; Don't use Sans serif
 (when (facep 'variable-pitch)
