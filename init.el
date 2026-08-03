@@ -64,6 +64,8 @@
    visible-bell t			; Don't beep at me
    kill-buffer-query-functions nil) ; don't ask if it is ok to kill a process when killing a buffer
 
+  (minibuffer-depth-indicate-mode)      ; useful when recursive minibuffers is used
+  
   ;; Hide commands in M-x which do not work in the current mode.  Vertico
   ;; commands are hidden in normal buffers. This setting is useful beyond
   ;; Vertico.
