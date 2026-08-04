@@ -5232,7 +5232,7 @@ RESCHEDULE-FN is the function to reschedule."
         '((unread elfeed-search-unread-title-face)
           ;; content type (primary visual distinction)
           (news font-lock-type-face)
-          (opinion success)
+          (opinion font-lock-function-name-face)
           (forum font-lock-keyword-face)
           (paper font-lock-comment-face)
           ;; workflow
