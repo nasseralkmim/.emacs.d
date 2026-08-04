@@ -5188,8 +5188,7 @@ RESCHEDULE-FN is the function to reschedule."
         elfeed-search-title-min-width 60
         elfeed-search-trailing-width 20)
   (setq elfeed-feeds
-        '(("https://www.bloomberg.com/opinion/authors/ARbTQlRLRjE/matthew-s-levine.rss" opinion finance economics)
-          ("https://www.bis.org/doclist/reshub_papers.rss" paper economics)
+        '(("https://www.bis.org/doclist/reshub_papers.rss" paper economics)
           ("https://www.economist.com/finance-and-economics/rss.xml" news finance economics)
           ("https://www.ft.com/opinion?format=rss" opinion economics)
           ("https://rss.nytimes.com/services/xml/rss/nyt/sunday-review.xml" opinion)
