@@ -5014,6 +5014,7 @@ RESCHEDULE-FN is the function to reschedule."
   :ensure nil
   :hook
   (prog-mode . display-line-numbers-mode)
+  (org-mode . display-line-numbers-mode)
   (LaTeX-mode . display-line-numbers-mode)
   :custom
   (display-line-numbers-type 'visual))
@@ -5203,8 +5204,10 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://feeds.leonid.codes/hacker_news_lite.rss" forum hackernews)
           ("https://paulkrugman.substack.com/feed" opinion economics)
           ("https://rbaldwin.substack.com/feed" opinion economics)
-          ("https://bubbles.town/briefing/feed" forum bubbles)
+          ("https://bubbles.town/briefing/feed" essay)
           ("https://aswathdamodaran.substack.com/feed" opinion finance)
+          ;; 
+          ("https://www.worksinprogress.news/feed" essay)
           ;; Mechanics journals
           ("https://rss.sciencedirect.com/publication/science/00652156" paper mechanics)
           ("https://rss.sciencedirect.com/publication/science/00457949" paper mechanics structures)
