@@ -5249,17 +5249,7 @@ RESCHEDULE-FN is the function to reschedule."
                                '((display-buffer-reuse-window
                                   display-buffer-below-selected)
                                  (window-height . 0.7)))))
-      (when win (select-window win))))
-
-  ;; Reload the db from disk when opening elfeed
-  (advice-add 'elfeed :before (lambda () (elfeed-db-load)))
-
-  ;; Save (and unload) when quitting the elfeed buffer
-  (defun my/elfeed-save-and-quit ()
-    (interactive)
-    (elfeed-db-save)
-    (quit-window))
-  (define-key elfeed-search-mode-map "q" #'my/elfeed-save-and-quit))
+      (when win (select-window win)))))
 
 (use-package elfeed-score
   :ensure t
