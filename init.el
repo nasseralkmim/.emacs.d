@@ -5200,6 +5200,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://pox.globo.com/rss/valor/opiniao" opinion)
           ("https://feeds.content.dowjones.io/public/rss/RSSOpinion" opinion)
           ("https://michaeljburry.substack.com/feed" opinion finance)
+          ("https://realinvestmentadvice.com/feed/" opinion finance)
           ;; ("https://news.ycombinator.com/rss" forum hackernews)
           ("https://feeds.leonid.codes/hacker_news_lite.rss" forum hackernews)
           ("https://paulkrugman.substack.com/feed" opinion economics)
