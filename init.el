@@ -5210,6 +5210,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://www.aei.org/feed/" opinion)
           ("https://piaui.uol.com.br/feed/" opinion)
           ("https://www.newyorker.com/feed/latest/rss" news)
+          ("https://www.newyorker.com/feed/magazine/the-financial-page/rss" news finance)
           ("https://cms.zerohedge.com/fullrss2.xml" opinion finance economics)
           ;; 
           ("https://blog.bytebytego.com/feed" essay technology)
