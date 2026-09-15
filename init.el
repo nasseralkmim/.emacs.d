@@ -959,6 +959,10 @@ frame if FRAME is nil, and to 1 if AMT is nil."
   
   (meow-setup)
   (add-to-list 'meow-mode-state-list '(gnus-article-mode . normal))
+  (add-to-list 'meow-mode-state-list '(notmuch-search-mode . motion))
+  (add-to-list 'meow-mode-state-list '(notmuch-show-mode . motion))
+  (add-to-list 'meow-mode-state-list '(notmuch-tree-mode . motion))
+  (add-to-list 'meow-mode-state-list '(notmuch-hello-mode . motion))
   (add-to-list 'meow-mode-state-list '(ediff-meta-mode . normal))
   (meow-global-mode)
   (setq meow-replace-state-name-list
