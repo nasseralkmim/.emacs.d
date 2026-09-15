@@ -5268,6 +5268,8 @@ RESCHEDULE-FN is the function to reschedule."
   (elfeed-score-enable))
 
 (use-package notmuch
-  :bind ("C-x e" . notmuch))
+  :bind ("C-x e" . notmuch)
+  :config
+  (setenv "NOTMUCH_CONFIG" "/home/nasser/Sync/news/.notmuch-config"))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
