@@ -5205,7 +5205,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://feeds.leonid.codes/hacker_news_lite.rss" forum hackernews)
           ("https://paulkrugman.substack.com/feed" opinion economics)
           ("https://rbaldwin.substack.com/feed" opinion economics)
-          ("https://bubbles.town/briefing/feed" essay)
+          ;; ("https://bubbles.town/briefing/feed" essay)
           ("https://aswathdamodaran.substack.com/feed" opinion finance)
           ("https://www.aei.org/feed/" opinion)
           ("https://piaui.uol.com.br/feed/" opinion)
