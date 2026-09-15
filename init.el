@@ -3609,13 +3609,14 @@ opening a file from dired. Otherwise just regular dired."
                                               (nntp-open-connection-function nntp-open-tls-stream) ; feedbase does not do STARTTLS (yet?)
                                               (nntp-port-number 563) ; nntps
                                               (nntp-address "feedbase.org"))
-                                        (nnimap "gmail"
-                                                (nnimap-address "imap.gmail.com"))
-                                        (nnmaildir "uibk"
-                                                   (directory "~/Sync/news/mail/uibk")
-                                                   (gnus-search-engine gnus-search-notmuch
-                                                                       (config-file "/home/nasser/Sync/news/.notmuch-config")
-                                                                       (remove-prefix "~/Sync/news/mail/uibk"))))
+                                        ;; (nnimap "gmail"
+                                        ;;         (nnimap-address "imap.gmail.com"))
+                                        ;; (nnmaildir "uibk"
+                                        ;;            (directory "~/Sync/news/mail/uibk")
+                                        ;;            (gnus-search-engine gnus-search-notmuch
+                                        ;;                                (config-file "/home/nasser/Sync/news/.notmuch-config")
+                                        ;;                                (remove-prefix "~/Sync/news/mail/uibk")))
+                                        )
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
         message-send-mail-function 'smtpmail-send-it
@@ -5265,5 +5266,8 @@ RESCHEDULE-FN is the function to reschedule."
   (define-key elfeed-search-mode-map "`" elfeed-score-map)
   (setq elfeed-score-serde-score-file "/home/nasser/Sync/news/elfeed.score")
   (elfeed-score-enable))
+
+(use-package notmuch
+  :bind ("C-x e" . notmuch))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
