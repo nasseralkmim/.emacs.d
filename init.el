@@ -5274,6 +5274,14 @@ RESCHEDULE-FN is the function to reschedule."
 (use-package notmuch
   :bind ("C-x e" . notmuch)
   :config
-  (setenv "NOTMUCH_CONFIG" "/home/nasser/Sync/news/.notmuch-config"))
+  (setenv "NOTMUCH_CONFIG" "/home/nasser/Sync/news/.notmuch-config")
+  
+  (setq notmuch-hello-logo nil
+        notmuch-search-oldest-first nil)
+  
+  (setq notmuch-search-line-faces
+        '(("work" . font-lock-function-name-face)
+          ("personal" . font-lock-comment-face)
+          ("unread" . notmuch-search-unread-face))))
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
