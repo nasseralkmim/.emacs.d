@@ -5278,6 +5278,14 @@ RESCHEDULE-FN is the function to reschedule."
         ("d" . my-notmuch-mark-read))
   :config
   (setenv "NOTMUCH_CONFIG" "/home/nasser/Sync/news/.notmuch-config")
+
+  (defvar mbsync-config-file "/home/nasser/Sync/news/.mbsyncrc"
+    "Path to the mbsync configuration file.")
+  (defun my-run-mbsync ()
+    "Run mbsync to synchronize emails."
+    (interactive)
+    (let ((mbsync-command (format "mbsync -c %s -a" mbsync-config-file)))
+      (async-shell-command mbsync-command "*mbsync-output*")))
   
   ;; show new on top
   (setq-default notmuch-search-oldest-first nil)
