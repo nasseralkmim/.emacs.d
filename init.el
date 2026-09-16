@@ -5331,5 +5331,14 @@ RESCHEDULE-FN is the function to reschedule."
                    smtpmail-smtp-server "smtp.uibk.ac.at")))))
   (add-hook 'message-send-hook 'my-send-mail-smtp-setup-hook))
 
+(use-package notmuch-indicator
+  :defer 1
+  :config
+  (setq
+   notmuch-indicator-notmuch-config-file "/home/nasser/Sync/news/.notmuch-config"
+   notmuch-indicator-args '((:terms "tag:unread and tag:gmail" :label "@")
+                            (:terms "tag:unread and tag:uibk" :label "U")))
+  (notmuch-indicator-mode))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
