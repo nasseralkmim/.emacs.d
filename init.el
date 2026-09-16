@@ -3585,7 +3585,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; 
 ;; Workflow for adding news source: server -> group -> articlea
 ;; enter the server: 'gnus-group-enter-server-mode', then we select the server 'gnus-server-read-server', once in the server we can subscribe/unsubscribe to specific group 'gnus-browse-toggle-subscription-at-point'
-(use-package gnus
+(use-package gnus :disabled
   :ensure nil
   :bind
   ("C-x C-m" . gnus)
