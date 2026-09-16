@@ -5309,6 +5309,11 @@ RESCHEDULE-FN is the function to reschedule."
   (setq message-send-mail-function 'smtpmail-send-it
         send-mail-function 'smtpmail-send-it))
 
+(use-package gnus-dired
+  :ensure nil
+  :hook (dired-mode . turn-on-gnus-dired-mode)
+  :config (setq gnus-dired-mail-mode 'notmuch-user-agent))
+
 (use-package smtpmail
   :ensure nil
   :config
