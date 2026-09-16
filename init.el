@@ -5293,22 +5293,30 @@ RESCHEDULE-FN is the function to reschedule."
     (interactive)
     (notmuch-search-tag (list "-unread"))
     (notmuch-search-next-thread))
+
+  ;; save sent messages
+  (setq notmuch-fcc-dirs
+        '(("nasser.alkmim@gmail.com" . "gmail/sent")
+          ("nasser.alkmim@uibk.ac.at" . "uibk/sent")))
   
   (setq notmuch-search-line-faces
-        '(("work" . font-lock-function-name-face)
-          ("personal" . font-lock-comment-face))))
+        '(("uibk" . font-lock-function-name-face)
+          ("gmail" . font-lock-comment-face))))
+
+(use-package sendmail
+  :ensure nil
+  :config
+  (setq message-send-mail-function 'smtpmail-send-it
+        send-mail-function 'smtpmail-send-it))
 
 (use-package smtpmail
   :ensure nil
   :config
   ;; (info "(message)Mail Variables")
-  ;; default gmail
   (setq smtpmail-smtp-server "smtp.gmail.com"
         smtpmail-smtp-user "nasser.alkmim@gmail.com"
         smtpmail-smtp-service 587
-        smtpmail-stream-type 'starttls
-        message-send-mail-function 'smtpmail-send-it
-        send-mail-function 'smtpmail-send-it)
+        smtpmail-stream-type 'starttls)
   (defun my-send-mail-smtp-setup-hook ()
     (let ((from (mail-fetch-field "From"))
           (personal "<nasser.alkmim@gmail.com>")
