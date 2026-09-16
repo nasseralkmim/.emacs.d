@@ -5272,8 +5272,51 @@ RESCHEDULE-FN is the function to reschedule."
   (elfeed-score-enable))
 
 (use-package notmuch
-  :bind ("C-x e" . notmuch)
+  :bind
+  ("C-x e" . my-notmuch-unread)
+  (:map notmuch-search-mode-map
+        ("d" . my-notmuch-mark-read))
   :config
-  (setenv "NOTMUCH_CONFIG" "/home/nasser/Sync/news/.notmuch-config"))
+  (setenv "NOTMUCH_CONFIG" "/home/nasser/Sync/news/.notmuch-config")
+  
+  ;; show new on top
+  (setq-default notmuch-search-oldest-first nil)
+
+  (setq notmuch-hello-logo nil)
+
+  (defun my-notmuch-unread ()
+    (interactive)
+    (notmuch-search "tag:unread"))
+  
+  (defun my-notmuch-mark-read ()
+    "Mark the current message as read and move to the next one."
+    (interactive)
+    (notmuch-search-tag (list "-unread"))
+    (notmuch-search-next-thread))
+  
+  (setq notmuch-search-line-faces
+        '(("work" . font-lock-function-name-face)
+          ("personal" . font-lock-comment-face))))
+
+(use-package smtpmail
+  :ensure nil
+  :config
+  ;; (info "(message)Mail Variables")
+  ;; default gmail
+  (setq smtpmail-smtp-server "smtp.gmail.com"
+        smtpmail-smtp-user "nasser.alkmim@gmail.com"
+        smtpmail-smtp-service 587
+        smtpmail-stream-type 'starttls
+        message-send-mail-function 'smtpmail-send-it
+        send-mail-function 'smtpmail-send-it)
+  (defun my-send-mail-smtp-setup-hook ()
+    (let ((from (mail-fetch-field "From"))
+          (personal "<nasser.alkmim@gmail.com>")
+          (work "<nasser.alkmim@uibk.ac.at>"))
+      (cond ((string-match work from)
+             (setf smtpmail-smtp-user "c8441205"
+                   smtpmail-smtp-server "smtp.uibk.ac.at")))))
+  (add-hook 'message-send-hook 'my-send-mail-smtp-setup-hook))
+
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
