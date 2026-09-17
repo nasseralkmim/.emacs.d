@@ -5304,8 +5304,8 @@ RESCHEDULE-FN is the function to reschedule."
 
   ;; save sent messages
   (setq notmuch-fcc-dirs
-        '(("nasser.alkmim@gmail.com" . "gmail/sent")
-          ("nasser.alkmim@uibk.ac.at" . "uibk/sent")))
+        '(("nasser.alkmim@gmail.com" . "gmail/Sent Items")
+          ("nasser.alkmim@uibk.ac.at" . "uibk/Sent Items")))
   
   (setq notmuch-search-line-faces
         '(("uibk" . font-lock-function-name-face)
