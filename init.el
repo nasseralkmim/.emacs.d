@@ -3585,7 +3585,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; 
 ;; Workflow for adding news source: server -> group -> articlea
 ;; enter the server: 'gnus-group-enter-server-mode', then we select the server 'gnus-server-read-server', once in the server we can subscribe/unsubscribe to specific group 'gnus-browse-toggle-subscription-at-point'
-(use-package gnus :disabled
+(use-package gnus
   :ensure nil
   :bind
   ("C-x C-m" . gnus)
@@ -3613,13 +3613,17 @@ opening a file from dired. Otherwise just regular dired."
                                               (nntp-open-connection-function nntp-open-tls-stream) ; feedbase does not do STARTTLS (yet?)
                                               (nntp-port-number 563) ; nntps
                                               (nntp-address "feedbase.org"))
-                                        ;; (nnimap "gmail"
-                                        ;;         (nnimap-address "imap.gmail.com"))
-                                        ;; (nnmaildir "uibk"
-                                        ;;            (directory "~/Sync/news/mail/uibk")
-                                        ;;            (gnus-search-engine gnus-search-notmuch
-                                        ;;                                (config-file "/home/nasser/Sync/news/.notmuch-config")
-                                        ;;                                (remove-prefix "~/Sync/news/mail/uibk")))
+                                        (nnmaildir "gmail"
+                                                ;; (nnimap-address "imap.gmail.com")
+                                                (directory "~/Sync/news/mail/gmail")
+                                                (gnus-search-engine gnus-search-notmuch
+                                                                    (config-file "/home/nasser/Sync/news/.notmuch-config")
+                                                                    (remove-prefix "~/Sync/news/mail/gmail/")))
+                                        (nnmaildir "uibk"
+                                                   (directory "~/Sync/news/mail/uibk")
+                                                   (gnus-search-engine gnus-search-notmuch
+                                                                       (config-file "/home/nasser/Sync/news/.notmuch-config")
+                                                                       (remove-prefix "~/Sync/news/mail/uibk/")))
                                         )
         ;; (info "(message)Mail Variables")
         ;; use an SMTP server to send email, setup with group properties
@@ -5317,7 +5321,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setq message-send-mail-function 'smtpmail-send-it
         send-mail-function 'smtpmail-send-it))
 
-(use-package gnus-dired
+(use-package gnus-dired :disabled
   :ensure nil
   :hook (dired-mode . turn-on-gnus-dired-mode)
   :config (setq gnus-dired-mail-mode 'notmuch-user-agent))
@@ -5339,7 +5343,7 @@ RESCHEDULE-FN is the function to reschedule."
                    smtpmail-smtp-server "smtp.uibk.ac.at")))))
   (add-hook 'message-send-hook 'my-send-mail-smtp-setup-hook))
 
-(use-package notmuch-indicator
+(use-package notmuch-indicator :disabled
   :defer 1
   :config
   (setq
