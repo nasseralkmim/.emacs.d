@@ -5229,6 +5229,7 @@ RESCHEDULE-FN is the function to reschedule."
           ;; 
           ("https://blog.bytebytego.com/feed" essay technology)
           ("https://www.worksinprogress.news/feed" essay)
+          ("https://spectrum.ieee.org/customfeeds/feed/all-topics/rss" :title "IEEE Spectrum" essay technology)
           ;; Mechanics journals
           ("https://rss.sciencedirect.com/publication/science/00652156" paper mechanics)
           ("https://rss.sciencedirect.com/publication/science/00457949" paper mechanics structures)
