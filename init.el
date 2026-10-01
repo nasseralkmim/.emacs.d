@@ -9,7 +9,8 @@
   ;; gptel-magit
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/"))
-  (setq package-install-upgrade-built-in t))
+  (setq package-install-upgrade-built-in t
+        package-vc-allow-build-commands '(excali)))
 
 ;; 'always-defer' means that for a package to load we need a ':hook' or using a ':general' keybinding
 ;; if there is none, we need to explicitly add ':demand' to load the package
@@ -1141,7 +1142,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
+  ;; :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
+  :load-path "~/.emacs.d/elpa/org-mode/lisp"
+  :ensure nil
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock :extend t))))
   (org-meta-line ((t (:foreground "gray60"))))
@@ -1481,7 +1484,7 @@ When matching, reference is stored in match group 1."
                                    )))
 
 (use-package org-latex-preview
-  :when (display-graphic-p)
+  ;; :when (display-graphic-p)
   :ensure nil
   :after org
   :init
@@ -5353,6 +5356,14 @@ RESCHEDULE-FN is the function to reschedule."
    notmuch-indicator-args '((:terms "tag:unread and tag:gmail" :label "@")
                             (:terms "tag:unread and tag:uibk" :label "U")))
   (notmuch-indicator-mode))
+
+(use-package excali
+  :vc (:url "https://github.com/yibie/excali-mode"
+            :shell-command "make && make fonts")
+  :commands (excali-open excali-new)
+  :config
+  (add-hook 'excali-mode-hook
+          (lambda () (setq excali--theme 'dark))))
 
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
