@@ -5363,6 +5363,9 @@ RESCHEDULE-FN is the function to reschedule."
   :vc (:url "https://github.com/yibie/excali-mode"
             :shell-command "make && make fonts")
   :commands (excali-open excali-new)
+  :bind
+  (:map excali-mode-map
+        ("u" . excali-undo))
   :config
   (add-hook 'excali-mode-hook
           (lambda () (setq excali--theme 'dark))))
