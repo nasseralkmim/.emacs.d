@@ -5369,6 +5369,22 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   ;; [[excali:file.excalidraw]] links: follow opens the scene, preview
   ;; renders it to a cached PNG shown with `org-link-preview-file'.
+  (defvar my/excali-preview-theme 'dark
+    "Theme of excali link previews: `light' or `dark'.")
+
+  (defun my/excali-darken-png (png)
+    "Apply excali's dark theme filter to PNG in place, via ImageMagick.
+The matrix is `excali_dark_filter' (invert 0.93, then hue-rotate 180deg)
+folded into one affine map; PNG exports have no dark mode of their own."
+    (unless (eq 0 (call-process
+                   "magick" nil nil nil png "-color-matrix"
+                   (concat "0.49364 -1.2298 -0.12384 0 0 0.93 "
+                           "-0.36636 -0.3698 -0.12384 0 0 0.93 "
+                           "-0.36636 -1.2298 0.73616 0 0 0.93 "
+                           "0 0 0 1 0 0  0 0 0 0 1 0  0 0 0 0 0 1")
+                   png))
+      (message "excali preview: dark filter failed for %s" png)))
+
   (defun my/excali-preview-png (file)
     "Return a cached PNG rendering of the excalidraw FILE."
     (require 'excali)
@@ -5376,7 +5392,9 @@ RESCHEDULE-FN is the function to reschedule."
     (let* ((file (file-truename file))
            (mtime (file-attribute-modification-time (file-attributes file)))
            (dir (expand-file-name "excali-previews" temporary-file-directory))
-           (png (expand-file-name (concat (md5 (format "%s%s" file mtime)) ".png") dir)))
+           (png (expand-file-name
+                 (concat (md5 (format "%s%s%s" file mtime my/excali-preview-theme)) ".png")
+                 dir)))
       (unless (file-exists-p png)
         (make-directory dir t)
         (with-temp-buffer
@@ -5387,7 +5405,9 @@ RESCHEDULE-FN is the function to reschedule."
                   excali--elements (append (alist-get 'elements doc) nil)
                   excali--selection nil
                   excali--native-cache (make-hash-table :test #'eq :weakness 'key))
-            (excali-export-png png))))
+            (excali-export-png png)))
+        (when (eq my/excali-preview-theme 'dark)
+          (my/excali-darken-png png)))
       png))
 
   (defun my/excali-link-preview (ov path link)
