@@ -5195,7 +5195,8 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   ("C-x w" . elfeed)
   (:map elfeed-search-mode-map
-   ("d" . elfeed-search-untag-all-unread))
+        ("d" . elfeed-search-untag-all-unread)
+        ("q" . elfeed-db-unload))       ;save, drop from memory, close elfeed
   :config
   (setq elfeed-db-directory "~/Sync/news/elfeed"
         elfeed-search-title-max-width 120
