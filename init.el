@@ -5366,6 +5366,44 @@ RESCHEDULE-FN is the function to reschedule."
   :bind
   (:map excali-mode-map
         ("u" . excali-undo))
+  :init
+  ;; [[excali:file.excalidraw]] links: follow opens the scene, preview
+  ;; renders it to a cached PNG shown with `org-link-preview-file'.
+  (defun my/excali-preview-png (file)
+    "Return a cached PNG rendering of the excalidraw FILE."
+    (require 'excali)
+    (require 'excali-export)
+    (let* ((file (file-truename file))
+           (mtime (file-attribute-modification-time (file-attributes file)))
+           (dir (expand-file-name "excali-previews" temporary-file-directory))
+           (png (expand-file-name (concat (md5 (format "%s%s" file mtime)) ".png") dir)))
+      (unless (file-exists-p png)
+        (make-directory dir t)
+        (with-temp-buffer
+          (let ((doc (excali--restore-doc (excali--read-scene-file file)))
+                (excali-export-embed-scene nil)
+                (inhibit-message t))
+            (setq excali--doc doc
+                  excali--elements (append (alist-get 'elements doc) nil)
+                  excali--selection nil
+                  excali--native-cache (make-hash-table :test #'eq :weakness 'key))
+            (excali-export-png png))))
+      png))
+
+  (defun my/excali-link-preview (ov path link)
+    "Preview the excalidraw file PATH of LINK in overlay OV."
+    (let ((file (expand-file-name (substitute-in-file-name path))))
+      (when (and (display-graphic-p) (file-exists-p file))
+        (when-let* ((png (with-demoted-errors "excali preview: %S"
+                           (my/excali-preview-png file))))
+          (org-link-preview-file ov png link)))))
+
+  (with-eval-after-load 'ol
+    (org-link-set-parameters
+     "excali"
+     :follow (lambda (path _) (excali-open path))
+     :complete (lambda (&optional _) (concat "excali:" (read-file-name "Excalidraw file: ")))
+     :preview #'my/excali-link-preview))
   :config
   (add-hook 'excali-mode-hook
           (lambda () (setq excali--theme 'dark))))
