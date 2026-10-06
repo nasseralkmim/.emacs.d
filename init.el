@@ -3380,7 +3380,7 @@ opening a file from dired. Otherwise just regular dired."
 ;; query for org
 (use-package org-ql
   :after org
-  :bind (:map org-mode-map ("C-c s f" . org-ql-find)))
+  :bind (:map org-mode-map ("C-c i" . org-ql-find)))
 
 ;; allows inline animations in org
 (use-package org-inline-anim :disabled
