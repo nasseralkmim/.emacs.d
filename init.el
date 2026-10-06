@@ -5211,7 +5211,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://www.federalreserve.gov/feeds/working_papers.xml" paper finance economics)
           ("https://libertystreeteconomics.newyorkfed.org/feed/" opinion finance economics)
           ("https://feeds.bloomberg.com/bview/news.rss" opinion)
-          ("https://pox.globo.com/rss/valor/opiniao" opinion)
+          ("https://pox.globo.com/rss/valor/opiniao" :title "Valor: Opinion" opinion)
           ("https://feeds.content.dowjones.io/public/rss/RSSOpinion" :title "WSJ:Opinion" opinion)
           ("https://michaeljburry.substack.com/feed" opinion finance)
           ("https://realinvestmentadvice.com/feed/" opinion finance)
