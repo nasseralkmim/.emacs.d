@@ -5227,6 +5227,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://www.newyorker.com/feed/latest/rss" :title "New Yorker: The Latest" news)
           ("https://www.newyorker.com/feed/magazine/the-financial-page/rss" news finance)
           ("https://cms.zerohedge.com/fullrss2.xml" opinion finance economics)
+          ("https://feeds.folha.uol.com.br/opiniao/rss091.xml" :tile "Folha: Opinião" opinion)
           ;; 
           ("https://blog.bytebytego.com/feed" essay technology)
           ("https://www.worksinprogress.news/feed" essay)
