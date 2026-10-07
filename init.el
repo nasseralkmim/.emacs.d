@@ -5205,7 +5205,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setq elfeed-feeds
         '(("https://www.bis.org/doclist/reshub_papers.rss" paper economics)
           ("https://www.economist.com/finance-and-economics/rss.xml" news finance economics)
-          ("https://www.ft.com/opinion?format=rss" opinion economics)
+          ("https://www.ft.com/opinion?format=rss" :title "FT: Opinion" opinion economics)
           ("https://www.ft.com/markets?format=rss" :title "FT: Markets" news finance economics)
           ("https://rss.nytimes.com/services/xml/rss/nyt/sunday-review.xml" opinion)
           ("https://www.bankofengland.co.uk/rss/publications" news finance economics)
