@@ -5202,71 +5202,126 @@ RESCHEDULE-FN is the function to reschedule."
         elfeed-search-title-max-width 120
         elfeed-search-title-min-width 60
         elfeed-search-trailing-width 20)
+  ;; Kind tags (one per feed) drive the colors: column, wire, forum,
+  ;; preprint, journal, magazine, institution, author, essay.
   (setq elfeed-feeds
-        '(("https://www.bis.org/doclist/reshub_papers.rss" :title "BIS: Research Hub" paper economics)
-          ("https://www.economist.com/finance-and-economics/rss.xml" :title "Economist: Finance & Economics" news finance economics)
-          ("https://www.ft.com/opinion?format=rss" :title "FT: Opinion" opinion economics)
-          ("https://www.ft.com/markets?format=rss" :title "FT: Markets" news finance economics)
-          ("https://rss.nytimes.com/services/xml/rss/nyt/sunday-review.xml" :title "NYT: Sunday Review" opinion)
-          ("https://www.bankofengland.co.uk/rss/publications" :title "Bank of England: Publications" news finance economics)
-          ("https://www.federalreserve.gov/feeds/working_papers.xml" :title "Fed: Working Papers" paper finance economics)
-          ("https://libertystreeteconomics.newyorkfed.org/feed/" :title "Liberty Street Economics" opinion finance economics)
-          ("https://feeds.bloomberg.com/bview/news.rss" :title "Bloomberg: Opinion" opinion)
-          ("https://feeds.bloomberg.com/markets/news.rss" :title "Bloomberg: Markets" news economics finance)
-          ("https://pox.globo.com/rss/valor/opiniao" :title "Valor: Opinion" opinion)
-          ("https://feeds.content.dowjones.io/public/rss/RSSOpinion" :title "WSJ: Opinion" opinion)
-          ("https://michaeljburry.substack.com/feed" :title "Michael Burry" opinion finance)
-          ("https://realinvestmentadvice.com/feed/" :title "Real Investment Advice" opinion finance)
-          ;; ("https://news.ycombinator.com/rss" forum hackernews)
-          ("https://feeds.leonid.codes/hacker_news_lite.rss" :title "Hacker News" forum hackernews)
-          ("https://paulkrugman.substack.com/feed" :title "Paul Krugman" opinion economics)
-          ("https://rbaldwin.substack.com/feed" :title "Richard Baldwin" opinion economics)
+        '(;; Institutions (rare, authoritative)
+          ("https://www.bis.org/doclist/reshub_papers.rss" :title "BIS: Research Hub" institution paper economics)
+          ("https://www.bankofengland.co.uk/rss/publications" :title "Bank of England: Publications" institution finance economics)
+          ("https://www.federalreserve.gov/feeds/working_papers.xml" :title "Fed: Working Papers" institution paper finance economics)
+          ("https://libertystreeteconomics.newyorkfed.org/feed/" :title "Liberty Street Economics" institution finance economics)
+          ("https://www.aei.org/feed/" :title "AEI" institution)
+          ;; Individual authors (rare, high signal)
+          ("https://michaeljburry.substack.com/feed" :title "Michael Burry" author finance)
+          ("https://realinvestmentadvice.com/feed/" :title "Real Investment Advice" author finance)
+          ("https://paulkrugman.substack.com/feed" :title "Paul Krugman" author economics)
+          ("https://rbaldwin.substack.com/feed" :title "Richard Baldwin" author economics)
+          ("https://aswathdamodaran.substack.com/feed" :title "Aswath Damodaran" author finance)
+          ("https://quoththeraven.substack.com/feed" :title "Quoth the Raven" author finance)
+          ;; Essays (rare, long)
           ;; ("https://bubbles.town/briefing/feed" essay)
-          ("https://aswathdamodaran.substack.com/feed" :title "Aswath Damodaran" opinion finance)
-          ("https://www.theatlantic.com/feed/all/" :title "The Atlantic" news)
-          ("https://www.aei.org/feed/" :title "AEI" opinion)
-          ("https://piaui.uol.com.br/feed/" :title "Piauí" opinion)
-          ("https://www.newyorker.com/feed/latest/rss" :title "New Yorker: The Latest" news)
-          ("https://www.newyorker.com/feed/magazine/the-financial-page/rss" :title "New Yorker: The Financial Page" news finance)
-          ("https://cms.zerohedge.com/fullrss2.xml" :title "ZeroHedge" opinion finance economics)
-          ("https://feeds.folha.uol.com.br/opiniao/rss091.xml" :title "Folha: Opinião" opinion)
-          ;; 
           ("https://blog.bytebytego.com/feed" :title "ByteByteGo" essay technology)
           ("https://www.worksinprogress.news/feed" :title "Works in Progress" essay)
           ("https://spectrum.ieee.org/customfeeds/feed/all-topics/rss" :title "IEEE Spectrum" essay technology)
-          ("https://quoththeraven.substack.com/feed" :title "Quoth the Raven" essay)
+          ;; Magazines (long-form, medium volume)
+          ("https://www.economist.com/finance-and-economics/rss.xml" :title "Economist: Finance & Economics" magazine finance economics)
+          ("https://rss.nytimes.com/services/xml/rss/nyt/sunday-review.xml" :title "NYT: Sunday Review" magazine)
+          ("https://www.theatlantic.com/feed/all/" :title "The Atlantic" magazine)
+          ("https://www.newyorker.com/feed/latest/rss" :title "New Yorker: The Latest" magazine)
+          ("https://www.newyorker.com/feed/magazine/the-financial-page/rss" :title "New Yorker: The Financial Page" magazine finance)
+          ("https://piaui.uol.com.br/feed/" :title "Piauí" magazine pt)
+          ;; Masthead opinion columns (high volume)
+          ("https://www.ft.com/opinion?format=rss" :title "FT: Opinion" column economics)
+          ("https://feeds.bloomberg.com/bview/news.rss" :title "Bloomberg: Opinion" column)
+          ("https://feeds.content.dowjones.io/public/rss/RSSOpinion" :title "WSJ: Opinion" column)
+          ("https://pox.globo.com/rss/valor/opiniao" :title "Valor: Opinion" column pt)
+          ("https://feeds.folha.uol.com.br/opiniao/rss091.xml" :title "Folha: Opinião" column pt)
+          ;; Markets wire (high volume)
+          ("https://www.ft.com/markets?format=rss" :title "FT: Markets" wire finance economics)
+          ("https://feeds.bloomberg.com/markets/news.rss" :title "Bloomberg: Markets" wire finance economics)
+          ("https://cms.zerohedge.com/fullrss2.xml" :title "ZeroHedge" wire finance economics)
+          ;; Forum (high volume)
+          ;; ("https://news.ycombinator.com/rss" forum hackernews)
+          ("https://feeds.leonid.codes/hacker_news_lite.rss" :title "Hacker News" forum hackernews)
           ;; Mechanics journals
-          ("https://rss.sciencedirect.com/publication/science/00652156" :title "Advances in Applied Mechanics" paper mechanics)
-          ("https://rss.sciencedirect.com/publication/science/00457949" :title "Computers & Structures" paper mechanics structures)
-          ("https://rss.sciencedirect.com/publication/science/00457825" :title "CMAME" paper mechanics cmame)
-          ("https://rss.sciencedirect.com/publication/science/00207403" :title "Int. J. Mechanical Sciences" paper mechanics mechanical-sciences)
-          ("https://rss.sciencedirect.com/publication/science/00137944" :title "Engineering Fracture Mechanics" paper mechanics fracture)
-          ("https://rss.sciencedirect.com/publication/science/03019322" :title "Int. J. Multiphase Flow" paper mechanics multiphase)
-          ("https://onlinelibrary.wiley.com/feed/10970207/most-recent" :title "Int. J. Numerical Methods in Engineering" paper mechanics numerical-methods)
-          ("https://link.springer.com/search.rss?facet-sub-discipline=%22Civil+Engineering%22&query=computational+mechanics&facet-discipline=%22Engineering%22&sortOrder=newestFirst&facet-sub-discipline=%22Classical+Mechanics%22&facet-content-type=%22Article%22&facet-sub-discipline=%22Mechanical+Engineering%22&facet-sub-discipline=%22Characterization+and+Evaluation+of+Materials%22" :title "Springer: Computational Mechanics" paper mechanics computational-mechanics springer)
-          ;; Geotechnics
-          ("https://rss.sciencedirect.com/publication/science/0266352X" :title "Computers and Geotechnics" paper geotechnics computers)
-          ("https://onlinelibrary.wiley.com/feed/10969853/most-recent" :title "Int. J. Numerical & Analytical Methods in Geomechanics" paper geotechnics geomechanics)
-          ;; Math / CS / Physics
-          ("https://rss.sciencedirect.com/publication/science/0307904X" :title "Applied Mathematical Modelling" paper math applied-modelling)
-          ("http://arxiv.org/rss/math.NA" :title "arXiv: math.NA" paper math numerical-analysis arxiv)
-          ("https://rss.sciencedirect.com/publication/science/00219991" :title "Journal of Computational Physics" paper physics computational-physics)
-          ("https://arxiv.org/rss/cs.PF" :title "arXiv: cs.PF" paper computer-science parallel arxiv)
-          ("http://rss.arxiv.org/rss/cs.MS" :title "arXiv: cs.MS" paper computer-science software arxiv)))
+          ("https://rss.sciencedirect.com/publication/science/00652156" :title "Advances in Applied Mechanics" journal paper mechanics)
+          ("https://rss.sciencedirect.com/publication/science/00457949" :title "Computers & Structures" journal paper mechanics structures)
+          ("https://rss.sciencedirect.com/publication/science/00457825" :title "CMAME" journal paper mechanics cmame)
+          ("https://rss.sciencedirect.com/publication/science/00207403" :title "Int. J. Mechanical Sciences" journal paper mechanics mechanical-sciences)
+          ("https://rss.sciencedirect.com/publication/science/00137944" :title "Engineering Fracture Mechanics" journal paper mechanics fracture)
+          ("https://rss.sciencedirect.com/publication/science/03019322" :title "Int. J. Multiphase Flow" journal paper mechanics multiphase)
+          ("https://onlinelibrary.wiley.com/feed/10970207/most-recent" :title "Int. J. Numerical Methods in Engineering" journal paper mechanics numerical-methods)
+          ("https://link.springer.com/search.rss?facet-sub-discipline=%22Civil+Engineering%22&query=computational+mechanics&facet-discipline=%22Engineering%22&sortOrder=newestFirst&facet-sub-discipline=%22Classical+Mechanics%22&facet-content-type=%22Article%22&facet-sub-discipline=%22Mechanical+Engineering%22&facet-sub-discipline=%22Characterization+and+Evaluation+of+Materials%22" :title "Springer: Computational Mechanics" journal paper mechanics computational-mechanics springer)
+          ;; Geotechnics journals
+          ("https://rss.sciencedirect.com/publication/science/0266352X" :title "Computers and Geotechnics" journal paper geotechnics computers)
+          ("https://onlinelibrary.wiley.com/feed/10969853/most-recent" :title "Int. J. Numerical & Analytical Methods in Geomechanics" journal paper geotechnics geomechanics)
+          ;; Math / Physics journals
+          ("https://rss.sciencedirect.com/publication/science/0307904X" :title "Applied Mathematical Modelling" journal paper math applied-modelling)
+          ("https://rss.sciencedirect.com/publication/science/00219991" :title "Journal of Computational Physics" journal paper physics computational-physics)
+          ;; Preprints (high volume)
+          ("http://arxiv.org/rss/math.NA" :title "arXiv: math.NA" preprint paper math numerical-analysis arxiv)
+          ("https://arxiv.org/rss/cs.PF" :title "arXiv: cs.PF" preprint paper computer-science parallel arxiv)
+          ("http://rss.arxiv.org/rss/cs.MS" :title "arXiv: cs.MS" preprint paper computer-science software arxiv)))
   
   (defface elfeed-search-later-face
        '((t :underline t))
     "Face for elfeed entries tagged 'later' — adds underline only.")
-  
+
+  ;; Hue encodes the kind of publication; intensity is inverse to
+  ;; volume, so high-volume feeds recede and rare long reads stand out.
+  (defface elfeed-author-face
+    '((((background dark)) :foreground "#ff66ff") (t :foreground "#dd22dd"))
+    "Individual authors (rare, high signal).")
+  (defface elfeed-essay-face
+    '((((background dark)) :foreground "#fec43f") (t :foreground "#884900"))
+    "Essays (rare, long reads).")
+  (defface elfeed-institution-face
+    '((((background dark)) :foreground "#00eff0") (t :foreground "#008899"))
+    "Central banks and think tanks (rare, authoritative).")
+  (defface elfeed-magazine-face
+    '((((background dark)) :foreground "#79a8ff") (t :foreground "#3548cf"))
+    "Magazines (long-form, medium volume).")
+  (defface elfeed-journal-face
+    '((((background dark)) :foreground "#44bc44") (t :foreground "#006800"))
+    "Refereed journals (medium volume).")
+  (defface elfeed-preprint-face
+    '((((background dark)) :foreground "#88ca9f") (t :foreground "#2a5045"))
+    "Preprints (high volume).")
+  (defface elfeed-forum-face
+    '((((background dark)) :foreground "#d2b580") (t :foreground "#624416"))
+    "Forums (high volume).")
+  (defface elfeed-wire-face
+    '((((background dark)) :foreground "#9ac8e0") (t :foreground "#005077"))
+    "Markets wire and aggregators (high volume).")
+  (defface elfeed-column-face
+    '((((background dark)) :foreground "#989898") (t :foreground "#595959"))
+    "Masthead opinion columns (highest volume).")
+
   (setq elfeed-search-face-alist
         '((unread elfeed-search-unread-title-face)
-          ;; content type (primary visual distinction)
-          (news font-lock-type-face)
-          (opinion font-lock-function-name-face)
-          (forum font-lock-keyword-face)
-          (paper font-lock-comment-face)
           ;; workflow
-          (later elfeed-search-later-face)))
+          (later elfeed-search-later-face)
+          ;; rare, long, high signal: saturated
+          (author elfeed-author-face)
+          (essay elfeed-essay-face)
+          (institution elfeed-institution-face)
+          ;; medium volume
+          (magazine elfeed-magazine-face)
+          (journal elfeed-journal-face)
+          ;; high volume: faint
+          (preprint elfeed-preprint-face)
+          (forum elfeed-forum-face)
+          (wire elfeed-wire-face)
+          (column elfeed-column-face)))
+
+  (defun my-elfeed-retag ()
+    "Replace old kind tags on stored entries with current `elfeed-feeds' tags."
+    (interactive)
+    (with-elfeed-db-visit (e feed)
+      (when-let* ((tags (elfeed-feed-autotags feed))) ; skip removed feeds
+        (elfeed-untag e 'news 'opinion 'essay 'paper)
+        (apply #'elfeed-tag e tags)))
+    (elfeed-search-update :force))
   ;; stay in search view after opening an entry
   (setq elfeed-show-entry-switch 'elfeed-show-entry-other-window)
   (defun elfeed-show-entry-other-window (buf &optional act)
