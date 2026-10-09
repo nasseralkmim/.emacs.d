@@ -5236,6 +5236,8 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://feeds.content.dowjones.io/public/rss/RSSOpinion" :title "WSJ: Opinion" column)
           ("https://pox.globo.com/rss/valor/opiniao" :title "Valor: Opinion" column pt)
           ("https://feeds.folha.uol.com.br/opiniao/rss091.xml" :title "Folha: Opinião" column pt)
+          ("https://www.lemonde.fr/en/opinion/rss_full.xml" :title "Le Monde: Opinion" column)
+          ("https://feeds.elpais.com/mrss-s/list/ep/site/elpais.com/section/opinion" :title "El País: Opinion" column)
           ;; Markets wire (high volume)
           ("https://www.ft.com/markets?format=rss" :title "FT: Markets" wire finance economics)
           ("https://feeds.bloomberg.com/markets/news.rss" :title "Bloomberg: Markets" wire finance economics)
