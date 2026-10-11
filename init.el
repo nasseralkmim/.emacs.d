@@ -5316,14 +5316,6 @@ RESCHEDULE-FN is the function to reschedule."
           (wire elfeed-wire-face)
           (column elfeed-column-face)))
 
-  (defun my-elfeed-retag ()
-    "Replace old kind tags on stored entries with current `elfeed-feeds' tags."
-    (interactive)
-    (with-elfeed-db-visit (e feed)
-      (when-let* ((tags (elfeed-feed-autotags feed))) ; skip removed feeds
-        (elfeed-untag e 'news 'opinion 'essay 'paper)
-        (apply #'elfeed-tag e tags)))
-    (elfeed-search-update :force))
   ;; stay in search view after opening an entry
   (setq elfeed-show-entry-switch 'elfeed-show-entry-other-window)
   (defun elfeed-show-entry-other-window (buf &optional act)
@@ -5332,7 +5324,9 @@ RESCHEDULE-FN is the function to reschedule."
                                '((display-buffer-reuse-window
                                   display-buffer-below-selected)
                                  (window-height . 0.7)))))
-      (when win (select-window win)))))
+      (when win (select-window win))))
+ 
+  )
 
 (use-package elfeed-score
   :ensure t
