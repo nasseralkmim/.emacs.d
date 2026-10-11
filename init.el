@@ -5324,9 +5324,7 @@ RESCHEDULE-FN is the function to reschedule."
                                '((display-buffer-reuse-window
                                   display-buffer-below-selected)
                                  (window-height . 0.7)))))
-      (when win (select-window win))))
- 
-  )
+      (when win (select-window win)))))
 
 (use-package elfeed-score
   :ensure t
