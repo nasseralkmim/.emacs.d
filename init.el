@@ -5212,6 +5212,7 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://www.federalreserve.gov/feeds/working_papers.xml" :title "Fed: Working Papers" institution paper finance economics)
           ("https://libertystreeteconomics.newyorkfed.org/feed/" :title "Liberty Street Economics" institution finance economics)
           ("https://www.aei.org/feed/" :title "AEI" institution)
+          ("https://mises.org/taxonomy/term/5490/feed" :title "Mises Institute" essay institution economics)
           ;; Individual authors (rare, high signal)
           ("https://michaeljburry.substack.com/feed" :title "Michael Burry" author finance)
           ("https://realinvestmentadvice.com/feed/" :title "Real Investment Advice" author finance)
