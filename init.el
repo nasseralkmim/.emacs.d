@@ -1142,8 +1142,9 @@ frame if FRAME is nil, and to 1 if AMT is nil."
     (ox-extras-activate '(ignore-headlines)))) 
 
 (use-package org
-  ;; :vc (org-mode :url "https://code.tecosaur.net/tec/org-mode.git" :branch "dev")
-  :load-path "~/.emacs.d/elpa/org-mode/lisp"
+  :vc (org :url "https://git.savannah.gnu.org/git/emacs/org-mode.git"
+           :lisp-dir "lisp"
+           :make "autoloads")
   :ensure nil
   :custom-face
   (org-block ((t (:inherit org-agenda-restriction-lock :extend t))))
@@ -1658,7 +1659,7 @@ fake then silences org-element's non-Org-buffer warning during placement."
     (require 'org-latex-preview)
     (if (null elements)
         (message "No LaTeX math fragment found")
-      (when-let ((ptype (org-latex-preview--effective-process-default)))
+      (when-let ((ptype org-latex-preview-process-default))
         (my/latex-preview--with-org-context
           (org-latex-preview--place-from-elements ptype elements)))))
 
@@ -1670,7 +1671,7 @@ fake then silences org-element's non-Org-buffer warning during placement."
         (my/latex-preview--place
          (my/latex-preview--elements-in (region-beginning) (region-end)))
       ;; Detect the fragment and build the preamble OUTSIDE the `major-mode'
-      ;; fake, then toggle inside it.  Use `--auto-aware-toggle' directly, not
+      ;; fake, then toggle inside it.  Use `--mode-aware-toggle' directly, not
       ;; `org-latex-preview': the latter ignores an element argument and
       ;; re-derives the region with `org-element-context' -- which in a *.tex
       ;; buffer returns the whole `document' environment.
@@ -1678,7 +1679,7 @@ fake then silences org-element's non-Org-buffer warning during placement."
         (if (null datum)
             (message "No LaTeX math fragment at point")
           (my/latex-preview--with-org-context
-            (org-latex-preview--auto-aware-toggle datum))))))
+            (org-latex-preview--mode-aware-toggle datum))))))
 
   (defun my/latex-preview-buffer ()
     "Preview every LaTeX math fragment in the current buffer."
@@ -1726,7 +1727,7 @@ Falls back to ORIG (which uses `org-element-context') elsewhere."
           (save-excursion
             (goto-char (overlay-start ov))
             (when-let* ((datum (my/latex-preview--element-at-point))
-                        (ptype (org-latex-preview--effective-process-default)))
+                        (ptype org-latex-preview-process-default))
               (my/latex-preview--with-org-context
                 (org-latex-preview--place-from-elements ptype (list datum))))))
       (apply orig ov args)))
@@ -5481,6 +5482,5 @@ folded into one affine map; PNG exports have no dark mode of their own."
   :config
   (add-hook 'excali-mode-hook
           (lambda () (setq excali--theme 'dark))))
-
 
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
