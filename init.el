@@ -5243,7 +5243,6 @@ RESCHEDULE-FN is the function to reschedule."
           ;; Markets wire (high volume)
           ("https://www.ft.com/markets?format=rss" :title "FT: Markets" wire finance economics)
           ("https://feeds.bloomberg.com/markets/news.rss" :title "Bloomberg: Markets" wire finance economics)
-          ("https://cms.zerohedge.com/fullrss2.xml" :title "ZeroHedge" wire finance economics)
           ;; Forum (high volume)
           ;; ("https://news.ycombinator.com/rss" forum hackernews)
           ("https://feeds.leonid.codes/hacker_news_lite.rss" :title "Hacker News" forum hackernews)
