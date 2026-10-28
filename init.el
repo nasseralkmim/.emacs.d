@@ -4165,12 +4165,55 @@ With prefix argument, prompt for a new default language."
   ;; :when (display-graphic-p)
   :vc (:url "https://github.com/misohena/el-easydraw")
   :init
+  ;; edraw has no `:preview' link parameter (it shows images through its
+  ;; own font-lock based `edraw-org-link-image-mode'), so provide one for
+  ;; Org 9.8 link previews.  The overlay is marked like edraw's own image
+  ;; overlays, so `edraw-org-edit-link' hides it while the editor is open
+  ;; and `edraw-org-link-close-editor' shows it again.
+  (defun my/edraw-link-preview (ov path link)
+    "Preview the edraw link PATH of LINK in overlay OV."
+    (when (display-graphic-p)
+      (when-let* ((props (edraw-org-link-props-parse path nil t))
+                  (image (edraw-org-link-image-create props)))
+        (when-let* ((width (org-display-inline-image--width link)))
+          (setf (image-property image :width) width))
+        ;; Emacs does not notice when a linked file changes (bug#59902)
+        (image-flush image)
+        (overlay-put ov 'display image)
+        (overlay-put ov 'face 'default)
+        (overlay-put ov 'keymap edraw-org-link-image-map)
+        (overlay-put ov 'edraw-org-link-image-p t)
+        (overlay-put ov 'edraw-org-link-image image)
+        (overlay-put ov 'edraw-org-link-image-visible t)
+        ;; Saving a data link rewrites the link text, which would delete
+        ;; the overlay; keep it so closing the editor knows to refresh.
+        (overlay-put ov 'modification-hooks
+                     (list (lambda (ov after beg end &optional len)
+                             (unless (bound-and-true-p edraw-org-enable-modification)
+                               (org-link-preview--remove-overlay ov after beg end len)))))
+        t)))
+
+  (defun my/edraw-close-editor-refresh-preview (fn editor)
+    "Call FN with EDITOR, then refresh the preview of the edited link."
+    (let* ((buffer (overlay-buffer (oref editor overlay)))
+           (preview (and buffer
+                         (with-current-buffer buffer
+                           (edraw-org-link-image-overlay-at
+                            (overlay-start (oref editor overlay))))))
+           (beg (and preview (overlay-start preview)))
+           (end (and preview (overlay-end preview))))
+      (funcall fn editor)
+      (when (and preview (buffer-live-p buffer))
+        (with-current-buffer buffer
+          (when (memq preview org-link-preview-overlays)
+            (org-link-preview-region nil t beg end))))))
+
   (with-eval-after-load 'org
-    (progn
-      (require 'edraw-org)
-      (edraw-org-setup-exporter)
-      ;; (advice-add 'edraw-org-link-finish-edit :after 'org-link-preview-refresh)
-    ))
+    (require 'edraw-org)
+    (edraw-org-setup-exporter)
+    (org-link-set-parameters "edraw" :preview #'my/edraw-link-preview)
+    (advice-add 'edraw-org-link-close-editor :around
+                #'my/edraw-close-editor-refresh-preview))
   :bind
   (:map edraw-editor-map
         ("<mouse-3>" . edraw-editor-select-tool-select))
