@@ -5275,6 +5275,8 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://www.newyorker.com/feed/latest/rss" :title "New Yorker: The Latest" magazine)
           ("https://www.newyorker.com/feed/magazine/the-financial-page/rss" :title "New Yorker: The Financial Page" magazine finance)
           ("https://piaui.uol.com.br/feed/" :title "Piauí" magazine pt)
+          ("https://rss.nytimes.com/services/xml/rss/nyt/HomePage.xml" :title "NYT: Home Page" magazine)
+          ("https://rss.nytimes.com/services/xml/rss/nyt/Books/Review.xml" :title "NYT: Book Review" magazine)
           ;; Masthead opinion columns (high volume)
           ("https://www.ft.com/opinion?format=rss" :title "FT: Opinion" column economics)
           ("https://feeds.bloomberg.com/bview/news.rss" :title "Bloomberg: Opinion" column)
