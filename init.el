@@ -5263,6 +5263,8 @@ RESCHEDULE-FN is the function to reschedule."
           ("https://rbaldwin.substack.com/feed" :title "Richard Baldwin" author economics)
           ("https://aswathdamodaran.substack.com/feed" :title "Aswath Damodaran" author finance)
           ("https://quoththeraven.substack.com/feed" :title "Quoth the Raven" author finance)
+          ("https://andrelararesende.substack.com/feed" :title "Andre Lara Resende" author economics)
+          ("https://www.grumpy-economist.com/feed" :title "John Cochrane" author economics)
           ;; Essays (rare, long)
           ;; ("https://bubbles.town/briefing/feed" essay)
           ("https://blog.bytebytego.com/feed" :title "ByteByteGo" essay technology)
