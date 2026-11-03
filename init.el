@@ -3127,7 +3127,7 @@ opening a file from dired. Otherwise just regular dired."
   :demand
   :after magit
   :config
-  (setq forge-owned-accounts '(("nasseralkmim")))
+  (setq forge-owned-accounts '(("nasseralkmim" "c8441205")))
   ;; add custom gitlab instance
   (push '("git@git.uibk.ac.at"
           "git.uibk.ac.at/api/v4"
