@@ -1750,6 +1750,350 @@ disabled so it is safe outside Org."
     (advice-add 'org-latex-preview-mode--regenerate-overlay :around
                 #'my/latex-preview--regenerate-in-any-buffer)))
 
+;; Text backend for `org-latex-preview' using `utftex' (libtexprintf), so
+;; previews work in a terminal frame.
+;;
+;; Everything `org-latex-preview-mode' does after placement (reveal source
+;; when the cursor enters, restore on exit, regenerate after edits, live
+;; previews) only swaps the overlay's `display' with the value stored in its
+;; `org-preview-image' property -- it never looks inside it.  So a backend
+;; only has to replace `org-latex-preview-place': we store a (multi-line)
+;; STRING there instead of an image spec, and the rest of the machinery,
+;; including the `my/latex-preview-*' commands above, works unchanged.
+;;
+;; A multi-line result is one `display' string on the whole fragment, rows
+;; joined by newlines (like an image replaces the whole fragment), instead
+;; of before-/after-string tricks, which confuse redisplay and line motion.
+;;
+;; utftex lacks some environments/commands, so the LaTeX is preprocessed:
+;; delimiters stripped, `\newcommand'/`\DeclareMathOperator' from the
+;; preview preamble (incl. #+latex_header) and `my/utftex-preamble'
+;; expanded, then `my/utftex-rewrites' applied.
+(use-package my-org-latex-preview-utftex
+  :ensure nil
+  :init
+  (defcustom my/utftex-use 'tty
+    "When to render LaTeX previews as text with utftex.
+`tty' when the selected frame is not graphical, `always', or `never'.
+Setting `org-latex-preview-process-default' to `utftex' also works."
+    :type '(choice (const tty) (const always) (const never))
+    :group 'org-latex-preview)
+
+  (defcustom my/utftex-program "utftex"
+    "The utftex executable."
+    :type 'string :group 'org-latex-preview)
+
+  (defcustom my/utftex-args nil
+    "Extra arguments for utftex, e.g. (\"-F\" \"mathnormal\") or (\"-A\")."
+    :type '(repeat string) :group 'org-latex-preview)
+
+  (defcustom my/utftex-preamble
+    "\\newcommand{\\boldsymbol}[1]{\\mathbf{#1}}
+\\newcommand{\\bm}[1]{\\mathbf{#1}}
+\\newcommand{\\vb}[1]{\\mathbf{#1}}
+\\newcommand{\\mathit}[1]{#1}
+\\newcommand{\\displaystyle}{}
+\\newcommand{\\textstyle}{}
+\\newcommand{\\dd}{\\mathrm{d}}"
+    "Fallback macro definitions for commands utftex does not know.
+Definitions in the document's own preamble take precedence."
+    :type 'string :group 'org-latex-preview)
+
+  (defcustom my/utftex-rewrites
+    '(;; drop numbering/labels
+      ("\\\\\\(?:label\\|tag\\*?\\|eqref\\|ref\\){[^}]*}" . "")
+      ("\\\\\\(?:nonumber\\|notag\\)\\>" . "")
+      ;; single-equation wrappers utftex rejects
+      ("\\\\\\(?:begin\\|end\\){\\(?:equation\\|displaymath\\|math\\)\\*?}" . "")
+      ;; multi-line environments utftex rejects -> aligned
+      ("\\\\begin{alignat\\*?}{[0-9]+}" . "\\begin{aligned}")
+      ("\\\\begin{\\(?:gather\\|gathered\\|multline\\|split\\|flalign\\|alignat\\|eqnarray\\)\\*?}"
+       . "\\begin{aligned}")
+      ("\\\\end{\\(?:gather\\|gathered\\|multline\\|split\\|flalign\\|alignat\\|eqnarray\\)\\*?}"
+       . "\\end{aligned}")
+      ("\\\\\\(?:begin\\|end\\){smallmatrix}" . "")
+      ;; row spacing \\[2pt] -> \\ ; negative thin space is printed as "!"
+      ("\\\\\\\\\\[[^]]*\\]" . "\\\\")
+      ("\\\\!" . ""))
+    "Regexp/replacement pairs (replacement is literal) applied before utftex."
+    :type '(alist :key-type regexp :value-type string)
+    :group 'org-latex-preview)
+
+  (defface my/utftex-face '((t :inherit org-latex-and-related))
+    "Face for utftex LaTeX previews."
+    :group 'org-latex-preview)
+
+  (defface my/utftex-error-face '((t :inherit error))
+    "Face for LaTeX fragments utftex could not render."
+    :group 'org-latex-preview)
+
+  (defvar my/utftex--force nil
+    "Non-nil forces the utftex backend (bound while lifting Org's GUI guard).")
+
+  (defvar my/utftex--cache (make-hash-table :test #'equal :size 512)
+    "utftex results keyed on (TEX . ARGS); values are (LINES . ERROR).")
+
+  (defvar my/utftex--macro-cache nil
+    "Last (PREAMBLE . MACROS) parsed by `my/utftex--macros'.")
+
+  (defconst my/utftex--syntax-table
+    (let ((st (make-syntax-table)))
+      (dolist (c '(?\( ?\) ?\[ ?\] ?\" ?$ ?% ?'))
+        (modify-syntax-entry c "." st))
+      (modify-syntax-entry ?{ "(}" st)
+      (modify-syntax-entry ?} "){" st)
+      (modify-syntax-entry ?\\ "\\" st)
+      (modify-syntax-entry ?@ "w" st)
+      st)
+    "Syntax table where only braces group, for reading TeX arguments.")
+
+  (defun my/utftex--active-p (processing-type)
+    "Non-nil if PROCESSING-TYPE should be rendered with utftex."
+    (or my/utftex--force
+        (eq processing-type 'utftex)
+        (pcase my/utftex-use
+          ('always t)
+          ('tty (not (display-graphic-p))))))
+
+  ;;; TeX argument reading and macro expansion
+
+  (defun my/utftex--read-arg ()
+    "Read one TeX argument after point, move past it and return its text.
+A braced group returns its contents; otherwise one token.  Nil at EOB."
+    (skip-chars-forward " \t\n")
+    (cond
+     ((eobp) nil)
+     ((eq (char-after) ?{)
+      (let ((start (point)))
+        (condition-case nil
+            (progn (forward-sexp 1)
+                   (buffer-substring-no-properties (1+ start) (1- (point))))
+          (scan-error (goto-char (point-max)) nil))))
+     ((looking-at "\\\\\\(?:[a-zA-Z@]+\\|.\\)")
+      (goto-char (match-end 0))
+      (match-string-no-properties 0))
+     (t (forward-char 1) (string (char-before)))))
+
+  (defun my/utftex--parse-macros (preamble)
+    "Return an alist (NAME NARGS BODY) of the simple macros defined in PREAMBLE.
+Handles \\newcommand, \\renewcommand, \\providecommand and
+\\DeclareMathOperator; optional-argument defaults are ignored."
+    (with-temp-buffer
+      (with-syntax-table my/utftex--syntax-table
+        (insert preamble)
+        (goto-char (point-min))
+        (let (macros)
+          (while (re-search-forward
+                  "\\\\\\(\\(?:re\\|provide\\|new\\)command\\|DeclareMathOperator\\)\\*?"
+                  nil t)
+            (let* ((opp (equal (match-string 1) "DeclareMathOperator"))
+                   (name (my/utftex--read-arg))
+                   (nargs (if (looking-at "[ \t]*\\[\\([0-9]\\)\\]")
+                              (progn (goto-char (match-end 0))
+                                     (string-to-number (match-string 1)))
+                            0))
+                   (_ (when (looking-at "[ \t]*\\[[^]]*\\]") ;optional default
+                        (goto-char (match-end 0))))
+                   (body (my/utftex--read-arg)))
+              (when (and name body
+                         (string-match "\\`\\s-*\\\\\\([a-zA-Z@]+\\)\\s-*\\'" name))
+                (push (list (match-string 1 name) nargs
+                            (if opp (concat "\\operatorname{" body "}") body))
+                      macros))))
+          (nreverse macros)))))
+
+  (defun my/utftex--macros (preamble)
+    "Macros from PREAMBLE followed by `my/utftex-preamble' (cached)."
+    (let ((key (concat preamble "\n" my/utftex-preamble)))
+      (if (equal (car my/utftex--macro-cache) key)
+          (cdr my/utftex--macro-cache)
+        (cdr (setq my/utftex--macro-cache
+                   (cons key (my/utftex--parse-macros key)))))))
+
+  (defun my/utftex--expand-macros (tex macros)
+    "Expand MACROS (see `my/utftex--parse-macros') in TEX."
+    (if (null macros)
+        tex
+      (with-temp-buffer
+        (with-syntax-table my/utftex--syntax-table
+          (insert tex)
+          (goto-char (point-min))
+          (let ((re (concat "\\\\\\(" (regexp-opt (mapcar #'car macros)) "\\)"
+                            "\\(?:[^a-zA-Z@]\\|\\'\\)"))
+                (fuel 2000))           ;guard against recursive definitions
+            (while (and (> (cl-decf fuel) 0) (re-search-forward re nil t))
+              (let* ((start (match-beginning 0))
+                     (macro (assoc (match-string 1) macros))
+                     (args (progn (goto-char (match-end 1))
+                                  (cl-loop repeat (nth 1 macro)
+                                           collect (or (my/utftex--read-arg) ""))))
+                     (body (replace-regexp-in-string
+                            "#\\([1-9]\\)"
+                            (lambda (m)
+                              (or (nth (1- (string-to-number (substring m 1))) args) ""))
+                            (nth 2 macro) t t)))
+                (delete-region start (point))
+                ;; Keep the next token separate: \dd x -> \mathrm{d} x
+                (insert body (if (and (string-match-p "\\\\[a-zA-Z@]+\\'" body)
+                                      (looking-at "[a-zA-Z@]"))
+                                 " " ""))
+                (goto-char start)))      ;rescan the expansion
+            (buffer-string))))))
+
+  ;;; Rendering
+
+  (defun my/utftex--strip-delimiters (value)
+    "Strip $...$, $$...$$, \\(...\\) or \\[...\\] from VALUE."
+    (let ((s (string-trim value)))
+      (cond
+       ((string-match "\\`\\$\\$\\(\\(?:.\\|\n\\)*\\)\\$\\$\\'" s) (match-string 1 s))
+       ((string-match "\\`\\$\\(\\(?:.\\|\n\\)*\\)\\$\\'" s) (match-string 1 s))
+       ((string-match "\\`\\\\[[(]\\(\\(?:.\\|\n\\)*\\)\\\\[])]\\'" s) (match-string 1 s))
+       (t s))))
+
+  (defun my/utftex--preprocess (value macros)
+    "Turn the LaTeX fragment VALUE into input utftex understands."
+    (let ((s (my/utftex--expand-macros (my/utftex--strip-delimiters value) macros)))
+      (pcase-dolist (`(,re . ,rep) my/utftex-rewrites)
+        (setq s (replace-regexp-in-string re rep s t t)))
+      (setq s (string-trim s))
+      ;; Bare multi-line math, e.g. \[ a &= b \\ c &= d \] -> aligned
+      (if (and (string-match-p "\\\\\\\\" s)
+               (not (string-match-p "\\\\begin{" s)))
+          (concat "\\begin{aligned}" s "\\end{aligned}")
+        s)))
+
+  (defun my/utftex--run (tex)
+    "Render TEX with utftex.  Return (LINES . ERROR); LINES nil on failure."
+    (let ((errfile (make-temp-file "utftex-err")))
+      (unwind-protect
+          (with-temp-buffer
+            (insert tex)
+            (let* ((coding-system-for-read 'utf-8)
+                   (coding-system-for-write 'utf-8)
+                   ;; TEX goes to stdin (an argv starting with "-" would be
+                   ;; taken as an option); stdout replaces it in the buffer.
+                   (status (apply #'call-process-region (point-min) (point-max)
+                                  my/utftex-program t (list t errfile) nil
+                                  my/utftex-args))
+                   (err (string-trim
+                         (with-temp-buffer
+                           (insert-file-contents errfile)
+                           (buffer-string))))
+                   (lines (mapcar #'string-trim-right
+                                  (split-string (buffer-string) "\n"))))
+              ;; drop blank rows at both ends
+              (while (and lines (string-empty-p (car lines))) (pop lines))
+              (setq lines (nreverse lines))
+              (while (and lines (string-empty-p (car lines))) (pop lines))
+              (setq lines (nreverse lines))
+              (if (and lines (eql status 0) (string-empty-p err))
+                  (cons lines nil)
+                (cons nil (if (string-empty-p err)
+                              (format "utftex exited with %s" status)
+                            err)))))
+        (delete-file errfile))))
+
+  (defun my/utftex--render (value macros)
+    "Render the LaTeX fragment VALUE with MACROS.  Return (LINES . ERROR)."
+    (let* ((tex (my/utftex--preprocess value macros))
+           (key (cons tex my/utftex-args)))
+      (or (gethash key my/utftex--cache)
+          (puthash key (my/utftex--run tex) my/utftex--cache))))
+
+  (defun my/utftex--display-string (lines beg)
+    "Join LINES into a display string for a fragment starting at BEG.
+A fragment at the start of a line replaces its indentation, so every row
+gets it back; an inline fragment indents rows 2.. to its own column."
+    (save-excursion
+      (goto-char beg)
+      (let* ((bolp (save-excursion (skip-chars-backward " \t") (bolp)))
+             (pad (make-string (if bolp (current-indentation) (current-column)) ?\s)))
+        (propertize (concat (if bolp pad "")
+                            (mapconcat #'identity lines (concat "\n" pad)))
+                    'face 'my/utftex-face))))
+
+  (defun my/utftex--update-overlay (ov display error)
+    "Make OV show DISPLAY, or its LaTeX source marked with ERROR."
+    (let ((viewing (overlay-get ov 'org-view-text))
+          (face (and error 'my/utftex-error-face)))
+      (overlay-put ov 'org-preview-image display)
+      (overlay-put ov 'help-echo (and error (concat "utftex: " error)))
+      (overlay-put ov 'org-hidden-face (and viewing face))
+      (unless viewing
+        (overlay-put ov 'face face)
+        (overlay-put ov 'display display))
+      (run-hook-with-args 'org-latex-preview-overlay-update-functions ov)))
+
+  (defun my/utftex--place (entries preamble)
+    "Text counterpart of `org-latex-preview-place' for ENTRIES."
+    (let ((macros (my/utftex--macros (or preamble "")))
+          (failed 0))
+      (save-excursion
+        (pcase-dolist (`(,beg ,end ,value) entries)
+          (let ((value (or value (buffer-substring-no-properties beg end))))
+            (unless (org-latex-preview--empty-fragment-p value)
+              ;; A fragment preceded only by indentation: start the overlay at
+              ;; bol, so the display string (which re-adds the indentation to
+              ;; every row) replaces it and all rows line up.
+              (let* ((beg (save-excursion
+                            (goto-char beg)
+                            (if (save-excursion (skip-chars-backward " \t") (bolp))
+                                (line-beginning-position)
+                              beg)))
+                     (res (my/utftex--render value macros)))
+                (unless (car res) (cl-incf failed))
+                (my/utftex--update-overlay
+                 (org-latex-preview--ensure-overlay beg end)
+                 (and (car res) (my/utftex--display-string (car res) beg))
+                 (cdr res)))))))
+      (when (> failed 0)
+        (message "utftex: %d fragment%s not rendered (C-h . on it for the error)"
+                 failed (if (= failed 1) "" "s")))))
+
+  (defun my/utftex--place-advice (orig processing-type entries
+                                       &optional numbering-offsets latex-preamble)
+    "Route `org-latex-preview-place' to utftex when `my/utftex--active-p'."
+    (if (not (my/utftex--active-p processing-type))
+        (funcall orig processing-type entries numbering-offsets latex-preamble)
+      (unless (executable-find my/utftex-program)
+        (user-error "utftex backend: `%s' not found" my/utftex-program))
+      (my/utftex--place
+       entries
+       (or latex-preamble
+           org-latex-preview--preamble-content
+           (setq org-latex-preview--preamble-content
+                 (org-latex-preview--get-preamble))))))
+
+  (defun my/utftex--lift-gui-guard (orig &rest args)
+    "Let ORIG (`org-latex-preview') run in a terminal when utftex is active.
+Its first `display-graphic-p' call is the GUI guard, so only that one is
+answered with t.  `clear-image-cache' errors on a tty frame, so it is
+disabled for the duration."
+    (if (and (not (display-graphic-p)) (my/utftex--active-p nil))
+        (let* ((my/utftex--force t)
+               (real (symbol-function 'display-graphic-p))
+               (guarded nil))
+          (cl-letf (((symbol-function 'display-graphic-p)
+                     (lambda (&rest a) (if guarded (apply real a) (setq guarded t))))
+                    ((symbol-function 'clear-image-cache) #'ignore))
+            (apply orig args)))
+      (apply orig args)))
+
+  (defun my/utftex-clear-cache (&rest _)
+    "Clear the utftex render cache."
+    (interactive)
+    (clrhash my/utftex--cache)
+    (setq my/utftex--macro-cache nil))
+
+  (with-eval-after-load 'org-latex-preview
+    (setf (alist-get 'utftex org-latex-preview-process-alist)
+          '(:programs ("utftex") :description "LaTeX > unicode text (utftex)"
+            :message "you need to install utftex (libtexprintf)."))
+    (advice-add 'org-latex-preview-place :around #'my/utftex--place-advice)
+    (advice-add 'org-latex-preview :around #'my/utftex--lift-gui-guard)
+    (advice-add 'org-latex-preview-clear-cache :after #'my/utftex-clear-cache)))
+
 (use-package ox-beamer
   :ensure nil
   :after org
