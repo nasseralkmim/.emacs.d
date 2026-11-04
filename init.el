@@ -455,8 +455,7 @@ frame if FRAME is nil, and to 1 if AMT is nil."
 ;; filter with space-separated components and match components in any order
 ;; filter means how a input string is matched against candidates
 (use-package orderless
-  :defer 1
-  :demand
+  :demand t
   :config
   ;; partial completion for files to allows path expansion
   (setq completion-styles '(orderless)
