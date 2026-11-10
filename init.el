@@ -5717,6 +5717,68 @@ RESCHEDULE-FN is the function to reschedule."
                                  (window-height . 0.7)))))
       (when win (select-window win)))))
 
+;; show the summary of the entry at point in the echo area when idle
+(use-package my-elfeed-preview
+  :ensure nil
+  :after elfeed
+  :init
+  (require 'dom)
+
+  (defvar my/elfeed-preview-delay 0.4
+    "Seconds of idle time before showing the entry summary.")
+
+  (defvar my/elfeed-preview-lines 2
+    "Maximum number of echo-area lines the summary may use.")
+
+  (defvar my/elfeed-preview--timer nil)
+
+  (defun my/elfeed-preview--text (entry)
+    "Return ENTRY's summary as plain, single-spaced text, or nil."
+    (let ((content (elfeed-deref (elfeed-entry-content entry)))
+          (type (elfeed-entry-content-type entry)))
+      (when (and content (not (string-empty-p content)))
+        (let ((text (if (eq type 'html)
+                        (if (libxml-available-p)
+                            (with-temp-buffer
+                              (insert content)
+                              (dom-texts (libxml-parse-html-region
+                                          (point-min) (point-max))
+                                         " "))
+                          (replace-regexp-in-string "<[^>]*>" " " content))
+                      content)))
+          (string-trim (replace-regexp-in-string "[ \t\n\r]+" " " text))))))
+
+  (defun my/elfeed-preview--show (buf)
+    "Display the summary of the entry at point in BUF."
+    (when (and (buffer-live-p buf)
+               (eq (window-buffer (selected-window)) buf)
+               (not (active-minibuffer-window))) ; don't interrupt prompts
+      (with-current-buffer buf
+        (when-let ((entry (elfeed-search-selected :ignore-region)))
+          (let* ((text (or (my/elfeed-preview--text entry) "(no summary)"))
+                 (width (* my/elfeed-preview-lines (- (frame-width) 2)))
+                 (message-log-max nil))  ; keep *Messages* clean
+            (message "%s" (truncate-string-to-width text width nil nil "…")))))))
+
+  (defun my/elfeed-preview--schedule ()
+    "Restart the idle timer after each command in the search buffer."
+    (when (timerp my/elfeed-preview--timer)
+      (cancel-timer my/elfeed-preview--timer))
+    (setq my/elfeed-preview--timer
+          (run-with-idle-timer my/elfeed-preview-delay nil
+                               #'my/elfeed-preview--show (current-buffer))))
+
+  (define-minor-mode my/elfeed-preview-mode
+    "Show the summary of the entry at point in the echo area when idle."
+    :lighter " Preview"
+    (if my/elfeed-preview-mode
+        (add-hook 'post-command-hook #'my/elfeed-preview--schedule nil t)
+      (remove-hook 'post-command-hook #'my/elfeed-preview--schedule t)
+      (when (timerp my/elfeed-preview--timer)
+        (cancel-timer my/elfeed-preview--timer))))
+
+  (add-hook 'elfeed-search-mode-hook #'my/elfeed-preview-mode))
+
 (use-package elfeed-score
   :ensure t
   :after elfeed
