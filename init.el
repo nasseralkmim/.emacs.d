@@ -5726,7 +5726,7 @@ RESCHEDULE-FN is the function to reschedule."
   :init
   (require 'dom)
 
-  (defvar my/elfeed-preview-delay 0.4
+  (defvar my/elfeed-preview-delay 1.4
     "Seconds of idle time before showing the entry summary.")
 
   (defvar my/elfeed-preview-lines 2
