@@ -2866,6 +2866,13 @@ Only if there is more than one window opened."
         eww-auto-rename-buffer t                    ; each page on its own buffer
         eww-search-prefix "https://www.google.com/search?hl=en&lr=lang_en&q="))
 
+;; per-site request headers (referer/user agent) to get past paywalls in eww
+(use-package bypass-paywalls
+  :ensure nil
+  :load-path "lisp/"
+  :after eww
+  :config (bypass-paywalls-mode 1))
+
 (use-package browse-url
   :ensure nil
   :config
