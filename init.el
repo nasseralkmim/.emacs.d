@@ -5596,6 +5596,7 @@ RESCHEDULE-FN is the function to reschedule."
   (setq elfeed-db-directory "~/Sync/news/elfeed"
         elfeed-search-title-max-width 120
         elfeed-search-title-min-width 60
+        browse-url-secondary-browser-function 'eww
         elfeed-search-trailing-width 20)
   ;; Kind tags (one per feed) drive the colors: column, wire, forum,
   ;; preprint, journal, magazine, institution, author, essay.
