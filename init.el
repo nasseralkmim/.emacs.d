@@ -2871,6 +2871,7 @@ Only if there is more than one window opened."
   :ensure nil
   :load-path "lisp/"
   :after eww
+  :demand t
   :config (bypass-paywalls-mode 1))
 
 (use-package browse-url
