@@ -5738,7 +5738,7 @@ RESCHEDULE-FN is the function to reschedule."
   (defvar my/elfeed-preview-delay 1.4
     "Seconds of idle time before showing the entry summary.")
 
-  (defvar my/elfeed-preview-lines 2
+  (defvar my/elfeed-preview-lines 1
     "Maximum number of echo-area lines the summary may use.")
 
   (defvar my/elfeed-preview--timer nil)
