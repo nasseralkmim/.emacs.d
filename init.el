@@ -5945,4 +5945,7 @@ folded into one affine map; PNG exports have no dark mode of their own."
   (add-hook 'excali-mode-hook
           (lambda () (setq excali--theme 'dark))))
 
+(use-package emureader
+  :hook (emureader-mode . emureader-dark-mode))
+
 (message "Start up time %.2fs" (float-time (time-subtract (current-time) my-start-time)))
